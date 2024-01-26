@@ -1,0 +1,209 @@
+{
+  "id": "midi-item-showcase-community",
+  "title": "Midi Item Showcase - Community",
+  "description": "A collection of Midi Automations from the Posney's Foundry Automation Discord",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11",
+    "maximum": "11"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
+        "compatibility": {
+          "minimum": "2.4.1",
+          "verified": "2.4.1"
+        }
+      }
+    ],
+    "requires": [
+      {
+        "id": "midi-qol",
+        "type": "module",
+        "manifest": "https://gitlab.com/tposney/midi-qol/raw/v10/package/module.json",
+        "compatibility": {
+          "verified": "11.3.13",
+          "minimum": "11.3.13"
+        }
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "TMinz",
+      "discord": "TMinz",
+      "url": "https://github.com/txm3278"
+    }
+  ],
+  "esmodules": [
+    "scripts/module.js"
+  ],
+  "packs": [
+    {
+      "name": "misc-items",
+      "label": "MISC Items",
+      "path": "packs/misc-items",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-actors",
+      "label": "MISC Actors",
+      "path": "packs/misc-actors",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-class-features",
+      "label": "MISC Class Features",
+      "path": "packs/misc-class-features",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-class-features-items",
+      "label": "MISC Class Features Items",
+      "path": "packs/misc-class-features-items",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-feats",
+      "label": "MISC Feats",
+      "path": "packs/misc-feats",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-macros",
+      "label": "MISC Macros",
+      "path": "packs/misc-macros",
+      "type": "Macro",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-monster-features",
+      "label": "MISC Monster Features",
+      "path": "packs/misc-monster-features",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-spell-items",
+      "label": "MISC Spell Items",
+      "path": "packs/misc-spell-items",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-unearthed-arcana",
+      "label": "MISC Unearthed Arcana",
+      "path": "packs/misc-unearthed-arcana",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-spells",
+      "label": "MISC Spells",
+      "path": "packs/misc-spells",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-homebrew",
+      "label": "MISC Homebrew",
+      "path": "packs/misc-homebrew",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-race-features",
+      "label": "MISC Race Features",
+      "path": "packs/misc-race-features",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Midi Item Showcase - Community",
+      "sorting": "a",
+      "color": "#018e5f",
+      "packs": [
+        "misc-actors",
+        "misc-class-features",
+        "misc-feats",
+        "misc-macros",
+        "misc-monster-features",
+        "misc-race-features",
+        "misc-spells",
+        "misc-items",
+        "misc-unearthed-arcana",
+        "misc-homebrew"
+      ],
+      "folders": [
+        {
+          "name": "Internal",
+          "sorting": "a",
+          "color": "#018e5f",
+          "packs": [
+            "misc-class-features-items",
+            "misc-spell-items"
+          ]
+        }
+      ]
+    }
+  ]
+}

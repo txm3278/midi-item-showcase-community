@@ -1,0 +1,8 @@
+2024/01/26-01:27:47.295 4ad8 Recovering log #146
+2024/01/26-01:27:47.301 4ad8 Delete type=0 #146
+2024/01/26-01:27:47.301 4ad8 Delete type=3 #144
+2024/01/26-01:30:29.561 4b30 Level-0 table #151: started
+2024/01/26-01:30:29.561 4b30 Level-0 table #151: 0 bytes OK
+2024/01/26-01:30:29.563 4b30 Delete type=0 #149
+2024/01/26-01:30:29.567 4b30 Manual compaction at level-0 from '!macros!uZVaF1ab3jw2n7pF' @ 72057594037927935 : 1 .. '!macros!uZVaF1ab3jw2n7pF' @ 0 : 0; will stop at (end)
+2024/01/26-01:30:29.567 4b30 Manual compaction at level-1 from '!macros!uZVaF1ab3jw2n7pF' @ 72057594037927935 : 1 .. '!macros!uZVaF1ab3jw2n7pF' @ 0 : 0; will stop at (end)
