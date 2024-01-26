@@ -2,12 +2,19 @@
   "id": "midi-item-showcase-community",
   "title": "Midi Item Showcase - Community",
   "description": "A collection of Midi Automations from the Posney's Foundry Automation Discord",
-  "version": "1.0.0",
+  "version": "#{VERSION}#",
   "compatibility": {
     "minimum": "11",
     "verified": "11",
     "maximum": "11"
   },
+  "authors": [
+    {
+      "name": "TMinz",
+      "discord": "TMinz",
+      "url": "https://github.com/txm3278"
+    }
+  ],
   "relationships": {
     "systems": [
       {
@@ -32,15 +39,15 @@
       }
     ]
   },
-  "authors": [
-    {
-      "name": "TMinz",
-      "discord": "TMinz",
-      "url": "https://github.com/txm3278"
-    }
-  ],
   "esmodules": [
     "scripts/module.js"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
   ],
   "packs": [
     {
@@ -204,6 +211,17 @@
           ]
         }
       ]
+    }
+  ],
+  "url": "https://github.com/txm3278/midi-item-showcase-community",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "media": [
+    {
+      "type": "icon",
+      "url": ""
     }
   ]
 }
