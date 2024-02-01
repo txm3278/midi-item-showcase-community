@@ -1,10 +1,12 @@
 import { moduleName } from './constants.js';
 import { registerSettings } from './settings.js';
+import { setConfig } from './config.js';
 import { setupActors } from './actors.js';
 import { runMacro } from './macros.js';
 
 Hooks.once('init', async function () {
   registerSettings();
+  setConfig();
 });
 
 Hooks.once('ready', async function () {
