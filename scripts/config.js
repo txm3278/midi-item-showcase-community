@@ -11,7 +11,7 @@ export function setConfig() {
       },
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       'Borrowed Knowledge': {
@@ -171,7 +171,7 @@ export function setConfig() {
       },
       'Spirit Shield': {
         name: 'Spirit Shield',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       'Spirit Totem: Bear Spirit': {
@@ -191,12 +191,12 @@ export function setConfig() {
       },
       'Vengeful Ancertors': {
         name: 'Vengeful Ancertors',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       'Vigilant Guardian': {
         name: 'Vigilant Guardian',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       'Wand of Winter': {
