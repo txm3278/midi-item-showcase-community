@@ -6,7 +6,7 @@ A collection of Midi Automations from the Posney's Foundry Automation Discord
 
 - allgoodtogrow
 - Bradeck
-- buttchecksio
+- buttcheeksio
 - Christopher
 - CoolHand
 - Elwin
