@@ -1,3 +1,7 @@
-2024/02/01-14:11:15.016 570 Recovering log #175
-2024/02/01-14:11:15.020 570 Delete type=0 #175
-2024/02/01-14:11:15.020 570 Delete type=3 #174
+2024/02/16-17:48:06.614 1728 Recovering log #191
+2024/02/16-17:48:06.619 1728 Delete type=0 #191
+2024/02/16-17:48:06.619 1728 Delete type=3 #189
+2024/02/16-17:51:38.246 44dc Level-0 table #196: started
+2024/02/16-17:51:38.246 44dc Level-0 table #196: 0 bytes OK
+2024/02/16-17:51:38.248 44dc Delete type=0 #194
+2024/02/16-17:51:38.250 44dc Manual compaction at level-0 from '!macros!IvcRZ1WVX20Fn2GJ' @ 72057594037927935 : 1 .. '!macros!IvcRZ1WVX20Fn2GJ' @ 0 : 0; will stop at (end)

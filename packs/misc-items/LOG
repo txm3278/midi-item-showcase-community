@@ -1,15 +1,8 @@
-2024/02/05-23:13:03.862 55b0 Recovering log #195
-2024/02/05-23:13:03.866 55b0 Delete type=0 #195
-2024/02/05-23:13:03.866 55b0 Delete type=3 #194
-2024/02/05-23:22:27.857 b38 Level-0 table #199: started
-2024/02/05-23:22:27.869 b38 Level-0 table #199: 22359 bytes OK
-2024/02/05-23:22:27.872 b38 Delete type=0 #197
-2024/02/05-23:22:27.886 b38 Manual compaction at level-0 from '!items!3ohUG6HC2ovrPpL4' @ 72057594037927935 : 1 .. '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 0 : 0; will stop at (end)
-2024/02/05-23:22:27.886 b38 Manual compaction at level-1 from '!items!3ohUG6HC2ovrPpL4' @ 72057594037927935 : 1 .. '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 0 : 0; will stop at '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 54 : 1
-2024/02/05-23:22:27.886 b38 Compacting 1@1 + 1@2 files
-2024/02/05-23:22:27.893 b38 Generated table #200@1: 13 keys, 33128 bytes
-2024/02/05-23:22:27.893 b38 Compacted 1@1 + 1@2 files => 33128 bytes
-2024/02/05-23:22:27.895 b38 compacted to: files[ 0 0 1 0 0 0 0 ]
-2024/02/05-23:22:27.895 b38 Delete type=2 #191
-2024/02/05-23:22:27.895 b38 Delete type=2 #199
-2024/02/05-23:22:27.904 b38 Manual compaction at level-1 from '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 54 : 1 .. '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 0 : 0; will stop at (end)
+2024/02/16-18:00:17.633 4444 Recovering log #216
+2024/02/16-18:00:17.638 4444 Delete type=0 #216
+2024/02/16-18:00:17.638 4444 Delete type=3 #214
+2024/02/16-18:09:40.534 1894 Level-0 table #221: started
+2024/02/16-18:09:40.534 1894 Level-0 table #221: 0 bytes OK
+2024/02/16-18:09:40.536 1894 Delete type=0 #219
+2024/02/16-18:09:40.540 1894 Manual compaction at level-0 from '!items!3ohUG6HC2ovrPpL4' @ 72057594037927935 : 1 .. '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 0 : 0; will stop at (end)
+2024/02/16-18:09:40.546 1894 Manual compaction at level-1 from '!items!3ohUG6HC2ovrPpL4' @ 72057594037927935 : 1 .. '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 0 : 0; will stop at (end)
