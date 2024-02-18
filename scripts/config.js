@@ -22,7 +22,7 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Elwin'],
       },
-      'Bless': {
+      Bless: {
         name: 'Bless',
         type: 'Spell',
         version: '0.1.0',
@@ -196,6 +196,12 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Elwin'],
       },
+      'Scaled Ornament (stirring)': {
+        name: 'Scaled Ornament (stirring)',
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Muhammad2126'],
+      },
       "Sentinel at Death's Door": {
         name: "Sentinel at Death's Door",
         type: 'Class Feature',
@@ -345,6 +351,27 @@ export function setConfig() {
           authors: ['CoolHand'],
         },
       },
+      'Hundred-Handed One': {
+        Reactive: {
+          name: 'Reactive',
+          version: '0.1.0',
+          authors: ['Muhammad2126'],
+        },
+      },
+      Marilith: {
+        Reactive: {
+          name: 'Reactive',
+          version: '0.1.0',
+          authors: ['Muhammad2126'],
+        },
+      },
+      'Marilith (Summoner Variant)': {
+        Reactive: {
+          name: 'Reactive',
+          version: '0.1.0',
+          authors: ['Muhammad2126'],
+        },
+      },
       Spectator: {
         'Confusion Ray': {
           name: 'Confusion Ray',
@@ -384,6 +411,20 @@ export function setConfig() {
           name: 'Bite',
           version: '0.1.0',
           authors: ['Moto Moto'],
+        },
+      },
+      Vrock: {
+        'Stunning Screech': {
+          name: 'Stunning Screech',
+          version: '0.1.0',
+          authors: ['Muhammad2126'],
+        },
+      },
+      'Vrock (Summoner Variant)': {
+        'Stunning Screech': {
+          name: 'Stunning Screech',
+          version: '0.1.0',
+          authors: ['Muhammad2126'],
         },
       },
     },

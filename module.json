@@ -22,7 +22,7 @@
         "type": "system",
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
-          "minimum": "3.0.2",
+          "minimum": "2.4.1",
           "verified": "3.0.3"
         }
       }
@@ -33,15 +33,13 @@
         "type": "module",
         "manifest": "https://gitlab.com/tposney/midi-qol/raw/v10/package/module.json",
         "compatibility": {
-          "verified": "11.4.2",
-          "minimum": "11.4.2"
+          "verified": "11.4.3",
+          "minimum": "11.3.23"
         }
       }
     ]
   },
-  "esmodules": [
-    "scripts/module.js"
-  ],
+  "esmodules": ["scripts/module.js"],
   "languages": [
     {
       "lang": "en",
@@ -205,10 +203,7 @@
           "name": "Internal",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": [
-            "misc-class-features-items",
-            "misc-spell-items"
-          ]
+          "packs": ["misc-class-features-items", "misc-spell-items"]
         }
       ]
     }
