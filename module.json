@@ -71,6 +71,17 @@
       }
     },
     {
+      "name": "misc-actions",
+      "label": "MISC Actions",
+      "path": "packs/misc-actions",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "misc-class-features",
       "label": "MISC Class Features",
       "path": "packs/misc-class-features",
@@ -188,6 +199,7 @@
       "color": "#018e5f",
       "packs": [
         "misc-actors",
+        "misc-actions",
         "misc-class-features",
         "misc-feats",
         "misc-macros",

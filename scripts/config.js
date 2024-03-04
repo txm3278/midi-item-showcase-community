@@ -13,6 +13,7 @@ export function setConfig() {
       'All of Nothing Armor': {
         name: 'All of Nothing Armor',
         type: 'Item',
+        homebrew,
         version: '0.1.0',
         authors: ['CoolHand'],
       },
@@ -31,6 +32,13 @@ export function setConfig() {
       'Borrowed Knowledge': {
         name: 'Borrowed Knowledge',
         type: 'Spell',
+        version: '0.1.0',
+        authors: ['SagaTympana'],
+      },
+      'Channel Divinity: Divine Spark': {
+        name: 'Channel Divinity: Divine Spark',
+        type: 'Class Feature',
+        UA,
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
@@ -82,6 +90,12 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['TMinz'],
       },
+      'Dust of Dryness': {
+        name: 'Dust of Dryness',
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
       'Eldritch Cannon': {
         name: 'Eldritch Cannon',
         type: 'Class Feature',
@@ -111,6 +125,12 @@ export function setConfig() {
         type: 'Class Feature',
         version: '0.1.0',
         authors: ['SagaTympana'],
+      },
+      'Forage': {
+        name: 'Forage',
+        type: 'Generic Action',
+        version: '0.1.0',
+        authors: ['Fridan99', 'Christopher'],
       },
       'Gift of Alacrity': {
         name: 'Gift of Alacrity',
@@ -154,11 +174,67 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Moto Moto', 'SagaTympana', 'Worthlesston'],
       },
+      'Indomitable Might': {
+        name: 'Indomitable Might',
+        type: 'Class Feature',
+        version: '0.1.0',
+        authors: ['Muhammad2126'],
+      },
+      "Lila's Famous Mushroom Tea": {
+        name: "Lila's Famous Mushroom Tea",
+        type: 'Item',
+        homebrew,
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
       'Magic Stone': {
         name: 'Magic Stone',
         type: 'Spell',
         version: '0.1.0',
         authors: ['Bradeck', 'Coolhand', 'SagaTympana'],
+      },
+      "Medium Armor Master": {
+        name: "Medium Armor Master",
+        type: 'Feat',
+        version: '0.1.0',
+        authors: ['Muhammad2126'],
+      },
+      "Memorize Spell": {
+        name: "Memorize Spell",
+        type: 'Class Feature',
+        UA,
+        version: '0.1.0',
+        authors: ['SagaTympana'],
+      },
+      "Moon-Touched Sword, Greatsword": {
+        name: "Moon-Touched Sword, Greatsword",
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
+      "Moon-Touched Sword, Longsword": {
+        name: "Moon-Touched Sword, Longsword",
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
+      "Moon-Touched Sword, Scimitar": {
+        name: "Moon-Touched Sword, Scimitar",
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
+      "Moon-Touched Sword, Shortsword": {
+        name: "Moon-Touched Sword, Shortsword",
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
+      "Moon-Touched, Rapier": {
+        name: "Moon-Touched, Rapier",
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
       },
       "Mordenkainen's Sword": {
         name: "Mordenkainen's Sword",
@@ -184,17 +260,75 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['WurstKorn'],
       },
+      'Potion of Healing': {
+        name: 'Potion of Healing',
+        type: 'Item',
+        homebrew,
+        version: '0.1.0',
+        authors: ['TreeDragon', 'thatlonelybugbear'],
+      },
+      'Potion of Healing (Greater)': {
+        name: 'Potion of Healing (Greater)',
+        type: 'Item',
+        homebrew,
+        version: '0.1.0',
+        authors: ['TreeDragon', 'thatlonelybugbear'],
+      },
+      'Potion of Healing (Superior)': {
+        name: 'Potion of Healing (Superior)',
+        type: 'Item',
+        homebrew,
+        version: '0.1.0',
+        authors: ['TreeDragon', 'thatlonelybugbear'],
+      },
+      'Potion of Healing (Supreme)': {
+        name: 'Potion of Healing (Supreme)',
+        type: 'Item',
+        homebrew,
+        version: '0.1.0',
+        authors: ['TreeDragon', 'thatlonelybugbear'],
+      },
       'Power Word Pain': {
         name: 'Power Word Pain',
         type: 'Spell',
         version: '0.1.0',
         authors: ['Xenophes'],
       },
+      'Primal Champion': {
+        name: 'Primal Champion',
+        type: 'Class Feature',
+        version: '0.1.0',
+        authors: ['Muhammad2126'],
+      },
       'Psionic Power: Protective Field': {
         name: 'Psionic Power: Protective Field',
         type: 'Class Feature',
         version: '0.1.0',
         authors: ['Elwin'],
+      },
+      'Raise Dead': {
+        name: 'Raise Dead',
+        type: 'Spell',
+        version: '0.1.0',
+        authors: ['SagaTympana'],
+      },
+      'Recall Monster Lore': {
+        name: 'Recall Monster Lore',
+        type: 'Generic Action',
+        version: '0.1.0',
+        authors: ['Fridan99'],
+      },
+      'Resurrection': {
+        name: 'Resurrection',
+        type: 'Spell',
+        version: '0.1.0',
+        authors: ['SagaTympana'],
+      },
+      'Ryath Root': {
+        name: 'Ryath Root',
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
       },
       'Scaled Ornament (stirring)': {
         name: 'Scaled Ornament (stirring)',
@@ -238,16 +372,36 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
+      'Starry Wisp': {
+        name: 'Starry Wisp',
+        type: 'Spell',
+        UA,
+        version: '0.1.0',
+        authors: ['SagaTympana'],
+      },
       'Steady Aim': {
         name: 'Steady Aim',
         type: 'Class Feature',
         version: '0.1.0',
         authors: ['Elwin'],
       },
+      'Tomb of Levistus': {
+        name: 'Tomb of Levistus',
+        type: 'Class Feature',
+        version: '0.1.0',
+        authors: ['pospa4'],
+      },
+      'Toughened Skin': {
+        name: 'Toughened Skin',
+        type: 'Feat',
+        homebrew,
+        version: '0.1.0',
+        authors: ['Muhammad2126'],
+      },
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       'Vengeful Ancertors': {
@@ -267,6 +421,18 @@ export function setConfig() {
         type: 'Item',
         version: '0.1.0',
         authors: ['thatlonelybugbear'],
+      },
+      'Wukka Nuts': {
+        name: 'Wukka Nuts',
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
+      'Wildroot': {
+        name: 'Wildroot',
+        type: 'Item',
+        version: '0.1.0',
+        authors: ['Moto Moto'],
       },
     },
     monsterAutomations: {
@@ -414,6 +580,11 @@ export function setConfig() {
         },
       },
       Vrock: {
+        'Spores': {
+          name: 'Spores',
+          version: '0.1.0',
+          authors: ['natesummers#8576'],
+        },
         'Stunning Screech': {
           name: 'Stunning Screech',
           version: '0.1.0',
@@ -421,6 +592,11 @@ export function setConfig() {
         },
       },
       'Vrock (Summoner Variant)': {
+        'Spores': {
+          name: 'Spores',
+          version: '0.1.0',
+          authors: ['natesummers#8576'],
+        },
         'Stunning Screech': {
           name: 'Stunning Screech',
           version: '0.1.0',
