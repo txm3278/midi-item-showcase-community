@@ -13,7 +13,7 @@ export function setConfig() {
       'All of Nothing Armor': {
         name: 'All of Nothing Armor',
         type: 'Item',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['CoolHand'],
       },
@@ -38,7 +38,7 @@ export function setConfig() {
       'Channel Divinity: Divine Spark': {
         name: 'Channel Divinity: Divine Spark',
         type: 'Class Feature',
-        UA,
+        UA: true,
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
@@ -111,7 +111,7 @@ export function setConfig() {
       'Fighting Style: Great Weapon Fighting': {
         name: 'Fighting Style: Great Weapon Fighting',
         type: 'Class Feature',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['WurstKorn'],
       },
       'Flames of Phlegethos': {
@@ -183,7 +183,7 @@ export function setConfig() {
       "Lila's Famous Mushroom Tea": {
         name: "Lila's Famous Mushroom Tea",
         type: 'Item',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
@@ -202,7 +202,7 @@ export function setConfig() {
       "Memorize Spell": {
         name: "Memorize Spell",
         type: 'Class Feature',
-        UA,
+        UA: true,
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
@@ -263,28 +263,28 @@ export function setConfig() {
       'Potion of Healing': {
         name: 'Potion of Healing',
         type: 'Item',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Potion of Healing (Greater)': {
         name: 'Potion of Healing (Greater)',
         type: 'Item',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Potion of Healing (Superior)': {
         name: 'Potion of Healing (Superior)',
         type: 'Item',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Potion of Healing (Supreme)': {
         name: 'Potion of Healing (Supreme)',
         type: 'Item',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
@@ -375,7 +375,7 @@ export function setConfig() {
       'Starry Wisp': {
         name: 'Starry Wisp',
         type: 'Spell',
-        UA,
+        UA: true,
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
@@ -394,14 +394,14 @@ export function setConfig() {
       'Toughened Skin': {
         name: 'Toughened Skin',
         type: 'Feat',
-        homebrew,
+        homebrew: true,
         version: '0.1.0',
         authors: ['Muhammad2126'],
       },
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['Elwin'],
       },
       'Vengeful Ancertors': {
