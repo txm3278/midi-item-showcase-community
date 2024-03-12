@@ -111,7 +111,7 @@ export function setConfig() {
       'Fighting Style: Great Weapon Fighting': {
         name: 'Fighting Style: Great Weapon Fighting',
         type: 'Class Feature',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['WurstKorn'],
       },
       'Flames of Phlegethos': {
