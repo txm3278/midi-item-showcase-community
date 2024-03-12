@@ -147,7 +147,7 @@ export function setConfig() {
       Goodberry: {
         name: 'Goodberry',
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       'Great Weapon Master': {
@@ -156,10 +156,16 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Elwin'],
       },
+      'Great Weapon Master Attack': {
+        name: 'Great Weapon Master Attack',
+        type: 'Feat',
+        version: '0.1.1',
+        authors: ['Elwin'],
+      },
       'Guardian Emblem': {
         name: 'Guardian Emblem',
         type: 'Item',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Elwin'],
       },
       Healer: {
@@ -190,7 +196,7 @@ export function setConfig() {
       'Magic Stone': {
         name: 'Magic Stone',
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Bradeck', 'Coolhand', 'SagaTympana'],
       },
       "Medium Armor Master": {
@@ -245,7 +251,7 @@ export function setConfig() {
       Mislead: {
         name: 'Mislead',
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['TMinz'],
       },
       Net: {
@@ -257,7 +263,7 @@ export function setConfig() {
       Poisoner: {
         name: 'Poisoner',
         type: 'Feat',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['WurstKorn'],
       },
       'Potion of Healing': {
@@ -363,7 +369,7 @@ export function setConfig() {
       'Spirit Shield': {
         name: 'Spirit Shield',
         type: 'Class Feature',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['Elwin'],
       },
       'Spirit Totem: Bear Spirit': {
@@ -388,7 +394,7 @@ export function setConfig() {
       'Tomb of Levistus': {
         name: 'Tomb of Levistus',
         type: 'Class Feature',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['pospa4'],
       },
       'Toughened Skin': {
@@ -401,7 +407,7 @@ export function setConfig() {
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '0.1.2',
+        version: '0.1.3',
         authors: ['Elwin'],
       },
       'Vengeful Ancertors': {
@@ -471,12 +477,12 @@ export function setConfig() {
         },
         'Eye Rays': {
           name: 'Eye Rays',
-          version: '0.1.0',
+          version: '0.1.1',
           authors: ['Christopher'],
         },
         'Eye Rays (Legendary)': {
           name: 'Eye Rays (Legendary)',
-          version: '0.1.0',
+          version: '0.1.1',
           authors: ['Christopher'],
         },
         'Fear Ray': {
