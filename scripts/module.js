@@ -12,7 +12,7 @@ Hooks.once('init', async function () {
 Hooks.once('ready', async function () {
   if (game.user.isGM) {
     if (game.settings.get(moduleName, 'Update Actors')) await setupActors();
-    if (game.settings.get(moduleName, 'Third Party Reactions'))
-      await runMacro('Third Party Reactions');
+    if (game.settings.get(moduleName, 'Elwin Helpers'))
+      await runMacro('Elwin Helpers');
   }
 });

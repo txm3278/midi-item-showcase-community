@@ -14,15 +14,15 @@ export function registerSettings() {
       if (value && game.user.isGM) await setupActors();
     },
   });
-  game.settings.register(moduleName, 'Third Party Reactions', {
-    name: 'Use Third Party Reactions (By Elwin)',
-    hint: "Enabling this will enable automations that rely on Elwin's Third Party Reactions script",
+  game.settings.register(moduleName, 'Elwin Helpers', {
+    name: 'Use Elwin Helpers',
+    hint: "Enabling this will enable automations that rely on Elwin's Helper Script",
     scope: 'world',
     config: true,
     type: Boolean,
     default: false,
     onChange: async (value) => {
-      if (value && game.user.isGM) await runMacro('Third Party Reactions');
+      if (value && game.user.isGM) await runMacro('Elwin Helpers');
     },
   });
 }
