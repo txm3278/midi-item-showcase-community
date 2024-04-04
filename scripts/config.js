@@ -23,11 +23,23 @@ export function setConfig() {
         version: '2.0.0',
         authors: ['Elwin'],
       },
+      'Aspect of the Beast: Bear': {
+        name: 'Aspect of the Beast: Bear',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       Bless: {
         name: 'Bless',
         type: 'Spell',
         version: '0.1.0',
         authors: ['Moto Moto'],
+      },
+      'Blessed Healer': {
+        name: 'Blessed Healer',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['SagaTympana, Moto Moto'],
       },
       'Borrowed Knowledge': {
         name: 'Borrowed Knowledge',
@@ -42,6 +54,12 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
+      'Channel Divinity: Turn the Tide': {
+        name: 'Channel Divinity: Turn the Tide',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Christopher'],
+      },
       'Clockwork Amulet': {
         name: 'Clockwork Amulet',
         type: 'Item',
@@ -53,6 +71,12 @@ export function setConfig() {
         type: 'Item',
         version: '0.1.0',
         authors: ['SagaTympana'],
+      },
+      'Crown of Stars': {
+        name: 'Crown of Stars',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Xenophes'],
       },
       'Deflect Missiles': {
         name: 'Deflect Missiles',
@@ -95,6 +119,12 @@ export function setConfig() {
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
+      },
+      'Dust of Sneezing and Choking': {
+        name: 'Dust of Sneezing and Choking',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['SaltyJ'],
       },
       'Eldritch Cannon': {
         name: 'Eldritch Cannon',
@@ -173,6 +203,12 @@ export function setConfig() {
         type: 'Feat',
         version: '0.1.0',
         authors: ['SagaTympana', 'WurstKorn'],
+      },
+      'Hero Points': {
+        name: 'Hero Points',
+        type: 'Generic Feature',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
       },
       Immolation: {
         name: 'Immolation',
@@ -259,6 +295,12 @@ export function setConfig() {
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
+      },
+      Oathbow: {
+        name: 'Oathbow',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Christopher'],
       },
       Poisoner: {
         name: 'Poisoner',
@@ -352,6 +394,12 @@ export function setConfig() {
         name: 'Sharpshooter',
         type: 'Feat',
         version: '0.1.0',
+        authors: ['Moto Moto'],
+      },
+      Slow: {
+        name: 'Slow',
+        type: 'Spell',
+        version: '1.0.0',
         authors: ['Moto Moto'],
       },
       Snare: {

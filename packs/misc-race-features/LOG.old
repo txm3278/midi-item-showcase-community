@@ -1,3 +1,24 @@
-2024/03/13-14:07:42.018 59c0 Recovering log #269
-2024/03/13-14:07:42.023 59c0 Delete type=0 #269
-2024/03/13-14:07:42.023 59c0 Delete type=3 #267
+2024/04/04-14:38:38.121 50f4 Recovering log #273
+2024/04/04-14:38:38.121 50f4 Level-0 table #275: started
+2024/04/04-14:38:38.134 50f4 Level-0 table #275: 20785 bytes OK
+2024/04/04-14:38:38.146 50f4 Delete type=0 #273
+2024/04/04-14:38:38.146 50f4 Delete type=3 #272
+2024/04/04-14:49:25.139 1c24 Level-0 table #278: started
+2024/04/04-14:49:25.139 1c24 Level-0 table #278: 0 bytes OK
+2024/04/04-14:49:25.145 1c24 Delete type=0 #276
+2024/04/04-14:49:25.145 1c24 Manual compaction at level-0 from '!folders!M1a0RkeVv33MD1aV' @ 72057594037927935 : 1 .. '!items.effects!K6P4us0eDKkbBYkg.nVkNqMNhW9Kcb6mq' @ 0 : 0; will stop at '!items!CCfrCqz5DqIVzPmM' @ 19 : 1
+2024/04/04-14:49:25.145 1c24 Compacting 2@0 + 0@1 files
+2024/04/04-14:49:25.155 1c24 Generated table #279@0: 4 keys, 7540 bytes
+2024/04/04-14:49:25.155 1c24 Compacted 2@0 + 0@1 files => 7540 bytes
+2024/04/04-14:49:25.160 1c24 compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/04/04-14:49:25.160 1c24 Delete type=2 #268
+2024/04/04-14:49:25.160 1c24 Delete type=2 #275
+2024/04/04-14:49:25.194 1c24 Manual compaction at level-0 from '!items!CCfrCqz5DqIVzPmM' @ 19 : 1 .. '!items.effects!K6P4us0eDKkbBYkg.nVkNqMNhW9Kcb6mq' @ 0 : 0; will stop at (end)
+2024/04/04-14:49:25.209 1c24 Manual compaction at level-1 from '!folders!M1a0RkeVv33MD1aV' @ 72057594037927935 : 1 .. '!items.effects!K6P4us0eDKkbBYkg.nVkNqMNhW9Kcb6mq' @ 0 : 0; will stop at '!items.effects!K6P4us0eDKkbBYkg.nVkNqMNhW9Kcb6mq' @ 23 : 1
+2024/04/04-14:49:25.209 1c24 Compacting 1@1 + 1@2 files
+2024/04/04-14:49:25.213 1c24 Generated table #280@1: 4 keys, 7607 bytes
+2024/04/04-14:49:25.213 1c24 Compacted 1@1 + 1@2 files => 7607 bytes
+2024/04/04-14:49:25.214 1c24 compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/04/04-14:49:25.214 1c24 Delete type=2 #150
+2024/04/04-14:49:25.214 1c24 Delete type=2 #279
+2024/04/04-14:49:25.220 1c24 Manual compaction at level-1 from '!items.effects!K6P4us0eDKkbBYkg.nVkNqMNhW9Kcb6mq' @ 23 : 1 .. '!items.effects!K6P4us0eDKkbBYkg.nVkNqMNhW9Kcb6mq' @ 0 : 0; will stop at (end)
