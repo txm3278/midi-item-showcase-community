@@ -18,6 +18,7 @@ A collection of Midi Automations from the Posney's Foundry Automation Discord
 - pospa4
 - Quinn Dexter
 - SagaTympana
+- SaltyJ
 - thatlonelybugbear
 - TMinz
 - TreeDragon
