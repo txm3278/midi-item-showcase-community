@@ -22,7 +22,7 @@ export function registerSettings() {
     type: Boolean,
     default: false,
     onChange: async (value) => {
-      if (value && game.user.isGM) await runMacro('Elwin Helpers');
+      if (value) await runMacro('Elwin Helpers');
     },
   });
 }
