@@ -1,24 +1,3 @@
-2024/04/04-14:38:37.694 50f4 Recovering log #337
-2024/04/04-14:38:37.694 50f4 Level-0 table #339: started
-2024/04/04-14:38:37.698 50f4 Level-0 table #339: 43957 bytes OK
-2024/04/04-14:38:37.707 50f4 Delete type=0 #337
-2024/04/04-14:38:37.707 50f4 Delete type=3 #336
-2024/04/04-14:49:24.961 1c24 Level-0 table #342: started
-2024/04/04-14:49:24.962 1c24 Level-0 table #342: 0 bytes OK
-2024/04/04-14:49:24.967 1c24 Delete type=0 #340
-2024/04/04-14:49:24.997 1c24 Manual compaction at level-0 from '!folders!Bn8fmEr6Vk6Vawl3' @ 72057594037927935 : 1 .. '!items.effects!vscVnDip6FTAIQ1Y.c9UT1Kava14E3Xts' @ 0 : 0; will stop at '!items!xCqCNpWvnjBDCwnq' @ 122 : 1
-2024/04/04-14:49:24.997 1c24 Compacting 2@0 + 0@1 files
-2024/04/04-14:49:25.003 1c24 Generated table #343@0: 13 keys, 25686 bytes
-2024/04/04-14:49:25.003 1c24 Compacted 2@0 + 0@1 files => 25686 bytes
-2024/04/04-14:49:25.008 1c24 compacted to: files[ 0 1 1 0 0 0 0 ]
-2024/04/04-14:49:25.008 1c24 Delete type=2 #332
-2024/04/04-14:49:25.008 1c24 Delete type=2 #339
-2024/04/04-14:49:25.008 1c24 Manual compaction at level-0 from '!items!xCqCNpWvnjBDCwnq' @ 122 : 1 .. '!items.effects!vscVnDip6FTAIQ1Y.c9UT1Kava14E3Xts' @ 0 : 0; will stop at (end)
-2024/04/04-14:49:25.041 1c24 Manual compaction at level-1 from '!folders!Bn8fmEr6Vk6Vawl3' @ 72057594037927935 : 1 .. '!items.effects!vscVnDip6FTAIQ1Y.c9UT1Kava14E3Xts' @ 0 : 0; will stop at '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 124 : 0
-2024/04/04-14:49:25.041 1c24 Compacting 1@1 + 1@2 files
-2024/04/04-14:49:25.047 1c24 Generated table #344@1: 34 keys, 60298 bytes
-2024/04/04-14:49:25.047 1c24 Compacted 1@1 + 1@2 files => 60298 bytes
-2024/04/04-14:49:25.050 1c24 compacted to: files[ 0 0 1 0 0 0 0 ]
-2024/04/04-14:49:25.050 1c24 Delete type=2 #316
-2024/04/04-14:49:25.050 1c24 Delete type=2 #343
-2024/04/04-14:49:25.051 1c24 Manual compaction at level-1 from '!items.effects!jxSUA78E2lvDVtOe.WU05KztTWM52xzK5' @ 124 : 0 .. '!items.effects!vscVnDip6FTAIQ1Y.c9UT1Kava14E3Xts' @ 0 : 0; will stop at (end)
+2024/04/04-14:50:50.916 b4c Recovering log #341
+2024/04/04-14:50:50.925 b4c Delete type=0 #341
+2024/04/04-14:50:50.926 b4c Delete type=3 #338

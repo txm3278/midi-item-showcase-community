@@ -7,7 +7,7 @@ export function setConfig() {
       'Absorb Elements': {
         name: 'Absorb Elements',
         type: 'Spell',
-        version: '0.1.1',
+        version: '1.0.1',
         authors: ['Bradeck', 'thatlonelybugbear'],
       },
       'All of Nothing Armor': {
@@ -156,7 +156,7 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
-      'Forage': {
+      Forage: {
         name: 'Forage',
         type: 'Generic Action',
         version: '0.1.0',
@@ -235,45 +235,45 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Bradeck', 'Coolhand', 'SagaTympana'],
       },
-      "Medium Armor Master": {
-        name: "Medium Armor Master",
+      'Medium Armor Master': {
+        name: 'Medium Armor Master',
         type: 'Feat',
         version: '0.1.0',
         authors: ['Muhammad2126'],
       },
-      "Memorize Spell": {
-        name: "Memorize Spell",
+      'Memorize Spell': {
+        name: 'Memorize Spell',
         type: 'Class Feature',
         UA: true,
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
-      "Moon-Touched Sword, Greatsword": {
-        name: "Moon-Touched Sword, Greatsword",
+      'Moon-Touched Sword, Greatsword': {
+        name: 'Moon-Touched Sword, Greatsword',
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
-      "Moon-Touched Sword, Longsword": {
-        name: "Moon-Touched Sword, Longsword",
+      'Moon-Touched Sword, Longsword': {
+        name: 'Moon-Touched Sword, Longsword',
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
-      "Moon-Touched Sword, Scimitar": {
-        name: "Moon-Touched Sword, Scimitar",
+      'Moon-Touched Sword, Scimitar': {
+        name: 'Moon-Touched Sword, Scimitar',
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
-      "Moon-Touched Sword, Shortsword": {
-        name: "Moon-Touched Sword, Shortsword",
+      'Moon-Touched Sword, Shortsword': {
+        name: 'Moon-Touched Sword, Shortsword',
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
-      "Moon-Touched, Rapier": {
-        name: "Moon-Touched, Rapier",
+      'Moon-Touched, Rapier': {
+        name: 'Moon-Touched, Rapier',
         type: 'Item',
         version: '0.1.0',
         authors: ['Moto Moto'],
@@ -348,6 +348,12 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Muhammad2126'],
       },
+      'Protection from Poison': {
+        name: 'Protection from Poison',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       'Psionic Power: Protective Field': {
         name: 'Psionic Power: Protective Field',
         type: 'Class Feature',
@@ -366,7 +372,7 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Fridan99'],
       },
-      'Resurrection': {
+      Resurrection: {
         name: 'Resurrection',
         type: 'Spell',
         version: '0.1.0',
@@ -399,7 +405,7 @@ export function setConfig() {
       Slow: {
         name: 'Slow',
         type: 'Spell',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Moto Moto'],
       },
       Snare: {
@@ -455,7 +461,7 @@ export function setConfig() {
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Vengeful Ancertors': {
@@ -482,7 +488,7 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
-      'Wildroot': {
+      Wildroot: {
         name: 'Wildroot',
         type: 'Item',
         version: '0.1.0',
@@ -592,6 +598,13 @@ export function setConfig() {
           authors: ['Muhammad2126'],
         },
       },
+      'Shield Guardian': {
+        'Spell Storing': {
+          name: 'Spell Storing',
+          version: '1.0.0',
+          authors: ['n3veruary'],
+        },
+      },
       Spectator: {
         'Confusion Ray': {
           name: 'Confusion Ray',
@@ -634,7 +647,7 @@ export function setConfig() {
         },
       },
       Vrock: {
-        'Spores': {
+        Spores: {
           name: 'Spores',
           version: '0.1.0',
           authors: ['natesummers#8576'],
@@ -646,7 +659,7 @@ export function setConfig() {
         },
       },
       'Vrock (Summoner Variant)': {
-        'Spores': {
+        Spores: {
           name: 'Spores',
           version: '0.1.0',
           authors: ['natesummers#8576'],

@@ -1,25 +1,3 @@
-2024/04/04-14:38:37.788 2c60 Recovering log #333
-2024/04/04-14:38:37.789 2c60 Level-0 table #335: started
-2024/04/04-14:38:37.795 2c60 Level-0 table #335: 139391 bytes OK
-2024/04/04-14:38:37.805 2c60 Delete type=0 #333
-2024/04/04-14:38:37.805 2c60 Delete type=3 #332
-2024/04/04-14:49:25.185 1c24 Level-0 table #338: started
-2024/04/04-14:49:25.185 1c24 Level-0 table #338: 0 bytes OK
-2024/04/04-14:49:25.188 1c24 Delete type=0 #336
-2024/04/04-14:49:25.194 1c24 Manual compaction at level-0 from '!folders!3710dxH68FQg2gpo' @ 72057594037927935 : 1 .. '!items.effects!tLp8ejkElbgRAD6k.8wCjz9mOtvTTbSKc' @ 0 : 0; will stop at '!items!rR0TFL9LkA06O7Qa' @ 190 : 1
-2024/04/04-14:49:25.194 1c24 Compacting 3@0 + 0@1 files
-2024/04/04-14:49:25.202 1c24 Generated table #339@0: 44 keys, 62364 bytes
-2024/04/04-14:49:25.202 1c24 Compacted 3@0 + 0@1 files => 62364 bytes
-2024/04/04-14:49:25.207 1c24 compacted to: files[ 0 1 1 0 0 0 0 ]
-2024/04/04-14:49:25.208 1c24 Delete type=2 #327
-2024/04/04-14:49:25.208 1c24 Delete type=2 #330
-2024/04/04-14:49:25.208 1c24 Delete type=2 #335
-2024/04/04-14:49:25.220 1c24 Manual compaction at level-0 from '!items!rR0TFL9LkA06O7Qa' @ 190 : 1 .. '!items.effects!tLp8ejkElbgRAD6k.8wCjz9mOtvTTbSKc' @ 0 : 0; will stop at (end)
-2024/04/04-14:49:25.252 1c24 Manual compaction at level-1 from '!folders!3710dxH68FQg2gpo' @ 72057594037927935 : 1 .. '!items.effects!tLp8ejkElbgRAD6k.8wCjz9mOtvTTbSKc' @ 0 : 0; will stop at '!items.effects!tLp8ejkElbgRAD6k.8wCjz9mOtvTTbSKc' @ 233 : 1
-2024/04/04-14:49:25.252 1c24 Compacting 1@1 + 1@2 files
-2024/04/04-14:49:25.273 1c24 Generated table #340@1: 55 keys, 77091 bytes
-2024/04/04-14:49:25.273 1c24 Compacted 1@1 + 1@2 files => 77091 bytes
-2024/04/04-14:49:25.278 1c24 compacted to: files[ 0 0 1 0 0 0 0 ]
-2024/04/04-14:49:25.278 1c24 Delete type=2 #323
-2024/04/04-14:49:25.278 1c24 Delete type=2 #339
-2024/04/04-14:49:25.279 1c24 Manual compaction at level-1 from '!items.effects!tLp8ejkElbgRAD6k.8wCjz9mOtvTTbSKc' @ 233 : 1 .. '!items.effects!tLp8ejkElbgRAD6k.8wCjz9mOtvTTbSKc' @ 0 : 0; will stop at (end)
+2024/04/04-14:50:50.952 50f4 Recovering log #337
+2024/04/04-14:50:50.962 50f4 Delete type=0 #337
+2024/04/04-14:50:50.962 50f4 Delete type=3 #334
