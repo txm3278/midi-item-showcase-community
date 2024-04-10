@@ -14,6 +14,7 @@ A collection of Midi Automations from the Posney's Foundry Automation Discord
 - Janner3D
 - Moto Moto
 - Muhammad2126
+- n3veruary
 - natesummers#8576
 - pospa4
 - Quinn Dexter
