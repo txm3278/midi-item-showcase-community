@@ -159,7 +159,7 @@ export function setConfig() {
       'Flaming Sphere': {
         name: 'Flaming Sphere',
         type: 'Spell',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Moto Moto'],
       },
       'Flash of Genius': {
