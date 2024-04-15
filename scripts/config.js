@@ -72,6 +72,12 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
+      'Countercharm': {
+        name: 'Countercharm',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       'Crown of Stars': {
         name: 'Crown of Stars',
         type: 'Spell',
@@ -149,6 +155,12 @@ export function setConfig() {
         type: 'Feat',
         version: '2.0.0',
         authors: ['Elwin'],
+      },
+      'Flaming Sphere': {
+        name: 'Flaming Sphere',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
       },
       'Flash of Genius': {
         name: 'Flash of Genius',
@@ -248,6 +260,18 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
+      'Meteor Swarm': {
+        name: 'Meteor Swarm',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Xenophes'],
+      },
+      Mislead: {
+        name: 'Mislead',
+        type: 'Spell',
+        version: '0.1.1',
+        authors: ['TMinz'],
+      },
       'Moon-Touched Sword, Greatsword': {
         name: 'Moon-Touched Sword, Greatsword',
         type: 'Item',
@@ -283,12 +307,6 @@ export function setConfig() {
         type: 'Spell',
         version: '0.1.0',
         authors: ['Janner3D'],
-      },
-      Mislead: {
-        name: 'Mislead',
-        type: 'Spell',
-        version: '0.1.1',
-        authors: ['TMinz'],
       },
       Net: {
         name: 'Net',
@@ -413,6 +431,13 @@ export function setConfig() {
         type: 'Spell',
         version: '0.1.0',
         authors: ['Quinn Dexter'],
+      },
+      'Sorcerous Burst': {
+        name: 'Sorcerous Burst',
+        type: 'Spell',
+        UA: true,
+        version: '1.0.0',
+        authors: ['SagaTympana'],
       },
       'Soul of Artifice': {
         name: 'Soul of Artifice',

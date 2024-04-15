@@ -1,3 +1,21 @@
-2024/04/04-14:50:50.916 b4c Recovering log #341
-2024/04/04-14:50:50.925 b4c Delete type=0 #341
-2024/04/04-14:50:50.926 b4c Delete type=3 #338
+2024/04/15-17:23:40.930 2744 Recovering log #353
+2024/04/15-17:23:40.935 2744 Delete type=0 #353
+2024/04/15-17:23:40.935 2744 Delete type=3 #352
+2024/04/15-17:56:22.276 604c Level-0 table #357: started
+2024/04/15-17:56:22.276 604c Level-0 table #357: 0 bytes OK
+2024/04/15-17:56:22.278 604c Delete type=0 #355
+2024/04/15-17:56:22.283 604c Manual compaction at level-0 from '!folders!Bn8fmEr6Vk6Vawl3' @ 72057594037927935 : 1 .. '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 0 : 0; will stop at '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 136 : 1
+2024/04/15-17:56:22.283 604c Compacting 1@0 + 0@1 files
+2024/04/15-17:56:22.288 604c Generated table #358@0: 4 keys, 7910 bytes
+2024/04/15-17:56:22.288 604c Compacted 1@0 + 0@1 files => 7910 bytes
+2024/04/15-17:56:22.290 604c compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/04/15-17:56:22.290 604c Delete type=2 #348
+2024/04/15-17:56:22.298 604c Manual compaction at level-0 from '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 136 : 1 .. '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 0 : 0; will stop at (end)
+2024/04/15-17:56:22.304 604c Manual compaction at level-1 from '!folders!Bn8fmEr6Vk6Vawl3' @ 72057594037927935 : 1 .. '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 0 : 0; will stop at '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 136 : 1
+2024/04/15-17:56:22.304 604c Compacting 1@1 + 1@2 files
+2024/04/15-17:56:22.308 604c Generated table #359@1: 38 keys, 68070 bytes
+2024/04/15-17:56:22.308 604c Compacted 1@1 + 1@2 files => 68070 bytes
+2024/04/15-17:56:22.309 604c compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/04/15-17:56:22.309 604c Delete type=2 #344
+2024/04/15-17:56:22.310 604c Delete type=2 #358
+2024/04/15-17:56:22.314 604c Manual compaction at level-1 from '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 136 : 1 .. '!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja' @ 0 : 0; will stop at (end)
