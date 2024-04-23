@@ -7,20 +7,20 @@ export function setConfig() {
       'Absorb Elements': {
         name: 'Absorb Elements',
         type: 'Spell',
-        version: '1.0.1',
+        version: '1.0.2',
         authors: ['Bradeck', 'thatlonelybugbear'],
       },
       'All of Nothing Armor': {
         name: 'All of Nothing Armor',
         type: 'Item',
         homebrew: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['CoolHand'],
       },
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
         type: 'Item',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Aspect of the Beast: Bear': {
@@ -32,44 +32,44 @@ export function setConfig() {
       Bless: {
         name: 'Bless',
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Moto Moto'],
       },
       'Blessed Healer': {
         name: 'Blessed Healer',
         type: 'Class Feature',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['SagaTympana, Moto Moto'],
       },
       'Borrowed Knowledge': {
         name: 'Borrowed Knowledge',
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['SagaTympana'],
       },
       'Channel Divinity: Divine Spark': {
         name: 'Channel Divinity: Divine Spark',
         type: 'Class Feature',
         UA: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['SagaTympana'],
       },
       'Channel Divinity: Turn the Tide': {
         name: 'Channel Divinity: Turn the Tide',
         type: 'Class Feature',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Christopher'],
       },
       'Clockwork Amulet': {
         name: 'Clockwork Amulet',
         type: 'Item',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['thatlonelybugbear'],
       },
       'Corpse Slayer Longbow': {
         name: 'Corpse Slayer Longbow',
         type: 'Item',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['SagaTympana'],
       },
       'Countercharm': {
@@ -81,7 +81,7 @@ export function setConfig() {
       'Crown of Stars': {
         name: 'Crown of Stars',
         type: 'Spell',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Xenophes'],
       },
       'Deflect Missiles': {
@@ -105,19 +105,19 @@ export function setConfig() {
       'Divine Allegiance': {
         name: 'Divine Allegiance',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       Driftglobe: {
         name: 'Driftglobe',
         type: 'Item',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['buttcheeksio'],
       },
       'Dungeon Delver': {
         name: 'Dungeon Delver',
         type: 'Feat',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['TMinz'],
       },
       'Dust of Dryness': {
@@ -135,7 +135,7 @@ export function setConfig() {
       'Eldritch Cannon': {
         name: 'Eldritch Cannon',
         type: 'Class Feature',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['allgoodtogrow'],
       },
       Elusive: {
@@ -144,22 +144,28 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
+      'Eyes of Minute Seeing': {
+        name: 'Eyes of Minute Seeing',
+        type: 'Item',
+        version: '1.9.0',
+        authors: ['Moto Moto'],
+      },
       'Fighting Style: Great Weapon Fighting': {
         name: 'Fighting Style: Great Weapon Fighting',
         type: 'Class Feature',
-        version: '0.1.2',
+        version: '0.1.3',
         authors: ['WurstKorn'],
       },
       'Flames of Phlegethos': {
         name: 'Flames of Phlegethos',
         type: 'Feat',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Flaming Sphere': {
         name: 'Flaming Sphere',
         type: 'Spell',
-        version: '1.0.1',
+        version: '1.0.2',
         authors: ['Moto Moto'],
       },
       'Flash of Genius': {
@@ -171,7 +177,7 @@ export function setConfig() {
       Forage: {
         name: 'Forage',
         type: 'Generic Action',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Fridan99', 'Christopher'],
       },
       'Gift of Alacrity': {
@@ -183,37 +189,43 @@ export function setConfig() {
       'Gift of the Metallic Dragon': {
         name: 'Gift of the Metallic Dragon',
         type: 'Feat',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
+      },
+      'Goggles of Object Reading': {
+        name: 'Goggles of Object Reading',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
       },
       Goodberry: {
         name: 'Goodberry',
         type: 'Spell',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Great Weapon Master': {
         name: 'Great Weapon Master',
         type: 'Feat',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Great Weapon Master Attack': {
         name: 'Great Weapon Master Attack',
         type: 'Feat',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Guardian Emblem': {
         name: 'Guardian Emblem',
         type: 'Item',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       Healer: {
         name: 'Healer',
         type: 'Feat',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['SagaTympana', 'WurstKorn'],
       },
       'Hero Points': {
@@ -244,7 +256,7 @@ export function setConfig() {
       'Magic Stone': {
         name: 'Magic Stone',
         type: 'Spell',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['Bradeck', 'Coolhand', 'SagaTympana'],
       },
       'Medium Armor Master': {
@@ -257,19 +269,19 @@ export function setConfig() {
         name: 'Memorize Spell',
         type: 'Class Feature',
         UA: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['SagaTympana'],
       },
       'Meteor Swarm': {
         name: 'Meteor Swarm',
         type: 'Spell',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Xenophes'],
       },
       Mislead: {
         name: 'Mislead',
         type: 'Spell',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['TMinz'],
       },
       'Moon-Touched Sword, Greatsword': {
@@ -305,7 +317,7 @@ export function setConfig() {
       "Mordenkainen's Sword": {
         name: "Mordenkainen's Sword",
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Janner3D'],
       },
       Net: {
@@ -317,47 +329,47 @@ export function setConfig() {
       Oathbow: {
         name: 'Oathbow',
         type: 'Item',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Christopher'],
       },
       Poisoner: {
         name: 'Poisoner',
         type: 'Feat',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['WurstKorn'],
       },
       'Potion of Healing': {
         name: 'Potion of Healing',
         type: 'Item',
         homebrew: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Potion of Healing (Greater)': {
         name: 'Potion of Healing (Greater)',
         type: 'Item',
         homebrew: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Potion of Healing (Superior)': {
         name: 'Potion of Healing (Superior)',
         type: 'Item',
         homebrew: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Potion of Healing (Supreme)': {
         name: 'Potion of Healing (Supreme)',
         type: 'Item',
         homebrew: true,
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
       'Power Word Pain': {
         name: 'Power Word Pain',
         type: 'Spell',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Xenophes'],
       },
       'Primal Champion': {
@@ -375,7 +387,7 @@ export function setConfig() {
       'Psionic Power: Protective Field': {
         name: 'Psionic Power: Protective Field',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Raise Dead': {
@@ -387,7 +399,7 @@ export function setConfig() {
       'Recall Monster Lore': {
         name: 'Recall Monster Lore',
         type: 'Generic Action',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Fridan99'],
       },
       Resurrection: {
@@ -411,7 +423,7 @@ export function setConfig() {
       "Sentinel at Death's Door": {
         name: "Sentinel at Death's Door",
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       Sharpshooter: {
@@ -423,7 +435,7 @@ export function setConfig() {
       Slow: {
         name: 'Slow',
         type: 'Spell',
-        version: '1.0.1',
+        version: '1.0.2',
         authors: ['Moto Moto'],
       },
       Snare: {
@@ -436,25 +448,25 @@ export function setConfig() {
         name: 'Sorcerous Burst',
         type: 'Spell',
         UA: true,
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['SagaTympana'],
       },
       'Soul of Artifice': {
         name: 'Soul of Artifice',
         type: 'Class Feature',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['SagaTympana'],
       },
       'Spirit Shield': {
         name: 'Spirit Shield',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Spirit Totem: Bear Spirit': {
         name: 'Spirit Totem: Bear Spirit',
         type: 'Class Feature',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['Moto Moto'],
       },
       'Starry Wisp': {
@@ -467,13 +479,13 @@ export function setConfig() {
       'Steady Aim': {
         name: 'Steady Aim',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Tomb of Levistus': {
         name: 'Tomb of Levistus',
         type: 'Class Feature',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['pospa4'],
       },
       'Toughened Skin': {
@@ -486,25 +498,31 @@ export function setConfig() {
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '2.0.1',
+        version: '2.0.2',
         authors: ['Elwin'],
       },
       'Vengeful Ancertors': {
         name: 'Vengeful Ancertors',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
+      },
+      'Vial': {
+        name: 'Vial',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
       },
       'Vigilant Guardian': {
         name: 'Vigilant Guardian',
         type: 'Race Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Wand of Winter': {
         name: 'Wand of Winter',
         type: 'Item',
-        version: '0.1.0',
+        version: '0.1.1',
         authors: ['thatlonelybugbear'],
       },
       'Wukka Nuts': {
@@ -524,12 +542,12 @@ export function setConfig() {
       Banshee: {
         Wail: {
           name: 'Wail',
-          version: '0.1.0',
+          version: '0.1.1',
           authors: ['Moto Moto'],
         },
         'Horrifying Visage': {
           name: 'Horrifying Visage',
-          version: '0.1.0',
+          version: '0.1.1',
           authors: ['Moto Moto'],
         },
       },
@@ -626,7 +644,7 @@ export function setConfig() {
       'Shield Guardian': {
         'Spell Storing': {
           name: 'Spell Storing',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['n3veruary'],
         },
       },
@@ -667,7 +685,7 @@ export function setConfig() {
       'Vampire Spawn': {
         Bite: {
           name: 'Bite',
-          version: '0.1.0',
+          version: '0.1.1',
           authors: ['Moto Moto'],
         },
       },

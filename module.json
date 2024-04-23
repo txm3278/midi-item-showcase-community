@@ -60,6 +60,17 @@
       }
     },
     {
+      "name": "misc-items-features",
+      "label": "MISC Items Features",
+      "path": "packs/misc-items-features",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "misc-actors",
       "label": "MISC Actors",
       "path": "packs/misc-actors",
@@ -108,17 +119,6 @@
       "label": "MISC Feats",
       "path": "packs/misc-feats",
       "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "misc-macros",
-      "label": "MISC Macros",
-      "path": "packs/misc-macros",
-      "type": "Macro",
       "system": "dnd5e",
       "ownership": {
         "PLAYER": "OBSERVER",
@@ -202,7 +202,6 @@
         "misc-actions",
         "misc-class-features",
         "misc-feats",
-        "misc-macros",
         "misc-monster-features",
         "misc-race-features",
         "misc-spells",
@@ -215,7 +214,11 @@
           "name": "Internal",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": ["misc-class-features-items", "misc-spell-items"]
+          "packs": [
+            "misc-class-features-items",
+            "misc-spell-items",
+            "misc-items-features"
+          ]
         }
       ]
     }

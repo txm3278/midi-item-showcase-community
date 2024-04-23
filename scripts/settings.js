@@ -1,6 +1,6 @@
 import { moduleName } from './constants.js';
 import { setupActors } from './actors.js';
-import { runMacro } from './macros.js';
+import { scripts } from './macros.js';
 
 export function registerSettings() {
   game.settings.register(moduleName, 'Update Actors', {
@@ -22,7 +22,7 @@ export function registerSettings() {
     type: Boolean,
     default: false,
     onChange: async (value) => {
-      if (value) await runMacro('Elwin Helpers');
+      if (value) await scripts.runElwinsHelpers();
     },
   });
 }
