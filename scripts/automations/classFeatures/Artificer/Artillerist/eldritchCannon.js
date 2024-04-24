@@ -151,7 +151,7 @@ export async function eldritchCannon({
           embedded: {
             Item: {
               [cannonFeatureItem.name]: cannonFeatureItem,
-              [detonateCannonFeature.name]: explosiveCannonFeature,
+              [detonateCannonFeature.name]: detonateCannonFeature,
             },
             ActiveEffect: {
               [halfCoverAura.label]: halfCoverAura,
@@ -166,7 +166,7 @@ export async function eldritchCannon({
           embedded: {
             Item: {
               [cannonFeatureItem.name]: cannonFeatureItem,
-              [detonateCannonFeature.name]: explosiveCannonFeature,
+              [detonateCannonFeature.name]: detonateCannonFeature,
             },
           },
         };
@@ -205,7 +205,7 @@ export async function eldritchCannon({
           embedded: {
             Item: {
               [cannonFeatureItem.name]: cannonFeatureItem,
-              [detonateCannonFeature.name]: explosiveCannonFeature,
+              [detonateCannonFeature.name]: detonateCannonFeature,
             },
             ActiveEffect: {
               [halfCoverAura.label]: halfCoverAura,
