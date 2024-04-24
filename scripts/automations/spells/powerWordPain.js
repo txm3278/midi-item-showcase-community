@@ -10,8 +10,8 @@ export async function powerWordPain({
   options,
 }) {
   const params = args[0];
-  const item = params.item;
-  if (item.type != 'spell') return;
+  const itemP = params.item;
+  if (itemP.type != 'spell') return;
   const sourceToken = canvas.tokens.get(params.tokenId);
   const originEffect = await params.actor.effects.find(
     (ef) => ef.label === 'Power Word Pain'

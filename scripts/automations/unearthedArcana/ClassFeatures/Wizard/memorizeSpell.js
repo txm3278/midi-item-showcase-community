@@ -7,7 +7,6 @@ export async function memorizeSpell({
   args,
   scope,
   workflow,
-  options,
 }) {
   const mutName = 'Memorize Spell';
   const thisToken = token.document;

@@ -42,12 +42,11 @@ export async function allOrNothingArmor({
   }
 
   let context = args[0];
-  const item = context.item;
+  const itemC = context.item;
   switch (context.macroPass) {
     case 'preTargetDamageApplication':
-      console.log(context);
       if (
-        item.type === 'spell' &&
+        itemC.type === 'spell' &&
         context.attackRoll === undefined &&
         context.failedSaves.length > 0 &&
         context.damageRoll != undefined
@@ -75,7 +74,7 @@ export async function allOrNothingArmor({
             let chatData = {
               user: game.user.id,
               speaker: ChatMessage.getSpeaker({ token: token.actor }),
-              content: `<strong>Max Damage Applied:</strong> ${token.name} takes max damage of ${totalAdjustedDamage} from ${item.name}.`,
+              content: `<strong>Max Damage Applied:</strong> ${token.name} takes max damage of ${totalAdjustedDamage} from ${itemC.name}.`,
             };
 
             ChatMessage.create(chatData).then((message) =>
@@ -89,8 +88,7 @@ export async function allOrNothingArmor({
       break;
 
     case 'preTargetSave': //Give advantage on saving throws for spells that do damage
-      console.log(context);
-      if (item.type === 'spell' && context.damageRoll != undefined) {
+      if (itemC.type === 'spell' && context.damageRoll != undefined) {
         context.workflow.saveDetails.advantage = true;
       }
       break;

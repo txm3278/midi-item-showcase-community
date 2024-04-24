@@ -8,7 +8,7 @@ import { meteorSwarm } from './meteorSwarm.js';
 import { mislead } from './mislead.js';
 import { mordenkainensSword } from './mordenkainensSword.js';
 import { powerWordPain } from './powerWordPain.js';
-import {slow} from './slow.js';
+import { slow } from './slow.js';
 
 export let spells = {
   absorbElements,

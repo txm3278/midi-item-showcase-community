@@ -7,7 +7,6 @@ export async function swornEnemy({
   args,
   scope,
   workflow,
-  options,
 }) {
   if (workflow.targets.size != 1) return;
   let seconds = 604800;

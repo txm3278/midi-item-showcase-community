@@ -89,7 +89,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     return false;
   }
 
-  const chosenWeaponId = actor.getFlag("world", "greatWeaponMaster.weaponChoiceId");
+  const chosenWeaponId = actor.getFlag("midi-item-showcase-community", "greatWeaponMaster.weaponChoiceId");
   let weaponItem = filteredWeapons[0];
   if (filteredWeapons.length > 1) {
     weaponItem = await getSelectedWeapon(macroItem, filteredWeapons, chosenWeaponId);
@@ -101,7 +101,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     return false;
   }
   // Keep weapon choice for next time (used as pre-selected choice)
-  await actor.setFlag("world", "greatWeaponMaster.weaponChoiceId", weaponItem.id);
+  await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster.weaponChoiceId", weaponItem.id);
 
   // Keep selected weapon in options
   workflow.options.greatWeaponMasterWeapon = weaponItem;
@@ -140,7 +140,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
       return;
     }
     // Adds a charge to the bonus action if the conditions are met.
-    if (actor.getFlag("world", "greatWeaponMaster.bonus")) {
+    if (actor.getFlag("midi-item-showcase-community", "greatWeaponMaster.bonus")) {
       // A bonus action was already granted
       return;
     }
@@ -160,7 +160,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
       await macroItem.update({
         "system.uses.value": 1,
       });
-      await actor.setFlag("world", "greatWeaponMaster", { bonus: true, weaponChoiceId: rolledItem.id });
+      await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster", { bonus: true, weaponChoiceId: rolledItem.id });
 
       // Add chat message saying a bonus attack can be made
       const message = `<p><strong>${macroItem.name}</strong> - You can make a special bonus attack.</p>`;
@@ -179,9 +179,9 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
   await item.update({ "system.uses.value": 0 });
 } else if (args[0] === "each") {
   // Reset the Heavy Weapon Master Attack bonus action to 0 charge
-  if (item.system?.uses?.value > 0 || getProperty(actor, "flags.world.greatWeaponMaster.bonus")) {
+  if (item.system?.uses?.value > 0 || getProperty(actor, "flags.midi-item-showcase-community.greatWeaponMaster.bonus")) {
     await item.update({ "system.uses.value": 0 });
-    await actor.setFlag("world", "greatWeaponMaster.bonus", false);
+    await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster.bonus", false);
   }
 }
 

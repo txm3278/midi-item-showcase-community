@@ -129,7 +129,7 @@ export async function guardianEmblem({
               'midi-qol': {
                 onUseMacroName: `[postActiveEffects]ItemMacro.${item.uuid}`,
               },
-              world: {
+              'midi-item-showcase-community': {
                 'guardian-emblem-origin': item.uuid,
               },
             },
@@ -171,7 +171,7 @@ export async function guardianEmblem({
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
-    const origin = rolledItem.getFlag('world', 'guardian-emblem-origin');
+    const origin = rolledItem.getFlag('midi-item-showcase-community', 'guardian-emblem-origin');
     if (origin !== macroItem.uuid) {
       console.warn(
         `${DEFAULT_ITEM_NAME} | Wrong sourceItemUuid is different from the origin of attach feat item.`,
@@ -238,7 +238,7 @@ export async function guardianEmblem({
     }
 
     const attachItemUuid = sourceItem.getFlag(
-      'world',
+      'midi-item-showcase-community',
       'guardian-emblem-attach-uuid'
     );
     const attachItem = fromUuidSync(attachItemUuid);
@@ -351,7 +351,7 @@ export async function guardianEmblem({
     sourceItem
   ) {
     const attachedItemUuid = sourceItem.getFlag(
-      'world',
+      'midi-item-showcase-community',
       'guardian-emblem-attach-uuid'
     );
     if (attachedItemUuid) {
@@ -371,7 +371,7 @@ export async function guardianEmblem({
       await activateAura(sourceItem, false);
     } else {
       const armorChoices = sourceToken.actor.itemTypes.equipment.filter(
-        (i) => i.isArmor && !i.getFlag('world', 'guardian-emblem-uuid')
+        (i) => i.isArmor && !i.getFlag('midi-item-showcase-community', 'guardian-emblem-uuid')
       );
 
       if (debug) {
@@ -403,12 +403,12 @@ export async function guardianEmblem({
       };
       setProperty(
         updates.embedded.Item[sourceItem.id],
-        'flags.world.guardian-emblem-attach-uuid',
+        'flags.midi-item-showcase-community.guardian-emblem-attach-uuid',
         selectedArmor.uuid
       );
       setProperty(
         updates.embedded.Item[selectedArmor.id],
-        'flags.world.guardian-emblem-uuid',
+        'flags.midi-item-showcase-community.guardian-emblem-uuid',
         sourceItem.uuid
       );
 

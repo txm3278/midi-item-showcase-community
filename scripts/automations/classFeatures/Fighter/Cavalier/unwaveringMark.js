@@ -119,7 +119,7 @@ export async function unwaveringMark({
     }
     return true;
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
-    if (actor.getFlag('world', 'unwaveringMark.markerTokenUuid')) {
+    if (actor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid')) {
       // When the marked target makes an attack
       handlePreAttackRollByMarkedTarget(workflow, macroItem);
     }
@@ -129,7 +129,7 @@ export async function unwaveringMark({
   ) {
     const macroData = args[0];
 
-    if (actor.getFlag('world', 'unwaveringMark.markerTokenUuid')) {
+    if (actor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid')) {
       // When the marked target makes an attack
       await handlePostActiveEffectsByMarkedTarget(
         macroData,
@@ -228,7 +228,7 @@ export async function unwaveringMark({
    */
   function handlePreAttackRollByMarkedTarget(currentWorkflow, sourceItem) {
     const markerTokenUuid = actor.getFlag(
-      'world',
+      'midi-item-showcase-community',
       'unwaveringMark.markerTokenUuid'
     );
     if (!isPassiveEffectActiveForItem(macroItem)) {
@@ -300,7 +300,7 @@ export async function unwaveringMark({
     }
 
     const markerTokenUuid = currentActor.getFlag(
-      'world',
+      'midi-item-showcase-community',
       'unwaveringMark.markerTokenUuid'
     );
     if (!isPassiveEffectActiveForItem(sourceItem)) {
@@ -448,7 +448,7 @@ export async function unwaveringMark({
     );
     if (foundIdx >= 0) {
       if (
-        targetActor.getFlag('world', 'unwaveringMark.markerTokenUuid') ===
+        targetActor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid') ===
         currentWorkflow.tokenUuid
       ) {
         // Target already marked this turn.
@@ -495,7 +495,7 @@ export async function unwaveringMark({
       changes: [
         // flag to indicate marker
         {
-          key: 'flags.world.unwaveringMark.markerTokenUuid',
+          key: 'flags.midi-item-showcase-community.unwaveringMark.markerTokenUuid',
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
           value: currentWorkflow.tokenUuid,
           priority: 20,
@@ -578,7 +578,7 @@ export async function unwaveringMark({
     }
 
     const chosenWeaponId = sourceActor.getFlag(
-      'world',
+      'midi-item-showcase-community',
       'unwaveringMark.weaponChoiceId'
     );
     let weaponItem = filteredWeapons[0];
@@ -598,7 +598,7 @@ export async function unwaveringMark({
     }
     // Keep weapon choice for next time (used as pre-selected choice)
     await sourceActor.setFlag(
-      'world',
+      'midi-item-showcase-community',
       'unwaveringMark.weaponChoiceId',
       weaponItem.id
     );

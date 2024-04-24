@@ -164,7 +164,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
       "midi-qol": {
         onUseMacroName: "[preTargeting]ItemMacro,[preItemRoll]ItemMacro,[postActiveEffects]ItemMacro",
       },
-      world: { goodberry: { expirationTime: expirationTime } },
+      'midi-item-showcase-community': { goodberry: { expirationTime: expirationTime } },
       dae: {
         macro: {
           data: {
@@ -200,7 +200,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
       eventId: eventId,
       actorUuid: macroData.actorUuid,
     };
-    await newItem.setFlag("world", "goodberry", goodberryEvent);
+    await newItem.setFlag("midi-item-showcase-community", "goodberry", goodberryEvent);
   }
 }
 
@@ -293,7 +293,7 @@ async function handleGoodBerryPreTargeting(gbWorkflow) {
   }
 
   const i18nGoodberry = initLocalization();
-  const expirationTime = getProperty(gbWorkflow.item, "flags.world.goodberry.expirationTime") ?? 0;
+  const expirationTime = getProperty(gbWorkflow.item, "flags.midi-item-showcase-community.goodberry.expirationTime") ?? 0;
   if (game.time.worldTime >= expirationTime) {
     ui.notifications.warn(game.i18n.localize(i18nGoodberry.expirationOnUseWarn));
     await gbWorkflow.item.delete();
@@ -301,7 +301,7 @@ async function handleGoodBerryPreTargeting(gbWorkflow) {
   }
   // When about time is present, register a callback to delete the item when it expires if not already registerd
   if (game.modules.get("about-time")?.active) {
-    if (gbWorkflow.item.getFlag("world", "goodberry")?.actorUuid !== gbWorkflow.actor.uuid) {
+    if (gbWorkflow.item.getFlag("midi-item-showcase-community", "goodberry")?.actorUuid !== gbWorkflow.actor.uuid) {
       const eventId = game.Gametime.doAt(
         expirationTime,
         deleteGoodberries,
@@ -309,7 +309,7 @@ async function handleGoodBerryPreTargeting(gbWorkflow) {
         game.i18n.format(i18nGoodberry.expirationEventWarn, { actorName: gbWorkflow.actor.name })
       );
       const goodberryEvent = { expirationTime: expirationTime, eventId: eventId, actorUuid: gbWorkflow.actor.uuid };
-      await gbWorkflow.item.setFlag("world", "goodberry", goodberryEvent);
+      await gbWorkflow.item.setFlag("midi-item-showcase-community", "goodberry", goodberryEvent);
     }
   }
   if (!game.user?.targets?.size) {
@@ -534,8 +534,8 @@ async function deleteGoodberries(actorUuid, goodberryExpirationEventWarn) {
   const now = game.time.worldTime;
   const itemsToDelete = actor.itemTypes.consumable.filter(
     (it) =>
-      getProperty(it, "flags.world.goodberry.expirationTime") &&
-      now >= getProperty(it, "flags.world.goodberry.expirationTime")
+      getProperty(it, "flags.midi-item-showcase-community.goodberry.expirationTime") &&
+      now >= getProperty(it, "flags.midi-item-showcase-community.goodberry.expirationTime")
   );
   if (itemsToDelete.length > 0) {
     const deletedItems = await actor.deleteEmbeddedDocuments(

@@ -26,5 +26,5 @@ export let macros = {
   raceFeatures,
   spellItems,
   spells,
-  UA
+  UA,
 };

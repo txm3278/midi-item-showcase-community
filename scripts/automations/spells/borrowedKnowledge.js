@@ -7,7 +7,6 @@ export async function borrowedKnowledge({
   args,
   scope,
   workflow,
-  options,
 }) {
   function dialogRender(html) {
     let ths = html[0].getElementsByTagName('th');

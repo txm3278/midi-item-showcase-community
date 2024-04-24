@@ -243,7 +243,7 @@ export async function spiritShield({
       return;
     }
     const sourceItemTokenUuid = sourceActor.getFlag(
-      'world',
+      'midi-item-showcase-community',
       'spiritShield.tokenUuid'
     );
     const sourceItemTokenDoc = fromUuidSync(sourceItemTokenUuid);
@@ -501,7 +501,7 @@ export async function spiritShield({
         priority: 20,
       });
       rageChanges.push({
-        key: 'flags.world.spiritShield.tokenUuid',
+        key: 'flags.midi-item-showcase-community.spiritShield.tokenUuid',
         mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
         value: sourceToken.document.uuid,
         priority: 20,

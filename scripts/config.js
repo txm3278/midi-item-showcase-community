@@ -72,7 +72,7 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['SagaTympana'],
       },
-      'Countercharm': {
+      Countercharm: {
         name: 'Countercharm',
         type: 'Spell',
         version: '1.0.0',
@@ -507,7 +507,7 @@ export function setConfig() {
         version: '2.0.1',
         authors: ['Elwin'],
       },
-      'Vial': {
+      Vial: {
         name: 'Vial',
         type: 'Item',
         version: '1.0.0',
