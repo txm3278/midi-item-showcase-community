@@ -9,7 +9,6 @@ export async function horrifyingVisage({
   workflow,
   options,
 }) {
-  console.log(item);
   if (item.name !== 'Horrifying Visage') return;
 
   const effectName = 'Horrifying Visage'; //that should match the effect name
@@ -17,8 +16,6 @@ export async function horrifyingVisage({
   const sourceActor = fromUuidSync(
     actor.effects.getName(effectName).origin
   ).actor;
-
-  console.log(sourceActor);
 
   if (!sourceActor) return;
   const sourceToken = sourceActor.token ?? sourceActor.getActiveTokens()[0];

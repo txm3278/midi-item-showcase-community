@@ -114,7 +114,6 @@ export async function wandOfWinter({
       {},
       { flags: { 'midi-qol': { castedLevel: spell.system.level } } }
     );
-    console.log(rollWorkflow);
     await item.update({
       'system.uses.value': item.system.uses.value - result.charges,
     });

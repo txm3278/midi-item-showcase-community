@@ -164,7 +164,6 @@ export async function spellStoring({
         }
         return a;
       });
-    console.log(upcastSlots);
     const upcastSelector = await warpgate.menu(
       {
         inputs: [

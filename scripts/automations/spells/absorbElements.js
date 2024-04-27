@@ -19,7 +19,6 @@ export async function absorbElements({
 
   /* Choose wich element to absorb */
   const buttons = damageTypes.map(([label, value]) => ({ label, value }));
-  console.log('BUTTONS', buttons);
   const title = 'Absorb Elements';
   const content = '<strong>What type of element do you absorb ?</strong>';
   const absorbedElement = await warpgate.buttonDialog(
@@ -45,11 +44,9 @@ export async function absorbElements({
   const damageBonusEffect = actor.effects.getName(
     'Absorb Elements: melee damage bonus'
   );
-  console.log('DAMAGE BONUS', damageBonusEffect.changes);
   const newDamageBonuses = duplicate(damageBonusEffect.changes);
   newDamageBonuses[0].value = newDamageBonuses[1].value =
     '+' + workflow.itemLevel + 'd6[' + absorbedElement + ']';
-  console.log('NEW DAMAGE BONUSES MODIFIED', newDamageBonuses);
   await warpgate.mutate(
     token.document,
     {
