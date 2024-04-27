@@ -9,18 +9,21 @@ export async function horrifyingVisage({
   workflow,
   options,
 }) {
+  console.log(item);
   if (item.name !== 'Horrifying Visage') return;
 
   const effectName = 'Horrifying Visage'; //that should match the effect name
 
   const sourceActor = fromUuidSync(
-    actor.effects.find((e) => e.label === effectName).origin
+    actor.effects.getName(effectName).origin
   ).actor;
-  //change to fromUuidSync(actor.effects.getName(effectName).origin).actor; for v11
+
+  console.log(sourceActor);
+
   if (!sourceActor) return;
   const sourceToken = sourceActor.token ?? sourceActor.getActiveTokens()[0];
 
-  const distance = MidiQOL.getDistance(token, sourceToken, true);
+  const distance = MidiQOL.computeDistance(token, sourceToken, true);
 
   if (!distance) return;
 

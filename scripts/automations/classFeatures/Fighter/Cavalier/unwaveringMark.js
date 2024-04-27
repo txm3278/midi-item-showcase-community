@@ -92,7 +92,7 @@ export async function unwaveringMark({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    if (macroItem.uuid !== rolledItem?.uuid) {
+    if (macroItem.uuid !== item?.uuid) {
       // Do nothing if item used is not the source item
       return true;
     }
@@ -139,7 +139,7 @@ export async function unwaveringMark({
       );
       return;
     }
-    if (rolledItem.uuid !== macroItem.uuid) {
+    if (item.uuid !== macroItem.uuid) {
       // Item usage other than the source item
       await handlePostActiveEffectsByMarker(workflow, token, macroItem);
       return;
@@ -150,7 +150,7 @@ export async function unwaveringMark({
       macroData,
       workflow,
       actor,
-      rolledItem
+      item
     );
   } else if (args[0] === 'each') {
     // Unset flag that allows special attack and current turn marked targets at end of each turn

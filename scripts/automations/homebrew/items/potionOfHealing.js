@@ -15,7 +15,7 @@ export async function potionOfHealing({
   const hasUsedBonusAction = await MidiQOL.hasUsedBonusAction(actor);
   let inRange = false;
   const target = args[0].targets[0].object;
-  if (MidiQOL.getDistance(token, target) > 5) inRange = true;
+  if (MidiQOL.computeDistance(token, target) > 5) inRange = true;
   if (inRange) {
     inRange = MidiQOL.findNearby(null, token, item.system.range.value, {
       includeIncapacitated: true,

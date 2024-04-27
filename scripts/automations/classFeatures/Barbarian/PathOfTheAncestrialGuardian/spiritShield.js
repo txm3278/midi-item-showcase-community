@@ -135,10 +135,10 @@ export async function spiritShield({
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
-    if (rolledItem?.name === RAGE_ITEM_NAME) {
+    if (item?.name === RAGE_ITEM_NAME) {
       // MidiQOL OnUse item macro for Rage
       await handleRageOnUsePostActiveEffects(workflow, macroItem);
-    } else if (rolledItem?.uuid === macroItem?.uuid) {
+    } else if (item?.uuid === macroItem?.uuid) {
       // MidiQOL OnUse item macro for Spirit Shield
       await handleSpiritShieldOnUsePostActiveEffects(workflow, actor);
     }

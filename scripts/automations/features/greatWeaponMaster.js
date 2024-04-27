@@ -78,11 +78,11 @@ export async function greatWeaponMaster({
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
     const macroData = args[0];
     if (
-      rolledItem?.type !== 'weapon' ||
-      !elwinHelpers.hasItemProperty(rolledItem, 'hvy') ||
-      !rolledItem?.system?.prof?.hasProficiency ||
+      item?.type !== 'weapon' ||
+      !elwinHelpers.hasItemProperty(item, 'hvy') ||
+      !item?.system?.prof?.hasProficiency ||
       !elwinHelpers.isMeleeWeaponAttack(
-        rolledItem,
+        item,
         token,
         workflow.targets.first()
       )

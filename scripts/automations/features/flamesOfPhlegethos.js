@@ -85,14 +85,14 @@ export async function flamesOfPhlegethos({
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postDamageRoll') {
     if (
-      rolledItem?.type !== 'spell' ||
+      item?.type !== 'spell' ||
       !(workflow.damageRolls?.length ?? workflow.damageRoll)
     ) {
       // Only works on spell with damage rolls
       return;
     }
     // TODO check also for other dmg?
-    const fireDmg = rolledItem?.system.damage?.parts.some(
+    const fireDmg = item?.system.damage?.parts.some(
       ([formula, type]) => type === 'fire' || formula?.includes('[fire]')
     );
     if (!fireDmg) {
@@ -176,7 +176,7 @@ export async function flamesOfPhlegethos({
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'isDamaged'
   ) {
-    if (!['mwak', 'msak'].includes(rolledItem?.system?.actionType)) {
+    if (!['mwak', 'msak'].includes(item?.system?.actionType)) {
       // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);

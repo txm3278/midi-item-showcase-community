@@ -74,8 +74,8 @@ export function setConfig() {
       },
       Countercharm: {
         name: 'Countercharm',
-        type: 'Spell',
-        version: '1.0.0',
+        type: 'Class Feature',
+        version: '1.0.1',
         authors: ['Moto Moto'],
       },
       'Crown of Stars': {
@@ -431,6 +431,12 @@ export function setConfig() {
         type: 'Feat',
         version: '0.1.0',
         authors: ['Moto Moto'],
+      },
+      'Shield of Missile Attraction': {
+        name: 'Shield of Missile Attraction',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Ris'],
       },
       Slow: {
         name: 'Slow',

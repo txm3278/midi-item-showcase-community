@@ -5,7 +5,7 @@ import { driftglobe } from './driftglobe.js';
 import { guardianEmblem } from './guardianEmblem.js';
 import { wandOfWinter } from './wandOfWinter.js';
 import { oathbow } from './oathbow.js';
-
+import { shieldOfMissileAttraction } from './shieldOfMissileAttraction.js';
 export let items = {
   arrowCatchingShield,
   clockworkAmulet,
@@ -14,4 +14,5 @@ export let items = {
   guardianEmblem,
   wandOfWinter,
   oathbow,
+  shieldOfMissileAttraction,
 };

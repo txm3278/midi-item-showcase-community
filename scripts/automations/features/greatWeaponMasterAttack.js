@@ -106,7 +106,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
   // Keep selected weapon in options
   workflow.options.greatWeaponMasterWeapon = weaponItem;
 } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-  if (rolledItem?.uuid === macroItem.uuid) {
+  if (item?.uuid === macroItem.uuid) {
     const weaponItem = workflow.options?.greatWeaponMasterWeapon;
     if (!weaponItem) {
       ui.notifications.warn(
@@ -132,7 +132,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
 
     await MidiQOL.completeItemUse(attackItem, {}, options);
   } else {
-    if (rolledItem?.type !== "weapon" || rolledItem?.system?.actionType !== "mwak") {
+    if (item?.type !== "weapon" || item?.system?.actionType !== "mwak") {
       // Not a melee weapon...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon.`);
@@ -160,7 +160,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
       await macroItem.update({
         "system.uses.value": 1,
       });
-      await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster", { bonus: true, weaponChoiceId: rolledItem.id });
+      await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster", { bonus: true, weaponChoiceId: item.id });
 
       // Add chat message saying a bonus attack can be made
       const message = `<p><strong>${macroItem.name}</strong> - You can make a special bonus attack.</p>`;

@@ -171,7 +171,7 @@ export async function guardianEmblem({
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
-    const origin = rolledItem.getFlag('midi-item-showcase-community', 'guardian-emblem-origin');
+    const origin = item.getFlag('midi-item-showcase-community', 'guardian-emblem-origin');
     if (origin !== macroItem.uuid) {
       console.warn(
         `${DEFAULT_ITEM_NAME} | Wrong sourceItemUuid is different from the origin of attach feat item.`,

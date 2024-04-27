@@ -104,7 +104,7 @@ export async function arrowCatchingShield({
       return;
     }
     if (
-      !elwinHelpers.isRangedAttack(rolledItem, workflow.token, options.token)
+      !elwinHelpers.isRangedAttack(item, workflow.token, options.token)
     ) {
       // Not a ranged attack
       if (debug) {
