@@ -75,7 +75,7 @@ export function setConfig() {
       Countercharm: {
         name: 'Countercharm',
         type: 'Class Feature',
-        version: '1.0.1',
+        version: '1.0.2',
         authors: ['Moto Moto'],
       },
       'Crown of Stars': {
@@ -281,7 +281,7 @@ export function setConfig() {
       Mislead: {
         name: 'Mislead',
         type: 'Spell',
-        version: '0.1.2',
+        version: '1.0.0',
         authors: ['TMinz'],
       },
       'Moon-Touched Sword, Greatsword': {
@@ -557,73 +557,23 @@ export function setConfig() {
           authors: ['Moto Moto'],
         },
       },
-      Beholder: {
-        'Charm Ray': {
-          name: 'Charm Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Death Ray': {
-          name: 'Death Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Disintegration Ray': {
-          name: 'Disintegration Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Enervation Ray': {
-          name: 'Enervation Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Eye Rays': {
-          name: 'Eye Rays',
-          version: '0.1.1',
-          authors: ['Christopher'],
-        },
-        'Eye Rays (Legendary)': {
-          name: 'Eye Rays (Legendary)',
-          version: '0.1.1',
-          authors: ['Christopher'],
-        },
-        'Fear Ray': {
-          name: 'Fear Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Paralyzing Ray': {
-          name: 'Paralyzing Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Petrification Ray': {
-          name: 'Petrification Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Sleep Ray': {
-          name: 'Sleep Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Slowing Ray': {
-          name: 'Slowing Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-        'Telekinetic Ray': {
-          name: 'Telekinetic Ray',
-          version: '0.1.0',
-          authors: ['Christopher'],
-        },
-      },
       'Giant Spider': {
         Web: {
           name: 'Web',
           version: '0.1.0',
           authors: ['CoolHand'],
+        },
+      },
+      Goat: {
+        Charge: {
+          name: 'Charge',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
         },
       },
       'Hundred-Handed One': {
@@ -647,38 +597,18 @@ export function setConfig() {
           authors: ['Muhammad2126'],
         },
       },
+      Sheep: {
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
       'Shield Guardian': {
         'Spell Storing': {
           name: 'Spell Storing',
           version: '1.0.1',
           authors: ['n3veruary'],
-        },
-      },
-      Spectator: {
-        'Confusion Ray': {
-          name: 'Confusion Ray',
-          version: '0.1.0',
-          authors: ['TMinz'],
-        },
-        'Fear Ray': {
-          name: 'Fear Ray',
-          version: '0.1.0',
-          authors: ['TMinz'],
-        },
-        'Paralyzing Ray': {
-          name: 'Paralyzing Ray',
-          version: '0.1.0',
-          authors: ['TMinz'],
-        },
-        'Spell Reflection': {
-          name: 'Spell Reflection',
-          version: '0.1.0',
-          authors: ['TMinz'],
-        },
-        'Wounding Ray': {
-          name: 'Wounding Ray',
-          version: '0.1.0',
-          authors: ['TMinz'],
         },
       },
       'Spider King': {
@@ -688,11 +618,147 @@ export function setConfig() {
           authors: ['CoolHand'],
         },
       },
+      Vampire: {
+        Bite: {
+          name: 'Bite',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        'Bite (Bat or Vampire Form Only)': {
+          name: 'Bite (Bat or Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        'Unarmed Strike (Vampire Form Only)': {
+          name: 'Unarmed Strike (Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        'Unarmed Strike': {
+          name: 'Unarmed Strike',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        'Multiattack (Vampire Form Only)': {
+          name: 'Multiattack (Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'tposney'],
+        },
+        Move: {
+          name: 'Move',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Janner3D'],
+        },
+        Shapechanger: {
+          name: 'Shapechanger',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher'],
+        },
+        'Misty Escape': {
+          name: 'Misty Escape',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher'],
+        },
+      },
       'Vampire Spawn': {
         Bite: {
           name: 'Bite',
-          version: '0.1.1',
-          authors: ['Moto Moto'],
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto'],
+        },
+        Claws: {
+          name: 'Claws',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        Multiattack: {
+          name: 'Multiattack',
+          version: '1.0.0',
+          authors: ['tposney'],
+        },
+      },
+      'Vampire Spellcaster': {
+        Bite: {
+          name: 'Bite',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        'Bite (Bat or Vampire Form Only)': {
+          name: 'Bite (Bat or Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        'Unarmed Strike (Vampire Form Only)': {
+          name: 'Unarmed Strike (Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        'Unarmed Strike': {
+          name: 'Unarmed Strike',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        'Multiattack (Vampire Form Only)': {
+          name: 'Multiattack (Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'tposney'],
+        },
+        Move: {
+          name: 'Move',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Janner3D'],
+        },
+        Shapechanger: {
+          name: 'Shapechanger',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher'],
+        },
+        'Misty Escape': {
+          name: 'Misty Escape',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher'],
+        },
+      },
+      'Vampire Warrior': {
+        Bite: {
+          name: 'Bite',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        'Bite (Bat or Vampire Form Only)': {
+          name: 'Bite (Bat or Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        'Unarmed Strike (Vampire Form Only)': {
+          name: 'Unarmed Strike (Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        'Unarmed Strike': {
+          name: 'Unarmed Strike',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
+        },
+        'Multiattack (Vampire Form Only)': {
+          name: 'Multiattack (Vampire Form Only)',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'tposney'],
+        },
+        Move: {
+          name: 'Move',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Janner3D'],
+        },
+        Shapechanger: {
+          name: 'Shapechanger',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher'],
+        },
+        'Misty Escape': {
+          name: 'Misty Escape',
+          version: '1.0.0',
+          authors: ['TreeDragon', 'Christopher'],
         },
       },
       Vrock: {

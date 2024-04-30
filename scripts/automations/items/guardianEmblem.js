@@ -156,7 +156,7 @@ export async function guardianEmblem({
     // Find aura effect to disable it
     await activateAura(item, false);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    return handleGuardianEmblemOnUsePreTargeting(workflow, macroItem);
+    return handleGuardianEmblemOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isHit') {
     if (!token) {
       // No target
@@ -166,13 +166,13 @@ export async function guardianEmblem({
       return;
     }
     // Handle reaction
-    await handleGuardianEmblemAuraOnTargetUseIsHit(workflow, token, macroItem);
+    await handleGuardianEmblemAuraOnTargetUseIsHit(workflow, token, scope.macroItem);
   } else if (
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
     const origin = item.getFlag('midi-item-showcase-community', 'guardian-emblem-origin');
-    if (origin !== macroItem.uuid) {
+    if (origin !== scope.macroItem.uuid) {
       console.warn(
         `${DEFAULT_ITEM_NAME} | Wrong sourceItemUuid is different from the origin of attach feat item.`,
         sourceItem.uuid,
@@ -180,7 +180,7 @@ export async function guardianEmblem({
       );
       return;
     }
-    await handleGuardianEmblemAttachPostActiveEffects(token, macroItem);
+    await handleGuardianEmblemAttachPostActiveEffects(token, scope.macroItem);
   }
 
   /**

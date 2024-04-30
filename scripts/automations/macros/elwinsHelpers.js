@@ -201,7 +201,7 @@ export function runElwinsHelpers () {
    *  if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
    *    if (
    *      workflow.options?.thirdPartyReaction?.trigger !== "isAttacked" ||
-   *      workflow.options?.thirdPartyReaction?.itemUuid !== item.uuid
+   *      workflow.options?.thirdPartyReaction?.itemUuid !== rolledItem.uuid
    *    ) {
    *      // Reaction should only be triggered by aura
    *      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the owner is targeted by a ranged attack.`;

@@ -92,7 +92,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
   const chosenWeaponId = actor.getFlag("midi-item-showcase-community", "greatWeaponMaster.weaponChoiceId");
   let weaponItem = filteredWeapons[0];
   if (filteredWeapons.length > 1) {
-    weaponItem = await getSelectedWeapon(macroItem, filteredWeapons, chosenWeaponId);
+    weaponItem = await getSelectedWeapon(scope.macroItem, filteredWeapons, chosenWeaponId);
   }
   if (!weaponItem) {
     // Bonus attack was cancelled
@@ -106,7 +106,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
   // Keep selected weapon in options
   workflow.options.greatWeaponMasterWeapon = weaponItem;
 } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-  if (item?.uuid === macroItem.uuid) {
+  if (scope.rolledItem?.uuid === scope.macroItem.uuid) {
     const weaponItem = workflow.options?.greatWeaponMasterWeapon;
     if (!weaponItem) {
       ui.notifications.warn(
@@ -132,7 +132,7 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
 
     await MidiQOL.completeItemUse(attackItem, {}, options);
   } else {
-    if (item?.type !== "weapon" || item?.system?.actionType !== "mwak") {
+    if (scope.rolledItem?.type !== "weapon" || scope.rolledItem?.system?.actionType !== "mwak") {
       // Not a melee weapon...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon.`);
@@ -157,13 +157,13 @@ if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     }
     if (allowBonusAction) {
       // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
-      await macroItem.update({
+      await scope.macroItem.update({
         "system.uses.value": 1,
       });
-      await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster", { bonus: true, weaponChoiceId: item.id });
+      await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster", { bonus: true, weaponChoiceId: scope.rolledItem.id });
 
       // Add chat message saying a bonus attack can be made
-      const message = `<p><strong>${macroItem.name}</strong> - You can make a special bonus attack.</p>`;
+      const message = `<p><strong>${scope.macroItem.name}</strong> - You can make a special bonus attack.</p>`;
       MidiQOL.addUndoChatMessage(
         await ChatMessage.create({
           type: CONST.CHAT_MESSAGE_TYPES.OTHER,

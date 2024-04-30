@@ -91,7 +91,7 @@ export async function divineAllegiance({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     // MidiQOL OnUse item macro for Divine Allegiance
-    return handleDivineAllegianceOnUsePreTargeting(workflow, macroItem);
+    return handleDivineAllegianceOnUsePreTargeting(workflow, scope.macroItem);
   } else if (
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'preTargetDamageApplication'
@@ -100,7 +100,7 @@ export async function divineAllegiance({
     return await handleDivineAllegianceAuraOnUsePreTargetDamageApplication(
       workflow,
       token,
-      macroItem
+      scope.macroItem
     );
   } else if (
     args[0].tag === 'OnUse' &&

@@ -97,7 +97,7 @@ export async function psionicPowerProtectiveField({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     // MidiQOL OnUse item macro for Psionic Power: Protective Field
-    return handleProtectiveFieldOnUsePreTargeting(workflow, macroItem);
+    return handleProtectiveFieldOnUsePreTargeting(workflow, scope.macroItem);
   } else if (
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'preTargetDamageApplication'
@@ -106,7 +106,7 @@ export async function psionicPowerProtectiveField({
     return await handleProtectiveFieldAuraOnUsePreTargetDamageApplication(
       workflow,
       token,
-      macroItem
+      scope.macroItem
     );
   } else if (
     args[0].tag === 'OnUse' &&

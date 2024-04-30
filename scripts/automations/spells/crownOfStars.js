@@ -9,13 +9,12 @@ export async function crownOfStars({
   workflow,
   options,
 }) {
-  // requires Sequencer, DAE, MidiQOL, Automated Animations, Warp Gate, and JB2A Patreon
-  if (args[0] === 'on' && args.length === 2) {
-    const params = args[1];
+  if (args[0] === 'on' && args.length === 3) {
+    const params = args[2];
     const sourceToken = canvas.tokens.get(params.tokenId);
     const sourceActor = game.actors.get(params.actorId);
     const activeEffect = sourceActor.effects.get(params.effectId);
-    const starFile = 'jb2a.twinkling_stars.points07.white'; // here to change the effect that's floating around the token
+    const starFile = 'jb2a.twinkling_stars.points07.white';
     const starItem = await sourceActor.items.find(
       (i) => i.name === 'Crown of Stars'
     );
@@ -793,8 +792,8 @@ export async function crownOfStars({
     await ui.notifications.notify(
       'Your Star Motes have been created as a spell in your spellbook.'
     ); // here to change the dialogue that appears when casting the spell
-  } else if (args[0] === 'off' && args.length === 2) {
-    const params = args[1];
+  } else if (args[0] === 'off' && args.length === 3) {
+    const params = args[2];
     const sourceToken = canvas.tokens.get(params.tokenId);
     await Sequencer.EffectManager.endEffects({
       name: '*StarMoteEffect*',
@@ -803,7 +802,7 @@ export async function crownOfStars({
     await warpgate.revert(sourceToken.document, 'Star Mote');
   }
 
-  if (args.length !== 2) {
+  if (args.length !== 3) {
     return;
   }
 }

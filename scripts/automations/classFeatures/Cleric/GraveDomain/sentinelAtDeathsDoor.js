@@ -85,7 +85,7 @@ export async function sentinelAtDeathsDoor({
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    return handleSentinelAtDeathsDoorOnUsePreTargeting(workflow, macroItem);
+    return handleSentinelAtDeathsDoorOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isHit') {
     if (!token) {
       // No target
@@ -98,7 +98,7 @@ export async function sentinelAtDeathsDoor({
     await handleSentinelAtDeathsDoorAuraOnTargetUseIsHit(
       workflow,
       token,
-      macroItem
+      scope.macroItem
     );
   }
 

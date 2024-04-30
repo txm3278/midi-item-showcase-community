@@ -92,7 +92,7 @@ export async function giftOfTheMetallicDragon({
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    return handleGiftOfTheMetallicDragonOnUsePreTargeting(workflow, macroItem);
+    return handleGiftOfTheMetallicDragonOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isHit') {
     if (!token) {
       // No target
@@ -105,7 +105,7 @@ export async function giftOfTheMetallicDragon({
     await handleGiftOfTheMetallicDragonAuraOnTargetUseIsHit(
       workflow,
       token,
-      macroItem
+      scope.macroItem
     );
   }
 

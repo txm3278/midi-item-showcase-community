@@ -92,7 +92,7 @@ export async function unwaveringMark({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    if (macroItem.uuid !== item?.uuid) {
+    if (scope.macroItem.uuid !== scope.rolledItem?.uuid) {
       // Do nothing if item used is not the source item
       return true;
     }
@@ -121,7 +121,7 @@ export async function unwaveringMark({
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
     if (actor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid')) {
       // When the marked target makes an attack
-      handlePreAttackRollByMarkedTarget(workflow, macroItem);
+      handlePreAttackRollByMarkedTarget(workflow, scope.macroItem);
     }
   } else if (
     args[0].tag === 'OnUse' &&
@@ -135,13 +135,13 @@ export async function unwaveringMark({
         macroData,
         workflow,
         actor,
-        macroItem
+        scope.macroItem
       );
       return;
     }
-    if (item.uuid !== macroItem.uuid) {
+    if (scope.rolledItem.uuid !== scope.macroItem.uuid) {
       // Item usage other than the source item
-      await handlePostActiveEffectsByMarker(workflow, token, macroItem);
+      await handlePostActiveEffectsByMarker(workflow, token, scope.macroItem);
       return;
     }
 
@@ -150,7 +150,7 @@ export async function unwaveringMark({
       macroData,
       workflow,
       actor,
-      item
+      scope.rolledItem
     );
   } else if (args[0] === 'each') {
     // Unset flag that allows special attack and current turn marked targets at end of each turn
@@ -231,7 +231,7 @@ export async function unwaveringMark({
       'midi-item-showcase-community',
       'unwaveringMark.markerTokenUuid'
     );
-    if (!isPassiveEffectActiveForItem(macroItem)) {
+    if (!isPassiveEffectActiveForItem(scope.macroItem)) {
       if (debug) {
         const reason = getActiveEffectInactivityReason(markerTokenUuid);
         console.warn(

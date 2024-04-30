@@ -87,7 +87,7 @@ export async function vigilantGuardian({
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    return handleVigilantGuardianOnUsePreTargeting(workflow, macroItem);
+    return handleVigilantGuardianOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isHit') {
     if (!token) {
       // No target
@@ -100,7 +100,7 @@ export async function vigilantGuardian({
     await handleVigilantGuardianAuraOnTargetUseIsHit(
       workflow,
       token,
-      macroItem
+      scope.macroItem
     );
   }
 

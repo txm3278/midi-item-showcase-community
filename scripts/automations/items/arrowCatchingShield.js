@@ -91,7 +91,7 @@ export async function arrowCatchingShield({
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    return handleArrowCatchingShieldOnUsePreTargeting(workflow, macroItem);
+    return handleArrowCatchingShieldOnUsePreTargeting(workflow, scope.macroItem);
   } else if (
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'isAttacked'
@@ -104,7 +104,7 @@ export async function arrowCatchingShield({
       return;
     }
     if (
-      !elwinHelpers.isRangedAttack(item, workflow.token, options.token)
+      !elwinHelpers.isRangedAttack(scope.rolledItem, workflow.token, options.token)
     ) {
       // Not a ranged attack
       if (debug) {
@@ -112,7 +112,7 @@ export async function arrowCatchingShield({
       }
       return;
     }
-    if (options.actor?.uuid === macroItem?.actor.uuid) {
+    if (options.actor?.uuid === scope.macroItem?.actor.uuid) {
       // Owner of shield
       // create an active effect on target to give bonus AC
       const targetEffectData = {
@@ -126,9 +126,9 @@ export async function arrowCatchingShield({
           },
         ],
 
-        origin: macroItem.uuid, //flag the effect as associated to the source item used
-        icon: macroItem.img,
-        name: `${macroItem.name} - Bonus AC`,
+        origin: scope.macroItem.uuid, //flag the effect as associated to the source item used
+        icon: scope.macroItem.img,
+        name: `${scope.macroItem.name} - Bonus AC`,
       };
       targetEffectData.duration = workflow.inCombat ? { turns: 1 } : {};
       setProperty(targetEffectData, 'flags.dae.specialDuration', [
@@ -144,7 +144,7 @@ export async function arrowCatchingShield({
       await handleArrowCatchingShieldOnTargetUseIsAttacked(
         workflow,
         token,
-        macroItem
+        scope.macroItem
       );
     }
   }

@@ -78,11 +78,11 @@ export async function greatWeaponMaster({
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
     const macroData = args[0];
     if (
-      item?.type !== 'weapon' ||
-      !elwinHelpers.hasItemProperty(item, 'hvy') ||
-      !item?.system?.prof?.hasProficiency ||
+      scope.rolledItem?.type !== 'weapon' ||
+      !elwinHelpers.hasItemProperty(scope.rolledItem, 'hvy') ||
+      !scope.rolledItem?.system?.prof?.hasProficiency ||
       !elwinHelpers.isMeleeWeaponAttack(
-        item,
+        scope.rolledItem,
         token,
         workflow.targets.first()
       )
@@ -114,9 +114,9 @@ export async function greatWeaponMaster({
       duration: {
         turns: 1,
       },
-      icon: macroItem.img,
-      name: `${macroItem.name} - Bonus`,
-      origin: macroItem.uuid,
+      icon: scope.macroItem.img,
+      name: `${scope.macroItem.name} - Bonus`,
+      origin: scope.macroItem.uuid,
       transfer: false,
       flags: {
         dae: {

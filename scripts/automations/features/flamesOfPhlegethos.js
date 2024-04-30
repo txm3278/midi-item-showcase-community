@@ -85,14 +85,14 @@ export async function flamesOfPhlegethos({
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postDamageRoll') {
     if (
-      item?.type !== 'spell' ||
+      scope.rolledItem?.type !== 'spell' ||
       !(workflow.damageRolls?.length ?? workflow.damageRoll)
     ) {
       // Only works on spell with damage rolls
       return;
     }
     // TODO check also for other dmg?
-    const fireDmg = item?.system.damage?.parts.some(
+    const fireDmg = scope.rolledItem?.system.damage?.parts.some(
       ([formula, type]) => type === 'fire' || formula?.includes('[fire]')
     );
     if (!fireDmg) {
@@ -121,7 +121,7 @@ export async function flamesOfPhlegethos({
 
     const { activateFlames, rerollDice } =
       await promptActivateFlamesAndOrRerollDice(
-        macroItem,
+        scope.macroItem,
         diceToReroll,
         rerollNumber
       );
@@ -150,7 +150,7 @@ export async function flamesOfPhlegethos({
 
     if (activateFlames) {
       // Add active effect for aura (for reactive damage) and flames effects
-      const flamesEffectData = getFlamesEffectData(macroItem);
+      const flamesEffectData = getFlamesEffectData(scope.macroItem);
 
       // Delete the effect if it already exists before reapplying it
       await actor.effects.getName(flamesEffectData.name)?.delete();
@@ -161,7 +161,7 @@ export async function flamesOfPhlegethos({
 
       await actor.createEmbeddedDocuments('ActiveEffect', [flamesEffectData]);
       const message = `<p><strong>${
-        macroItem.name
+        scope.macroItem.name
       }</strong> - ${elwinHelpers.getTokenName(
         token
       )} is wreathed in flames</p>`;
@@ -176,7 +176,7 @@ export async function flamesOfPhlegethos({
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'isDamaged'
   ) {
-    if (!['mwak', 'msak'].includes(item?.system?.actionType)) {
+    if (!['mwak', 'msak'].includes(scope.rolledItem?.system?.actionType)) {
       // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);
@@ -190,7 +190,7 @@ export async function flamesOfPhlegethos({
       !actor ||
       !token ||
       !targetToken ||
-      workflow.actorUuid === macroItem?.parent.uuid
+      workflow.actorUuid === scope.macroItem?.parent.uuid
     ) {
       // Missing info or attacker is the owner of the feat...
       console.warn(
@@ -198,7 +198,7 @@ export async function flamesOfPhlegethos({
         actor,
         token,
         targetToken,
-        macroItem
+        scope.macroItem
       );
       return;
     }
@@ -213,8 +213,8 @@ export async function flamesOfPhlegethos({
 
     const featData = {
       type: 'feat',
-      name: `${macroItem.name} - Reactive Damage`,
-      img: macroItem.img,
+      name: `${scope.macroItem.name} - Reactive Damage`,
+      img: scope.macroItem.img,
       system: {
         actionType: 'other',
         damage: { parts: [['1d4[fire]', 'fire']] },

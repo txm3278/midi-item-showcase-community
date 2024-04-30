@@ -11,12 +11,12 @@ export async function greatWeaponFighting({
 }) {
   if (
     args[0].macroPass === 'preDamageRoll' &&
-    item.type == 'weapon' &&
-    item.system.type.value.match(/^(simpleM|martialM)$/)
+    scope.rolledItem.type == 'weapon' &&
+    scope.rolledItem.system.type.value.match(/^(simpleM|martialM)$/)
   ) {
-    if (item.system.properties.has('two')) {
+    if (scope.rolledItem.system.properties.has('two')) {
       let parts = [];
-      item.system.damage.parts.forEach((part) =>
+      scope.rolledItem.system.damage.parts.forEach((part) =>
         parts.push([replace(part[0]), part[1]])
       );
       workflow.item = workflow.item.clone(
@@ -24,7 +24,7 @@ export async function greatWeaponFighting({
         { keepId: true }
       );
     }
-    if (item.system.properties.has('ver')) {
+    if (scope.rolledItem.system.properties.has('ver')) {
       workflow.item = workflow.item.clone(
         {
           'system.damage.versatile': replace(

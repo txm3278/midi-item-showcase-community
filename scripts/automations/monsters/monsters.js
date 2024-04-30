@@ -1,9 +1,11 @@
 import { banshee } from './Banshee/banshee.js';
 import { shieldGuardian } from './ShieldGuardian/shieldGuardian.js';
-import { vampireSpawn } from './VampireSpawn/vampireSpawn.js';
+import { vampire } from './Vampire/vampire.js';
+import { generic } from './Generic/generic.js';
 
 export let monsters = {
   banshee,
   shieldGuardian,
-  vampireSpawn,
+  vampire,
+  generic,
 };

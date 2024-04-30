@@ -120,7 +120,7 @@ export async function spiritShield({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     // MidiQOL OnUse item macro for Spirit Shield
-    return handleSpiritShieldOnUsePreTargeting(workflow, macroItem);
+    return handleSpiritShieldOnUsePreTargeting(workflow, scope.macroItem);
   } else if (
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'preTargetDamageApplication'
@@ -129,16 +129,16 @@ export async function spiritShield({
     return await handleSpiritShieldAuraOnUsePreTargetDamageApplication(
       workflow,
       token,
-      macroItem
+      scope.macroItem
     );
   } else if (
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
-    if (item?.name === RAGE_ITEM_NAME) {
+    if (scope.rolledItem?.name === RAGE_ITEM_NAME) {
       // MidiQOL OnUse item macro for Rage
-      await handleRageOnUsePostActiveEffects(workflow, macroItem);
-    } else if (item?.uuid === macroItem?.uuid) {
+      await handleRageOnUsePostActiveEffects(workflow, scope.macroItem);
+    } else if (scope.rolledItem?.uuid === scope.macroItem?.uuid) {
       // MidiQOL OnUse item macro for Spirit Shield
       await handleSpiritShieldOnUsePostActiveEffects(workflow, actor);
     }
