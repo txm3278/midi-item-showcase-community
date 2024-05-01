@@ -1,6 +1,6 @@
 // ##################################################################################################
 // Mix of helper functions for macros.
-// v2.0.0
+// v2.1.0
 //
 // Description:
 // This macro exposes mutiple utility functions used by different item macros.
@@ -18,11 +18,20 @@
 // - elwinHelpers.isMeleeAttack
 // - elwinHelpers.isMeleeWeaponAttack
 // - elwinHelpers.isMidiHookStillValid
-// - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.getTokenName
+// - elwinHelpers.getActorSizeValue
+// - elwinHelpers.getSizeValue
+// - elwinHelpers.buttonDialog
+// - elwinHelpers.remoteButtonDialog
+// - elwinHelpers.getAttackSegment
+// - elwinHelpers.getMoveTowardsPosition
+// - elwinHelpers.findMovableSpaceNearDest
+// - elwinHelpers.ItemSelectionDialog
+// - elwinHelpers.TokenSelectionDialog
 //
 // ###################################################################################################
-export function runElwinsHelpers () {
+export function runElwinsHelpers() {
+  const VERSION = '2.1.0';
   const MACRO_NAME = 'elwin-helpers';
   const debug = true;
   const active = true;
@@ -34,7 +43,7 @@ export function runElwinsHelpers () {
 
     // Set ReactionFilter only for midi version before 11.3.13
     if (
-      !isNewerVersion(
+      !foundry.utils.isNewerVersion(
         game.modules.get('midi-qol').version ?? '0.0.0',
         '11.3.12.99'
       )
@@ -47,7 +56,7 @@ export function runElwinsHelpers () {
     }
 
     // Set a version to facilitate dependency check
-    exportIdentifier('elwinHelpers.version', '2.0.0');
+    exportIdentifier('elwinHelpers.version', VERSION);
 
     // Note: keep this name to be backward compatible
     exportIdentifier('MidiQOL_doThirdPartyReaction', doThirdPartyReaction);
@@ -74,7 +83,22 @@ export function runElwinsHelpers () {
     exportIdentifier('elwinHelpers.isMeleeWeaponAttack', isMeleeWeaponAttack);
     exportIdentifier('elwinHelpers.isMidiHookStillValid', isMidiHookStillValid);
     exportIdentifier('elwinHelpers.getTokenName', getTokenName);
+    exportIdentifier('elwinHelpers.getActorSizeValue', getActorSizeValue);
+    exportIdentifier('elwinHelpers.getSizeValue', getSizeValue);
+    exportIdentifier('elwinHelpers.buttonDialog', buttonDialog);
+    exportIdentifier('elwinHelpers.remoteButtonDialog', remoteButtonDialog);
+    exportIdentifier('elwinHelpers.getAttackSegment', getAttackSegment);
+    exportIdentifier(
+      'elwinHelpers.getMoveTowardsPosition',
+      getMoveTowardsPosition
+    );
+    exportIdentifier(
+      'elwinHelpers.findMovableSpaceNearDest',
+      findMovableSpaceNearDest
+    );
     // Note: classes need to be exported after they are declared...
+
+    registerRemoteFunctions();
   }
 
   /**
@@ -106,12 +130,15 @@ export function runElwinsHelpers () {
    * @param {function} hookFunction the function to register on the hook event.
    */
   function setHook(hookName, hookNameId, hookFunction) {
-    const hookId = getProperty(globalThis, `${MACRO_NAME}.${hookNameId}`);
+    const hookId = foundry.utils.getProperty(
+      globalThis,
+      `${MACRO_NAME}.${hookNameId}`
+    );
     if (hookId) {
       Hooks.off(hookName, hookId);
     }
     if (active) {
-      setProperty(
+      foundry.utils.setProperty(
         globalThis,
         `${MACRO_NAME}.${hookNameId}`,
         Hooks.on(hookName, hookFunction)
@@ -130,7 +157,11 @@ export function runElwinsHelpers () {
       delete globalThis[exportedIdentifierName];
     }
     if (active) {
-      setProperty(globalThis, exportedIdentifierName, exportedValue);
+      foundry.utils.setProperty(
+        globalThis,
+        exportedIdentifierName,
+        exportedValue
+      );
     }
   }
 
@@ -317,7 +348,7 @@ export function runElwinsHelpers () {
 
     if (!player?.active) {
       // Find first active GM player
-      player = game.users?.find((p) => p.isGM && p.active);
+      player = game.users?.activeGM;
     }
     if (!player?.active) {
       console.warn(
@@ -529,7 +560,7 @@ export function runElwinsHelpers () {
     );
     const targetName = MidiQOL.getTokenPlayerName(targetToken);
     const playerText = textTemplate.replace('${tokenName}', targetName);
-    if (isNewerVersion(game.system.version, '3')) {
+    if (foundry.utils.isNewerVersion(game.system.version, '3')) {
       return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
     }
     return `<div class="midi-qol-target-npc-GM">${gmText}</div><div class="midi-qol-target-npc-Player">${playerText}</div>`;
@@ -542,7 +573,7 @@ export function runElwinsHelpers () {
    * @returns {boolean} true if the item has the property, false otherwise.
    */
   function hasItemProperty(item, propName) {
-    if (isNewerVersion(game.system.version, '3')) {
+    if (foundry.utils.isNewerVersion(game.system.version, '3')) {
       return item.system?.properties?.has(propName);
     }
     return item.system?.properties?.[propName];
@@ -797,7 +828,10 @@ export function runElwinsHelpers () {
    */
   function getMidiItemChatMessage(workflow) {
     if (
-      isNewerVersion(game.modules.get('midi-qol').version ?? '0.0.0', '11.4.1')
+      foundry.utils.isNewerVersion(
+        game.modules.get('midi-qol').version ?? '0.0.0',
+        '11.4.1'
+      )
     ) {
       return MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
     }
@@ -816,7 +850,7 @@ export function runElwinsHelpers () {
     chatMessage,
     text
   ) {
-    let content = deepClone(chatMessage.content);
+    let content = foundry.utils.deepClone(chatMessage.content);
     let searchRegex = undefined;
     let replaceString = `$1\n${text}\n$2`;
     switch (position) {
@@ -827,12 +861,12 @@ export function runElwinsHelpers () {
       default:
         searchRegex =
           /(<\/section>)(\s*<div class="card-buttons midi-buttons">)/m;
-        if (!isNewerVersion(game.system.version, '3')) {
+        if (!foundry.utils.isNewerVersion(game.system.version, '3')) {
           searchRegex = /(<\/div>)(\s*<div class="card-buttons">)/m;
         }
         break;
     }
-    if (!isNewerVersion(game.system.version, '3')) {
+    if (!foundry.utils.isNewerVersion(game.system.version, '3')) {
       replaceString = `$1\n<br/>${text}\n$2`;
     }
     content = content.replace(searchRegex, replaceString);
@@ -940,14 +974,22 @@ export function runElwinsHelpers () {
             ),
           };
         }
-        let subtitle = [
+        const subtitle = [
           item.system.type?.label,
           item.isActive ? item.labels.activation : null,
         ].filterJoin(' &bull; ');
+        const tags =
+          item.labels.properties
+            ?.filter((prop) => prop.icon)
+            .map(
+              (prop) =>
+                `<span aria-label="${prop.label}"><dnd5e-icon src="${prop.icon}"></dnd5e-icon></span>`
+            )
+            .join(' ') ?? '';
 
         itemContent += `
-      <label class="item" for="radio-${item.id}">
-        <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${selected}>
+      <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${selected}>
+        <label class="item" for="radio-${item.id}">
           <div class="item-name">
             <img class="item-image" src="${item.img}" alt="${item.name}">
             <div class="name name-stacked">
@@ -955,6 +997,7 @@ export function runElwinsHelpers () {
               <span class="subtitle">${subtitle}</span>
             </div>
             <div class="tags">
+              ${tags}
             </div>
           </div>
           <div class="item-controls">
@@ -975,8 +1018,8 @@ export function runElwinsHelpers () {
         }
         itemContent += `
           </div>
-        </input>
-      </label>
+        </label>
+      </input>
       `;
       }
       const content = `
@@ -985,10 +1028,10 @@ export function runElwinsHelpers () {
               display: flex;
               flex-direction: row;
               align-items: stretch;
-              margin: 3px;
+              margin: 4px;
             }
 
-            .selectItem .item input {
+            .selectItem input {
               opacity: 0;
               position: absolute;
               z-index: -1;
@@ -1004,7 +1047,10 @@ export function runElwinsHelpers () {
             }            
       
             .selectItem .item .item-image {
-              border: 0px;
+              border: 2px solid var(--dnd5e-color-gold, ##9f9275);
+              box-shadow: 0 0 4px var(--dnd5e-shadow-45, rgb(0 0 0 / 45%));
+              border-radius: 0;
+              background-color: var(--dnd5e-color-light-gray, #3d3d3d);
               width: 32px;
               height: 32px;
               flex: 0 0 32px;
@@ -1049,8 +1095,8 @@ export function runElwinsHelpers () {
             }
 
             /* CHECKED STYLES */
-            .selectItem [type=radio]:checked + div img {
-              outline: 2px solid #f00;
+            .selectItem [type=radio]:checked + label {
+              outline: 3px solid #f00;
             }
           </style>
           
@@ -1148,7 +1194,7 @@ export function runElwinsHelpers () {
               display: flex;
               flex-direction: row;
               align-items: center;
-              margin-left: 3px;
+              margin: 4px;
               text-align: center;
               justify-items: center;
               flex: 1 0 25%;
@@ -1172,7 +1218,7 @@ export function runElwinsHelpers () {
       
             /* CHECKED STYLES */
             .selectToken [type=radio]:checked + img {
-              outline: 2px solid #f00;
+              outline: 3px solid #f00;
             }
           </style>
           
@@ -1272,6 +1318,737 @@ export function runElwinsHelpers () {
     exportIdentifier('elwinHelpers.TokenSelectionDialog', TokenSelectionDialog);
   }
 
+  /**
+   * Returns the numeric value of the specified actor's size value.
+   *
+   * @param {Actor5e} actor actor for which to get the size value.
+   * @returns {number} the numeric value of the specified actor's size value.
+   */
+  function getActorSizeValue(actor) {
+    return getSizeValue(actor?.system?.traits?.size ?? 'med');
+  }
+
+  /**
+   * Returns the numeric value of the specified size.
+   *
+   * @param {string} size  the size name for which to get the size value.
+   * @returns {number} the numeric value of the specified size.
+   */
+  function getSizeValue(size) {
+    return Object.keys(CONFIG.DND5E.actorSizes).indexOf(size ?? 'med');
+  }
+
+  /**
+   * Helper function to create a simple dialog with labeled buttons and associated data.
+   *
+   * @param {object} data dialog's data.
+   * @param {{label: string, value: object}[]} [data.buttons] buttons to be displayed in the dialog.
+   * @param {string} [data.title] dialog's title.
+   * @param {string} [data.content] dialog's html content.
+   * @param {object} [data.options] dialog's options.
+   * @param {string} [direction = 'row'] 'column' or 'row' accepted. Controls layout direction of the dialog's buttons.
+   *
+   * @returns {object} the value associated to the selected button.
+   */
+  async function buttonDialog(data, direction) {
+    const buttons = {};
+
+    data.buttons.forEach((button) => {
+      buttons[button.label] = {
+        label: button.label,
+        callback: () => button.value,
+      };
+    });
+
+    const render = (html) =>
+      html.find('.dialog-buttons').css({
+        'flex-direction': direction,
+      });
+
+    return await Dialog.wait(
+      {
+        title: data.title,
+        content: data.content ?? '',
+        buttons,
+        render,
+        close: () => null,
+      },
+      { classes: ['dnd5e', 'dialog'], height: '100%', ...data.options },
+      {}
+    );
+  }
+
+  /**
+   * Helper function to create a simple dialog with labeled buttons and associated data.
+   *
+   * @param {object} data dialog's data.
+   * @param {{label: string, value: object}[]} [data.buttons] buttons to be displayed in the dialog.
+   * @param {string} [data.title] dialog's title.
+   * @param {string} [data.content] dialog's html content.
+   * @param {object} [data.options] dialog's options.
+   * @param {string} [direction = 'row'] 'column' or 'row' accepted. Controls layout direction of the dialog's buttons.
+   *
+   * @returns {object} the value associated to the selected button.
+   */
+  async function remoteButtonDialog(userId, data, direction) {
+    return elwinHelpers.socket.executeAsUser(
+      'elwinHelpers.remoteButtonDialog',
+      userId,
+      data,
+      direction
+    );
+  }
+
+  /**
+   * Returns the intersection point on the target token between the source token and target token and the ray used to compute the intersection.
+   * The possible segments are computed using the same algo as MidiQOL uses to compute attack distances.
+   *
+   * @param {Token5e} sourceToken source token.
+   * @param {Token5e} targetToken target token.
+   * @returns {{point: {x: number, y: number}, ray: Ray}} the intersection point between the source token and target token and the ray used to compute the intersection.
+   */
+  function getAttackSegment(sourceToken, targetToken) {
+    if (!canvas || !canvas.scene || !canvas.grid || !canvas.dimensions) {
+      return undefined;
+    }
+    if (!sourceToken || !targetToken) {
+      return undefined;
+    }
+
+    const segments = getDistanceSegments(sourceToken, targetToken, true);
+    if (debug) {
+      console.warn(`${MACRO_NAME} | getAttackSegment (getDistanceSegments)`, {
+        sourceToken,
+        targetToken,
+        segments,
+      });
+    }
+    if (segments.length === 0) {
+      return undefined;
+    }
+    const segmentDistances = simpleMeasureDistances(segments, {
+      gridSpaces: true,
+    });
+    if (MidiQOL.configSettings()?.optionalRules.distanceIncludesHeight) {
+      const heightDifference = calculateTokeHeightDifference(
+        sourceToken,
+        targetToken
+      );
+      segmentDistances.forEach(
+        (distance, index, arr) =>
+          (arr[index] = getDistanceAdjustedByVerticalDist(
+            distance,
+            heightDifference
+          ))
+      );
+    }
+    if (debug) {
+      console.warn(
+        `${MACRO_NAME} | getAttackSegment (simpleMeasureDistances)`,
+        {
+          segments,
+          segmentDistances,
+        }
+      );
+    }
+    const idxShortestSegment = segmentDistances.indexOf(
+      Math.min(...segmentDistances)
+    );
+    if (idxShortestSegment < 0) {
+      return undefined;
+    }
+    const targetRect = new PIXI.Rectangle(
+      targetToken.x,
+      targetToken.y,
+      targetToken.w,
+      targetToken.h
+    ).getBounds();
+    const targetRay = segments[idxShortestSegment].ray;
+    const intersectSegments = targetRect.segmentIntersections(
+      targetRay.A,
+      targetRay.B
+    );
+    if (debug) {
+      console.warn(`${MACRO_NAME} | getAttackSegment (insersectSegments)`, {
+        targetRect,
+        targetRay,
+        intersectSegments,
+      });
+    }
+    if (!intersectSegments?.length) {
+      return undefined;
+    }
+    return { point: intersectSegments[0], ray: targetRay };
+  }
+
+  /**
+   * Get the distance segments between two objects. Based on midi-qol code used in getDistance.
+   *
+   * @param {Token5e} t1 - the first token.
+   * @param {Token5e} t2 - the second token.
+   * @param {boolean} wallBlocking - whether to consider walls as blocking.
+   * @return {{ray: Ray}[]} an array of segments representing the distance between the two tokens.
+   */
+  function getDistanceSegments(t1, t2, wallBlocking = false) {
+    const actor = t1.actor;
+    const ignoreWallsFlag = foundry.utils.getProperty(
+      actor,
+      'flags.midi-qol.ignoreWalls'
+    );
+    if (ignoreWallsFlag) {
+      wallBlocking = false;
+    }
+
+    const t1StartX = t1.document.width >= 1 ? 0.5 : t1.document.width / 2;
+    const t1StartY = t1.document.height >= 1 ? 0.5 : t1.document.height / 2;
+    const t2StartX = t2.document.width >= 1 ? 0.5 : t2.document.width / 2;
+    const t2StartY = t2.document.height >= 1 ? 0.5 : t2.document.height / 2;
+
+    let x, x1, y, y1;
+    let segments = [];
+    for (x = t1StartX; x < t1.document.width; x++) {
+      for (y = t1StartY; y < t1.document.height; y++) {
+        const origin = new PIXI.Point(
+          //        ...canvas.grid.getCenter(
+          Math.round(t1.document.x + canvas.dimensions.size * x),
+          Math.round(t1.document.y + canvas.dimensions.size * y)
+          //       )
+        );
+        for (x1 = t2StartX; x1 < t2.document.width; x1++) {
+          for (y1 = t2StartY; y1 < t2.document.height; y1++) {
+            const dest = new PIXI.Point(
+              //            ...canvas.grid.getCenter(
+              Math.round(t2.document.x + canvas.dimensions.size * x1),
+              Math.round(t2.document.y + canvas.dimensions.size * y1)
+              //          )
+            );
+            const r = new Ray(origin, dest);
+            if (wallBlocking) {
+              const collisionCheck =
+                CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
+                  mode: 'any',
+                  type: 'move',
+                });
+              if (debug) {
+                console.warn(`${MACRO_NAME} | getDistanceSegments`, {
+                  segment: { ray: r },
+                  collisionCheck,
+                });
+              }
+              if (collisionCheck) {
+                continue;
+              }
+            }
+            segments.push({ ray: r });
+          }
+        }
+      }
+    }
+    return segments;
+  }
+
+  /**
+   * Based on midi-qol measureDistances function.
+   * Measure distances for given segments with optional grid spaces.
+   *
+   * @param {{{ray: Ray}}[]} segments - Array of segments to measure distances for.
+   * @param {object} options - Optional object with grid spaces configuration.
+   * @return {number[]} Array of distances for each segment.
+   */
+  function simpleMeasureDistances(segments, options = {}) {
+    if (
+      canvas?.grid?.grid.constructor.name !== 'BaseGrid' ||
+      !options.gridSpaces
+    ) {
+      const distances = canvas?.grid?.measureDistances(segments, options);
+      return distances;
+    }
+
+    const rule = canvas?.grid.diagonalRule;
+    if (!options.gridSpaces || !['555', '5105', 'EUCL'].includes(rule)) {
+      return canvas?.grid?.measureDistances(segments, options);
+    }
+    // Track the total number of diagonals
+    let nDiagonal = 0;
+    const d = canvas?.dimensions;
+
+    const grid = canvas?.scene?.grid;
+    if (!d || !d.size) return 0;
+
+    // Iterate over measured segments
+    return segments.map((s) => {
+      const r = s.ray;
+      // Determine the total distance traveled
+      const nx = Math.ceil(Math.max(0, Math.abs(r.dx / d.size)));
+      const ny = Math.ceil(Math.max(0, Math.abs(r.dy / d.size)));
+      // Determine the number of straight and diagonal moves
+      const nd = Math.min(nx, ny);
+      const ns = Math.abs(ny - nx);
+      nDiagonal += nd;
+
+      if (rule === '5105') {
+        // Alternative DMG Movement
+        const nd10 =
+          Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
+        const spaces = nd10 * 2 + (nd - nd10) + ns;
+        return spaces * d.distance;
+      } else if (rule === 'EUCL') {
+        // Euclidean Measurement
+        const nx = Math.max(0, Math.abs(r.dx / d.size));
+        const ny = Math.max(0, Math.abs(r.dy / d.size));
+        return Math.ceil(Math.hypot(nx, ny) * grid?.distance);
+      } else {
+        // Standard PHB Movement
+        return Math.max(nx, ny) * grid.distance;
+      }
+    });
+  }
+
+  /**
+   * Calculate the height difference between two tokens based on their elevation and dimensions.
+   *
+   * @param {Token5e} t1 - the first token.
+   * @param {Token5e} t2 - the second token.
+   * @return {number} the height difference between the two tokens
+   */
+  function calculateTokeHeightDifference(t1, t2) {
+    const t1Elevation = t1.document.elevation ?? 0;
+    const t2Elevation = t2.document.elevation ?? 0;
+    const t1TopElevation =
+      t1Elevation +
+      Math.max(t1.document.height, t1.document.width) *
+        (canvas?.dimensions?.distance ?? 5);
+    const t2TopElevation =
+      t2Elevation +
+      Math.min(t2.document.height, t2.document.width) *
+        (canvas?.dimensions?.distance ?? 5);
+
+    let heightDifference = 0;
+    let t1ElevationRange =
+      Math.max(t1.document.height, t1.document.width) *
+      (canvas?.dimensions?.distance ?? 5);
+    if (Math.abs(t2Elevation - t1Elevation) < t1ElevationRange) {
+      // token 2 is within t1's size so height difference is functionally 0
+      heightDifference = 0;
+    } else if (t1Elevation < t2Elevation) {
+      // t2 above t1
+      heightDifference = t2Elevation - t1TopElevation;
+    } else if (t1Elevation > t2Elevation) {
+      // t1 above t2
+      heightDifference = t1Elevation - t2TopElevation;
+    }
+
+    return heightDifference;
+  }
+
+  /**
+   * Returns the total measured distance for the specified horizDistance and vertDistance.
+   *
+   * @param {number} horizDistance - horizontal distance.
+   * @param {number} vertDistance - vertical distance.
+   * @returns {number} the total measured distance including the vertical distance.
+   */
+  function getDistanceAdjustedByVerticalDist(horizDistance, vertDistance) {
+    const rule = canvas.grid.diagonalRule;
+    let distance = horizDistance;
+    if (['555', '5105'].includes(rule)) {
+      let nd = Math.min(horizDistance, vertDistance);
+      let ns = Math.abs(horizDistance - vertDistance);
+      distance = nd + ns;
+      let dimension = canvas?.dimensions?.distance ?? 5;
+      if (rule === '5105') {
+        distance = distance + Math.floor(nd / 2 / dimension) * dimension;
+      }
+    } else {
+      distance = Math.sqrt(
+        vertDistance * vertDistance + horizDistance * horizDistance
+      );
+    }
+    return distance;
+  }
+
+  /**
+   * Returns the position where to move the token so its border is next to the specified point.
+   *
+   * @param {Token5e} token - the token to be moved.
+   * @param {{x: number, y: number}} point - the point next to which to move the token.
+   * @param {object} options - Options
+   * @param {boolean} [options.snapToGrid] - if the the returned position will be snapped to grid or not.
+   *
+   * @returns {{x: number, y: number}} the position where to move the token so its border is next to the specified point.
+   */
+  function getMoveTowardsPosition(
+    token,
+    point,
+    options = { snapToGrid: true }
+  ) {
+    const moveTowardsRay = new Ray(token.center, point);
+    const tokenIntersects = token.bounds.segmentIntersections(
+      moveTowardsRay.A,
+      moveTowardsRay.B
+    );
+    if (!tokenIntersects?.length) {
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | getMoveTowardsPosition no segmentIntersections found`,
+          {
+            tokenBounds: token.bounds,
+            moveTowardsRay,
+          }
+        );
+      }
+      return undefined;
+    }
+    const centerToBounds = new Ray(moveTowardsRay.A, tokenIntersects[0]);
+
+    const rayToCenter = Ray.towardsPoint(
+      moveTowardsRay.A,
+      moveTowardsRay.B,
+      moveTowardsRay.distance - centerToBounds.distance
+    );
+    const tokenPos = {
+      x: rayToCenter.B.x - token.w / 2,
+      y: rayToCenter.B.y - token.h / 2,
+    };
+    let tokenPosSnapped = undefined;
+    if (options?.snapToGrid && canvas.grid.type !== CONST.GRID_TYPES.GRIDLESS) {
+      const isTiny = token.document.width < 1 && token.document.height < 1;
+      const interval = canvas.grid.isHex ? 1 : isTiny ? 2 : 1;
+      tokenPosSnapped = canvas.grid.getSnappedPosition(
+        tokenPos.x,
+        tokenPos.y,
+        interval,
+        { token }
+      );
+    }
+    if (debug) {
+      console.warn(`${MACRO_NAME} | getMoveTowardsPosition`, {
+        tokenPos,
+        tokenPosSnapped,
+      });
+    }
+    return tokenPosSnapped ? tokenPosSnapped : tokenPos;
+  }
+
+  /**
+   * Returns a position near the specified destPos where the specified token can be moved.
+   * There must be no collision betwen the token current position and the token destination position,
+   * if the destination position is occupied an altenative position can be returned but there must be no
+   * collision between the initial destination position and the new proposed one.
+   * An unoccupied space will be prioritized over an occupied one. If a nearToken is specified
+   * the position returned must be adjacent to this token.
+   *
+   * @param {Token5e} token - the token for which to find a space where it could be moved.
+   * @param {{x: number, y: number}} destPos - the token's tentative destination position.
+   * @param {Token5e} nearToken - if defined, the final position of the token must be adjacent to this token.
+   * @returns {{pos: {x: number, y: number}, occupied: boolean}} the token's preferred final destination with a flag to indicate if its already occupied by another token.
+   */
+  function findMovableSpaceNearDest(token, destPos, nearToken) {
+    const tokenInitialDestBounds = new PIXI.Rectangle(
+      destPos.x,
+      destPos.y,
+      token.w,
+      token.h
+    ).getBounds();
+    if (
+      token.checkCollision(tokenInitialDestBounds.center, {
+        type: 'move',
+        mode: 'any',
+      })
+    ) {
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | findMovableSpaceNearDest (wall collision initial destination)`,
+          {
+            tokenCenterPos: token.center,
+            tokenDestCenterPos: tokenInitialDestBounds.center,
+            wallCollision: true,
+          }
+        );
+      }
+      return undefined;
+    }
+
+    const size = Math.max(token.document.width, token.document.height);
+    const isTiny = size < 1;
+    let interval = 0;
+    let gridIncrement = 1;
+    let gridDistance = size;
+    if (canvas.grid.type !== CONST.GRID_TYPES.GRIDLESS) {
+      interval = canvas.grid.isHex ? 1 : isTiny ? 2 : 1;
+      gridIncrement = canvas.grid.isHex || !isTiny ? 1 : size;
+      gridDistance = isTiny ? 1 : size;
+    }
+
+    const posGen = nearbyPositionsGenerator(
+      destPos,
+      gridIncrement,
+      gridDistance
+    );
+
+    let nearTokenShape = undefined;
+    if (nearToken) {
+      if (canvas.grid.isHex) {
+        // Use padded poly otherwise overlaps does not work for certain adjacent grid spaces.
+        const points = canvas.grid.grid.getBorderPolygon(
+          nearToken.document.width,
+          nearToken.document.height,
+          CONFIG.Canvas.objectBorderThickness
+        );
+        nearTokenShape = new PIXI.Polygon(points).translate(
+          nearToken.x,
+          nearToken.y
+        );
+      } else {
+        nearTokenShape = nearToken.bounds;
+      }
+    }
+
+    const quadtree = canvas.tokens.quadtree;
+    let collisionTest = (o, r) => o.t.id !== token.id && o.r.intersects(r);
+    if (canvas.grid.isHex) {
+      collisionTest = (o, _) => {
+        if (o.t.id === token.id) {
+          return false;
+        }
+        const points = canvas.grid.grid.getBorderPolygon(
+          o.t.document.width,
+          o.t.document.height,
+          -CONFIG.Canvas.objectBorderThickness
+        );
+        currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
+        return currentTokenShape.overlaps(token.testCollisitionShape);
+      };
+    }
+    let testIter = null;
+    const unoccupiedDestinations = [];
+    const occupiedDestinations = [];
+
+    while (!(testIter = posGen.next()).done) {
+      const testPos = testIter.value;
+      const testPosSnapped = canvas.grid.getSnappedPosition(
+        testPos.x,
+        testPos.y,
+        interval,
+        { token }
+      );
+      let adjTargetShape;
+      let adjTargetForNeighborTestShape;
+
+      if (canvas.grid.isHex) {
+        if (isTiny) {
+          // For Tiny in hex grid we use a complete grid space to test touches near token
+          const tmpPos = canvas.grid.getSnappedPosition(
+            testPos.x,
+            testPos.y,
+            interval
+          );
+          const tmpPoints = canvas.grid.grid.getBorderPolygon(1, 1, 0);
+          adjTargetForNeighborTestShape = new PIXI.Polygon(tmpPoints).translate(
+            tmpPos.x,
+            tmpPos.y
+          );
+        }
+        const points = canvas.grid.grid.getBorderPolygon(
+          token.document.width,
+          token.document.height,
+          0
+        );
+        adjTargetShape = new PIXI.Polygon(points).translate(
+          testPosSnapped.x,
+          testPosSnapped.y
+        );
+      } else {
+        adjTargetShape = new PIXI.Rectangle(
+          testPosSnapped.x,
+          testPosSnapped.y,
+          token.w,
+          token.h
+        ).getBounds();
+      }
+
+      const paddedAdjTargetShape = adjTargetShape
+        .clone()
+        .pad(-CONFIG.Canvas.objectBorderThickness);
+      const paddedAdjTargetBounds =
+        paddedAdjTargetShape instanceof PIXI.Rectangle
+          ? paddedAdjTargetShape
+          : paddedAdjTargetShape.getBounds();
+
+      let touchesNearToken = true;
+      let insideNearToken = false;
+      if (nearToken) {
+        adjTargetForNeighborTestShape ??= adjTargetShape;
+        touchesNearToken = nearTokenShape.overlaps(
+          adjTargetForNeighborTestShape
+        );
+        insideNearToken = nearTokenShape.overlaps(paddedAdjTargetShape);
+      }
+      if (debug) {
+        console.warn(`${MACRO_NAME} | findMovableSpaceNearDest iter`, {
+          testPos,
+          testPosSnapped,
+          testGrid: canvas.grid.grid.getGridPositionFromPixels(
+            testPosSnapped.x,
+            testPosSnapped.y
+          ),
+          touchesNearToken,
+          insideNearToken,
+          nearTokenShape,
+          adjTargetShape,
+          paddedAdjTargetShape,
+        });
+      }
+      if (!touchesNearToken || insideNearToken) {
+        continue;
+      }
+      const testPosCenter = paddedAdjTargetBounds.center;
+      // Test if token can move from destPost to this new position
+      const wallCollision = token.checkCollision(testPosCenter, {
+        origin: tokenInitialDestBounds.center,
+        type: 'move',
+        mode: 'any',
+      });
+      if (wallCollision) {
+        if (debug) {
+          console.warn(
+            `${MACRO_NAME} | findMovableSpaceNearDest (wall collision)`,
+            {
+              testPos,
+              testPosCenter,
+              origin: token.center,
+              wallCollision,
+            }
+          );
+        }
+        continue;
+      }
+      // Set shape on current token to be used by grid collision test
+      token.testCollisitionShape = paddedAdjTargetShape;
+      const overlappingTokens = quadtree.getObjects(paddedAdjTargetBounds, {
+        collisionTest,
+      });
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | findMovableSpaceNearDest (token collision)`,
+          {
+            testPos,
+            testPosSnapped,
+            testPosCenter,
+            origin: token.center,
+            tokenCollision: !!overlappingTokens.size,
+            overlappingTokens,
+          }
+        );
+      }
+      if (overlappingTokens.size) {
+        // Location occupied by other token keep it in case no other not blocked by wall found
+        occupiedDestinations.push(testPosSnapped);
+      } else {
+        unoccupiedDestinations.push(testPosSnapped);
+      }
+    }
+
+    if (debug) {
+      console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (destinations)`, {
+        unoccupiedDestinations,
+        occupiedDestinations,
+      });
+    }
+    return unoccupiedDestinations.length
+      ? { pos: unoccupiedDestinations[0], occupied: false }
+      : occupiedDestinations.length
+      ? { pos: occupiedDestinations[0], occupied: true }
+      : undefined;
+  }
+
+  /**
+   * Generator of positions that are around the specified startingPoint up to the specified grid distance.
+   * Note: this was inspired by warpgate's PlaceableFit.
+   *
+   * @param {{x: number, y: number}} startingPoint - the starting position from which to find positions around the starting point.
+   * @param {number} gridIncrement - the grid increment to use around the starting point to include in the iteration,
+   *                                 fractions of grid distance is allowed but only for square grids, e.g.: 0.5.
+   * @param {number} gridDistance - the maximum grid distance around the starting point to include in the iteration.
+   * @returns the generator function of positions around the specific startingPoint.
+   */
+  function* nearbyPositionsGenerator(
+    startingPoint,
+    gridIncrement,
+    gridDistance
+  ) {
+    const gridLoc = canvas.grid.grid.getGridPositionFromPixels(
+      startingPoint.x,
+      startingPoint.y
+    );
+    // Adjust starting location for partial grid distance increment on square grids only
+    if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
+      const dim = canvas.dimensions.size;
+      gridLoc[0] += (startingPoint.y % dim) / dim;
+      gridLoc[1] += (startingPoint.x % dim) / dim;
+    }
+    // partial grid distance is not supported for types of Grid other than Square
+    if (gridIncrement < 1 && canvas.grid.type !== CONST.GRID_TYPES.SQUARE) {
+      gridIncrement = 1;
+    }
+    const positions = new Set();
+
+    const seen = (position) => {
+      const key = position.join('.');
+      if (positions.has(key)) return true;
+
+      positions.add(key);
+      return false;
+    };
+
+    seen(gridLoc);
+    let queue = [gridLoc];
+    let ring = 0;
+
+    /* include seed point in iterator */
+    yield { x: startingPoint.x, y: startingPoint.y, ring: -1 };
+
+    while (queue.length > 0 && ring < gridDistance) {
+      const next = queue.flatMap((loc) => getNeighbors(loc, gridIncrement));
+      queue = next.filter((loc) => !seen(loc));
+
+      for (const loc of queue) {
+        const [x, y] = canvas.grid.grid.getPixelsFromGridPosition(...loc);
+        yield { x, y, ring };
+      }
+
+      ring += gridIncrement;
+    }
+
+    return { x: null, y: null, ring: null };
+  }
+
+  /**
+   * Returns an array of grid locations corresponding to the specified location neighbors.
+   *
+   * @param {number[]} loc array containing a grid location's a row and column.
+   * @param {number} gridIncrement the grid increment, should be 1 for small or larger creatures and 0.5 for tiny ones.
+   * @returns {number[][]} array containing the grid locations' row and column of the specified loc neighbors.
+   */
+  function getNeighbors(loc, gridIncrement) {
+    const [row, col] = loc;
+    if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
+      let offsets = [
+        [-gridIncrement, -gridIncrement],
+        [-gridIncrement, 0],
+        [-gridIncrement, gridIncrement],
+        [0, -gridIncrement],
+        [0, gridIncrement],
+        [gridIncrement, -gridIncrement],
+        [gridIncrement, 0],
+        [gridIncrement, gridIncrement],
+      ];
+      return offsets.map((o) => [row + o[0], col + o[1]]);
+    } else {
+      return canvas.grid.grid.getNeighbors(row, col);
+    }
+  }
+
   //----------------------------------
   // Copied from midi-qol because its not exposed in the API
   function geti18nOptions(key) {
@@ -1347,4 +2124,17 @@ export function runElwinsHelpers () {
     }
     return img;
   }
-};
+
+  ////////////////// Remote functions ///////////////////////////////
+
+  function registerRemoteFunctions() {
+    const socket = socketlib.registerSystem(game.system.id);
+    socket.register('elwinHelpers.remoteButtonDialog', _remoteButtonDialog);
+
+    exportIdentifier('elwinHelpers.socket', socket);
+  }
+
+  async function _remoteButtonDialog(data, direction) {
+    return await buttonDialog(data, direction);
+  }
+}

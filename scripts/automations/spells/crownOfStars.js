@@ -10,7 +10,7 @@ export async function crownOfStars({
   options,
 }) {
   if (args[0] === 'on' && args.length === 3) {
-    const params = args[2];
+    const params = args[args.length - 1];
     const sourceToken = canvas.tokens.get(params.tokenId);
     const sourceActor = game.actors.get(params.actorId);
     const activeEffect = sourceActor.effects.get(params.effectId);
@@ -752,7 +752,7 @@ export async function crownOfStars({
                 },
               },
               'midi-qol': {
-                onUseMacroName: '[postActiveEffects]ItemMacro',
+                onUseMacroName: '[preDamageRoll]ItemMacro',
               },
             },
             system: {
@@ -793,7 +793,7 @@ export async function crownOfStars({
       'Your Star Motes have been created as a spell in your spellbook.'
     ); // here to change the dialogue that appears when casting the spell
   } else if (args[0] === 'off' && args.length === 3) {
-    const params = args[2];
+    const params = args[args.length - 1];
     const sourceToken = canvas.tokens.get(params.tokenId);
     await Sequencer.EffectManager.endEffects({
       name: '*StarMoteEffect*',
