@@ -733,6 +733,9 @@ export async function crownOfStars({
                 preview: false,
                 explosions: { enable: false },
               },
+              universalAnimations: {
+                override: 'neverPlay',
+              },
               itemacro: {
                 macro: {
                   // ADD CHECK FOR LIGHTING

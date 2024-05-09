@@ -156,6 +156,12 @@ export function setConfig() {
         version: '0.1.3',
         authors: ['WurstKorn'],
       },
+      'Flame Tongue Rapier': {
+        name: 'Flame Tongue Rapier',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       'Flames of Phlegethos': {
         name: 'Flames of Phlegethos',
         type: 'Feat',
@@ -246,12 +252,24 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Muhammad2126'],
       },
+      'Inspiring Leader': {
+        name: 'Inspiring Leader',
+        type: 'Feat',
+        version: '1.0.0',
+        authors: ['SagaTympana'],
+      },
       "Lila's Famous Mushroom Tea": {
         name: "Lila's Famous Mushroom Tea",
         type: 'Item',
         homebrew: true,
         version: '0.1.0',
         authors: ['Moto Moto'],
+      },
+      'Mage Hand': {
+        name: 'Mage Hand',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Lukas'],
       },
       'Magic Stone': {
         name: 'Magic Stone',
@@ -475,6 +493,12 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Moto Moto'],
       },
+      'Squire of Solamnia: Precise Strike': {
+        name: 'Squire of Solamnia: Precise Strike',
+        type: 'Feat',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       'Starry Wisp': {
         name: 'Starry Wisp',
         type: 'Spell',
@@ -545,6 +569,30 @@ export function setConfig() {
       },
     },
     monsterAutomations: {
+      'Adrix, The Hammer': {
+        'Dreadful Smite': {
+          name: 'Dreadful Smite',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
+        'Dreadful Wrath': {
+          name: 'Dreadful Wrath',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
+      },
+      'Awakened White Moose': {
+        Charge: {
+          name: 'Charge',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
       Banshee: {
         Wail: {
           name: 'Wail',
@@ -554,6 +602,73 @@ export function setConfig() {
         'Horrifying Visage': {
           name: 'Horrifying Visage',
           version: '0.1.1',
+          authors: ['Moto Moto'],
+        },
+      },
+      Bulezau: {
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
+      'Burnished Hart': {
+        Charge: {
+          name: 'Charge',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
+      Dao: {
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
+      Fraughashar: {
+        'Deft Snow Walk': {
+          name: 'Deft Snow Walk',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
+      'Fulgorax: The Beacon': {
+        'Evasion': {
+          name: 'Evasion',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
+        'Magic Resistance': {
+          name: 'Magic Resistance',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
+        'Move': {
+          name: 'Move',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
+        'Turn Immunity': {
+          name: 'Turn Immunity',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
+      },
+      'Giant Goat': {
+        Charge: {
+          name: 'Charge',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
           authors: ['Moto Moto'],
         },
       },
@@ -576,11 +691,30 @@ export function setConfig() {
           authors: ['Moto Moto'],
         },
       },
+      'Goat-Knight Steed': {
+        Charge: {
+          name: 'Charge',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
       'Hundred-Handed One': {
         Reactive: {
           name: 'Reactive',
           version: '0.1.0',
           authors: ['Muhammad2126'],
+        },
+      },
+      Lindwurm: {
+        'Sure-Footed Skater': {
+          name: 'Sure-Footed Skater',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
         },
       },
       Marilith: {
@@ -595,6 +729,32 @@ export function setConfig() {
           name: 'Reactive',
           version: '0.1.0',
           authors: ['Muhammad2126'],
+        },
+      },
+      'Mountain Goat': {
+        Charge: {
+          name: 'Charge',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
+      Mule: {
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
+        },
+      },
+      Nimblewright: {
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
         },
       },
       Sheep: {
@@ -783,6 +943,13 @@ export function setConfig() {
           name: 'Stunning Screech',
           version: '0.1.0',
           authors: ['Muhammad2126'],
+        },
+      },
+      'Wooden Donkey': {
+        'Sure-Footed': {
+          name: 'Sure-Footed',
+          version: '1.0.0',
+          authors: ['Moto Moto'],
         },
       },
     },

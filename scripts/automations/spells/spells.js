@@ -9,6 +9,7 @@ import { mislead } from './mislead.js';
 import { mordenkainensSword } from './mordenkainensSword.js';
 import { powerWordPain } from './powerWordPain.js';
 import { slow } from './slow.js';
+import { mageHand } from './mageHand.js';
 
 export let spells = {
   absorbElements,
@@ -22,4 +23,5 @@ export let spells = {
   mordenkainensSword,
   powerWordPain,
   slow,
+  mageHand,
 };
