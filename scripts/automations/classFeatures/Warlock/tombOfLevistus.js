@@ -14,7 +14,7 @@ export async function tombOfLevistus({
     !actor.system.traits.dv.value.has('fire')
   )
     await actor.update({
-      'flags.midi-item-showcase-community': {
+      'flags["midi-item-showcase-community"]': {
         tol: Array.from(actor.system.traits.dv.value),
       },
       'system.traits.dv.value': Array.from(
@@ -24,10 +24,10 @@ export async function tombOfLevistus({
 
   if (args[0] === 'off') {
     const updates = { 'system.attributes.hp.temp': null };
-    if (actor.flags.midi - item - showcase - community?.tol) {
+    if (actor.flags["midi-item-showcase-community"]?.tol) {
       updates['system.traits.dv.value'] =
-        actor.flags.midi - item - showcase - community.tol;
-      updates['flags.midi-item-showcase-community.-=tol'] = null;
+        actor.flags["midi-item-showcase-community"].tol;
+      updates['flags["midi-item-showcase-community"].-=tol'] = null;
     }
     await actor.update(updates);
   }
