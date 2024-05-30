@@ -12,6 +12,7 @@ import { channelDivinityTurnTheTide } from './Paladin/OathOfTheCrown/channelDivi
 import { divineAllegiance } from './Paladin/OathOfTheCrown/divineAllegiance.js';
 import { steadyAim } from './Rogue/steadyAim.js';
 import { tombOfLevistus } from './Warlock/tombOfLevistus.js';
+import { armsOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/armsOfTheAstralSelf.js';
 
 export let classFeatures = {
   eldritchCannon,
@@ -28,4 +29,5 @@ export let classFeatures = {
   divineAllegiance,
   steadyAim,
   tombOfLevistus,
+  armsOfTheAstralSelf,
 };

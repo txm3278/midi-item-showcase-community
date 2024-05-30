@@ -1,3 +1,23 @@
-2024/05/11-17:07:01.692 19c4 Recovering log #905
-2024/05/11-17:07:01.696 19c4 Delete type=0 #905
-2024/05/11-17:07:01.697 19c4 Delete type=3 #904
+2024/05/30-15:37:27.093 1e64 Recovering log #920
+2024/05/30-15:37:27.093 1e64 Level-0 table #922: started
+2024/05/30-15:37:27.097 1e64 Level-0 table #922: 37424 bytes OK
+2024/05/30-15:37:27.102 1e64 Delete type=0 #920
+2024/05/30-15:37:27.102 1e64 Delete type=3 #919
+2024/05/30-15:51:18.813 afc Level-0 table #925: started
+2024/05/30-15:51:18.813 afc Level-0 table #925: 0 bytes OK
+2024/05/30-15:51:18.815 afc Delete type=0 #923
+2024/05/30-15:51:18.823 afc Manual compaction at level-0 from '!folders!1VEvTB4U8zjUONoV' @ 72057594037927935 : 1 .. '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 0 : 0; will stop at '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 581 : 1
+2024/05/30-15:51:18.823 afc Compacting 1@0 + 0@1 files
+2024/05/30-15:51:18.827 afc Generated table #926@0: 28 keys, 37424 bytes
+2024/05/30-15:51:18.827 afc Compacted 1@0 + 0@1 files => 37424 bytes
+2024/05/30-15:51:18.829 afc compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/05/30-15:51:18.829 afc Delete type=2 #922
+2024/05/30-15:51:18.832 afc Manual compaction at level-0 from '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 581 : 1 .. '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 0 : 0; will stop at (end)
+2024/05/30-15:51:18.832 afc Manual compaction at level-1 from '!folders!1VEvTB4U8zjUONoV' @ 72057594037927935 : 1 .. '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 0 : 0; will stop at '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 581 : 1
+2024/05/30-15:51:18.832 afc Compacting 1@1 + 1@2 files
+2024/05/30-15:51:18.836 afc Generated table #927@1: 137 keys, 152904 bytes
+2024/05/30-15:51:18.836 afc Compacted 1@1 + 1@2 files => 152904 bytes
+2024/05/30-15:51:18.837 afc compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/05/30-15:51:18.838 afc Delete type=2 #912
+2024/05/30-15:51:18.838 afc Delete type=2 #926
+2024/05/30-15:51:18.856 afc Manual compaction at level-1 from '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 581 : 1 .. '!items.effects!yaakhzPOEUlMeete.pjziE3JABHFwqNbM' @ 0 : 0; will stop at (end)

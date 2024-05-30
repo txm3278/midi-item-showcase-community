@@ -10,12 +10,24 @@ export function setConfig() {
         version: '1.0.2',
         authors: ['Bradeck', 'thatlonelybugbear'],
       },
+      "Alchemist's Fire (flask)": {
+        name: "Alchemist's Fire (flask)",
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       'All of Nothing Armor': {
         name: 'All of Nothing Armor',
         type: 'Item',
         homebrew: true,
         version: '0.1.1',
         authors: ['CoolHand'],
+      },
+      'Arms of the Astral Self': {
+        name: 'Arms of the Astral Self',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Spoob'],
       },
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
@@ -290,6 +302,12 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['SagaTympana'],
       },
+      'Mental Prison': {
+        name: 'Mental Prison',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Spoob'],
+      },
       'Meteor Swarm': {
         name: 'Meteor Swarm',
         type: 'Spell',
@@ -515,7 +533,7 @@ export function setConfig() {
       'Tomb of Levistus': {
         name: 'Tomb of Levistus',
         type: 'Class Feature',
-        version: '0.1.2',
+        version: '0.1.3',
         authors: ['pospa4'],
       },
       'Toughened Skin': {
@@ -589,7 +607,7 @@ export function setConfig() {
         },
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -608,7 +626,7 @@ export function setConfig() {
       Bulezau: {
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -620,21 +638,21 @@ export function setConfig() {
         },
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
       Dao: {
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
       Fraughashar: {
         'Deft Snow Walk': {
           name: 'Deft Snow Walk',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -668,7 +686,7 @@ export function setConfig() {
         },
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -687,7 +705,7 @@ export function setConfig() {
         },
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -699,7 +717,7 @@ export function setConfig() {
         },
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -713,7 +731,7 @@ export function setConfig() {
       Lindwurm: {
         'Sure-Footed Skater': {
           name: 'Sure-Footed Skater',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
@@ -739,28 +757,28 @@ export function setConfig() {
         },
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
       Mule: {
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
       Nimblewright: {
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
       Sheep: {
         'Sure-Footed': {
           name: 'Sure-Footed',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Moto Moto'],
         },
       },
