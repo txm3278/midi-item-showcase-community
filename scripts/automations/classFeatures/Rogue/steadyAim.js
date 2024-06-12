@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v1.2.0
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [on], [off] item macro
@@ -53,6 +53,8 @@
 //   If "Monk's TokenBar" is active, change token movement to the mode preserved in the flag.
 // ###################################################################################################
 
+// Validate requirements
+
 export async function steadyAim({
   speaker,
   actor,
@@ -64,8 +66,6 @@ export async function steadyAim({
   workflow,
   options,
 }) {
-  // Validate requirements
-  const DEFAULT_ITEM_NAME = 'Steady Aim';
   const dependencies = ['dae', 'times-up', 'midi-qol'];
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;

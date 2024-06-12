@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to toggle on/off the -5 penalty to hit and +10 bonus to the damage on a
 // heavy weapon melee attack. Note: it supports checking for melee weapon attack with a thrown.
-// v1.1.0
+// v2.1.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -42,6 +42,8 @@
 //   considered a melee weapon attack.
 // ###################################################################################################
 
+// Default name of the item
+
 export async function greatWeaponMaster({
   speaker,
   actor,
@@ -53,13 +55,16 @@ export async function greatWeaponMaster({
   workflow,
   options,
 }) {
-  // Default name of the item
-  const DEFAULT_ITEM_NAME = 'Great Weapon Master';
   // Set to false to remove debug logging
-  const debug = true;
+  const debug = false;
 
-  if (!isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '2.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled`;
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '2.0'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -96,6 +101,7 @@ export async function greatWeaponMaster({
       return;
     }
     // Add an AE for -5 to hit +10 dmg
+    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const effectData = {
       changes: [
         {
@@ -114,7 +120,7 @@ export async function greatWeaponMaster({
       duration: {
         turns: 1,
       },
-      icon: scope.macroItem.img,
+      [imgPropName]: scope.macroItem.img,
       name: `${scope.macroItem.name} - Bonus`,
       origin: scope.macroItem.uuid,
       transfer: false,

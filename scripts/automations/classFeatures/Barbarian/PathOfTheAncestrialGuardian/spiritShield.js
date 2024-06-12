@@ -1,15 +1,15 @@
 // ##################################################################################################
 // Author: Elwin#1410
 // Read First!!!!
-// Adds an active efect aura when Rage is activated, that effect will trigger a reaction on the raging barbarian
-// when a visible creature within range is damaged to allow him to use the feature to reduce the target's damage.
+// Adds an active effect with third party reaction when Rage is activated, that effect will trigger a reaction
+// on the raging barbarian when a visible creature within range is damaged to allow him to use the feature
+// to reduce the target's damage.
 // If Vengeful Ancestors is present and the Barbarian has the appropriate level, it is triggered on the attacker.
-// v2.0.0
+// v3.0.0
 // Dependencies:
 //  - DAE [on][off]
 //  - Times Up
-//  - MidiQOL "on use" actor and item macro [preTargeting],[preTargetDamageApplication],[postActiveEffects]
-//  - Active Auras
+//  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
 //  - Elwin Helpers world script
 //  Note: A Rage item which adds a Rage effect when activated must be configured,
 //        A scale dice value must be configured on the 'Path of the Ancestral Guardian' subclass,
@@ -18,8 +18,9 @@
 // How to configure:
 // The Feature details must be:
 //   - Feature Type: Class Feature
-//   - Activation cost: 1 Reaction Manual
-//   - Target: 1 Creature
+//   - Activation cost: 1 Reaction
+//   - Target: 1 Ally (RAW it's Creature, but use Ally to trigger reaction on allies only)
+//   - Range: 30 feet
 //   - Action Type: Other
 //   - Damage formula:
 //     @scale.path-of-the-ancestral-guardian.spirit-shield | No Damage
@@ -28,6 +29,10 @@
 //       ItemMacro | Called before the item is rolled
 //   - Confirm Targets: Never
 //   - Roll a separate attack per target: Never
+//   - No Full cover: (checked)
+//   - Activation Conditions
+//     - Reaction:
+//       reaction === "tpr.isDamaged"
 //   - This item macro code must be added to the DIME code of this feature.
 // Two effects must also be added:
 //   - Spirit Shield:
@@ -35,46 +40,38 @@
 //      - Effects:
 //          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,postActiveEffects
 //          - flags.dae.macro.itemMacro | Custom |
-//   - Spirit Shield - Aura:
+//   - Spirit Shield - TPR:
 //      - Effect Suspended (checked)
 //      - Transfer Effect to Actor on ItemEquip (checked)
 //      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,preTargetDamageApplication
-//      - Auras:
-//        - Effect is Aura: checked
-//        - Aura Targets: Allies (RAW it's All, but use Allies to trigger reaction only on allies)
-//        - Aura radius: 30
-//        - Ignore self? (checked)
-//        - Check Token Height: (checked)
-//        - Walls Block this Aura?: No
+//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isDamaged|ignoreSelf=true;canSee=true;pre=true;post=true
 //
 // Usage:
-// This item has a passive effect that unsuspends an active aura effect when the Rage item is activated.
-// It is also a manual reaction item that gets triggered by the active aura effect when appropriate.
+// This item has a passive effect that unsuspends a third party reaction effect when the Rage item is activated.
+// It is also a reaction item that gets triggered by the third party reaction effect when appropriate.
 //
 // Description:
 // There are multiple calls of this item macro, dependending on the trigger.
 // When the Spirit Shield effect is transferred on the actor:
-//   If the Rage effect is activated, unsuspends the aura effect for the actor,
-//   the rage effect is also updated to suspend the aura effect on deletion.
-// In the postActiveEffects phase of the Rage item:
-//   Unsuspends the aura effect for the actor. The rage effect is also updated to suspend
-//   the aura effect on deletion.
+//   If the Rage effect is activated, unsuspends the third party reaction effect for the actor,
+//   the rage effect is also updated to suspend the third party reaction effect on deletion.
 // When the Spirit Shield effect is passivated:
-//   Suspends the aura effect if present.
-// In the preItemRoll phase of Spirit Shield item:
-//   Validates that the actor has the Rage effect activated and that one and one target is selected,
-//   that the target is within range and that there is line of sight to the target,
+//   Suspends the third party reaction effect if present.
+// In the preTargeting (item OnUse) phase of the Spirit Shield item (in owner's workflow):
+//   Validates that item was triggered by the remote tpr.isDamaged target on use,
 //   otherwise the item workflow execution is aborted.
-// In the preTargetDamageApplication phase of a target having the Spirit Shield's Active Aura Effect:
-//   Validates that the source actor of the Spirit Shield is not incapacitated, can see the target and
-//   has not used its reaction. If the conditions are fulfilled, the Spirit Shield item is triggered
-//   has a reaction on the source actor client's. If the reaction was used and completed successfully,
-//   the target's damage is reduced by the amount specified in the flag set by the executed reaction.
-//   If the Vengeful Ancestors feat is present on the source actor of the Spirit Shield and the Barbarian
-//   has the appropriate level, the item is called on the source actor client's.
-// In the postActiveEffects phase of Spirit Shield item:
-//   A damage reduction flag is set on the actor to be used by the macro in the preTargetDamageApplication phase.
+// In the postActiveEffects (item onUse) phase of the Rage item (in owner's workflow):
+//   Unsuspends the third party reaction effect for the actor. The rage effect is also updated to suspend
+//   the third party reaction effect on deletion.
+// In the postActiveEffects (item onUse) phase of Spirit Shield item (in owner's workflow):
+//   A damage reduction flag is set on the item's owner to be used by the post macro of the tpr.isDamaged reaction.
+// In the tpr.isDamaged (TargetOnUse) pre macro (in attacker's workflow) (on other target):
+//   Unsets the previous damage reduction flag on the item's owner.
+// In the tpr.isDamaged (TargetOnUse) post macro (in attacker's workflow) (on other target):
+//   If the reaction was used and completed successfully, the target's damage is reduced
+//   by the amount specified in the damage reduction flag set by the executed reaction on the item's owner.
+//   If the Vengeful Ancestors feat is present on the Spirit Shield item's owner and the Barbarian
+//   has the appropriate level, the item is called on the Spirit Shield item owner's client.
 // ###################################################################################################
 
 export async function spiritShield({
@@ -90,6 +87,7 @@ export async function spiritShield({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Spirit Shield';
+  const MODULE_ID = 'midi-item-showcase-community';
   // Default name of the Rage feature
   const RAGE_ITEM_NAME = 'Rage';
   // Default name of the Rage effect, normally same as the feature
@@ -98,14 +96,19 @@ export async function spiritShield({
   const VENGEFUL_ANCESTORS_ITEM_NAME = 'Vengeful Ancestors';
   // Level at which Vengeful Ancestors is triggered
   const VENGEFUL_ANCESTORS_TRIGGER_LEVEL = 14;
-  const debug = true;
+  const debug = false;
 
-  if (!isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '2.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled`;
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '2.2'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol', 'ActiveAuras'];
+  const dependencies = ['dae', 'times-up', 'midi-qol'];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -120,16 +123,23 @@ export async function spiritShield({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     // MidiQOL OnUse item macro for Spirit Shield
-    return handleSpiritShieldOnUsePreTargeting(workflow, scope.macroItem);
+    return handleOnUsePreTargeting(workflow, scope.macroItem);
   } else if (
     args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'preTargetDamageApplication'
+    args[0].macroPass === 'tpr.isDamaged.pre'
   ) {
-    // MidiQOL TargetOnUse item macro for Spirit Shield Aura
-    return await handleSpiritShieldAuraOnUsePreTargetDamageApplication(
+    // MidiQOL TargetOnUse pre macro for Spirit Shield pre reaction in the triggering midi-qol workflow
+    // Remove previous damage prevention value
+    await DAE.unsetFlag(scope.macroItem.actor, 'spiritShieldPreventedDmg');
+  } else if (
+    args[0].tag === 'TargetOnUse' &&
+    args[0].macroPass === 'tpr.isDamaged.post'
+  ) {
+    // MidiQOL TargetOnUse post macro for Spirit Shield post reaction
+    return await handleTargetOnUseIsDamagedPost(
       workflow,
-      token,
-      scope.macroItem
+      scope.macroItem,
+      options?.thirdPartyReactionResult
     );
   } else if (
     args[0].tag === 'OnUse' &&
@@ -140,14 +150,14 @@ export async function spiritShield({
       await handleRageOnUsePostActiveEffects(workflow, scope.macroItem);
     } else if (scope.rolledItem?.uuid === scope.macroItem?.uuid) {
       // MidiQOL OnUse item macro for Spirit Shield
-      await handleSpiritShieldOnUsePostActiveEffects(workflow, actor);
+      await handleOnUsePostActiveEffects(workflow, actor);
     }
   } else if (args[0] === 'on') {
     // DAE on item macro for spirit shield effect
-    await handleSpiritShieldOnEffect(actor, token, item);
+    await handleOnEffect(actor, token, item);
   } else if (args[0] === 'off') {
     // DAE off item macro for spirit shield effect
-    await handleSpiritShieldOffEffect(actor, item);
+    await handleOffEffect(actor, item);
   }
 
   /**
@@ -155,24 +165,26 @@ export async function spiritShield({
    * Validates that the actor has the Rage effect activated and that one and one target is selected,
    * that the target is within range and that there is line of sight to the target.
    *
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol current workflow.
-   * @param {Item5e} sourceItem The Spirit Shield item.
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Spirit Shield item.
    *
    * @returns {boolean} true if all requirements are fulfilled, false otherwise.
    */
-  function handleSpiritShieldOnUsePreTargeting(currentWorkflow, sourceItem) {
+  function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !==
-        'preTargetDamageApplication' ||
-      currentWorkflow.options?.thirdPartyReaction?.itemUuid !== sourceItem.uuid
+        'tpr.isDamaged' ||
+      !currentWorkflow.options?.thirdPartyReaction?.itemUuids?.includes(
+        sourceItem.uuid
+      )
     ) {
-      // Reaction should only be triggered by aura
+      // Reaction should only be triggered by third party reaction AE
       const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the raging barbarian is damaged.`;
       ui.notifications.warn(msg);
       return false;
     }
 
-    setProperty(
+    foundry.utils.setProperty(
       currentWorkflow,
       'options.workflowOptions.fastForwardDamage',
       true
@@ -182,11 +194,11 @@ export async function spiritShield({
 
   /**
    * Handles the postActiveEffects of the Rage item midi-qol workflow.
-   * If the Rage effect is activated, adds an aura effect to the actor,
-   * the rage effect is also updated to delete the aura effect on deletion.
+   * If the Rage effect is activated, unsuspends the third party reaction effect on the actor,
+   * the rage effect is also updated to suspend the third party reaction effect on deletion.
    *
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol current workflow.
-   * @param {Item5e} sourceItem The Spirit Shield item.
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Spirit Shield item.
    */
   async function handleRageOnUsePostActiveEffects(currentWorkflow, sourceItem) {
     const sourceActor = currentWorkflow.actor;
@@ -195,8 +207,8 @@ export async function spiritShield({
       (ae) => ae.name === RAGE_EFFECT_NAME
     );
     if (rageEffect) {
-      // The Barbarian is in Rage it can have the Spirit Shield aura effect on
-      await activateAuraEffect(
+      // The Barbarian is in Rage it can have the Spirit Shield third party reaction effect on
+      await activateThirdPartyReactionEffect(
         sourceActor,
         true,
         sourceItem,
@@ -207,92 +219,43 @@ export async function spiritShield({
   }
 
   /**
- * Handles the preTargetDamageApplication of the Spirit Shield item midi-qol workflow.
- * If the requirements are fulfilled, triggers a remote reaction on the Fighter's client 
- * to reduce the damage applied to the target.
-
- *
- * @param {MidiQOL.Workflow} currentWorkflow midi-qol current workflow.
- * @param {Token5e} targetToken The target token that is damaged.
- * @param {Item5e} sourceItem The Spirit Shield item.
- */
-  async function handleSpiritShieldAuraOnUsePreTargetDamageApplication(
+   * Handles the tpr.isDamaged post reaction of the Spirit Shield item in the triggering midi-qol workflow.
+   * If the reaction was used and completed successfully, reduces the damage aplied to the target by the rolled amount
+   * of the reaction. Also, if of appropriate level, activates the Vengeful Ancestors on the attacker.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Spirit Shield item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
+  async function handleTargetOnUseIsDamagedPost(
     currentWorkflow,
-    targetToken,
-    sourceItem
+    sourceItem,
+    thirdPartyReactionResult
   ) {
-    // Skip this phase if it was triggered by the sourceItem
-    if (currentWorkflow.itemUuid === sourceItem?.uuid) {
-      return;
-    }
-    // Skip this phase if the item did not applied damage or it was healing
-    if (
-      !currentWorkflow.damageItem?.appliedDamage ||
-      currentWorkflow.damageItem?.appliedDamage < 0
-    ) {
-      return;
-    }
     const sourceActor = sourceItem.actor;
-
-    if (!sourceActor || !targetToken) {
-      console.error(
-        `${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`,
-        sourceActor,
-        targetToken
-      );
-      return;
-    }
-    const sourceItemTokenUuid = sourceActor.getFlag(
-      'midi-item-showcase-community',
-      'spiritShield.tokenUuid'
-    );
-    const sourceItemTokenDoc = fromUuidSync(sourceItemTokenUuid);
-    if (!sourceItemTokenDoc) {
-      console.error(
-        `${DEFAULT_ITEM_NAME} | Source token not found for ${sourceItemTokenUuid}`
-      );
-      return;
-    }
-
-    if (!MidiQOL.canSee(sourceItemTokenDoc, targetToken)) {
-      // There is no line of sight to the target or the target is not visible
-      if (debug) {
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | There is no line of sight to the target.`
-        );
-      }
-      return;
-    }
-
-    // Remove previous damage prevention value
-    await DAE.unsetFlag(sourceActor, 'spiritShieldPreventedDmg');
-    const result = await elwinHelpers.doThirdPartyReaction(
-      currentWorkflow.item,
-      targetToken,
-      sourceItem,
-      'preTargetDamageApplication',
-      { debug, reactionTokenUuid: sourceItemTokenUuid }
-    );
-
+    const damageItem = currentWorkflow.damageItem;
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Reaction result`, {
-        result,
-        damageItem: currentWorkflow.damageItem,
+        thirdPartyReactionResult,
+        damageItem,
         preventedDmg: DAE.getFlag(sourceActor, 'spiritShieldPreventedDmg'),
       });
     }
 
     if (
       !(
-        result?.uuid === sourceItem.uuid &&
+        thirdPartyReactionResult?.uuid === sourceItem.uuid &&
         DAE.getFlag(sourceActor, 'spiritShieldPreventedDmg') > 0
       )
     ) {
       return;
     }
-    const damageItem = currentWorkflow.damageItem;
+    const currentAppliedDamage = damageItem.appliedDamage;
     const preventedDmg = DAE.getFlag(sourceActor, 'spiritShieldPreventedDmg');
     elwinHelpers.reduceAppliedDamage(damageItem, preventedDmg);
+    // TODO Validate if prevented damage is total rolled or up to total damaged the target received
+    //const effectivePreventedDamage = Math.max(0, currentAppliedDamage - damageItem.appliedDamage);
+    //DAE.setFlag(sourceActor, "spiritShieldPreventedDmg", effectivePreventedDamage);
 
     if (
       (sourceActor.getRollData().classes?.barbarian?.levels ?? 0) >=
@@ -332,7 +295,7 @@ export async function spiritShield({
       let player = MidiQOL.playerForActor(sourceActor);
       if (!player?.active) {
         // Find first active GM player
-        player = game.users?.find((p) => p.isGM && p.active);
+        player = game.users?.activeGM;
       }
       if (!player?.active) {
         console.warn(
@@ -373,13 +336,10 @@ export async function spiritShield({
    * A flag is added to the Barbarian with the damage reduction to be applied and the item card
    * is updated to inform of the damage reduction to be applied on the target.
    *
-   * @param {MidiQOL.Workflow} currentWorkflow The midi-qol curent workflow.
-   * @param {Actor5e} sourceActor Owner of the Spirit Shield item.
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Actor5e} sourceActor - The owner of the Spirit Shield item.
    */
-  async function handleSpiritShieldOnUsePostActiveEffects(
-    currentWorkflow,
-    sourceActor
-  ) {
+  async function handleOnUsePostActiveEffects(currentWorkflow, sourceActor) {
     const targetToken = currentWorkflow.targets.first();
     if (!targetToken) {
       // No target found
@@ -406,21 +366,17 @@ export async function spiritShield({
 
   /**
    * Handles DAE 'on' macro call for the Spirit Shield effect.
-   * If the Rage effect is activated, unsuspends the aura effect for the actor,
-   * the rage effect is also updated to suspend the aura effect on deletion.
+   * If the Rage effect is activated, unsuspends the third party reaction effect for the actor,
+   * the rage effect is also updated to suspend the third party reaction effect on deletion.
    *
-   * @param {Actor5e} sourceActor owner of the source item.
-   * @param {Token5e} sourceToken token of the source actor.
-   * @param {Item5e} sourceItem the Spirit Shield item.
+   * @param {Actor5e} sourceActor - The owner of the source item.
+   * @param {Token5e} sourceToken - The token of the source actor.
+   * @param {Item5e} sourceItem - The Spirit Shield item.
    */
-  async function handleSpiritShieldOnEffect(
-    sourceActor,
-    sourceToken,
-    sourceItem
-  ) {
+  async function handleOnEffect(sourceActor, sourceToken, sourceItem) {
     // macro called on the "on" of the source item (Spirit Shield)
     // if rage already present when this item effect is activated,
-    // we need to unsuspend the aura
+    // we need to unsuspend the third party reaction effect
     const rageEffect = sourceActor.appliedEffects.find(
       (ae) => ae.name === RAGE_EFFECT_NAME
     );
@@ -429,8 +385,8 @@ export async function spiritShield({
       return;
     }
 
-    // The Barbarian is in Rage it can have the Spirit Shield aura effect on
-    await activateAuraEffect(
+    // The Barbarian is in Rage it can have the Spirit Shield third party reaction effect on
+    await activateThirdPartyReactionEffect(
       sourceActor,
       true,
       sourceItem,
@@ -441,67 +397,65 @@ export async function spiritShield({
 
   /**
    * Handles DAE 'off' macro call for the Spirit Shield effect.
-   * Suspends the aura effect if present.
+   * Suspends the third party reaction effect if present.
    *
-   * @param {Actor5e} sourceActor owner of the item
-   * @param {Item5e} sourceItem the Spirit Shield item.
+   * @param {Actor5e} sourceActor - The owner of the item
+   * @param {Item5e} sourceItem - The Spirit Shield item.
    */
-  async function handleSpiritShieldOffEffect(sourceActor, sourceItem) {
-    // Suspend aura effect if present
-    await activateAuraEffect(sourceActor, false, sourceItem);
+  async function handleOffEffect(sourceActor, sourceItem) {
+    // Suspend third party reaction effect if present
+    await activateThirdPartyReactionEffect(sourceActor, false, sourceItem);
   }
 
   /**
-   * Unsuspends the Spirit Shield Active Aura effect for the specified actor to trigger reaction on damage,
-   * it also updates the Rage effect to suspend the aura when the Rage effect is deleted.
+   * Unsuspends the Spirit Shield third party reaction effect for the specified actor to trigger reaction on damage,
+   * it also updates the Rage effect to suspend the third party reaction effect when the Rage effect is deleted.
    *
-   * @param {Actor5e} sourceActor the owner of the source item.
-   * @param {boolean} activate flag to indicate if the aura effect must be activate or deactivated.
-   * @param {Item5e} sourceItem the Spirit Shield item.
-   * @param {string} sourceToken the token of the source actor (only needed for activation).
-   * @param {string} rageEffect the Rage effect (only needed for activation).
+   * @param {Actor5e} sourceActor - The owner of the source item.
+   * @param {boolean} activate - Flag to indicate if the third party reaction effect must be activate or deactivated.
+   * @param {Item5e} sourceItem - The Spirit Shield item.
+   * @param {string} sourceToken - The token of the source actor (only needed for activation).
+   * @param {string} rageEffect - The Rage effect (only needed for activation).
    */
-  async function activateAuraEffect(
+  async function activateThirdPartyReactionEffect(
     sourceActor,
     activate,
     sourceItem,
     sourceToken,
     rageEffect
   ) {
-    let aePredicate = undefined;
-    if (CONFIG.ActiveEffect.legacyTransferral) {
-      aePredicate = (ae) =>
-        ae.flags?.dae?.transfer &&
-        ae.origin === sourceItem.uuid &&
-        ae.getFlag('ActiveAuras', 'isAura');
-    } else {
-      aePredicate = (ae) =>
-        ae.transfer &&
-        ae.parent?.uuid === sourceItem.uuid &&
-        ae.getFlag('ActiveAuras', 'isAura');
-    }
+    const aePredicate = (ae) =>
+      ae.transfer &&
+      ae.parent?.uuid === sourceItem.uuid &&
+      ae.changes.some(
+        (c) =>
+          c.key === 'flags.midi-qol.onUseMacroName' &&
+          c.value.includes('tpr.isDamaged')
+      );
 
     if (activate) {
-      // Find aura effect to enable it
-      const auraEffect = [...sourceActor.allApplicableEffects()].find(
+      // Find third party reaction effect to enable it
+      const tprEffect = [...sourceActor.allApplicableEffects()].find(
         aePredicate
       );
-      if (!auraEffect) {
-        console.error(`${DEFAULT_ITEM_NAME} | Aura effect not found.`);
+      if (!tprEffect) {
+        console.error(
+          `${DEFAULT_ITEM_NAME} | Third Party Reaction effect not found.`
+        );
         return;
       }
-      await auraEffect.update({ disabled: false });
+      await tprEffect.update({ disabled: false });
 
-      // Add effect to auto suspend Spirit Shield Aura when Rage effect expires
-      let rageChanges = deepClone(rageEffect.changes);
+      // Add effect to auto suspend Spirit Shield third party reaction effect when Rage effect expires
+      let rageChanges = foundry.utils.deepClone(rageEffect.changes);
       rageChanges.push({
         key: 'flags.dae.suspendActiveEffect',
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: auraEffect.uuid,
+        value: tprEffect.uuid,
         priority: 20,
       });
       rageChanges.push({
-        key: 'flags.midi-item-showcase-community.spiritShield.tokenUuid',
+        key: `flags.${MODULE_ID}.spiritShield.tokenUuid`,
         mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
         value: sourceToken.document.uuid,
         priority: 20,
@@ -510,13 +464,15 @@ export async function spiritShield({
         { _id: rageEffect.id, changes: rageChanges },
       ]);
     } else {
-      // Find aura effect to suspend it
-      const auraEffect = sourceActor.appliedEffects.find(aePredicate);
-      if (!auraEffect) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Aura effect not active.`);
+      // Find third party reaction effect to suspend it
+      const tprEffect = sourceActor.appliedEffects.find(aePredicate);
+      if (!tprEffect) {
+        console.warn(
+          `${DEFAULT_ITEM_NAME} | Third Party Reaction effect not active.`
+        );
         return;
       }
-      await auraEffect.update({ disabled: true });
+      await tprEffect.update({ disabled: true });
     }
   }
 }

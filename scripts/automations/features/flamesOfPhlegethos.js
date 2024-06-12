@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v2.0.0
+// v2.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -48,6 +48,8 @@
 //   Note: This is done, to not interfere with other effects the attack could have.
 // ###################################################################################################
 
+// Default name of the item
+
 export async function flamesOfPhlegethos({
   speaker,
   actor,
@@ -59,15 +61,18 @@ export async function flamesOfPhlegethos({
   workflow,
   options,
 }) {
-  // Default name of the item
-  const DEFAULT_ITEM_NAME = 'Flames of Phlegethos';
   // Set to false to remove debug logging
-  const debug = true;
+  const debug = false;
   // Normally should be one, but for test purpose can be set to an higher value
   const rerollNumber = 1;
 
-  if (!isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '2.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled`;
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '2.0'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -346,7 +351,7 @@ export async function flamesOfPhlegethos({
       dieJson.results = dieJson.results.slice(
         dieJson.results.length - rerolledResults.length
       );
-      setProperty(dieJson, 'options.flavor', 'fire');
+      foundry.utils.setProperty(dieJson, 'options.flavor', 'fire');
       // Add dummy + operator if we want to roll multiple dice
       if (terms.length > 0) {
         const operatorTerm = new OperatorTerm({ operator: '+' }).evaluate();
@@ -370,6 +375,7 @@ export async function flamesOfPhlegethos({
    * @returns {object} the active effect data for the light and Token Magic FX flames.
    */
   function getFlamesEffectData(sourceItem) {
+    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const flamesEffectData = {
       changes: [
         {
@@ -425,7 +431,7 @@ export async function flamesOfPhlegethos({
         rounds: 1,
         turns: 1,
       },
-      icon: sourceItem.img,
+      [imgPropName]: sourceItem.img,
       name: `${sourceItem.name} - Flames`,
       origin: sourceItem.uuid,
       transfer: false,

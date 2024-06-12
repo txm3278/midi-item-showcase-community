@@ -2,7 +2,7 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Damages the attacker that triggered Spirit Shield by the amount of damage that was prevented.
-// v2.0.0
+// v2.0.2
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll][preDamageRoll]
@@ -55,10 +55,15 @@ export async function vengefulAncestors({
   const DEFAULT_ITEM_NAME = 'Vengeful Ancestors';
   // Default name of the Rage effect, normally same as the feature
   const RAGE_EFFECT_NAME = 'Rage';
-  const debug = true;
+  const debug = false;
 
-  if (!isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '2.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled`;
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '2.0'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }

@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to make a bonus melee weapon attack when the actor scores a critical hit or brings a
 // target to 0 HP with a melee weapon.
-// v2.0.0
+// v2.1.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][each]
@@ -50,6 +50,8 @@
 //   Calls MidiQOL.completeItemUse with the selected weapon.
 // ###################################################################################################
 
+// Default name of the item
+
 export async function greatWeaponMasterAttack({
   speaker,
   actor,
@@ -61,155 +63,205 @@ export async function greatWeaponMasterAttack({
   workflow,
   options,
 }) {
+  const MODULE_ID = 'midi-item-showcase-community';
+  // Set to false to remove debug logging
+  const debug = false;
 
-
-// Default name of the item
-const DEFAULT_ITEM_NAME = "Great Weapon Master Attack";
-// Set to false to remove debug logging
-const debug = true;
-
-if (!isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "2.0")) {
-  const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled`;
-  ui.notifications.error(errorMsg);
-  return;
-}
-const dependencies = ["dae", "times-up", "midi-qol"];
-if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
-  return;
-}
-
-if (debug) {
-  console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
-}
-if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
-  const filteredWeapons = getEquippedMeleeWeapons(actor);
-  if (filteredWeapons.length === 0) {
-    const msg = `${DEFAULT_ITEM_NAME} | No melee weapon equipped.`;
-    ui.notifications.warn(msg);
-    return false;
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '2.0'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    ui.notifications.error(errorMsg);
+    return;
+  }
+  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return;
   }
 
-  const chosenWeaponId = actor.getFlag("midi-item-showcase-community", "greatWeaponMaster.weaponChoiceId");
-  let weaponItem = filteredWeapons[0];
-  if (filteredWeapons.length > 1) {
-    weaponItem = await getSelectedWeapon(scope.macroItem, filteredWeapons, chosenWeaponId);
+  if (debug) {
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
-  if (!weaponItem) {
-    // Bonus attack was cancelled
-    const msg = `${DEFAULT_ITEM_NAME} | No weapon selected for the bonus attack.`;
-    ui.notifications.warn(msg);
-    return false;
-  }
-  // Keep weapon choice for next time (used as pre-selected choice)
-  await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster.weaponChoiceId", weaponItem.id);
+  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
+    const filteredWeapons = getEquippedMeleeWeapons(actor);
+    if (filteredWeapons.length === 0) {
+      const msg = `${DEFAULT_ITEM_NAME} | No melee weapon equipped.`;
+      ui.notifications.warn(msg);
+      return false;
+    }
 
-  // Keep selected weapon in options
-  workflow.options.greatWeaponMasterWeapon = weaponItem;
-} else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-  if (scope.rolledItem?.uuid === scope.macroItem.uuid) {
-    const weaponItem = workflow.options?.greatWeaponMasterWeapon;
+    const chosenWeaponId = actor.getFlag(
+      MODULE_ID,
+      'greatWeaponMaster.weaponChoiceId'
+    );
+    let weaponItem = filteredWeapons[0];
+    if (filteredWeapons.length > 1) {
+      weaponItem = await getSelectedWeapon(
+        scope.macroItem,
+        filteredWeapons,
+        chosenWeaponId
+      );
+    }
     if (!weaponItem) {
-      ui.notifications.warn(
-        `${DEFAULT_ITEM_NAME}: No selected weapon for bonus attack, reallocate spent resource if needed.`
-      );
-      return;
+      // Bonus attack was cancelled
+      const msg = `${DEFAULT_ITEM_NAME} | No weapon selected for the bonus attack.`;
+      ui.notifications.warn(msg);
+      return false;
     }
-    // Change action cost to Special to not be take as an Attack Action
-    const weaponCopy = weaponItem.toObject();
-    delete weaponCopy._id;
-    // Change activation type to special so it is not considered as an Attack Action
-    weaponCopy.system.activation = deepClone(weaponCopy.system.activation ?? {});
-    weaponCopy.system.activation.type = "special";
-    weaponCopy.system.activation.cost = null;
+    // Keep weapon choice for next time (used as pre-selected choice)
+    await actor.setFlag(
+      MODULE_ID,
+      'greatWeaponMaster.weaponChoiceId',
+      weaponItem.id
+    );
 
-    const options = {
-      showFullCard: false,
-      createWorkflow: true,
-      configureDialog: true,
-      workflowOptions: { autoRollAttack: true },
-    };
-    const attackItem = new CONFIG.Item.documentClass(weaponCopy, { parent: actor, temporary: true });
-
-    await MidiQOL.completeItemUse(attackItem, {}, options);
-  } else {
-    if (scope.rolledItem?.type !== "weapon" || scope.rolledItem?.system?.actionType !== "mwak") {
-      // Not a melee weapon...
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon.`);
+    // Keep selected weapon in options
+    workflow.options.greatWeaponMasterWeapon = weaponItem;
+  } else if (
+    args[0].tag === 'OnUse' &&
+    args[0].macroPass === 'postActiveEffects'
+  ) {
+    if (scope.rolledItem?.uuid === scope.macroItem.uuid) {
+      const weaponItem = workflow.options?.greatWeaponMasterWeapon;
+      if (!weaponItem) {
+        ui.notifications.warn(
+          `${DEFAULT_ITEM_NAME}: No selected weapon for bonus attack, reallocate spent resource if needed.`
+        );
+        return;
       }
-      return;
-    }
-    // Adds a charge to the bonus action if the conditions are met.
-    if (actor.getFlag("midi-item-showcase-community", "greatWeaponMaster.bonus")) {
-      // A bonus action was already granted
-      return;
-    }
-    let allowBonusAction = workflow.isCritical;
-    let reduceToZeroHp = false;
-    if (!allowBonusAction && workflow.hitTargets.size > 0) {
-      reduceToZeroHp = workflow.damageList?.some(
-        (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0
+      // Change action cost to Special to not be take as an Attack Action
+      const weaponCopy = weaponItem.toObject();
+      delete weaponCopy._id;
+      // Change activation type to special so it is not considered as an Attack Action
+      weaponCopy.system.activation = foundry.utils.deepClone(
+        weaponCopy.system.activation ?? {}
       );
-      allowBonusAction = reduceToZeroHp;
-    }
-    if (debug) {
-      console.warn(DEFAULT_ITEM_NAME, { allowBonusAction, isCritical: workflow.isCritical, reduceToZeroHp });
-    }
-    if (allowBonusAction) {
-      // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
-      await scope.macroItem.update({
-        "system.uses.value": 1,
+      weaponCopy.system.activation.type = 'special';
+      weaponCopy.system.activation.cost = null;
+
+      const options = {
+        showFullCard: false,
+        createWorkflow: true,
+        configureDialog: true,
+        workflowOptions: { autoRollAttack: true },
+      };
+      const attackItem = new CONFIG.Item.documentClass(weaponCopy, {
+        parent: actor,
+        temporary: true,
       });
-      await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster", { bonus: true, weaponChoiceId: scope.rolledItem.id });
 
-      // Add chat message saying a bonus attack can be made
-      const message = `<p><strong>${scope.macroItem.name}</strong> - You can make a special bonus attack.</p>`;
-      MidiQOL.addUndoChatMessage(
-        await ChatMessage.create({
-          type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-          content: message,
-          speaker: ChatMessage.getSpeaker({ actor, token }),
-          whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
-        })
-      );
+      await MidiQOL.completeItemUse(attackItem, {}, options);
+    } else {
+      if (
+        scope.rolledItem?.type !== 'weapon' ||
+        scope.rolledItem?.system?.actionType !== 'mwak'
+      ) {
+        // Not a melee weapon...
+        if (debug) {
+          console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon.`);
+        }
+        return;
+      }
+      // Adds a charge to the bonus action if the conditions are met.
+      if (actor.getFlag(MODULE_ID, 'greatWeaponMaster.bonus')) {
+        // A bonus action was already granted
+        return;
+      }
+      let allowBonusAction = workflow.isCritical;
+      let reduceToZeroHp = false;
+      if (!allowBonusAction && workflow.hitTargets.size > 0) {
+        reduceToZeroHp = workflow.damageList?.some(
+          (dmgItem) =>
+            dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0
+        );
+        allowBonusAction = reduceToZeroHp;
+      }
+      if (debug) {
+        console.warn(DEFAULT_ITEM_NAME, {
+          allowBonusAction,
+          isCritical: workflow.isCritical,
+          reduceToZeroHp,
+        });
+      }
+      if (allowBonusAction) {
+        // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
+        await scope.macroItem.update({
+          'system.uses.value': 1,
+        });
+        await actor.setFlag(MODULE_ID, 'greatWeaponMaster', {
+          bonus: true,
+          weaponChoiceId: scope.rolledItem.id,
+        });
+
+        // Add chat message saying a bonus attack can be made
+        const message = `<p><strong>${scope.macroItem.name}</strong> - You can make a special bonus attack.</p>`;
+        MidiQOL.addUndoChatMessage(
+          await ChatMessage.create({
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            content: message,
+            speaker: ChatMessage.getSpeaker({ actor, token }),
+            whisper: ChatMessage.getWhisperRecipients('GM').map((u) => u.id),
+          })
+        );
+      }
+    }
+  } else if (args[0] === 'on') {
+    // Clear item state when first applied
+    await item.update({ 'system.uses.value': 0 });
+  } else if (args[0] === 'each') {
+    // Reset the Heavy Weapon Master Attack bonus action to 0 charge
+    if (
+      item.system?.uses?.value > 0 ||
+      foundry.utils.getProperty(
+        actor,
+        `flags.${MODULE_ID}.greatWeaponMaster.bonus`
+      )
+    ) {
+      await item.update({ 'system.uses.value': 0 });
+      await actor.setFlag(MODULE_ID, 'greatWeaponMaster.bonus', false);
     }
   }
-} else if (args[0] === "on") {
-  // Clear item state when first applied
-  await item.update({ "system.uses.value": 0 });
-} else if (args[0] === "each") {
-  // Reset the Heavy Weapon Master Attack bonus action to 0 charge
-  if (item.system?.uses?.value > 0 || getProperty(actor, "flags.midi-item-showcase-community.greatWeaponMaster.bonus")) {
-    await item.update({ "system.uses.value": 0 });
-    await actor.setFlag("midi-item-showcase-community", "greatWeaponMaster.bonus", false);
+
+  /**
+   * Returns a list of equipped melee weapons for the specified actor.
+   *
+   * @param {Actor5e} sourceActor token actor
+   * @returns {Item5e[]} list of equipped melee weapons.
+   */
+  function getEquippedMeleeWeapons(sourceActor) {
+    return sourceActor.itemTypes.weapon.filter(
+      (w) => w.system.equipped && w.system.actionType === 'mwak'
+    );
   }
-}
 
-/**
- * Returns a list of equipped melee weapons for the specified actor.
- *
- * @param {Actor5e} sourceActor token actor
- * @returns {Item5e[]} list of equipped melee weapons.
- */
-function getEquippedMeleeWeapons(sourceActor) {
-  return sourceActor.itemTypes.weapon.filter((w) => w.system.equipped && w.system.actionType === "mwak");
-}
-
-/**
- * Prompts a dialog to select a weapon and returns the id of the selected weapon.
- *
- * @param {Item5e} sourceItem item for which the dialog is prompted.
- * @param {Item5e[]} weaponChoices array of weapon items from which to choose.
- * @param {string} defaultChosenWeaponId id of weapon to be selected by default.
- *
- * @returns {Item5e|null} the selected weapon.
- */
-async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
-  const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
-  return elwinHelpers.ItemSelectionDialog.createDialog(
-    `⚔️ ${sourceItem.name}: Choose a Weapon`,
+  /**
+   * Prompts a dialog to select a weapon and returns the id of the selected weapon.
+   *
+   * @param {Item5e} sourceItem item for which the dialog is prompted.
+   * @param {Item5e[]} weaponChoices array of weapon items from which to choose.
+   * @param {string} defaultChosenWeaponId id of weapon to be selected by default.
+   *
+   * @returns {Item5e|null} the selected weapon.
+   */
+  async function getSelectedWeapon(
+    sourceItem,
     weaponChoices,
-    defaultWeapon
-  );
-}
+    defaultChosenWeaponId
+  ) {
+    const defaultWeapon = weaponChoices.find(
+      (i) => i.id === defaultChosenWeaponId
+    );
+    return elwinHelpers.ItemSelectionDialog.createDialog(
+      `⚔️ ${sourceItem.name}: Choose a Weapon`,
+      weaponChoices,
+      defaultWeapon
+    );
+  }
 }

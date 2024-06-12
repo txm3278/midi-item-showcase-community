@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v2.0.0
+// v2.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -71,11 +71,16 @@ export async function unwaveringMark({
   workflow,
   options,
 }) {
-  const DEFAULT_ITEM_NAME = 'Unwavering Mark';
-  const debug = true;
+  const MODULE_ID = 'midi-item-showcase-community';
+  const debug = false;
 
-  if (!isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '2.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled`;
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '2.0'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -119,7 +124,7 @@ export async function unwaveringMark({
     }
     return true;
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
-    if (actor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid')) {
+    if (actor.getFlag(MODULE_ID, 'unwaveringMark.markerTokenUuid')) {
       // When the marked target makes an attack
       handlePreAttackRollByMarkedTarget(workflow, scope.macroItem);
     }
@@ -129,7 +134,7 @@ export async function unwaveringMark({
   ) {
     const macroData = args[0];
 
-    if (actor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid')) {
+    if (actor.getFlag(MODULE_ID, 'unwaveringMark.markerTokenUuid')) {
       // When the marked target makes an attack
       await handlePostActiveEffectsByMarkedTarget(
         macroData,
@@ -168,7 +173,7 @@ export async function unwaveringMark({
         'unwaveringMark.specialAttackTargetTokenUuids'
       );
       if (specialAttackTargetTokenUuids) {
-        specialAttackTargetTokenUuids = deepClone(
+        specialAttackTargetTokenUuids = foundry.utils.deepClone(
           specialAttackTargetTokenUuids
         );
         // Remove token from specialAttackTargets
@@ -228,7 +233,7 @@ export async function unwaveringMark({
    */
   function handlePreAttackRollByMarkedTarget(currentWorkflow, sourceItem) {
     const markerTokenUuid = actor.getFlag(
-      'midi-item-showcase-community',
+      MODULE_ID,
       'unwaveringMark.markerTokenUuid'
     );
     if (!isPassiveEffectActiveForItem(scope.macroItem)) {
@@ -300,7 +305,7 @@ export async function unwaveringMark({
     }
 
     const markerTokenUuid = currentActor.getFlag(
-      'midi-item-showcase-community',
+      MODULE_ID,
       'unwaveringMark.markerTokenUuid'
     );
     if (!isPassiveEffectActiveForItem(sourceItem)) {
@@ -347,7 +352,7 @@ export async function unwaveringMark({
     const markerTokenActor = MidiQOL.MQfromActorUuid(markerTokenUuid);
 
     // Set flag for who was marked that did damage (triggered the special attack)
-    const specialAttackTargetTokenUuids = deepClone(
+    const specialAttackTargetTokenUuids = foundry.utils.deepClone(
       DAE.getFlag(
         markerTokenActor,
         'unwaveringMark.specialAttackTargetTokenUuids'
@@ -436,7 +441,7 @@ export async function unwaveringMark({
 
     const targetActor = targetToken.actor;
     const targetUuid = targetToken.document.uuid;
-    let currentTurnMarkedTargetTokenUuids = deepClone(
+    let currentTurnMarkedTargetTokenUuids = foundry.utils.deepClone(
       DAE.getFlag(
         sourceToken,
         'unwaveringMark.currentTurnMarkedTargetTokenUuids'
@@ -448,7 +453,7 @@ export async function unwaveringMark({
     );
     if (foundIdx >= 0) {
       if (
-        targetActor.getFlag('midi-item-showcase-community', 'unwaveringMark.markerTokenUuid') ===
+        targetActor.getFlag(MODULE_ID, 'unwaveringMark.markerTokenUuid') ===
         currentWorkflow.tokenUuid
       ) {
         // Target already marked this turn.
@@ -491,11 +496,12 @@ export async function unwaveringMark({
       });
     }
     // create an active effect to set advantage on attack rolls on target only
+    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const targetEffectData = {
       changes: [
         // flag to indicate marker
         {
-          key: 'flags.midi-item-showcase-community.unwaveringMark.markerTokenUuid',
+          key: `flags.${MODULE_ID}.unwaveringMark.markerTokenUuid`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
           value: currentWorkflow.tokenUuid,
           priority: 20,
@@ -524,17 +530,21 @@ export async function unwaveringMark({
       ],
       origin: sourceItem.uuid, //flag the effect as associated to the source item
       disabled: false,
-      icon: sourceItem.img,
+      [imgPropName]: sourceItem.img,
       name: targetEffectName,
     };
     targetEffectData.duration = currentWorkflow.inCombat
       ? { rounds: 1, turns: 1 }
       : { seconds: CONFIG.time.roundTime + 1 };
 
-    setProperty(targetEffectData, 'flags.dae.specialDuration', [
+    foundry.utils.setProperty(targetEffectData, 'flags.dae.specialDuration', [
       'turnEndSource',
     ]);
-    setProperty(targetEffectData, 'flags.dae.stackable', 'noneNameOnly');
+    foundry.utils.setProperty(
+      targetEffectData,
+      'flags.dae.stackable',
+      'noneNameOnly'
+    );
 
     await MidiQOL.socket().executeAsGM('createEffects', {
       actorUuid: targetActor.uuid,
@@ -578,7 +588,7 @@ export async function unwaveringMark({
     }
 
     const chosenWeaponId = sourceActor.getFlag(
-      'midi-item-showcase-community',
+      MODULE_ID,
       'unwaveringMark.weaponChoiceId'
     );
     let weaponItem = filteredWeapons[0];
@@ -598,7 +608,7 @@ export async function unwaveringMark({
     }
     // Keep weapon choice for next time (used as pre-selected choice)
     await sourceActor.setFlag(
-      'midi-item-showcase-community',
+      MODULE_ID,
       'unwaveringMark.weaponChoiceId',
       weaponItem.id
     );
@@ -629,7 +639,7 @@ export async function unwaveringMark({
     const weaponCopy = weaponItem.toObject();
     delete weaponCopy._id;
     // Change activation type to special so it is not considered as an Attack Action
-    weaponCopy.system.activation = deepClone(
+    weaponCopy.system.activation = foundry.utils.deepClone(
       weaponCopy.system.activation ?? {}
     );
     weaponCopy.system.activation.type = 'special';
