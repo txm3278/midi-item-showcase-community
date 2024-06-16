@@ -1,6 +1,6 @@
 // ##################################################################################################
 // Mix of helper functions for macros.
-// v2.2.0
+// v2.2.1
 // Dependencies:
 //  - MidiQOL
 //
@@ -74,7 +74,7 @@
 //
 // ###################################################################################################
 export function runElwinsHelpers() {
-  const VERSION = '2.2.0';
+  const VERSION = '2.2.1';
   const MACRO_NAME = 'elwin-helpers';
   const debug = false;
   const active = true;
@@ -310,11 +310,14 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePostStart.`, workflow);
     }
     for (let token of game.canvas.tokens.placeables) {
-      const actorOnUseMacros =
-        foundry.utils.getProperty(
-          token.actor ?? {},
-          'flags.midi-qol.onUseMacroParts'
-        ) ?? new OnUseMacros();
+      const actorOnUseMacros = foundry.utils.getProperty(
+        token.actor ?? {},
+        'flags.midi-qol.onUseMacroParts'
+      );
+      if (!actorOnUseMacros) {
+        // Skip this actor does not have any on use macros
+        continue;
+      }
       await registerThirdPartyReactions(
         workflow,
         token,

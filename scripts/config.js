@@ -32,7 +32,7 @@ export function setConfig() {
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
         type: 'Item',
-        version: '3.1.0',
+        version: '3.1.1',
         authors: ['Elwin'],
       },
       'Aspect of the Beast: Bear': {
@@ -129,7 +129,7 @@ export function setConfig() {
       'Divine Allegiance': {
         name: 'Divine Allegiance',
         type: 'Class Feature',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       Driftglobe: {
@@ -189,7 +189,7 @@ export function setConfig() {
       'Flames of Phlegethos': {
         name: 'Flames of Phlegethos',
         type: 'Feat',
-        version: '2.1.0',
+        version: '2.1.1',
         authors: ['Elwin'],
       },
       'Flaming Sphere': {
@@ -219,7 +219,7 @@ export function setConfig() {
       'Gift of the Metallic Dragon': {
         name: 'Gift of the Metallic Dragon',
         type: 'Feat',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Goggles of Object Reading': {
@@ -231,25 +231,25 @@ export function setConfig() {
       Goodberry: {
         name: 'Goodberry',
         type: 'Spell',
-        version: '2.0.2',
+        version: '2.0.3',
         authors: ['Elwin'],
       },
       'Great Weapon Master': {
         name: 'Great Weapon Master',
         type: 'Feat',
-        version: '2.1.2',
+        version: '2.1.3',
         authors: ['Elwin'],
       },
       'Great Weapon Master Attack': {
         name: 'Great Weapon Master Attack',
         type: 'Feat',
-        version: '2.1.2',
+        version: '2.1.3',
         authors: ['Elwin'],
       },
       'Guardian Emblem': {
         name: 'Guardian Emblem',
         type: 'Item',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       Healer: {
@@ -435,7 +435,7 @@ export function setConfig() {
       'Psionic Power: Protective Field': {
         name: 'Psionic Power: Protective Field',
         type: 'Class Feature',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Psychic Blades': {
@@ -477,7 +477,7 @@ export function setConfig() {
       "Sentinel at Death's Door": {
         name: "Sentinel at Death's Door",
         type: 'Class Feature',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       Sharpshooter: {
@@ -520,7 +520,7 @@ export function setConfig() {
       'Spirit Shield': {
         name: 'Spirit Shield',
         type: 'Class Feature',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Spirit Totem: Bear Spirit': {
@@ -545,7 +545,7 @@ export function setConfig() {
       'Steady Aim': {
         name: 'Steady Aim',
         type: 'Class Feature',
-        version: '2.2.0',
+        version: '2.2.1',
         authors: ['Elwin'],
       },
       'Tomb of Levistus': {
@@ -564,13 +564,13 @@ export function setConfig() {
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '2.1.0',
+        version: '2.1.1',
         authors: ['Elwin'],
       },
       'Vengeful Ancertors': {
         name: 'Vengeful Ancertors',
         type: 'Class Feature',
-        version: '2.0.2',
+        version: '2.0.3',
         authors: ['Elwin'],
       },
       Vial: {
@@ -582,7 +582,7 @@ export function setConfig() {
       'Vigilant Guardian': {
         name: 'Vigilant Guardian',
         type: 'Race Feature',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Wand of Winter': {
@@ -594,7 +594,7 @@ export function setConfig() {
       'Warding Flare': {
         name: 'Warding Flare',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Wukka Nuts': {
