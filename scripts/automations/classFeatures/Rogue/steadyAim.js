@@ -66,6 +66,7 @@ export async function steadyAim({
   workflow,
   options,
 }) {
+  const DEFAULT_ITEM_NAME = 'Steady Aim';
   const dependencies = ['dae', 'times-up', 'midi-qol'];
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;

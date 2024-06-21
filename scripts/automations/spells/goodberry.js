@@ -80,8 +80,6 @@
 //
 // ###################################################################################################
 
-// Default name of the item
-
 export async function goodberry({
   speaker,
   actor,
@@ -93,6 +91,8 @@ export async function goodberry({
   workflow,
   options,
 }) {
+  // Default name of the item
+  const DEFAULT_ITEM_NAME = 'Goodberry';
   const MODULE_ID = 'midi-item-showcase-community';
   const SPELL_DURATION = 60 * 60 * 24;
   // Default rest-recovery sated type as RAW, change to "both" to sate food and water.

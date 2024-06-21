@@ -48,8 +48,6 @@
 //   Note: This is done, to not interfere with other effects the attack could have.
 // ###################################################################################################
 
-// Default name of the item
-
 export async function flamesOfPhlegethos({
   speaker,
   actor,
@@ -61,6 +59,8 @@ export async function flamesOfPhlegethos({
   workflow,
   options,
 }) {
+  // Default name of the item
+  const DEFAULT_ITEM_NAME = 'Flames of Phlegethos';
   // Set to false to remove debug logging
   const debug = false;
   // Normally should be one, but for test purpose can be set to an higher value

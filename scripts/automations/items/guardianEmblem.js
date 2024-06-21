@@ -70,8 +70,6 @@
 //   a normal hit.
 // ###################################################################################################
 
-// Default name of the item
-
 export async function guardianEmblem({
   speaker,
   actor,
@@ -83,6 +81,8 @@ export async function guardianEmblem({
   workflow,
   options,
 }) {
+  // Default name of the item
+  const DEFAULT_ITEM_NAME = 'Guardian Emblem';
   const MODULE_ID = 'midi-item-showcase-community';
   // Set to false to remove debug logging
   const debug = false;

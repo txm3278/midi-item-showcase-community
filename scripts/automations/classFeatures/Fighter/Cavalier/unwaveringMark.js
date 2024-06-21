@@ -71,6 +71,7 @@ export async function unwaveringMark({
   workflow,
   options,
 }) {
+  const DEFAULT_ITEM_NAME = 'Unwavering Mark';
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = false;
 

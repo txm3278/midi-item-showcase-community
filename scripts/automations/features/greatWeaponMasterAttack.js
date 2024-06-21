@@ -50,8 +50,6 @@
 //   Calls MidiQOL.completeItemUse with the selected weapon.
 // ###################################################################################################
 
-// Default name of the item
-
 export async function greatWeaponMasterAttack({
   speaker,
   actor,
@@ -63,6 +61,8 @@ export async function greatWeaponMasterAttack({
   workflow,
   options,
 }) {
+  // Default name of the item
+  const DEFAULT_ITEM_NAME = 'Great Weapon Master Attack';
   const MODULE_ID = 'midi-item-showcase-community';
   // Set to false to remove debug logging
   const debug = false;

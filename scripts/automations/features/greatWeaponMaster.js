@@ -42,8 +42,6 @@
 //   considered a melee weapon attack.
 // ###################################################################################################
 
-// Default name of the item
-
 export async function greatWeaponMaster({
   speaker,
   actor,
@@ -55,6 +53,8 @@ export async function greatWeaponMaster({
   workflow,
   options,
 }) {
+  // Default name of the item
+  const DEFAULT_ITEM_NAME = 'Great Weapon Master';
   // Set to false to remove debug logging
   const debug = false;
 
