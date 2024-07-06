@@ -1,4 +1,5 @@
 import { runElwinsHelpers } from './automations/macros/elwinsHelpers.js';
+import { setupBakanaMacros } from './automations/macros/bakanaHelpers.js';
 import { actions } from './automations/actions/actions.js';
 import { classFeatures } from './automations/classFeatures/classFeatures.js';
 import { features } from './automations/features/features.js';
@@ -13,6 +14,7 @@ import { UA } from './automations/unearthedArcana/unearthedArcana.js';
 
 export let scripts = {
   runElwinsHelpers,
+  setupBakanaMacros,
 };
 
 export let macros = {
