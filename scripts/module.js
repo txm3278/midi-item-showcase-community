@@ -16,6 +16,8 @@ Hooks.once('ready', async function () {
   if (game.settings.get(moduleName, 'Elwin Helpers')) {
     await scripts.runElwinsHelpers();
   }
+  // TODO(bakanabaka) : make a setting to enable
+  scripts.setupBakanaMacros();
 });
 
 globalThis['MISC'] = {
