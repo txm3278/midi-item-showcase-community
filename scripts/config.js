@@ -812,6 +812,20 @@ export function setConfig() {
           authors: ['Moto Moto'],
         },
       },
+      'Hobgoblin Recruit': {
+        'Infernal Ichor': {
+          name: 'Infernal Ichor',
+          version: '1.0.0',
+          homebrew: true,
+          authors: ['Matdir'],
+        },
+        'Tactical Positioning': {
+          name: 'Tactical Positioning',
+          version: '1.0.0',
+          homebrew: true,
+          authors: ['Matdir'],
+        },
+      },
       'Hundred-Handed One': {
         Reactive: {
           name: 'Reactive',

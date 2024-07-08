@@ -1,0 +1,19 @@
+{
+  "name": "Flee, Mortals!",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "B6oCQR7setiwm8X8",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1720476861687,
+    "modifiedTime": 1720476861687,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!B6oCQR7setiwm8X8"
+}
