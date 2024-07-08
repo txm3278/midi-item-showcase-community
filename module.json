@@ -39,7 +39,7 @@
       }
     ]
   },
-  "esmodules": ["scripts/module.js"],
+  "esmodules": ["dist/main.js"],
   "languages": [
     {
       "lang": "en",
