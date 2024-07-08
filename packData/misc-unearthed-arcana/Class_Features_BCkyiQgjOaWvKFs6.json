@@ -1,0 +1,19 @@
+{
+  "name": "Class Features",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "BCkyiQgjOaWvKFs6",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.4.1",
+    "coreVersion": "11.315",
+    "createdTime": 1706032854204,
+    "modifiedTime": 1706032854204,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!BCkyiQgjOaWvKFs6"
+}

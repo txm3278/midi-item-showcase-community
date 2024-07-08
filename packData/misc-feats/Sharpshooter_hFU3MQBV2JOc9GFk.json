@@ -1,0 +1,381 @@
+{
+  "name": "Sharpshooter",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><p>Popup by Michael</p><p></p><p><strong>Note:</strong> If clicking yes in the popup doesn't work make sure you used the Sharpshooter feature before and have the 'Sharpshooter' effect. If you don't want the popup delete the effect names 'Sharpshooter - Popup'.</p>",
+      "chat": ""
+    },
+    "source": {
+      "book": "Player's Handbook",
+      "page": "170",
+      "license": "",
+      "custom": ""
+    },
+    "activation": {
+      "type": "none",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "other",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "feat",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "summons": null,
+    "properties": []
+  },
+  "flags": {
+    "ddbimporter": {
+      "id": 42,
+      "type": "feat",
+      "entityTypeId": 1088085227,
+      "dndbeyond": {},
+      "effectsApplied": true,
+      "importId": "Nv2c5SmAmikSlH4h"
+    },
+    "obsidian": {
+      "source": {
+        "type": "feat"
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "forceCEOff": true,
+      "forceCEOn": true,
+      "removeAttackDamageButtons": "default",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "toggleEffect": true,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "ignoreTotalCover": false
+    },
+    "scene-packer": {
+      "hash": "57fdaf62c05d08490759dc973daccc70ea3e945d",
+      "sourceId": "Item.Sl0aZ4yax6prEOyw"
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {},
+    "exportSource": {
+      "world": "campaign-3",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    }
+  },
+  "effects": [
+    {
+      "icon": "icons/skills/ranged/arrow-flying-white-blue.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.sharpShooter",
+          "mode": 2,
+          "value": "1",
+          "priority": 30
+        }
+      ],
+      "duration": {
+        "startTime": 12,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": 3,
+        "startTurn": 0
+      },
+      "tint": null,
+      "transfer": true,
+      "disabled": false,
+      "flags": {
+        "dae": {
+          "transfer": true,
+          "stackable": "noneName",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ddbimporter": {
+          "disabled": false
+        },
+        "midi-qol": {
+          "forceCEOff": true
+        },
+        "core": {},
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "name": "Sharpshooter - Range Adjustment",
+      "statuses": [],
+      "_id": "q5Le1zgY3WEmhZFu",
+      "description": "",
+      "origin": "Actor.SbPLp1RSHoyCfrm3.Item.epAthZza25FAhWvj",
+      "_key": "!items.effects!hFU3MQBV2JOc9GFk.q5Le1zgY3WEmhZFu"
+    },
+    {
+      "changes": [
+        {
+          "key": "system.bonuses.rwak.attack",
+          "mode": 2,
+          "value": "-5",
+          "priority": 20
+        },
+        {
+          "key": "system.bonuses.rwak.damage",
+          "mode": 2,
+          "value": "+10",
+          "priority": 20
+        }
+      ],
+      "description": "<p>Subtracts 5 from ranged attacks but adds 10 to ranged damage</p>",
+      "disabled": false,
+      "duration": {
+        "rounds": null,
+        "seconds": null,
+        "turns": null,
+        "startTime": null,
+        "combat": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "flags": {
+        "dfreds-convenient-effects": {
+          "isConvenient": true,
+          "isDynamic": false,
+          "isViewable": true,
+          "nestedEffects": [],
+          "subEffects": []
+        },
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "icon": "icons/weapons/bows/shortbow-recurve-yellow.webp",
+      "name": "Sharpshooter",
+      "origin": "Actor.SbPLp1RSHoyCfrm3.Item.epAthZza25FAhWvj",
+      "tint": null,
+      "transfer": false,
+      "statuses": [
+        "Convenient Effect: Sharpshooter"
+      ],
+      "_id": "O6BVvkgyGnFSmqtm",
+      "_key": "!items.effects!hFU3MQBV2JOc9GFk.O6BVvkgyGnFSmqtm"
+    },
+    {
+      "name": "Sharpshooter - Popup",
+      "icon": "icons/skills/ranged/arrow-flying-white-blue.webp",
+      "origin": "Actor.SbPLp1RSHoyCfrm3.Item.epAthZza25FAhWvj",
+      "duration": {
+        "startTime": 12,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": 3,
+        "startTurn": 0
+      },
+      "disabled": false,
+      "_id": "PwonbdcUAuWgMsxI",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.features.sharpshooter,preAttackRoll",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!hFU3MQBV2JOc9GFk.PwonbdcUAuWgMsxI"
+    }
+  ],
+  "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
+  "folder": null,
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706483810724,
+    "modifiedTime": 1718157851773,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "hFU3MQBV2JOc9GFk",
+  "sort": 0,
+  "_key": "!items!hFU3MQBV2JOc9GFk"
+}

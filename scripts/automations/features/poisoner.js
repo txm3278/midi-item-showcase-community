@@ -35,9 +35,9 @@ export async function poisoner({
     );
 
     gold = gold - 50;
-    quantity = actor.system.attributes.prof;
+    let quantity = actor.system.attributes.prof;
 
-    if (!!actor.items.getName(potentPoisonItem.name)) {
+    if (actor.items.getName(potentPoisonItem.name)) {
       quantity += actor.items.getName(potentPoisonItem.name).system.quantity;
     }
     potentPoisonItem.system.quantity = quantity;

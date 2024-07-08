@@ -142,7 +142,7 @@ export async function guardianEmblem({
 
     // Add item that allows attaching emblem to shield or armor
     const attachMutationName = `${item.id}-attach-action`;
-    if (!!warpgate.mutationStack(token.document).getName(attachMutationName)) {
+    if (warpgate.mutationStack(token.document).getName(attachMutationName)) {
       await warpgate.revert(token.document, attachMutationName);
     }
     await warpgate.mutate(
@@ -193,7 +193,7 @@ export async function guardianEmblem({
     if (origin !== scope.macroItem.uuid) {
       console.warn(
         `${DEFAULT_ITEM_NAME} | Wrong sourceItemUuid is different from the origin of attach feat item.`,
-        sourceItem.uuid,
+        scope.macroItem.uuid,
         origin
       );
       return;
@@ -304,7 +304,7 @@ export async function guardianEmblem({
       if (!attachedItem) {
         if (debug) {
           console.warn(
-            `${DEFAULT_ITEM_NAME} | Missing attached item: ${attachItemUuid}.`
+            `${DEFAULT_ITEM_NAME} | Missing attached item: ${attachedItemUuid}.`
           );
         }
       }
@@ -359,7 +359,7 @@ export async function guardianEmblem({
 
       const attachItemMutationName = `${sourceItem.id}-attach-item`;
       if (
-        !!warpgate
+        warpgate
           .mutationStack(sourceToken.document)
           .getName(attachItemMutationName)
       ) {

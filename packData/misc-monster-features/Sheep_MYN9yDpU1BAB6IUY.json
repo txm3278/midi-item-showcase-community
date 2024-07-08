@@ -1,0 +1,19 @@
+{
+  "name": "Sheep",
+  "sorting": "a",
+  "folder": "bmVC9uN2inJJZOE9",
+  "type": "Item",
+  "_id": "MYN9yDpU1BAB6IUY",
+  "sort": 300000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714425078491,
+    "modifiedTime": 1715293723563,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!MYN9yDpU1BAB6IUY"
+}

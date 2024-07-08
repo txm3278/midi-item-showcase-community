@@ -1,0 +1,198 @@
+{
+  "name": "Move",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2>From TOMB by Brave New Worlds</h2><p><a href=\"https://www.patreon.com/BraveNewWorlds\">https://www.patreon.com/BraveNewWorlds</a></p>",
+      "chat": ""
+    },
+    "source": {
+      "book": "SRD 5.1",
+      "page": "",
+      "custom": "",
+      "license": "CC-BY-4.0"
+    },
+    "activation": {
+      "type": "legendary",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": 1,
+      "scale": false
+    },
+    "ability": null,
+    "actionType": "",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "dc": null,
+      "ability": "",
+      "scaling": "flat"
+    },
+    "summons": null,
+    "type": {
+      "value": "monster",
+      "subtype": ""
+    },
+    "properties": [],
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "levelBonus": false,
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "fullName": "Move",
+      "actionCopy": false,
+      "type": "legendary"
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.monsters.vampire.move"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "dae": {
+      "macro": {
+        "name": "Move",
+        "img": "icons/magic/control/debuff-energy-snare-blue.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {},
+    "exportSource": {
+      "world": "world1",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    }
+  },
+  "img": "icons/magic/control/debuff-energy-snare-blue.webp",
+  "folder": "7tXgChfNzt5OSc5K",
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713979574605,
+    "modifiedTime": 1715297649016,
+    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3,
+    "qtso6O4cks8DC6Ro": 3
+  },
+  "_id": "ggMvSSybpOT4Hpv0",
+  "sort": 0,
+  "_key": "!items!ggMvSSybpOT4Hpv0"
+}

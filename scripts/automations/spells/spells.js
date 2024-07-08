@@ -11,6 +11,11 @@ import { powerWordPain } from './powerWordPain.js';
 import { slow } from './slow.js';
 import { mageHand } from './mageHand.js';
 import { beastSense } from './beastSense.js';
+import { augury } from './augury.js';
+import { divination } from './divination.js';
+import { commune } from './commune.js';
+import { message } from './message.js';
+import { powerWordKill } from './powerWordKill.js';
 
 export let spells = {
   absorbElements,
@@ -26,4 +31,9 @@ export let spells = {
   slow,
   mageHand,
   beastSense,
+  augury,
+  divination,
+  commune,
+  message,
+  powerWordKill,
 };

@@ -1,0 +1,281 @@
+{
+  "name": "Bite",
+  "type": "weapon",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by TreeDragon and Moto Moto</span></h2><p>Uses automation from Moto Moto (healing macro) and thatlonelybugbear (effect setup). </p>",
+      "chat": ""
+    },
+    "source": {
+      "book": "SRD 5.1",
+      "page": "",
+      "custom": "",
+      "license": "CC-BY-4.0"
+    },
+    "identified": true,
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": 0,
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "rarity": "",
+    "attunement": 0,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "inst"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature",
+      "prompt": true
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6[piercing] + @mod",
+          "piercing"
+        ],
+        [
+          "2d6[necrotic]",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "dc": null,
+      "ability": "",
+      "scaling": "flat"
+    },
+    "summons": null,
+    "armor": {
+      "value": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "type": {
+      "value": "natural",
+      "baseItem": ""
+    },
+    "magicalBonus": null,
+    "properties": [],
+    "equipped": true,
+    "proficient": null
+  },
+  "effects": [
+    {
+      "name": "Bite",
+      "icon": "icons/creatures/abilities/mouth-teeth-long-red.webp",
+      "origin": "Scene.CYta3aBd3GmR8hg4.Token.Y9Prt8z5nszHOJqU.Actor.CuJDS5G6xHHUm6Zs.Item.lAEEQoGuDz9PIYna",
+      "duration": {
+        "startTime": null,
+        "seconds": 28800,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pW3cpazlmxh207Us",
+      "changes": [
+        {
+          "key": "system.attributes.hp.tempmax",
+          "mode": 2,
+          "value": "-@damageComponents.necrotic",
+          "priority": 20
+        },
+        {
+          "key": "macro.actorUpdate",
+          "mode": 0,
+          "value": "@targetUuid number \"min(##attributes.hp.value,(##attributes.hp.max - @damageComponents.necrotic))\" system.attributes.hp.value",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "multi",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "longRest"
+          ]
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!rieSM4Gca4pRk9IY.pW3cpazlmxh207Us"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "levelBonus": false,
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<strong>Bite. (Bat or Vampire Form Only).</strong>",
+      "fullName": "Bite. (Bat or Vampire Form Only).",
+      "actionCopy": false,
+      "type": "action"
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "fumbleThreshold": null,
+      "rollAttackPerTarget": "default",
+      "itemCondition": "['Grappled', 'Incapacitated', 'Restrained'].some(n=>fromUuidSync(targetUuid).actor.appliedEffects.some(e=>e.name===n))",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.monsters.vampire.bite"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "core": {},
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "dae": {
+      "macro": {
+        "name": "Bite",
+        "img": "icons/creatures/abilities/mouth-teeth-long-red.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "exportSource": {
+      "world": "world1",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    }
+  },
+  "img": "icons/creatures/abilities/mouth-teeth-long-red.webp",
+  "folder": "cuNiLu4fXhSiymG9",
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713985843503,
+    "modifiedTime": 1714431740319,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "rieSM4Gca4pRk9IY",
+  "sort": 0,
+  "_key": "!items!rieSM4Gca4pRk9IY"
+}

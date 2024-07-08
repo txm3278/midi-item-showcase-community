@@ -9,5 +9,12 @@ export async function inspiringLeader({
   workflow,
   options,
 }) {
-    game.user.updateTokenTargets(workflow.targets.filter(t => !t.actor.appliedEffects.some(e => e.name === `Inspiring Leader`)).map(i => i.id));
+  game.user.updateTokenTargets(
+    workflow.targets
+      .filter(
+        (t) =>
+          !t.actor.appliedEffects.some((e) => e.name === `Inspiring Leader`)
+      )
+      .map((i) => i.id)
+  );
 }

@@ -1,0 +1,222 @@
+{
+  "name": "Soul of Artifice",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2>Made by SagaTympana</h2><h3>Requires:</h3><ul><li><p>Warpgate</p></li></ul><p></p><p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">Handles the passive effect as well as the death avoidance. It does not currently take into account damage resistances or immunities that the artificer may have that would prevent them from dropping to 0 HP in the first place. It also does not handle the \"remove an infusion\" part, because the public Midi community doesn't currently have the kind of standardized infusion framework that would require.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": {},
+    "activation": {
+      "type": "reaction",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "img": "icons/commodities/gems/pearl-blue-gold.webp",
+  "effects": [
+    {
+      "name": "Soul of Artifice",
+      "icon": "icons/commodities/gems/pearl-blue-gold.webp",
+      "origin": "Actor.K0R7AifO3SCgArcI.Item.KsAG4Sm1ekrY5Jlr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "transfer": true,
+      "disabled": false,
+      "_id": "jKRU2KpeyfFfSPzT",
+      "changes": [
+        {
+          "key": "system.bonuses.abilities.save",
+          "mode": 2,
+          "value": "+ @attributes.attunement.value",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": true
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!eoPQ7wVvab72GH6j.jKRU2KpeyfFfSPzT"
+    }
+  ],
+  "folder": "XdRbjr9vWzc7ijqS",
+  "flags": {
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "grpact": false
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "itemCondition": "",
+      "reactionCondition": "reaction === 'isDamaged' && workflow.damageTotal >= target.attributes.hp.value && workflow.damageTotal < target.attributes.hp.value + target.attributes.hp.max",
+      "otherCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.classFeatures.soulOfArtifice",
+      "rollAttackPerTarget": "default"
+    },
+    "dae": {
+      "macro": {
+        "name": "Soul of Artifice",
+        "img": "icons/commodities/gems/pearl-blue-gold.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {},
+    "exportSource": {
+      "world": "eberron",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.0.4",
+    "coreVersion": "11.315",
+    "createdTime": 1705782749328,
+    "modifiedTime": 1713822843542,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_id": "eoPQ7wVvab72GH6j",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_key": "!items!eoPQ7wVvab72GH6j"
+}

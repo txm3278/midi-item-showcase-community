@@ -40,11 +40,13 @@ export async function deflectMissiles({
   };
   await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
   if (deflectRoll.total >= args[0].workflowOptions.damageTotal) {
-    const throwBack = await Dialog.confirm({
-      title: game.i18n.localize('Return Missile'),
-      content: `<p>Throw the missile back at the attacker</p>`,
-    });
-    console.log(throwBack);
+    let throwBack = false;
+    if (actor.items.get(scope.macroItem.system.consume.target).system.uses.value) {
+      throwBack = await Dialog.confirm({
+        title: game.i18n.localize('Return Missile'),
+        content: `<p>Throw the missile back at the attacker</p>`,
+      });
+    }
     if (!throwBack) {
       await actor.createEmbeddedDocuments('Item', [
         fromUuidSync(
@@ -70,11 +72,13 @@ export async function deflectMissiles({
       };
       theItemData.system.consume = {
         type: 'charges',
-        target: rolledItem.system.consume.target,
+        target: scope.rolledItem.system.consume.target,
         amount: 1,
         scale: false,
       };
-      theItemData.system.proficient = 1;
+      theItemData.system.attack.bonus = '@prof';
+      theItemData.system.proficient = 0;
+      theItemData.system.consume.amount = 1;
       setProperty(theItemData.system.damage, 'parts', [
         [
           '1@scale.monk.die + @mod',

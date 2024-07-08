@@ -24,9 +24,9 @@ export async function tombOfLevistus({
 
   if (args[0] === 'off') {
     const updates = { 'system.attributes.hp.temp': null };
-    if (actor.flags["midi-item-showcase-community"]?.tol) {
+    if (actor.flags['midi-item-showcase-community']?.tol) {
       updates['system.traits.dv.value'] =
-        actor.flags["midi-item-showcase-community"].tol;
+        actor.flags['midi-item-showcase-community'].tol;
       updates['flags.midi-item-showcase-community.-=tol'] = null;
     }
     await actor.update(updates);

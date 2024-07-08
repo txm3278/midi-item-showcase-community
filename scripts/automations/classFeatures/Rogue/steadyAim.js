@@ -121,24 +121,24 @@ export async function steadyAim({
       const defaultMovement = game.settings.get('monks-tokenbar', 'movement');
       const currentMovement =
         token.document.getFlag('monks-tokenbar', 'movement') || defaultMovement;
-      await DAE.setFlag(lastArgValue.actorUuid, 'steady-aim', {
+      await DAE.setFlag(scope.lastArgValue.actorUuid, 'steady-aim', {
         previousDefaultMovement: defaultMovement,
         previousMovement: currentMovement,
       });
-      game.MonksTokenBar.changeMovement('none', [lastArgValue.tokenId]);
+      game.MonksTokenBar.changeMovement('none', [scope.lastArgValue.tokenId]);
     }
   } else if (args[0] === 'off') {
     // DAE Item Macro GM call
     if (game.modules.get('monks-tokenbar')?.active) {
       const defaultMovement = game.settings.get('monks-tokenbar', 'movement');
-      const steadyAimData = DAE.getFlag(lastArgValue.actorUuid, 'steady-aim');
+      const steadyAimData = DAE.getFlag(scope.lastArgValue.actorUuid, 'steady-aim');
       if (steadyAimData.previousDefaultMovement !== defaultMovement) {
         steadyAimData.previousMovement = defaultMovement;
       }
       game.MonksTokenBar.changeMovement(steadyAimData.previousMovement, [
-        lastArgValue.tokenId,
+        scope.lastArgValue.tokenId,
       ]);
-      await DAE.unsetFlag(lastArgValue.actorUuid, 'steady-aim');
+      await DAE.unsetFlag(scope.lastArgValue.actorUuid, 'steady-aim');
     }
   }
 }

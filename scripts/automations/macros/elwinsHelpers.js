@@ -1,6 +1,6 @@
 // ##################################################################################################
 // Mix of helper functions for macros.
-// v2.2.1
+// v2.2.3
 // Dependencies:
 //  - MidiQOL
 //
@@ -32,6 +32,8 @@
 // - elwinHelpers.getMoveTowardsPosition
 // - elwinHelpers.findMovableSpaceNearDest
 // - elwinHelpers.convertCriticalToNormalHit
+// - elwinHelpers.getAppliedEnchantments (dnd5e v3.2+ only)
+// - elwinHelpers.deleteAppliedEnchantments (dnd5e v3.2+ only)
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -74,7 +76,7 @@
 //
 // ###################################################################################################
 export function runElwinsHelpers() {
-  const VERSION = '2.2.1';
+  const VERSION = '2.2.3';
   const MACRO_NAME = 'elwin-helpers';
   const debug = false;
   const active = true;
@@ -149,6 +151,11 @@ export function runElwinsHelpers() {
     setHook('midi-qol.hitsChecked', 'handleHitsCheckedId', handleHitsChecked);
     setHook('midi-qol.isDamaged', 'handleIsDamagedId', handleIsDamaged);
     setHook('midi-qol.isHealed', 'handleIsHealedId', handleIsHealed);
+    setHook(
+      'midi-qol.preCheckSaves',
+      'handlePreCheckSavesId',
+      handlePreCheckSaves
+    );
 
     // Note: keep this name to be backward compatible
     exportIdentifier('MidiQOL_doThirdPartyReaction', doThirdPartyReaction);
@@ -192,6 +199,16 @@ export function runElwinsHelpers() {
       'elwinHelpers.convertCriticalToNormalHit',
       convertCriticalToNormalHit
     );
+    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
+      exportIdentifier(
+        'elwinHelpers.getAppliedEnchantments',
+        getAppliedEnchantments
+      );
+      exportIdentifier(
+        'elwinHelpers.deleteAppliedEnchantments',
+        deleteAppliedEnchantments
+      );
+    }
     // Note: classes need to be exported after they are declared...
 
     registerRemoteFunctions();
@@ -397,6 +414,18 @@ export function runElwinsHelpers() {
       extraActivationCond:
         'workflow.damageItem && workflow.damageItem.appliedDamage < 0',
     });
+  }
+
+  /**
+   * Triggers isPreCheckSave third party reactions.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  async function handlePreCheckSaves(workflow) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreCheckSaves.`, { workflow });
+    }
+
+    await handleThirdPartyReactions(workflow, ['isPreCheckSave']);
   }
 
   /**
@@ -646,6 +675,7 @@ export function runElwinsHelpers() {
         break;
       case 'preTargetSave':
       case 'isAboutToSave':
+      case 'isPreCheckSave':
         reactionFlavor =
           '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
         break;
@@ -698,7 +728,7 @@ export function runElwinsHelpers() {
             attackRoll?.total ?? ''
           }</h4>`;
           break;
-        case 'allCrit':
+        case 'allCrit': {
           const criticalString = attackRoll?.isCritical
             ? `<span style="color: green">(${getI18n('DND5E.Critical')})</span>`
             : '';
@@ -706,13 +736,15 @@ export function runElwinsHelpers() {
             attackRoll?.total ?? ''
           } ${criticalString}</h4>`;
           break;
-        case 'd20':
+        }
+        case 'd20': {
           const theRoll = attackRoll?.terms[0]?.results
             ? attackRoll.terms[0].results.find((r) => r.active)?.result ??
               attackRoll.terms[0]?.total
             : attackRoll?.terms[0]?.total ?? '';
           reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
           break;
+        }
         default:
       }
     }
@@ -726,11 +758,8 @@ export function runElwinsHelpers() {
    * @param {string[]} triggerList - List of reaction triggers needing to be handled.
    * @param {object} options - Options to override some defaults or change the execution behavior.
    */
-  async function handleThirdPartyReactions(
-    workflow,
-    triggerList,
-    options = {}
-  ) {
+  async function handleThirdPartyReactions(workflow, triggerList, options) {
+    options ??= workflow.options;
     if (
       !(MidiQOL.configSettings().allowUseMacro && !options.noTargetOnuseMacro)
     ) {
@@ -860,6 +889,7 @@ export function runElwinsHelpers() {
         targets = options.target ? [options.target] : [];
         break;
       case 'isHit':
+      case 'isPreCheckSave':
         targets = [...workflow.hitTargets, ...workflow.hitTargetsEC];
         break;
       case 'isMissed':
@@ -876,7 +906,7 @@ export function runElwinsHelpers() {
         break;
     }
     // TODO
-    //if (["preTargetSave", "isAboutToSave", "isSaveSuccess", "isSaveFailure"].includes(regTrigger)) {
+    //if (["preTargetSave"???, "isAboutToSave", "isSaveSuccess", "isSaveFailure"].includes(regTrigger)) {
     //  triggerItem = workflow.saveItem;
     //}
 
@@ -1175,7 +1205,6 @@ export function runElwinsHelpers() {
             )
           ) {
             range *= 5280;
-            longRange *= 5280;
           } else if (
             ['yards', 'yd', 'yds'].includes(
               canvas?.scene?.grid.units?.toLocaleLowerCase()
@@ -1302,7 +1331,7 @@ export function runElwinsHelpers() {
    * @param {User} user - the user associated to the reaction token, or the GM is none active.
    * @param {string} reactionTrigger - the third party reaction trigger.
    * @param {Token5e} target - the target of the third party reaction trigger.
-   * @param {object} reactions - list of reaction data from which the reaction token can choose to activate.
+   * @param {ReactionData[]} reactions - list of reaction data from which the reaction token can choose to activate.
    * @param {object} options - options to pass to macros.
    */
   async function callReactionsForToken(
@@ -1317,116 +1346,153 @@ export function runElwinsHelpers() {
     if (!reactions?.length) {
       return;
     }
-    let macroData;
-    const reactionsToSkip = new Set();
-    const preReactionOptions = foundry.utils.mergeObject(
-      { actor: target.actor, token: target },
-      options?.reactionOptions ?? {}
+    const reactionsByTriggerSources = [];
+    const reactionsByAttacker = reactions.filter(
+      (rd) => rd.triggerSource === 'attacker'
     );
-    for (let reactionData of reactions) {
-      try {
-        // TODO allow return values to pass options to reaction?
-        if (reactionData.macroName && reactionData.preMacro) {
-          if (debug) {
-            console.warn(
-              `${MACRO_NAME} | calling Third Party Reaction pre macro.`,
-              {
-                workflow,
-                reactionData,
-                reactionTrigger,
-                preReactionOptions,
-              }
-            );
-          }
-          let [result] = await workflow.callMacros(
-            workflow.item,
-            reactionData.macroName,
-            'TargetOnUse',
-            reactionTrigger + '.pre',
-            preReactionOptions
-          );
-          if (result?.skip) {
-            reactionsToSkip.add(reactionData);
-          }
-        }
-      } catch (error) {
-        console.error(`${MACRO_NAME} | error in preReaction.`, error);
-        reactionsToSkip.add(reactionData);
-      }
+    if (reactionsByAttacker.length) {
+      reactionsByTriggerSources.push(reactionsByAttacker);
     }
-    reactions = reactions.filter((rd) => !reactionsToSkip.has(rd));
-
-    const noResult = { name: 'None', uuid: undefined };
-    let result = noResult;
-    try {
-      // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
-      const reactionUuids = reactions.map((rd) => rd.item?.uuid);
-      const reactionOptions = foundry.utils.mergeObject(
-        {
-          itemUuid: options?.item?.uuid ?? workflow.itemUuid,
-          thirdPartyReaction: {
-            trigger: reactionTrigger,
-            itemUuids: reactionUuids,
-          },
-          workflowOptions: { targetConfirmation: 'none' },
-        },
+    const reactionsByTarget = reactions.filter(
+      (rd) => rd.triggerSource === 'target'
+    );
+    if (reactionsByTarget.length) {
+      reactionsByTriggerSources.push(reactionsByTarget);
+    }
+    for (let reactionsByTriggerSource of reactionsByTriggerSources) {
+      const reactionsToSkip = new Set();
+      const preReactionOptions = foundry.utils.mergeObject(
+        { actor: target.actor, token: target },
         options?.reactionOptions ?? {}
       );
-
-      const data = {
-        tokenUuid: reactionToken.document.uuid,
-        reactionItemList: reactionUuids,
-        triggerTokenUuid: target.document.uuid,
-        reactionFlavor: getReactionFlavor(
-          user,
-          reactionTrigger.replace('tpr.', ''),
-          target,
-          workflow.item,
-          reactionToken,
-          workflow.attackRoll
-        ),
-        triggerType: 'reactionmanual',
-        options: reactionOptions,
-      };
-
-      result = await MidiQOL.socket().executeAsUser(
-        'chooseReactions',
-        user.id,
-        data
-      );
-    } finally {
-      const postReactionOptions = foundry.utils.mergeObject(
-        {
-          actor: target.actor,
-          token: target,
-          thirdPartyReactionResult: result,
-        },
-        options?.reactionOptions ?? {}
-      );
-      for (let reactionData of reactions) {
+      for (let reactionData of reactionsByTriggerSource) {
         try {
-          if (reactionData.macroName && reactionData.postMacro) {
+          // TODO allow return values to pass options to reaction?
+          if (reactionData.macroName && reactionData.preMacro) {
             if (debug) {
               console.warn(
-                `${MACRO_NAME} | calling Third Party Reaction post macro.`,
+                `${MACRO_NAME} | calling Third Party Reaction pre macro.`,
                 {
                   workflow,
                   reactionData,
                   reactionTrigger,
-                  postReactionOptions,
+                  preReactionOptions,
                 }
               );
             }
-            await workflow.callMacros(
+            let [result] = await workflow.callMacros(
               workflow.item,
               reactionData.macroName,
               'TargetOnUse',
-              reactionTrigger + '.post',
-              postReactionOptions
+              reactionTrigger + '.pre',
+              preReactionOptions
             );
+            if (result?.skip) {
+              reactionsToSkip.add(reactionData);
+            }
           }
         } catch (error) {
-          console.error(`${MACRO_NAME} | error in postReaction.`, error);
+          console.error(`${MACRO_NAME} | error in preReaction.`, error);
+          reactionsToSkip.add(reactionData);
+        }
+      }
+      const validReactions = reactionsByTriggerSource.filter(
+        (rd) => !reactionsToSkip.has(rd)
+      );
+
+      const noResult = { name: 'None', uuid: undefined };
+      let result = noResult;
+      try {
+        // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
+        const reactionUuids = validReactions.map((rd) => rd.item?.uuid);
+        const reactionOptions = foundry.utils.mergeObject(
+          {
+            itemUuid: options?.item?.uuid ?? workflow.itemUuid,
+            thirdPartyReaction: {
+              trigger: reactionTrigger,
+              itemUuids: reactionUuids,
+            },
+            workflowOptions: { targetConfirmation: 'none' },
+          },
+          options?.reactionOptions ?? {}
+        );
+        let reactionTargetUuid;
+        foundry.utils.setProperty(
+          reactionOptions.thirdPartyReaction,
+          'triggerSource',
+          validReactions[0].triggerSource
+        );
+        if (validReactions[0].triggerSource === 'attacker') {
+          foundry.utils.setProperty(
+            reactionOptions.thirdPartyReaction,
+            'targetUuid',
+            target.document.uuid
+          );
+          reactionTargetUuid = workflow.tokenUuid;
+        } else {
+          foundry.utils.setProperty(
+            reactionOptions.thirdPartyReaction,
+            'attackerUuid',
+            workflow.tokenUuid
+          );
+          reactionTargetUuid = target.document.uuid;
+        }
+
+        const data = {
+          tokenUuid: reactionToken.document.uuid,
+          reactionItemList: reactionUuids,
+          triggerTokenUuid: reactionTargetUuid,
+          reactionFlavor: getReactionFlavor(
+            user,
+            reactionTrigger.replace('tpr.', ''),
+            target,
+            workflow.item,
+            reactionToken,
+            workflow.attackRoll
+          ),
+          triggerType: 'reaction',
+          options: reactionOptions,
+        };
+
+        result = await MidiQOL.socket().executeAsUser(
+          'chooseReactions',
+          user.id,
+          data
+        );
+      } finally {
+        const postReactionOptions = foundry.utils.mergeObject(
+          {
+            actor: target.actor,
+            token: target,
+            thirdPartyReactionResult: result,
+          },
+          options?.reactionOptions ?? {}
+        );
+        for (let reactionData of reactionsByTriggerSource) {
+          try {
+            if (reactionData.macroName && reactionData.postMacro) {
+              if (debug) {
+                console.warn(
+                  `${MACRO_NAME} | calling Third Party Reaction post macro.`,
+                  {
+                    workflow,
+                    reactionData,
+                    reactionTrigger,
+                    postReactionOptions,
+                  }
+                );
+              }
+              await workflow.callMacros(
+                workflow.item,
+                reactionData.macroName,
+                'TargetOnUse',
+                reactionTrigger + '.post',
+                postReactionOptions
+              );
+            }
+          } catch (error) {
+            console.error(`${MACRO_NAME} | error in postReaction.`, error);
+          }
         }
       }
     }
@@ -1910,6 +1976,32 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Gets the applied enchantments for the specified item uuid if any exist.
+   *
+   * @param {string} itemUuid - The UUID of the item for which to find associated enchantments.
+   * @returns {ActiveEffect5e[]} list of applied enchantments.
+   */
+  function getAppliedEnchantments(itemUuid) {
+    return CONFIG.Item.dataModels.consumable.schema.fields.enchantment.model.appliedEnchantments(
+      itemUuid
+    );
+  }
+
+  /**
+   * Deletes the applied enchantments on the specified item uuid.
+   *
+   * @param {string} itemUuid - The UUID of the item for which to delete the associated enchantments.
+   * @returns {ActiveEffect5e[]} the list of applied enchantments that was deleted.
+   */
+  async function deleteAppliedEnchantments(itemUuid) {
+    const appliedEnchantements = getAppliedEnchantments(itemUuid);
+    for (let activeEffect of appliedEnchantements) {
+      await activeEffect.delete();
+    }
+    return appliedEnchantements;
+  }
+
+  /**
    * Utility dialog to select an item from a list of items.
    *
    * @example
@@ -1985,12 +2077,16 @@ export function runElwinsHelpers() {
             .join(' ') ?? '';
 
         itemContent += `
-      <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${ctx.selected}>
+      <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${
+          ctx.selected
+        }>
         <label class="item" for="radio-${item.id}">
           <div class="item-name">
             <img class="item-image" src="${item.img}" alt="${item.name}">
             <div class="name name-stacked">
-              <span class="title">${item.name}</span>
+              <span class="title">${item.name}${
+          item.type === 'consumable' ? `[${item.system.quantity}]` : ''
+        }</span>
               <span class="subtitle">${ctx.subtitle}</span>
             </div>
             <div class="tags">
@@ -2836,7 +2932,7 @@ export function runElwinsHelpers() {
           o.t.document.height,
           -CONFIG.Canvas.objectBorderThickness
         );
-        currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
+        let currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
         return currentTokenShape.overlaps(token.testCollisitionShape);
       };
     }
@@ -3100,7 +3196,7 @@ export function runElwinsHelpers() {
       if (tprOptions) {
         const tprOptionParts = tprOptions.split(/\s*;\s*/);
         for (let tprOptionPart of tprOptionParts) {
-          const [name, value] = tprOptionPart.split(/\s*\=\s*/);
+          const [name, value] = tprOptionPart.split(/\s*=\s*/);
 
           if (name && value) {
             if (!TPR_OPTIONS.includes(name)) {
@@ -3157,7 +3253,7 @@ export function runElwinsHelpers() {
         options,
       });
     }
-    const reactionItem = await getItemFromMacroName(
+    let reactionItem = await getItemFromMacroName(
       macroName,
       workflow.item,
       workflow.actor
@@ -3271,7 +3367,7 @@ export function runElwinsHelpers() {
       if (name.startsWith('Macro.')) {
         name = name.replace('Macro.', '');
       }
-      macro = game.macros?.getName(name);
+      let macro = game.macros?.getName(name);
       if (!macro) {
         const itemOrMacro = await fromUuid(name);
         if (itemOrMacro instanceof Item) {

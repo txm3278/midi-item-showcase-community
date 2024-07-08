@@ -345,7 +345,7 @@ export async function flamesOfPhlegethos({
   async function rollNewDice(dice) {
     let terms = [];
     dice.forEach((die) => {
-      dieJson = die.toJSON();
+      let dieJson = die.toJSON();
       // Only keep last nb results (the new results of the rerolled ones)
       const rerolledResults = die.results.filter((result) => result.rerolled);
       dieJson.results = dieJson.results.slice(

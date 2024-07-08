@@ -1,0 +1,237 @@
+{
+  "name": "Sentinel at Death's Door",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>",
+      "chat": ""
+    },
+    "source": {},
+    "activation": {
+      "type": "reaction",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "ally",
+      "prompt": true
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 1,
+      "max": "@abilities.wis.mod",
+      "per": "lr",
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": [],
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "summons": null
+  },
+  "flags": {
+    "infusions": {
+      "infused": false
+    },
+    "obsidian": {
+      "source": {
+        "type": "class",
+        "text": "Cleric"
+      }
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "effectActivation": false,
+      "itemCondition": "",
+      "reactionCondition": "reaction === \"tpr.isHit\" && workflow.isCritical",
+      "otherCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preTargeting]ItemMacro",
+      "rollAttackPerTarget": "never"
+    },
+    "midiProperties": {
+      "confirmTargets": "never",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": true
+    },
+    "core": {},
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "dae": {
+      "macro": {
+        "name": "Sentinel at Death's Door",
+        "img": "icons/magic/control/encase-creature-monster-hold.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "return await MISC.macros.classFeatures.sentinelAtDeathsDoor({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    }
+  },
+  "effects": [
+    {
+      "name": "Sentinel at Death's Door",
+      "icon": "icons/magic/control/encase-creature-monster-hold.webp",
+      "origin": "Item.6OtmQjcnT1N3N1Oo",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "transfer": true,
+      "disabled": false,
+      "_id": "7bTXyw1T6SO5ubJ3",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,tpr.isHit|canSee=true;post=true",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": true
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!Cvpz7fKYVFieXF6o.7bTXyw1T6SO5ubJ3"
+    }
+  ],
+  "img": "icons/magic/control/encase-creature-monster-hold.webp",
+  "folder": "Wlznzo7daJM68Pec",
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "XPfMr7PMwh3Hrbvr": 3
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706323891871,
+    "modifiedTime": 1718556434794,
+    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+  },
+  "_id": "Cvpz7fKYVFieXF6o",
+  "sort": 0,
+  "_key": "!items!Cvpz7fKYVFieXF6o"
+}

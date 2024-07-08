@@ -62,7 +62,7 @@ export async function squireOfSolamniaPreciseStrike({
       }
     } catch (err) {
       console.error(
-        `${args[0].itemData.name} - Squire of Solamnia: Precise Strike ${version}`,
+        `${args[0].itemData.name} - Squire of Solamnia: Precise Strike`,
         err
       );
     }

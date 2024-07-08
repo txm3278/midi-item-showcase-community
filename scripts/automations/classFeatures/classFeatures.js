@@ -15,6 +15,8 @@ import { tombOfLevistus } from './Warlock/tombOfLevistus.js';
 import { armsOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/armsOfTheAstralSelf.js';
 import { wardingFlare } from './Cleric/LightDomain/wardingFlare.js';
 import { deflectMissiles } from './Monk/deflectMissiles.js';
+import { colossusSlayer } from './Ranger/Hunter/colossusSlayer.js';
+import { primevalAwareness } from './Ranger/primevalAwareness.js';
 
 export let classFeatures = {
   eldritchCannon,
@@ -34,4 +36,6 @@ export let classFeatures = {
   armsOfTheAstralSelf,
   wardingFlare,
   deflectMissiles,
+  colossusSlayer,
+  primevalAwareness,
 };

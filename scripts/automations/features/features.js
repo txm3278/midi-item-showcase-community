@@ -8,6 +8,7 @@ import { poisoner } from './poisoner.js';
 import { squireOfSolamniaPreciseStrike } from './squireOfSolamniaPreciseStrike.js';
 import { inspiringLeader } from './inspiringLeader.js';
 import { sharpshooter } from './sharpshooter.js';
+import { piercer } from './piercer.js';
 
 export let features = {
   dungeonDelver,
@@ -20,4 +21,5 @@ export let features = {
   squireOfSolamniaPreciseStrike,
   inspiringLeader,
   sharpshooter,
+  piercer,
 };

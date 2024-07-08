@@ -1,0 +1,19 @@
+{
+  "name": "Barbarian",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "V6sKa58kfW3Alwsa",
+  "sort": 500000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.0.4",
+    "coreVersion": "11.315",
+    "createdTime": 1706031540235,
+    "modifiedTime": 1710821882035,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!V6sKa58kfW3Alwsa"
+}

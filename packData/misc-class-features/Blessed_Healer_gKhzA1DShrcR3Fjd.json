@@ -1,0 +1,296 @@
+{
+  "name": "Blessed Healer",
+  "type": "feat",
+  "img": "icons/magic/light/orbs-hand-gray.webp",
+  "effects": [
+    {
+      "_id": "r24ao66frio1l5rw",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.blessedHealer, postActiveEffects",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "icon": "icons/magic/light/orbs-hand-gray.webp",
+      "origin": "Compendium.midi-item-showcase-community.misc-class-features.Item.gKhzA1DShrcR3Fjd",
+      "transfer": true,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "showIcon": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "nameOverride": "",
+          "customCheck": "",
+          "wallsBlock": "system"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        }
+      },
+      "tint": null,
+      "name": "Blessed Healer",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!gKhzA1DShrcR3Fjd.r24ao66frio1l5rw"
+    }
+  ],
+  "flags": {
+    "entityorder": {
+      "order": 128
+    },
+    "midi-qol": {
+      "onUseMacroName": "",
+      "effectActivation": false,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "offHandWeapon": false,
+      "ignoreTotalCover": false,
+      "confirmTargets": "default",
+      "noConcentrationCheck": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Blessed Healer",
+          "type": "script",
+          "author": "devnIbfBHb74U9Zv",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const version = \"0.9.53\";\ntry {\n    if (args[0].itemData.type !== \"spell\") return;\n    // no healing done?\n    if (!(args[0].damageList.some(li => li.oldHP < li.newHP))) return;\n    // only targets self?\n    if (!(args[0].hitTargetUuids.some(uuid => uuid !== args[0].tokenUuid))) return;\n    // await (new Promise(resolve => setTimeout(resolve, 100)))\n    \n    \n    const tactor = await fromUuid(args[0].actorUuid);\n    const spellLevel = args[0].spellLevel;\n    const currentHP = tactor.data.data.attributes.hp.value;\n    const newHP = Math.min(tactor.data.data.attributes.hp.max, tactor.data.data.attributes.hp.value + 2 + spellLevel);\n    ChatMessage.create({content: `${tactor.name} cures ${newHP - currentHP} HP of bonus healing`})\n    return tactor.update({\"data.attributes.hp.value\": newHP});\n} catch (err) {\n    console.error(`${args[0].itemData.name} - Blessed Healer ${version}`, err);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        },
+        "name": "Blessed Healer",
+        "type": "script",
+        "img": "icons/svg/dice-target.svg",
+        "scope": "global",
+        "command": "const version = \"10.0.10\";\ntry {\n    if (args[0].itemData.type !== \"spell\") return;\n    // no healing done?\n    if (!(args[0].damageList?.some(li => li.oldHP < li.newHP))) return;\n    // only targets self?\n    \n    if (!(args[0].hitTargetUuids.some(uuid => uuid !== args[0].tokenUuid))) return;\n    // await (new Promise(resolve => setTimeout(resolve, 100)))\n    \n    \n    const tactor = await fromUuid(args[0].actorUuid);\n    const spellLevel = args[0].spellLevel;\n    const currentHP = tactor.system.attributes.hp.value;\n    const newHP = Math.min(tactor.system.attributes.hp.max, tactor.system.attributes.hp.value + 2 + spellLevel);\n    ChatMessage.create({content: `${tactor.name} cures ${newHP - currentHP} HP of bonus healing`})\n    return tactor.update({\"system.attributes.hp.value\": newHP});\n} catch (err) {\n    console.error(`${args[0].itemData.name} - Blessed Healer ${version}`, err);\n}",
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "scene-packer": {
+      "hash": "dfbc26d47abf675e473a132d631b64c40d9f7c2a",
+      "sourceId": "Item.tbXVFpqHOXUQjdSu"
+    },
+    "core": {},
+    "exportSource": {
+      "world": "tp-game-v3",
+      "system": "dnd5e",
+      "coreVersion": "9.255",
+      "systemVersion": "1.5.7"
+    },
+    "cf": {
+      "id": "temp_qt0kn9os0vl"
+    },
+    "spellTemplateManager": {
+      "stmData": {
+        "ignoreDuration": false,
+        "spellTexture": "",
+        "useTexture": false,
+        "alpha": 50,
+        "coneOrigin": 1,
+        "loopAnimations": true
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Blessed Healer",
+        "img": "icons/magic/light/orbs-hand-gray.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by SagaTympana and Moto Moto</span></h2>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "PHB pg. 60"
+    },
+    "activation": {
+      "type": "special",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "heal",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "2",
+          "healing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "requirements": "Life Domain 6",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": []
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.0.4",
+    "coreVersion": "11.315",
+    "createdTime": 1661995926104,
+    "modifiedTime": 1713833578385,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "folder": "vWlmbveIxgnJwjjB",
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "gKhzA1DShrcR3Fjd",
+  "sort": 0,
+  "_key": "!items!gKhzA1DShrcR3Fjd"
+}

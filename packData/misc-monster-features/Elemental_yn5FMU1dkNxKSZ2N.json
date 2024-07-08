@@ -1,0 +1,19 @@
+{
+  "name": "Elemental",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "yn5FMU1dkNxKSZ2N",
+  "sort": 300000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1715294192691,
+    "modifiedTime": 1715294436254,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!yn5FMU1dkNxKSZ2N"
+}

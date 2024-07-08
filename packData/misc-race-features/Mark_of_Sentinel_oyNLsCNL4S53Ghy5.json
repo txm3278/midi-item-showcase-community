@@ -1,0 +1,19 @@
+{
+  "name": "Mark of Sentinel",
+  "sorting": "a",
+  "folder": "M1a0RkeVv33MD1aV",
+  "type": "Item",
+  "_id": "oyNLsCNL4S53Ghy5",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "2.4.1",
+    "coreVersion": "11.315",
+    "createdTime": 1706121758535,
+    "modifiedTime": 1706121769419,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!oyNLsCNL4S53Ghy5"
+}

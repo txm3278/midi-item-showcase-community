@@ -12,7 +12,6 @@ export async function misleadSwitch({
   const spawnedId = actor.getFlag('midi-item-showcase-community', 'mislead.spawnedTokenId');
   const currentVision = actor.getFlag('midi-item-showcase-community', 'mislead.sight');
   const itemS = actor.getFlag('midi-item-showcase-community', 'mislead.item');
-  console.log(spawnedId);
   if (!canvas.scene.tokens.get(spawnedId)) return;
   let target;
   let remove;

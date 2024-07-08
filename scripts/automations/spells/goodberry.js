@@ -596,8 +596,7 @@ ${isRealNumber.toString()}
     // Note: type water only not supported
 
     if (!foundry.utils.isEmpty(actorUpdates)) {
-      const daeGmAction = await import('/modules/dae/module/GMAction.js');
-      await daeGmAction?.socketlibSocket.executeAsGM('_updateActor', {
+      await socketlib.modules.get('dae').executeAsGM('_updateActor', {
         actorUuid: targetToken.actor.uuid,
         update: actorUpdates,
       });

@@ -1,0 +1,203 @@
+{
+  "name": "Recall Monster Lore",
+  "type": "feat",
+  "img": "icons/creatures/eyes/humanoid-single-yellow.webp",
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "itemacro": {
+      "macro": {
+        "name": "Monster Lore",
+        "type": "script",
+        "scope": "global",
+        "command": "// Original code by thatlonelybugbear\n// Optimized by Zhell\n// Minor stylised by Fridan99\nif(!token) return ui.notifications.warn(\"You must select a token.\");\nconst target = game.user.targets.first()?.actor;\nif(!target) return ui.notifications.warn(\"You must select a target.\");\nconst type = target.system.details.race || target.system.details.type.value;\n\nconst skill = {\n  \"aberration\": \"arc\",\n  \"construct\": \"arc\",\n  \"elemental\": \"arc\",\n  \"monstrosity\": \"arc\",\n  \"dragon\": \"his\",\n  \"giant\": \"his\",\n  \"humanoid\": \"his\",\n  \"beast\": \"nat\",\n  \"fey\": \"nat\",\n  \"ooze\": \"nat\",\n  \"plant\": \"nat\",\n  \"celestial\": \"rel\",\n  \"fiend\": \"rel\",\n  \"undead\": \"rel\"\n}[type];\n\nconst roll = await token.actor.rollSkill(skill, {event, chatMessage: false});\n\nlet Title = `Monster Lore (${roll.options.flavor})`;\nlet SubTitle = '<b>Arcana:</b> Aberrations, Constructs, Elementals, Monstrosities<br/><b>History:</b> Dragons, Giants, Humanoids<br/><b>Nature:</b> Beasts, Fey, Oozes, Plants<br/><b>Religion:</b> Celestials, Fiends, Undead';\nlet text = ' is trying to know';\nlet flavorGradient = 'to bottom'\nlet flavorColorFrom = '#a623f0';\nlet flavorColorTo = '#c90cc6';\nlet titleGradient = 'to left'; //Only change this to right\nlet titleColorFrom = '#0073e6';\nlet titleColorTo = '#0059b3';\n\n//Don't change this... Probably\nlet name = token.document.name;\nlet avatar = token.document.texture.src;\n\n//Formatting of the Chat message. I would not modify this if you are not proficient in HTML\nlet flavor = `\n<div style=\"display: flex; flex-direction: column;\"> <div style=\"background: linear-gradient(${flavorGradient}, ${flavorColorFrom}, ${flavorColorTo}); margin-top: px; margin-bottom: 1px; padding: 1px; text-align: center; border-radius: 5px; width: 100%;\">\n  <div style = 'display: table-cell; border: none; border-radius: 50px; vertical-align: middle; text-align: center; font-size:14px; padding: 0 5px 0 55px; background-image: url(\"${avatar}\"); background-size: 45px 45px; background-position: 5px; background-repeat: no-repeat; height: 6px; min-height: 6px;'>\n    <div style = \"display: table-cell; color: white; font-size: 12px; font-style: italic; font-family: 'Signika'; text-align: center; vertical-align: middle;\">${name}${text}</div>\n  </div>\n</div>`;\nlet html = `\n<div style=\"background: linear-gradient(${titleGradient}, ${titleColorFrom}, ${titleColorTo}); color: black; font-size: 12px; font-family: 'Signika'; font-weight:bolder; margin-bottom: 0; padding: 0; text-align: center; border-radius: 5px 5px 0 0; text-shadow: 0 0 5px white; \">${Title}</div>\n<div style=\"background: linear-gradient(${titleGradient}, ${titleColorFrom}, ${titleColorTo}); color: black; font-size: 10.5px;  text-shadow: 0 0 20px white; font-family: 'Signika'; font-weight:normal; margin-top: 0; margin-bottom: 1px; padding: 0; text-align: left; border-radius: 0 0 5px 5px; \">${SubTitle}</div>\n<div style=\"width: 100%; background: #CEC7B6; color: black; border-width: 1px 1px 0 1px; border-style: solid; border-color:black; font-size: 11.5px; font-family: 'Signika'; margin-bottom: 0; padding: 3px 2px 3px 2px; text-align: left; border-radius: 5px 5px 0 0; \">`;\nif(roll.total >= 15){\n  html += `\n  <div style=\"display: table-cell; width: 80px; font-weight: normal;\"><strong><u>DC</u></strong><br/>\n    15<br/>\n    ${roll.total >= 20 ? \"20<br/>\" : \"\"}\n    ${roll.total >= 25 ? \"25<br/>\" : \"\"}\n    ${roll.total >= 30 ? \"30+<br/>\" : \"\"}\n  </div>`;\n} else html += \"You don't know anything about the creature...\";\n\nif(roll.total >= 15){\n  html += `\n  <div style=\"display: table-cell; font-weight:normal;\"><strong><u>Information</u></strong><br/>\n    Name, creature type<br/>\n    ${roll.total >= 20 ? \"Senses, special abilities<br/>\" : \"\"}\n    ${roll.total >= 25 ? \"Resistances, vulnerabilities<br/>\" : \"\"}\n    ${roll.total >= 30 ? \"Legendary actions<br/>\" : \"\"}\n  </div>`;\n}\nhtml += `</div>\n<div style=\"width: 100%; background: #B6AB91; color: black; border-width: 0 1px 0 1px; border-style: solid; border-color:black; font-size: 16px; font-family: 'Signika'; margin-bottom: 0; padding: 0; text-align: left; border-radius: 0; \">\n  <div style=\"display: table-cell; width: 80px; font-weight:bold;\"></div>\n  <div style=\"display: table-cell; font-weight:normal;\"></div>\n</div>\n<div style=\"width: 100%; background: #CEC7B6; color: black; border-width: 0 1px 1px 1px; border-style: solid; border-color:black; font-size: 16px; font-family: 'Signika'; margin-bottom: 0; padding: 3px 2px 0 2px; text-align: left; border-radius: 0 0 5px 5px; \"></div>`\n\n//Creation of the Chat message. Definitely don't modify this unless you can write this shit on your own!\nroll.toMessage({flavor:flavor+html, speaker:ChatMessage.getSpeaker({token: token.document})});",
+        "author": "NGYyZGRmYmIwNzJk",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.actions.recallMonsterLore",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "autoSaveFriendly": false,
+      "confirmTargets": "default",
+      "noConcentrationCheck": false
+    },
+    "core": {},
+    "exportSource": {
+      "world": "d-d-waterdeep-dragon-heist",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    },
+    "scene-packer": {
+      "hash": "24229bae127b2162449937060edb0bd384407cc1",
+      "sourceId": "Item.IRBV3EMRURbdPAZr"
+    },
+    "tidy5e-sheet": {
+      "favorite": true
+    },
+    "LocknKey": {
+      "IDKeysFlag": "",
+      "RemoveKeyonUseFlag": false,
+      "LPFormulaFlag": "",
+      "LPFormulaOverrideFlag": false,
+      "LBFormulaFlag": "",
+      "LBFormulaOverrideFlag": false,
+      "ReplacementItemFlag": ""
+    },
+    "dae": {
+      "macro": {
+        "name": "Recall Monster Lore",
+        "img": "icons/creatures/eyes/humanoid-single-yellow.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Fridan99</span></h2><p>Rolls the proper check to recall information about a specific creature</p>",
+      "chat": ""
+    },
+    "source": {
+      "custom": ""
+    },
+    "activation": {
+      "type": "special",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "abil",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": []
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.0.4",
+    "coreVersion": "11.315",
+    "createdTime": 1672243938641,
+    "modifiedTime": 1713819468415,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "xPSevKypyDQowXx2",
+  "sort": 300000,
+  "_key": "!items!xPSevKypyDQowXx2"
+}

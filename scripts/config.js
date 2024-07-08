@@ -47,6 +47,12 @@ export function setConfig() {
         version: '1.0.0',
         authors: ['thatlonelybugbear'],
       },
+      Augury: {
+        name: 'Augury',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Fridan99'],
+      },
       'Beast Sense': {
         name: 'Beast Sense',
         type: 'Spell',
@@ -90,6 +96,18 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['thatlonelybugbear'],
       },
+      'Colossus Slayer': {
+        name: 'Colossus Slayer',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Bakana'],
+      },
+      Commune: {
+        name: 'Commune',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Fridan99'],
+      },
       'Corpse Slayer Longbow': {
         name: 'Corpse Slayer Longbow',
         type: 'Item',
@@ -108,10 +126,16 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['Xenophes'],
       },
+      'Dark Ones Own Luck': {
+        name: 'Dark Ones Own Luck',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       'Deflect Missiles': {
         name: 'Deflect Missiles',
         type: 'Class Feature',
-        version: '1.0.1',
+        version: '1.1.0',
         authors: ['thatlonelybugbear'],
       },
       'Deflect Missiles Attack': {
@@ -131,6 +155,12 @@ export function setConfig() {
         type: 'Class Feature',
         version: '3.0.1',
         authors: ['Elwin'],
+      },
+      Divination: {
+        name: 'Divination',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Fridan99'],
       },
       Driftglobe: {
         name: 'Driftglobe',
@@ -204,6 +234,12 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['SagaTympana'],
       },
+      'Foe Slayer': {
+        name: 'Foe Slayer',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
       Forage: {
         name: 'Forage',
         type: 'Generic Action',
@@ -237,7 +273,7 @@ export function setConfig() {
       'Great Weapon Master': {
         name: 'Great Weapon Master',
         type: 'Feat',
-        version: '2.1.3',
+        version: '2.1.4',
         authors: ['Elwin'],
       },
       'Great Weapon Master Attack': {
@@ -320,6 +356,12 @@ export function setConfig() {
         version: '1.0.0',
         authors: ['Spoob'],
       },
+      Message: {
+        name: 'Message',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Fridan99'],
+      },
       'Meteor Swarm': {
         name: 'Meteor Swarm',
         type: 'Spell',
@@ -380,6 +422,12 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['Christopher'],
       },
+      Piercer: {
+        name: 'Piercer',
+        type: 'Feat',
+        version: '1.0.0',
+        authors: ['Bakana'],
+      },
       Poisoner: {
         name: 'Poisoner',
         type: 'Feat',
@@ -414,6 +462,12 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['TreeDragon', 'thatlonelybugbear'],
       },
+      'Power Word Kill': {
+        name: 'Power Word Kill',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Fridan99'],
+      },
       'Power Word Pain': {
         name: 'Power Word Pain',
         type: 'Spell',
@@ -425,6 +479,12 @@ export function setConfig() {
         type: 'Class Feature',
         version: '0.1.0',
         authors: ['Muhammad2126'],
+      },
+      'Primeval Awareness': {
+        name: 'Primeval Awareness',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Bakana'],
       },
       'Protection from Poison': {
         name: 'Protection from Poison',
@@ -483,8 +543,8 @@ export function setConfig() {
       Sharpshooter: {
         name: 'Sharpshooter',
         type: 'Feat',
-        version: '1.0.1',
-        authors: ['Moto Moto'],
+        version: '2.0.0',
+        authors: ['Elwin'],
       },
       'Shield of Missile Attraction': {
         name: 'Shield of Missile Attraction',
@@ -532,6 +592,13 @@ export function setConfig() {
       'Squire of Solamnia: Precise Strike': {
         name: 'Squire of Solamnia: Precise Strike',
         type: 'Feat',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
+      'St. Markovia Statuette': {
+        name: 'St. Markovia Statuette',
+        type: 'Item',
+        hombrew: true,
         version: '1.0.0',
         authors: ['Moto Moto'],
       },
@@ -681,7 +748,7 @@ export function setConfig() {
         },
       },
       'Fulgorax: The Beacon': {
-        'Evasion': {
+        Evasion: {
           name: 'Evasion',
           version: '1.0.0',
           authors: ['TMinz'],
@@ -691,7 +758,7 @@ export function setConfig() {
           version: '1.0.0',
           authors: ['TMinz'],
         },
-        'Move': {
+        Move: {
           name: 'Move',
           version: '1.0.0',
           authors: ['TMinz'],

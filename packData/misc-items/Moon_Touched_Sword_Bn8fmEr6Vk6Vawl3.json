@@ -1,0 +1,19 @@
+{
+  "name": "Moon-Touched Sword",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "Bn8fmEr6Vk6Vawl3",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.0.3",
+    "coreVersion": "11.315",
+    "createdTime": 1709581901330,
+    "modifiedTime": 1709582485907,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!Bn8fmEr6Vk6Vawl3"
+}

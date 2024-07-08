@@ -165,9 +165,9 @@ export async function unwaveringMark({
     const markerTokenUuid = args[1];
     // Remove this token from special attack flag on marker unless the delete is caused by the same origin
     if (
-      lastArgValue['expiry-reason'] &&
-      lastArgValue['expiry-reason'] !==
-        `new-unwavering-mark:${lastArgValue.origin}`
+      scope.lastArgValue['expiry-reason'] &&
+      scope.lastArgValue['expiry-reason'] !==
+        `new-unwavering-mark:${scope.lastArgValue.origin}`
     ) {
       let specialAttackTargetTokenUuids = DAE.getFlag(
         markerTokenUuid,
@@ -179,7 +179,7 @@ export async function unwaveringMark({
         );
         // Remove token from specialAttackTargets
         const foundIdx = specialAttackTargetTokenUuids.indexOf(
-          (tu) => tu === lastArgValue.tokenUuid
+          (tu) => tu === scope.lastArgValue.tokenUuid
         );
         if (foundIdx >= 0) {
           specialAttackTargetTokenUuids.splice(foundIdx, 1);
