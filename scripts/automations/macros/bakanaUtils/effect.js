@@ -3,16 +3,15 @@ function find(actorEntity, effect) {
 }
 
 async function create(actorEntity, effect) {
-    if (!actorEntity)  return undefined;
+    if (!actorEntity) return;
     await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actorEntity.uuid, effects: [effect] });
-    let appliedEffect = find(actorEntity, effect);
-    return appliedEffect;
+    return find(actorEntity, effect);
 }
 
 async function remove(actorEntity, effect) {
-    if (!actorEntity) return false;
+    if (!actorEntity) return;
     let appliedEffect = find(actorEntity, effect);
-    if (!appliedEffect) return false;
+    if (!appliedEffect) return;
     await MidiQOL.socket().executeAsGM('removeEffects', { actorUuid: actorEntity.uuid, effects: [appliedEffect.id] });
     return true;
 }
@@ -23,8 +22,8 @@ async function update(actorEntity, effect) {
 
 async function toggle(actorEntity, effect) {
     if (!actorEntity) return;
-    if (await remove(actorEntity, effect) === false)
-        await create(actorEntity, effect);
+    if (await remove(actorEntity, effect)) return true;
+    return await create(actorEntity, effect);
 }
 
 async function stack(actorEntity, effect, config) {

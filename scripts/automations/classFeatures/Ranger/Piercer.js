@@ -125,10 +125,10 @@ async function reroll(damageRolls) {
 
 function maximalDie(dieRolls) {
     let maximal = 0;
-    for (roll of dieRolls) {
+    for (let roll of dieRolls) {
         let dieUsed = roll.formula.split(' ').filter(op => op.includes('d'));
         const values = dieUsed.map(die => Number(die.split('d')[1]));
-        maximal = Math.max(Math.max(...values), maximal);
+        maximal = Math.max(...values, maximal);
     }
     return maximal;
 }
