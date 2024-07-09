@@ -147,7 +147,7 @@ async function runWorkflows(argumentInput, config) {
 
         if (firstArg.tag == "OnUse" || firstArg.tag == "DamageBonus" || firstArg.tag == "TargetOnUse"){
             if (macroUtil.debugLevel > 1) console.warn("midiWorkflow:", workflow);
-            if (!workflowStates[workflowAction]) throw `Undefined midiWorkflow name : ${workflowActions}`;
+            if (!workflowStates[workflowAction]) throw `Undefined midiWorkflow name : ${workflowAction}`;
             else workflowReturn = await workflowStates[workflowAction](args);
 
             if (workflowReturn === false) workflow.aborted = true;
