@@ -13,7 +13,7 @@ async function remove(actorEntity, effect) {
     let appliedEffect = find(actorEntity, effect);
     if (!appliedEffect) return;
     await MidiQOL.socket().executeAsGM('removeEffects', { actorUuid: actorEntity.uuid, effects: [appliedEffect.id] });
-    return true;
+    return !find(actorEntity, effect);
 }
 
 async function update(actorEntity, effect) {
