@@ -133,15 +133,15 @@ async function runWorkflows(argumentInput, config) {
     /* ---------------------------------------------------------------------------------------------
     Below this line is the main function which runs everything else... you shouldn't need to
     modify this unless you need some additional debug information that isn't coming back.
-   --------------------------------------------------------------------------------------------*/
-    let  workflowAction = (args[0].macroPass || args[0]);
+    --------------------------------------------------------------------------------------------*/
+   
+    let workflowReturn; 
+    const [firstArg] = args;
+    let  workflowAction = (firstArg.macroPass || firstArg);
     try {
         if (macroUtil.debugLevel) validateDependencies(config.dependsOn || {});
 
-        let workflowReturn;
-        const [firstArg] = args;
-
-        if (macroUtil.debugLevel > 0) {
+        if (macroUtil.debugLevel) {
             console.group(`%c↳ (${macroItem.name}) [${workflowAction}]`, 'background:black; color: white; padding:2px 5px;font-weight:bold;');
         }
 
@@ -157,7 +157,7 @@ async function runWorkflows(argumentInput, config) {
             else workflowReturn = await effectStates[workflowAction](args.splice(1));
         }
 
-        if(macroUtil.debugLevel > 0) console.groupEnd();
+        if(macroUtil.debugLevel) console.groupEnd();
         return workflowReturn;
     } catch (e) {
         ui.notifications.error(`An unexpected error occurred in the execcution of the ${macroItem.name} ItemMacro. Please press <F12> and inspect the console errors for more information.`);
@@ -165,7 +165,7 @@ async function runWorkflows(argumentInput, config) {
         console.error("Unexpected error occurred :", e);
         if (config.exceptionHandler) await config.exceptionHandler(e);
         console.groupEnd();
-        if(macroUtil.debugLevel > 0) console.groupEnd(); 
+        if(macroUtil.debugLevel) console.groupEnd(); 
     }
 }
 
