@@ -2,7 +2,7 @@
 
 async function preAttackRoll() {
     let itemEffect = macroItem.effects.find(ef => ef.name == `${macroItem.name} Enabled`);
-    let actorEffect = macroUtil.effect.find(actor, itemEffect);
+    let actorEffect = await macroUtil.effect.find(actor, itemEffect);
 
     if (!actorEffect) return; // Sharpshooter is not enabled
     // if (item.system.actionType != "rwak") return; // not a ranged weapon (checked by DAE)

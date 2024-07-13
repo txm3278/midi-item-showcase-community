@@ -2,7 +2,7 @@
 
 async function preAttackRoll() {
     let itemEffect = macroItem.effects.find(ef => ef.name == `${macroItem.name} Enabled`);
-    let actorEffect = macroUtil.effect.find(actor, itemEffect);
+    let actorEffect = await macroUtil.effect.find(actor, itemEffect);
 
     if (!actorEffect) return; // Great Weapon Master is not enabled
     // if (item.system.actionType != "mwak") return; // not a melee weapon attack (checked by DAE)

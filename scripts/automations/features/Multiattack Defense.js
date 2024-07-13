@@ -32,7 +32,7 @@ async function isDamaged() {
     persistentData.actorIds.push(workflow.actor.id);
 
     let madEffect = macroItem.effects.find(ef => ef.name == `${macroItem.name} Active`);
-    if (macroUtil.effect.find(actor, madEffect)) return; // don't reapply if already exists
+    if (await macroUtil.effect.find(actor, madEffect)) return; // don't reapply if already exists
     await macroUtil.effect.create(actor, madEffect);
 }
 

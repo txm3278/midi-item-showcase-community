@@ -52,12 +52,12 @@ async function runWorkflows(argumentInput, config) {
         If you want these to fire EVERY time on EVERY weapon activate with Dynamic Effects
             Enable by creating a dynamic effect with effect: 
         
-        flags.midi-qol.onUseMacroName  |   custom   | ItemMacro.($ItemName),${WorkflowName} |  20
+        flags.midi-qol.onUseMacroName  |   custom   | ItemMacro(.$ItemName),${WorkflowName} |  20
     --------------------------------------------------------------------------------------------*/
     const workflowStates = {
         // OnUse macros                    registered callback                      example use case
         "preTargeting"                  : config.preTargeting,
-        "preItemRoll"                   : config.preItemRoll,
+        "preItemRoll"                   : config.preItemRoll,                       // Disable consumption usage
         "postNoAction"                  : config.postNoAction,
         "preStart"                      : config.preStart,
         "postStart"                     : config.postStart,
@@ -84,7 +84,7 @@ async function runWorkflows(argumentInput, config) {
         "postDamageRollStarted"         : config.postDamageRollStarted,
         "preDamageRollComplete"         : config.preDamageRollComplete,         // damage die additions
         "postDamageRoll"                : config.postDamageRoll,                // damage die replacement
-        "postDamageRollComplete"        : config.postDamageRollComplete,
+        "postDamageRollComplete"        : config.postDamageRollComplete,        // damage type conversions
         "preWaitForSaves"               : config.preWaitForSaves,
         "preSave"                       : config.preSave,
         "postWaitForSaves"              : config.postWaitForSaves,
@@ -148,12 +148,11 @@ async function runWorkflows(argumentInput, config) {
         if (firstArg.tag == "OnUse" || firstArg.tag == "DamageBonus" || firstArg.tag == "TargetOnUse"){
             if (macroUtil.debugLevel > 1) console.warn("midiWorkflow:", workflow);
             if (!workflowStates[workflowAction]) throw `Undefined midiWorkflow name : ${workflowAction}`;
-            else workflowReturn = await workflowStates[workflowAction](args);
+            else workflowReturn = await workflowStates[workflowAction](firstArg);
 
             if (workflowReturn === false) workflow.aborted = true;
             if (macroUtil.debugLevel > 1) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
         } else {
-            const effectData = args[args.length - 1];
             if (!effectStates[workflowAction]) throw `Undefined effectState : ${workflowAction}`;
             else workflowReturn = await effectStates[workflowAction](args.splice(1));
         }
