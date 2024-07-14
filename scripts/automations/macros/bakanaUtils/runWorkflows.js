@@ -11,6 +11,14 @@
 // ---------------------------------------------------------------------------------------------------
 
 /**
+ *  Midiworkflow usage suggestions:
+ * "preItemRoll"                   : Disable consumption usage
+ * "preDamageRollComplete"         : Damage roll modifications (addition/removal)
+ * "postDamageRoll"                : Damage die replacement
+ * "postDamageRollComplete"        : Damage type conversions
+ */
+
+/**
   * Validates dependencies.
   * @param config.module A list of module names
   * @param config.setting Configurations defining how CompleteMidi will run.
@@ -44,93 +52,6 @@ async function runWorkflows(argumentInput, config) {
     const workflow = argumentInput[4].workflow;
 
     /* ---------------------------------------------------------------------------------------------
-        Workflow states that are being run
-    --------------------------------------------------------------------------------------------*/
-    /* ---------------------------------------------------------------------------------------------
-        If you want these to fire EVERY time when you use THIS item activate with Midi-QOL
-            Enabled by selecting the appropriate option from the dropdown menu
-        If you want these to fire EVERY time on EVERY weapon activate with Dynamic Effects
-            Enable by creating a dynamic effect with effect: 
-        
-        flags.midi-qol.onUseMacroName  |   custom   | ItemMacro(.$ItemName),${WorkflowName} |  20
-    --------------------------------------------------------------------------------------------*/
-    const workflowStates = {
-        // OnUse macros                    registered callback                      example use case
-        "preTargeting"                  : config.preTargeting,
-        "preItemRoll"                   : config.preItemRoll,                       // Disable consumption usage
-        "postNoAction"                  : config.postNoAction,
-        "preStart"                      : config.preStart,
-        "postStart"                     : config.postStart,
-        "preAoETargetConfirmation"      : config.preAoETargetConfirmation,
-        "postAoETargetConfirmation"     : config.postAoETargetConfirmation,
-        "preValidateRoll"               : config.preValidateRoll,
-        "postValidateRoll"              : config.postValidateRoll,
-        "prePreambleComplete"           : config.prePreambleComplete,
-        "preambleComplete"              : config.preambleComplete,
-        "postPreambleComplete"          : config.postPreambleComplete,
-        "preWaitForAttackRoll"          : config.preWaitForAttackRoll,
-        "preAttackRoll"                 : config.preAttackRoll,
-        "postWaitForAttackRoll"         : config.postWaitForAttackRoll,
-        "preAttackRollComplete"         : config.preAttackRollComplete,
-        "preCheckHits"                  : config.preCheckHits,
-        "postAttackRoll"                : config.postAttackRoll,
-        "postAttackRollComplete"        : config.postAttackRollComplete,
-        "preWaitForDamageRoll"          : config.preWaitForDamageRoll,
-        "preDamageRoll"                 : config.preDamageRoll,
-        "postWaitForDamageRoll"         : config.postWaitForDamageRoll,
-        "preConfirmRoll"                : config.preConfirmRoll,
-        "postConfirmRoll"               : config.postConfirmRoll,
-        "preDamageRollStarted"          : config.preDamageRollStarted,
-        "postDamageRollStarted"         : config.postDamageRollStarted,
-        "preDamageRollComplete"         : config.preDamageRollComplete,         // damage die additions
-        "postDamageRoll"                : config.postDamageRoll,                // damage die replacement
-        "postDamageRollComplete"        : config.postDamageRollComplete,        // damage type conversions
-        "preWaitForSaves"               : config.preWaitForSaves,
-        "preSave"                       : config.preSave,
-        "postWaitForSaves"              : config.postWaitForSaves,
-        "preSavesComplete"              : config.preSavesComplete,
-        "postSave"                      : config.postSave,
-        "postSavesComplete"             : config.postSavesComplete,
-        "preAllRollsComplete"           : config.preAllRollsComplete,
-        "preDamageApplication"          : config.preDamageApplication,
-        "postAllRollsComplete"          : config.postAllRollsComplete,
-        "preApplyDynamicEffects"        : config.preApplyDynamicEffects,
-        "preActiveEffects"              : config.preActiveEffects,
-        "postApplyDynamicEffects"       : config.postApplyDynamicEffects,
-        "preRollFinished"               : config.preRollFinished,
-        "postActiveEffects"             : config.postActiveEffects,
-        "postRollFinished"              : config.postRollFinished,
-        "preCleanup"                    : config.preCleanup,
-        "postCleanup"                   : config.postCleanup,
-        "preCompleted"                  : config.preCompleted,
-        
-        // Damage Bonus
-        "DamageBonus"                   : config.DamageBonus,
-
-        // Target Workflows
-        "isAttacked"                    : config.isAttacked,
-        "isHit"                         : config.isHit,
-        "preSaveTarget"                 : config.preSaveTarget,
-        "isSave"                        : config.isSave,
-        "isSaveSuccess"                 : config.isSaveSuccess,
-        "isSaveFailure"                 : config.isSaveFailure,
-        "isDamaged"                     : config.isDamaged,
-        "preTargetDamageApplication"    : config.preTargetDamageApplication,
-    };
-
-    /* ---------------------------------------------------------------------------------------------
-        Enable by creating a dynamic effect with effect
-
-        macro.itemMacro  |   custom   |      |  20
-    --------------------------------------------------------------------------------------------*/
-
-    const effectStates = {
-        "on"                            : config.on,
-        "each"                          : config.each,
-        "off"                           : config.off,
-    };
-
-    /* ---------------------------------------------------------------------------------------------
     Below this line is the main function which runs everything else... you shouldn't need to
     modify this unless you need some additional debug information that isn't coming back.
     --------------------------------------------------------------------------------------------*/
@@ -139,22 +60,21 @@ async function runWorkflows(argumentInput, config) {
     const [firstArg] = args;
     let  workflowAction = (firstArg.macroPass || firstArg);
     try {
-        if (macroUtil.debugLevel) validateDependencies(config.dependsOn || {});
-
         if (macroUtil.debugLevel) {
             console.group(`%c↳ (${macroItem.name}) [${workflowAction}]`, 'background:black; color: white; padding:2px 5px;font-weight:bold;');
         }
 
         if (firstArg.tag == "OnUse" || firstArg.tag == "DamageBonus" || firstArg.tag == "TargetOnUse"){
-            if (macroUtil.debugLevel > 1) console.warn("midiWorkflow:", workflow);
-            if (!workflowStates[workflowAction]) throw `Undefined midiWorkflow name : ${workflowAction}`;
-            else workflowReturn = await workflowStates[workflowAction](firstArg);
+            if (macroUtil.debugLevel > 2) console.warn("midiWorkflow:", workflow);
+            if (!config[workflowAction]) console.error(`Undefined workflow attempting to run : ${workflowAction}`);
+            else workflowReturn = await config[workflowAction](firstArg);
 
-            if (workflowReturn === false) workflow.aborted = true;
-            if (macroUtil.debugLevel > 1) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
-        } else {
-            if (!effectStates[workflowAction]) throw `Undefined effectState : ${workflowAction}`;
-            else workflowReturn = await effectStates[workflowAction](args.splice(1));
+            if (macroUtil.debugLevel > 1) {
+                if (workflow.aborted) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
+            }
+        } else {            
+            if (!config[workflowAction]) console.error(`Undefined workflow attempting to run : ${workflowAction}`);
+            else workflowReturn = await config[workflowAction](args.splice(1));
         }
 
         if(macroUtil.debugLevel) console.groupEnd();
