@@ -25,6 +25,6 @@ async function preDamageRoll() {
 }
 
 await macroUtil.runWorkflows(arguments, {
-    "preDamageRoll"             : preDamageRoll,
+    preDamageRoll : preDamageRoll,
 });
 
