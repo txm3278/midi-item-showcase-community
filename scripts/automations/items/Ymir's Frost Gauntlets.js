@@ -17,6 +17,7 @@ async function updateDamageType(damageType){
     const updates = {"system.damage.parts" : damageParts};
     workflow.item = workflow.item.clone(updates, {keepId: true});
 }
+
 async function preDamageRoll() {
     if (!isMeleeAttack()) return;                   // not a melee attack
     if (workflow.item.type != "weapon") return;     // not a weapon
