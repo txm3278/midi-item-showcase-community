@@ -6,7 +6,7 @@ function  setPreUseItemConfig(item, cfgs, opts) {
         for (let key of Object.keys(cfgs))
             config[key] = cfgs[key];
 
-        if (macroUtil.debugLevel) {
+        if (macroUtil.debugLevel < 0) {
             console.warn("Set preUseItem config:", config);
             console.warn("Set preUseItem options:", options);
         }
