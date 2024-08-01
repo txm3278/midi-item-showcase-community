@@ -28,11 +28,12 @@ export async function deflectMissiles({
   newMessage._id = deflectMsg._id;
   const deflectRollMsg = await ChatMessage.updateDocuments([newMessage]);
 
+  const imgPropName = game.version < 12 ? 'icon' : 'img';
   const effectData = {
     changes: [
       { key: 'flags.midi-qol.DR.all', mode: 0, value: deflectRoll.total },
     ],
-    icon: 'icons/skills/ranged/arrow-flying-white-blue.webp',
+    [imgPropName]: 'icons/skills/ranged/arrow-flying-white-blue.webp',
     duration: { rounds: 1 },
     name: 'Damage Reduction - Deflect Missiles',
     origin: item.uuid,

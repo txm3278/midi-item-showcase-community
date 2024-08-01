@@ -63,10 +63,10 @@ export async function poisoner({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
     const macroData = args[0];
-
+    const imgPropName = game.version < 12 ? 'icon' : 'img';
     let effectData = {
       label: 'Poisoner',
-      icon: 'icons/skills/melee/strike-scythe-fire-green.webp',
+      [imgPropName]: 'icons/skills/melee/strike-scythe-fire-green.webp',
       origin: macroData.sourceItemUuid,
       duration: {
         turns: 1,

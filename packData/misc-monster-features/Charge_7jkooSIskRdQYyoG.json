@@ -60,12 +60,7 @@
       "damage": ""
     },
     "damage": {
-      "parts": [
-        [
-          "2d4[bludgeoning]",
-          "bludgeoning"
-        ]
-      ],
+      "parts": [],
       "versatile": ""
     },
     "formula": "",
@@ -136,7 +131,7 @@
         {
           "key": "flags.midi-qol.optional.chargeAttack.damage.mwak",
           "mode": 0,
-          "value": "ItemMacro",
+          "value": "2d4[bludgeoning]",
           "priority": 20
         },
         {
@@ -149,6 +144,12 @@
           "key": "flags.midi-qol.optional.chargeAttack.label",
           "mode": 0,
           "value": "Use this if the goat charged before the attack.",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.chargeAttack.macroToCall",
+          "mode": 2,
+          "value": "ItemMacro",
           "priority": 20
         }
       ],
@@ -314,7 +315,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714333185251,
-    "modifiedTime": 1715461872230,
+    "modifiedTime": 1722534697390,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {

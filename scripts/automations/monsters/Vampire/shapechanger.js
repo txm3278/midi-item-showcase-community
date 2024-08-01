@@ -17,6 +17,7 @@ export async function shapechanger({
     tokenImg =
       'modules/JB2A_DnD5e/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm';
   }
+  const imgPropName = game.version < 12 ? 'icon' : 'img';
   const mistForm = {
     mutation: 'Mist Form',
     token: {
@@ -49,7 +50,7 @@ export async function shapechanger({
       },
       ActiveEffect: {
         'Mist Form': {
-          icon: 'icons/svg/acid.svg',
+          [imgPropName]: 'icons/svg/acid.svg',
           changes: [
             {
               key: 'flags.midi-qol.advantage.ability.save.str',

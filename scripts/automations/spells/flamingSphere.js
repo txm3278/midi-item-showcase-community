@@ -42,6 +42,7 @@ export async function flamingSphere({
       },saveAbility=dex,damageRoll=${
         args[0].spellLevel
       }d6,damageType=fire,saveDamage=halfdamage,saveRemove=false`;
+      const imgPropName = game.version < 12 ? 'icon' : 'img';
       const embedded = {
         Item: {
           'Flaming Sphere Damage': {
@@ -61,7 +62,7 @@ export async function flamingSphere({
             ],
             disabled: false,
             label: 'Flaming Sphere Damage',
-            icon: 'icons/magic/fire/orb-vortex.webp',
+            [imgPropName]: 'icons/magic/fire/orb-vortex.webp',
             flags: {
               ActiveAuras: {
                 isAura: true,
@@ -111,7 +112,7 @@ export async function flamingSphere({
           label: 'Flaming Sphere Summon',
           duration: { seconds: 60, rounds: 10 },
           origin: args[0].itemUuid,
-          icon: 'icons/magic/fire/orb-vortex.webp',
+          [imgPropName]: 'icons/magic/fire/orb-vortex.webp',
         },
       ]);
     }

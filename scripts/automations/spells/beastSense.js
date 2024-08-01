@@ -61,11 +61,11 @@ export async function beastSense({
       const beastSenseOriginUuid = concentrating.uuid;
 
       const concEffect = MidiQOL.getConcentrationEffect(casterActor);
-
+      const imgPropName = game.version < 12 ? 'icon' : 'img';
       //The After Effects
       const beastSenseEffects = {
         name: 'Beast Sense Effects',
-        icon: 'graphics/Zantor/icons/humanoid-single-green-blue.png',
+        [imgPropName]: 'graphics/Zantor/icons/humanoid-single-green-blue.png',
         changes: [
           {
             key: 'macro.CE',

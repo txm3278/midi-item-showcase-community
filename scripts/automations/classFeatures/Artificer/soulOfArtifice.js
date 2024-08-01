@@ -11,10 +11,10 @@ export async function soulOfArtifice({
 }) {
   const damageReduction =
     args[0].workflowOptions.damageTotal - actor.system.attributes.hp.value + 1;
-
+  const imgPropName = game.version < 12 ? 'icon' : 'img';
   let effectData = {
     name: workflow.item.name,
-    icon: workflow.item.img,
+    [imgPropName]: workflow.item.img,
     origin: workflow.item.uuid,
     duration: {
       rounds: 1,

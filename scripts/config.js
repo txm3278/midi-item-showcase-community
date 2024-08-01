@@ -528,8 +528,8 @@ export function setConfig() {
         version: '0.1.0',
         authors: ['Moto Moto'],
       },
-      'Scaled Ornament (stirring)': {
-        name: 'Scaled Ornament (stirring)',
+      'Scaled Ornament (Stirring)': {
+        name: 'Scaled Ornament (Stirring)',
         type: 'Item',
         version: '0.1.0',
         authors: ['Muhammad2126'],
@@ -634,8 +634,8 @@ export function setConfig() {
         version: '2.1.1',
         authors: ['Elwin'],
       },
-      'Vengeful Ancertors': {
-        name: 'Vengeful Ancertors',
+      'Vengeful Ancestors': {
+        name: 'Vengeful Ancestors',
         type: 'Class Feature',
         version: '2.0.3',
         authors: ['Elwin'],

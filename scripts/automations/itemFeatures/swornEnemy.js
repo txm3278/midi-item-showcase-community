@@ -10,9 +10,10 @@ export async function swornEnemy({
 }) {
   if (workflow.targets.size != 1) return;
   let seconds = 604800;
+  const imgPropName = game.version < 12 ? 'icon' : 'img';
   let targetEffectData = {
     name: 'Sworn Enemy',
-    icon: workflow.item.img,
+    [imgPropName]: workflow.item.img,
     origin: workflow.item.uuid,
     duration: {
       seconds: seconds,
@@ -48,7 +49,7 @@ export async function swornEnemy({
   }
   let sourceEffectData = {
     name: 'Sworn Enemy',
-    icon: workflow.item.img,
+    [imgPropName]: workflow.item.img,
     changes: [
       {
         key: 'flags.chris-premades.spell.huntersMark',
