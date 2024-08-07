@@ -72,7 +72,7 @@
       "name": "Spirit Shield",
       "description": "",
       "statuses": [],
-      "_key": "!items.effects!OEvhnustZRlEPaIG.kNzSxJ8OjrSbindN"
+      "_key": "!items.effects!VydET5sQKmlnScMo.kNzSxJ8OjrSbindN"
     },
     {
       "name": "Spirit Shield - TPR",
@@ -130,7 +130,7 @@
         }
       },
       "tint": null,
-      "_key": "!items.effects!OEvhnustZRlEPaIG.ca75UjEzNsyVf6kH"
+      "_key": "!items.effects!VydET5sQKmlnScMo.ca75UjEzNsyVf6kH"
     }
   ],
   "folder": "Nx5JXfL2Hcdv9LBX",
@@ -170,7 +170,11 @@
       "offHandWeapon": false,
       "ignoreTotalCover": true,
       "noConcentrationCheck": false,
-      "confirmTargets": "never"
+      "confirmTargets": "never",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "magicitems": {
       "enabled": false,
@@ -206,7 +210,7 @@
         "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.classFeatures.spiritShield({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.spiritShield(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -238,8 +242,8 @@
   },
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that unsuspends a third party reaction effect when the Rage item is activated.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A Rage item which adds a Rage effect when activated must be configured, A scale dice value must be configured on the 'Path of the Ancestral Guardian' subclass, its data value should resolve to '@scale.path-of-the-ancestral-guardian.spirit-shield'.<br />RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>",
-      "chat": "If you are raging and another creature you can see within 30 feet of you takes damage, you can use your reaction to reduce that damage by [[/roll @scale.path-of-the-ancestral-guardian.spirit-shield]]\n<details>\n  <summary>\n    More Details\n  </summary>\n  <p>\n    </p><p class=\"Core-Styles_Core-Body\">Beginning at 6th level, the guardian spirits that aid you can provide supernatural protection to those you defend. If you are raging and another creature you can see within 30 feet of you takes damage, you can use your reaction to reduce that damage by 2d6.</p>\n<p class=\"Core-Styles_Core-Body\">When you reach certain levels in this class, you can reduce the damage by more: by 3d6 at 10th level and by 4d6 at 14th level.</p>\n  <p></p>\n</details>"
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-bJHw5PhW9CC9v5ow\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that unsuspends a third party reaction effect when the Rage item is activated.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A Rage item which adds a Rage effect when activated must be configured, A scale dice value must be configured on the 'Path of the Ancestral Guardian' subclass, its data value should resolve to '@scale.path-of-the-ancestral-guardian.spirit-shield'.<br />RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
+      "chat": ""
     },
     "source": {
       "custom": ""
@@ -322,17 +326,17 @@
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
     "Y4IYXHUifrP8RFnx": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1663621622102,
-    "modifiedTime": 1718556414188,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "modifiedTime": 1722891652208,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "OEvhnustZRlEPaIG",
+  "_id": "VydET5sQKmlnScMo",
   "sort": 0,
-  "_key": "!items!OEvhnustZRlEPaIG"
+  "_key": "!items!VydET5sQKmlnScMo"
 }

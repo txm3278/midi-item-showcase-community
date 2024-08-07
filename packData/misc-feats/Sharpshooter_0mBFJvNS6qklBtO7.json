@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2><p>Based on MotoMoto and Michael version.</p><p><strong>Usage:</strong></p><p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-mhp8QUgzhNeiToO3\" class=\"secret\">\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p></section>",
       "chat": ""
     },
     "source": {
@@ -156,7 +156,7 @@
         "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.features.sharpshooter({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.sharpshooter(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -253,7 +253,7 @@
       "_id": "q5Le1zgY3WEmhZFu",
       "description": "",
       "origin": "Item.sD8SN0BIFqIdx1Ie",
-      "_key": "!items.effects!jUjtEr6v16MfYv8l.q5Le1zgY3WEmhZFu"
+      "_key": "!items.effects!0mBFJvNS6qklBtO7.q5Le1zgY3WEmhZFu"
     }
   ],
   "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
@@ -263,7 +263,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706483810724,
-    "modifiedTime": 1720475785405,
+    "modifiedTime": 1722892014436,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
@@ -271,7 +271,7 @@
     "B2BBHntfpytXE8DP": 3,
     "9QqTZMFq1dhCIYAR": 3
   },
-  "_id": "jUjtEr6v16MfYv8l",
+  "_id": "0mBFJvNS6qklBtO7",
   "sort": 0,
-  "_key": "!items!jUjtEr6v16MfYv8l"
+  "_key": "!items!0mBFJvNS6qklBtO7"
 }

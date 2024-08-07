@@ -5,8 +5,8 @@
   "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the effects are applied.</p>",
-      "chat": "As a bonus action, you give yourself advantage on your next attack roll on the current turn. You can use this bonus action only if you haven’t moved during this turn, and after you use the bonus action, your speed is 0 until the end of the current turn.\n<details>\n  <summary>\n    More Details\n  </summary>\n  <p>\n    </p><p><em>3rd-level rogue feature</em></p>\n<p>As a bonus action, you give yourself advantage on your next attack roll on the current turn. You can use this bonus action only if you haven’t moved during this turn, and after you use the bonus action, your speed is 0 until the end of the current turn.</p>\n  <p></p>\n</details>"
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-32VrC3axYJs4Z44O\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the effects are applied.</p></section>",
+      "chat": ""
     },
     "source": {
       "custom": ""
@@ -143,7 +143,7 @@
       "name": "Steady Aim - Advantage",
       "description": "",
       "statuses": [],
-      "_key": "!items.effects!YRGWzQrJPEqQuRQ7.ttliu8T5zozrLsKw"
+      "_key": "!items.effects!X9ClkH9UNKmp0oSa.ttliu8T5zozrLsKw"
     },
     {
       "_id": "ljsYEY13ngAg6G8h",
@@ -211,13 +211,13 @@
       "name": "Steady Aim - Movement",
       "description": "",
       "statuses": [],
-      "_key": "!items.effects!YRGWzQrJPEqQuRQ7.ljsYEY13ngAg6G8h"
+      "_key": "!items.effects!X9ClkH9UNKmp0oSa.ljsYEY13ngAg6G8h"
     }
   ],
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "flags": {
     "infusions": {
@@ -252,7 +252,11 @@
       "ignoreTotalCover": false,
       "autoSaveFriendly": false,
       "noConcentrationCheck": false,
-      "confirmTargets": "never"
+      "confirmTargets": "never",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "magicitems": {
       "enabled": false,
@@ -282,7 +286,7 @@
         "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.classFeatures.steadyAim({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.steadyAim(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -317,10 +321,10 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1663621622129,
-    "modifiedTime": 1718556512193,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "modifiedTime": 1722891675821,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "YRGWzQrJPEqQuRQ7",
+  "_id": "X9ClkH9UNKmp0oSa",
   "sort": 0,
-  "_key": "!items!YRGWzQrJPEqQuRQ7"
+  "_key": "!items!X9ClkH9UNKmp0oSa"
 }

@@ -2,7 +2,7 @@
 // Read First!!!!
 // Creates a Goodberry item that expires and is deleted after 24h.
 // If the caster has the Disciple of Life feature, the healing power of the berries is increased.
-// v2.0.2
+// v2.0.1
 // Author: Elwin#1410, based on Crymic's Goodberry macro
 // Dependencies:
 //  - DAE
@@ -596,7 +596,7 @@ ${isRealNumber.toString()}
     // Note: type water only not supported
 
     if (!foundry.utils.isEmpty(actorUpdates)) {
-      await socketlib.modules.get('dae').executeAsGM('_updateActor', {
+      await socketlib.modules.get('dae')?.executeAsGM('_updateActor', {
         actorUuid: targetToken.actor.uuid,
         update: actorUpdates,
       });

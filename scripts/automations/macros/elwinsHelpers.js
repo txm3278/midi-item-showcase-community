@@ -1,6 +1,8 @@
 // ##################################################################################################
+// Read First!!!!
+// World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.2.3
+// v2.3.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -52,6 +54,7 @@
 //     - tpr.isMissed: this is called after MidiQOL validated that a target was missed.
 //     - tpr.isDamaged: this is called after MidiQOL computed the damage to be dealt to a target but before it is applied.
 //     - tpr.isHealed: this is called after MidiQOL computed the healing to be done to a target but before it is applied.
+//     - tpr.isPreCheckSave: this is called just before a saving throw check is asked from the target.
 //   - thirdPartyReactionOptions: The options consist of a list of parameter/value pairs separated by `;`. The parameter and its value is separated by a `=`.
 //     - ignoreSelf: true or false to indicate if the owner being a target must not trigger the reaction. [default false]
 //     - triggerSource: target or attacker, determines to whom the canSee option, the item’s range and target applies. [default target]
@@ -73,10 +76,15 @@
 //   - tpr.tokenId: token id associated with the reaction item owner’s.
 //   - tpr.tokenUuid: token UUID associated with the reaction item owner’s.
 //   - tpr.canSeeTriggerSource: boolean to indicate if the owner canSee the triggerSource, usually the target but in some cases the attacker.
+//   - tpr.isMeleeAttack: boolean to indicate if the item that triggered the reaction is a melee attack.
+//   - tpr.isMeleeWeaponAttack: boolean to indicate if the item that triggered the reaction is a melee weapon attack.
+//   - tpr.isRangedAttack: boolean to indicate if the item that triggered the reaction is a ranged attack.
+//   - tpr.isRangedWeaponAttack: boolean to indicate if the item that triggered the reaction is a ranged weapon attack.
 //
 // ###################################################################################################
+
 export function runElwinsHelpers() {
-  const VERSION = '2.2.3';
+  const VERSION = '2.3.0';
   const MACRO_NAME = 'elwin-helpers';
   const debug = false;
   const active = true;
@@ -149,8 +157,11 @@ export function runElwinsHelpers() {
       handlePreAttackRoll
     );
     setHook('midi-qol.hitsChecked', 'handleHitsCheckedId', handleHitsChecked);
-    setHook('midi-qol.isDamaged', 'handleIsDamagedId', handleIsDamaged);
-    setHook('midi-qol.isHealed', 'handleIsHealedId', handleIsHealed);
+    setHook(
+      'midi-qol.preTargetDamageApplication',
+      'handlePreTargetDamageApplId',
+      handlePreTargetDamageApplication
+    );
     setHook(
       'midi-qol.preCheckSaves',
       'handlePreCheckSavesId',
@@ -381,21 +392,39 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isDamaged third party reactions.
-   * @param {Token5e} target - The target that is damaged.
+   * Triggers isDamaged or isHealed third party reactions.
+   *
+   * @param {Token5e} target - The target that is damaged/healed.
    * @param {object} options - Options passed by midi qol.
    */
-  async function handleIsDamaged(target, options) {
+  async function handlePreTargetDamageApplication(target, options) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handleIsDamaged.`, { target, options });
+      console.warn(`${MACRO_NAME} | handlePreTargetDamageApplication.`, {
+        target,
+        options,
+      });
     }
-
-    await handleThirdPartyReactions(options.workflow, ['isDamaged'], {
-      item: options?.item,
-      target,
-      extraActivationCond:
-        'workflow.damageItem && workflow.damageItem.appliedDamage > 0',
-    });
+    if (
+      options.workflow?.damageItem &&
+      options.workflow.damageItem.appliedDamage !== 0 &&
+      (options.workflow.hitTargets.has(target) ||
+        options.workflow.hitTargetsEC.has(target) ||
+        options.workflow.saveItem.hasSave)
+    ) {
+      if (options.workflow.damageItem.appliedDamage > 0) {
+        await handleThirdPartyReactions(options.workflow, ['isDamaged'], {
+          item: options?.item,
+          target,
+          extraActivationCond: 'workflow.damageItem?.appliedDamage > 0',
+        });
+      } else {
+        await handleThirdPartyReactions(options.workflow, ['isHealed'], {
+          item: options?.item,
+          target,
+          extraActivationCond: 'workflow.damageItem?.appliedDamage < 0',
+        });
+      }
+    }
   }
 
   /**
@@ -1088,6 +1117,18 @@ export function runElwinsHelpers() {
         tokenId: reactionToken?.id,
         tokenUuid: reactionToken?.document.uuid,
         canSeeTriggerSource,
+        get isMeleeAttack() {
+          return isMeleeAttack(workflow.item, workflow.token, target);
+        },
+        get isMeleeWeaponAttack() {
+          return isMeleeWeaponAttack(workflow.item, workflow.token, target);
+        },
+        get isRangedAttack() {
+          return isRangedAttack(workflow.item, workflow.token, target);
+        },
+        get isRangedWeaponAttack() {
+          return isRangedWeaponAttack(workflow.item, workflow.token, target);
+        },
       },
     };
 
@@ -1403,6 +1444,9 @@ export function runElwinsHelpers() {
       const noResult = { name: 'None', uuid: undefined };
       let result = noResult;
       try {
+        if (!validReactions.length) {
+          continue;
+        }
         // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
         const reactionUuids = validReactions.map((rd) => rd.item?.uuid);
         const reactionOptions = foundry.utils.mergeObject(
@@ -1963,7 +2007,7 @@ export function runElwinsHelpers() {
     }
     // Redisplay roll and hits with the new data
     if (debug) {
-      console.warn(`${DEFAULT_ITEM_NAME} | Hit display data after updates.`, {
+      console.warn(`${MACRO_NAME} | Hit display data after updates.`, {
         hitDisplayData: workflow.hitDisplayData,
       });
     }
@@ -2063,6 +2107,8 @@ export function runElwinsHelpers() {
             ),
           };
         }
+        ctx.quantity =
+          item.type === 'consumable' ? `[${item.system.quantity}]` : '';
         ctx.subtitle = [
           item.system.type?.label,
           item.isActive ? item.labels.activation : null,
@@ -2077,16 +2123,12 @@ export function runElwinsHelpers() {
             .join(' ') ?? '';
 
         itemContent += `
-      <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${
-          ctx.selected
-        }>
+      <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${ctx.selected}>
         <label class="item" for="radio-${item.id}">
           <div class="item-name">
             <img class="item-image" src="${item.img}" alt="${item.name}">
             <div class="name name-stacked">
-              <span class="title">${item.name}${
-          item.type === 'consumable' ? `[${item.system.quantity}]` : ''
-        }</span>
+              <span class="title">${item.name}${ctx.quantity}</span>
               <span class="subtitle">${ctx.subtitle}</span>
             </div>
             <div class="tags">
@@ -2932,7 +2974,10 @@ export function runElwinsHelpers() {
           o.t.document.height,
           -CONFIG.Canvas.objectBorderThickness
         );
-        let currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
+        const currentTokenShape = new PIXI.Polygon(points).translate(
+          o.t.x,
+          o.t.y
+        );
         return currentTokenShape.overlaps(token.testCollisitionShape);
       };
     }
@@ -3253,11 +3298,6 @@ export function runElwinsHelpers() {
         options,
       });
     }
-    let reactionItem = await getItemFromMacroName(
-      macroName,
-      workflow.item,
-      workflow.actor
-    );
     if (!reactionToken?.actor) {
       console.warn(
         `${MACRO_NAME} | No actor for reaction token.`,
@@ -3265,6 +3305,11 @@ export function runElwinsHelpers() {
       );
       return;
     }
+    let reactionItem = await getItemFromMacroName(
+      macroName,
+      workflow.item,
+      workflow.actor
+    );
     if (options.itemUuid) {
       reactionItem = await fromUuid(options.itemUuid);
     }
@@ -3320,7 +3365,7 @@ export function runElwinsHelpers() {
       MQItemMacroLabel = 'ItemMacro';
     }
 
-    let [name, uuid] = macroName?.trim().split('|');
+    let [name, uuid] = macroName?.trim().split('|') ?? [undefined, undefined];
     let macroItem = undefined;
     if (uuid?.length > 0) {
       macroItem = fromUuidSync(uuid);
@@ -3367,7 +3412,7 @@ export function runElwinsHelpers() {
       if (name.startsWith('Macro.')) {
         name = name.replace('Macro.', '');
       }
-      let macro = game.macros?.getName(name);
+      const macro = game.macros?.getName(name);
       if (!macro) {
         const itemOrMacro = await fromUuid(name);
         if (itemOrMacro instanceof Item) {

@@ -1,16 +1,14 @@
 {
-  "name": "Great Weapon Master Attack",
+  "name": "Psionic Power: Protective Field",
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feat has a charge when the requirements are met.</p><p><strong>Note:</strong> <em>Great Weapon Master</em> in MISC Feat should also be added to actor.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-K4EfFu9MIEQtpgUy\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Psi Warrior' subclass, its data value should resolve to '@scale.psi-warrior.psionic-power'. When adding this feature to an actor, you must configure the consumption on the Psionic Power.<br />RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
       "chat": ""
     },
-    "source": {
-      "custom": ""
-    },
+    "source": {},
     "activation": {
-      "type": "bonus",
+      "type": "reaction",
       "cost": 1,
       "condition": ""
     },
@@ -21,39 +19,44 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": null,
+      "value": 1,
       "width": null,
       "units": "",
-      "type": "",
+      "type": "ally",
       "prompt": true
     },
     "range": {
-      "value": null,
+      "value": 30,
       "long": null,
-      "units": ""
+      "units": "ft"
     },
     "uses": {
-      "value": 0,
-      "max": "1",
-      "per": "charges",
+      "value": null,
+      "max": "",
+      "per": null,
       "recovery": "",
       "prompt": true
     },
     "consume": {
-      "type": "",
+      "type": "charges",
       "target": "",
-      "amount": null,
+      "amount": 1,
       "scale": false
     },
     "ability": "",
-    "actionType": "",
+    "actionType": "other",
     "chatFlavor": "",
     "critical": {
       "threshold": null,
       "damage": ""
     },
     "damage": {
-      "parts": [],
+      "parts": [
+        [
+          "max(@scale.psi-warrior.psionic-power +@abilities.int.mod, 1)",
+          "midi-none"
+        ]
+      ],
       "versatile": ""
     },
     "formula": "",
@@ -63,8 +66,8 @@
       "scaling": "spell"
     },
     "type": {
-      "value": "feat",
-      "subtype": ""
+      "value": "class",
+      "subtype": "psionicPower"
     },
     "requirements": "",
     "recharge": {
@@ -84,25 +87,24 @@
     },
     "obsidian": {
       "source": {
-        "type": "feat"
+        "type": "class",
+        "text": "Fighter"
       }
     },
-    "core": {},
     "midi-qol": {
+      "removeAttackDamageButtons": "default",
       "effectActivation": false,
-      "onUseMacroName": "[preItemRoll]ItemMacro",
-      "rollAttackPerTarget": "never",
       "itemCondition": "",
-      "effectCondition": ""
+      "reactionCondition": "reaction === \"tpr.isDamaged\"",
+      "otherCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preTargeting]ItemMacro,[postActiveEffects]ItemMacro",
+      "rollAttackPerTarget": "never"
     },
     "midiProperties": {
       "confirmTargets": "never",
-      "nodam": false,
-      "fulldam": false,
-      "halfdam": false,
       "autoFailFriendly": false,
       "autoSaveFriendly": false,
-      "rollOther": false,
       "critOther": false,
       "offHandWeapon": false,
       "magicdam": false,
@@ -110,15 +112,20 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": true,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
+    "core": {},
     "dae": {
       "macro": {
-        "name": "Great Weapon Master Attack",
-        "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+        "name": "Psionic Power: Protective Field",
+        "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.features.greatWeaponMasterAttack({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.psionicPowerProtectiveField(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -157,32 +164,26 @@
   },
   "effects": [
     {
-      "name": "Great Weapon Master Attack",
-      "icon": "icons/weapons/axes/axe-battle-skull-black.webp",
-      "origin": "Item.mcD0g8NnohY8m807",
+      "name": "Psionic Power: Protective Field",
+      "icon": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
+      "origin": "Item.Ffqtl1yAQRd1XTN3",
       "duration": {
         "startTime": null,
         "seconds": null,
         "combat": null,
         "rounds": null,
         "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "startRound": 105,
+        "startTurn": 8
       },
       "transfer": true,
       "disabled": false,
-      "_id": "WA8Y2i8D7bmZjtLr",
+      "_id": "8wCjz9mOtvTTbSKc",
       "changes": [
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "",
-          "priority": 20
-        },
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,postActiveEffects",
+          "value": "ItemMacro,tpr.isDamaged|canSee=true;pre=true;post=true",
           "priority": 20
         }
       ],
@@ -200,7 +201,7 @@
           "stackable": "noneName",
           "showIcon": false,
           "durationExpression": "",
-          "macroRepeat": "endEveryTurn",
+          "macroRepeat": "none",
           "specialDuration": []
         },
         "ActiveAuras": {
@@ -221,25 +222,25 @@
         }
       },
       "tint": null,
-      "_key": "!items.effects!kz9mMefKYga21GxP.WA8Y2i8D7bmZjtLr"
+      "_key": "!items.effects!an6ZfwdFpyMJ1IIA.8wCjz9mOtvTTbSKc"
     }
   ],
-  "img": "icons/weapons/axes/axe-battle-skull-black.webp",
-  "folder": null,
+  "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
+  "folder": "AGtradq44LNR36HH",
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1702224079058,
-    "modifiedTime": 1718556203676,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "createdTime": 1705895542886,
+    "modifiedTime": 1722891630418,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "kz9mMefKYga21GxP",
+  "_id": "an6ZfwdFpyMJ1IIA",
   "sort": 0,
-  "_key": "!items!kz9mMefKYga21GxP"
+  "_key": "!items!an6ZfwdFpyMJ1IIA"
 }

@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v2.2.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [on], [off] item macro

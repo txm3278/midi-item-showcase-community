@@ -32,7 +32,6 @@ export async function recallMonsterLore({
   }[type];
 
   const roll = await token.actor.rollSkill(skill, {
-    event,
     chatMessage: false,
   });
 

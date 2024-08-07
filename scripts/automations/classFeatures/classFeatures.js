@@ -17,6 +17,8 @@ import { wardingFlare } from './Cleric/LightDomain/wardingFlare.js';
 import { deflectMissiles } from './Monk/deflectMissiles.js';
 import { colossusSlayer } from './Ranger/Hunter/colossusSlayer.js';
 import { primevalAwareness } from './Ranger/primevalAwareness.js';
+import { flashOfGenius } from './Artificer/flashOfGenius.js';
+import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
 
 export let classFeatures = {
   eldritchCannon,
@@ -38,4 +40,6 @@ export let classFeatures = {
   deflectMissiles,
   colossusSlayer,
   primevalAwareness,
+  flashOfGenius,
+  channelDivinityVowOfEnmity,
 };

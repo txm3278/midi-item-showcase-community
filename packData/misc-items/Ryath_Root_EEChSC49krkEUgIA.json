@@ -153,10 +153,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.0.4",
+    "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1708723446056,
-    "modifiedTime": 1713901016704,
+    "modifiedTime": 1723047944093,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
@@ -164,6 +164,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "EEChSC49krkEUgIA",
-  "sort": 700000,
+  "sort": 1200000,
   "_key": "!items!EEChSC49krkEUgIA"
 }

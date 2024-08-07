@@ -1,16 +1,14 @@
 {
-  "name": "Unwavering Mark",
+  "name": "Sentinel at Death's Door",
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that marks a target when a melee attack is successful.<br />\n  It can also be activated to use the special attack if one was triggered by a marked target.<br />\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-RJSlaDHCRyXPqqHl\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
       "chat": ""
     },
-    "source": {
-      "custom": ""
-    },
+    "source": {},
     "activation": {
-      "type": "bonus",
+      "type": "reaction",
       "cost": 1,
       "condition": ""
     },
@@ -21,20 +19,20 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": null,
+      "value": 1,
       "width": null,
       "units": "",
-      "type": "",
+      "type": "ally",
       "prompt": true
     },
     "range": {
-      "value": 5,
+      "value": 30,
       "long": null,
-      "units": ""
+      "units": "ft"
     },
     "uses": {
       "value": 1,
-      "max": "@abilities.str.mod",
+      "max": "@abilities.wis.mod",
       "per": "lr",
       "recovery": "",
       "prompt": true
@@ -42,7 +40,7 @@
     "consume": {
       "type": "",
       "target": "",
-      "amount": 1,
+      "amount": null,
       "scale": false
     },
     "ability": "",
@@ -85,64 +83,55 @@
     "obsidian": {
       "source": {
         "type": "class",
-        "text": "Fighter"
+        "text": "Cleric"
       }
     },
     "midi-qol": {
+      "removeAttackDamageButtons": "default",
       "effectActivation": false,
-      "onUseMacroName": "[preTargeting]ItemMacro",
-      "rollAttackPerTarget": "never",
       "itemCondition": "",
-      "reactionCondition": "",
+      "reactionCondition": "reaction === \"tpr.isHit\" && workflow.isCritical",
       "otherCondition": "",
-      "effectCondition": ""
+      "effectCondition": "",
+      "onUseMacroName": "[preTargeting]ItemMacro",
+      "rollAttackPerTarget": "never"
     },
     "midiProperties": {
-      "nodam": false,
-      "fulldam": false,
-      "halfdam": false,
+      "confirmTargets": "never",
       "autoFailFriendly": false,
-      "rollOther": false,
+      "autoSaveFriendly": false,
       "critOther": false,
       "offHandWeapon": false,
       "magicdam": false,
       "magiceffect": false,
       "concentration": false,
-      "toggleEffect": false,
-      "ignoreTotalCover": false,
-      "autoSaveFriendly": false,
       "noConcentrationCheck": false,
-      "confirmTargets": "never"
-    },
-    "magicitems": {
-      "enabled": false,
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
+      "toggleEffect": false,
+      "ignoreTotalCover": true,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
     "dae": {
       "macro": {
-        "name": "Unwavering Mark",
-        "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
+        "name": "Sentinel at Death's Door",
+        "img": "icons/magic/control/encase-creature-monster-hold.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.classFeatures.unwaveringMark({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.sentinelAtDeathsDoor(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
-        "_id": null,
-        "folder": null,
-        "sort": 0,
         "ownership": {
           "default": 3
         },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
         "flags": {},
         "_stats": {
           "systemId": null,
@@ -161,10 +150,6 @@
         }
       }
     },
-    "walledtemplates": {
-      "wallsBlock": "globalDefault",
-      "wallRestriction": "globalDefault"
-    },
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
@@ -172,11 +157,11 @@
       "systemVersion": "2.4.1"
     }
   },
-  "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
   "effects": [
     {
-      "icon": "icons/weapons/swords/sword-broad-crystal-paired.webp",
-      "origin": "Compendium.ddb-shared-compendia.ddb-override.OiAfv4qsdzOF3u5n",
+      "name": "Sentinel at Death's Door",
+      "icon": "icons/magic/control/encase-creature-monster-hold.webp",
+      "origin": "Item.6OtmQjcnT1N3N1Oo",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -186,79 +171,71 @@
         "startRound": null,
         "startTurn": null
       },
+      "transfer": true,
       "disabled": false,
-      "_id": "k6VChPqCYMCeFLPJ",
+      "_id": "7bTXyw1T6SO5ubJ3",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,postActiveEffects",
-          "priority": 20
-        },
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "",
+          "value": "ItemMacro,tpr.isHit|canSee=true;post=true",
           "priority": 20
         }
       ],
-      "tint": null,
-      "transfer": true,
+      "description": "",
+      "statuses": [],
       "flags": {
-        "times-up": {},
+        "times-up": {
+          "isPassive": true
+        },
         "dae": {
+          "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,
-          "stackable": "noneName",
-          "durationExpression": "",
-          "macroRepeat": "endEveryTurn",
-          "specialDuration": [],
           "dontApply": false,
+          "stackable": "noneName",
           "showIcon": false,
-          "disableIncapacitated": true
-        },
-        "core": {
-          "statusId": ""
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
         },
         "ActiveAuras": {
           "isAura": false,
           "aura": "None",
+          "nameOverride": "",
           "radius": "",
           "alignment": "",
           "type": "",
+          "customCheck": "",
           "ignoreSelf": false,
           "height": false,
           "hidden": false,
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "nameOverride": "",
-          "customCheck": "",
           "wallsBlock": "system"
         }
       },
-      "name": "Unwavering Mark",
-      "description": "",
-      "statuses": [],
-      "_key": "!items.effects!IXUlMTamNTBUohiD.k6VChPqCYMCeFLPJ"
+      "tint": null,
+      "_key": "!items.effects!iQ8qlTgq8nBwObN4.7bTXyw1T6SO5ubJ3"
     }
   ],
+  "img": "icons/magic/control/encase-creature-monster-hold.webp",
+  "folder": "Wlznzo7daJM68Pec",
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "Y4IYXHUifrP8RFnx": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1672329111608,
-    "modifiedTime": 1718556453552,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "createdTime": 1706323891871,
+    "modifiedTime": 1722891640560,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "folder": "ZniCDCqUBftmEiPR",
-  "_id": "IXUlMTamNTBUohiD",
+  "_id": "iQ8qlTgq8nBwObN4",
   "sort": 0,
-  "_key": "!items!IXUlMTamNTBUohiD"
+  "_key": "!items!iQ8qlTgq8nBwObN4"
 }

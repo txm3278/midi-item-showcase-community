@@ -3,7 +3,7 @@
   "type": "equipment",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Warp Gate</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, a feat is added that allows to attach/detach to/from a shield or armor. When this feat is used, it allows to attach the emblem, once attached, it activates a third party reaction effect. It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-MbOxO83wj0VjHdz7\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Warp Gate (dnd5e &lt; v3.2)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, a feat is added that allows to attach/detach to/from a shield or armor. When this feat is used, it allows to attach the emblem, once attached, it activates a third party reaction effect. It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
       "chat": ""
     },
     "source": {
@@ -129,7 +129,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": true
+      "ignoreTotalCover": true,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "infusions": {
       "maps": [],
@@ -143,7 +147,7 @@
         "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.items.guardianEmblem({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.items.guardianEmblem(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -236,7 +240,7 @@
         }
       },
       "tint": null,
-      "_key": "!items.effects!msFInHG5ifnt7k0O.CEQGUOX1WoREMxKj"
+      "_key": "!items.effects!RG0wykjarhVnN7nn.CEQGUOX1WoREMxKj"
     },
     {
       "name": "Guardian Emblem",
@@ -297,7 +301,7 @@
         }
       },
       "tint": null,
-      "_key": "!items.effects!msFInHG5ifnt7k0O.OhlssfgzGDAr77cd"
+      "_key": "!items.effects!RG0wykjarhVnN7nn.OhlssfgzGDAr77cd"
     }
   ],
   "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
@@ -305,17 +309,17 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706098165283,
-    "modifiedTime": 1718556253746,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "modifiedTime": 1723047944093,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "msFInHG5ifnt7k0O",
-  "sort": 0,
-  "_key": "!items!msFInHG5ifnt7k0O"
+  "_id": "RG0wykjarhVnN7nn",
+  "sort": 400000,
+  "_key": "!items!RG0wykjarhVnN7nn"
 }

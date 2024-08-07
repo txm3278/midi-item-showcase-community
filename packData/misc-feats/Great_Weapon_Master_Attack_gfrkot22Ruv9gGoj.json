@@ -1,14 +1,16 @@
 {
-  "name": "Divine Allegiance",
+  "name": "Great Weapon Master Attack",
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-TQEixdySgIjVVgMy\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feat has a charge when the requirements are met.</p><p><strong>Note:</strong> <em>Great Weapon Master</em> in MISC Feat should also be added to actor.</p>\n</section>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
-      "type": "reaction",
+      "type": "bonus",
       "cost": 1,
       "condition": ""
     },
@@ -19,27 +21,27 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": null,
       "width": null,
       "units": "",
-      "type": "ally",
+      "type": "",
       "prompt": true
     },
     "range": {
-      "value": 5,
+      "value": null,
       "long": null,
-      "units": "ft"
+      "units": ""
     },
     "uses": {
-      "value": null,
-      "max": "",
-      "per": null,
+      "value": 0,
+      "max": "1",
+      "per": "charges",
       "recovery": "",
       "prompt": true
     },
     "consume": {
       "type": "",
-      "target": null,
+      "target": "",
       "amount": null,
       "scale": false
     },
@@ -61,7 +63,7 @@
       "scaling": "spell"
     },
     "type": {
-      "value": "class",
+      "value": "feat",
       "subtype": ""
     },
     "requirements": "",
@@ -82,24 +84,25 @@
     },
     "obsidian": {
       "source": {
-        "type": "class",
-        "text": "Paladin"
+        "type": "feat"
       }
     },
+    "core": {},
     "midi-qol": {
-      "removeAttackDamageButtons": "default",
       "effectActivation": false,
+      "onUseMacroName": "[preItemRoll]ItemMacro",
+      "rollAttackPerTarget": "never",
       "itemCondition": "",
-      "reactionCondition": "reaction === \"tpr.isDamaged\"",
-      "otherCondition": "",
-      "effectCondition": "",
-      "onUseMacroName": "[preTargeting]ItemMacro,[postActiveEffects]ItemMacro",
-      "rollAttackPerTarget": "never"
+      "effectCondition": ""
     },
     "midiProperties": {
       "confirmTargets": "never",
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
       "autoFailFriendly": false,
       "autoSaveFriendly": false,
+      "rollOther": false,
       "critOther": false,
       "offHandWeapon": false,
       "magicdam": false,
@@ -107,16 +110,19 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
-    "core": {},
     "dae": {
       "macro": {
-        "name": "Divine Allegiance",
-        "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
+        "name": "Great Weapon Master Attack",
+        "img": "icons/weapons/axes/axe-battle-skull-black.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.classFeatures.divineAllegiance({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.greatWeaponMasterAttack(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -155,19 +161,9 @@
   },
   "effects": [
     {
-      "name": "Divine Allegiance",
-      "icon": "icons/magic/life/heart-cross-strong-flame-green.webp",
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;pre=true;post=true",
-          "priority": 20
-        }
-      ],
-      "transfer": true,
-      "_id": "9IJ6UUPYYF1mQoZc",
-      "disabled": false,
+      "name": "Great Weapon Master Attack",
+      "icon": "icons/weapons/axes/axe-battle-skull-black.webp",
+      "origin": "Item.mcD0g8NnohY8m807",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -177,12 +173,28 @@
         "startRound": null,
         "startTurn": null
       },
+      "transfer": true,
+      "disabled": false,
+      "_id": "WA8Y2i8D7bmZjtLr",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,postActiveEffects",
+          "priority": 20
+        }
+      ],
       "description": "",
-      "origin": "Item.wBTKcNEUSwEuzrht",
       "statuses": [],
       "flags": {
         "times-up": {
-          "isPassive": false
+          "isPassive": true
         },
         "dae": {
           "disableIncapacitated": false,
@@ -192,7 +204,7 @@
           "stackable": "noneName",
           "showIcon": false,
           "durationExpression": "",
-          "macroRepeat": "none",
+          "macroRepeat": "endEveryTurn",
           "specialDuration": []
         },
         "ActiveAuras": {
@@ -213,25 +225,25 @@
         }
       },
       "tint": null,
-      "_key": "!items.effects!b6oLqFimXNmki37A.9IJ6UUPYYF1mQoZc"
+      "_key": "!items.effects!gfrkot22Ruv9gGoj.WA8Y2i8D7bmZjtLr"
     }
   ],
-  "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
-  "folder": "6cZX0kexN8Ekw6p0",
+  "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+  "folder": null,
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1705852991498,
-    "modifiedTime": 1718556494350,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "createdTime": 1702224079058,
+    "modifiedTime": 1722892013397,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "b6oLqFimXNmki37A",
+  "_id": "gfrkot22Ruv9gGoj",
   "sort": 0,
-  "_key": "!items!b6oLqFimXNmki37A"
+  "_key": "!items!gfrkot22Ruv9gGoj"
 }

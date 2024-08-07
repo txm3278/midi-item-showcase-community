@@ -49,7 +49,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "noConcentrationCheck": false,
-      "confirmTargets": "never"
+      "confirmTargets": "never",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "dae": {
       "macro": {
@@ -57,7 +61,7 @@
         "img": "icons/consumables/plants/leaf-veins-glowing-green.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.spells.goodberry({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.spells.goodberry(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -74,7 +78,7 @@
   },
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>About Time (to handle automatic expiration after 24h)</li>\n   <li>Simple Calendar (to format expiration time if batch format setting is date-time)</li>\n   <li>Rest Recovery for 5E (to configure the berries to handle food and/or water satiation)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item need to be used to activate. It creates a batch of berries that will expire in 24h.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-TV23j6s2KeUYs8hS\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>About Time (to handle automatic expiration after 24h)</li>\n   <li>Simple Calendar (to format expiration time if batch format setting is date-time)</li>\n   <li>Rest Recovery for 5E (to configure the berries to handle food and/or water satiation)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item need to be used to activate. It creates a batch of berries that will expire in 24h.</p></section>",
       "chat": ""
     },
     "source": {
@@ -165,17 +169,17 @@
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
     "gL73FCal7TSakaVy": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1663621625017,
-    "modifiedTime": 1720475693948,
+    "modifiedTime": 1722892084166,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "CnuhdMRgxIKE70Az",
-  "sort": 100000,
-  "_key": "!items!CnuhdMRgxIKE70Az"
+  "_id": "84bl1mqySJnMbLgO",
+  "sort": 0,
+  "_key": "!items!84bl1mqySJnMbLgO"
 }

@@ -272,10 +272,10 @@
   "folder": null,
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.0.4",
+    "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1698529782342,
-    "modifiedTime": 1713901016704,
+    "modifiedTime": 1723047944093,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
@@ -283,6 +283,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "Q6njt8al67V1bqeE",
-  "sort": 1500000,
+  "sort": 2000000,
   "_key": "!items!Q6njt8al67V1bqeE"
 }

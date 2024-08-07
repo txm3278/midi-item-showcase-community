@@ -123,7 +123,7 @@ export async function wardingFlare({
    * If the reaction was used and completed successfully, adds disadvantage to the attack roll.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Spirit Shield item.
+   * @param {Item5e} sourceItem - The Warding Flare item.
    * @param {object} thirdPartyReactionResult - The third party reaction result.
    */
   function handleTargetOnUseIsPreAttackedPost(

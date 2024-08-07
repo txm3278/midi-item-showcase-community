@@ -5,8 +5,8 @@
   "img": "icons/creatures/magical/construct-iron-stomping-yellow.webp",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the <em>Spirit Shield</em> feature.<br />\n  When used, it will damage the attacker that triggered the <em>Spirit Shield</em> by the amount of damage that was prevented from the target.</p><p><strong>Note:</strong> This feature needs to be triggered by Spirit Shield (found in MISC Class Features) to work properly.</p>",
-      "chat": "<p><span style=\"font-family:Signika, sans-serif\">When you use your Spirit Shield to reduce the damage of an attack, the attacker takes an amount of force damage equal to the damage that your Spirit Shield prevents.</span></p>"
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-Jdv7gOxvcdBo7dVz\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the <em>Spirit Shield</em> feature.<br />\n  When used, it will damage the attacker that triggered the <em>Spirit Shield</em> by the amount of damage that was prevented from the target.</p><p><strong>Note:</strong> This feature needs to be triggered by Spirit Shield (found in MISC Class Features) to work properly.</p>\n</section>",
+      "chat": ""
     },
     "source": {
       "custom": ""
@@ -89,7 +89,7 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "flags": {
     "rest-recovery": {
@@ -124,7 +124,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "never",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "dae": {
@@ -133,7 +137,7 @@
         "img": "icons/creatures/magical/construct-iron-stomping-yellow.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.classFeatures.vengefulAncestors({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.vengefulAncestors(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -168,10 +172,10 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1694744431298,
-    "modifiedTime": 1718556419127,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "modifiedTime": 1722891690009,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "cQIKRxvjImpJxUxk",
+  "_id": "h79YWBu4Z648pgmk",
   "sort": 0,
-  "_key": "!items!cQIKRxvjImpJxUxk"
+  "_key": "!items!h79YWBu4Z648pgmk"
 }

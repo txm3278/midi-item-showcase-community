@@ -5,7 +5,7 @@
   "img": "icons/magic/light/explosion-star-glow-yellow.webp",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Enemy' to trigger reaction only on enemies.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-QMiCLESDxWvdwyK1\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Enemy' to trigger reaction only on enemies.</p>\n</section>",
       "chat": ""
     },
     "source": {},
@@ -135,13 +135,13 @@
         }
       },
       "tint": null,
-      "_key": "!items.effects!Ntu85cWANFl4XjCE.jPLrgv9929fkXzIz"
+      "_key": "!items.effects!mJnMmEe7zp2XVm28.jPLrgv9929fkXzIz"
     }
   ],
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "flags": {
     "walledtemplates": {
@@ -159,7 +159,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": true
+      "ignoreTotalCover": true,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "never",
@@ -180,7 +184,7 @@
         "img": "icons/magic/light/explosion-star-glow-yellow.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.classFeatures.wardingFlare({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.wardingFlare(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -212,10 +216,10 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714926134142,
-    "modifiedTime": 1718556479546,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "modifiedTime": 1722891696523,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "Ntu85cWANFl4XjCE",
+  "_id": "mJnMmEe7zp2XVm28",
   "sort": 0,
-  "_key": "!items!Ntu85cWANFl4XjCE"
+  "_key": "!items!mJnMmEe7zp2XVm28"
 }

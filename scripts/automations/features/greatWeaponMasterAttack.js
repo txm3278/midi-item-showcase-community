@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to make a bonus melee weapon attack when the actor scores a critical hit or brings a
 // target to 0 HP with a melee weapon.
-// v2.1.2
+// v2.0.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][each]

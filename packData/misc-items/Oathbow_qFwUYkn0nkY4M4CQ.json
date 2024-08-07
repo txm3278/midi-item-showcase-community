@@ -1,0 +1,259 @@
+{
+  "name": "Oathbow",
+  "type": "weapon",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Christopher</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul><li><p>Effect Macro</p></li></ul><h3>Optional:</h3><ul><li><p>Boss Loot Assets</p></li></ul>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "Basic Rules, Player's Handbook pg 183"
+    },
+    "quantity": 1,
+    "weight": 2,
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "attunement": 1,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": "false"
+    },
+    "range": {
+      "value": 150,
+      "long": 600,
+      "units": "ft"
+    },
+    "ability": "dex",
+    "actionType": "rwak",
+    "chatFlavor": "Roll Other damage: [3d6] Against Sworn Enemy",
+    "damage": {
+      "parts": [
+        [
+          "1d8[piercing] + @mod",
+          "piercing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "3d6[piercing]",
+    "properties": [
+      "hvy",
+      "mgc",
+      "two"
+    ],
+    "unidentified": {
+      "description": "Longbow",
+      "name": "Unidentified Longbow"
+    },
+    "type": {
+      "value": "martialR",
+      "baseItem": "longbow"
+    },
+    "container": null,
+    "equipped": false,
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "armor": {
+      "value": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "magicalBonus": null,
+    "proficient": null
+  },
+  "flags": {
+    "universalAnimations": {
+      "override": "neverPlay"
+    },
+    "boss-loot-assets-free": {
+      "afterAttack": {
+        "command": "/**\n *\n * After Attack\n * Bow Attack with miss animation\n * As a world macro the miss animation would not work\n *\n */\nif (canvas.tokens.controlled.length === 0 || game.user.targets.size === 0) {\n  ui.notifications.warn('Please select a source and a target token!');\n  return;\n}\n\nconst myToken = canvas.tokens.controlled[0];\nconst targetToken = Array.from(game.user.targets)[0];\nconst sourceElevation = myToken.document.elevation;\nconst targetElevation = targetToken.document.elevation;\n\nlet isMiss = false;\nif (typeof roll !== 'undefined' && roll !== null) {\n  isMiss = roll.total < targetToken.actor.system.attributes.ac.value;\n}\n\nlet impactPoint = targetToken.center;\nif (isMiss) {\n  impactPoint = blfx.helpers.getTokenCorner(myToken, targetToken);\n}\n\nawait new Sequence()\n\n  // BOW_ANIMATION\n  .effect()\n  .file('blfx.weapon.range.bow1.physical.shot.attack2.blue') // add bow animation here\n  .elevation(sourceElevation)\n  .atLocation(myToken)\n  .rotateTowards(impactPoint)\n  .scale(0.15)\n  .center()\n  .spriteOffset({ x: myToken.document.width * 0.3 }, { gridUnits: true })\n  .waitUntilFinished(-500)\n\n  // ARROW\n  .effect()\n  .file('blfx.weapon.range.snipe.arrow1.physical.impact1.blue') // add arrow animation here\n  .elevation(targetElevation)\n  .atLocation(myToken)\n  .stretchTo(impactPoint)\n  .waitUntilFinished(-300)\n\n  .play();"
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "",
+      "fumbleThreshold": null,
+      "effectActivation": false,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "otherCondition": "workflow.hitTargets.first()?.actor.appliedEffects?.some((ef) => ef.name === \"Sworn Enemy\")",
+      "effectCondition": ""
+    },
+    "dae": {
+      "macro": {
+        "name": "Oathbow",
+        "img": "icons/weapons/bows/longbow-gold-pink.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "core": {}
+  },
+  "effects": [
+    {
+      "name": "Oathbow - Weapon Effects",
+      "icon": "icons/weapons/bows/longbow-gold-pink.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.attack.rwak",
+          "mode": 0,
+          "value": "workflow.hitTargets.first()?.actor.appliedEffects.some(ef=>ef.name === 'Sworn Enemy')",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.items.oathbow,preCheckHits",
+          "priority": 20
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "function.MISC.macros.items.oathbow",
+          "priority": 20
+        }
+      ],
+      "transfer": true,
+      "_id": "glYmT4YY50JeQQFo",
+      "disabled": false,
+      "description": "",
+      "statuses": [],
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.ph5SOUu0UMurMn5Y",
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!qFwUYkn0nkY4M4CQ.glYmT4YY50JeQQFo"
+    }
+  ],
+  "img": "icons/weapons/bows/longbow-gold-pink.webp",
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1723047655867,
+    "modifiedTime": 1723047944093,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_id": "qFwUYkn0nkY4M4CQ",
+  "sort": 300000,
+  "_key": "!items!qFwUYkn0nkY4M4CQ"
+}

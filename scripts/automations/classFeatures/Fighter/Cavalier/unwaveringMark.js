@@ -372,8 +372,8 @@ export async function unwaveringMark({
     let player = MidiQOL.playerForActor(markerTokenActor);
     if (!player) {
       console.warn(
-        `${MACRO_NAME} | No active player or GM for actor.`,
-        sourceActor
+        `${DEFAULT_ITEM_NAME} | No active player or GM for actor.`,
+        markerTokenActor
       );
       return;
     }

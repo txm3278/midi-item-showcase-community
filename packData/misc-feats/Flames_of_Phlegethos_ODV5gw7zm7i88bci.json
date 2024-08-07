@@ -5,7 +5,7 @@
   "img": "icons/magic/control/debuff-chains-red.webp",
   "system": {
     "description": {
-      "value": "<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-nxKDaje07I2LPAmE\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></section>",
       "chat": ""
     },
     "source": {
@@ -141,13 +141,13 @@
       "name": "Flames of Phlegethos",
       "description": "",
       "statuses": [],
-      "_key": "!items.effects!sleGR3AKMMkYN37T.uTsKzidAmvYyp62G"
+      "_key": "!items.effects!ODV5gw7zm7i88bci.uTsKzidAmvYyp62G"
     }
   ],
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "XPfMr7PMwh3Hrbvr": 3
+    "B2BBHntfpytXE8DP": 3
   },
   "flags": {
     "magicitems": {
@@ -180,7 +180,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "never",
@@ -200,7 +204,7 @@
         "img": "icons/magic/control/debuff-chains-red.webp",
         "type": "script",
         "scope": "global",
-        "command": "return await MISC.macros.features.flamesOfPhlegethos({speaker, actor, token, character, item, args, scope, workflow, options});",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.flamesOfPhlegethos(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -213,10 +217,10 @@
     "systemVersion": "3.1.2",
     "coreVersion": "11.315",
     "createdTime": 1663621622118,
-    "modifiedTime": 1718556198867,
-    "lastModifiedBy": "XPfMr7PMwh3Hrbvr"
+    "modifiedTime": 1722892009740,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "sleGR3AKMMkYN37T",
+  "_id": "ODV5gw7zm7i88bci",
   "sort": 0,
-  "_key": "!items!sleGR3AKMMkYN37T"
+  "_key": "!items!ODV5gw7zm7i88bci"
 }

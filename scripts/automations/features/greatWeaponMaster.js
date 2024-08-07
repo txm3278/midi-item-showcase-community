@@ -101,7 +101,6 @@ export async function greatWeaponMaster({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
-    const macroData = args[0];
     const toggleEffect = foundry.utils.getProperty(
       scope.macroItem,
       'flags.midiProperties.toggleEffect'
@@ -148,7 +147,6 @@ export async function greatWeaponMaster({
         ?.delete();
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
-    const macroData = args[0];
     if (
       scope.rolledItem?.type !== 'weapon' ||
       !elwinHelpers.hasItemProperty(scope.rolledItem, 'hvy') ||
