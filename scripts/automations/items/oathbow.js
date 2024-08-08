@@ -27,6 +27,9 @@ export async function oathbow({
     flags: {
       'midi-qol': {
         onUseMacroName: '[postActiveEffects]ItemMacro',
+        rollAttackPerTarget: 'default',
+        itemCondition: '',
+        effectCondition: '',
       },
       dae: {
         macro: {
@@ -35,7 +38,7 @@ export async function oathbow({
           type: 'script',
           scope: 'global',
           command:
-            'const target = workflow.targets.first()\nconsole.log(target)\nconst uuid = target.document.uuid;\nconst swornEnemyEffect = {\n  name: "Sworn Enemy",\n  icon: workflow.item.img,\n  origin: workflow.item.uuid,\n  duration: {\n    seconds: 604800,\n  },\n  flags: {\n    dae: {\n      specialDuration: ["zeroHP"],\n    },\n    effectmacro: {\n      onDelete: {\n        script:\n          \'let sourceActor = origin.parent\\nlet sourceActorUuid = sourceActor.uuid\\nlet sourceEffect = sourceActor.effects.getName("Sworn Enemy")\\n\\nif (!sourceEffect) {\\n    return;\\n} else {\\n    await MidiQOL.socket().executeAsGM("deleteEffects", {\\n    actorUuid: sourceActorUuid,\\n    effectsToDelete: [sourceEffect.id],\\n  });\\n}\',\n      },\n    },\n  },\n}\nawait target.actor.setFlag(\'dnd5e\', \'sworn-enemy\', true)\nawait MidiQOL.socket().executeAsGM(\'createEffects\', {actorUuid: uuid, effects: [swornEnemyEffect]});',
+            'const target = workflow.targets.first()\nconst uuid = target.actor.uuid;\nconst effectSource = actor.appliedEffects.find(e=>e.name == \'Sworn Enemy - Attacker\');\nconst effectTarget = target.actor.appliedEffects.find(e=>e.name == "Sworn Enemy - Target")\n\nconsole.log("effectSource:", effectSource);\nconsole.log("effectSource.uuid:", effectSource.uuid);\nconsole.log("effectTarget:", effectTarget);\nconsole.log("effectTarget.uuid", effectTarget.uuid)\n\nawait MidiQOL.socket().executeAsGM(\'addDependent\', {concentrationEffectUuid: effectSource.uuid, dependentUuid: effectTarget.uuid});\nawait MidiQOL.socket().executeAsGM(\'addDependent\', {concentrationEffectUuid: effectTarget.uuid, dependentUuid: effectSource.uuid});',
           author: 'jM4h8qpyxwTpfNli',
           ownership: {
             default: 3,
@@ -45,19 +48,21 @@ export async function oathbow({
           sort: 0,
           flags: {},
           _stats: {
-            systemId: null,
-            systemVersion: null,
-            coreVersion: null,
+            systemId: 'dnd5e',
+            systemVersion: '3.3.1',
+            coreVersion: '12.330',
             createdTime: null,
             modifiedTime: null,
             lastModifiedBy: null,
+            compendiumSource: null,
+            duplicateSource: null,
           },
         },
         DAECreated: true,
       },
       'scene-packer': {
-        hash: 'd7fcd471df2beae629c774e0338abbc5bccc07cc',
-        sourceId: 'Item.OA9JL0beu7KuHS0X',
+        hash: '3eb63519c2833021a79b75f21ec2c725156e96a7',
+        sourceId: 'Item.rk239YpC0iWlhxjA',
       },
       walledtemplates: {
         wallsBlock: 'globalDefault',
@@ -69,6 +74,38 @@ export async function oathbow({
         system: 'dnd5e',
         coreVersion: '11.315',
         systemVersion: '3.2.1',
+      },
+      magicitems: {
+        enabled: false,
+        default: '',
+        equipped: false,
+        attuned: false,
+        charges: '0',
+        chargeType: 'c1',
+        destroy: false,
+        destroyFlavorText:
+          'reaches 0 charges: it crumbles into ashes and is destroyed.',
+        rechargeable: false,
+        recharge: '0',
+        rechargeType: 't1',
+        rechargeUnit: 'r1',
+        sorting: 'l',
+      },
+      midiProperties: {
+        confirmTargets: 'default',
+        autoFailFriendly: false,
+        autoSaveFriendly: false,
+        critOther: false,
+        offHandWeapon: false,
+        magicdam: false,
+        magiceffect: false,
+        noConcentrationCheck: false,
+        toggleEffect: false,
+        ignoreTotalCover: false,
+        idr: false,
+        idi: false,
+        idv: false,
+        ida: false,
       },
     },
     img: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
@@ -154,7 +191,7 @@ export async function oathbow({
     },
     effects: [
       {
-        name: 'Sworn Enemy',
+        name: 'Sworn Enemy - Attacker',
         changes: [
           {
             key: 'flags.midi-qol.disadvantage.attack.all',
@@ -164,7 +201,6 @@ export async function oathbow({
           },
         ],
         transfer: false,
-        icon: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
         _id: 'q71qwG76PUYJIVVg',
         disabled: false,
         duration: {
@@ -187,6 +223,8 @@ export async function oathbow({
             durationExpression: '',
             macroRepeat: 'none',
             specialDuration: [],
+            enableCondition: '',
+            disableCondition: '',
           },
           ActiveAuras: {
             isAura: false,
@@ -204,29 +242,80 @@ export async function oathbow({
             onlyOnce: false,
             wallsBlock: 'system',
           },
-          effectmacro: {
-            onDelete: {
-              script:
-                'let tokens = canvas.tokens.placeables;\nlet tactor;\nlet tactorUuid;\nlet tactorEffect;\n\nfor (let t of tokens) {\n  tactor = t.actor;\n  tactorUuid = tactor.uuid;\n  tactorEffect = tactor.effects.find((e) => e.name === "Sworn Enemy");\n\n  if (tactor.flags.dnd5e?.["sworn-enemy"]) {\n    await tactor.unsetFlag("dnd5e", "sworn-enemy");\n    await MidiQOL.socket().executeAsGM("deleteEffects", {\n      actorUuid: tactorUuid,\n      effectsToDelete: [tactorEffect.id],\n    });\n  } else {\n    continue;\n  }\n}\n',
-            },
-          },
+          effectmacro: {},
         },
-        description: '',
+        description:
+          '<p>When you denote an enemy as a "Sworn Enemy," the target of your Oathbow attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.</p><p>When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.</p><p>While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.</p>',
         origin: null,
         statuses: [],
-        tint: null,
+        tint: '#ffffff',
+        icon: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
+      },
+      {
+        origin: 'Actor.XlGHj4yq4EcmlMMq.Item.f2rRBfwVMPmycAgD',
+        duration: {
+          rounds: 1,
+          startTime: null,
+          seconds: 604800,
+          combat: null,
+          turns: null,
+          startRound: null,
+          startTurn: null,
+        },
+        disabled: false,
+        name: 'Sworn Enemy - Target',
+        _id: 'Knbw6MDKs8vRF3Ig',
+        changes: [],
+        description:
+          '<p>When you denote an enemy as a "Sworn Enemy," the target of your Oathbow attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.</p><p>When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.</p><p>While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.</p>',
+        tint: '#ffffff',
+        transfer: false,
+        statuses: [],
+        flags: {
+          dae: {
+            enableCondition: '',
+            disableCondition: '',
+            disableIncapacitated: false,
+            selfTarget: false,
+            selfTargetAlways: false,
+            dontApply: false,
+            stackable: 'noneName',
+            showIcon: false,
+            durationExpression: '',
+            macroRepeat: 'none',
+            specialDuration: ['zeroHP'],
+          },
+          ActiveAuras: {
+            isAura: false,
+            aura: 'None',
+            nameOverride: '',
+            radius: '',
+            alignment: '',
+            type: '',
+            customCheck: '',
+            ignoreSelf: false,
+            height: false,
+            hidden: false,
+            displayTemp: false,
+            hostile: false,
+            onlyOnce: false,
+            wallsBlock: 'system',
+          },
+        },
+        icon: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
       },
     ],
     folder: null,
     _stats: {
+      coreVersion: '11.315',
       systemId: 'dnd5e',
       systemVersion: '3.2.1',
-      coreVersion: '11.315',
-      createdTime: 1720847879236,
-      modifiedTime: 1720851477858,
+      createdTime: 1723123040587,
+      modifiedTime: 1723124919099,
       lastModifiedBy: 'jM4h8qpyxwTpfNli',
     },
   };
+
   if (args[0] === 'on') {
     await actor.createEmbeddedDocuments('Item', [swornEnemy]);
     return;
@@ -240,7 +329,7 @@ export async function oathbow({
     if (!workflow.targets.size) return;
     const effectExists = workflow.targets
       .first()
-      ?.actor?.appliedEffects?.find((ef) => ef.name === 'Sworn Enemy');
+      ?.actor?.appliedEffects?.find((ef) => ef.name === 'Sworn Enemy - Target');
     if (!effectExists) return;
 
     let validTypes = ['rwak'];
@@ -251,27 +340,16 @@ export async function oathbow({
     )
       return;
 
-    //   let queueSetup = await chrisPremades.queue.setup( // not sure this is even needed
-    //   workflow.item.uuid,
-    //   "oathbow",
-    //   150
-    // );
-    // console.log("queueSetup", queueSetup);
-
-    // if (!queueSetup) return;
     let coverBonus = MidiQOL.computeCoverBonus(
       workflow.token,
       workflow.targets.first(),
       workflow.item
     );
-    console.log('coverBonus', coverBonus);
     if (coverBonus > 5) {
-      // chrisPremades.queue.remove(workflow.item.uuid); // figure out how to cancel workflow here
       ui.notifications.warn('Target is under total cover');
       return;
     }
     let updatedRoll = await addToRoll(workflow.attackRoll, coverBonus);
     workflow.setAttackRoll(updatedRoll);
-    // chrisPremades.queue.remove(workflow.item.uuid); // is this even necessary?
   }
 }

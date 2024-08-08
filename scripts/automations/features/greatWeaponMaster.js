@@ -198,9 +198,6 @@ export async function greatWeaponMaster({
     const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const effectData = {
       changes: [],
-      duration: {
-        seconds: -1,
-      },
       [imgPropName]: sourceItem.img,
       name: `${sourceItem.name} - Toggled On`,
       origin: sourceItem.uuid,
