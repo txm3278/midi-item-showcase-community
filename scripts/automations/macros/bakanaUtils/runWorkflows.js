@@ -16,7 +16,73 @@
  * "preDamageRollComplete"         : Damage roll modifications (addition/removal)
  * "postDamageRoll"                : Damage die replacement
  * "postDamageRollComplete"        : Damage type conversions
- */
+
+    // Self workflows
+    "preTargeting"              : preTargeting,
+    "preItemRoll"               : preItemRoll,
+    "postNoAction"              : postNoAction,
+    "preStart"                  : preStart,
+    "postStart"                 : postStart,
+    "preAoETargetConfirmation"  : preAoETargetConfirmation,
+    "postAoETargetConfirmation" : postAoETargetConfirmation,
+    "preValidateRoll"           : preValidateRoll,
+    "postValidateRoll"          : postValidateRoll,
+    "prePreambleComplete"       : prePreambleComplete,
+    "preambleComplete"          : preambleComplete,
+    "postPreambleComplete"      : postPreambleComplete,
+    "preWaitForAttackRoll"      : preWaitForAttackRoll,
+    "preAttackRoll"             : preAttackRoll,
+    "postWaitForAttackRoll"     : postWaitForAttackRoll,
+    "preAttackRollComplete"     : preAttackRollComplete,
+    "preCheckHits"              : preCheckHits,
+    "postAttackRoll"            : postAttackRoll,
+    "postAttackRollComplete"    : postAttackRollComplete,
+    "preWaitForDamageRoll"      : preWaitForDamageRoll,
+    "preDamageRoll"             : preDamageRoll,
+    "postWaitForDamageRoll"     : postWaitForDamageRoll,
+    "preConfirmRoll"            : preConfirmRoll,
+    "postConfirmRoll"           : postConfirmRoll,
+    "preDamageRollStarted"      : preDamageRollStarted,
+    "postDamageRollStarted"     : postDamageRollStarted,
+    "preDamageRollComplete"     : preDamageRollComplete,
+    "postDamageRoll"            : postDamageRoll,
+    "postDamageRollComplete"    : postDamageRollComplete,
+    "preWaitForSaves"           : preWaitForSaves,
+    "preSave"                   : preSave,
+    "postWaitForSaves"          : postWaitForSaves,
+    "preSavesComplete"          : preSavesComplete,
+    "postSave"                  : postSave,
+    "postSavesComplete"         : postSavesComplete,
+    "preAllRollsComplete"       : preAllRollsComplete,
+    "preDamageApplication"      : preDamageApplication,
+    "postAllRollsComplete"      : postAllRollsComplete,
+    "preApplyDynamicEffects"    : preApplyDynamicEffects,
+    "preActiveEffects"          : preActiveEffects,
+    "postApplyDynamicEffects"   : postApplyDynamicEffects,
+    "preRollFinished"           : preRollFinished,
+    "postActiveEffects"         : postActiveEffects,
+    "postRollFinished"          : postRollFinished,
+    "preCleanup"                : preCleanup,
+    "postCleanup"               : postCleanup,
+    "preCompleted"              : preCompleted,
+    
+    // Damage Bonus - Recommend not to use
+    "DamageBonus"                 : DamageBonus,
+
+    // Target Workflows
+    "isAttacked"                    : isAttacked,
+    "isHit"                         : isHit,
+    "preSaveTarget"                 : preSaveTarget,
+    "isSave"                        : isSave,
+    "isSaveSuccess"                 : isSaveSuccess,
+    "isSaveFailure"                 : isSaveFailure,
+    "isDamaged"                     : isDamaged,
+    "preTargetDamageApplication"    : preTargetDamageApplication,
+
+    "on"    :   effectOn,
+    "each"  :   effectTurn,
+    "off"   :   effectOff,
+*/
 
 /**
   * Validates dependencies.
@@ -68,6 +134,10 @@ async function runWorkflows(argumentInput, config) {
             if (macroUtil.debugLevel > 2) console.warn("midiWorkflow:", workflow);
             if (!config[workflowAction]) console.error(`Undefined workflow attempting to run : ${workflowAction}`);
             else workflowReturn = await config[workflowAction](firstArg);
+
+            // Handle some compatibilty corner cases
+            // TODO(bakanabaka)
+            // End corner cases
 
             if (macroUtil.debugLevel > 1) {
                 if (workflow.aborted) console.warn("Aborted flag on workflow is set to :", workflow.aborted);

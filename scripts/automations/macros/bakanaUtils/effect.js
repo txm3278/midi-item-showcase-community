@@ -1,40 +1,16 @@
-async function rootOrigin(child) {
-    if (!child) return  undefined;
-    let recursiveLimit = 5;
-    while (recursiveLimit--) {
-        if (!child) throw `Unhandlabled exception: origin chain of ${child} is improper`;
-        if (child?.documentName == 'Item') return child.uuid;
-        child = await fromUuid(child.origin);
-    }
-    throw `Recursion depth reached while attempting to find root origin`
-}
-
 async function find(actorEntity, effect) {
-    if (!effect) return false;
-    let rootOriginItem =  await rootOrigin(effect);
-    let possibleEffects = actorEntity.effects.filter(ef => ef.name == effect?.name);
-    for (let possible of possibleEffects) {
-        let rootOriginEffect = await rootOrigin(possible);
-        if (rootOriginEffect == rootOriginItem) return possible;
-    }
-    return undefined;
+    if (!effect || !actorEntity) return false;
+    return actorEntity.effects.find(ef => ef.name == effect.name);
 }
 
-async function create(actorEntity, effect, parentEffect) {
-    if (!actorEntity) return;
-    if (parentEffect?.uuid) {
-        let createdEffect = duplicate(effect);
-        createdEffect.origin = parentEffect.uuid;
-        await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actorEntity.uuid, effects: [createdEffect] });
-    } else {
-        await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actorEntity.uuid, effects: [effect] });
-    }
-    let actorInfo = await fromUuid(actorEntity.uuid);   // poll actor info again to update
-    return await find(actorInfo, effect);
+async function create(actorEntity, effect) {
+    if (!effect || !actorEntity) return;
+    await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actorEntity.uuid, effects: [effect] });
+    return await find(actorEntity, effect);
 }
 
 async function remove(actorEntity, effect) {
-    if (!actorEntity) return;
+    if (!effect || !actorEntity) return;
     let appliedEffect = await find(actorEntity, effect);
     if (!appliedEffect) return;
     await MidiQOL.socket().executeAsGM('removeEffects', { actorUuid: actorEntity.uuid, effects: [appliedEffect.id] });
@@ -42,7 +18,7 @@ async function remove(actorEntity, effect) {
 }
 
 async function update(actorEntity, effect) {
-    if (!actorEntity) return;
+    if (!effect || !actorEntity) return;
 }
 
 async function toggle(actorEntity, effect) {
