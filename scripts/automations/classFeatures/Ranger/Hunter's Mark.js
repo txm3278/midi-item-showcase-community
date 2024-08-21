@@ -1,6 +1,21 @@
+async function find(actorEntity, effect) {
+    if (!effect) return undefined;
+    return actorEntity.effects.find(ef => (ef.name == effect.name) && (ef.origin == effect.origin));
+}
+
+async function create(actorEntity, effect, rooteffect) {
+    if (!actorEntity) return;
+    if (rooteffect) {
+        console.warn(rooteffect);
+    }
+
+    await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actorEntity.uuid, effects: [effect] });
+    return await find(actorEntity, effect);
+}
+
 async function preItemRoll() {
     let huntersMark = macroItem.effects.find(ef => ef.name == macroItem.name);
-    let originalCast = !(await macroUtil.effect.find(actor, huntersMark));
+    let originalCast = !(await find(actor, huntersMark));
 
     if (!originalCast) {
         let formerPrey = canvas.tokens.get(persistentData.targetTokenId);
@@ -27,11 +42,13 @@ async function postRollFinished(midiArgs) {
         let hours = (castlevel >= 5) ? 24 : ((castlevel >= 3) ? 8 : 1);
         persistentData.duration = hours * 600; // 600 turns per hour
 
-        //let markEffect = await macroUtil.effect.create(actor, huntersMark, concentration);
+        let markEffect = await create(actor, huntersMark, concentration);
         console.warn("concentration", concentration);
-        //console.warn("target mark",  markEffect);
+        console.warn("target mark",  markEffect);
+
         await concentration.update({ "duration.rounds"  : persistentData.duration });
-        //await markEffect.update({ "duration.rounds"  : persistentData.duration });
+        if(!markEffect) throw `Unable to create ${macroItem.name} mark effect`;
+        await markEffect.update({ "duration.rounds"  : persistentData.duration });
     }
 
     // Personalize hunter's mark
@@ -45,7 +62,7 @@ async function postRollFinished(midiArgs) {
 
     // Apply hunter's mark to new target
     let targetActor = workflow.targets.first().actor;
-    let markEffect = await macroUtil.effect.create(targetActor, markedTarget, huntersMark);
+    let markEffect = await create(targetActor, markedTarget, concentration);
     persistentData.targetTokenId = workflow.targets.first().id;
 
     // Update hunter's mark duration
