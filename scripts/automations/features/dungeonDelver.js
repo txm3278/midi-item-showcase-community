@@ -38,6 +38,7 @@ export async function dungeonDelver({
   }
 
   if (args[0].macroPass === 'preTargetSave' && workflow.actor.name === 'Trap') {
+    const imgPropName = game.version < 12 ? 'icon' : 'img';
     const effectData = {
       changes: [
         {
@@ -47,7 +48,7 @@ export async function dungeonDelver({
         },
       ],
       name: `${item.name}: preTargetSave`,
-      icon: `${item.img}`,
+      [imgPropName]: `${item.img}`,
       flags: { dae: { specialDuration: ['isSave'], stackable: 'noneName' } },
     };
     await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);

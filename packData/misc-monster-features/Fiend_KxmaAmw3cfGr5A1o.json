@@ -1,0 +1,19 @@
+{
+  "name": "Fiend",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "KxmaAmw3cfGr5A1o",
+  "sort": 100000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1715293709411,
+    "modifiedTime": 1715294436254,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!KxmaAmw3cfGr5A1o"
+}

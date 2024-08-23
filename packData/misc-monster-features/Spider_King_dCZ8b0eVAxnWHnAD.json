@@ -1,0 +1,19 @@
+{
+  "name": "Spider King",
+  "sorting": "a",
+  "folder": "bmVC9uN2inJJZOE9",
+  "type": "Item",
+  "_id": "dCZ8b0eVAxnWHnAD",
+  "sort": 400000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706337818051,
+    "modifiedTime": 1715293744671,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!dCZ8b0eVAxnWHnAD"
+}

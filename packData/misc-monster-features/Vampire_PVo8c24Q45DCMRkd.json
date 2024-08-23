@@ -1,0 +1,19 @@
+{
+  "name": "Vampire",
+  "sorting": "a",
+  "folder": "awB551V0n6NHOPGR",
+  "type": "Item",
+  "_id": "PVo8c24Q45DCMRkd",
+  "sort": 200000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714418248315,
+    "modifiedTime": 1715293752638,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!PVo8c24Q45DCMRkd"
+}

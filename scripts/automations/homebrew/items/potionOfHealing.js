@@ -12,7 +12,7 @@ export async function potionOfHealing({
   //Prompts to use an action to drink the whole potion (full value) or bonus action to use the die roll. Also allows throwing up to 30 ft as a regular action to apply the healing to a targeted ally.
   //Item onUse ItemMacro | Before damage is rolled
 
-  const hasUsedBonusAction = await MidiQOL.hasUsedBonusAction(actor);
+  const hasUsedBonusAction = MidiQOL.hasUsedBonusAction(actor);
   let inRange = false;
   const target = args[0].targets[0].object;
   if (MidiQOL.computeDistance(token, target) > 5) inRange = true;
@@ -54,11 +54,12 @@ export async function potionOfHealing({
     });
   }
   if (dialog === 'action') {
+    const imgPropName = game.version < 12 ? 'icon' : 'img';
     const effectData = {
       changes: [{ key: 'flags.midi-qol.max.damage.heal', mode: 0, value: 1 }],
       name: item.name,
       origin: item.uuid,
-      icon: item.img,
+      [imgPropName]: item.img,
       flags: { dae: { specialDuration: ['DamageDealt'] } },
     };
     return await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);

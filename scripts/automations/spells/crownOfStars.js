@@ -761,7 +761,7 @@ export async function crownOfStars({
             system: {
               actionType: 'rsak',
               school: 'evo',
-              level: 0,
+              level: 7,
               preparation: { mode: 'atwill', prepared: true },
               damage: { parts: [['4d12', 'radiant']] },
               activation: { type: 'bonus', cost: 1 },

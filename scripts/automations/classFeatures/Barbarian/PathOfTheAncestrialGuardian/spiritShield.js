@@ -26,7 +26,7 @@
 //     @scale.path-of-the-ancestral-guardian.spirit-shield | No Damage
 // The Feature Midi-QOL must be:
 //   - On Use Macros:
-//       ItemMacro | Called before the item is rolled
+//       ItemMacro | Called before targeting is resolved (*)
 //   - Confirm Targets: Never
 //   - Roll a separate attack per target: Never
 //   - No Full cover: (checked)
@@ -299,7 +299,7 @@ export async function spiritShield({
       }
       if (!player?.active) {
         console.warn(
-          `${MACRO_NAME} | No active player or GM for actor.`,
+          `${DEFAULT_ITEM_NAME} | No active player or GM for actor.`,
           sourceActor
         );
         return;

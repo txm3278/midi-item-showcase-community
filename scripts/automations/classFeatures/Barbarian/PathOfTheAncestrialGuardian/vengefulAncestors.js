@@ -2,7 +2,7 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Damages the attacker that triggered Spirit Shield by the amount of damage that was prevented.
-// v2.0.2
+// v2.0.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll][preDamageRoll]

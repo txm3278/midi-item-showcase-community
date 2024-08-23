@@ -1,0 +1,447 @@
+{
+  "name": "Healer",
+  "type": "feat",
+  "img": "icons/environment/people/cleric-grey.webp",
+  "system": {
+    "description": {
+      "value": "<h2><span style=\"font-family:Signika, sans-serif\">Made by SagaTympana/WurstKorn</span></h2><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;text-align:start\"><span style=\"font-family:Signika, sans-serif\">Healing by SagaTympana, modified by WurstKorn to add stabilize</span></p><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;text-align:start\"></p><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial;text-align:start\"><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">This item will handle the healing effect of the Healer feat. Set its consumption to Healer's Kit uses once it's added to an actor.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": {
+      "custom": ""
+    },
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature",
+      "prompt": true
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "charges",
+      "target": "",
+      "amount": 1,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "heal",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1",
+          "healing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "feat",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "ddbimporter": {
+      "id": "53625",
+      "entityTypeId": "222216831",
+      "componentId": 22,
+      "componentTypeId": 1088085227,
+      "type": "feat",
+      "importId": "RrLEXdG6sezJ0UCL"
+    },
+    "infusions": {
+      "infused": false
+    },
+    "obsidian": {
+      "source": {
+        "type": "feat"
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[all]function.MISC.macros.features.healer",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": "",
+      "rollAttackPerTarget": "default"
+    },
+    "itemacro": {
+      "macro": {
+        "name": "Healer",
+        "type": "script",
+        "scope": "global",
+        "command": "if(args[0].macroPass === \"preItemRoll\")\n{\n    const target = args[0].targets[0]?.actor;\n    if(!target) return;\n    if(target.effects.find(e=>e.name===\"Healer Feat\"))\n    {\n        await ChatMessage.create({\n            user: game.user.id,\n            content: `<b>Healer</b><br>This creature must finish a <b>short</b> or <b>long rest</b> before benefiting from the Healer feat.`,\n            speaker: ChatMessage.getSpeaker({ actor: target }),\n        }, {});\n        return false;\n    }\n}\nif(args[0].macroPass === \"postDamageRoll\")\n{\nlet damage = \"0\";\nconst target = args[0].targets[0]?.actor;\nconst macroData = args[0];\nconst sourceItem = fromUuidSync(macroData.sourceItemUuid);\nconst EffectData = {\n\t\t\t\t\tchanges: [],\n\t\t\t\t\tduration: {\n\t\t\t\t\t  seconds: 999999,\n\t\t\t\t\t},\n\t\t\t\t\ticon: sourceItem.img,\n\t\t\t\t\tlabel: \"Healer Feat\",\n\t\t\t\t\torigin: macroData.sourceItemUuid,\n\t\t\t\t\ttransfer: false,\n\t\t\t\t\tflags: {\n\t\t\t\t\t  dae: {\n\t\t\t\t\t\tstackable: \"none\",\n\t\t\t\t\t\tspecialDuration: [\"longRest\",\"shortRest\"],\n\t\t\t\t\t  },\n\t\t\t\t\t},\n\t\t\t\t};\nconst dialog = await Dialog.wait({\n\ttitle: `${item.name}`,\n        content: \"What do you want to do?\",\n        buttons: {\n          stabilize: {\n                icon: '<image src=\"icons/svg/regen.svg\" width=\"30\" height=\"30\" style=\"border:0px\">',\n                label: \"Stabilize the target and heal for 1hp\",\n                callback: () => {\n\t\t\t\t\tdamage = \"1\";\n\t\t\t\t}\n\t\t\t},\n\t\t  healing: {\n                icon: '<image src=\"icons/svg/heal.svg\" width=\"30\" height=\"30\" style=\"border:0px\">',\n                label: \"Heal the target (once per short rest)\",\n                callback: () => {\n\t\t\t\t\tif(!target) return;\n\t\t\t\t\tconst hd = target.system.details.level;\n\t\t\t\t\tdamage = \"1d6 + 4 + \"+hd;\n\t\t\t\t}\n            }\n        },\n        default: \"stabilize\"\n    });\n\nif (damage != \"1\") { \nawait MidiQOL.socket().executeAsGM('createEffects',{actorUuid:target.uuid, effects: [EffectData]})\n};\nconst damageRoll = await new Roll(damage).roll({async: true});\n  workflow.setDamageRoll(damageRoll);\n  return;\n}",
+        "author": "RDUD9VahrEsIwEDB",
+        "_id": null,
+        "img": "icons/environment/people/cleric-grey.webp",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 3
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "autoanimations": {
+      "id": "3a205523-5231-435b-ac19-01371bad77a9",
+      "label": "Healer Healing",
+      "levels3d": {
+        "enable": false,
+        "type": "",
+        "data": {},
+        "secondary": {
+          "enable": false,
+          "data": {}
+        },
+        "sound": {
+          "delay": 0,
+          "enable": false,
+          "file": "",
+          "startTime": 0,
+          "repeat": 1,
+          "repeatDelay": 250,
+          "volume": 0.75
+        }
+      },
+      "macro": {
+        "enable": false,
+        "playWhen": "0"
+      },
+      "meleeSwitch": {
+        "video": {
+          "dbSection": "range",
+          "menuType": "weapon",
+          "animation": "arrow",
+          "variant": "regular",
+          "color": "regular"
+        },
+        "sound": {
+          "enable": false,
+          "delay": 0,
+          "repeat": 1,
+          "repeatDelay": 250,
+          "startTime": 0,
+          "volume": 0.75
+        },
+        "options": {
+          "detect": "automatic",
+          "range": 2,
+          "returning": false,
+          "switchType": "on"
+        }
+      },
+      "menu": "ontoken",
+      "primary": {
+        "options": {
+          "addTokenWidth": false,
+          "anchor": "0.5",
+          "delay": 0,
+          "elevation": 0,
+          "fadeIn": 250,
+          "fadeOut": 500,
+          "isMasked": false,
+          "isRadius": false,
+          "isWait": false,
+          "opacity": 1,
+          "persistent": false,
+          "playOn": "default",
+          "repeat": 1,
+          "repeatDelay": 0,
+          "size": 2,
+          "unbindAlpha": false,
+          "unbindVisibility": false,
+          "zIndex": 1
+        },
+        "sound": {
+          "delay": 0,
+          "enable": true,
+          "file": "sounds/Spells/Buff/spell-buff-long-*",
+          "startTime": 0,
+          "volume": 0.75,
+          "repeat": 1,
+          "repeatDelay": 250
+        },
+        "video": {
+          "dbSection": "static",
+          "menuType": "spell",
+          "animation": "generichealing",
+          "variant": "02",
+          "color": "greenorange",
+          "enableCustom": false
+        }
+      },
+      "secondary": {
+        "enable": false,
+        "options": {
+          "addTokenWidth": false,
+          "anchor": "0.5",
+          "delay": 2400,
+          "elevation": 1000,
+          "fadeIn": 250,
+          "fadeOut": 500,
+          "isMasked": false,
+          "isRadius": true,
+          "isWait": false,
+          "opacity": 1,
+          "repeat": 1,
+          "repeatDelay": 0,
+          "size": 1.5,
+          "zIndex": 1
+        },
+        "sound": {
+          "delay": 0,
+          "enable": false,
+          "file": "",
+          "startTime": 0,
+          "volume": 0.75,
+          "repeat": 1,
+          "repeatDelay": 250
+        },
+        "video": {
+          "dbSection": "static",
+          "menuType": "spell",
+          "animation": "generichealing",
+          "variant": "02",
+          "color": "greenorange",
+          "enableCustom": false,
+          "customPath": ""
+        }
+      },
+      "soundOnly": {
+        "sound": {
+          "enable": false,
+          "delay": 0,
+          "startTime": 0,
+          "volume": 0.75,
+          "repeat": 1,
+          "repeatDelay": 250
+        }
+      },
+      "source": {
+        "enable": false,
+        "options": {
+          "addTokenWidth": false,
+          "anchor": "0.5",
+          "delay": 0,
+          "elevation": 1000,
+          "fadeIn": 250,
+          "fadeOut": 500,
+          "isMasked": false,
+          "isRadius": false,
+          "isWait": true,
+          "opacity": 1,
+          "repeat": 1,
+          "repeatDelay": 250,
+          "size": 1,
+          "zIndex": 1
+        },
+        "sound": {
+          "delay": 0,
+          "enable": false,
+          "file": "",
+          "startTime": 0,
+          "repeat": 1,
+          "repeatDelay": 250,
+          "volume": 0.75
+        },
+        "video": {
+          "dbSection": "static",
+          "menuType": "spell",
+          "animation": "curewounds",
+          "variant": "01",
+          "color": "blue",
+          "enableCustom": false,
+          "customPath": ""
+        }
+      },
+      "target": {
+        "enable": false,
+        "options": {
+          "addTokenWidth": false,
+          "anchor": "0.5",
+          "delay": 0,
+          "elevation": 1000,
+          "fadeIn": 250,
+          "fadeOut": 500,
+          "isMasked": false,
+          "isWait": false,
+          "isRadius": false,
+          "opacity": 1,
+          "persistent": false,
+          "repeat": 1,
+          "repeatDelay": 250,
+          "size": 1,
+          "unbindAlpha": false,
+          "unbindVisibility": false,
+          "zIndex": 1
+        },
+        "sound": {
+          "delay": 0,
+          "enable": false,
+          "file": "",
+          "startTime": 0,
+          "repeat": 1,
+          "repeatDelay": 250,
+          "volume": 0.75
+        },
+        "video": {
+          "dbSection": "static",
+          "menuType": "spell",
+          "animation": "curewounds",
+          "variant": "01",
+          "color": "blue",
+          "enableCustom": false,
+          "customPath": ""
+        }
+      },
+      "isEnabled": true,
+      "isCustomized": true,
+      "fromAmmo": false,
+      "version": 5
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "confirmTargets": "never",
+      "noConcentrationCheck": false
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false,
+          "custom_formula": ""
+        }
+      }
+    },
+    "favorite-items": {
+      "favorite": false
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "core": {},
+    "exportSource": {
+      "world": "basis",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "dae": {
+      "macro": {
+        "name": "Healer",
+        "img": "icons/environment/people/cleric-grey.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680735873189,
+    "modifiedTime": 1715296229892,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_id": "jpcr34jLLheGZYWj",
+  "sort": 900000,
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_key": "!items!jpcr34jLLheGZYWj"
+}

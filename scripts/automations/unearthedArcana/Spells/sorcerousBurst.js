@@ -11,90 +11,93 @@ export async function sorcerousBurst({
 }) {
   let damageTypes = [
     {
-        "label": "🧪 Acid",
-        "value": "acid"
+      label: '🧪 Acid',
+      value: 'acid',
     },
     {
-        "label": "❄️ Cold",
-        "value": "cold"
+      label: '❄️ Cold',
+      value: 'cold',
     },
     {
-        "label": "🔥 Fire",
-        "value": "fire"
+      label: '🔥 Fire',
+      value: 'fire',
     },
     {
-        "label": "⚡ Lightning",
-        "value": "lightning"
+      label: '⚡ Lightning',
+      value: 'lightning',
     },
     {
-        "label": "☠️ Poison",
-        "value": "poison"
+      label: '☠️ Poison',
+      value: 'poison',
     },
     {
-        "label": "🧠 Psychic",
-        "value": "psychic"
+      label: '🧠 Psychic',
+      value: 'psychic',
     },
     {
-        "label": "☁️ Thunder",
-        "value": "thunder"
-    }
-]
+      label: '☁️ Thunder',
+      value: 'thunder',
+    },
+  ];
 
-let selection = await warpgate.buttonDialog(
+  let selection = await warpgate.buttonDialog(
     {
-        buttons : damageTypes,
-        title : 'Select a damage type'
+      buttons: damageTypes,
+      title: 'Select a damage type',
     },
     'column'
-);
+  );
 
-if (!selection) {
+  if (!selection) {
     return;
-}
+  }
 
-let damageFormula = workflow.item.system.damage.parts[0][0].replace('none', selection);
-let damage = [[damageFormula, selection]];
-let animation, color;
+  let damageFormula = workflow.item.system.damage.parts[0][0].replace(
+    'none',
+    selection
+  );
+  let damage = [[damageFormula, selection]];
+  let animation, color;
 
-switch(selection) {
+  switch (selection) {
     case 'acid':
-        animation = 'rayoffrost'
-        color = 'green'
-        break;
+      animation = 'rayoffrost';
+      color = 'green';
+      break;
     case 'cold':
-        animation = 'rayoffrost'
-        color = 'blue'
-        break;
+      animation = 'rayoffrost';
+      color = 'blue';
+      break;
     case 'fire':
-        animation = 'firebolt'
-        color = 'orange'
-        break;
+      animation = 'firebolt';
+      color = 'orange';
+      break;
     case 'lightning':
-        animation = 'chainlightning';
-        color = 'purpleblue';
-        break;
+      animation = 'chainlightning';
+      color = 'purpleblue';
+      break;
     case 'poison':
-        animation = 'scorchingray'
-        color = 'green'
-        break;
+      animation = 'scorchingray';
+      color = 'green';
+      break;
     case 'psychic':
-        animation = 'firebolt'
-        color = 'purple'
-        break;
+      animation = 'firebolt';
+      color = 'purple';
+      break;
     case 'thunder':
-        animation = 'rayoffrost'
-        color = 'yellowblue'
-        break;
-}
+      animation = 'rayoffrost';
+      color = 'yellowblue';
+      break;
+  }
 
-const updates = {
-    'system.damage.parts' : damage,
-    'system.prof' : workflow.item.system.prof,
-    'flags.autoanimations.primary.video.animation' : animation,
-    'flags.autoanimations.primary.video.color' : color,
-};
+  const updates = {
+    'system.damage.parts': damage,
+    'system.prof': workflow.item.system.prof,
+    'flags.autoanimations.primary.video.animation': animation,
+    'flags.autoanimations.primary.video.color': color,
+  };
 
-let newItem = workflow.item.clone(updates, {keepId : true});
-newItem.prepareFinalAttributes();
-workflow.item = newItem;
+  let newItem = workflow.item.clone(updates, { keepId: true });
+  newItem.prepareFinalAttributes();
+  workflow.item = newItem;
 }

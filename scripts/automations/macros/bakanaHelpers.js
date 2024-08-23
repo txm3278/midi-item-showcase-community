@@ -1,7 +1,7 @@
-import { workflowApi } from "./bakanaUtils/runWorkflows.js";
-import { templateApi } from "./bakanaUtils/template.js";
-import { combatApi } from "./bakanaUtils/combat.js";
-import { effectsApi } from "./bakanaUtils/effect.js";
+import { workflowApi } from './bakanaUtils/runWorkflows.js';
+import { templateApi } from './bakanaUtils/template.js';
+import { combatApi } from './bakanaUtils/combat.js';
+import { effectsApi } from './bakanaUtils/effect.js';
 import { flagsApi } from "./bakanaUtils/flags.js";
 import { itemApi } from "./bakanaUtils/item.js";
 
@@ -11,7 +11,10 @@ import { itemApi } from "./bakanaUtils/item.js";
  * @param {array} exportedIdentifierName the array of exported functions to be merged
  */
 function setupApiCalls(exportedFunctions) {
-    globalThis.macroUtil = foundry.utils.mergeObject(globalThis.macroUtil ?? {}, exportedFunctions);
+  globalThis.macroUtil = foundry.utils.mergeObject(
+    globalThis.macroUtil ?? {},
+    exportedFunctions
+  );
 }
 
 /**
@@ -19,13 +22,15 @@ function setupApiCalls(exportedFunctions) {
  */
 let debugLevel = 0;
 export function setupBakanaMacros() {
-    // Initialize debugLevel variable
-    globalThis.macroUtil = foundry.utils.mergeObject(globalThis.macroUtil ?? {}, {debugLevel});
+  // Initialize debugLevel variable
+  globalThis.macroUtil = foundry.utils.mergeObject(globalThis.macroUtil ?? {}, {
+    debugLevel,
+  });
 
-    setupApiCalls(workflowApi);
-    setupApiCalls({template : templateApi});
-    setupApiCalls({combat : combatApi});
-    setupApiCalls({effect : effectsApi});
+  setupApiCalls(workflowApi);
+  setupApiCalls({ template: templateApi });
+  setupApiCalls({ combat: combatApi });
+  setupApiCalls({ effect: effectsApi });
     setupApiCalls({item : itemApi});
     setupApiCalls(flagsApi);
 }

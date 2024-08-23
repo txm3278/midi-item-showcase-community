@@ -32,7 +32,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+      - run: npm ci
+      - name: Build Compendiums
+        run: npm run buildCompendiums
+      - name : Webpack build
+        run: npm run build
 
       # Extract version embedded in the tag.
       - id: get_version
@@ -65,10 +69,9 @@ jobs:
              ./module.zip                        \
             `# The files that will be included.` \
             module.json                          \
-            README.md                            \
+            dist                                 \
             LICENSE                              \
             templates                            \
-            scripts/                             \
             styles/                              \
             packs/                               \
             languages/                           \

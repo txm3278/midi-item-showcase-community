@@ -1,0 +1,1470 @@
+{
+  "name": "Lila's Famous Mushroom Tea",
+  "type": "consumable",
+  "img": "icons/containers/kitchenware/vase-wood-wrapped-brown.webp",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Active Token Effects</span></p></li><li style=\"box-sizing:border-box;user-select:text\"><p>Gambit's Premades</p></li><li style=\"box-sizing:border-box;user-select:text\"><p>Vision 5e</p></li></ul>",
+      "chat": ""
+    },
+    "source": {},
+    "quantity": 1,
+    "weight": 0,
+    "price": {
+      "value": 2,
+      "denomination": "gp"
+    },
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "legendary",
+    "identified": true,
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "24",
+      "units": "hour"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "recovery": "",
+      "autoDestroy": true,
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d20",
+          "midi-none"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "properties": [],
+    "unidentified": {
+      "description": ""
+    },
+    "type": {
+      "value": "potion",
+      "subtype": ""
+    },
+    "container": null
+  },
+  "effects": [
+    {
+      "name": "[Very Tired]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "system.attributes.exhaustion",
+          "mode": 2,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "WB7u3srz6ZlXylp0",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You get very tired. If you do not go to sleep immediately, you suffer 1 level of exhaustion.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.WB7u3srz6ZlXylp0"
+    },
+    {
+      "name": "[Light-Headed]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.grants.disadvantage.check.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.save.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "jm1MWsC2INQpDoZs",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You feel lightheaded, gaining disadvantage on all Dexterity checks and saving throws.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.jm1MWsC2INQpDoZs"
+    },
+    {
+      "name": "[Truesight]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "system.attributes.senses.truesight",
+          "mode": 4,
+          "value": "100",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "1fYF36VhWmMRIwdA",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You gain truesight out to 100 feet.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.1fYF36VhWmMRIwdA"
+    },
+    {
+      "name": "[Invigorated]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.grants.advantage.check.str",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.save.str",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "ScxVP7WMeTIP9PKz",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You feel invigorated, gaining +1 on all Strength checks and saving throws.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.ScxVP7WMeTIP9PKz"
+    },
+    {
+      "name": "[Paranoid]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.skill.ins",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "VdiVprYzivkDcFof",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You believe everyone is a spy for Strahd, even your fellow party members. You have disadvantage on all insight checks for 24 hours.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.VdiVprYzivkDcFof"
+    },
+    {
+      "name": "[Speak with Animals]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.skill.ani",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "vaP7lSY32oTlF6op",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>Your voice has changed; you can only speak plainly for 6 seconds, then must wait 60 seconds to speak plainly again. During the 60 seconds you speak natively like an animal nearby, they can understand everything you say and you understand them. This does not affect spellcasting. You have advantage on all animal handling skill checks.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.vaP7lSY32oTlF6op"
+    },
+    {
+      "name": "[Pie]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [],
+      "transfer": false,
+      "_id": "PXT20gGenJkqiRR7",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You want to eat pie. You will seek out pie for the next 24 hours and consume as much as you can. For every hour that goes by without eating a pie like pastry, you take [[/r 2d6]] psychic damage.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.PXT20gGenJkqiRR7"
+    },
+    {
+      "name": "[Love]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [],
+      "transfer": false,
+      "_id": "75jMK3FpD5dQUFC0",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You randomly fall under the charm of one of your fellow party members, willing to do anything they wish.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.75jMK3FpD5dQUFC0"
+    },
+    {
+      "name": "[Huh?]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.fail.skill.ins",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "Muyos0PU0TXgTAvd",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You can only understand language that is spoken to you if its yelled to you. You also fail all insight checks.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.Muyos0PU0TXgTAvd"
+    },
+    {
+      "name": "[Uncanny Hearing]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.skill.prc",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "7Qkuu7YImcPf06nx",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You gain uncanny hearing. You gain advantage on all Wisdom (Perception) checks involving hearing.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.7Qkuu7YImcPf06nx"
+    },
+    {
+      "name": "[Swamp Fey]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "system.attributes.movement.swim",
+          "mode": 4,
+          "value": "60",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "XhuFLrWsQXCToavS",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You see in your mind’s eye the location of the Swamp Fey shrine and know of its location. You gain a swim speed of 60 feet.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.XhuFLrWsQXCToavS"
+    },
+    {
+      "name": "[Death Sniffer]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [],
+      "transfer": false,
+      "_id": "OSO5sDkQTJqUtCfO",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You can smell death; you know the exact location and type of creature that has died within 100 feet of you and within the past 10 days.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.OSO5sDkQTJqUtCfO"
+    },
+    {
+      "name": "[Channeled Magic]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "system.bonuses.heal.damage",
+          "mode": 2,
+          "value": "+1d4",
+          "priority": 20
+        },
+        {
+          "key": "system.bonuses.All-Damage",
+          "mode": 2,
+          "value": "+1d4",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "smaFOk3YMEzTLLBi",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You feel magic channeling through every part of your body. Your spells do an additional 1d4 damage or heal an additional 1d4 hit points.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.smaFOk3YMEzTLLBi"
+    },
+    {
+      "name": "[Unseen Servant]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [],
+      "transfer": false,
+      "_id": "0yuCEfFM0lMuiNbr",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>An unseen servant materializes and follows your commands.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.0yuCEfFM0lMuiNbr"
+    },
+    {
+      "name": "[Vicious Words]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "macro.createItem",
+          "mode": 0,
+          "value": "Compendium.gambits-premades.gps-spells.hvLdfEyNtHnvwPSW",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "kH2UpWgmhhZKGnay",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>When you speak someone’s name and they are within 30 feet of you, you cast vicious mockery on them. This is still a spell that costs 1 action, but only has a verbal component. It uses the highest of Wisdom, Intelligence, or Charisma on the imbiber. It scales like the cantrip does.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.kH2UpWgmhhZKGnay"
+    },
+    {
+      "name": "[Smol]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "ATL.height",
+          "mode": 5,
+          "value": "0.5",
+          "priority": 20
+        },
+        {
+          "key": "ATL.width",
+          "mode": 5,
+          "value": "0.5",
+          "priority": 20
+        },
+        {
+          "key": "system.traits.size",
+          "mode": 5,
+          "value": "tiny",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "rjcm8xNA6qOuhRd4",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You shrink to 1 foot tall and retain all your stats.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.rjcm8xNA6qOuhRd4"
+    },
+    {
+      "name": "[Tall]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "ATL.height",
+          "mode": 5,
+          "value": "2",
+          "priority": 20
+        },
+        {
+          "key": "ATL.width",
+          "mode": 5,
+          "value": "2",
+          "priority": 20
+        },
+        {
+          "key": "system.traits.size",
+          "mode": 5,
+          "value": "lg",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "HiJrX0ONpXR2uQqV",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You grow to 10 feet tall and retain all your stats.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.HiJrX0ONpXR2uQqV"
+    },
+    {
+      "name": "[Dhampyr]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "macro.createItem",
+          "mode": 0,
+          "value": "Compendium.kashaws-campaign-materials.create-item.Item.rbRzJ81xNAw70w9Y",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "4ujtiXJhuceNLOBG",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You become a dhampyr for 24 hours. You gain fangs and a new unarmed strike that you can only use on incapacitated, restrained, or grappled targets.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.4ujtiXJhuceNLOBG"
+    },
+    {
+      "name": "[Whispers]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [],
+      "transfer": false,
+      "_id": "LNUWOtkb8WCWlbJu",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You hear judgmental whispering all the time. Sometimes these whispers reveal truths in your surroundings you wouldn't otherwise percieve or insight.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.LNUWOtkb8WCWlbJu"
+    },
+    {
+      "name": "[Mistwalker]",
+      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "changes": [
+        {
+          "key": "system.traits.ci.value",
+          "mode": 2,
+          "value": "charmed",
+          "priority": 20
+        },
+        {
+          "key": "system.traits.di.value",
+          "mode": 2,
+          "value": "psychic",
+          "priority": 20
+        },
+        {
+          "key": "system.traits.dr.value",
+          "mode": 2,
+          "value": "necrotic",
+          "priority": 20
+        }
+      ],
+      "transfer": false,
+      "_id": "9Zh8uo8oUXHjmOZH",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You can walk through the mist without it harming you, but you are unable to escape Barovia. You also become immune to the charmed condition for its duration. You are also immune to psychic damage and resistant to necrotic damage for the duration.</p>",
+      "origin": "Item.p7MO2yMkVbSQQxAs",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!plHkMziKSQR02vZx.9Zh8uo8oUXHjmOZH"
+    }
+  ],
+  "folder": "I5HSDg4rINU3hF3J",
+  "flags": {
+    "scene-packer": {
+      "hash": "ad0addc1ede81e5a872e8834391fa3364dd8d574",
+      "sourceId": "Item.k1LJ4KK8LldFQCqi"
+    },
+    "rest-recovery": {
+      "data": {
+        "consumable": {
+          "enabled": false,
+          "dayWorth": false
+        },
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "effectActivation": false,
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]function.MidiQOL.chooseEffect",
+      "removeAttackDamageButtons": "default"
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "core": {},
+    "exportSource": {
+      "world": "campaign-3",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1708838833519,
+    "modifiedTime": 1720475814699,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "plHkMziKSQR02vZx",
+  "sort": 100000,
+  "_key": "!items!plHkMziKSQR02vZx"
+}

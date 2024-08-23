@@ -29,12 +29,13 @@ export async function healer({
     const target = args[0].targets[0]?.actor;
     const macroData = args[0];
     const sourceItem = fromUuidSync(macroData.sourceItemUuid);
+    const imgPropName = game.version < 12 ? 'icon' : 'img';
     const EffectData = {
       changes: [],
       duration: {
         seconds: 999999,
       },
-      icon: sourceItem.img,
+      [imgPropName]: sourceItem.img,
       label: 'Healer Feat',
       origin: macroData.sourceItemUuid,
       transfer: false,

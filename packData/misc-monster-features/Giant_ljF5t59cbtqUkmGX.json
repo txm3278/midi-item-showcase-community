@@ -1,0 +1,19 @@
+{
+  "name": "Giant",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "ljF5t59cbtqUkmGX",
+  "sort": 700000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1715293697673,
+    "modifiedTime": 1715294436254,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!ljF5t59cbtqUkmGX"
+}

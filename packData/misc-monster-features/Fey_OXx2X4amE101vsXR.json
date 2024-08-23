@@ -1,0 +1,19 @@
+{
+  "name": "Fey",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "OXx2X4amE101vsXR",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1715294742469,
+    "modifiedTime": 1715294742469,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!OXx2X4amE101vsXR"
+}

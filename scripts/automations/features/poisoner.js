@@ -35,9 +35,9 @@ export async function poisoner({
     );
 
     gold = gold - 50;
-    quantity = actor.system.attributes.prof;
+    let quantity = actor.system.attributes.prof;
 
-    if (!!actor.items.getName(potentPoisonItem.name)) {
+    if (actor.items.getName(potentPoisonItem.name)) {
       quantity += actor.items.getName(potentPoisonItem.name).system.quantity;
     }
     potentPoisonItem.system.quantity = quantity;
@@ -63,10 +63,10 @@ export async function poisoner({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
     const macroData = args[0];
-
+    const imgPropName = game.version < 12 ? 'icon' : 'img';
     let effectData = {
       label: 'Poisoner',
-      icon: 'icons/skills/melee/strike-scythe-fire-green.webp',
+      [imgPropName]: 'icons/skills/melee/strike-scythe-fire-green.webp',
       origin: macroData.sourceItemUuid,
       duration: {
         turns: 1,

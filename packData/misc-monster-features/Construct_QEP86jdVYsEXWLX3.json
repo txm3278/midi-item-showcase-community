@@ -1,0 +1,19 @@
+{
+  "name": "Construct",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "QEP86jdVYsEXWLX3",
+  "sort": 200000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1715293732942,
+    "modifiedTime": 1715294436254,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!QEP86jdVYsEXWLX3"
+}

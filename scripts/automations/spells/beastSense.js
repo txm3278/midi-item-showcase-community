@@ -44,8 +44,7 @@ export async function beastSense({
       const targetToken = targetTokens[0];
       const tokenType = MidiQOL.typeOrRace(targetToken);
 
-      if (tokenType == 'beast') {
-      } else {
+      if (!tokenType == 'beast') {
         ui.notifications.warn('Target is NOT a beast!');
         if (concentrating) await concentrating.delete();
         return;
@@ -62,11 +61,11 @@ export async function beastSense({
       const beastSenseOriginUuid = concentrating.uuid;
 
       const concEffect = MidiQOL.getConcentrationEffect(casterActor);
-
+      const imgPropName = game.version < 12 ? 'icon' : 'img';
       //The After Effects
       const beastSenseEffects = {
         name: 'Beast Sense Effects',
-        icon: 'graphics/Zantor/icons/humanoid-single-green-blue.png',
+        [imgPropName]: 'graphics/Zantor/icons/humanoid-single-green-blue.png',
         changes: [
           {
             key: 'macro.CE',

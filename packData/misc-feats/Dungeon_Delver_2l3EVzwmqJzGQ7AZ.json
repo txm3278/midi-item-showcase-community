@@ -1,0 +1,282 @@
+{
+  "name": "Dungeon Delver",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2>Made by TMinz</h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Recommended:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Perceptive (For Door Searching)</span></p></li></ul><p></p><p>Does not handle the bonus to fast travel</p><p></p><p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\"><strong>Note:</strong> Requires Trap Attacks to come from an actor name \"Trap\". This can be modified in the macro.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": {
+      "custom": "Player's Handbook pg 166"
+    },
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "feat",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "flags": {
+    "ddbimporter": {
+      "featId": 18,
+      "version": "3.5.2",
+      "prerequisites": []
+    },
+    "obsidian": {
+      "source": {
+        "type": "feat"
+      }
+    },
+    "scene-packer": {
+      "sourceId": "Item.LiaC6YMg7WBxI104",
+      "hash": "143849cf59b8d4cd1795261eac16cb82c960d501"
+    },
+    "midi-qol": {
+      "onUseMacroName": "",
+      "effectActivation": false,
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": "",
+      "rollAttackPerTarget": "default"
+    },
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "LocknKey": {
+      "IDKeysFlag": "",
+      "RemoveKeyonUseFlag": false,
+      "LPFormulaFlag": "",
+      "LPFormulaOverrideFlag": false,
+      "LBFormulaFlag": "",
+      "LBFormulaOverrideFlag": false,
+      "ReplacementItemFlag": ""
+    },
+    "core": {},
+    "itemacro": {
+      "macro": {
+        "name": "Dungeon Delver",
+        "img": "icons/environment/traps/spike-skull-white-brown.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "if (args[0].macroPass === 'preTargetDamageApplication' && workflow.actor.name === 'Trap') {\n  const msg = await item.displayCard({createMessage:false});\n  const DIV = document.createElement(\"DIV\");\n  DIV.innerHTML = msg.content;\n  DIV.querySelector(\"div.card-buttons\").remove();\n  await ChatMessage.create({content:DIV.innerHTML});\n  let keptDamage = Math.floor(workflow.damageItem.appliedDamage/2);\n  let ditem = workflow.damageItem;\n  if (ditem.oldTempHP > 0) {\n      if (keptDamage > ditem.oldTempHP) {\n          ditem.newTempHP = 0;\n          keptDamage -= ditem.oldTempHP;\n          ditem.tempDamage = ditem.oldTempHP;\n      } else {\n          ditem.newTempHP = ditem.oldTempHP - keptDamage;\n          ditem.tempDamage = keptDamage;\n          keptDamage = 0;\n      }\n  }\n  let maxHP = args[0].options.token.actor.system.attributes.hp.max;\n  ditem.hpDamage = Math.clamped(keptDamage, 0, maxHP);\n  ditem.newHP = Math.clamped(ditem.oldHP - keptDamage, 0, maxHP);\n  ditem.appliedDamage = keptDamage;\n}\n\nif (args[0].macroPass === 'preTargetSave' && workflow.actor.name === 'Trap') {\n  const effectData = {\n    changes: [{key: 'flags.midi-qol.advantage.ability.save.all', mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1}],\n    name: `${item.name}: preTargetSave`,\n    icon: `${item.img}`,\n    flags: {dae: {specialDuration: ['isSave'], stackable: \"noneName\" } },\n  }\n  await actor.createEmbeddedDocuments('ActiveEffect', [effectData])\n}",
+        "author": "YccsjBFS1pfzrMb3",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Dungeon Delver",
+        "img": "icons/environment/traps/spike-skull-white-brown.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "exportSource": {
+      "world": "golden-vault",
+      "system": "dnd5e",
+      "coreVersion": "11.313",
+      "systemVersion": "2.3.1"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    }
+  },
+  "img": "icons/environment/traps/spike-skull-white-brown.webp",
+  "effects": [
+    {
+      "name": "Dungeon Delver",
+      "icon": "icons/environment/traps/spike-skull-white-brown.webp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.features.dungeonDelver, preTargetDamageApplication",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.features.dungeonDelver, preTargetSave",
+          "priority": 20
+        },
+        {
+          "key": "flags.perceptive.Modifiers.perception.BEH.Wall.active",
+          "mode": 2,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.perceptive.Modifiers.perception.BEH.Wall.inv",
+          "mode": 2,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "transfer": true,
+      "_id": "K3m9jjQHRcAYsr2o",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "origin": "Compendium.midi-item-showcase-community.misc-feats.Item.2l3EVzwmqJzGQ7AZ",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!2l3EVzwmqJzGQ7AZ.K3m9jjQHRcAYsr2o"
+    }
+  ],
+  "folder": null,
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1693339938172,
+    "modifiedTime": 1715296229892,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "2l3EVzwmqJzGQ7AZ",
+  "sort": 800000,
+  "_key": "!items!2l3EVzwmqJzGQ7AZ"
+}

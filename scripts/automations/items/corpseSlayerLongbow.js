@@ -9,8 +9,7 @@ export async function corpseSlayerLongbow({
   workflow,
   options,
 }) {
-    if(workflow.item.name.includes("Turn Undead"))
-    {
-        workflow.saveDetails.disadvantage = true;
-    }
+  if (workflow.item.name.includes('Turn Undead')) {
+    workflow.saveDetails.disadvantage = true;
+  }
 }

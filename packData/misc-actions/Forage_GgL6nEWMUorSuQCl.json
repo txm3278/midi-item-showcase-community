@@ -1,0 +1,192 @@
+{
+  "name": "Forage",
+  "type": "feat",
+  "img": "icons/magic/nature/plant-bamboo-green.webp",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Fridan99 and Christopher</span></h2><p>Characters can gather food and water as the party travels at a normal or slow pace. A foraging character makes a Wisdom (Survival) check whenever you call for it, with the DC determined by the abundance of food and water in the region.</p><table class=\"rd__table  stripe-odd-table\" style=\"box-sizing:border-box;border-spacing:0px;border-collapse:collapse;background-color:rgb(255, 255, 255);margin-bottom:5px;white-space:normal;color:rgb(51, 51, 51);font-family:Roboto, Helvetica, sans-serif;font-size:14px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><caption data-title-index=\"79\" style=\"box-sizing:border-box;padding:0px;color:rgb(119, 119, 119);text-align:left;margin-left:5px;font-weight:700;font-size:1.1em\"><span style=\"font-family:Roboto, Helvetica, sans-serif\"><strong>Foraging DCs</strong></span></caption><thead style=\"box-sizing:border-box\"><tr style=\"box-sizing:border-box\"><th class=\"col-10\" data-rd-isroller=\"false\" style=\"box-sizing:border-box;padding:1px 0.3em;text-align:left;position:static;min-height:1px;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">Food and Water Availability</span></th><th class=\"col-2 ve-text-center\" data-rd-isroller=\"false\" style=\"box-sizing:border-box;padding:1px 0.3em;text-align:center !important;position:static;min-height:1px;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">DC</span></th></tr></thead><tbody style=\"box-sizing:border-box\"><tr style=\"box-sizing:border-box;background:rgba(203, 191, 170, 0.5)\"><td class=\"col-10\" style=\"box-sizing:border-box;padding:1px 0.3em;position:static;min-height:1px;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">Abundant food and water sources</span></td><td class=\"col-2 ve-text-center\" style=\"box-sizing:border-box;padding:1px 0.3em;position:static;min-height:1px;text-align:center !important;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">10</span></td></tr><tr style=\"box-sizing:border-box\"><td class=\"col-10\" style=\"box-sizing:border-box;padding:1px 0.3em;position:static;min-height:1px;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">Limited food and water sources</span></td><td class=\"col-2 ve-text-center\" style=\"box-sizing:border-box;padding:1px 0.3em;position:static;min-height:1px;text-align:center !important;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">15</span></td></tr><tr style=\"box-sizing:border-box;background:rgba(203, 191, 170, 0.5)\"><td class=\"col-10\" style=\"box-sizing:border-box;padding:1px 0.3em;position:static;min-height:1px;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">Very little, if any, food and water sources</span></td><td class=\"col-2 ve-text-center\" style=\"box-sizing:border-box;padding:1px 0.3em;position:static;min-height:1px;text-align:center !important;display:table-cell;float:none\"><span style=\"font-family:Roboto, Helvetica, sans-serif\">20</span></td></tr></tbody></table><p>If multiple characters forage, each character makes a separate check. A foraging character finds nothing on a failed check. On a successful check, roll 1d6 + the character's Wisdom modifier to determine how much food (in pounds) the character finds, then repeat the roll for water (in gallons).</p>",
+      "chat": ""
+    },
+    "source": {
+      "custom": ""
+    },
+    "activation": {
+      "type": "special",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "abil",
+    "attackBonus": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "type": {
+      "value": "",
+      "subtype": ""
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": []
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "itemacro": {
+      "macro": {
+        "name": "Foraging Rule",
+        "type": "script",
+        "scope": "global",
+        "command": "/*Version: 1.0.1\n * Creator: thatlonelybugbear\n * Colaborators: Fridan99\n * Need the Item Macro module\n * Create a item, go to details, set utility in the \"Action Type\", set default in the \"Ability Modifier\", On use macro: ItemMacro (After Active Effects)\n * Go to the Item Macro tab above, and paste the code\n * Put the item in the character sheet of the actor, recommended as a favorite, then roll the item\n */\n\nconst regions = {\n  \"Mountains & Hills [DC 15]\": {dc: 15, food: [\"Berries\", \"Fish\", \"Flowers\", \"Fruit\", \"Fungi\", \"Insects\", \"Meat\", \"Nuts\", \"Plants\", \"Seeds\", \"Roots\", \"Weeds\"]},\n  \"Forest & Jungle [DC 10]\": {dc: 10, food: [\"Berries\", \"Fish\", \"Flowers\", \"Fruit\", \"Fungi\", \"Insects\", \"Meat\", \"Nuts\", \"Plants\", \"Roots\", \"Seeds\", \"Vegetables\"]},\n  \"Desert [DC 20]\": {dc: 20, food: [\"Insects\", \"Meat\", \"Seeds\", \"Roots\", \"Weeds\"]},\n  \"Dungeon & Underdark [DC 20]\": {dc: 20, food: [\"Berries\", \"Fish\", \"Flowers\", \"Fruit\", \"Fungi\", \"Meat\", \"Seeds\", \"Roots\", \"Weeds\"]},\n  \"City [DC 15]\": {dc: 15, food: [\"Flowers\", \"Insects\", \"Meat\", \"Seeds\", \"Roots\", \"Rubbish\", \"Weeds\"], note: \"Note: The Meat is probably bird, cat, dog, or rat\"},\n  \"Artic [DC 20]\": {dc: 20, food: [\"Fish\", \"Meat\", \"Seeds\", \"Roots\", \"Weeds\"]},\n  \"Swamp [DC 15]\": {dc: 15, food: [\"Berries\", \"Fish\", \"Flowers\", \"Fungi\", \"Insects\", \"Meat\", \"Seeds\", \"Roots\", \"Weeds\"]},\n  \"Grassland [DC 10]\": {dc: 10, food: [\"Berries\", \"Flowers\", \"Fruit\", \"Insects\", \"Meat\", \"Seeds\", \"Roots\", \"Vegetables\", \"Weeds\"]},\n  \"Coast [DC 10]\": {dc: 10, food: [\"Fish\", \"Fruit\", \"Mollusks\", \"Roots\", \"Seaweed\", \"Weeds\"]}\n};\n\nconst dialogOptions = Object.entries(regions).reduce((acc, [type, value]) => acc += `<option value=\"${type}\">${type}</option>`, ``);\n\nconst title = 'Foraging';\nconst buttons = [\"Advantage\", \"Normal\", \"Disadvantage\"].map((i) => ({ label: i, callback: () => {\n  const region = document.querySelector('#type')?.value;\n  return {region, rollType: i } }}));\nconst content = `\n<p>Choose a region and type of roll!</p>\n<hr>\n<form>\n  <div class=\"form-group\">\n    <label for=\"type\">Survival skill check</label>\n    <div class=\"form-fields\">\n      <select id=\"type\">${dialogOptions}</select>\n    </div>\n  </div>\n</form>`;\nconst close = () => false;\n\nconst dialog = await Dialog.wait({ title, content, buttons, close }, { id: 'foraging-dialog' });\nif (!dialog) return;\nconst diceFormula = dialog.rollType === 'Normal' ? '1d20' : '2d20';\nconst survivalRoll = await new Roll(`${diceFormula}${dialog.rollType === 'Advantage' ? 'kh' : dialog.rollType === 'Disadvantage' ? 'kl' : ''} + @skills.sur.total`, token.actor.getRollData()).evaluate();\nlet msg = await survivalRoll.toMessage({ flavor: `Survival skill check (the task takes 4h of effort)` });\nawait game.dice3d?.waitFor3DAnimationByMessageID(msg.id);\n\nif (survivalRoll.total < regions[dialog.region].dc) {\n  await ChatMessage.create({content: `You don't get food or water`});\n} else {\n  const wisMod = token.actor.system.abilities.wis.mod;\n  const waterRoll = await new Roll(`1d6 + ${wisMod}`).evaluate();\n  msg = await waterRoll.toMessage({ flavor: `You get in gallons of water` });\n  await game.dice3d?.waitFor3DAnimationByMessageID(msg.id);\n  const foodRoll = await new Roll(`1d6 + ${wisMod}`).evaluate();\n  msg = await foodRoll.toMessage({ flavor: `You get in pounds of food` });\n  await game.dice3d?.waitFor3DAnimationByMessageID(msg.id);\n\n  const foodTypes = regions[dialog.region].food;\n  const foodCount = foodRoll.total;\n  const foodResult = {};\n  for (let i = 0; i < foodCount; i++) {\n    const foodType = foodTypes[Math.floor(Math.random() * foodTypes.length)];\n    foodResult[foodType] = (foodResult[foodType] || 0) + 1;\n  }\n  const foodMessage = Object.entries(foodResult).sort().map(([type, count]) => `${count}x ${type}`).join(', ');\n  await ChatMessage.create({content: `<b>You found the following types of food</b>: ${foodMessage}`});\nif (dialog.region === \"City [DC 15]\") {\n    await ChatMessage.create({content: `<span style=\"color:red\">Note:</span> The Meat is probably bird, cat, dog, or rat`});\n  }\n}",
+        "author": "NGYyZGRmYmIwNzJk",
+        "_id": null,
+        "img": "icons/svg/dice-target.svg",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 0
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.actions.forage",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "noConcentrationCheck": false,
+      "confirmTargets": "default"
+    },
+    "dae": {
+      "macro": {
+        "name": "Forage",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "_id": null,
+        "img": "icons/magic/nature/plant-bamboo-green.webp",
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 3
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "core": {},
+    "exportSource": {
+      "world": "d-d-waterdeep-dragon-heist",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "scene-packer": {
+      "hash": "a6091d3ceae84b2bd95fe134fb49757a34d60d92",
+      "sourceId": "Item.TyJWIqyRQJQ1XY2U"
+    },
+    "tidy5e-sheet": {
+      "favorite": true
+    }
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.0.4",
+    "coreVersion": "11.315",
+    "createdTime": 1696633614995,
+    "modifiedTime": 1713819458102,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "GgL6nEWMUorSuQCl",
+  "sort": 200000,
+  "_key": "!items!GgL6nEWMUorSuQCl"
+}

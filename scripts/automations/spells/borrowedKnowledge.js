@@ -54,9 +54,10 @@ export async function borrowedKnowledge({
   async function effectMacro() {
     await warpgate.revert(token.document, 'Borrowed Knowledge');
   }
+  const imgPropName = game.version < 12 ? 'icon' : 'img';
   let effectData = {
     label: workflow.item.name,
-    icon: workflow.item.img,
+    [imgPropName]: workflow.item.img,
     origin: workflow.item.uuid,
     duration: {
       seconds: 3600,

@@ -19,7 +19,7 @@ export async function clockworkAmulet({
       .map((bab) => bab.bonuses.bonus)
       .join('+');
     let newRoll;
-    if (!!getBabosAttackToHit)
+    if (getBabosAttackToHit)
       newRoll = await new Roll(
         `10 + ${formulaData} + ${getBabosAttackToHit}`,
         actor.getRollData()

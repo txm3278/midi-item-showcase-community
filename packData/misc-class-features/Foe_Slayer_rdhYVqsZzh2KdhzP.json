@@ -1,0 +1,264 @@
+{
+  "name": "Foe Slayer",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2>",
+      "chat": ""
+    },
+    "activation": {
+      "type": "",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": 5,
+      "units": "ft",
+      "long": null
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "other",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "properties": [],
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "source": {}
+  },
+  "flags": {
+    "ddbimporter": {
+      "id": "53392",
+      "entityTypeId": "222216831",
+      "action": true,
+      "componentId": 306,
+      "componentTypeId": 12168134,
+      "originalName": "Foe Slayer",
+      "type": "class",
+      "class": "Ranger",
+      "subclass": "Hunter",
+      "dndbeyond": {
+        "levelScale": null,
+        "levelScales": [],
+        "limitedUse": [
+          {
+            "level": null,
+            "uses": 1
+          }
+        ]
+      },
+      "importId": "s7atKcwCHxTJzdMx"
+    },
+    "infusions": {
+      "infused": false
+    },
+    "obsidian": {
+      "source": {
+        "type": "class",
+        "text": "Ranger"
+      }
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "concentration": false
+    },
+    "dnd5e": {
+      "advancementOrigin": "qdOnFd8btFo0gQSv"
+    },
+    "scene-packer": {
+      "hash": "a5a25f16b68eaec4ea0aac4becb2cb1cae2a04d3",
+      "sourceId": "Item.m1pwmXpb7UM8O1Ty"
+    },
+    "core": {},
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "campaign-3",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    }
+  },
+  "effects": [
+    {
+      "name": "Foe Slayer",
+      "changes": [
+        {
+          "key": "flags.midi-qol.optional.foeSlayer.damage.msak",
+          "mode": 0,
+          "value": "@abilities.wis.mod",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.foeSlayer.damage.mwak",
+          "mode": 0,
+          "value": "@abilities.wis.mod",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.foeSlayer.damage.rsak",
+          "mode": 0,
+          "value": "@abilities.wis.mod",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.foeSlayer.damage.rwak",
+          "mode": 0,
+          "value": "@abilities.wis.mod",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.foeSlayer.label",
+          "mode": 0,
+          "value": "Foe Slayer",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.foeSlayer.count",
+          "mode": 0,
+          "value": "each-round",
+          "priority": 20
+        }
+      ],
+      "transfer": true,
+      "icon": "icons/magic/fire/projectile-arrow-fire-red-yellow.webp",
+      "_id": "Wy6FMZCOxidvDoUn",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "origin": "Actor.iN5V8FpR4UCf1I9S.Item.dQAi2lfhu05ztATx",
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": null,
+      "_key": "!items.effects!rdhYVqsZzh2KdhzP.Wy6FMZCOxidvDoUn"
+    }
+  ],
+  "img": "icons/magic/fire/projectile-arrow-fire-red-yellow.webp",
+  "folder": "xw13xZMCXoloLDbk",
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "3.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1720320656282,
+    "modifiedTime": 1720475725443,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "rdhYVqsZzh2KdhzP",
+  "sort": 0,
+  "_key": "!items!rdhYVqsZzh2KdhzP"
+}
