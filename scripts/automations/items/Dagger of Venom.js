@@ -1,7 +1,7 @@
 // @bakanabaka
 
 async function onEffect() {
-    await macroItem.setFlag("midi-qol", "onUseMacroName", "[postSave]ItemMacro");
+    await macroItem.setFlag("midi-qol", "onUseMacroName", "[postActiveEffects]ItemMacro");
     let poisonEffect = macroItem.effects.find(ef => ef.name == macroItem.name);
     await poisonEffect.setFlag("dae", "dontApply", false);
 
@@ -26,7 +26,7 @@ async function offEffect() {
     await macroItem.update(updates);
 }
 
-async function postSave() {
+async function postActiveEffects() {
     let enableEffect = macroItem.effects.find(ef => ef.name.includes("Enabled"));
     await enableEffect.update({"Suppressed": true, "disabled": true});
 }
@@ -34,5 +34,5 @@ async function postSave() {
 await macroUtil.runWorkflows(arguments, {
     on : onEffect,
     off : offEffect,
-    postSave : postSave
+    postActiveEffects : postActiveEffects
 });
