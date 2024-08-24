@@ -27,7 +27,7 @@ async function offEffect() {
 }
 
 async function postActiveEffects() {
-    let enableEffect = macroItem.effects.find(ef => ef.name.includes("Enabled"));
+    let enableEffect = macroItem.effects.find(ef => !ef.name.includes(macroItem.name));
     await enableEffect.update({"Suppressed": true, "disabled": true});
 }
 
