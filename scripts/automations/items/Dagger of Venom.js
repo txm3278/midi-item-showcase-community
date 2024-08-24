@@ -4,6 +4,7 @@ async function preDamageRoll() {
     let poisonEffect = macroItem.effects.find(ef => ef.name == macroItem.name);
     await macroItem.setFlag("midi-qol", "onUseMacroName", "");
     if (poisonEffect.disabled) return;
+    await poisonEffect.setFlag("dae", "dontApply", false);
 
     const updates = {
         "system.formula"      : "2d10[poison]",
@@ -18,6 +19,7 @@ async function preDamageRoll() {
     workflow.item = workflow.item.clone(updates, options);
 
     await poisonEffect.update({"disabled": true, "isSuppressed": true});
+    await poisonEffect.setFlag("dae", "dontApply", true);
 }
 
 await macroUtil.runWorkflows(arguments, {
