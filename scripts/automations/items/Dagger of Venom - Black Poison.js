@@ -1,3 +1,5 @@
+// @bakanabaka
+
 async function postActiveEffects() {
     function findItem(itemName) {
         return actor.items.find(it => it.name == itemName); 
