@@ -9,9 +9,8 @@ async function postActiveEffects() {
     if (!dagger) return;
 
     // Add poison effect
-    let poisonEffect = dagger.effects.find(ef => ef.name == dagger.name);
-    await poisonEffect.update({"disabled": false, "isSuppressed": false});
-    await dagger.setFlag("midi-qol", "onUseMacroName", "[preDamageRoll]ItemMacro");
+    let enableEffect = dagger.effects.find(ef => ef.name.includes("Enabled"));
+    await enableEffect.update({"disabled": false});
 }
 
 await macroUtil.runWorkflows(arguments, {
