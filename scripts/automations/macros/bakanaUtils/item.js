@@ -21,7 +21,7 @@ async function syntheticItem(itemData, actor, updates = {}) {
 
     if (itemData.flags?.world?.syntheticItem && itemData.parent == actor) {
         item = itemData;
-    } else if (macroUtil.module.activated('chris-premades')) {
+    } else if (macroUtil.module.activated('chris-premades', '0.12.27')) {
         item = await chrisPremades.utils.itemUtils.syntheticItem(itemData, actor);
     } else { // Scraped from CPR 08/24/2024
         item = new CONFIG.Item.documentClass(itemData, {parent: actor});
@@ -40,7 +40,7 @@ async function syntheticItemDataRoll(itemData, actor, targets, {options = {}, co
 }
 
 async function syntheticItemRoll(item, targets, {options = {}, config = {}} = {}) {
-    if (macroUtil.module.activated('chris-premades'))
+    if (macroUtil.module.activated('chris-premades', '0.12.27'))
         return chrisPremades.utils.workflowUtils.syntheticItemRoll(item, targets, {options: options, config: config} = {});
     else {  // Scraped from CPR 08/24/2024
         let defaultConfig = {
