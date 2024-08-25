@@ -1,0 +1,257 @@
+{
+  "name": "Negative Energy Flood",
+  "type": "spell",
+  "system": {
+    "source": {
+      "custom": "",
+      "book": "XGE",
+      "page": "163",
+      "license": ""
+    },
+    "description": {
+      "value": "",
+      "chat": ""
+    },
+    "actionType": "save",
+    "level": 5,
+    "school": "nec",
+    "properties": [
+      "vocal",
+      "material"
+    ],
+    "materials": {
+      "value": "a broken bone and a square of black silk",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "target": {
+      "value": "0",
+      "units": "",
+      "type": "",
+      "prompt": true,
+      "width": null
+    },
+    "range": {
+      "value": 60,
+      "units": "ft",
+      "long": null
+    },
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "inst"
+    },
+    "damage": {
+      "parts": [
+        [
+          "5d12",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "save": {
+      "ability": "con",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "ability": "",
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "formula": "",
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "cover": null,
+    "crewed": false,
+    "enchantment": null,
+    "summons": null,
+    "sourceClass": ""
+  },
+  "img": "icons/skills/wounds/injury-pain-body-orange.webp",
+  "flags": {
+    "plutonium": {
+      "page": "spells.html",
+      "source": "XGE",
+      "hash": "negative%20energy%20flood_xge",
+      "propDroppable": "spell"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "saveDamage": "default",
+      "bonusSaveDamage": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preDamageRoll]ItemMacro,[preDamageApplication]ItemMacro"
+    },
+    "dae": {
+      "macro": {
+        "name": "Negative Energy Flood",
+        "img": "icons/skills/wounds/injury-pain-body-orange.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "async function preDamageRoll() {\n    const target = workflow.targets.first();\n    const targetType = target.actor.system.details.type.value.toLowerCase();\n    if (targetType != \"undead\") return;\n\n    const updates = {\n        \"system.actionType\"     : \"heal\",\n        \"system.damage.parts\"   : [[\"5d12\", \"temphp\"]],\n        \"system.save.ability\"   : \"\",\n        \"system.save.dc\"        : null,\n        \"system.save.scaling\"   : \"flag\"\n    }\n    workflow.item = await macroUtil.item.syntheticItem(workflow.item, actor, updates);\n}\n\nasync function preDamageApplication() {\n    if (!workflow.damageItem.oldHP) return;\n    if (workflow.damageItem.oldHP != workflow.damageItem.hpDamage) return;\n\n    const zombification = macroItem.effects.find(ef => ef.name == \"Zombification\");\n    const target = canvas.tokens.get(workflow.damageItem.tokenId);\n    await macroUtil.effect.create(target.actor, zombification);\n}\n\nasync function offEffect() {\n    const zombie = game.actors.getName(\"Zombie\");\n    if (!zombie) ui.notifications.error(\"No zombie actor detected\");\n    else await actor.transformInto(zombie, {}, {renderSheet:false});\n}\n\nawait macroUtil.runWorkflows(arguments, {\n    preDamageRoll : preDamageRoll,\n    preDamageApplication : preDamageApplication,\n    off : offEffect,\n});",
+        "author": "kZCTN6jqnh5wCn1V",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "12.331",
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "exportSource": {
+      "world": "ytod-bor-is-dead-long-live-sokfel",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "3.3.1"
+    }
+  },
+  "effects": [
+    {
+      "name": "Zombification",
+      "origin": "Item.oqUKR6uwY0oMwZdR",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": 6,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "flags": {
+        "dnd5e": {},
+        "dae": {
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStartSource"
+          ],
+          "enableCondition": "",
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "img": "icons/skills/wounds/injury-pain-body-orange.webp",
+      "_id": "8knqCbq5LGjepapi",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": 1724604112677,
+        "modifiedTime": 1724604454538,
+        "lastModifiedBy": "kZCTN6jqnh5wCn1V"
+      }
+    }
+  ],
+  "folder": null,
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1724603499218,
+    "modifiedTime": 1724604957481,
+    "lastModifiedBy": "kZCTN6jqnh5wCn1V"
+  }
+}

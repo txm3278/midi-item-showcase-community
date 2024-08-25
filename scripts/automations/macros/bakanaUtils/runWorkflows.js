@@ -143,7 +143,8 @@ async function runWorkflows(argumentInput, config) {
 
         if (firstArg.tag == "OnUse" || firstArg.tag == "DamageBonus" || firstArg.tag == "TargetOnUse"){
             if (macroUtil.debugLevel > 2) console.warn("midiWorkflow:", workflow);
-            if (!config[workflowAction]) console.error(`Undefined workflow attempting to run : ${workflowAction}`);
+            if (!config[workflowAction]) 
+              console.warn(`Undefined workflow attempting to run : ${workflowAction}`);
             else workflowReturn = await config[workflowAction](firstArg);
 
 
@@ -151,8 +152,10 @@ async function runWorkflows(argumentInput, config) {
                 if (workflow.aborted) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
             }
         } else {            
-            if (!config[workflowAction]) console.error(`Undefined workflow attempting to run : ${workflowAction}`);
-            else workflowReturn = await config[workflowAction](args.splice(1));
+            if (!config[workflowAction]) {
+              if (workflowAction != "on" && workflowAction != "off")
+                console.warn(`Undefined workflow attempting to run : ${workflowAction}`);
+            } else workflowReturn = await config[workflowAction](args.splice(1));
         }
 
         if(macroUtil.debugLevel) console.groupEnd();

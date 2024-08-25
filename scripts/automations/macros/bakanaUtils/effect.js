@@ -6,7 +6,8 @@ async function find(actorEntity, effect) {
 
 async function create(entity, effectData, {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent, keepId} = {}) {
     macroUtil.module.requires('chris-premades');
-    await chrisPremades.utils.effectUtil.createEffect(entity, effectData, {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent,keepId});
+    let options = {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent, keepId};
+    await chrisPremades.utils.effectUtils.createEffect(entity, effectData, options);
 }
 
 async function addDependents(entity, dependents) {
