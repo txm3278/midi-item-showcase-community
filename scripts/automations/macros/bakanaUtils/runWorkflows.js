@@ -85,33 +85,6 @@
 */
 
 /**
- * Validates dependencies.
- * @param config.module A list of module names
- * @param config.setting Configurations defining how CompleteMidi will run.
- * @param config.verbose Verbose debug settings.
- * @param config.WORKFLOWNAME A function to run when the specified workflow occurs. (eg preCheckHits / off)
- * @param config.exceptionHandler(e) A function which runs before exit on a caught exception
- */
-function validateDependencies({
-  module: requiredModules,
-  setting: requiredSettings,
-}) {
-  function moduleIsActive(name) {
-    return game.modules.get(name)?.active;
-  }
-  if (requiredModules)
-    for (let name of requiredModules) {
-      if (!moduleIsActive(name))
-        throw Error(`Module ${name} is not installed or activated`);
-    }
-  if (requiredSettings)
-    for (let { moduleName: name, settingName: setting } of requiredSettings) {
-      if (!game.settings.get(name, setting))
-        throw Error(`Setting ${setting} is not enabled in ${name}`);
-    }
-}
-
-/**
  * Advanced error handler for Midi Macros, wraps all code in a try/catch and helps organize code.
  * @param argumentInput The args value passed into the macro.
  * @param config Configurations defining how CompleteMidi will run.
