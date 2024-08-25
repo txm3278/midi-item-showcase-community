@@ -7,7 +7,7 @@ async function preItemRoll() {
     // Jank -- use the uses to track the number of times it has occurred
     //    we do this because it automatically will reset on short rest this way
     const updates = {"system.save.dc" : 5 * macroItem.system.uses.value};
-    workflow.item = workflow.item.clone(updates, {keepId: true});
+    workflow.item = macroUtil.item.syntheticItem(workflow.item, actor, updates);
 }
 
 async function postSave () {

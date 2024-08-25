@@ -55,7 +55,7 @@ async function preSave() {
         updates = {"system.save.dc" : severity.dc};
     }
 
-    workflow.item = workflow.item.clone(updates, {keepId: true});
+    workflow.item = macroUtil.item.syntheticItem(workflow.item, actor, updates);
 }
 
 async function applySeverity(illnessLevel) {

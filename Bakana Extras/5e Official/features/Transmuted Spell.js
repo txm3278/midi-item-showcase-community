@@ -26,7 +26,7 @@ async function updateDamageType(damageType, replacementType){
         if (part[1] == damageType)
             part[1] = replacementType;         // convert all damage to cold damage
     const updates = {"system.damage.parts" : damageParts};
-    workflow.item = workflow.item.clone(updates, {keepId: true});
+    workflow.item = macroUtil.item.syntheticItem(workflow.item, actor, updates);
 }
 
 await macroUtil.runWorkflows(arguments, {

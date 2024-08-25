@@ -23,7 +23,7 @@ function updateDamageType(damageType) {
 async function preDamageRoll() {
     if (!isMeleeAttack()) return;                   // not a melee attack
     if (workflow.item.type != "weapon") return;     // not a weapon
-    workflow.item = workflow.item.clone({}, {keepId: true});
+    workflow.item = macroUtil.item.syntheticItem(workflow.item, actor);
     addDamageType("cold");
     if (!isMetal(workflow.item)) return;            // not metal
     updateDamageType("cold");

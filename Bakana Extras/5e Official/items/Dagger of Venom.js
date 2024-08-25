@@ -12,8 +12,7 @@ async function preDamageRoll() {
         //"flags.midiProperties.saveDamage"       : "fulldam",      // Set directly in item
         //"flags.midiProperties.otherSaveDamage"  : "nodam",        // Set directly in item
     };
-    const options = {keepId: true};
-    workflow.item = workflow.item.clone(updates, options);
+    workflow.item = macroUtil.item.syntheticItem(workflow.item, actor, updates);
 
     await poisonEffect.update({"disabled": true, "isSuppressed": true});
 }

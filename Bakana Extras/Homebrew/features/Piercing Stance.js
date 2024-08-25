@@ -6,7 +6,7 @@ async function postAttackRoll() {
         const effectData = macroItem.effects.find(ef => ef.name == "Off-Balance");
         await macroUtil.effect.create(actor, effectData);
     } else {
-        workflow.item = workflow.item.clone({}, {keepId: true});
+        workflow.item = macroUtil.item.syntheticItem(workflow.item, actor);
         let damageFormula = workflow.item.system.damage.parts[0][0];
         workflow.item.system.damage.parts[0][0] = damageFormula + ` + @mod`;
     }
