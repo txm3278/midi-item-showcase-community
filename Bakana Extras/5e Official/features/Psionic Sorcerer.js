@@ -22,10 +22,9 @@ async function preItemRoll() {
     if (!response) return;
 
     // Turn off usage requirements
-    macroUtil.item.setPreUseItemConfig(macroItem,
-        {consumeSpellSlot : null},
-        {configureDialog : false}
-    );
+    let configs = {consumeSpellSlot : null};
+    let options = {configureDialog : false};
+    macroUtil.item.preItemRoll.config(configs, options);
 
     // Consume sorcery points
     await sorcerypoints.update({"uses" : pointsRemaining - pointsConsumed})

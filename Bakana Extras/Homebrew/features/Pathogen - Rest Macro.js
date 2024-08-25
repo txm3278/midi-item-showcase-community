@@ -4,7 +4,7 @@ const persistentDataName = `(${origin.name}) Persistent Data`;
 let persistentData = await DAE.getFlag(actor, persistentDataName);
 let syntheticItem = origin.clone({"system.save.dc" : persistentData.recoveryDc}, {keepId: true});
 
-await chrisPremades.utils.workflowUtils.syntheticItemDataRoll(syntheticItem, actor, [token]);
+await macroUtil.item.syntheticItemDataRoll(syntheticItem, actor, [token]);
 
 // Search for any other effects we need to apply
 let allEffects = Array.from(actor.allApplicableEffects());

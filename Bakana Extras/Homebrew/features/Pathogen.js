@@ -84,7 +84,7 @@ async function effectOn() {
         let percentage = baseEffect.changes.find(ch => ch.key == "pathogen.spreadPercentage")?.value;
         persistentData.spreadProbability = (percentage) ? Number(percentage) : 25;
     } else {    // non-carrier
-        await chrisPremades.utils.workflowUtils.syntheticItemDataRoll(macroItem, actor, [token]);
+        await macroUtil.item.syntheticItemDataRoll(macroItem, actor, [token]);
         persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
     }
 }

@@ -22,10 +22,9 @@ async function preItemRoll() {
         let formerPreyRollData = formerPrey?.actor.getRollData();
         if (!formerPrey || !formerPreyRollData.attributes.hp.value) {
             // Turn off all consumption (manual) and chatbox creation (remove clutter)
-            macroUtil.item.setPreUseItemConfig(macroItem,
-                {beginConcentrating : null, consumeSpellSlot : null},
-                {createMessage : false}
-            );
+            let configs = {beginConcentrating : null, consumeSpellSlot : null};
+            let options = {createMessage : false};
+            macroUtil.item.preItemRoll.config(configs, options);
             return;
         }
     }

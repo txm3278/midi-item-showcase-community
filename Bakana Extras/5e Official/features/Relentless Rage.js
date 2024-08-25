@@ -1,7 +1,9 @@
 // @bakanabaka
 
 async function preItemRoll() {
-    await macroUtil.item.setPreUseItemConfig(macroItem, {consumeUsage : false}, {});
+    let configs = {consumeUsage : false};
+    let options = {};
+    macroUtil.item.preItemRoll.config(configs, options);
     // Jank -- use the uses to track the number of times it has occurred
     //    we do this because it automatically will reset on short rest this way
     const updates = {"system.save.dc" : 5 * macroItem.system.uses.value};
