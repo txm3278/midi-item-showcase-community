@@ -1,31 +1,19 @@
-function versionCompare(a, b) {
-    let A = a.split('.').map(v => Number(v));
-    let B = b.split('.').map(v => Number(v));
-
-    let idx = 0;
-    for (idx = 0; idx < A.length && idx < B.length; ++idx) {
-        if (A[idx] > B[idx]) return -1;
-        if (A[idx] < B[idx]) return 1;
-    }
-    while (A[idx] != undefined) { if (A[idx++]) return -1; }
-    while (B[idx] != undefined) { if (B[idx++]) return 1; }
-    return 0;
+// Returns true if version A <= B <= C
+function versionBetween(a, b, c) {
+    return !foundry.utils.isNewerVersion(a, b) && !foundry.utils.isNewerVersion(b, c);
 }
 
-function versionClamp(a, version, b) {
-    if (versionCompare(a, version) < 0) return false;
-    if (versionCompare(version, b) > 0) return false;
-    return true;
-}
-
+// Returns true if dependency exists, is active, and is appropriately versioned
 function activated(dependId, minimum, maximum) {
-    let entity = (dependId == "dnd5e") ? game.system : game.modules.get(depId);
-    if (!entity?.activated) return false;
-    if (minimum == undefined) minimum = entity.version;
-    if (maximum == undefined) maximum = entity.version;
-    return !versionClamp(minimum, entity.version, maximum);
+    let isModule = game.modules.get(dependId);
+    let entity = (isModule) ? game.modules.get(dependId) : globalThis[dependId];
+    if (!entity?.active && isModule) return false;
+    if (minimum == undefined) minimum = entity.version ?? "0.0.0";
+    if (maximum == undefined) maximum = entity.version ?? "0.0.0";
+    return versionBetween(minimum, entity.version, maximum);
 }
 
+// Throws an error if dependency does not exist, is not active, or is outside of versions
 function required(dependId, minimum, maximum) {
     if (!activated(dependId, minimum, maximum)) {
         let errorMsg = `Requires ${dependId} to be installed and activated.`;
