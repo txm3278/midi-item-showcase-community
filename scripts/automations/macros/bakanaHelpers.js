@@ -2,9 +2,8 @@ import { workflowApi } from './bakanaUtils/runWorkflows.js';
 import { templateApi } from './bakanaUtils/template.js';
 import { combatApi } from './bakanaUtils/combat.js';
 import { effectsApi } from './bakanaUtils/effect.js';
-import { flagsApi } from "./bakanaUtils/flags.js";
 import { itemApi } from "./bakanaUtils/item.js";
-import { moduleApi } from "./bakanaUtils/module.js";
+import { dependencyApi } from "./bakanaUtils/dependency.js";
 
 /**
  * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
@@ -34,4 +33,5 @@ export function setupBakanaMacros() {
   setupApiCalls({ effect: effectsApi });
   setupApiCalls({ item : itemApi });
   setupApiCalls({ module : moduleApi });
+  setupApiCalls({ dependsOn : dependencyApi });
 }
