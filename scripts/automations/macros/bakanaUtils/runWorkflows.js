@@ -93,9 +93,7 @@
  * @param config.exceptionHandler(e) A function which runs before exit on a caught exception
  */
 async function runWorkflows(argumentInput, config) {
-  const args = argumentInput[4].args;
-  const macroItem = argumentInput[4].macroItem;
-  const workflow = argumentInput[4].workflow;
+  const [speaker, actor, token, character, scope, workflow, item, rolledItem, macroItem, args, options, midiData] = argumentInput;
 
   /* ---------------------------------------------------------------------------------------------
     Below this line is the main function which runs everything else... you shouldn't need to
