@@ -25,8 +25,10 @@ async function preTargetDamageApplication() {
 }
 
 async function updateTargetHealth(sharedToken, sharedDamage) {
-    await wait(500); // may need a higher value depending on how slow your server is
+    await wait(500);
     MidiQOL.applyTokenDamage([{damage: sharedDamage, type: "none"}], sharedDamage, new Set([sharedToken]), undefined, new Set(), { existingDamage: [], superSavers: new Set(), semiSuperSavers: new Set(), workflow: undefined, updateContext: {onUpdateCalled: true} })
 }
 
-await preTargetDamageApplication();
+await macroUtil.runWorkflows(arguments, {
+    preTargetDamageApplication : preTargetDamageApplication,
+});
