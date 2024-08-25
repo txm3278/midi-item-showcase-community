@@ -15,14 +15,13 @@ function config(cfgs, opts){
 //    https://github.com/MotoMoto1234/Midi-Wiki/wiki/Tutorials-‐-How-to-Make-CPR-Actions-in-Token-Action-Hud
 //---------------------------------------------------------------------------------------------------------------
 
-async function syntheticItem(itemData, actor, updates) {
+async function syntheticItem(itemData, actor, updates = {}) {
     let item;
-    updates.synthetic = true;
+    foundry.utils.mergeObject(updates, {"flags.world.syntheticItem" : true});
 
-    if (itemData.synthetic && itemData.parent == actor) {
-        // Some way to determine if we have already made a synthetic object possibly in a prior stage to shortcut
+    if (itemData.flags?.world?.syntheticItem && itemData.parent == actor) {
         item = itemData;
-    } else if (macroUtil.moduleApi.activated('chris-premades')) {
+    } else if (macroUtil.module.activated('chris-premades')) {
         item = await chrisPremades.utils.itemUtils.syntheticItem(itemData, actor);
     } else { // Scraped from CPR 08/24/2024
         item = new CONFIG.Item.documentClass(itemData, {parent: actor});
@@ -30,20 +29,18 @@ async function syntheticItem(itemData, actor, updates) {
         item.prepareFinalAttributes();
         item.applyActiveEffects();
     }
+
     return foundry.utils.mergeObject(item, updates);
 }
 
 async function syntheticItemDataRoll(itemData, actor, targets, {options = {}, config = {}} = {}) {
-    if (macroUtil.moduleApi.activated('chris-premades'))
-        return await chrisPremades.utils.workflowUtils.syntheticItemDataRoll(item, targets, {options: options, config: config});
-    else { // Scraped from CPR 08/24/2024
-        let item = await syntheticItem(itemData, actor);
-        return await syntheticItemRoll(item, targets, {options, config});
-    }
+    // Scraped from chrisPremades 08/24/2024 : utils.workflowUtils.syntheticItemDataRoll
+    let item = await syntheticItem(itemData, actor);
+    return await syntheticItemRoll(item, targets, {options, config});
 }
 
 async function syntheticItemRoll(item, targets, {options = {}, config = {}} = {}) {
-    if (macroUtil.moduleApi.activated('chris-premades'))
+    if (macroUtil.module.activated('chris-premades'))
         return chrisPremades.utils.workflowUtils.syntheticItemRoll(item, targets, {options: options, config: config} = {});
     else {  // Scraped from CPR 08/24/2024
         let defaultConfig = {
