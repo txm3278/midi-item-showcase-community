@@ -4,8 +4,6 @@
 //  Generalized Midi-QOL workflow function injection utilizing a DAE effect to enable calls
 //  Add a DAE effects to the actor to have them call into this macro during workflow execution.
 //
-//  After writing your code, feel free to remove any unused functions declarations / lookup entries
-//
 //                          Don't be a baka, but do things that are bakana!
 //                      No credit required for this. Just be cool to other people.
 // ---------------------------------------------------------------------------------------------------
@@ -31,7 +29,6 @@ async function runWorkflows(argumentInput, config) {
     let  workflowAction = firstArg.macroPass || firstArg;
     try {
         if (macroUtil.debugLevel) {
-        
             console.group(
             	`%c↳ (${macroItem.name}) [${workflowAction}]`,
             	'background:black; color: white; padding:2px 5px;font-weight:bold;'
@@ -43,7 +40,6 @@ async function runWorkflows(argumentInput, config) {
             if (!config[workflowAction]) 
               console.warn(`Undefined workflow attempting to run : ${workflowAction}`);
             else workflowReturn = await config[workflowAction](firstArg);
-
 
             if (macroUtil.debugLevel > 1) {
                 if (workflow.aborted) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
