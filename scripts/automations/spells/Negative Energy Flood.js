@@ -5,6 +5,7 @@ async function preDamageRoll() {
     const targetType = targetToken.actor.system.details.type.value?.toLowerCase();
     if (targetType == undefined || targetType == "") 
         console.warn(`Token ${targetToken.id} has no creature type (eg 'undead, humanoid, ooze,...')`,  targetToken);
+
     if (targetType != "undead") return;
 
     const updates = {

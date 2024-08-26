@@ -137,7 +137,7 @@
         "img": "icons/skills/wounds/injury-pain-body-orange.webp",
         "type": "script",
         "scope": "global",
-        "command": "async function preDamageRoll() {\n    const target = workflow.targets.first();\n    const targetType = target.actor.system.details.type.value.toLowerCase();\n    if (targetType != \"undead\") return;\n\n    const updates = {\n        \"system.actionType\"     : \"heal\",\n        \"system.damage.parts\"   : [[\"5d12\", \"temphp\"]],\n        \"system.save.ability\"   : \"\",\n        \"system.save.dc\"        : null,\n        \"system.save.scaling\"   : \"flag\"\n    }\n    workflow.item = await macroUtil.item.syntheticItem(workflow.item, actor, updates);\n}\n\nasync function preDamageApplication() {\n    if (!workflow.damageItem.oldHP) return;\n    if (workflow.damageItem.oldHP != workflow.damageItem.hpDamage) return;\n\n    const zombification = macroItem.effects.find(ef => ef.name == \"Zombification\");\n    const target = canvas.tokens.get(workflow.damageItem.tokenId);\n    await macroUtil.effect.create(target.actor, zombification);\n}\n\nasync function offEffect() {\n    const zombie = game.actors.getName(\"Zombie\");\n    if (!zombie) ui.notifications.error(\"No zombie actor detected\");\n    else await actor.transformInto(zombie, {}, {renderSheet:false});\n}\n\nawait macroUtil.runWorkflows(arguments, {\n    preDamageRoll : preDamageRoll,\n    preDamageApplication : preDamageApplication,\n    off : offEffect,\n});",
+        "command": "async function preDamageRoll() {\n    const target = workflow.targets.first();\n    const targetType = target.actor.system.details.type.value?.toLowerCase();\n    if (targetType != \"undead\") return;\n\n    const updates = {\n        \"system.actionType\"     : \"heal\",\n        \"system.damage.parts\"   : [[\"5d12\", \"temphp\"]],\n        \"system.save.ability\"   : \"\",\n        \"system.save.dc\"        : null,\n        \"system.save.scaling\"   : \"flag\"\n    }\n    workflow.item = await macroUtil.item.syntheticItem(workflow.item, actor, updates);\n}\n\nasync function preDamageApplication() {\n    if (!workflow.damageItem.oldHP) return;\n    if (workflow.damageItem.oldHP != workflow.damageItem.hpDamage) return;\n\n    const zombification = macroItem.effects.find(ef => ef.name == \"Zombification\");\n    const target = canvas.tokens.get(workflow.damageItem.tokenId);\n    await macroUtil.effect.create(target.actor, zombification);\n}\n\nasync function offEffect() {\n    const zombie = game.actors.getName(\"Zombie\");\n    if (!zombie) ui.notifications.error(\"No zombie actor detected\");\n    else await actor.transformInto(zombie, {}, {renderSheet:false});\n}\n\nawait macroUtil.runWorkflows(arguments, {\n    preDamageRoll : preDamageRoll,\n    preDamageApplication : preDamageApplication,\n    off : offEffect,\n});",
         "author": "kZCTN6jqnh5wCn1V",
         "ownership": {
           "default": 3
@@ -251,7 +251,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724603499218,
-    "modifiedTime": 1724604957481,
+    "modifiedTime": 1724652934189,
     "lastModifiedBy": "kZCTN6jqnh5wCn1V"
   }
 }
