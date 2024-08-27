@@ -5,13 +5,13 @@ async function find(actorEntity, effect) {
 }
 
 async function create(entity, effectData, {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent, keepId} = {}) {
-    macroUtil.dependsOn.required('chris-premades', '0.12.27');
+    macroUtil.dependsOn.required({id: 'chris-premades', min: '0.12.27'});
     let options = {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent, keepId};
     await chrisPremades.utils.effectUtils.createEffect(entity, effectData, options);
 }
 
 async function addDependents(entity, dependents) {
-    macroUtil.dependsOn.required('chris-premades', '0.12.27');
+    macroUtil.dependsOn.required({id: 'chris-premades', min: '0.12.27'});
     await chrisPremades.utils.effectUtils.addDependent(entity, dependents);
 }
 
