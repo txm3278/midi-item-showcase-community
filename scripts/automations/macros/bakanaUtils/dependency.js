@@ -4,7 +4,6 @@ function _isAscending(a, b, c) {
 }
 
 function _activated(dependency) {
-    if (!dependency.id) return [false, undefined];
     let isModule = game.modules.get(dependency.id);
     let entity = (isModule) ? game.modules.get(dependency.id) : globalThis[dependency.id];
     if (!entity?.active && isModule) return [false, undefined];
@@ -13,9 +12,24 @@ function _activated(dependency) {
     return [_isAscending(dependency.min, entity.version, dependency.max), entity?.version];
 }
 
+function _versionMessageAppend(dependency, version) {
+    let msg = "";
+    if (dependency.min) msg += `\n\tMinimum version: ${dependency.min}`;
+    if (dependency.max) msg += `\n\tMaximum version: ${dependency.max}`;
+    msg += "\n\tCurrent version: " + (version) ? version : "NOT INSTALLED";
+    return msg;
+}
+
 // Returns true if dependency exists, is active, and is inside any provided version window
-function activated(dependency) {
+function activated(dependency, warnMessage) {
+    if (!dependency.id) return [false, undefined];
     let [isActivated, currentVersion] = _activated(dependency);
+    if (!isActivated && warnMessage) {
+        if (warnMessage.length) warnMessage += '\n';
+        warnMessage += `Warning: ${dependency.id} is not between expected versions.`;
+        warnMessage += _versionMessageAppend(dependency, currentVersion)
+        console.warn(warnMessage);
+    }
     return isActivated;
 }
 
@@ -25,10 +39,7 @@ function required(dependency) {
     if (isActivated) return true;
 
     let errorMsg = `Requires ${dependency.id} to be installed and activated.`;
-    if (dependency.min) errorMsg += `\tMinimum version: ${dependency.min}`;
-    if (dependency.max) errorMsg += `\tMaximum version: ${dependency.max}`;
-    errorMsg += "\tCurrent version: " + (currentVersion) ? currentVersion : "not installed";
-
+    errorMsg += _versionMessageAppend(dependency, currentVersion);
     throw errorMsg;
 }
 
@@ -41,11 +52,8 @@ function someRequired(dependencyList) {
         if (isActivated) return true;
 
         errorMsg += `Module Id: ${dependency.id}`;
-        if (dependency.min) errorMsg += `\tMinimum version: ${dependency.min}`;
-        if (dependency.max) errorMsg += `\tMaximum version: ${dependency.max}`;
-        errorMsg += "\tCurrent version: " + (currentVersion) ? currentVersion : "not installed";
+        errorMsg += _versionMessageAppend(dependency, currentVersion);
     }
-
     throw errorMsg;
 }
 
