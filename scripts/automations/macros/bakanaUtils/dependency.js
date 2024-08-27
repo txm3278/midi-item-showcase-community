@@ -13,13 +13,13 @@ function _activated(dependency) {
     return [_isAscending(dependency.min, entity.version, dependency.max), entity?.version];
 }
 
-// Returns true if dependency exists, is active, and is appropriately versioned
+// Returns true if dependency exists, is active, and is inside any provided version window
 function activated(dependency) {
     let [isActivated, currentVersion] = _activated(dependency);
     return isActivated;
 }
 
-// Throws an error if dependency does not exist, is not active, or is outside of versions
+// Throws an error if dependency does not exist, is not active, or is outside of version window
 function required(dependency) {
     let [isActivated, currentVersion] = _activated(dependency);
     if (isActivated) return true;
@@ -32,6 +32,7 @@ function required(dependency) {
     throw errorMsg;
 }
 
+// Throws an error if no entry in dependency list exists, is active, and is inside version window
 function someRequired(dependencyList) {
     let errorMsg = `Requires at least one of the following to be installed and activated:\n`;
 
