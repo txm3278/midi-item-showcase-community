@@ -54,7 +54,7 @@ async function runWorkflows(argumentInput, config) {
         if(macroUtil.debugLevel) console.groupEnd();
         return workflowReturn;
     } catch (e) {
-        ui.notifications.error(`An unexpected error occurred in the execcution of the ${macroItem.name} ItemMacro. Please press <F12> and inspect the console errors for more information.`);
+        ui.notifications.error(`An unexpected error occurred in the execution of the ${macroItem.name} ItemMacro. Please press <F12> and inspect the console errors for more information.`);
         console.group(`%c❗❗ (${macroItem.name}) [Error in ${workflowAction}] ❗❗`, 'background:black; color: white; padding:2px 5px;font-weight:bold;');
         console.error("Unexpected error occurred :", e);
         if (config.exceptionHandler) await config.exceptionHandler(e);
