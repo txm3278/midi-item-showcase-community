@@ -1,9 +1,11 @@
-// @bakanabaka
-
-let dagger = actor.items.find(it => it.name == "Dagger of Venom"); 
-if (!dagger) {
-    console.error("'Dagger of Venom' not found on actor!");
-    return;
+function findItem(itemName) {
+    return actor.items.find(it => it.name == itemName); 
 }
-let enableEffect = dagger.effects.find(ef => ef.name.includes(macroItem.name));
-await enableEffect.update({"disabled": false});
+
+let dagger = findItem("Dagger of Venom");
+if (!dagger) return;
+
+// Add poison effect
+let poisonEffect = dagger.effects.find(ef => ef.name == dagger.name);
+await poisonEffect.update({"disabled": false, "isSuppressed": false});
+await dagger.setFlag("midi-qol", "onUseMacroName", "[preDamageRoll]ItemMacro");
