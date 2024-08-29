@@ -175,10 +175,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1686418531216,
     "modifiedTime": 1713821463591,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

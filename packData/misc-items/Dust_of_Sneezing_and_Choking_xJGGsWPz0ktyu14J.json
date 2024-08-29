@@ -88,7 +88,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/water/bubbles-air-water-light.webp",
       "origin": "Item.1rUKPwZcDXSSW0VN",
       "duration": {
         "rounds": null,
@@ -151,7 +150,21 @@
           "sourceId": "Item.RTxMjsiVIrImD9qL.ActiveEffect.uhETx7WWBudPGJvh"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/water/bubbles-air-water-light.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!xJGGsWPz0ktyu14J.22QFpX5b9sZ84Tja"
     }
   ],
@@ -205,10 +218,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1709823568040,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

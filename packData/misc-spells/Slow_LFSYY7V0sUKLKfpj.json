@@ -1,0 +1,338 @@
+{
+  "type": "spell",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Times Up</span></p></li></ul>",
+      "chat": ""
+    },
+    "source": {
+      "book": "Player’s Handbook (2014)",
+      "page": "277",
+      "license": "",
+      "custom": ""
+    },
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "minute"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "40",
+      "units": "ft",
+      "type": "cube",
+      "width": null,
+      "prompt": true
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "save",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "enchantment": null,
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "level": 3,
+    "school": "trs",
+    "properties": [
+      "vocal",
+      "somatic",
+      "material",
+      "concentration"
+    ],
+    "materials": {
+      "value": "a drop of molasses",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "sourceClass": ""
+  },
+  "name": "Slow",
+  "flags": {
+    "ddbimporter": {
+      "id": 138748,
+      "definitionId": 2256,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "originalName": "Slow",
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 277,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Control",
+        "Debuff"
+      ],
+      "version": "5.2.27",
+      "effectsApplied": true
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "forceCEOff": true,
+      "AoETargetType": "any",
+      "AoETargetTypeIncludeSelf": true,
+      "autoTarget": "default",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "magicdam": true,
+      "magiceffect": true,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "region-attacher": {
+      "attachRegionToTemplate": false,
+      "regionBehaviors": []
+    },
+    "dae": {
+      "macro": {
+        "name": "Slow",
+        "img": "icons/creatures/webs/webthin-blue.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "12.331",
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "exportSource": {
+      "world": "one-way-out",
+      "system": "dnd5e",
+      "coreVersion": "12.330",
+      "systemVersion": "3.3.1"
+    }
+  },
+  "effects": [
+    {
+      "img": "icons/creatures/webs/webthin-blue.webp",
+      "changes": [
+        {
+          "key": "system.attributes.ac.bonus",
+          "mode": 2,
+          "value": "-2",
+          "priority": 20
+        },
+        {
+          "key": "system.attributes.movement.all",
+          "mode": 0,
+          "value": "/2",
+          "priority": 20
+        },
+        {
+          "key": "system.abilities.dex.bonuses.save",
+          "mode": 2,
+          "value": "-2",
+          "priority": 20
+        },
+        {
+          "key": "macro.StatusEffect",
+          "mode": 0,
+          "value": "reaction",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 0,
+          "value": "turn=end,\nsaveAbility=wis,\nsaveDC=@attributes.spelldc,\nsaveMagic=true,\nname=Wisdom Save to remove Slow effect",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.actions.reaction",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "function.MISC.spells.slow",
+          "priority": 20
+        }
+      ],
+      "duration": {
+        "seconds": 60,
+        "startTime": null,
+        "rounds": 10,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null,
+        "combat": null
+      },
+      "tint": "#ffffff",
+      "transfer": false,
+      "disabled": false,
+      "flags": {
+        "dae": {
+          "transfer": false,
+          "stackable": "noneName",
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "startEveryTurn",
+          "specialDuration": []
+        },
+        "ddbimporter": {
+          "disabled": false
+        },
+        "midi-qol": {
+          "forceCEOff": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "effectmacro": {},
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "chris-premades": {
+          "noAnimation": false,
+          "conditions": []
+        }
+      },
+      "name": "Slow",
+      "statuses": [],
+      "_id": "7H184UCaBc5I3ohL",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!LFSYY7V0sUKLKfpj.7H184UCaBc5I3ohL"
+    }
+  ],
+  "img": "icons/creatures/webs/webthin-blue.webp",
+  "folder": null,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1724961733021,
+    "modifiedTime": 1724961733021,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "LFSYY7V0sUKLKfpj",
+  "sort": 0,
+  "_key": "!items!LFSYY7V0sUKLKfpj"
+}

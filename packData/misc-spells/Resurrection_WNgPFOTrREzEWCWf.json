@@ -133,7 +133,6 @@
   "img": "icons/magic/life/heart-cross-strong-flame-blue.webp",
   "effects": [
     {
-      "icon": "icons/magic/life/heart-cross-strong-flame-blue.webp",
       "origin": "Item.x722LxjNhNMkXWDg",
       "duration": {
         "startTime": null,
@@ -218,7 +217,21 @@
           "sourceId": "Item.LOv8IFfm7SRtrKnz.ActiveEffect.OePEECL0IYNowggX"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/life/heart-cross-strong-flame-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!WNgPFOTrREzEWCWf.5maatZ0izJELyVfD"
     }
   ],
@@ -226,16 +239,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1661787234213,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "WNgPFOTrREzEWCWf",
-  "sort": 1700000,
+  "sort": 1900000,
   "_key": "!items!WNgPFOTrREzEWCWf"
 }

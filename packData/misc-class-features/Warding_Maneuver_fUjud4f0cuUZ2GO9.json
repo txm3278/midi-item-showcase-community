@@ -86,7 +86,6 @@
   "effects": [
     {
       "name": "Warding Maneuver",
-      "icon": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
       "origin": "Item.gwtiJjqTZOGueckf",
       "duration": {
         "startTime": null,
@@ -136,7 +135,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!fUjud4f0cuUZ2GO9.vNUk4Hnqh9SKG2AD"
     }
   ],
@@ -212,10 +225,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1721486352626,
     "modifiedTime": 1722891751194,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "fUjud4f0cuUZ2GO9",
   "sort": 0,

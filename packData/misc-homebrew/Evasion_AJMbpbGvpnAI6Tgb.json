@@ -80,7 +80,6 @@
   "effects": [
     {
       "name": "Evasion",
-      "icon": "icons/magic/light/beam-red-orange.webp",
       "origin": "Actor.k6Fva8SjyWXGyOXI.Item.naCN6P5xYV08aXCW",
       "duration": {
         "startTime": null,
@@ -133,7 +132,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/light/beam-red-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!AJMbpbGvpnAI6Tgb.ukwUZdW71pAvg32O"
     }
   ],
@@ -189,10 +202,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1711434458373,
     "modifiedTime": 1715297625780,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "AJMbpbGvpnAI6Tgb",
   "sort": 300000,

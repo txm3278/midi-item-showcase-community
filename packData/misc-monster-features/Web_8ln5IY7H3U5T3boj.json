@@ -77,7 +77,6 @@
   "effects": [
     {
       "name": "Web",
-      "icon": "icons/commodities/materials/material-webbing.webp",
       "changes": [
         {
           "key": "flags.midi-qol.OverTime",
@@ -145,7 +144,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/materials/material-webbing.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!8ln5IY7H3U5T3boj.tOWMuVOvGn3MUSGZ"
     }
   ],
@@ -249,10 +262,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "2.4.1",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1704475374340,
     "modifiedTime": 1707925713267,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

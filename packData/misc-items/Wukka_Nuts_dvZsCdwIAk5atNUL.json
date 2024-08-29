@@ -122,9 +122,8 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/consumables/fruit/pineapple-ripe-yellow.webp",
       "origin": "Item.sUcQH94FBjkb3uYx",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "flags": {
         "core": {
@@ -174,6 +173,20 @@
       "statuses": [
         "Convenient Effect: Light - Candle"
       ],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/consumables/fruit/pineapple-ripe-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!dvZsCdwIAk5atNUL.oASolcTIslfYytSf"
     }
   ],
@@ -241,10 +254,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708725164914,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

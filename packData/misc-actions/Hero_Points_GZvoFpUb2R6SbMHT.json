@@ -81,7 +81,6 @@
   "effects": [
     {
       "name": "Hero Points",
-      "icon": "icons/magic/light/hand-sparks-glow-yellow.webp",
       "origin": "Item.oAvADAgIMgJPAOfr",
       "duration": {
         "startTime": null,
@@ -170,7 +169,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!GZvoFpUb2R6SbMHT.qeiFHv5QSZb8epC0"
     }
   ],
@@ -240,10 +253,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1711445052565,
     "modifiedTime": 1712257071295,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

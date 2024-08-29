@@ -165,7 +165,6 @@
   "effects": [
     {
       "name": "Psionic Power: Protective Field",
-      "icon": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
       "origin": "Item.Ffqtl1yAQRd1XTN3",
       "duration": {
         "startTime": null,
@@ -221,7 +220,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!an6ZfwdFpyMJ1IIA.8wCjz9mOtvTTbSKc"
     }
   ],
@@ -235,10 +248,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1705895542886,
     "modifiedTime": 1722891630418,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "an6ZfwdFpyMJ1IIA",
   "sort": 0,

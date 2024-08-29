@@ -161,7 +161,6 @@
   "effects": [
     {
       "name": "Aspect of the Beast: Bear",
-      "icon": "icons/commodities/claws/claws-bear-brown-white.webp",
       "changes": [
         {
           "key": "flags.midi-qol.advantage.ability.check.str",
@@ -226,7 +225,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/claws/claws-bear-brown-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!F5qzYX7b4YGuyBuA.sFUQSExvVxwwS173"
     }
   ],
@@ -235,10 +248,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1711593342228,
     "modifiedTime": 1712256889653,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

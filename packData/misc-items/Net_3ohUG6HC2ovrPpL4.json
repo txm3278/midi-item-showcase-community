@@ -216,7 +216,6 @@
   "effects": [
     {
       "name": "Net",
-      "icon": "icons/tools/fishing/net-simple-brown.webp",
       "changes": [
         {
           "key": "macro.CE",
@@ -286,7 +285,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/tools/fishing/net-simple-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!3ohUG6HC2ovrPpL4.YxU4cuCvKpVhj3wi"
     }
   ],
@@ -294,10 +307,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084463183,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": null,
   "ownership": {

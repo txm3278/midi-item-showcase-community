@@ -5,7 +5,6 @@
   "effects": [
     {
       "name": "Spores",
-      "icon": "https://assets.forge-vtt.com/bazaar/core/icons/magic/earth/orb-stone-smoke-teal.webp",
       "origin": "Scene.iWXFkdtjSvbsBME0.Token.MC242QFxoXJqIfuk.Actor.o1E39Nfpl63gm1ax.Item.6xW3cGBPIoeeggce",
       "duration": {
         "rounds": 1,
@@ -73,7 +72,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "https://assets.forge-vtt.com/bazaar/core/icons/magic/earth/orb-stone-smoke-teal.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!EqrFT2ZycNzhhqJE.Aon2YoytEjBAXCPA"
     }
   ],
@@ -404,10 +417,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708200698459,
     "modifiedTime": 1708714190190,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

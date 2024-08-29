@@ -81,7 +81,6 @@
   "effects": [
     {
       "name": "Gift of the Metallic Dragon",
-      "icon": "icons/creatures/reptiles/dragon-winged-blue.webp",
       "origin": "Item.Vui6WdIKyasm5bcI",
       "duration": {
         "startTime": null,
@@ -137,12 +136,25 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!bbUAlJcTzDtb53Zq.KKgBnwQi3umjgmYk"
     },
     {
       "name": "Gift of the Metallic Dragon - AC Bonus",
-      "icon": "icons/creatures/reptiles/dragon-winged-blue.webp",
       "origin": "Item.Vui6WdIKyasm5bcI",
       "duration": {
         "rounds": null,
@@ -200,7 +212,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!bbUAlJcTzDtb53Zq.IcGaEbrOONUEKiQG"
     }
   ],
@@ -283,10 +309,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1706615384809,
     "modifiedTime": 1722892010656,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "bbUAlJcTzDtb53Zq",
   "sort": 0,

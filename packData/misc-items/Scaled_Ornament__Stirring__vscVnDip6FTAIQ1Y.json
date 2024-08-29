@@ -102,7 +102,6 @@
   "effects": [
     {
       "name": "Scaled Ornament (+1AC)",
-      "icon": "icons/commodities/leather/scales-white.webp",
       "origin": "Compendium.mhiyarishareddata.items.Item.W68JQq1y0xPM0v8M",
       "duration": {
         "startTime": null,
@@ -158,12 +157,25 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/leather/scales-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!vscVnDip6FTAIQ1Y.7vwACCFTjOlgS18h"
     },
     {
       "name": "Scaled Ornament (charmed & frightened immunity)",
-      "icon": "icons/commodities/leather/scales-white.webp",
       "origin": "Compendium.mhiyarishareddata.items.Item.W68JQq1y0xPM0v8M",
       "duration": {
         "startTime": null,
@@ -225,12 +237,25 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/leather/scales-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!vscVnDip6FTAIQ1Y.JZ1N3w3cj1kKaup5"
     },
     {
       "name": "Scaled Ornament (Aura)",
-      "icon": "icons/commodities/leather/scales-white.webp",
       "origin": "Compendium.mhiyarishareddata.items.Item.W68JQq1y0xPM0v8M",
       "duration": {
         "startTime": null,
@@ -292,7 +317,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/leather/scales-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!vscVnDip6FTAIQ1Y.c9UT1Kava14E3Xts"
     }
   ],
@@ -327,10 +366,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708209155827,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

@@ -186,7 +186,6 @@
   "effects": [
     {
       "name": "Beast Sense (Spirit Seeker)",
-      "icon": "icons/creatures/eyes/humanoid-single-red-brown.webp",
       "origin": "Actor.t2BjukxVotGVDqUW.Item.P3sKxluULj02WtZS",
       "duration": {
         "rounds": 1,
@@ -240,7 +239,21 @@
           }
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/eyes/humanoid-single-red-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!mhfyFJrf5UNUP7PE.aMCOQx18GTG6ld5g"
     }
   ],
@@ -248,16 +261,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1699554950768,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "mhfyFJrf5UNUP7PE",
-  "sort": 200000,
+  "sort": 500000,
   "_key": "!items!mhfyFJrf5UNUP7PE"
 }

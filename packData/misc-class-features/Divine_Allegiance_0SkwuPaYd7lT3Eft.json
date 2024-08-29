@@ -160,7 +160,6 @@
   "effects": [
     {
       "name": "Divine Allegiance",
-      "icon": "icons/magic/life/heart-cross-strong-flame-green.webp",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
@@ -216,7 +215,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!0SkwuPaYd7lT3Eft.9IJ6UUPYYF1mQoZc"
     }
   ],
@@ -230,10 +243,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1705852991498,
     "modifiedTime": 1722891543687,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "0SkwuPaYd7lT3Eft",
   "sort": 0,

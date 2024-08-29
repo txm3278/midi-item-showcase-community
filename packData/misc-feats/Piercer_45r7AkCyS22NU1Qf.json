@@ -143,7 +143,6 @@
   "effects": [
     {
       "name": "Piercer",
-      "icon": "icons/skills/ranged/projectile-strike-impale-gray.webp",
       "origin": "Item.nd0VbwpWJps8zXp4",
       "duration": {
         "startTime": 1326,
@@ -202,7 +201,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/skills/ranged/projectile-strike-impale-gray.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!45r7AkCyS22NU1Qf.DkmyUB9axNOVRWuO"
     }
   ],
@@ -210,10 +223,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1710807233055,
     "modifiedTime": 1720475774504,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

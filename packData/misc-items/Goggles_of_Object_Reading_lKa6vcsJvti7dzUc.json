@@ -198,7 +198,6 @@
   "effects": [
     {
       "name": "Goggles of Object Reading",
-      "icon": "icons/equipment/head/goggles-leather-tan.webp",
       "changes": [
         {
           "key": "flags.midi-qol.optional.objectReading.skill.arc",
@@ -263,7 +262,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/head/goggles-leather-tan.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!lKa6vcsJvti7dzUc.yPdDsIhiheoi5nHJ"
     }
   ],
@@ -271,10 +284,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084449819,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": null,
   "ownership": {

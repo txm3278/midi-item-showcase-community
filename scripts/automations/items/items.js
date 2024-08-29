@@ -6,6 +6,7 @@ import { guardianEmblem } from './guardianEmblem.js';
 import { wandOfWinter } from './wandOfWinter.js';
 import { oathbow } from './oathbow.js';
 import { shieldOfMissileAttraction } from './shieldOfMissileAttraction.js';
+import { sunBlade } from './sunBlade.js';
 
 export let items = {
   arrowCatchingShield,
@@ -16,4 +17,5 @@ export let items = {
   wandOfWinter,
   oathbow,
   shieldOfMissileAttraction,
+  sunBlade,
 };

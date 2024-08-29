@@ -5,7 +5,7 @@
   "img": "icons/magic/control/debuff-chains-red.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-nxKDaje07I2LPAmE\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></section>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-NpEgJeneEtn7Zmci\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></section>",
       "chat": ""
     },
     "source": {
@@ -23,7 +23,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": null,
+      "value": "",
       "width": null,
       "units": "",
       "type": "",
@@ -78,7 +78,11 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "effects": [
     {
@@ -101,7 +105,6 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/magic/control/debuff-chains-red.webp",
       "origin": "Item.NXTNzCS4k7G8Jnbs",
       "transfer": true,
       "flags": {
@@ -137,11 +140,25 @@
           "description": ""
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
       "name": "Flames of Phlegethos",
       "description": "",
       "statuses": [],
-      "_key": "!items.effects!ODV5gw7zm7i88bci.uTsKzidAmvYyp62G"
+      "img": "icons/magic/control/debuff-chains-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!Pd6wKMgIe8KiInhL.uTsKzidAmvYyp62G"
     }
   ],
   "ownership": {
@@ -213,14 +230,16 @@
     }
   },
   "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
-    "createdTime": 1663621622118,
-    "modifiedTime": 1722892009740,
+    "systemVersion": "3.3.1",
+    "createdTime": 1724960118963,
+    "modifiedTime": 1724960118963,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "ODV5gw7zm7i88bci",
+  "_id": "Pd6wKMgIe8KiInhL",
   "sort": 0,
-  "_key": "!items!ODV5gw7zm7i88bci"
+  "_key": "!items!Pd6wKMgIe8KiInhL"
 }

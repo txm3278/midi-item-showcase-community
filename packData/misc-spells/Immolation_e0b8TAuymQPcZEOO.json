@@ -97,7 +97,6 @@
   "effects": [
     {
       "name": "Immolation",
-      "icon": "icons/magic/fire/explosion-mushroom-nuke-orange.webp",
       "origin": "Actor.9da5ZtvbZq40CYeV.Item.AOXB0cAbxBfsPISf",
       "duration": {
         "rounds": 10,
@@ -177,7 +176,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/fire/explosion-mushroom-nuke-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!e0b8TAuymQPcZEOO.AuZ4Q34t6tIkejKy"
     }
   ],
@@ -289,16 +302,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1662520710160,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "e0b8TAuymQPcZEOO",
-  "sort": 2300000,
+  "sort": 2500000,
   "_key": "!items!e0b8TAuymQPcZEOO"
 }

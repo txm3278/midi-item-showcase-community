@@ -80,7 +80,6 @@
   "effects": [
     {
       "name": "Magic Resistance",
-      "icon": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
       "origin": "Actor.k6Fva8SjyWXGyOXI.Item.0OtRNKgF2PQ2FFAF",
       "duration": {
         "startTime": null,
@@ -133,7 +132,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!011uUY06itjiKMkI.JcTkWBGz81mZOC7y"
     }
   ],
@@ -189,10 +202,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1711434458398,
     "modifiedTime": 1715297633966,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "011uUY06itjiKMkI",
   "sort": 100000,

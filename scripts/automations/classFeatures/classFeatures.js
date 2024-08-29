@@ -19,6 +19,7 @@ import { colossusSlayer } from './Ranger/Hunter/colossusSlayer.js';
 import { primevalAwareness } from './Ranger/primevalAwareness.js';
 import { flashOfGenius } from './Artificer/flashOfGenius.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
+import { sorrowfulFate } from './Bard/CollegeOfTragedy/sorrowfulFate.js';
 
 export let classFeatures = {
   eldritchCannon,
@@ -42,4 +43,5 @@ export let classFeatures = {
   primevalAwareness,
   flashOfGenius,
   channelDivinityVowOfEnmity,
+  sorrowfulFate,
 };

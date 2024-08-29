@@ -95,7 +95,6 @@
   "effects": [
     {
       "name": "Magic Stone 2",
-      "icon": "icons/magic/earth/projectile-stone-ball-purple.webp",
       "origin": "Item.2n9kjVnF0bhyQ1QN",
       "duration": {
         "startTime": null,
@@ -148,7 +147,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/earth/projectile-stone-ball-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!kEx5akRkTGwMsGEz.8EyBpUVJg9naxr61"
     }
   ],
@@ -544,16 +557,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1701895998788,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "kEx5akRkTGwMsGEz",
-  "sort": 2400000,
+  "sort": 2600000,
   "_key": "!items!kEx5akRkTGwMsGEz"
 }

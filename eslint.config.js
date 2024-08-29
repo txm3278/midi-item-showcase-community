@@ -17,7 +17,6 @@ export default [
       globals: {
         browser: 'readonly',
         game: 'writable',
-        setProperty: 'writable',
         Roll: 'writable',
         ChatMessage: 'writable',
         Dialog: 'writable',
@@ -43,7 +42,6 @@ export default [
         VideoHelper: 'writable',
         socketlib: 'writable',
         document: 'writable',
-        warpgate: 'writable',
         socket: 'writable',
         DAE: 'writable',
         deepClone: 'writable',
@@ -52,6 +50,7 @@ export default [
         macroUtil: 'writable',
         dragRuler: 'writable',
         OperatorTerm: 'writable',
+        NumericTerm: 'writable',
         Die: 'writable',
         setTimeout: 'writable',
         structuredClone: 'writable',

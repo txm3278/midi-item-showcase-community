@@ -81,7 +81,6 @@
   },
   "effects": [
     {
-      "icon": "icons/commodities/gems/gem-rough-square-red.webp",
       "changes": [
         {
           "key": "flags.midi-qol.optional.Dark.check.all",
@@ -127,7 +126,7 @@
         "startTurn": null
       },
       "origin": "Item.bHEjrJshvxt114Ky",
-      "tint": null,
+      "tint": "#ffffff",
       "flags": {
         "dfreds-convenient-effects": {
           "description": ""
@@ -165,6 +164,20 @@
       "name": "Dark One’s Own Luck",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/gems/gem-rough-square-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!qCJ0EeInuxE5UtUo.JuP7CV7AB4GNmdC8"
     }
   ],
@@ -217,10 +230,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1685213414938,
     "modifiedTime": 1720475736740,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

@@ -272,15 +272,28 @@
           "sourceId": "Compendium.kashaws-campaign-materials.rare-items.Item.EQ9QMawhkJzyzyL6.ActiveEffect.o5jh1MGmaw3XXzoF"
         }
       },
-      "icon": "icons/magic/nature/symbol-moon-stars-white.webp",
       "name": "Moon-Touched, Rapier Effect",
       "origin": "Compendium.kashaws-campaign-materials.rare-items.Item.06TVmtNbdY69axPz",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "statuses": [
         "Convenient Effect: Torch"
       ],
       "_id": "U0GGRWYgKlHjahiu",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/nature/symbol-moon-stars-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!ETbMAJLoyNw4zvBa.U0GGRWYgKlHjahiu"
     }
   ],
@@ -288,10 +301,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084444696,
     "modifiedTime": 1709582057750,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "Bn8fmEr6Vk6Vawl3",
   "ownership": {

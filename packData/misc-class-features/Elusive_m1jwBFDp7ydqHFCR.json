@@ -78,7 +78,6 @@
   "effects": [
     {
       "name": "Elusive",
-      "icon": "icons/svg/item-bag.svg",
       "origin": "Item.RreVD0VHceCtqFRH",
       "duration": {
         "startTime": null,
@@ -134,7 +133,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!m1jwBFDp7ydqHFCR.2hre3Q6o2Cwk9Iqd"
     }
   ],
@@ -175,10 +188,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "2.4.1",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1701024695503,
     "modifiedTime": 1707926051582,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "m1jwBFDp7ydqHFCR",
   "sort": 0,

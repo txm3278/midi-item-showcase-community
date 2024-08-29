@@ -218,7 +218,7 @@
         "startTurn": null,
         "combat": null
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
@@ -265,7 +265,20 @@
       "_id": "KZ6eQicTM3tqz4f8",
       "description": "",
       "origin": null,
-      "icon": "icons/creatures/birds/raptor-hawk-flying.webp",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/birds/raptor-hawk-flying.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!OGS7iwL2UQV4WTTW.KZ6eQicTM3tqz4f8"
     }
   ],
@@ -274,10 +287,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1715205844350,
     "modifiedTime": 1715296229892,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

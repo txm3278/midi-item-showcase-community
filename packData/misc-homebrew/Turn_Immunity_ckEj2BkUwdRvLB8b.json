@@ -80,7 +80,6 @@
   "effects": [
     {
       "name": "Turn Immunity",
-      "icon": "icons/magic/fire/flame-burning-creature-skeleton.webp",
       "origin": "Actor.k6Fva8SjyWXGyOXI.Item.c5uXVgPPKN1NzqiP",
       "duration": {
         "startTime": null,
@@ -133,7 +132,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/fire/flame-burning-creature-skeleton.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!ckEj2BkUwdRvLB8b.TF6bOepHB7IS3pOP"
     }
   ],
@@ -189,10 +202,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1711434458437,
     "modifiedTime": 1715297656153,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "ckEj2BkUwdRvLB8b",
   "sort": 200000,

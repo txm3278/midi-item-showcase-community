@@ -89,7 +89,6 @@
   "effects": [
     {
       "name": "Infernal Ichor",
-      "icon": "icons/magic/fire/flame-burning-eye.webp",
       "origin": "Item.uThc0wnPjknHETrL",
       "duration": {
         "startTime": null,
@@ -143,7 +142,21 @@
         },
         "effectmacro": {}
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/fire/flame-burning-eye.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!CRPIlrdHoiynKb4R.dy9FZins7RjrDmEy"
     }
   ],
@@ -232,10 +245,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1717806836439,
     "modifiedTime": 1720477137093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

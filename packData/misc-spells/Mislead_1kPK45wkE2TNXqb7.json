@@ -189,7 +189,6 @@
   "effects": [
     {
       "name": "Mislead - Blinded",
-      "icon": "icons/magic/control/debuff-energy-hold-levitate-yellow.webp",
       "origin": "Actor.0Hh6GpvsUgdPh5rQ.Item.d0fWW4HejTNtB4wu",
       "duration": {
         "rounds": 1,
@@ -251,7 +250,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/debuff-energy-hold-levitate-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1kPK45wkE2TNXqb7.sUWhGh6Etykudz8I"
     },
     {
@@ -296,7 +309,6 @@
           "wallsBlock": "system"
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/invisible.svg",
       "_id": "xn2QLx1dsEXN0EoQ",
       "disabled": false,
       "duration": {
@@ -310,12 +322,25 @@
       },
       "description": "",
       "statuses": [],
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/invisible.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1kPK45wkE2TNXqb7.xn2QLx1dsEXN0EoQ"
     },
     {
       "name": "Mislead - Item",
-      "icon": "icons/magic/control/debuff-energy-hold-levitate-yellow.webp",
       "origin": "Compendium.midi-item-showcase-community.misc-spells.Item.1kPK45wkE2TNXqb7",
       "duration": {
         "rounds": 1,
@@ -368,7 +393,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/debuff-energy-hold-levitate-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1kPK45wkE2TNXqb7.YyJ33qXYkqn0fcI1"
     }
   ],
@@ -377,16 +416,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1688759466528,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "1kPK45wkE2TNXqb7",
-  "sort": 2500000,
+  "sort": 2700000,
   "_key": "!items!1kPK45wkE2TNXqb7"
 }

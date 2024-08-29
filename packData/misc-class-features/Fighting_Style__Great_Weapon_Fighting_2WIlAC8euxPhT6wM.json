@@ -175,7 +175,6 @@
   "effects": [
     {
       "name": "Fighting Style: Great Weapon Fighting",
-      "icon": "icons/skills/melee/strike-sword-steel-yellow.webp",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
@@ -231,7 +230,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!2WIlAC8euxPhT6wM.HfS4s63NmLcWZLzu"
     }
   ],
@@ -239,10 +252,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1661787234325,
     "modifiedTime": 1714153716810,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "2WIlAC8euxPhT6wM",
   "sort": 0,

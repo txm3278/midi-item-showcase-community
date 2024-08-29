@@ -1,0 +1,944 @@
+{
+  "name": "Mage Hand",
+  "type": "npc",
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.jb2a_patreon.jb2a-actors.Actor.tIqeF7NwPyBFn3iU"
+    },
+    "scene-packer": {
+      "hash": "dff802da6b7e0b70cf6139933f77a5485fd6d307",
+      "sourceId": "Actor.cNEz1DyAu2RLsAmh"
+    },
+    "midi-qol": {
+      "concentration-damage": 0
+    },
+    "exportSource": {
+      "world": "one-way-out",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "3.3.1"
+    }
+  },
+  "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Blue_Thumb.webp",
+  "items": [
+    {
+      "name": "Never Target",
+      "type": "feat",
+      "system": {
+        "description": {
+          "value": "<p>midi-qol: 11.0.7 Cause the actor to be untargetable</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": ""
+        },
+        "activation": {
+          "type": "",
+          "cost": null,
+          "condition": ""
+        },
+        "duration": {
+          "value": "",
+          "units": ""
+        },
+        "cover": null,
+        "crewed": false,
+        "target": {
+          "value": "",
+          "width": null,
+          "units": "",
+          "type": "",
+          "prompt": true
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "consume": {
+          "type": "",
+          "target": null,
+          "amount": null,
+          "scale": false
+        },
+        "ability": null,
+        "actionType": "",
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "type": {
+          "value": "monster",
+          "subtype": ""
+        },
+        "requirements": "",
+        "recharge": {
+          "value": null,
+          "charged": false
+        },
+        "attack": {
+          "bonus": "",
+          "flat": false
+        },
+        "enchantment": null,
+        "summons": null,
+        "prerequisites": {
+          "level": null
+        },
+        "properties": []
+      },
+      "img": "icons/magic/perception/shadow-stealth-eyes-purple.webp",
+      "effects": [
+        {
+          "name": "Never Target",
+          "origin": "Actor.cNEz1DyAu2RLsAmh.Item.h9n0RhXMvkqadzrc",
+          "duration": {
+            "startTime": null,
+            "seconds": null,
+            "combat": null,
+            "rounds": null,
+            "turns": null,
+            "startRound": 1,
+            "startTurn": 0
+          },
+          "transfer": true,
+          "disabled": false,
+          "_id": "jFKhp34XZd32ryYT",
+          "changes": [
+            {
+              "key": "flags.midi-qol.neverTarget",
+              "mode": 0,
+              "value": "true",
+              "priority": 20
+            }
+          ],
+          "description": "",
+          "statuses": [],
+          "flags": {
+            "times-up": {
+              "isPassive": true
+            },
+            "dae": {
+              "selfTarget": false,
+              "selfTargetAlways": false,
+              "stackable": "noneName",
+              "durationExpression": "",
+              "macroRepeat": "none",
+              "specialDuration": [],
+              "disableCondition": "",
+              "disableIncapacitated": false,
+              "showIcon": false
+            },
+            "core": {
+              "overlay": false
+            },
+            "ActiveAuras": {
+              "isAura": false,
+              "aura": "None",
+              "nameOverride": "",
+              "radius": "",
+              "alignment": "",
+              "type": "",
+              "customCheck": "",
+              "ignoreSelf": false,
+              "height": false,
+              "hidden": false,
+              "displayTemp": false,
+              "hostile": false,
+              "onlyOnce": false,
+              "wallsBlock": "system"
+            }
+          },
+          "tint": "#ffffff",
+          "_stats": {
+            "compendiumSource": null,
+            "duplicateSource": null,
+            "coreVersion": "12.331",
+            "systemId": "dnd5e",
+            "systemVersion": "3.3.1",
+            "createdTime": null,
+            "modifiedTime": null,
+            "lastModifiedBy": null
+          },
+          "img": "icons/magic/perception/shadow-stealth-eyes-purple.webp",
+          "type": "base",
+          "system": {},
+          "sort": 0,
+          "_key": "!actors.items.effects!S7PWKzw97SwKHB7L.h9n0RhXMvkqadzrc.jFKhp34XZd32ryYT"
+        }
+      ],
+      "folder": "eANcf0wdWW30zqCS",
+      "ownership": {
+        "default": 0,
+        "ffUVCzLexh57kZfU": 3,
+        "L9q5rw37PGD7yPqq": 3
+      },
+      "flags": {
+        "core": {},
+        "midiProperties": {
+          "confirmTargets": "default",
+          "autoFailFriendly": false,
+          "autoSaveFriendly": false,
+          "critOther": false,
+          "offHandWeapon": false,
+          "magicdam": false,
+          "magiceffect": false,
+          "noConcentrationCheck": false,
+          "toggleEffect": false,
+          "ignoreTotalCover": false
+        },
+        "midi-qol": {
+          "rollAttackPerTarget": "default",
+          "itemCondition": "",
+          "effectCondition": ""
+        },
+        "scene-packer": {
+          "hash": "007916423831180f161953340c1cfab492c7ebc0"
+        }
+      },
+      "_stats": {
+        "compendiumSource": "Compendium.midi-qol.midiqol-sample-items.Item.mT0aJmviVtVlss4s",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_id": "h9n0RhXMvkqadzrc",
+      "sort": 0,
+      "_key": "!actors.items!S7PWKzw97SwKHB7L.h9n0RhXMvkqadzrc"
+    }
+  ],
+  "effects": [],
+  "system": {
+    "abilities": {
+      "str": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "dex": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "con": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "int": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "wis": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "cha": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "hon": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "san": {
+        "value": 100,
+        "proficient": 0,
+        "max": null,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      }
+    },
+    "attributes": {
+      "ac": {
+        "flat": 100,
+        "calc": "flat",
+        "formula": ""
+      },
+      "hp": {
+        "value": 1000,
+        "max": 1000,
+        "temp": 0,
+        "tempmax": 0,
+        "formula": ""
+      },
+      "init": {
+        "ability": "",
+        "bonus": "0",
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "movement": {
+        "burrow": null,
+        "climb": null,
+        "fly": 30,
+        "swim": null,
+        "walk": null,
+        "units": "ft",
+        "hover": true
+      },
+      "attunement": {
+        "max": 3
+      },
+      "senses": {
+        "darkvision": null,
+        "blindsight": null,
+        "tremorsense": null,
+        "truesight": null,
+        "units": "ft",
+        "special": ""
+      },
+      "spellcasting": "int",
+      "death": {
+        "success": 0,
+        "failure": 0,
+        "ability": "",
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "exhaustion": 0,
+      "concentration": {
+        "ability": "",
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        },
+        "bonuses": {
+          "save": ""
+        },
+        "limit": 1
+      },
+      "hd": {
+        "spent": 0
+      }
+    },
+    "details": {
+      "biography": {
+        "value": "",
+        "public": ""
+      },
+      "alignment": "",
+      "race": null,
+      "type": {
+        "value": "custom",
+        "subtype": "Hand",
+        "swarm": "",
+        "custom": "Illusion"
+      },
+      "environment": "",
+      "cr": 1,
+      "spellLevel": 0,
+      "source": {},
+      "ideal": "",
+      "bond": "",
+      "flaw": ""
+    },
+    "traits": {
+      "size": "tiny",
+      "di": {
+        "value": [],
+        "bypasses": [],
+        "custom": ""
+      },
+      "dr": {
+        "value": [],
+        "bypasses": [],
+        "custom": ""
+      },
+      "dv": {
+        "value": [],
+        "bypasses": [],
+        "custom": ""
+      },
+      "ci": {
+        "value": [],
+        "custom": ""
+      },
+      "languages": {
+        "value": [],
+        "custom": ""
+      },
+      "dm": {
+        "amount": {},
+        "bypasses": []
+      }
+    },
+    "currency": {
+      "pp": 0,
+      "gp": 0,
+      "ep": 0,
+      "sp": 0,
+      "cp": 0
+    },
+    "skills": {
+      "acr": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "ani": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "arc": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "ath": {
+        "value": 0,
+        "ability": "str",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "dec": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "his": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "ins": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "itm": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "inv": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "med": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "nat": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "prc": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "prf": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "per": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "rel": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "slt": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "ste": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      },
+      "sur": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        },
+        "roll": {
+          "min": null,
+          "max": null,
+          "mode": 0
+        }
+      }
+    },
+    "tools": {},
+    "spells": {
+      "spell1": {
+        "value": 0,
+        "override": null
+      },
+      "spell2": {
+        "value": 0,
+        "override": null
+      },
+      "spell3": {
+        "value": 0,
+        "override": null
+      },
+      "spell4": {
+        "value": 0,
+        "override": null
+      },
+      "spell5": {
+        "value": 0,
+        "override": null
+      },
+      "spell6": {
+        "value": 0,
+        "override": null
+      },
+      "spell7": {
+        "value": 0,
+        "override": null
+      },
+      "spell8": {
+        "value": 0,
+        "override": null
+      },
+      "spell9": {
+        "value": 0,
+        "override": null
+      },
+      "pact": {
+        "value": 0,
+        "override": null
+      }
+    },
+    "bonuses": {
+      "mwak": {
+        "attack": "",
+        "damage": ""
+      },
+      "rwak": {
+        "attack": "",
+        "damage": ""
+      },
+      "msak": {
+        "attack": "",
+        "damage": ""
+      },
+      "rsak": {
+        "attack": "",
+        "damage": ""
+      },
+      "abilities": {
+        "check": "",
+        "save": "",
+        "skill": ""
+      },
+      "spell": {
+        "dc": ""
+      }
+    },
+    "resources": {
+      "legact": {
+        "value": 0,
+        "max": 0
+      },
+      "legres": {
+        "value": 0,
+        "max": 0
+      },
+      "lair": {
+        "value": false,
+        "initiative": 0
+      }
+    }
+  },
+  "prototypeToken": {
+    "flags": {
+      "monks-enhanced-journal": {
+        "chatbubble": ""
+      },
+      "monks-tokenbar": {
+        "include": "default"
+      },
+      "aedifs-tactical-grid": {
+        "viewDistance": null,
+        "viewShape": "",
+        "color": ""
+      },
+      "elevation-drag-ruler": {
+        "hasBonusDash": false,
+        "hideSpeedButton": false,
+        "selectedSpeed": "auto"
+      },
+      "token-auras": {
+        "aura1": {
+          "permission": "all",
+          "colour": "#ffffff",
+          "opacity": 0.5,
+          "distance": null,
+          "square": false
+        },
+        "aura2": {
+          "permission": "all",
+          "colour": "#ffffff",
+          "opacity": 0.5,
+          "distance": null,
+          "square": false
+        }
+      },
+      "token-variants": {
+        "randomImgDefault": "",
+        "disableHUDButton": false
+      },
+      "monks-combat-marker": {
+        "token-highlight-scale": 1.5,
+        "token-combat-animation": "",
+        "token-highlight": ""
+      },
+      "monks-bloodsplats": {
+        "bloodsplat-type": "",
+        "bloodsplat-colour": ""
+      },
+      "Rideable": {
+        "issetRideableFlag": true,
+        "MaxRiderFlag": null,
+        "CustomRidingheightFlag": null,
+        "UseRidingHeightFlag": true,
+        "RiderPositioningFlag": "RowPlacement",
+        "TokenFormFlag": "TokenFormCircle",
+        "InsideMovementFlag": false,
+        "SpawnRidersFlag": "",
+        "MountingEffectsFlag": "",
+        "WorldMEffectOverrideFlag": false,
+        "SelfApplyEffectsFlag": false,
+        "forMountEffectsFlag": "",
+        "canbeGrappledFlag": true,
+        "CanbePilotedFlag": false,
+        "RidersScaleFlag": 1,
+        "RiderOffsetFlag": [
+          0,
+          0
+        ],
+        "PilotedbyDefaultFlag": false
+      },
+      "about-face": {
+        "indicatorDisabled": false,
+        "flipOrRotate": "global",
+        "facingDirection": "global",
+        "rotationOffset": 0
+      },
+      "tokencover": {
+        "maximumCoverGrant": 1
+      },
+      "dnd5e": {
+        "tokenRing": {
+          "effects": 1
+        }
+      }
+    },
+    "name": "Mage Hand",
+    "displayName": 20,
+    "width": 0.5,
+    "height": 0.5,
+    "lockRotation": false,
+    "rotation": 0,
+    "actorLink": false,
+    "disposition": 0,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "attributes.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "randomImg": true,
+    "light": {
+      "dim": 0,
+      "bright": 0,
+      "angle": 360,
+      "color": null,
+      "alpha": 1,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "coloration": 1,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "negative": false,
+      "priority": 0
+    },
+    "texture": {
+      "src": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/NameTag/*.webm",
+      "tint": "#ffffff",
+      "scaleX": 1,
+      "scaleY": 1,
+      "offsetX": 0,
+      "offsetY": 0,
+      "rotation": 0,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": true,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0,
+      "color": null
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "alpha": 1,
+    "detectionModes": [],
+    "hexagonalShape": 0,
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 0,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "_stats": {
+    "compendiumSource": "Compendium.jb2a_patreon.jb2a-actors.Actor.tIqeF7NwPyBFn3iU",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1724961415823,
+    "modifiedTime": 1724961415823,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "S7PWKzw97SwKHB7L",
+  "sort": 0,
+  "_key": "!actors!S7PWKzw97SwKHB7L"
+}

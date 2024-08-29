@@ -77,7 +77,6 @@
   "effects": [
     {
       "name": "Toughened Skin",
-      "icon": "icons/commodities/leather/leather-scrap-white.webp",
       "origin": "Compendium.mhiyarishareddata.classes.Item.hlSiuFjWF5EI8p83",
       "duration": {
         "startTime": null,
@@ -133,7 +132,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/leather/leather-scrap-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!La81Od1xCvT1Yka1.g15Lil6WOvdSlpBK"
     }
   ],
@@ -172,10 +185,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708451394059,
     "modifiedTime": 1713899580399,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

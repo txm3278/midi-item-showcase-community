@@ -80,7 +80,6 @@
   "effects": [
     {
       "name": "Dreadful Wrath",
-      "icon": "icons/svg/book.svg",
       "origin": "Actor.dgTzgwAVmsL9Qr0D.Item.KhE1Hq5n9YT26fvb",
       "duration": {
         "startTime": null,
@@ -133,7 +132,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/book.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!Q7EKix4fMni6swAv.8t5EGbzZa8dHjzf4"
     }
   ],
@@ -189,10 +202,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1712075112444,
     "modifiedTime": 1715297513784,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "Q7EKix4fMni6swAv",
   "sort": 200000,

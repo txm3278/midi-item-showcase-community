@@ -81,7 +81,6 @@
   "effects": [
     {
       "name": "Reactive",
-      "icon": "https://i.imgur.com/P4dkcYT.png",
       "origin": "Actor.RXPRgB6aGB3rUZhd.Item.rBHEI0gZnnv8h44g",
       "duration": {
         "startTime": null,
@@ -135,7 +134,21 @@
           }
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "https://i.imgur.com/P4dkcYT.png",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!gsy8jGIs8m02IzZV.fMrgeyimXraaWBMd"
     }
   ],
@@ -177,10 +190,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1706091442647,
     "modifiedTime": 1708286517317,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

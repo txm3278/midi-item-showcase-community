@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-dRYJ70ysLM3P9sVB\" class=\"secret\">\n<h2>Made by Elwin</h2>\nBased on SagaTympana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-JEwgEC734PNs3KfQ\" class=\"secret\">\n<h2>Made by Elwin</h2>\nBased on SagaTympana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
       "chat": ""
     },
     "source": {
@@ -21,7 +21,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
       "type": "ally",
@@ -76,7 +76,11 @@
       "flat": false
     },
     "summons": null,
-    "properties": []
+    "properties": [],
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "flags": {
     "infusions": {
@@ -90,9 +94,9 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "",
+      "onUseMacroName": "[preTargeting]ItemMacro,[preActiveEffects]ItemMacro",
       "itemCondition": "",
-      "reactionCondition": "reaction === \"tpr.isPreCheckSave\"",
+      "reactionCondition": "reaction === \"tpr.isPostCheckSave\"",
       "otherCondition": "",
       "effectCondition": "",
       "rollAttackPerTarget": "default"
@@ -128,7 +132,9 @@
     "link-item-resource-5e": {
       "resource-link": "secondary"
     },
-    "core": {},
+    "core": {
+      "sourceId": "Compendium.midi-item-showcase-community.misc-class-features.Item.B6epLSnrE62E0T13"
+    },
     "custom-character-sheet-sections": {
       "sectionName": ""
     },
@@ -170,7 +176,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/light/explosion-star-blue.webp",
       "origin": "Actor.K0R7AifO3SCgArcI.Item.NpkYaKppfTD2eW1f",
       "duration": {
         "rounds": null,
@@ -197,7 +202,7 @@
           "priority": 20
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "flags": {
         "dfreds-convenient-effects": {
@@ -240,11 +245,24 @@
       "name": "Flash of Genius - Bonus",
       "description": "",
       "statuses": [],
-      "_key": "!items.effects!5BxfNTKwlEaLgrYn.YS5K59UnEuyNjtDE"
+      "img": "icons/magic/light/explosion-star-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!XKhC91q0SnUo1iig.YS5K59UnEuyNjtDE"
     },
     {
       "name": "Flash of Genius",
-      "icon": "icons/magic/light/explosion-star-blue.webp",
       "origin": "Item.boU3p9rVecaXjnIv",
       "duration": {
         "startTime": null,
@@ -261,7 +279,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isPreCheckSave|canSee=true",
+          "value": "ItemMacro,tpr.isPostCheckSave|canSee=true;post=true",
           "priority": 20
         }
       ],
@@ -275,7 +293,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -292,19 +311,38 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
-      "tint": null,
-      "_key": "!items.effects!5BxfNTKwlEaLgrYn.PmbYTNMjZDpmi9EX"
+      "tint": "#ffffff",
+      "img": "icons/magic/light/explosion-star-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!XKhC91q0SnUo1iig.PmbYTNMjZDpmi9EX"
     }
   ],
   "img": "icons/magic/light/explosion-star-blue.webp",
   "_stats": {
+    "compendiumSource": "Compendium.midi-item-showcase-community.misc-class-features.Item.B6epLSnrE62E0T13",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
-    "createdTime": 1680737539131,
-    "modifiedTime": 1722891617024,
+    "systemVersion": "3.3.1",
+    "createdTime": 1724960041291,
+    "modifiedTime": 1724960041291,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "folder": "XdRbjr9vWzc7ijqS",
@@ -313,7 +351,7 @@
     "B2BBHntfpytXE8DP": 3,
     "9QqTZMFq1dhCIYAR": 3
   },
-  "_id": "5BxfNTKwlEaLgrYn",
+  "_id": "XKhC91q0SnUo1iig",
   "sort": 0,
-  "_key": "!items!5BxfNTKwlEaLgrYn"
+  "_key": "!items!XKhC91q0SnUo1iig"
 }

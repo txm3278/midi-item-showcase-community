@@ -113,7 +113,6 @@
   "effects": [
     {
       "name": "Indomitable Might",
-      "icon": "icons/magic/control/buff-strength-muscle-damage.webp",
       "origin": "Actor.2DRqQG8ShTa5tXub.Item.CvK4dKXIpwWOCdFD",
       "duration": {
         "startTime": null,
@@ -175,7 +174,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/buff-strength-muscle-damage.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!CZcpIMt4kIjeDWzH.xx3oM8c1XwgvVxr7"
     }
   ],
@@ -183,10 +196,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1661787234372,
     "modifiedTime": 1708713737443,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

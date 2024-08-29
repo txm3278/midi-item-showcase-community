@@ -393,7 +393,11 @@
       "offsetX": 0,
       "offsetY": 0,
       "rotation": 0,
-      "tint": null
+      "tint": "#ffffff",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
     },
     "width": 1,
     "height": 1,
@@ -429,7 +433,9 @@
         "min": 0,
         "max": 1
       },
-      "color": "#fb00ff"
+      "color": "#fb00ff",
+      "negative": false,
+      "priority": 0
     },
     "sight": {
       "enabled": true,
@@ -487,9 +493,7 @@
         "token-combat-animation": "",
         "token-highlight": ""
       },
-      "core": {
-        "occlusionRadius": null
-      },
+      "core": {},
       "autorotate": {
         "enabled": null,
         "offset": null
@@ -536,7 +540,23 @@
         "coverLevel": 1
       }
     },
-    "randomImg": false
+    "randomImg": false,
+    "hexagonalShape": 0,
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
   },
   "items": [
     {
@@ -715,17 +735,18 @@
       "_stats": {
         "systemId": "dnd5e",
         "systemVersion": "2.4.0",
-        "coreVersion": "11.315",
+        "coreVersion": "12.331",
         "createdTime": 1701356974129,
         "modifiedTime": 1701373539604,
-        "lastModifiedBy": "Pfx3sw8Lgvkdi5Qz"
+        "lastModifiedBy": "Pfx3sw8Lgvkdi5Qz",
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "_key": "!actors.items!DPZbLQWvhekve6ti.l1i6Lh7ovPm9V70i"
     }
   ],
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.world.spellsentities.Actor.k6T7Cfby4D7rSJSH",
       "duration": {
         "startTime": 17199242830,
@@ -788,7 +809,21 @@
           "sourceId": "Actor.uzipmt8fS1fJp6Nh.ActiveEffect.dZfceh6neEezaNfm"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!actors.effects!DPZbLQWvhekve6ti.bP4Z3KxZ9gANPahr"
     }
   ],
@@ -834,10 +869,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1701356697683,
     "modifiedTime": 1715295199240,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

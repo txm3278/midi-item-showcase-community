@@ -144,7 +144,6 @@
   "effects": [
     {
       "name": "Dreadful Smite",
-      "icon": "icons/svg/combat.svg",
       "origin": "Actor.dgTzgwAVmsL9Qr0D.Item.I6UEeIpCZVUMsNvd",
       "duration": {
         "startTime": null,
@@ -199,7 +198,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/combat.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!2wE3oc0MNitT0CuA.ImRGaUJ7smfF9Lxm"
     }
   ],
@@ -212,10 +225,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1712075112387,
     "modifiedTime": 1715297517372,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "2wE3oc0MNitT0CuA",
   "sort": 100000,

@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v2.1.0
+// v2.1.3
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -90,14 +90,14 @@ export async function flamesOfPhlegethos({
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postDamageRoll') {
     if (
-      scope.rolledItem?.type !== 'spell' ||
+      scope.scope.lastArgValue?.type !== 'spell' ||
       !(workflow.damageRolls?.length ?? workflow.damageRoll)
     ) {
       // Only works on spell with damage rolls
       return;
     }
     // TODO check also for other dmg?
-    const fireDmg = scope.rolledItem?.system.damage?.parts.some(
+    const fireDmg = scope.scope.lastArgValue?.system.damage?.parts.some(
       ([formula, type]) => type === 'fire' || formula?.includes('[fire]')
     );
     if (!fireDmg) {
@@ -181,7 +181,9 @@ export async function flamesOfPhlegethos({
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'isDamaged'
   ) {
-    if (!['mwak', 'msak'].includes(scope.rolledItem?.system?.actionType)) {
+    if (
+      !['mwak', 'msak'].includes(scope.scope.lastArgValue?.system?.actionType)
+    ) {
       // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);
@@ -241,7 +243,7 @@ export async function flamesOfPhlegethos({
     let player = MidiQOL.playerForActor(actor);
     if (!player?.active) {
       // Find first active GM player
-      player = game.users?.find((p) => p.isGM && p.active);
+      player = game.users?.activeGM;
     }
     if (!player) {
       console.error(

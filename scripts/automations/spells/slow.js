@@ -9,8 +9,12 @@ export async function slow({
   workflow,
   options,
 }) {
-  ChatMessage.create({
-    content: `You can choose up to 6 targets inside the template.`,
-    whisper: [game.user.id],
-  });
+  const effectImage = effect.img;
+  if (args[0] === 'each') {
+    await foundry.applications.api.DialogV2.prompt({
+      window: { title: 'Effect Reminder' },
+      position: { width: 400 },
+      content: `<img src="${effectImage}"><br/><br/>${actor.name} can use either an action or a bonus action, not both. Regardless of the creature's abilities or magic items, it can't make more than one melee or ranged attack during its turn.`,
+    });
+  }
 }

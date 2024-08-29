@@ -390,7 +390,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/symbols/runes-star-pentagon-orange.webp",
       "origin": "Actor.6GOEqR5w5K6dlIBa.Item.sAOWmCQC0BypRIpf",
       "duration": {
         "seconds": 3600,
@@ -417,7 +416,7 @@
           "priority": 20
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "flags": {
         "dae": {
@@ -599,6 +598,20 @@
       "name": "Crown of Stars",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!PsIXP2qEzjsRXlsw.ChNJjiQpJ8HXoACx"
     }
   ],
@@ -607,16 +620,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1668722974545,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "PsIXP2qEzjsRXlsw",
-  "sort": 1600000,
+  "sort": 1800000,
   "_key": "!items!PsIXP2qEzjsRXlsw"
 }

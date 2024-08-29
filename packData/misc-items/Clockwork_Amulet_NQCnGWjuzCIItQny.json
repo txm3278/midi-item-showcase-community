@@ -223,7 +223,6 @@
   "effects": [
     {
       "name": "Clockwork Amulet",
-      "icon": "icons/equipment/neck/amulet-triangle-blue.webp",
       "origin": "Item.8GdCZ0zveADaJ2gX",
       "duration": {
         "startTime": null,
@@ -287,7 +286,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/neck/amulet-triangle-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!NQCnGWjuzCIItQny.SFcGCaKfDKLzIaT7"
     }
   ],
@@ -296,10 +309,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1693338787345,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

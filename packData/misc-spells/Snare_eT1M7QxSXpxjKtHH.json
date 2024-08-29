@@ -92,7 +92,6 @@
   "effects": [
     {
       "name": "Snare",
-      "icon": "icons/magic/nature/root-vine-thorned-coil-green.webp",
       "origin": "Actor.l55gZpaGabPZJ2dP.Item.NYZ4ApW94s2AqvSa",
       "duration": {
         "rounds": 4800,
@@ -129,7 +128,21 @@
           }
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/nature/root-vine-thorned-coil-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!eT1M7QxSXpxjKtHH.gCjkvEUvBPyH1akf"
     }
   ],
@@ -171,7 +184,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "templatemacro": {
       "whenTurnEnd": {
@@ -193,21 +210,26 @@
       "system": "dnd5e",
       "coreVersion": "11.307",
       "systemVersion": "2.3.0"
+    },
+    "region-attacher": {
+      "attachRegionToTemplate": false
     }
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1691695541803,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961888024,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "eT1M7QxSXpxjKtHH",
-  "sort": 2100000,
+  "sort": 2300000,
   "_key": "!items!eT1M7QxSXpxjKtHH"
 }

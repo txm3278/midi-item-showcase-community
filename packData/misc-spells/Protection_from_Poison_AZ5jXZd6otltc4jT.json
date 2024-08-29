@@ -177,7 +177,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "changes": [
         {
           "key": "system.traits.dr.value",
@@ -201,7 +200,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
@@ -251,6 +250,20 @@
       "_id": "ocWLtVK4Dh82B9Cb",
       "description": "",
       "origin": null,
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!AZ5jXZd6otltc4jT.ocWLtVK4Dh82B9Cb"
     }
   ],
@@ -258,10 +271,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1687853853517,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": null,
   "ownership": {
@@ -269,6 +284,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "AZ5jXZd6otltc4jT",
-  "sort": 1300000,
+  "sort": 1500000,
   "_key": "!items!AZ5jXZd6otltc4jT"
 }

@@ -178,7 +178,6 @@
   },
   "effects": [
     {
-      "icon": "icons/skills/ranged/arrow-flying-white-blue.webp",
       "changes": [
         {
           "key": "flags.midi-qol.sharpShooter",
@@ -208,7 +207,7 @@
         "startRound": 3,
         "startTurn": 0
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "disabled": false,
       "flags": {
@@ -253,6 +252,20 @@
       "_id": "q5Le1zgY3WEmhZFu",
       "description": "",
       "origin": "Item.sD8SN0BIFqIdx1Ie",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!0mBFJvNS6qklBtO7.q5Le1zgY3WEmhZFu"
     }
   ],
@@ -261,10 +274,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1706483810724,
     "modifiedTime": 1722892014436,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

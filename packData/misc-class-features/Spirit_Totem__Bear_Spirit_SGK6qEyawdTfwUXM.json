@@ -208,7 +208,6 @@
   },
   "effects": [
     {
-      "icon": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "changes": [
         {
           "key": "flags.midi-qol.advantage.ability.save.str",
@@ -236,7 +235,7 @@
         "startTurn": null
       },
       "origin": null,
-      "tint": null,
+      "tint": "#ffffff",
       "flags": {
         "dfreds-convenient-effects": {
           "description": ""
@@ -269,6 +268,20 @@
       "name": "Spirit Totem: Bear",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!SGK6qEyawdTfwUXM.esTr06HsHn27LeGO"
     }
   ],
@@ -276,10 +289,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1688330326548,
     "modifiedTime": 1713834054872,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "k2RQBzUw3hnekMmB",
   "ownership": {

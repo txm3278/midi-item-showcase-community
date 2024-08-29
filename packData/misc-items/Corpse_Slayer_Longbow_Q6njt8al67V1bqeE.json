@@ -206,7 +206,6 @@
   "effects": [
     {
       "name": "Corpse Slayer Longbow",
-      "icon": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
       "origin": "Item.e8f1IqRLvmTyyezq",
       "duration": {
         "rounds": 1,
@@ -264,7 +263,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!Q6njt8al67V1bqeE.0p4TAXJ9qUfykkIL"
     }
   ],
@@ -273,10 +286,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1698529782342,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

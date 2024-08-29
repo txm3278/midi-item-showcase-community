@@ -393,7 +393,11 @@
       "offsetX": 0,
       "offsetY": 0,
       "rotation": 0,
-      "tint": null
+      "tint": "#ffffff",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
     },
     "width": 1,
     "height": 1,
@@ -429,7 +433,9 @@
         "min": 0,
         "max": 1
       },
-      "color": null
+      "color": null,
+      "negative": false,
+      "priority": 0
     },
     "sight": {
       "enabled": false,
@@ -444,12 +450,27 @@
     },
     "detectionModes": [],
     "flags": {},
-    "randomImg": false
+    "randomImg": false,
+    "hexagonalShape": 0,
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
   },
   "items": [],
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.midi-item-showcase-community.MISC Actors.Actor.JG9PElSAiFSWl3QC",
       "duration": {
         "startTime": 0,
@@ -483,7 +504,21 @@
           "showIcon": false
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!actors.effects!JG9PElSAiFSWl3QC.bc7SiXRipp5I3b49"
     }
   ],
@@ -501,10 +536,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1706049486528,
     "modifiedTime": 1715295199240,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!actors!JG9PElSAiFSWl3QC"
 }

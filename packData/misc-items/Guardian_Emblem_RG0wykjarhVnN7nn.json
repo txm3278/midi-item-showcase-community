@@ -183,7 +183,6 @@
   "effects": [
     {
       "name": "Guardian Emblem - TPR",
-      "icon": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "origin": "Item.pkk4U68aMz4x6TiW",
       "duration": {
         "startTime": null,
@@ -239,12 +238,25 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!RG0wykjarhVnN7nn.CEQGUOX1WoREMxKj"
     },
     {
       "name": "Guardian Emblem",
-      "icon": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "origin": "Item.pkk4U68aMz4x6TiW",
       "duration": {
         "startTime": null,
@@ -300,7 +312,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!RG0wykjarhVnN7nn.OhlssfgzGDAr77cd"
     }
   ],
@@ -314,10 +340,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1706098165283,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "RG0wykjarhVnN7nn",
   "sort": 400000,

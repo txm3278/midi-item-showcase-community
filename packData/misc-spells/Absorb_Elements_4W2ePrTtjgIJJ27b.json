@@ -87,7 +87,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/lightning/orb-ball-purple.webp",
       "origin": "Actor.Vq5RyPSEVPmzV3Xq.Item.5BApm80SzuQyn5aW",
       "duration": {
         "rounds": 1,
@@ -144,11 +143,24 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/lightning/orb-ball-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!4W2ePrTtjgIJJ27b.S8udaJKnffkZ0H1h"
     },
     {
-      "icon": "icons/magic/lightning/orb-ball-purple.webp",
       "origin": "Actor.Vq5RyPSEVPmzV3Xq.Item.5BApm80SzuQyn5aW",
       "duration": {
         "rounds": 2,
@@ -213,7 +225,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/lightning/orb-ball-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!4W2ePrTtjgIJJ27b.v4INfOx42ithtQLo"
     }
   ],
@@ -350,16 +376,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1699888936249,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "4W2ePrTtjgIJJ27b",
-  "sort": 1200000,
+  "sort": 1400000,
   "_key": "!items!4W2ePrTtjgIJJ27b"
 }

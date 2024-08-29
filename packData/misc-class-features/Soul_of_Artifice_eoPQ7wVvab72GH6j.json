@@ -3,11 +3,13 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2>Made by SagaTympana</h2><h3>Requires:</h3><ul><li><p>Warpgate</p></li></ul><p></p><p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">Handles the passive effect as well as the death avoidance. It does not currently take into account damage resistances or immunities that the artificer may have that would prevent them from dropping to 0 HP in the first place. It also does not handle the \"remove an infusion\" part, because the public Midi community doesn't currently have the kind of standardized infusion framework that would require.</span></p>",
+      "value": "<h2>Made by SagaTympana</h2><p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">Handles the passive effect as well as the death avoidance. It does not currently take into account damage resistances or immunities that the artificer may have that would prevent them from dropping to 0 HP in the first place. It also does not handle the \"remove an infusion\" part, because the public Midi community doesn't currently have the kind of standardized infusion framework that would require.</span></p>",
       "chat": "",
       "unidentified": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "reaction",
       "cost": null,
@@ -76,7 +78,6 @@
   "effects": [
     {
       "name": "Soul of Artifice",
-      "icon": "icons/commodities/gems/pearl-blue-gold.webp",
       "origin": "Actor.K0R7AifO3SCgArcI.Item.KsAG4Sm1ekrY5Jlr",
       "duration": {
         "startTime": null,
@@ -132,7 +133,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/gems/pearl-blue-gold.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!eoPQ7wVvab72GH6j.jKRU2KpeyfFfSPzT"
     }
   ],
@@ -160,7 +175,11 @@
       "noConcentrationCheck": false,
       "toggleEffect": false,
       "ignoreTotalCover": false,
-      "grpact": false
+      "grpact": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "effectActivation": false,
@@ -206,11 +225,13 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1705782749328,
-    "modifiedTime": 1713822843542,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1723754340314,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "eoPQ7wVvab72GH6j",
   "sort": 0,

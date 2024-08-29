@@ -1,0 +1,269 @@
+{
+  "name": "Sun Blade",
+  "type": "weapon",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-iCvEoQrHCO3ji94P\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, a feat is added that allows to activate/deactivate the blade.\n When this feat is used, it allows to activate the blade, when activated an AE with the light effect is added also as another feat to adjust the blade's light radius.</p></section>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "Basic Rules, Player's Handbook pg 205"
+    },
+    "quantity": 1,
+    "weight": {
+      "value": 3,
+      "units": "lb"
+    },
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "attunement": "required",
+    "equipped": false,
+    "rarity": "rare",
+    "identified": true,
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "1",
+      "width": null,
+      "units": "",
+      "type": "",
+      "prompt": true
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d8[radiant]+ @mod",
+          "radiant"
+        ]
+      ],
+      "versatile": "1d10[radiant] + @mod"
+    },
+    "formula": "1d8[radiant]",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "properties": [
+      "mgc"
+    ],
+    "proficient": null,
+    "unidentified": {
+      "description": "Longsword"
+    },
+    "type": {
+      "value": "martialM",
+      "baseItem": "longsword"
+    },
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "container": null,
+    "summons": null,
+    "magicalBonus": 2,
+    "attuned": false,
+    "enchantment": null
+  },
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.heQxYJeb3zgddXZs"
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "midi-qol": {
+      "fumbleThreshold": null,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "otherCondition": "[\"undead\"].includes(\"@raceOrType\")",
+      "effectCondition": "",
+      "onUseMacroName": "[preTargeting]ItemMacro"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "dae": {
+      "macro": {
+        "name": "Sun Blade",
+        "img": "https://www.dndbeyond.com/avatars/18/886/636381750087410566.jpeg",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.items.sunBlade(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "effects": [
+    {
+      "name": "Sun Blade",
+      "origin": "Item.7xeuYcnO3qLpobUy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "MmkiDR420XnUKMLC",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "tint": "#ffffff",
+      "img": "icons/weapons/swords/sword-gold-holy.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rP8tEhtwll3fNAkf.MmkiDR420XnUKMLC"
+    }
+  ],
+  "img": "icons/weapons/swords/sword-gold-holy.webp",
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-items.Item.heQxYJeb3zgddXZs",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1724960138128,
+    "modifiedTime": 1724960138128,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_id": "rP8tEhtwll3fNAkf",
+  "sort": 0,
+  "_key": "!items!rP8tEhtwll3fNAkf"
+}

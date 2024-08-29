@@ -419,7 +419,6 @@
   "effects": [
     {
       "name": "Oathbow - Weapon Effects",
-      "icon": "icons/weapons/bows/longbow-gold-pink.webp",
       "changes": [
         {
           "key": "flags.midi-qol.advantage.attack.rwak",
@@ -484,7 +483,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/bows/longbow-gold-pink.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!TNZS31lBOuA3kpzb.glYmT4YY50JeQQFo"
     }
   ],
@@ -493,10 +506,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1722807696536,
     "modifiedTime": 1723138095136,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

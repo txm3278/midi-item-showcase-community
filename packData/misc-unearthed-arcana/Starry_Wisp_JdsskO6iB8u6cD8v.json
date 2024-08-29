@@ -380,7 +380,6 @@
   "effects": [
     {
       "name": "Starry Wisp",
-      "icon": "icons/magic/light/projectiles-star-purple.webp",
       "origin": "Actor.TSPEJchXetQwrvf7.Item.O6H321HYsB7tpOlA",
       "duration": {
         "rounds": 2,
@@ -462,7 +461,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/light/projectiles-star-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!JdsskO6iB8u6cD8v.ABTqEduS38CKw5EO"
     }
   ],
@@ -471,10 +484,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "2.4.1",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1701322414911,
     "modifiedTime": 1707925585698,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "JdsskO6iB8u6cD8v",
   "sort": 0,

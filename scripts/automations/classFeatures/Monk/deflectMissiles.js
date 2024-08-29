@@ -80,7 +80,7 @@ export async function deflectMissiles({
       theItemData.system.attack.bonus = '@prof';
       theItemData.system.proficient = 0;
       theItemData.system.consume.amount = 1;
-      setProperty(theItemData.system.damage, 'parts', [
+      foundry.utils.setProperty(theItemData.system.damage, 'parts', [
         [
           '1@scale.monk.die + @mod',
           theItem.system.damage?.parts[0]?.[1] ?? 'bludgeoning',

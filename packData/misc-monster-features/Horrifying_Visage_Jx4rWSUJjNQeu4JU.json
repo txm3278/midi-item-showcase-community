@@ -111,7 +111,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
@@ -157,12 +157,25 @@
           "wallsBlock": "system"
         }
       },
-      "icon": "icons/magic/control/fear-fright-monster-grin-purple-blue.webp",
       "_id": "yBUqw30JDCCrrFi3",
       "origin": null,
       "name": "Horrifying Visage",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/fear-fright-monster-grin-purple-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!Jx4rWSUJjNQeu4JU.yBUqw30JDCCrrFi3"
     }
   ],
@@ -265,10 +278,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1688536233652,
     "modifiedTime": 1714177966478,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "qtLSfj8xTQ7L3OwZ",
   "ownership": {

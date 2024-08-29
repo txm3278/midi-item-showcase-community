@@ -230,10 +230,12 @@
       "_stats": {
         "systemId": "dnd5e",
         "systemVersion": "2.4.1",
-        "coreVersion": "11.315",
+        "coreVersion": "12.331",
         "createdTime": null,
         "modifiedTime": 1704448060719,
-        "lastModifiedBy": "sx8auPLEHfbqfyKj"
+        "lastModifiedBy": "sx8auPLEHfbqfyKj",
+        "compendiumSource": "Item.os6WBKZ9m8aOjecL",
+        "duplicateSource": null
       },
       "_key": "!actors.items!CLcAG9dKY4hg8PQ6.O9ThymNjpRlq26u1"
     },
@@ -317,7 +319,6 @@
       "effects": [
         {
           "name": "Never Target",
-          "icon": "icons/magic/perception/shadow-stealth-eyes-purple.webp",
           "origin": "Actor.xeD65q5zOVH6FR8q.Item.wtjtsxld4yzjwRH3",
           "duration": {
             "startTime": null,
@@ -354,7 +355,21 @@
               "specialDuration": []
             }
           },
-          "tint": null,
+          "tint": "#ffffff",
+          "_stats": {
+            "coreVersion": "12.331",
+            "systemId": null,
+            "systemVersion": null,
+            "createdTime": null,
+            "modifiedTime": null,
+            "lastModifiedBy": null,
+            "compendiumSource": null,
+            "duplicateSource": null
+          },
+          "img": "icons/magic/perception/shadow-stealth-eyes-purple.webp",
+          "type": "base",
+          "system": {},
+          "sort": 0,
           "_key": "!actors.items.effects!CLcAG9dKY4hg8PQ6.wtjtsxld4yzjwRH3.jFKhp34XZd32ryYT"
         }
       ],
@@ -392,10 +407,12 @@
       "_stats": {
         "systemId": "dnd5e",
         "systemVersion": "3.0.3",
-        "coreVersion": "11.315",
+        "coreVersion": "12.331",
         "createdTime": 1690516533168,
         "modifiedTime": 1709607236899,
-        "lastModifiedBy": "sx8auPLEHfbqfyKj"
+        "lastModifiedBy": "sx8auPLEHfbqfyKj",
+        "compendiumSource": "Compendium.midi-qol.midiqol-sample-items.Item.mT0aJmviVtVlss4s",
+        "duplicateSource": null
       },
       "_id": "wtjtsxld4yzjwRH3",
       "sort": 0,
@@ -914,20 +931,7 @@
         "bloodsplat-type": "",
         "bloodsplat-colour": ""
       },
-      "dnd5e": {
-        "tokenRing": {
-          "enabled": false,
-          "textures": {
-            "subject": ""
-          },
-          "scaleCorrection": 1,
-          "colors": {
-            "ring": "",
-            "background": ""
-          },
-          "effects": 1
-        }
-      }
+      "dnd5e": {}
     },
     "randomImg": false,
     "light": {
@@ -951,16 +955,22 @@
       "darkness": {
         "min": 0,
         "max": 1
-      }
+      },
+      "negative": false,
+      "priority": 0
     },
     "texture": {
       "src": "icons/svg/mystery-man.svg",
-      "tint": null,
+      "tint": "#ffffff",
       "scaleX": 1,
       "scaleY": 1,
       "offsetX": 0,
       "offsetY": 0,
-      "rotation": 0
+      "rotation": 0,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
     },
     "sight": {
       "angle": 360,
@@ -975,17 +985,35 @@
     },
     "appendNumber": false,
     "prependAdjective": false,
-    "detectionModes": []
+    "detectionModes": [],
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "texture": null,
+        "scale": 1
+      }
+    },
+    "hexagonalShape": 0,
+    "occludable": {
+      "radius": 0
+    }
   },
   "effects": [],
   "folder": null,
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1690516533168,
     "modifiedTime": 1715295199240,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

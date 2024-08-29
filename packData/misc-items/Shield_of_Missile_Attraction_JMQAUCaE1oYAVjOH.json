@@ -223,7 +223,6 @@
   "effects": [
     {
       "name": "Aura of Missile Attraction",
-      "icon": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
       "origin": "Item.gmlh3tcBYuzxP4oe",
       "duration": {
         "rounds": null,
@@ -276,12 +275,25 @@
           "wallsBlock": "true"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!JMQAUCaE1oYAVjOH.JW9OkKLeBnyq5lMI"
     },
     {
       "name": "Missile Resistance",
-      "icon": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
       "origin": "Item.gmlh3tcBYuzxP4oe",
       "duration": {
         "startTime": null,
@@ -334,7 +346,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!JMQAUCaE1oYAVjOH.OtCRp2ff3vM88UxP"
     }
   ],
@@ -343,10 +369,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1713822285162,
     "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

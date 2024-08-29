@@ -81,7 +81,6 @@
   },
   "effects": [
     {
-      "icon": "icons/weapons/axes/axe-battle-orange.webp",
       "changes": [
         {
           "key": "ATL.light.dim",
@@ -156,7 +155,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/axes/axe-battle-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!mJ9CMCvCRvF3HFMZ.GGiKLsI2xCnBMo6D"
     }
   ],
@@ -446,10 +459,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1689416407418,
     "modifiedTime": 1715294984383,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

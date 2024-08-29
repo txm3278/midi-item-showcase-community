@@ -162,7 +162,6 @@
   "effects": [
     {
       "name": "Great Weapon Master",
-      "icon": "icons/weapons/axes/axe-battle-skull-black.webp",
       "origin": "Item.DS20pNCAcdjibFJV",
       "duration": {
         "rounds": null,
@@ -224,7 +223,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!kpNbAoNcxRNom20D.9nM4tx8rg8WlIpEW"
     }
   ],
@@ -238,10 +251,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1702224079058,
     "modifiedTime": 1722892012040,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "kpNbAoNcxRNom20D",
   "sort": 0,

@@ -84,7 +84,6 @@
   "effects": [
     {
       "name": "Misty Escape",
-      "icon": "icons/magic/air/wind-stream-purple.webp",
       "origin": "Compendium.midi-item-showcase-community.misc-monster-features.Item.fMdEo6c1j7AJx6Oy",
       "duration": {
         "startTime": null,
@@ -136,6 +135,20 @@
         }
       },
       "tint": "#000000",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/air/wind-stream-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!11MBwtWmIZLYqing.pnOoi7IHmXnswLbt"
     }
   ],
@@ -240,10 +253,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1714264007910,
     "modifiedTime": 1714425827708,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

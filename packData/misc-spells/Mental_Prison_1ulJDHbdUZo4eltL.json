@@ -95,7 +95,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/control/debuff-chains-purple.webp",
       "origin": "Item.ycmdtVmE8IU2umB5",
       "duration": {
         "rounds": null,
@@ -160,7 +159,21 @@
           }
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/debuff-chains-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.yIBKc1cneurMV6Sb"
     },
     {
@@ -240,16 +253,29 @@
           "wallsBlock": "system"
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/restrained.svg",
       "name": "Restrained",
       "origin": "Actor.giyM99yVkRqrnKyG.Item.Nxtil0OW1c3nJbU4",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "statuses": [
         "Convenient Effect: Restrained",
         "restrained"
       ],
       "_id": "kYDwtsOjIrHML5UF",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/restrained.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.kYDwtsOjIrHML5UF"
     },
     {
@@ -323,16 +349,29 @@
           }
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/blinded.svg",
       "name": "Blinded",
       "origin": "Actor.giyM99yVkRqrnKyG.Item.Nxtil0OW1c3nJbU4",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "statuses": [
         "Convenient Effect: Blinded",
         "blinded"
       ],
       "_id": "KHDSS1szXC5FtRHU",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/blinded.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.KHDSS1szXC5FtRHU"
     },
     {
@@ -387,16 +426,29 @@
           "wallsBlock": "system"
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/deafened.svg",
       "name": "Deafened",
       "origin": "Item.CRmIFD5vX2XtmUUU",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "statuses": [
         "Convenient Effect: Deafened",
         "deafened"
       ],
       "_id": "LtEyIfGIGuTPui1Y",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/deafened.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.LtEyIfGIGuTPui1Y"
     }
   ],
@@ -724,16 +776,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1716548165662,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724961581351,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "1ulJDHbdUZo4eltL",
-  "sort": 800000,
+  "sort": 1100000,
   "_key": "!items!1ulJDHbdUZo4eltL"
 }

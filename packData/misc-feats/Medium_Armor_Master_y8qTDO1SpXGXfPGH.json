@@ -77,7 +77,6 @@
   "effects": [
     {
       "name": "Medium Armour Master",
-      "icon": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
       "origin": "Item.oLJTuA4EM7yPRnVI",
       "duration": {
         "startTime": null,
@@ -133,7 +132,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!y8qTDO1SpXGXfPGH.v10yKMUeuf5Octjr"
     }
   ],
@@ -172,10 +185,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708675249893,
     "modifiedTime": 1715296229892,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

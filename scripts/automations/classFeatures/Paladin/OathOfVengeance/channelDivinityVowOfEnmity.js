@@ -1,12 +1,12 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v2.0.1
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
-//  - DAE, macro [off]
+//  - DAE
 //  - Times Up
-//  - MidiQOL "on use" item macro,[preAttackRoll][postActiveEffects]
+//  - MidiQOL "on use" item/actor macro,[preAttackRoll][postActiveEffects]
 //
 // How to configure:
 // The item details must be:
@@ -16,7 +16,7 @@
 //   - Target: 1 Creature
 //   - Range: 10 feet
 //   - Duration: 1 minute
-//   - Resource Consumption: 1 | Channel Divinity | Item Uses
+//   - Resource Consumption: 1 | Channel Divinity | Item Uses (to be set when added to an actor)
 //   - Action Type: (empty)
 // The Feature Midi-QOL must be:
 //   - On Use Macros:
@@ -32,25 +32,23 @@
 //          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,preAttackRoll
 //   - Marked by Vow of Enmity:
 //      - Transfer Effect to Actor on ItemEquip (unchecked)
+//      - An expression if false will remove the AE: !statuses.has("unconscious")
 //      - Duration: empty
 //      - Special duration:
 //        - Zero HP
-//      - Effects:
-//          - macro.itemMacro | Custom |
 //
 // Usage:
 // This item need to be used to activate. It marks the target and gives advantage to any attack made to this target.
 //
-// Note: It does not auto remove the effect if the marked target becomes Unconscious with more than 0 HP,
-// e.g.: due to a Sleep spell, this case would need to be handled manually.
+// Note: It may not auto remove the effect if the marked target becomes Unconscious with more than 0 HP immediately.
+//       It will do so on the next actor update, this is due to when DAE evaluates the expression. This could probably
+//       fixed in a future DAE version.
 //
 // Description:
 // In the preAttackRoll phase (of any item of the marker):
 //   Gives advantage to the marker if the target is marked by him.
 // In the postActiveEffects phase:
-//   Updates the self active effect to delete the target active effect when deleted.
-// In the off DAE macro (on the target):
-//   Deletes the effect on the marker.
+//   Updates the self active effect to delete the target active effect when deleted and vice versa.
 // ###################################################################################################
 
 export async function channelDivinityVowOfEnmity({
@@ -138,6 +136,14 @@ export async function channelDivinityVowOfEnmity({
     const appliedEffect = tokenTarget.actor.appliedEffects.find(
       (ae) => ae.origin === scope.macroItem.uuid
     );
+    if (!appliedEffect) {
+      if (debug) {
+        console.warn(
+          `${DEFAULT_ITEM_NAME} | No applied effect found on target actor.`
+        );
+      }
+      return;
+    }
 
     // Find AE on self to add delete flag
     const selfEffect = actor.effects.find(
@@ -150,12 +156,9 @@ export async function channelDivinityVowOfEnmity({
       return;
     }
     await selfEffect.addDependent(appliedEffect);
-  } else if (args[0] === 'off') {
-    // TODO check if item set and use its uuid instead of origin
-    const sourceItem = fromUuidSync(scope.lastArgValue.origin);
-    // Delete effect on marker
-    if (sourceItem?.actor?.uuid && sourceItem.actor.uuid !== actor.uuid) {
-      await DAE.deleteActiveEffect(sourceItem.actor.uuid, scope.lastArgValue.origin);
-    }
+    await MidiQOL.socket().executeAsGM('addDependent', {
+      concentrationEffectUuid: appliedEffect.uuid,
+      dependentUuid: selfEffect.uuid,
+    });
   }
 }

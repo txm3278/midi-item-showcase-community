@@ -160,7 +160,6 @@
   "effects": [
     {
       "name": "Sentinel at Death's Door",
-      "icon": "icons/magic/control/encase-creature-monster-hold.webp",
       "origin": "Item.6OtmQjcnT1N3N1Oo",
       "duration": {
         "startTime": null,
@@ -216,7 +215,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/encase-creature-monster-hold.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!iQ8qlTgq8nBwObN4.7bTXyw1T6SO5ubJ3"
     }
   ],
@@ -230,10 +243,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1706323891871,
     "modifiedTime": 1722891640560,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "iQ8qlTgq8nBwObN4",
   "sort": 0,

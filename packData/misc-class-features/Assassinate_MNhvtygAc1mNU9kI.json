@@ -81,7 +81,6 @@
   "effects": [
     {
       "name": "Assassinate",
-      "icon": "icons/weapons/daggers/dagger-curved-black.webp",
       "origin": "Item.saNjNi5yuhB3p9UF",
       "duration": {
         "startTime": null,
@@ -140,7 +139,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/daggers/dagger-curved-black.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!MNhvtygAc1mNU9kI.EKOsG1Q1RFdyApHC"
     }
   ],
@@ -178,10 +191,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1715295265573,
     "modifiedTime": 1718158126231,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
