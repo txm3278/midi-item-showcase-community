@@ -1,22 +1,38 @@
-async function preDamageRoll() {
+// @bakanabaka
+
+async function onEffect() {
+    await macroItem.setFlag("midi-qol", "onUseMacroName", "[postActiveEffects]ItemMacro");
     let poisonEffect = macroItem.effects.find(ef => ef.name == macroItem.name);
-    await macroItem.setFlag("midi-qol", "onUseMacroName", "");
-    if (poisonEffect.disabled) return;
+    await poisonEffect.setFlag("dae", "dontApply", false);
 
     const updates = {
         "system.formula"      : "2d10[poison]",
         "system.save.ability" : "con",
         "system.save.dc"      : 15,
-        "system.save.scaling" : "flat",
-        // Below flags enabled by above four fields (damage + saving throw)
-        //"flags.midiProperties.saveDamage"       : "fulldam",      // Set directly in item
-        //"flags.midiProperties.otherSaveDamage"  : "nodam",        // Set directly in item
     };
-    workflow.item = macroUtil.item.syntheticItem(workflow.item, actor, updates);
+    await macroItem.update(updates);
+}
 
-    await poisonEffect.update({"disabled": true, "isSuppressed": true});
+async function offEffect() {
+    await macroItem.setFlag("midi-qol", "onUseMacroName", "");
+    let poisonEffect = macroItem.effects.find(ef => ef.name == macroItem.name);
+    await poisonEffect.setFlag("dae", "dontApply", true);
+
+    const updates = {
+        "system.formula"      : "",
+        "system.save.ability" : "",
+        "system.save.dc"      : undefined,
+    };
+    await macroItem.update(updates);
+}
+
+async function postActiveEffects() {
+    let enableEffect = macroItem.effects.find(ef => !ef.name.includes(macroItem.name));
+    await enableEffect.update({"Suppressed": true, "disabled": true});
 }
 
 await macroUtil.runWorkflows(arguments, {
-    preDamageRoll : preDamageRoll
+    on : onEffect,
+    off : offEffect,
+    postActiveEffects : postActiveEffects
 });
