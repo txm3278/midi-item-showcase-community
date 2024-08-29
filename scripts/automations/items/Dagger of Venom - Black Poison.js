@@ -1,11 +1,12 @@
-function findItem(itemName) {
-    return actor.items.find(it => it.name == itemName); 
+// @bakanabaka
+
+async function postActiveEffects() {
+    let dagger = actor.items.find(it => it.name == "Dagger of Venom"); 
+    if (!dagger) return;
+    let enableEffect = dagger.effects.find(ef => ef.name.includes(macroItem.name));
+    await enableEffect.update({"disabled": false});
 }
 
-let dagger = findItem("Dagger of Venom");
-if (!dagger) return;
-
-// Add poison effect
-let poisonEffect = dagger.effects.find(ef => ef.name == dagger.name);
-await poisonEffect.update({"disabled": false, "isSuppressed": false});
-await dagger.setFlag("midi-qol", "onUseMacroName", "[preDamageRoll]ItemMacro");
+await macroUtil.runWorkflows(arguments, {
+    postActiveEffects : postActiveEffects
+});
