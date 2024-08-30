@@ -6,9 +6,9 @@ const macroPass = args[0].macroPass;
 const tprActor = (macroPass.includes('tpr.')) ? macroItem.actor : workflow.actor;
 
 // Core functionality
-macroUtil.dependsOn.required({id: 'elwinHelpers', min: '2.2'});
-macroUtil.dependsOn.required({id: 'dae'});
-macroUtil.dependsOn.required({id: 'midi-qol'});
+macroUtil.dependsOn.requires({id: 'elwinHelpers', min: '2.2'});
+macroUtil.dependsOn.requires({id: 'dae'});
+macroUtil.dependsOn.requires({id: 'midi-qol'});
 
 // Original workflow
 async function tprIsDamagedPre() {
