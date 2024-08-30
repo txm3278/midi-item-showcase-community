@@ -2,7 +2,6 @@
 // Rewritten animation by @bakanabaka
 
 /**
- * Advanced error handler for Midi Macros, wraps all code in a try/catch and helps organize code.
  * @param token The token this effect should occur on
  * @param effect The active effect this should be tied to if any, undefined if none
  * @param moteCount The number of motes to space equally around the token
