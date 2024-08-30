@@ -7,26 +7,27 @@
  * @param effect The active effect this should be tied to if any, undefined if none
  * @param moteCount The number of motes to space equally around the token
  * @param identifier A unique name if for some reason more than one of this effect is run on this actor
- * @param starfile A JB2A animation to swirl around you
+ * @param animationFile A JB2A animation to swirl around you
  * @param scale Scale factor for the animation
  */
-export function crownOfStars(token, moteCount, {effect=undefined, identifier="Crown of Stars", starfile='jb2a.twinkling_stars.points07.white', scale=0.5} = {}) {
+export function crownOfStars(token, moteCount, {effect=undefined, identifier="Crown of Stars", animationFile, animationScale=0.5} = {}) {
     macroUtil.dependsOn.requires({id:'sequencer'});
-    macroUtil.dependsOn.requiresOne([{id:'jb2a_patreon'}, {id:'JB2A'}])
-    const STAR_FILE = starfile;
-    const MOTE_SCALE = scale;
+    if (!animationFile) {
+        macroUtil.dependsOn.requiresOne([ {id:'jb2a_patreon'}, {id:'JB2A_DnD5e'} ]);
+        animationFile = 'jb2a.twinkling_stars.points07.white';
+    }
 
     function rotateSprites(sequence) {
         sequence = sequence
             .effect()
-            .file(STAR_FILE)
+            .file(animationFile)
             .from(token, { cacheLocation: true });
 
         if (effect) sequence = sequence.tieToDocuments(effect);
             
         return sequence
             .attachTo(token)
-            .scale(MOTE_SCALE)
+            .scale(animationScale)
             .fadeIn(300)
             .fadeOut(500)
             .aboveLighting()
