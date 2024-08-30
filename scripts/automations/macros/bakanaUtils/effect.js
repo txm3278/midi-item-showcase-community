@@ -1,4 +1,4 @@
-async function find(actorEntity, effect) {
+function find(actorEntity, effect) {
     return Array.from(actorEntity.allApplicableEffects()).find(
         (ef) => ef.name == effect?.name && ef.origin == effect?.origin
     );
