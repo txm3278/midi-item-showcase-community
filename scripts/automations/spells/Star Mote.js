@@ -1,16 +1,9 @@
 // @bakanabaka
 
 async function postAttackRoll() {
-    async function removeStar(idx) {
-        await Sequencer.EffectManager.endEffects({
-            name: `Crown of Stars - ${actor.id} - ${idx}`,
-            objects: token,
-          });
-    }
-
     const randomIndex = Math.floor(Math.random() * remainingStars.length);
     let randomStar = remainingStars[randomIndex];
-    await removeStar(randomStar);
+    await macroUtil.animation.crownOfStars.remmove(token, {id: `[${actor.id}] Crown of Stars`}, randomStar);
     
     remainingStars[randomIndex] = remainingStars[remainingStars.length-1];
     remainingStars.pop();
@@ -33,4 +26,4 @@ let remainingStars = actor.getFlag('world', `Crown of Stars`);
 await macroUtil.runWorkflows(arguments, {
     postAttackRoll : postAttackRoll 
 });
-actor.setFlag('world', `Crown of Stars`, remainingStars)
+await actor.setFlag('world', `Crown of Stars`, remainingStars)

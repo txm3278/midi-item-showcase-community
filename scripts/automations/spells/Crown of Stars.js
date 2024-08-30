@@ -12,14 +12,11 @@ async function onEffect() {
     
     // Don't realistically need to wait on either of these
     actor.setFlag('world', `${macroItem.name}`, [...Array(MOTE_COUNT).keys()].map(i => i + 1));
-    macroUtil.animation.crownOfStars(token, MOTE_COUNT, {effect: effect, identifier: macroItem.name});
+    macroUtil.animation.crownOfStars.create(token, MOTE_COUNT, {effect: effect, id: `[${actor.id}] Crown of Stars`});
 }
 
 async function offEffect() {
-    await Sequencer.EffectManager.endEffects({
-        name: `${macroItem.name} - ${actor.id} - *`,
-        objects: token,
-      });
+    macroUtil.animation.crownOfStars.destroy(token, {id: `[${actor.id}] Crown of Stars`});
     await actor.unsetFlag('world', `${macroItem.name}`);
 }
 

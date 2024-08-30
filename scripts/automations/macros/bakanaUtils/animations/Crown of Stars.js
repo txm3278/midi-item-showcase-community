@@ -6,11 +6,11 @@
  * @param token The token this effect should occur on
  * @param effect The active effect this should be tied to if any, undefined if none
  * @param moteCount The number of motes to space equally around the token
- * @param identifier A unique name if for some reason more than one of this effect is run on this actor
+ * @param id A unique name if for some reason more than one of this effect is run on this actor
  * @param animationFile A JB2A animation to swirl around you
  * @param scale Scale factor for the animation
  */
-export function crownOfStars(token, moteCount, {effect=undefined, identifier="Crown of Stars", animationFile, animationScale=0.5} = {}) {
+function create(token, moteCount, {effect=undefined, id="Crown of Stars", animationFile, animationScale=0.5} = {}) {
     macroUtil.dependsOn.requires({id:'sequencer'});
     if (!animationFile) {
         macroUtil.dependsOn.requiresOne([ {id:'jb2a_patreon'}, {id:'JB2A_DnD5e'} ]);
@@ -51,7 +51,7 @@ export function crownOfStars(token, moteCount, {effect=undefined, identifier="Cr
         return sequence
             .spriteOffset({ x: 0.5 }, { gridUnits: true })
             .rotate((360 / moteCount) * idx)
-            .name(`${identifier} - ${token.actor.id} - ${idx}`);
+            .name(`${id} - ${idx}`);
     }
 
     let starsSequence = new Sequence();
@@ -59,3 +59,19 @@ export function crownOfStars(token, moteCount, {effect=undefined, identifier="Cr
         starsSequence = createStarMoteEffect(starsSequence, idx);
     starsSequence.play();
 }
+
+async function remove(token, {id}, idx) {
+    await Sequencer.EffectManager.endEffects({
+        name: `${id} - ${idx}`,
+        objects: token,
+      });
+}
+
+async function destroy(token, {id}) {
+    await Sequencer.EffectManager.endEffects({
+        name: `${id} - *`,
+        objects: token,
+      });
+}
+
+export const crownOfStars = { create : create, remove : remove, destroy : destroy };
