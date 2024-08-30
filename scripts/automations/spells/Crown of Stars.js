@@ -12,7 +12,7 @@ async function onEffect() {
     
     // Don't realistically need to wait on either of these
     actor.setFlag('world', `${macroItem.name}`, [...Array(MOTE_COUNT).keys()].map(i => i + 1));
-    macroUtil.animation.crownOfStars(token, MOTE_COUNT, effect, macroItem.name);
+    macroUtil.animation.crownOfStars(token, MOTE_COUNT, {effect: effect, identifier: macroItem.name});
 }
 
 async function offEffect() {

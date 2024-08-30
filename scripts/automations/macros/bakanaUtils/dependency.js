@@ -21,7 +21,7 @@ function _versionMessageAppend(dependency, version) {
 }
 
 // Returns true if dependency exists, is active, and is inside any provided version window
-function activated(dependency, warnMessage) {
+function isActivated(dependency, warnMessage) {
     if (!dependency.id) return [false, undefined];
     let [isActivated, currentVersion] = _activated(dependency);
     if (!isActivated && warnMessage) {
@@ -34,7 +34,7 @@ function activated(dependency, warnMessage) {
 }
 
 // Throws an error if dependency does not exist, is not active, or is outside of version window
-function required(dependency) {
+function requires(dependency) {
     let [isActivated, currentVersion] = _activated(dependency);
     if (isActivated) return true;
 
@@ -44,7 +44,7 @@ function required(dependency) {
 }
 
 // Throws an error if no entry in dependency list exists, is active, and is inside version window
-function someRequired(dependencyList) {
+function requiresOne(dependencyList) {
     let errorMsg = `Requires at least one of the following to be installed and activated:\n`;
 
     for (let dependency of dependencyList) {
@@ -58,7 +58,7 @@ function someRequired(dependencyList) {
 }
 
 export const dependencyApi = { 
-    activated,
-    required,
-    someRequired
+    isActivated,
+    requires,
+    requiresOne
 };
