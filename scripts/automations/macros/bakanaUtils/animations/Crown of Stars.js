@@ -11,9 +11,9 @@
  * @param scale Scale factor for the animation
  */
 function create(token, moteCount, {effect=undefined, id="Crown of Stars", animationFile, animationScale=0.5} = {}) {
-    macroUtil.dependsOn.requires({id:'sequencer'});
+    if (!macroUtil.dependsOn.hasRecommended({id:'sequencer'})) return;
     if (!animationFile) {
-        macroUtil.dependsOn.requiresOne([ {id:'jb2a_patreon'}, {id:'JB2A_DnD5e'} ]);
+        macroUtil.dependsOn.hasSomeRecommended([ {id:'jb2a_patreon'}, {id:'JB2A_DnD5e'} ]);
         animationFile = 'jb2a.twinkling_stars.points07.white';
     }
 

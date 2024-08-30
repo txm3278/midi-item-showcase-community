@@ -1,4 +1,3 @@
-macroUtil.dependsOn.requires('foundry', '12');
 // @bakanabaka
 
 async function preDamageRoll() {

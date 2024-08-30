@@ -37,8 +37,21 @@ function isActivated(dependency, warnMessage) {
     return isActivated;
 }
 
+function hasRecommended(dependency) {
+    return isActivated(dependency, "Recommend installing the following:");
+}
+
+function hasSomeRecommended(dependencyList) {
+    for (let dependency of dependencyList)
+        if (isActivated(dependency)) return true;
+
+    console.warn("Recommend installing one of the following:")
+    for (let dependency of dependency) isActivated(dependency, "");
+    return false;
+}
+
 // Throws an error if dependency does not exist, is not active, or is outside of version window
-function requires(dependency) {
+function required(dependency) {
     let [isActivated, currentVersion] = _activated(dependency);
     if (isActivated) return true;
 
@@ -48,7 +61,7 @@ function requires(dependency) {
 }
 
 // Throws an error if no entry in dependency list exists, is active, and is inside version window
-function requiresOne(dependencyList) {
+function someRequired(dependencyList) {
     let errorMsg = `Requires at least one of the following to be installed and activated:\n`;
 
     for (let dependency of dependencyList) {
@@ -63,6 +76,8 @@ function requiresOne(dependencyList) {
 
 export const dependencyApi = { 
     isActivated,
-    requires,
-    requiresOne
+    hasRecommended,
+    hasSomeRecommended,
+    required,
+    someRequired
 };
