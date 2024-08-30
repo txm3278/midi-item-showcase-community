@@ -1,6 +1,11 @@
+macroUtil.dependsOn.requires('foundry', '12');
+// @bakanabaka
+
 async function preDamageRoll() {
-    const target = workflow.targets.first();
-    const targetType = target.actor.system.details.type.value.toLowerCase();
+    const targetToken = workflow.targets.first();
+    const targetType = targetToken.actor.system.details.type.value?.toLowerCase();
+    if (targetType == undefined || targetType == "") 
+        console.warn(`Token ${targetToken.id} has no creature type (eg 'undead, humanoid, ooze,...')`,  targetToken);
     if (targetType != "undead") return;
 
     const updates = {
@@ -25,7 +30,7 @@ async function preDamageApplication() {
 async function offEffect() {
     const zombie = game.actors.getName("Zombie");
     if (!zombie) ui.notifications.error("No zombie actor detected");
-    else await actor.transformInto(zombie, {}, {renderSheet:false});
+    else await actor.transformInto(zombie, {}, {renderSheet: false});
 }
 
 await macroUtil.runWorkflows(arguments, {

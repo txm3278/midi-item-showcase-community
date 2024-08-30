@@ -22,10 +22,11 @@ function setupApiCalls(exportedFunctions) {
  * Initializes the environment with macroUtil for macros
  */
 let debugLevel = 0;
+const version = "0.12.0";
 export function setupBakanaMacros() {
   // Initialize debugLevel variable
   globalThis.macroUtil = foundry.utils.mergeObject(globalThis.macroUtil ?? {}, {
-    debugLevel,
+    debugLevel, version
   });
 
   setupApiCalls(workflowApi);
