@@ -4,10 +4,11 @@ async function find(actorEntity, effect) {
     );
 }
 
+// In process to move to CPR-like function
 async function create(entity, effectData, {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent, keepId} = {}) {
-    macroUtil.dependsOn.requires({id: 'chris-premades', min: '0.12.27'});
-    let options = {concentrationItem, parentEntity, identifier, vae, interdependent, strictlyInterdependent, keepId};
-    await chrisPremades.utils.effectUtils.createEffect(entity, effectData, options);
+    if (!entity)  return undefined;
+    await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: entity.uuid, effects: [effectData] });
+    return find(entity, effectData);;
 }
 
 async function addDependents(entity, dependents) {

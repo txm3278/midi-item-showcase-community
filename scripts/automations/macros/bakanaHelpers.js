@@ -5,6 +5,7 @@ import { effectsApi } from './bakanaUtils/effect.js';
 import { itemApi } from "./bakanaUtils/item.js";
 import { dependencyApi } from "./bakanaUtils/dependency.js";
 import { animationApi } from './bakanaUtils/animations.js';
+import { genericApi } from './bakanaUtils/generic.js';
 
 /**
  * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
@@ -36,4 +37,5 @@ export function setupBakanaMacros() {
   setupApiCalls({ module : moduleApi });
   setupApiCalls({ dependsOn : dependencyApi });
   setupApiCalls({ animation : animationApi});
+  setupApiCalls({ generic : genericApi});
 }
