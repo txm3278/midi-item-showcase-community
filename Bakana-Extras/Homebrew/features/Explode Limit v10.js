@@ -1,11 +1,11 @@
 // @bakanabaka
-// Explosion Limit v1.0.3
+// Explosion Limit v1.0.5
 
 // The first time this macro is run the user settings are locked in until the user refreshes
 // The choices apply to all actors the user is controlling and launching workflows from
-const FORCE_ALL_EXPLOSIONS = false;         // If a user doesn't select an option or cancels out, skip rest of explosion
+const FORCE_ALL_EXPLOSIONS = true;         // If a user doesn't select an option or cancels out, skip rest of explosion
 const ALLOW_TEMPHP_EXPLOSIONS = false;      // If a the triggering damage is Healing (Temporary) whether to explode
-const DEBUG_LEVEL = 1;                      // macroUtil.debugLevel stand-in
+const DEBUG_LEVEL = 0;                      // macroUtil.debugLevel stand-in
 
 // Parse damageRoll entries into maximalMap to count number of perfect rolls
 function parseDamageRoll(damageRoll, maximalMap) {
@@ -54,10 +54,11 @@ async function addToRoll(roll, addonFormula, damageType) {
 async function rollExplosionDice(damageType, faces, count) {
     const damageAmount =`${count}d${faces}`;
     //workflow.damageRolls.push(damageRoll);
-    let damageRoll = await addToRoll(workflow.damageRoll, damageAmount, damageType);
+    let damageRoll = await addToRoll(midiWorkflow.damageRoll, damageAmount, damageType);
 
     let rollMap = {};
     parseDamageRoll(damageRoll, rollMap);
+    if (DEBUG_LEVEL) console.warn("new rollMap", rollMap);
     return rollMap;
 }
 
@@ -94,13 +95,17 @@ async function queryUser(HTMLHeader, HTMLOptions, remainingLimit) {
                     label: 'Select',
                     callback: async (html) => {
                         let radio = html.find('input[name="selection"]:checked');
-                        let radioVal = radio.val()?.split(' ');
-                        if (radioVal) {
-                            let [numFaces, damageType] = radioVal;
-                            let userInput = document.getElementById(damageType).value;  // only the user input has this id
-                            resolve({ cancelled: false, selection: [damageType, numFaces, Math.min(userInput, remainingLimit)] });
+                        if (radio.length == 0) {
+                            resolve({ cancelled: false, selection: undefined} );
                         } else {
-                            resolve({ cancelled: true, selection: undefined});
+                            let radioVal = radio.val()?.split(' ');
+                            if (radioVal) {
+                                let [numFaces, damageType] = radioVal;
+                                let userInput = document.getElementById(damageType).value;  // only the user input has this id
+                                resolve({ cancelled: false, selection: [damageType, numFaces, Math.min(userInput, remainingLimit)] });
+                            } else {
+                                resolve({ cancelled: true, selection: undefined});
+                            }
                         }
                     },
                 },
@@ -147,6 +152,7 @@ async function getExplosionChoice(optionMap, limit) {
     if (optionCount == 1 && FORCE_ALL_EXPLOSIONS) return [lastDamage, lastFaces, Math.min(lastCount, limit)];
 
     let response = await queryUser(HTMLHeader, HTMLOptions, limit);
+    if (!response?.cancelled && !response?.selection) return ["MISCLICK", undefined, undefined];
     if (response?.cancelled) return [lastDamage, undefined, undefined];
     return response.selection;
 }
@@ -156,6 +162,10 @@ async function explode(optionMap, limit) {
     while (explosionCount < limit) {
         [damageType, faces, count] = await getExplosionChoice(optionMap, limit - explosionCount);
         if (!damageType) break; // no valid roll options
+        if (damageType == "MISCLICK") {
+            ui.notifications.warn("Please select a radio button to indicate your option before pressing select!");
+            continue;
+        }
         if (!faces || !count) {
             if (FORCE_ALL_EXPLOSIONS) continue; 
             else break;
@@ -169,15 +179,15 @@ async function explode(optionMap, limit) {
         typeRolled[typeRolled.length-1][1] += newMap[damageType][faces] - count; // adjust # of die available to explode
         if (!typeRolled[typeRolled.length-1][1]) typeRolled.pop(); // remove empty entry
     }
-    await workflow.setDamageRoll(workflow.damageRoll);
+    await midiWorkflow.setDamageRoll(midiWorkflow.damageRoll);
 }
 
 async function preDamageRollComplete() {
-    if (workflow.item.type != "spell" && workflow.item.type != "weapon") return;
+    if (midiWorkflow.item.type != "spell" && midiWorkflow.item.type != "weapon") return;
 
     let maximalMap = {};
     //for (let damageRoll of workflow.damageRolls)
-        parseDamageRoll(workflow.damageRoll, maximalMap);
+        parseDamageRoll(midiWorkflow.damageRoll, maximalMap);
 
     let damageMap = {};
     let healingMap = {};
@@ -195,10 +205,10 @@ async function preDamageRollComplete() {
         }
     }
     
-    let explosionLimit = workflow.actor.flags.world?.explosionLimit;
+    let explosionLimit = midiWorkflow.actor.flags.world?.explosionLimit;
     if (!explosionLimit) return;
     
-    let limit = ((workflow.item.type == "spell") ? explosionLimit.spell : explosionLimit.weapon) ?? 0;
+    let limit = ((midiWorkflow.item.type == "spell") ? explosionLimit.spell : explosionLimit.weapon) ?? 0;
     await explode(damageMap, limit);                            // Explode damage dice
     await explode(healingMap, explosionLimit.healing ?? 0);     // Explode healing dice
 }
@@ -215,11 +225,11 @@ async function preDamageRollComplete() {
 
 // Add in fake macroItem and workflow.item to make more compatible with v11+
 const macroItem = {name: "Explosion Limit"};
-let workflow;
+let midiWorkflow;
 async function runWorkflows(argumentInput, config) {
     // const [speaker, actor, token, character, scope, workflow, item, workflow.item, macroItem, args, options, midiData] = argumentInput; (v11+)
     // const [speaker, actor, token, character, scope, workflow, item, args, options] = argumentInput;
-    workflow = argumentInput[0];
+    midiWorkflow = argumentInput[0];
     const workflowAction = "preDamageRollComplete"
 
     let workflowReturn; 
@@ -231,13 +241,13 @@ async function runWorkflows(argumentInput, config) {
             );
         }
 
-        if (DEBUG_LEVEL > 2) console.warn("midiWorkflow:", workflow);
+        if (DEBUG_LEVEL > 2) console.warn("midiWorkflow:", midiWorkflow);
         if (!config[workflowAction]) 
         console.warn(`Undefined workflow attempting to run : ${workflowAction}`);
         else workflowReturn = await config[workflowAction]();
 
         if (DEBUG_LEVEL > 1) {
-            if (workflow.aborted) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
+            if (midiWorkflow.aborted) console.warn("Aborted flag on workflow is set to :", midiWorkflow.aborted);
         }
 
         if(DEBUG_LEVEL) console.groupEnd();
