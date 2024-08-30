@@ -34,7 +34,6 @@ export function setupBakanaMacros() {
   setupApiCalls({ combat: combatApi });
   setupApiCalls({ effect: effectsApi });
   setupApiCalls({ item : itemApi });
-  setupApiCalls({ module : moduleApi });
   setupApiCalls({ dependsOn : dependencyApi });
   setupApiCalls({ animation : animationApi});
   setupApiCalls({ generic : genericApi});
