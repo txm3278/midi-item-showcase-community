@@ -9,7 +9,7 @@ export async function slow({
   workflow,
   options,
 }) {
-  const effectImage = effect.img;
+  const effectImage = scope.effect.img;
   if (args[0] === 'each') {
     await foundry.applications.api.DialogV2.prompt({
       window: { title: 'Effect Reminder' },

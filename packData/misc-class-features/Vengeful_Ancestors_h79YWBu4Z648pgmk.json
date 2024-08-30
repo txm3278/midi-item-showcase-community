@@ -165,6 +165,21 @@
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault"
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "_stats": {
@@ -172,7 +187,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "12.331",
     "createdTime": 1694744431298,
-    "modifiedTime": 1722891690009,
+    "modifiedTime": 1724964875255,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

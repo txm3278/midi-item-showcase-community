@@ -37,7 +37,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "saveDamage": "default",
-      "bonusSaveDamage": "default"
+      "bonusSaveDamage": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -71,7 +75,9 @@
       "type": "bonus",
       "condition": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "duration": {
       "value": "",
       "units": ""
@@ -158,9 +164,9 @@
       "_id": "ImRGaUJ7smfF9Lxm",
       "changes": [
         {
-          "key": "macro.CE",
+          "key": "StatusEffect",
           "mode": 0,
-          "value": "Frightened",
+          "value": "frightened",
           "priority": 20
         }
       ],
@@ -179,7 +185,9 @@
           "macroRepeat": "none",
           "specialDuration": [
             "turnEndSource"
-          ]
+          ],
+          "enableCondition": "",
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -196,6 +204,9 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
@@ -204,8 +215,8 @@
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1724965135066,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
         "compendiumSource": null,
         "duplicateSource": null
       },
@@ -224,11 +235,11 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1712075112387,
-    "modifiedTime": 1715297517372,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "modifiedTime": 1724965137112,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null
   },

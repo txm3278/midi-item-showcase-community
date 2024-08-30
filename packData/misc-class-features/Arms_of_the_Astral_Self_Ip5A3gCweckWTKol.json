@@ -229,7 +229,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "saveDamage": "nodam",
-      "bonusSaveDamage": "default"
+      "bonusSaveDamage": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -551,6 +555,21 @@
       "isCustomized": true,
       "fromAmmo": false,
       "version": 5
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "_stats": {
@@ -558,7 +577,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "12.331",
     "createdTime": 1708896433408,
-    "modifiedTime": 1718156810308,
+    "modifiedTime": 1724964942407,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

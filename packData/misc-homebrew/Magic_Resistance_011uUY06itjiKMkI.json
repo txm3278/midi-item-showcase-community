@@ -7,7 +7,9 @@
       "value": "<h2>From TOMB by Brave New Worlds</h2><p><a href=\"https://www.patreon.com/BraveNewWorlds\">https://www.patreon.com/BraveNewWorlds</a></p>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "",
       "cost": null,
@@ -183,7 +185,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -201,11 +207,11 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1711434458398,
-    "modifiedTime": 1715297633966,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro",
+    "modifiedTime": 1724965170319,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null
   },

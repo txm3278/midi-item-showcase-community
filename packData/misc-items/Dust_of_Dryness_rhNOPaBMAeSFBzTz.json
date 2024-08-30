@@ -7,7 +7,9 @@
       "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "quantity": 1,
     "weight": 1,
     "price": {
@@ -121,7 +123,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "midiProperties": {
       "confirmTargets": "default",
@@ -136,7 +139,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "saveDamage": "halfdam",
-      "bonusSaveDamage": "default"
+      "bonusSaveDamage": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -155,10 +162,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1708842815281,
-    "modifiedTime": 1723047944093,
+    "modifiedTime": 1724965261517,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

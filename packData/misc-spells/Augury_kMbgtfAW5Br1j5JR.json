@@ -142,7 +142,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {}
   },
@@ -154,7 +158,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "12.331",
     "createdTime": 1708116608890,
-    "modifiedTime": 1724961581351,
+    "modifiedTime": 1724968786152,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null
@@ -164,6 +168,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "kMbgtfAW5Br1j5JR",
-  "sort": 600000,
+  "sort": 900000,
   "_key": "!items!kMbgtfAW5Br1j5JR"
 }

@@ -246,7 +246,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "midi-qol": {
       "effectActivation": false,
@@ -325,7 +326,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724960056173,
-    "modifiedTime": 1724960056173,
+    "modifiedTime": 1724964938678,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "folder": "KAZwfuQe2tARhyGL",

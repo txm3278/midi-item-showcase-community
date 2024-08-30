@@ -462,7 +462,7 @@
         {
           "key": "macro.itemMacro",
           "mode": 0,
-          "value": "function.MISC.spells.soulCage",
+          "value": "function.MISC.macros.spells.soulCage",
           "priority": 20
         }
       ],
@@ -748,8 +748,8 @@
         "systemId": "dnd5e",
         "systemVersion": "3.3.1",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1724966707912,
+        "lastModifiedBy": "B2BBHntfpytXE8DP"
       },
       "_key": "!items.effects!unH8koxGjHOJK0iM.x9pigEoAe2LDhrzT"
     }
@@ -763,7 +763,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724961040742,
-    "modifiedTime": 1724961581351,
+    "modifiedTime": 1724968786152,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
@@ -771,6 +771,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "unH8koxGjHOJK0iM",
-  "sort": 300000,
+  "sort": 600000,
   "_key": "!items!unH8koxGjHOJK0iM"
 }

@@ -17,6 +17,9 @@ import { commune } from './commune.js';
 import { message } from './message.js';
 import { powerWordKill } from './powerWordKill.js';
 import { soulCage } from './soulCage.js';
+import { tashasMindWhip } from './tashasMindWhip.js';
+import { tensersTransformation } from './tensersTransformation.js';
+import { flameArrows } from './flameArrows.js';
 
 export let spells = {
   absorbElements,
@@ -38,4 +41,7 @@ export let spells = {
   message,
   powerWordKill,
   soulCage,
+  tashasMindWhip,
+  tensersTransformation,
+  flameArrows,
 };

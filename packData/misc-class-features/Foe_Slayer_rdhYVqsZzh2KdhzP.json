@@ -74,7 +74,9 @@
       "value": null,
       "charged": false
     },
-    "source": {}
+    "source": {
+      "custom": ""
+    }
   },
   "flags": {
     "ddbimporter": {
@@ -125,7 +127,11 @@
       "noConcentrationCheck": false,
       "toggleEffect": false,
       "ignoreTotalCover": false,
-      "concentration": false
+      "concentration": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "dnd5e": {
       "advancementOrigin": "qdOnFd8btFo0gQSv"
@@ -261,10 +267,10 @@
   "folder": "xw13xZMCXoloLDbk",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1720320656282,
-    "modifiedTime": 1720475725443,
+    "modifiedTime": 1724964940390,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

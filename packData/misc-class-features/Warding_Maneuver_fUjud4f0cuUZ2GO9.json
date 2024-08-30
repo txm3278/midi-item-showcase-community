@@ -8,7 +8,9 @@
       "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-gR7uZpw4QSjC6sY8\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "reaction",
       "cost": 1,
@@ -220,14 +222,29 @@
         }
       }
     },
-    "core": {}
+    "core": {},
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    }
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1721486352626,
-    "modifiedTime": 1722891751194,
+    "modifiedTime": 1724964906654,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

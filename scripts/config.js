@@ -4,12 +4,6 @@ export function setConfig() {
   foundry.utils.setProperty(CONFIG, moduleName, {
     module: moduleName,
     automations: {
-      'Absorb Elements': {
-        name: 'Absorb Elements',
-        type: 'Spell',
-        version: '1.0.3',
-        authors: ['Bradeck', 'thatlonelybugbear'],
-      },
       "Alchemist's Fire (flask)": {
         name: "Alchemist's Fire (flask)",
         type: 'Item',
@@ -71,18 +65,11 @@ export function setConfig() {
         version: '1.0.2',
         authors: ['SagaTympana, Moto Moto'],
       },
-      'Borrowed Knowledge': {
-        name: 'Borrowed Knowledge',
-        type: 'Spell',
-        version: '0.1.2',
-        authors: ['SagaTympana'],
-      },
-      'Channel Divinity: Divine Spark': {
-        name: 'Channel Divinity: Divine Spark',
+      'Channel Divinity: Guided Strike': {
+        name: 'Channel Divinity: Guided Strike',
         type: 'Class Feature',
-        UA: true,
-        version: '0.1.2',
-        authors: ['SagaTympana'],
+        version: '1.0.0',
+        authors: ['Lin Dong'],
       },
       'Channel Divinity: Turn the Tide': {
         name: 'Channel Divinity: Turn the Tide',
@@ -126,11 +113,11 @@ export function setConfig() {
         version: '1.0.3',
         authors: ['Moto Moto'],
       },
-      'Crown of Stars': {
-        name: 'Crown of Stars',
-        type: 'Spell',
-        version: '1.0.2',
-        authors: ['Xenophes'],
+      'Dagger Of Venom': {
+        name: 'Dagger Of Venom',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Bakana'],
       },
       'Dark Ones Own Luck': {
         name: 'Dark Ones Own Luck',
@@ -167,12 +154,6 @@ export function setConfig() {
         type: 'Spell',
         version: '1.0.1',
         authors: ['Fridan99'],
-      },
-      Driftglobe: {
-        name: 'Driftglobe',
-        type: 'Item',
-        version: '0.1.2',
-        authors: ['buttcheeksio'],
       },
       'Dungeon Delver': {
         name: 'Dungeon Delver',
@@ -216,6 +197,12 @@ export function setConfig() {
         version: '0.1.4',
         authors: ['WurstKorn'],
       },
+      'Flame Arrows': {
+        name: 'Flame Arrows',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Lin Dong'],
+      },
       'Flame Tongue Rapier': {
         name: 'Flame Tongue Rapier',
         type: 'Item',
@@ -227,12 +214,6 @@ export function setConfig() {
         type: 'Feat',
         version: '2.2.0',
         authors: ['Elwin'],
-      },
-      'Flaming Sphere': {
-        name: 'Flaming Sphere',
-        type: 'Spell',
-        version: '1.0.3',
-        authors: ['Moto Moto'],
       },
       'Flash of Genius': {
         name: 'Flash of Genius',
@@ -343,24 +324,11 @@ export function setConfig() {
         version: '1.1.0',
         authors: ['Moto Moto'],
       },
-      'Magic Stone': {
-        name: 'Magic Stone',
-        type: 'Spell',
-        version: '0.1.3',
-        authors: ['Bradeck', 'Coolhand', 'SagaTympana'],
-      },
       'Medium Armor Master': {
         name: 'Medium Armor Master',
         type: 'Feat',
         version: '0.1.1',
         authors: ['Muhammad2126'],
-      },
-      'Memorize Spell': {
-        name: 'Memorize Spell',
-        type: 'Class Feature',
-        UA: true,
-        version: '0.1.2',
-        authors: ['SagaTympana'],
       },
       'Mental Prison': {
         name: 'Mental Prison',
@@ -373,18 +341,6 @@ export function setConfig() {
         type: 'Spell',
         version: '1.0.1',
         authors: ['Fridan99'],
-      },
-      'Meteor Swarm': {
-        name: 'Meteor Swarm',
-        type: 'Spell',
-        version: '1.0.2',
-        authors: ['Xenophes'],
-      },
-      Mislead: {
-        name: 'Mislead',
-        type: 'Spell',
-        version: '1.0.1',
-        authors: ['TMinz'],
       },
       'Moon-Touched Sword, Greatsword': {
         name: 'Moon-Touched Sword, Greatsword',
@@ -416,12 +372,6 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Moto Moto'],
       },
-      "Mordenkainen's Sword": {
-        name: "Mordenkainen's Sword",
-        type: 'Spell',
-        version: '0.1.2',
-        authors: ['Janner3D'],
-      },
       Net: {
         name: 'Net',
         type: 'Item',
@@ -439,12 +389,6 @@ export function setConfig() {
         type: 'Feat',
         version: '1.0.1',
         authors: ['Bakana'],
-      },
-      Poisoner: {
-        name: 'Poisoner',
-        type: 'Feat',
-        version: '0.1.3',
-        authors: ['WurstKorn'],
       },
       'Potion of Healing': {
         name: 'Potion of Healing',
@@ -576,13 +520,6 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Quinn Dexter'],
       },
-      'Sorcerous Burst': {
-        name: 'Sorcerous Burst',
-        type: 'Spell',
-        UA: true,
-        version: '1.0.2',
-        authors: ['SagaTympana'],
-      },
       'Sorrowful Fate': {
         name: 'Sorrowful Fate',
         type: 'Class Feature',
@@ -644,6 +581,18 @@ export function setConfig() {
         type: 'Item',
         version: '1.0.0',
         authors: ['Elwin'],
+      },
+      "Tasha's Mind Whip": {
+        name: "Tasha's Mind Whip",
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Moto Moto'],
+      },
+      "Tenser's Transformation": {
+        name: "Tenser's Transformation",
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Lin Dong'],
       },
       'Tomb of Levistus': {
         name: 'Tomb of Levistus',
@@ -923,13 +872,6 @@ export function setConfig() {
           authors: ['Moto Moto'],
         },
       },
-      'Shield Guardian': {
-        'Spell Storing': {
-          name: 'Spell Storing',
-          version: '1.0.1',
-          authors: ['n3veruary'],
-        },
-      },
       'Spider King': {
         Web: {
           name: 'Web',
@@ -962,21 +904,6 @@ export function setConfig() {
           name: 'Multiattack (Vampire Form Only)',
           version: '1.0.0',
           authors: ['TreeDragon', 'tposney'],
-        },
-        Move: {
-          name: 'Move',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Janner3D'],
-        },
-        Shapechanger: {
-          name: 'Shapechanger',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Christopher'],
-        },
-        'Misty Escape': {
-          name: 'Misty Escape',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Christopher'],
         },
       },
       'Vampire Spawn': {
@@ -1022,21 +949,6 @@ export function setConfig() {
           version: '1.0.0',
           authors: ['TreeDragon', 'tposney'],
         },
-        Move: {
-          name: 'Move',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Janner3D'],
-        },
-        Shapechanger: {
-          name: 'Shapechanger',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Christopher'],
-        },
-        'Misty Escape': {
-          name: 'Misty Escape',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Christopher'],
-        },
       },
       'Vampire Warrior': {
         Bite: {
@@ -1063,21 +975,6 @@ export function setConfig() {
           name: 'Multiattack (Vampire Form Only)',
           version: '1.0.0',
           authors: ['TreeDragon', 'tposney'],
-        },
-        Move: {
-          name: 'Move',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Janner3D'],
-        },
-        Shapechanger: {
-          name: 'Shapechanger',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Christopher'],
-        },
-        'Misty Escape': {
-          name: 'Misty Escape',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'Christopher'],
         },
       },
       Vrock: {

@@ -206,7 +206,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "walledtemplates": {
@@ -225,7 +229,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "scene-packer": {
       "hash": "bbe69f6b5c6992869556d3c9d58cb862f067a1b4",
@@ -339,7 +344,7 @@
     "systemVersion": "2.4.1",
     "coreVersion": "12.331",
     "createdTime": 1694709878754,
-    "modifiedTime": 1707926025860,
+    "modifiedTime": 1724964942088,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

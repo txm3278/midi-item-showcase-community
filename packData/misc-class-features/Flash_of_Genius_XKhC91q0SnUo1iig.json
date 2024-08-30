@@ -172,6 +172,21 @@
           "lastModifiedBy": null
         }
       }
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "effects": [
@@ -342,7 +357,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724960041291,
-    "modifiedTime": 1724960041291,
+    "modifiedTime": 1724964647856,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "folder": "XdRbjr9vWzc7ijqS",

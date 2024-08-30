@@ -23,7 +23,7 @@
     "target": {
       "value": 30,
       "width": null,
-      "units": "ft",
+      "units": "",
       "type": "self",
       "prompt": true
     },
@@ -126,7 +126,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "exportSource": {
       "world": "campaign-3",
@@ -279,10 +283,10 @@
   "folder": "ftVRlNpPFKZkpWP8",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1709712806400,
-    "modifiedTime": 1714418091634,
+    "modifiedTime": 1724964885889,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

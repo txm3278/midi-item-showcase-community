@@ -46,7 +46,7 @@ export async function soulCage({
     };
     await chrisPremades.utils.itemUtils.createItems(actor, [soulUpdates], {
       favorite: true,
-      parentEntity: effect,
+      parentEntity: scope.effect,
     });
     let trappedSoul = actor.items.getName('Trapped Soul');
     console.log('trappedSoul', trappedSoul);

@@ -237,7 +237,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "saveDamage": "halfdam",
-      "bonusSaveDamage": "default"
+      "bonusSaveDamage": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "scene-packer": {
@@ -304,7 +308,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "12.331",
     "createdTime": 1662520710160,
-    "modifiedTime": 1724961581351,
+    "modifiedTime": 1724968786152,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null
@@ -314,6 +318,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "e0b8TAuymQPcZEOO",
-  "sort": 2500000,
+  "sort": 2200000,
   "_key": "!items!e0b8TAuymQPcZEOO"
 }

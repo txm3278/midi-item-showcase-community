@@ -1,4 +1,3 @@
-import { eldritchCannon } from './Artificer/Artillerist/eldritchCannon.js';
 import { soulOfArtifice } from './Artificer/soulOfArtifice.js';
 import { spiritShield } from './Barbarian/PathOfTheAncestrialGuardian/spiritShield.js';
 import { vengefulAncestors } from './Barbarian/PathOfTheAncestrialGuardian/vengefulAncestors.js';
@@ -22,7 +21,6 @@ import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDiv
 import { sorrowfulFate } from './Bard/CollegeOfTragedy/sorrowfulFate.js';
 
 export let classFeatures = {
-  eldritchCannon,
   soulOfArtifice,
   spiritShield,
   vengefulAncestors,

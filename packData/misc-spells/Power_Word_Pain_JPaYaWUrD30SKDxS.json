@@ -122,7 +122,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "never",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "exportSource": {
@@ -320,7 +324,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "12.331",
     "createdTime": 1670042235732,
-    "modifiedTime": 1724961581351,
+    "modifiedTime": 1724968786152,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null
@@ -330,6 +334,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "JPaYaWUrD30SKDxS",
-  "sort": 2400000,
+  "sort": 2100000,
   "_key": "!items!JPaYaWUrD30SKDxS"
 }

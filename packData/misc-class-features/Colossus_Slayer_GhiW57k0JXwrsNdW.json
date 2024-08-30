@@ -110,7 +110,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "core": {},
     "itemacro": {
@@ -160,7 +161,11 @@
       "autoSaveFriendly": false,
       "offHandWeapon": false,
       "noConcentrationCheck": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "exportSource": {
       "world": "playground",
@@ -277,7 +282,7 @@
     "systemVersion": "3.1.2",
     "coreVersion": "12.331",
     "createdTime": 1713596410959,
-    "modifiedTime": 1720475718683,
+    "modifiedTime": 1724964940728,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

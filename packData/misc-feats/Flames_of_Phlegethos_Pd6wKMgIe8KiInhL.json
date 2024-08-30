@@ -179,7 +179,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "core": {},
     "walledtemplates": {
@@ -236,7 +237,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724960118963,
-    "modifiedTime": 1724960118963,
+    "modifiedTime": 1724965022395,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "_id": "Pd6wKMgIe8KiInhL",
