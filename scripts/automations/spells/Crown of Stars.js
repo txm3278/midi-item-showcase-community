@@ -15,7 +15,7 @@ async function onEffect() {
     
     // Don't realistically need to wait on either of these
     actor.setFlag('world', `${macroItem.name}`, [...Array(moteCount).keys()].map(i => i + 1));
-    macroUtil.animation.crownOfStars.create(token, moteCount, {effect: effect, id: effectUniqueName, animationFile: ANIMATION_FILE});
+    macroUtil.animation.crownOfStars.create(token, moteCount, {effect: effect, id: effectUniqueName, file: ANIMATION_FILE});
 }
 
 async function offEffect() {
