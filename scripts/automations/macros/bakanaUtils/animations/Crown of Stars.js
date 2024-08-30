@@ -10,12 +10,10 @@
  * @param file A JB2A animation to swirl around you
  * @param scale Scale factor for the animation
  */
-function create(token, moteCount, {effect=undefined, id="Crown of Stars", file, scale=0.5} = {}) {
-    if (!macroUtil.dependsOn.hasRecommended({id:'sequencer'})) return;
-    if (!file) {
-        macroUtil.dependsOn.hasSomeRecommended([ {id:'jb2a_patreon'}, {id:'JB2A_DnD5e'} ]);
-        file = 'jb2a.twinkling_stars.points07.white';
-    }
+function create(token, moteCount, {effect=undefined, id="Crown of Stars", file="jb2a.twinkling_stars.points07.white", scale=0.5} = {}) {
+    if (!macroUtil.dependsOn.hasRecommended({id:"sequencer"})) return;
+    if (file.startsWith("jb2a."))
+        macroUtil.dependsOn.someRequired([ {id:"jb2a_patreon"}, {id:"JB2A_DnD5e"} ]);
 
     function rotateSprites(sequence) {
         sequence = sequence
@@ -36,7 +34,7 @@ function create(token, moteCount, {effect=undefined, id="Crown of Stars", file, 
 
     function loopDaLoop(sequence, objectName, delay) {
         return sequence
-            .loopProperty(objectName, 'rotation', {
+            .loopProperty(objectName, "rotation", {
                 from: 0,
                 to: 360,
                 duration: 5000,
@@ -46,8 +44,8 @@ function create(token, moteCount, {effect=undefined, id="Crown of Stars", file, 
 
     function createStarMoteEffect(sequence, idx) {
         sequence = rotateSprites(sequence)
-        sequence = loopDaLoop(sequence, 'sprite', 500)
-        sequence = loopDaLoop(sequence, 'spriteContainer', 0)
+        sequence = loopDaLoop(sequence, "sprite", 500)
+        sequence = loopDaLoop(sequence, "spriteContainer", 0)
         return sequence
             .spriteOffset({ x: 0.5 }, { gridUnits: true })
             .rotate((360 / moteCount) * idx)
