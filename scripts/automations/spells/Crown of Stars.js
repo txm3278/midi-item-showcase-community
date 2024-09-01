@@ -3,7 +3,7 @@
 const ANIMATION_FILE = 'jb2a.twinkling_stars.points07.white';
 
 const spellLevel = args[1];
-const moteCount = ((spellLevel || 7) - 7) * 2 + 7;
+const moteCount = 2 * (spellLevel ?? 7) - 7;
 const effectUniqueName = `[${actor.id}] Crown of Stars`;
 
 async function onEffect() {
