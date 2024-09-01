@@ -166,6 +166,7 @@ async function explode(optionMap, limit) {
             ui.notifications.warn("Please select a radio button to indicate your option before pressing select!");
             continue;
         }
+        count = Math.clamp(count, 0, typeRolled[typeRolled.length-1][1]);
         if (!faces || !count) {
             if (FORCE_ALL_EXPLOSIONS) continue; 
             else break;
