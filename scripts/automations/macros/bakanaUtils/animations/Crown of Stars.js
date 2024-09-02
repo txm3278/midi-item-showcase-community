@@ -13,7 +13,8 @@
 function create(token, moteCount, {effect=undefined, id="Crown of Stars", file="jb2a.twinkling_stars.points07.white", scale=0.5} = {}) {
     if (!macroUtil.dependsOn.hasRecommended({id:"sequencer"})) return;
     if (file.startsWith("jb2a."))
-        macroUtil.dependsOn.someRequired([ {id:"jb2a_patreon"}, {id:"JB2A_DnD5e"} ]);
+        if (!macroUtil.dependsOn.hasSomeRecommended([ {id:"jb2a_patreon"}, {id:"JB2A_DnD5e"} ]))
+            return;
 
     function rotateSprites(sequence) {
         sequence = sequence
