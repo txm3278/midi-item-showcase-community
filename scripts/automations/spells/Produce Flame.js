@@ -31,7 +31,7 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
+await macroUtil.runWorkflows(callArguments, {
     preTargeting      : preTargeting,
     preItemRoll       : preItemRoll,
     postAttackRoll    : postAttackRoll,

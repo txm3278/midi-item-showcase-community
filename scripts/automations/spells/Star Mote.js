@@ -38,7 +38,7 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
+await macroUtil.runWorkflows(callArguments, {
     postAttackRoll : postAttackRoll 
 });
 await actor.setFlag('world', originName, remainingStars)

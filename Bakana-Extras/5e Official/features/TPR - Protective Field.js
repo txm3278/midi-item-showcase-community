@@ -62,7 +62,7 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
+await macroUtil.runWorkflows(callArguments, {
     "tpr.isDamaged.pre" : tprIsDamagedPre,
     preTargeting : handleOnUsePreTargeting,
     postActiveEffects : handleOnUsePostActiveEffects,

@@ -34,7 +34,7 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
+await macroUtil.runWorkflows(callArguments, {
     on : onEffect,
     off : offEffect
 });

@@ -31,5 +31,7 @@ export async function primevalAwareness({
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, { postCleanup: postCleanup });
+  await macroUtil.runWorkflows(callArguments, {
+    postCleanup: postCleanup 
+  });
 }

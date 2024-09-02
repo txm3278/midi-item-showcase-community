@@ -27,6 +27,6 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
+await macroUtil.runWorkflows(callArguments, {
     "tpr.isDamaged.post" : tpr_isDamaged_post,
 });

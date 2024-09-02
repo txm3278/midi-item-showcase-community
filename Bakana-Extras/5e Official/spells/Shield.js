@@ -74,8 +74,8 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
-        postCleanup                 : postCleanup,
-        isDamaged                   : isDamaged,
-        preTargetDamageApplication  : preTargetDamageApplication,
-    });
+await macroUtil.runWorkflows(callArguments, {
+    postCleanup                 : postCleanup,
+    isDamaged                   : isDamaged,
+    preTargetDamageApplication  : preTargetDamageApplication,
+});

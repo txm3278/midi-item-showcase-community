@@ -51,9 +51,9 @@ const callArguments = {
     workflow:   workflow,
     options:    options
   };
-  await macroUtil.runWorkflows(callArguments, {
-        isAttacked  : isAttacked,
-        isDamaged   : isDamaged,
-    });
+await macroUtil.runWorkflows(callArguments, {
+    isAttacked  : isAttacked,
+    isDamaged   : isDamaged,
+});
 
 await DAE.setFlag(actor, persistentDataName, persistentData);
