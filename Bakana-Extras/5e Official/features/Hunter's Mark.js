@@ -87,7 +87,7 @@ const persistentDataName = `(Hunter's Mark) - Persistent Data`;
 const defaultPersistentData = { targetTokenId : undefined, duration : undefined };
 let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -95,9 +95,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     preItemRoll  : preItemRoll,
     preDamageRollComplete  : preDamageRollComplete,

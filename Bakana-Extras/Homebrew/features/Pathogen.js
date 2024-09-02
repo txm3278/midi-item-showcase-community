@@ -96,7 +96,7 @@ const persistentDataName = `(${macroItem.name}) Persistent Data`;
 const defaultPersistentData = { severity : 1, spreadProbability : 100, recoveryDc : 15 };
 let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -104,9 +104,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     on : effectOn,
     off : effectOff,

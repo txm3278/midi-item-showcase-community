@@ -28,7 +28,7 @@ export async function colossusSlayer({
   let persistentData =
     (await DAE.getFlag(actor, persistentDataName)) || defaultPersistentData;
 
-  const callArguments = {  
+  const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -36,9 +36,7 @@ export async function colossusSlayer({
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
   await macroUtil.runWorkflows(callArguments, {
     preDamageRollComplete: preDamageRollComplete, // damage die additions
   });

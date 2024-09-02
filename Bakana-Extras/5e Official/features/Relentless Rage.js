@@ -41,7 +41,7 @@ async function preTargetDamageApplication() {
 const persistentDataName = `(Relentless Rage) - Persistent Data`;
 const defaultPersistentData = { isActive : false, workflowId : undefined };
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -49,9 +49,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     preItemRoll  : preItemRoll,
     preTargetDamageApplication  : preTargetDamageApplication,

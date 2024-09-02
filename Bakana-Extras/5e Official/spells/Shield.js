@@ -63,7 +63,7 @@ async function preTargetDamageApplication(midiMacro) {
     workflow.damageItem.hpDamage = 0;
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -71,9 +71,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     postCleanup                 : postCleanup,
     isDamaged                   : isDamaged,

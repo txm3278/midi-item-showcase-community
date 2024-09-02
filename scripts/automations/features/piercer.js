@@ -195,7 +195,7 @@ export async function piercer({
   let persistentData =
     (await DAE.getFlag(actor, persistentDataName)) || defaultPersistentData;
 
-  const callArguments = {  
+  const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -203,9 +203,7 @@ export async function piercer({
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
   await macroUtil.runWorkflows(callArguments, {
     preDamageRollComplete: preDamageRollComplete, // damage die additions
     postDamageRoll: postDamageRoll, // damage die replacement effect

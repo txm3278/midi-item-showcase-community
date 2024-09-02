@@ -31,7 +31,7 @@ async function postActiveEffects() {
     await enableEffect.update({"Suppressed": true, "disabled": true});
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -39,9 +39,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     on : onEffect,
     off : offEffect,

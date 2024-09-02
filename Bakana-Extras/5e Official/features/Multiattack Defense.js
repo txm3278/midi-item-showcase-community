@@ -40,7 +40,7 @@ const persistentDataName = `(Multiattack Defense) - Persistent Data`;
 const defaultPersistentData = { combat : {}, actorIds : [] };
 let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -48,9 +48,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     isAttacked  : isAttacked,
     isDamaged   : isDamaged,

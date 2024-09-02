@@ -23,7 +23,7 @@ async function offEffect() {
     await actor.unsetFlag("world", `${macroItem.name}`);
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -31,9 +31,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     on : onEffect,
     off : offEffect

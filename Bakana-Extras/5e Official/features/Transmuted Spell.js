@@ -29,7 +29,7 @@ async function updateDamageType(damageType, replacementType){
     workflow.item = await macroUtil.item.syntheticItem(workflow.item, actor, updates);
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -37,9 +37,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     preDamageRoll  : preDamageRoll,
 });

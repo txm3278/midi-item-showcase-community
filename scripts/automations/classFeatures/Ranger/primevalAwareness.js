@@ -20,7 +20,7 @@ export async function primevalAwareness({
   }
 
   
-  const callArguments = {  
+  const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -28,9 +28,7 @@ export async function primevalAwareness({
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
   await macroUtil.runWorkflows(callArguments, {
     postCleanup: postCleanup 
   });

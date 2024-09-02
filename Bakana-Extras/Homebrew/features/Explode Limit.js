@@ -181,7 +181,7 @@ async function postDamageRoll() {
     await explode(healingMap, explosionLimit.healing);
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -189,9 +189,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     postDamageRoll  : postDamageRoll,
 });

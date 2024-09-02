@@ -15,7 +15,7 @@ async function postAttackRoll() {
     await macroUtil.effect.remove(actor, effectData);
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -23,9 +23,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     postAttackRoll : postAttackRoll
 });

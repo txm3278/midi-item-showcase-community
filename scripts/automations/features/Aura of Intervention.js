@@ -16,7 +16,7 @@ async function tpr_isDamaged_post() {
     workflow.damageItem.hpDamage -= 1;
 }
 
-const callArguments = {  
+const callArguments = {
     speaker:    speaker,
     actor:      actor,
     token:      token,
@@ -24,9 +24,7 @@ const callArguments = {
     item:       item,
     args:       args,
     scope:      scope,
-    workflow:   workflow,
-    options:    options
-  };
+};
 await macroUtil.runWorkflows(callArguments, {
     "tpr.isDamaged.post" : tpr_isDamaged_post,
 });
