@@ -27,7 +27,7 @@ async function syntheticItem(itemData, actor, updates = {}) {
         item = new CONFIG.Item.documentClass(itemData, {parent: actor});
         item.prepareData();
         item.prepareFinalAttributes();
-        item.applyActiveEffects();
+        if (macroUtil.dependsOn.isActivated('dnd5e', '3.2')) item.applyActiveEffects();
     }
 
     return foundry.utils.mergeObject(item, updates);

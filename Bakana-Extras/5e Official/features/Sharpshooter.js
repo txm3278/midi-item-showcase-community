@@ -14,9 +14,4 @@ async function preAttackRoll() {
     await item.update({"flags.bakanabaka" : bakanabaka }); // set DAE flags
 }
 
-async function postCleanup() {
-    let itemEffect = macroItem.effects.find(ef => ef.name == `${macroItem.name} Enabled`);
-    await macroUtil.effect.toggle(actor, itemEffect);
-}
-
-await macroUtil.runWorkflows(arguments, {preAttackRoll : preAttackRoll, postCleanup : postCleanup});
+await macroUtil.runWorkflows(arguments, {preAttackRoll : preAttackRoll});

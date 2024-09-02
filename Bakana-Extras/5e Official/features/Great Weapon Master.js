@@ -28,13 +28,7 @@ async function preDamageApplication() {
     }
 }
 
-async function postCleanup() {
-    let itemEffect = macroItem.effects.find(ef => ef.name == `${macroItem.name} Enabled`);
-    await macroUtil.effect.toggle(actor, itemEffect);
-}
-
 await macroUtil.runWorkflows(arguments, {
         preAttackRoll : preAttackRoll, 
-        preDamageApplication : preDamageApplication,
-        postCleanup : postCleanup
+        preDamageApplication : preDamageApplication
     });

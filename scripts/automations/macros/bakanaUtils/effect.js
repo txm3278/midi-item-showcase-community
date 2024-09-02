@@ -1,4 +1,4 @@
-async function find(actorEntity, effect) {
+function find(actorEntity, effect) {
     return Array.from(actorEntity.allApplicableEffects()).find(
         (ef) => ef.name == effect?.name && ef.origin == effect?.origin
     );
@@ -15,8 +15,10 @@ async function addDependents(entity, dependents) {
     await chrisPremades.utils.effectUtils.addDependent(entity, dependents);
 }
 
-async function remove(effect) {
-    await macroUtil.generic.remove(effect);
+async function remove(actorEntity, effect) {
+    let isAllEffect = find(actorEntity, effect);
+    if (isAllEffect) macroUtil.generic.remove(isAllEffect);
+    else await macroUtil.generic.remove(effect);
 }
 
 async function update(actorEntity, effect) {
