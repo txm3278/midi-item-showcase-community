@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.3.0
+// v2.4.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -55,6 +55,7 @@
 //     - tpr.isDamaged: this is called after MidiQOL computed the damage to be dealt to a target but before it is applied.
 //     - tpr.isHealed: this is called after MidiQOL computed the healing to be done to a target but before it is applied.
 //     - tpr.isPreCheckSave: this is called just before a saving throw check is asked from the target.
+//     - tpr.isPostCheckSave: this is called after a saving throw check is asked from the target but before it is displayed.
 //   - thirdPartyReactionOptions: The options consist of a list of parameter/value pairs separated by `;`. The parameter and its value is separated by a `=`.
 //     - ignoreSelf: true or false to indicate if the owner being a target must not trigger the reaction. [default false]
 //     - triggerSource: target or attacker, determines to whom the canSee option, the item’s range and target applies. [default target]
@@ -84,7 +85,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '2.3.0';
+  const VERSION = '2.4.0';
   const MACRO_NAME = 'elwin-helpers';
   const debug = false;
   const active = true;
@@ -166,6 +167,11 @@ export function runElwinsHelpers() {
       'midi-qol.preCheckSaves',
       'handlePreCheckSavesId',
       handlePreCheckSaves
+    );
+    setHook(
+      'midi-qol.postCheckSaves',
+      'handlePostCheckSavesId',
+      handlePostCheckSaves
     );
 
     // Note: keep this name to be backward compatible
@@ -458,6 +464,18 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Triggers isPostCheckSave third party reactions.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  async function handlePostCheckSaves(workflow) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePostCheckSaves.`, { workflow });
+    }
+
+    await handleThirdPartyReactions(workflow, ['isPostCheckSave']);
+  }
+
+  /**
    * Validates if the conditions for a reaction item are met before sending a remote request to prompt a dialog with
    * the reaction to the player associated to the reaction item's owner and execute it if the player selects it.
    *
@@ -626,15 +644,15 @@ export function runElwinsHelpers() {
       tokenUuid: reactionTokenUuid,
       reactionItemList: [reactionItem.uuid],
       triggerTokenUuid: triggerToken.document.uuid,
-      reactionFlavor: getReactionFlavor(
-        player,
+      reactionFlavor: getReactionFlavor({
+        user: player,
         reactionTriggerName,
         triggerToken,
         triggerItem,
         reactionToken,
-        options.attackRoll,
-        options.showReactionAttackRoll
-      ),
+        roll: options.attackRoll,
+        showReactionAttackRoll: options.showReactionAttackRoll,
+      }),
       triggerType: 'reactionmanual',
       options: reactionOptions,
     };
@@ -644,27 +662,29 @@ export function runElwinsHelpers() {
 
   /**
    * Returns the reaction flavor for the reaction dialog.
-   *
-   * @param {User} user the user to which the reaction dialog will be displayed.
-   * @param {string} reactionTriggerName name of the TargetOnUse macroPass on which the reaction that was triggered.
-   * @param {Token5e} triggerToken the token which initiated the third party reaction, usually the target of an attack (options.token).
-   * @param {Item5e} triggerItem the item that triggered the reaction, usually the item used (workflow.item).
-   * @param {Token5e} reactionToken the token for which the reaction dialog will be displayed.
-   * @param {Roll} attackRoll current attack roll.
-   * @param {boolean|undefined} showReactionAttackRoll flag to indicate if the attack roll should be shown to the reaction or not,
-   *                                                   if undefined the midi setting is used.
+   * @param {object} data - The parameters for the reaction flavor.
+   * @param {User} data.user - The user to which the reaction dialog will be displayed.
+   * @param {string} data.reactionTriggerName - Name of the TargetOnUse macroPass on which the reaction that was triggered.
+   * @param {Token5e} data.triggerToken - The token which initiated the third party reaction, usually the target of an attack (options.token).
+   * @param {Item5e} data.triggerItem - The item that triggered the reaction, usually the item used (workflow.item).
+   * @param {Token5e} data.reactionToken - The token for which the reaction dialog will be displayed.
+   * @param {Roll} data.roll - Current D20 roll (attack roll, saving throw or ability test).
+   * @param {boolean|undefined} data.showReactionAttackRoll - Option of what detail of the roll should be shown for the reaction,
+   *                                                          if undefined the midi setting is used.
    *
    * @returns {string} the flavor for the reaction trigger.
    */
-  function getReactionFlavor(
-    user,
-    reactionTriggerName,
-    triggerToken,
-    triggerItem,
-    reactionToken,
-    attackRoll,
-    showReactionAttackRoll
-  ) {
+  function getReactionFlavor(data) {
+    const {
+      user,
+      reactionTriggerName,
+      triggerToken,
+      triggerItem,
+      reactionToken,
+      roll,
+      showReactionAttackRoll,
+    } = data;
+
     let reactionFlavor = 'Unknow reaction trigger!';
     switch (reactionTriggerName) {
       case 'isPreAttacked':
@@ -705,6 +725,7 @@ export function runElwinsHelpers() {
       case 'preTargetSave':
       case 'isAboutToSave':
       case 'isPreCheckSave':
+      case 'isPostCheckSave':
         reactionFlavor =
           '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
         break;
@@ -736,9 +757,6 @@ export function runElwinsHelpers() {
       reactionActorName: reactionToken?.name ?? 'unknown',
     });
 
-    showReactionAttackRoll =
-      showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
-    const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
     //{none: 'Attack Hits', d20: 'd20 roll only', all: 'Attack Roll Total', allCrit: 'Attack Roll Total + Critical'}
     if (
       [
@@ -751,32 +769,61 @@ export function runElwinsHelpers() {
         'isAttacked',
       ].includes(reactionTriggerName)
     ) {
-      switch (showReactionAttackRoll) {
+      const showAttackRoll =
+        showReactionAttackRoll ??
+        MidiQOL.configSettings().showReactionAttackRoll;
+      const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
+      switch (showAttackRoll) {
         case 'all':
           reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            attackRoll?.total ?? ''
+            roll?.total ?? ''
           }</h4>`;
           break;
         case 'allCrit': {
-          const criticalString = attackRoll?.isCritical
+          const criticalString = roll?.isCritical
             ? `<span style="color: green">(${getI18n('DND5E.Critical')})</span>`
             : '';
           reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            attackRoll?.total ?? ''
+            roll?.total ?? ''
           } ${criticalString}</h4>`;
           break;
         }
         case 'd20': {
-          const theRoll = attackRoll?.terms[0]?.results
-            ? attackRoll.terms[0].results.find((r) => r.active)?.result ??
-              attackRoll.terms[0]?.total
-            : attackRoll?.terms[0]?.total ?? '';
+          const theRoll = roll?.terms[0]?.results
+            ? roll.terms[0].results.find((r) => r.active)?.result ??
+              roll.terms[0]?.total
+            : roll?.terms[0]?.total ?? '';
           reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
           break;
         }
         default:
       }
     }
+    if (['isPostCheckSave'].includes(reactionTriggerName)) {
+      // Note: we use the same config as the attack to determine is the TPR owner can see of the Roll.
+      const showAttackRoll =
+        showReactionAttackRoll ??
+        MidiQOL.configSettings().showReactionAttackRoll;
+      const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
+      switch (showAttackRoll) {
+        case 'all':
+        case 'allCrit':
+          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
+            roll?.total ?? ''
+          }</h4>`;
+          break;
+        case 'd20': {
+          const theRoll = roll?.terms[0]?.results
+            ? roll.terms[0].results.find((r) => r.active)?.result ??
+              roll.terms[0]?.total
+            : roll?.terms[0]?.total ?? '';
+          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
+          break;
+        }
+        default:
+      }
+    }
+
     return reactionFlavor;
   }
 
@@ -911,6 +958,7 @@ export function runElwinsHelpers() {
 
     let targets;
     let triggerItem = workflow.item;
+    let roll = workflow.attackRoll;
     const regTrigger = trigger.replace('tpr.', '');
     switch (regTrigger) {
       case 'isHealed':
@@ -919,6 +967,7 @@ export function runElwinsHelpers() {
         break;
       case 'isHit':
       case 'isPreCheckSave':
+      case 'isPostCheckSave':
         targets = [...workflow.hitTargets, ...workflow.hitTargetsEC];
         break;
       case 'isMissed':
@@ -967,6 +1016,11 @@ export function runElwinsHelpers() {
           return;
         }
       }
+      if (['isPostCheckSave'].includes(regTrigger)) {
+        roll = workflow.saveRolls?.find(
+          (r) => r.data.tokenUuid === target.document.uuid
+        );
+      }
       const allowedReactions = filteredReactions.filter((reactionData) =>
         canTriggerReaction(
           workflow,
@@ -985,6 +1039,7 @@ export function runElwinsHelpers() {
         trigger,
         target,
         allowedReactions,
+        roll,
         options
       );
       first = false;
@@ -1373,6 +1428,7 @@ export function runElwinsHelpers() {
    * @param {string} reactionTrigger - the third party reaction trigger.
    * @param {Token5e} target - the target of the third party reaction trigger.
    * @param {ReactionData[]} reactions - list of reaction data from which the reaction token can choose to activate.
+   * @param {Roll} roll - The D20 roll of the attack, saving throw or ability test.
    * @param {object} options - options to pass to macros.
    */
   async function callReactionsForToken(
@@ -1382,6 +1438,7 @@ export function runElwinsHelpers() {
     reactionTrigger,
     target,
     reactions,
+    roll,
     options = {}
   ) {
     if (!reactions?.length) {
@@ -1486,14 +1543,14 @@ export function runElwinsHelpers() {
           tokenUuid: reactionToken.document.uuid,
           reactionItemList: reactionUuids,
           triggerTokenUuid: reactionTargetUuid,
-          reactionFlavor: getReactionFlavor(
+          reactionFlavor: getReactionFlavor({
             user,
-            reactionTrigger.replace('tpr.', ''),
-            target,
-            workflow.item,
+            reactionTriggerName: reactionTrigger.replace('tpr.', ''),
+            triggerToken: target,
+            triggerItem: workflow.item,
             reactionToken,
-            workflow.attackRoll
-          ),
+            roll,
+          }),
           triggerType: 'reaction',
           options: reactionOptions,
         };

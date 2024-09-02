@@ -7,7 +7,9 @@
       "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Spoob</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin-block-end:0px;margin:0.5em 0px\"><span style=\"font-family:Signika, sans-serif\">Template Macro</span></p></li><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Effect Macro</span></p><p style=\"box-sizing:border-box;user-select:text;margin-block-end:0px;margin:0.5em 0px\"></p></li></ul>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "action",
       "cost": 1,
@@ -95,7 +97,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/control/debuff-chains-purple.webp",
       "origin": "Item.ycmdtVmE8IU2umB5",
       "duration": {
         "rounds": null,
@@ -160,7 +161,21 @@
           }
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/debuff-chains-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.yIBKc1cneurMV6Sb"
     },
     {
@@ -240,16 +255,29 @@
           "wallsBlock": "system"
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/restrained.svg",
       "name": "Restrained",
       "origin": "Actor.giyM99yVkRqrnKyG.Item.Nxtil0OW1c3nJbU4",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "statuses": [
         "Convenient Effect: Restrained",
         "restrained"
       ],
       "_id": "kYDwtsOjIrHML5UF",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/restrained.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.kYDwtsOjIrHML5UF"
     },
     {
@@ -323,16 +351,29 @@
           }
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/blinded.svg",
       "name": "Blinded",
       "origin": "Actor.giyM99yVkRqrnKyG.Item.Nxtil0OW1c3nJbU4",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "statuses": [
         "Convenient Effect: Blinded",
         "blinded"
       ],
       "_id": "KHDSS1szXC5FtRHU",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/blinded.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.KHDSS1szXC5FtRHU"
     },
     {
@@ -387,16 +428,29 @@
           "wallsBlock": "system"
         }
       },
-      "icon": "modules/dfreds-convenient-effects/images/deafened.svg",
       "name": "Deafened",
       "origin": "Item.CRmIFD5vX2XtmUUU",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "statuses": [
         "Convenient Effect: Deafened",
         "deafened"
       ],
       "_id": "LtEyIfGIGuTPui1Y",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/dfreds-convenient-effects/images/deafened.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!1ulJDHbdUZo4eltL.LtEyIfGIGuTPui1Y"
     }
   ],
@@ -420,7 +474,11 @@
       "saveDamage": "fulldam",
       "bonusSaveDamage": "default",
       "concentration": true,
-      "otherSaveDamage": "nodam"
+      "otherSaveDamage": "nodam",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -723,17 +781,19 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1716548165662,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724968786152,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "1ulJDHbdUZo4eltL",
-  "sort": 800000,
+  "sort": 1400000,
   "_key": "!items!1ulJDHbdUZo4eltL"
 }

@@ -163,7 +163,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "midi-qol": {
       "fumbleThreshold": null,
@@ -184,7 +185,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "scene-packer": {
       "hash": "38676c5be304fb3c46513a46c3fbc6b6ba63bb67",
@@ -219,7 +224,7 @@
           "priority": 50
         }
       ],
-      "description": "<p>In darkness, the unsheathed blade of this sword sheds moonlight, creating bright light in a 15-foot radius and dim light for an additiona<span class=\"No-Break\">l 15 feet.</span></p>",
+      "description": "",
       "disabled": false,
       "duration": {
         "rounds": null,
@@ -250,7 +255,8 @@
           "showIcon": true,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -269,18 +275,30 @@
           "wallsBlock": "system"
         },
         "core": {
-          "sourceId": "Compendium.kashaws-campaign-materials.rare-items.Item.EQ9QMawhkJzyzyL6.ActiveEffect.o5jh1MGmaw3XXzoF"
+          "sourceId": "Compendium.kashaws-campaign-materials.rare-items.Item.EQ9QMawhkJzyzyL6.ActiveEffect.o5jh1MGmaw3XXzoF",
+          "overlay": false
         }
       },
-      "icon": "icons/magic/nature/symbol-moon-stars-white.webp",
       "name": "Moon-Touched, Rapier Effect",
-      "origin": "Compendium.kashaws-campaign-materials.rare-items.Item.GNHyrX2LNGjUgzIh",
-      "tint": null,
+      "origin": "Compendium.midi-item-showcase-community.misc-items.Item.JZVmNlFE9wXAweBD",
+      "tint": "#ffffff",
       "transfer": true,
-      "statuses": [
-        "Convenient Effect: Torch"
-      ],
+      "statuses": [],
       "_id": "0Ta8bV0lKSbtQBIO",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": 1724965218400,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/nature/symbol-moon-stars-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!JZVmNlFE9wXAweBD.0Ta8bV0lKSbtQBIO"
     }
   ],
@@ -288,10 +306,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084444706,
-    "modifiedTime": 1709582057750,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965219879,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "Bn8fmEr6Vk6Vawl3",
   "ownership": {

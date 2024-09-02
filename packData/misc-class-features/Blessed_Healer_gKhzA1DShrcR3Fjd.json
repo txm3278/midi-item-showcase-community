@@ -23,7 +23,6 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/magic/light/orbs-hand-gray.webp",
       "origin": "Compendium.midi-item-showcase-community.misc-class-features.Item.gKhzA1DShrcR3Fjd",
       "transfer": true,
       "flags": {
@@ -62,10 +61,24 @@
           "rest-effect": "Ignore"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
       "name": "Blessed Healer",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/light/orbs-hand-gray.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!gKhzA1DShrcR3Fjd.r24ao66frio1l5rw"
     }
   ],
@@ -93,7 +106,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "midiProperties": {
       "nodam": false,
@@ -110,7 +124,11 @@
       "offHandWeapon": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "itemacro": {
       "macro": {
@@ -280,10 +298,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1661995926104,
-    "modifiedTime": 1713833578385,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724963957683,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "vWlmbveIxgnJwjjB",
   "ownership": {

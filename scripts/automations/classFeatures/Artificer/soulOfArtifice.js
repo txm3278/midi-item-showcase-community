@@ -34,11 +34,8 @@ export async function soulOfArtifice({
     },
   };
 
-  if (warpgate.util.firstOwner(actor).id === game.user.id) {
-    await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
-  } else {
-    await fromUuid(
-      await socket.executeAsGM('createEffect', actor.uuid, effectData)
-    );
-  }
+  const checkUser =
+    game.user?.isGM || game.user?.id === MidiQOL.playerForActor(actor)?.id;
+  if (checkUser) await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+  else await MidiQOL.socket().executeAsGM('createEffect', actor.uuid, effectData);
 }

@@ -23,7 +23,7 @@
     "target": {
       "value": null,
       "width": null,
-      "units": "touch",
+      "units": "",
       "type": "",
       "prompt": true
     },
@@ -137,7 +137,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "noConcentrationCheck": false,
-      "confirmTargets": "default"
+      "confirmTargets": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "custom-character-sheet-sections": {
       "sectionName": ""
@@ -176,7 +180,6 @@
   "effects": [
     {
       "name": "Gift of Alacrity",
-      "icon": "icons/magic/fire/dagger-rune-enchant-flame-blue-yellow.webp",
       "changes": [
         {
           "key": "system.attributes.init.bonus",
@@ -236,7 +239,21 @@
           "sourceId": "Actor.3jfviBXRcF8bJhox.Item.h80PnQ2hVfWnJlSQ.ActiveEffect.a5pl4yFZIKcX223F"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/fire/dagger-rune-enchant-flame-blue-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!PKDMnKhzeM65KNa9.QiyHNXLIBZEXENlb"
     }
   ],
@@ -244,17 +261,19 @@
   "folder": null,
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1696694555343,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724968786152,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "PKDMnKhzeM65KNa9",
-  "sort": 1900000,
+  "sort": 1800000,
   "_key": "!items!PKDMnKhzeM65KNa9"
 }

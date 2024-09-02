@@ -161,7 +161,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "midi-qol": {
       "fumbleThreshold": null,
@@ -182,7 +183,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "custom-character-sheet-sections": {
       "sectionName": ""
@@ -220,7 +225,7 @@
           "priority": 50
         }
       ],
-      "description": "<p>In darkness, the unsheathed blade of this sword sheds moonlight, creating bright light in a 15-foot radius and dim light for an additiona<span class=\"No-Break\">l 15 feet.</span></p>",
+      "description": "",
       "disabled": false,
       "duration": {
         "rounds": null,
@@ -251,7 +256,8 @@
           "showIcon": true,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -270,18 +276,30 @@
           "wallsBlock": "system"
         },
         "core": {
-          "sourceId": "Compendium.kashaws-campaign-materials.rare-items.Item.EQ9QMawhkJzyzyL6.ActiveEffect.o5jh1MGmaw3XXzoF"
+          "sourceId": "Compendium.kashaws-campaign-materials.rare-items.Item.EQ9QMawhkJzyzyL6.ActiveEffect.o5jh1MGmaw3XXzoF",
+          "overlay": false
         }
       },
-      "icon": "icons/magic/nature/symbol-moon-stars-white.webp",
       "name": "Moon-Touched, Rapier Effect",
-      "origin": "Compendium.kashaws-campaign-materials.rare-items.Item.EQ9QMawhkJzyzyL6",
-      "tint": null,
+      "origin": "Compendium.midi-item-showcase-community.misc-items.Item.Hzzm2kNHfsgbZl7i",
+      "tint": "#ffffff",
       "transfer": true,
-      "statuses": [
-        "Convenient Effect: Torch"
-      ],
+      "statuses": [],
       "_id": "o5jh1MGmaw3XXzoF",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": 1724965226754,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/nature/symbol-moon-stars-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!Hzzm2kNHfsgbZl7i.o5jh1MGmaw3XXzoF"
     }
   ],
@@ -289,10 +307,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084444665,
-    "modifiedTime": 1709582057750,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965227615,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "Bn8fmEr6Vk6Vawl3",
   "ownership": {

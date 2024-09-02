@@ -130,7 +130,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "core": {},
     "dae": {
@@ -179,7 +180,6 @@
   "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
   "effects": [
     {
-      "icon": "icons/weapons/swords/sword-broad-crystal-paired.webp",
       "origin": "Compendium.ddb-shared-compendia.ddb-override.OiAfv4qsdzOF3u5n",
       "duration": {
         "startTime": null,
@@ -206,7 +206,7 @@
           "priority": 20
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {
         "times-up": {},
@@ -244,6 +244,20 @@
       "name": "Unwavering Mark",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!oytuTEeVCQ3Lcfqq.k6VChPqCYMCeFLPJ"
     }
   ],
@@ -256,10 +270,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1672329111608,
-    "modifiedTime": 1722891684698,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964906970,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "ZniCDCqUBftmEiPR",
   "_id": "oytuTEeVCQ3Lcfqq",

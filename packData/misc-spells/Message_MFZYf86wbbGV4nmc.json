@@ -142,7 +142,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {}
   },
@@ -152,16 +156,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708116611191,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724968786152,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "MFZYf86wbbGV4nmc",
-  "sort": 700000,
+  "sort": 1300000,
   "_key": "!items!MFZYf86wbbGV4nmc"
 }

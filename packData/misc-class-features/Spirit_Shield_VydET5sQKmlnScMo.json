@@ -29,9 +29,8 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "origin": "Item.pqEVQomnz1s1xqFG",
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {
         "core": {
@@ -72,11 +71,24 @@
       "name": "Spirit Shield",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!VydET5sQKmlnScMo.kNzSxJ8OjrSbindN"
     },
     {
       "name": "Spirit Shield - TPR",
-      "icon": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "origin": "Item.HX2MBqMv5aADOVg0",
       "duration": {
         "startTime": null,
@@ -129,7 +141,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!VydET5sQKmlnScMo.ca75UjEzNsyVf6kH"
     }
   ],
@@ -188,7 +214,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "enhanced-terrain-layer": {
       "multiple": null,
@@ -331,10 +358,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1663621622102,
-    "modifiedTime": 1722891652208,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964871953,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "VydET5sQKmlnScMo",
   "sort": 0,

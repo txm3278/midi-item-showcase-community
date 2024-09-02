@@ -84,7 +84,6 @@
   "effects": [
     {
       "name": "Tactical Positioning",
-      "icon": "icons/sundries/gaming/chess-knite-gray.webp",
       "origin": "Item.75eyOrZMD7o4StbB",
       "duration": {
         "startTime": null,
@@ -137,7 +136,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/sundries/gaming/chess-knite-gray.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!R0SRmio2jjo7FQ1B.hJCiNEZR07TrPtn4"
     }
   ],
@@ -227,10 +240,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1717820133289,
     "modifiedTime": 1720477192256,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

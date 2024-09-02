@@ -148,7 +148,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "always",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "exportSource": {
@@ -156,6 +160,21 @@
       "system": "dnd5e",
       "coreVersion": "10.291",
       "systemVersion": "2.1.5"
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "effects": [],
@@ -163,10 +182,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1685520652581,
-    "modifiedTime": 1718156668719,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964941432,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "mvjSpU0QwubNqNmW",
   "ownership": {

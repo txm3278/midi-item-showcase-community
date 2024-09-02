@@ -23,7 +23,6 @@
         "startRound": 6,
         "startTurn": 3
       },
-      "icon": "icons/creatures/magical/humanoid-giant-forest-blue.webp",
       "transfer": true,
       "flags": {
         "dae": {
@@ -63,11 +62,25 @@
           "statusId": ""
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
       "name": "Colossus Slayer",
       "description": "",
       "origin": "Item.K7jxfUa2KcumAWUR",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/magical/humanoid-giant-forest-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!GhiW57k0JXwrsNdW.PHUHW2gr7AzSPCBn"
     }
   ],
@@ -97,7 +110,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "core": {},
     "itemacro": {
@@ -147,7 +161,11 @@
       "autoSaveFriendly": false,
       "offHandWeapon": false,
       "noConcentrationCheck": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "exportSource": {
       "world": "playground",
@@ -262,10 +280,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1713596410959,
-    "modifiedTime": 1720475718683,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964940728,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

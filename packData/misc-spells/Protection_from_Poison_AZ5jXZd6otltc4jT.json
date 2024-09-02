@@ -2,7 +2,7 @@
   "type": "spell",
   "system": {
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">DFreds Convenient Effects</span></p></li><li style=\"box-sizing:border-box;user-select:text\"><p>Effect Macro</p></li><li style=\"box-sizing:border-box;user-select:text\"><p>Chris' Premades</p></li></ul>",
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p><span style=\"font-family:Signika, sans-serif\">Effect Macro</span></p></li><li style=\"box-sizing:border-box;user-select:text\"><p><span style=\"font-family:Signika, sans-serif\">Chris' Premades</span></p></li></ul>",
       "chat": ""
     },
     "source": {
@@ -22,7 +22,7 @@
     "target": {
       "value": null,
       "width": null,
-      "units": "touch",
+      "units": "",
       "type": "",
       "prompt": true
     },
@@ -130,7 +130,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "never",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "forceCEOff": true,
@@ -177,7 +181,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "changes": [
         {
           "key": "system.traits.dr.value",
@@ -201,7 +204,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
@@ -251,17 +254,33 @@
       "_id": "ocWLtVK4Dh82B9Cb",
       "description": "",
       "origin": null,
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!AZ5jXZd6otltc4jT.ocWLtVK4Dh82B9Cb"
     }
   ],
   "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1687853853517,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965839229,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": null,
   "ownership": {
@@ -269,6 +288,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "AZ5jXZd6otltc4jT",
-  "sort": 1300000,
+  "sort": 1500000,
   "_key": "!items!AZ5jXZd6otltc4jT"
 }

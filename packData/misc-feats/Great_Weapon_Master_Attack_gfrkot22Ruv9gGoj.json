@@ -157,12 +157,26 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "effects": [
     {
       "name": "Great Weapon Master Attack",
-      "icon": "icons/weapons/axes/axe-battle-skull-black.webp",
       "origin": "Item.mcD0g8NnohY8m807",
       "duration": {
         "startTime": null,
@@ -224,7 +238,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!gfrkot22Ruv9gGoj.WA8Y2i8D7bmZjtLr"
     }
   ],
@@ -238,10 +266,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1702224079058,
-    "modifiedTime": 1722892013397,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965026810,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "gfrkot22Ruv9gGoj",
   "sort": 0,

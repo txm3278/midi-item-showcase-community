@@ -140,7 +140,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "enhanced-terrain-layer": {
       "multiple": null,
@@ -204,11 +208,28 @@
           "lastModifiedBy": null
         }
       }
+    },
+    "region-attacher": {
+      "attachRegionToTemplate": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "effects": [
     {
-      "icon": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "changes": [
         {
           "key": "flags.midi-qol.advantage.ability.save.str",
@@ -236,7 +257,7 @@
         "startTurn": null
       },
       "origin": null,
-      "tint": null,
+      "tint": "#ffffff",
       "flags": {
         "dfreds-convenient-effects": {
           "description": ""
@@ -269,6 +290,20 @@
       "name": "Spirit Totem: Bear",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!SGK6qEyawdTfwUXM.esTr06HsHn27LeGO"
     }
   ],
@@ -276,10 +311,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1688330326548,
-    "modifiedTime": 1713834054872,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964908497,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "k2RQBzUw3hnekMmB",
   "ownership": {

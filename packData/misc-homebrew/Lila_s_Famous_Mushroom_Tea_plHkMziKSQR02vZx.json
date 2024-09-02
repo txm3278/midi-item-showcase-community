@@ -7,7 +7,9 @@
       "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Active Token Effects</span></p></li><li style=\"box-sizing:border-box;user-select:text\"><p>Gambit's Premades</p></li><li style=\"box-sizing:border-box;user-select:text\"><p>Vision 5e</p></li></ul>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "quantity": 1,
     "weight": 0,
     "price": {
@@ -91,7 +93,6 @@
   "effects": [
     {
       "name": "[Very Tired]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "system.attributes.exhaustion",
@@ -150,12 +151,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.WB7u3srz6ZlXylp0"
     },
     {
       "name": "[Light-Headed]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "flags.midi-qol.grants.disadvantage.check.dex",
@@ -220,12 +234,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.jm1MWsC2INQpDoZs"
     },
     {
       "name": "[Truesight]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "system.attributes.senses.truesight",
@@ -284,12 +311,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.1fYF36VhWmMRIwdA"
     },
     {
       "name": "[Invigorated]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "flags.midi-qol.grants.advantage.check.str",
@@ -354,12 +394,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.ScxVP7WMeTIP9PKz"
     },
     {
       "name": "[Paranoid]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "flags.midi-qol.disadvantage.skill.ins",
@@ -418,12 +471,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.VdiVprYzivkDcFof"
     },
     {
       "name": "[Speak with Animals]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "flags.midi-qol.advantage.skill.ani",
@@ -482,12 +548,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.vaP7lSY32oTlF6op"
     },
     {
       "name": "[Pie]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [],
       "transfer": false,
       "_id": "PXT20gGenJkqiRR7",
@@ -539,12 +618,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.PXT20gGenJkqiRR7"
     },
     {
       "name": "[Love]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [],
       "transfer": false,
       "_id": "75jMK3FpD5dQUFC0",
@@ -596,12 +688,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.75jMK3FpD5dQUFC0"
     },
     {
       "name": "[Huh?]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "flags.midi-qol.fail.skill.ins",
@@ -660,12 +765,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.Muyos0PU0TXgTAvd"
     },
     {
       "name": "[Uncanny Hearing]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "flags.midi-qol.advantage.skill.prc",
@@ -724,12 +842,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.7Qkuu7YImcPf06nx"
     },
     {
       "name": "[Swamp Fey]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "system.attributes.movement.swim",
@@ -788,12 +919,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.XhuFLrWsQXCToavS"
     },
     {
       "name": "[Death Sniffer]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [],
       "transfer": false,
       "_id": "OSO5sDkQTJqUtCfO",
@@ -845,12 +989,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.OSO5sDkQTJqUtCfO"
     },
     {
       "name": "[Channeled Magic]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "system.bonuses.heal.damage",
@@ -915,12 +1072,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.smaFOk3YMEzTLLBi"
     },
     {
       "name": "[Unseen Servant]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [],
       "transfer": false,
       "_id": "0yuCEfFM0lMuiNbr",
@@ -972,12 +1142,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.0yuCEfFM0lMuiNbr"
     },
     {
       "name": "[Vicious Words]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "macro.createItem",
@@ -1036,12 +1219,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.kH2UpWgmhhZKGnay"
     },
     {
       "name": "[Smol]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "ATL.height",
@@ -1112,12 +1308,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.rjcm8xNA6qOuhRd4"
     },
     {
       "name": "[Tall]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "ATL.height",
@@ -1188,12 +1397,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.HiJrX0ONpXR2uQqV"
     },
     {
       "name": "[Dhampyr]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "macro.createItem",
@@ -1252,12 +1474,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.4ujtiXJhuceNLOBG"
     },
     {
       "name": "[Whispers]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [],
       "transfer": false,
       "_id": "LNUWOtkb8WCWlbJu",
@@ -1309,12 +1544,25 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.LNUWOtkb8WCWlbJu"
     },
     {
       "name": "[Mistwalker]",
-      "icon": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
       "changes": [
         {
           "key": "system.traits.ci.value",
@@ -1385,7 +1633,21 @@
           "sourceId": "Item.p7MO2yMkVbSQQxAs.ActiveEffect.ge9cXGDwyVKPRGrR"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-vallaki-pk/assets/items/Magic_mushroom_tea.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!plHkMziKSQR02vZx.9Zh8uo8oUXHjmOZH"
     }
   ],
@@ -1418,7 +1680,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "midiProperties": {
       "confirmTargets": "default",
@@ -1431,7 +1694,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -1454,11 +1721,13 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1708838833519,
-    "modifiedTime": 1720475814699,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965138114,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

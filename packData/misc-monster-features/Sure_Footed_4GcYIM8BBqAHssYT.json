@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Chris's Premades</span></p></li><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">DFreds Convenient Effects</span></p></li></ul>",
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Chris's Premades</span></p></li></ul>",
       "chat": ""
     },
     "source": {
@@ -84,7 +84,6 @@
   "effects": [
     {
       "name": "Sure-Footed",
-      "icon": "icons/magic/nature/wolf-paw-glow-teal-blue.webp",
       "changes": [
         {
           "key": "flags.chris-premades.CR.prone",
@@ -137,7 +136,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/nature/wolf-paw-glow-teal-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!4GcYIM8BBqAHssYT.pjziE3JABHFwqNbM"
     }
   ],
@@ -181,7 +194,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -218,11 +235,13 @@
   "folder": "rB4c0FlZjy4IWtwk",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1714333254353,
-    "modifiedTime": 1716946883676,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965430757,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

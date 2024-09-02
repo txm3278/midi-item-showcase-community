@@ -94,7 +94,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -107,13 +111,27 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "img": "icons/magic/earth/strike-fist-stone-light.webp",
   "effects": [
     {
       "name": "Primal Champion",
-      "icon": "icons/magic/earth/strike-fist-stone-light.webp",
       "origin": "Actor.2DRqQG8ShTa5tXub.Item.QgSorfuidMQ4BUpv",
       "duration": {
         "startTime": null,
@@ -187,7 +205,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/earth/strike-fist-stone-light.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!BN2Jfy1WigrHAVyb.1AwAuGBjSuLv85ML"
     }
   ],
@@ -195,10 +227,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1661787234413,
-    "modifiedTime": 1708714245991,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964879067,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

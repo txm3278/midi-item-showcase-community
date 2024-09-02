@@ -173,12 +173,26 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "effects": [
     {
       "name": "Arrow-Catching Shield",
-      "icon": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
       "origin": "Item.LzpyQ4WdeuTZQFFT",
       "duration": {
         "startTime": null,
@@ -240,7 +254,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!jiumRg5y7DyhiNpO.WU05KztTWM52xzK5"
     }
   ],
@@ -254,10 +282,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1696175312442,
-    "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965243124,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "jiumRg5y7DyhiNpO",
   "sort": 700000,

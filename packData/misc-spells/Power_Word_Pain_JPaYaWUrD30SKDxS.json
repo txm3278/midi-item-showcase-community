@@ -122,7 +122,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "never",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "exportSource": {
@@ -160,7 +164,6 @@
   "effects": [
     {
       "name": "Power Word Pain",
-      "icon": "icons/magic/control/voodoo-doll-pain-damage-yellow.webp",
       "origin": "Actor.NmB23Y8JLSVx7hjl.Item.CNKEse7qphfghwUm",
       "duration": {
         "startTime": null,
@@ -297,7 +300,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/voodoo-doll-pain-damage-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!JPaYaWUrD30SKDxS.lbMp1lirYdFVMzIL"
     }
   ],
@@ -305,16 +322,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1670042235732,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724968786152,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "JPaYaWUrD30SKDxS",
-  "sort": 2200000,
+  "sort": 2100000,
   "_key": "!items!JPaYaWUrD30SKDxS"
 }

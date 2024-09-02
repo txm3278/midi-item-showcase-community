@@ -74,7 +74,9 @@
       "value": null,
       "charged": false
     },
-    "source": {}
+    "source": {
+      "custom": ""
+    }
   },
   "flags": {
     "ddbimporter": {
@@ -125,7 +127,11 @@
       "noConcentrationCheck": false,
       "toggleEffect": false,
       "ignoreTotalCover": false,
-      "concentration": false
+      "concentration": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "dnd5e": {
       "advancementOrigin": "qdOnFd8btFo0gQSv"
@@ -199,7 +205,6 @@
         }
       ],
       "transfer": true,
-      "icon": "icons/magic/fire/projectile-arrow-fire-red-yellow.webp",
       "_id": "Wy6FMZCOxidvDoUn",
       "disabled": false,
       "duration": {
@@ -240,7 +245,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/fire/projectile-arrow-fire-red-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!rdhYVqsZzh2KdhzP.Wy6FMZCOxidvDoUn"
     }
   ],
@@ -248,11 +267,13 @@
   "folder": "xw13xZMCXoloLDbk",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1720320656282,
-    "modifiedTime": 1720475725443,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964940390,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

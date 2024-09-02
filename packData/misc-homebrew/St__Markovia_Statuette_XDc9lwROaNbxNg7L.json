@@ -165,7 +165,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -209,7 +213,6 @@
         }
       ],
       "transfer": true,
-      "icon": "modules/cos-abbey-pk/assets/items/Statue_St_Markovia.webp",
       "_id": "58BgE2jbOnUeWnsY",
       "disabled": false,
       "duration": {
@@ -253,7 +256,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "modules/cos-abbey-pk/assets/items/Statue_St_Markovia.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!XDc9lwROaNbxNg7L.58BgE2jbOnUeWnsY"
     }
   ],
@@ -261,10 +278,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1695829547473,
-    "modifiedTime": 1720475817672,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965137678,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "I5HSDg4rINU3hF3J",
   "ownership": {

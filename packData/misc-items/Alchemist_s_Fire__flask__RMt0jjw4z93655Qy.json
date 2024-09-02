@@ -161,7 +161,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "magicitems": {
@@ -196,7 +200,6 @@
   "effects": [
     {
       "name": "Alchemist's Fire (flask)",
-      "icon": "icons/consumables/potions/potion-flask-corked-orange.webp",
       "changes": [
         {
           "key": "flags.midi-qol.OverTime",
@@ -252,7 +255,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/consumables/potions/potion-flask-corked-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!RMt0jjw4z93655Qy.9hKbwzQMH2NC8phg"
     }
   ],
@@ -260,10 +277,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084457635,
-    "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965236083,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": null,
   "ownership": {

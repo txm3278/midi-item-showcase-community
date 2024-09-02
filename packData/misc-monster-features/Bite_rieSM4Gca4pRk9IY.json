@@ -113,7 +113,6 @@
   "effects": [
     {
       "name": "Bite",
-      "icon": "icons/creatures/abilities/mouth-teeth-long-red.webp",
       "origin": "Scene.CYta3aBd3GmR8hg4.Token.Y9Prt8z5nszHOJqU.Actor.CuJDS5G6xHHUm6Zs.Item.lAEEQoGuDz9PIYna",
       "duration": {
         "startTime": null,
@@ -174,7 +173,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/abilities/mouth-teeth-long-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!rieSM4Gca4pRk9IY.pW3cpazlmxh207Us"
     }
   ],
@@ -211,7 +224,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "magicitems": {
@@ -266,10 +283,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1713985843503,
-    "modifiedTime": 1714431740319,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965766206,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

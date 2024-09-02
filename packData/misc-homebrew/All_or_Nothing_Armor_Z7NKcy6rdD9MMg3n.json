@@ -220,7 +220,6 @@
   "effects": [
     {
       "name": "All or Nothing Armor",
-      "icon": "icons/equipment/chest/breastplate-banded-steel-grey.webp",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
@@ -282,7 +281,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/chest/breastplate-banded-steel-grey.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!Z7NKcy6rdD9MMg3n.xvYVN5TdWTQnf22A"
     }
   ],
@@ -291,10 +304,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1701463112144,
     "modifiedTime": 1713899575598,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

@@ -151,7 +151,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "custom-character-sheet-sections": {
@@ -175,7 +179,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "dae": {
       "macro": {
@@ -240,10 +245,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1674492040799,
-    "modifiedTime": 1713840550558,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964941108,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

@@ -10,7 +10,6 @@ let packs = [
   'misc-items',
   'misc-unearthed-arcana',
   'misc-homebrew',
-  'misc-class-features-items',
   'misc-spell-items',
   'misc-items-features',
 ];

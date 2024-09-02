@@ -170,7 +170,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -187,7 +191,6 @@
   "effects": [
     {
       "name": "Eyes of Minute Seeing",
-      "icon": "icons/magic/control/hypnosis-mesmerism-eye.webp",
       "changes": [
         {
           "key": "flags.midi-qol.optional.minuteSeeing.count",
@@ -252,7 +255,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/control/hypnosis-mesmerism-eye.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!q1pxe85o4liefeYc.R4nOFdvUHnA0bx2a"
     }
   ],
@@ -260,10 +277,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1682084428665,
-    "modifiedTime": 1723047944093,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965260175,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": null,
   "ownership": {

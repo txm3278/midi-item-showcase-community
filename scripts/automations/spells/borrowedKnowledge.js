@@ -79,7 +79,7 @@ export async function borrowedKnowledge({
     },
   };
   let updates = {};
-  setProperty(
+  foundry.utils.setProperty(
     updates,
     'embedded.ActiveEffect.' + workflow.item.name,
     effectData

@@ -366,7 +366,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "never",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "rest-recovery": {
       "data": {
@@ -401,7 +405,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "dae": {
       "macro": {
@@ -432,10 +437,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1680735873189,
-    "modifiedTime": 1715296229892,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965031293,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "jpcr34jLLheGZYWj",
   "sort": 900000,

@@ -148,7 +148,11 @@
       "noConcentrationCheck": false,
       "toggleEffect": false,
       "ignoreTotalCover": false,
-      "confirmTargets": "default"
+      "confirmTargets": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "forceCEOff": true,
@@ -197,7 +201,6 @@
   },
   "effects": [
     {
-      "icon": "icons/magic/holy/prayer-hands-glowing-yellow-green.webp",
       "changes": [
         {
           "key": "system.bonuses.abilities.save",
@@ -221,7 +224,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
@@ -266,6 +269,20 @@
       "_id": "RhefuPHdJTVE5yI3",
       "description": "",
       "origin": null,
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/holy/prayer-hands-glowing-yellow-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!VMFkGcbIb64okaax.RhefuPHdJTVE5yI3"
     }
   ],
@@ -274,16 +291,18 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1699643348454,
-    "modifiedTime": 1720475693948,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724968786152,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
   "_id": "VMFkGcbIb64okaax",
-  "sort": 2000000,
+  "sort": 1900000,
   "_key": "!items!VMFkGcbIb64okaax"
 }

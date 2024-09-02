@@ -81,7 +81,6 @@
   "effects": [
     {
       "name": "Vigilant Guardian",
-      "icon": "icons/equipment/shield/buckler-wooden-boss-glowing-blue.webp",
       "origin": "Item.x6ukfMYysNxqtQnD",
       "duration": {
         "startTime": null,
@@ -137,7 +136,21 @@
           "wallsBlock": "true"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/equipment/shield/buckler-wooden-boss-glowing-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!xChCy4dFutV9aM9n.nVkNqMNhW9Kcb6mq"
     }
   ],
@@ -220,10 +233,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1705894314273,
     "modifiedTime": 1722892063083,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "xChCy4dFutV9aM9n",
   "sort": 0,

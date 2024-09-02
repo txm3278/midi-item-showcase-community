@@ -8,7 +8,9 @@
       "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Muhammad2126</span></h2><p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">While you are not wearing any armor, your Armor Class equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit. </span></p><p><span style=\"font-family:'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif\">In addition, when you wear light or medium armor, you can add your CON modifier, instead of your DEX modifier to your AC. The medium armor limit to the bonus is applied as normal.</span></p>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "",
       "cost": null,
@@ -77,8 +79,7 @@
   "effects": [
     {
       "name": "Toughened Skin",
-      "icon": "icons/commodities/leather/leather-scrap-white.webp",
-      "origin": "Compendium.mhiyarishareddata.classes.Item.hlSiuFjWF5EI8p83",
+      "origin": "Compendium.midi-item-showcase-community.misc-homebrew.Item.La81Od1xCvT1Yka1",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -93,7 +94,7 @@
       "_id": "g15Lil6WOvdSlpBK",
       "changes": [
         {
-          "key": "system.attributes.ac.value",
+          "key": "system.attributes.ac.armor",
           "mode": 4,
           "value": "dae.eval(((!attributes.ac.equippedArmor) ? 10 + @abilities.con.mod + @abilities.dex.mod : \n(\n    (attributes.ac.equippedArmor && attributes.ac.equippedArmor.system.armor.type === \"light\") ? @attributes.ac.armor + @abilities.con.mod : \n    (\n        (attributes.ac.equippedArmor && attributes.ac.equippedArmor.system.armor.type === \"medium\") ?  @attributes.ac.armor + (@abilities.con.mod > 2 ? 2 : @abilities.con.mod) : \n        @attributes.ac.armor + @attributes.ac.dex))) + @attributes.ac.cover + @attributes.ac.shield + @attributes.ac.bonus)",
           "priority": 20
@@ -114,7 +115,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -131,9 +133,26 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": 1724965096802,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/commodities/leather/leather-scrap-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!La81Od1xCvT1Yka1.g15Lil6WOvdSlpBK"
     }
   ],
@@ -153,7 +172,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -167,15 +190,32 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1708451394059,
-    "modifiedTime": 1713899580399,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965111917,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

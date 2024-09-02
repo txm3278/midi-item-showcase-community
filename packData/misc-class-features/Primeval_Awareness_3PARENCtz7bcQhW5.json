@@ -7,7 +7,9 @@
       "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Bakana</span></h2><p><em>Only automates additional time extensions</em></p>",
       "chat": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "activation": {
       "type": "action",
       "cost": 1,
@@ -89,7 +91,6 @@
   "effects": [
     {
       "name": "Primeval Awareness",
-      "icon": "icons/magic/perception/eye-slit-pink.webp",
       "changes": [],
       "transfer": false,
       "_id": "LdIEbqFCIVK0QNse",
@@ -135,7 +136,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/perception/eye-slit-pink.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!3PARENCtz7bcQhW5.LdIEbqFCIVK0QNse"
     }
   ],
@@ -152,7 +167,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -202,11 +221,13 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1711858580928,
-    "modifiedTime": 1720475722127,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964940039,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

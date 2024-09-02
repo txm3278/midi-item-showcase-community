@@ -206,7 +206,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "confirmTargets": "default",
-      "noConcentrationCheck": false
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "walledtemplates": {
@@ -225,7 +229,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "scene-packer": {
       "hash": "bbe69f6b5c6992869556d3c9d58cb862f067a1b4",
@@ -241,7 +246,6 @@
   "effects": [
     {
       "name": "Deft Strike",
-      "icon": "icons/skills/melee/strike-spear-red.webp",
       "changes": [
         {
           "key": "flags.midi-qol.optional.deftStrike.damage.all",
@@ -315,7 +319,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/skills/melee/strike-spear-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!aPL4xzWibSoiBkJt.85lOh4kaJgflBUmW"
     }
   ],
@@ -324,10 +342,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "2.4.1",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1694709878754,
-    "modifiedTime": 1707926025860,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964942088,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

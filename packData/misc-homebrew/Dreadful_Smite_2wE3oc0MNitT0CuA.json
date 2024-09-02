@@ -37,7 +37,11 @@
       "toggleEffect": false,
       "ignoreTotalCover": false,
       "saveDamage": "default",
-      "bonusSaveDamage": "default"
+      "bonusSaveDamage": "default",
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -71,7 +75,9 @@
       "type": "bonus",
       "condition": ""
     },
-    "source": {},
+    "source": {
+      "custom": ""
+    },
     "duration": {
       "value": "",
       "units": ""
@@ -144,7 +150,6 @@
   "effects": [
     {
       "name": "Dreadful Smite",
-      "icon": "icons/svg/combat.svg",
       "origin": "Actor.dgTzgwAVmsL9Qr0D.Item.I6UEeIpCZVUMsNvd",
       "duration": {
         "startTime": null,
@@ -159,9 +164,9 @@
       "_id": "ImRGaUJ7smfF9Lxm",
       "changes": [
         {
-          "key": "macro.CE",
+          "key": "StatusEffect",
           "mode": 0,
-          "value": "Frightened",
+          "value": "frightened",
           "priority": 20
         }
       ],
@@ -180,7 +185,9 @@
           "macroRepeat": "none",
           "specialDuration": [
             "turnEndSource"
-          ]
+          ],
+          "enableCondition": "",
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -197,9 +204,26 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": 1724965135066,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/combat.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!2wE3oc0MNitT0CuA.ImRGaUJ7smfF9Lxm"
     }
   ],
@@ -211,11 +235,13 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1712075112387,
-    "modifiedTime": 1715297517372,
-    "lastModifiedBy": "qtso6O4cks8DC6Ro"
+    "modifiedTime": 1724965137112,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "2wE3oc0MNitT0CuA",
   "sort": 100000,

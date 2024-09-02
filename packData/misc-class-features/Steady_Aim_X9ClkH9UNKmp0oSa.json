@@ -101,7 +101,6 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
       "transfer": false,
       "flags": {
@@ -139,10 +138,24 @@
           "onlyOnce": false
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
       "name": "Steady Aim - Advantage",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!X9ClkH9UNKmp0oSa.ttliu8T5zozrLsKw"
     },
     {
@@ -171,7 +184,6 @@
         "startRound": null,
         "startTurn": null
       },
-      "icon": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
       "transfer": false,
       "flags": {
@@ -207,10 +219,24 @@
           "onlyOnce": false
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
       "name": "Steady Aim - Movement",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!X9ClkH9UNKmp0oSa.ljsYEY13ngAg6G8h"
     }
   ],
@@ -270,7 +296,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "core": {},
     "rest-recovery": {
@@ -319,10 +346,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1663621622129,
-    "modifiedTime": 1722891675821,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724964937264,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "X9ClkH9UNKmp0oSa",
   "sort": 0,

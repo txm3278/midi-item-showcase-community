@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">DFreds Convenient Effects</span></p></li></ul>",
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2>",
       "chat": ""
     },
     "source": {
@@ -85,9 +85,9 @@
     {
       "changes": [
         {
-          "key": "macro.CE",
+          "key": "macro.StatusEffect",
           "mode": 0,
-          "value": "Prone",
+          "value": "prone",
           "priority": 20
         }
       ],
@@ -100,13 +100,23 @@
         "startTurn": null,
         "combat": null
       },
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
         "dae": {
           "transfer": false,
-          "stackable": "noneName"
+          "stackable": "noneName",
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
         },
         "ddbimporter": {
           "disabled": false
@@ -114,19 +124,49 @@
         "midi-qol": {
           "forceCEOff": true
         },
-        "core": {}
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
       },
       "name": "Charge",
       "statuses": [],
-      "icon": "icons/magic/light/beam-red-orange.webp",
       "_id": "5P7yRzTo94Cq4IVV",
       "description": "",
       "origin": null,
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": 1724965536293,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/light/beam-red-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!7jkooSIskRdQYyoG.5P7yRzTo94Cq4IVV"
     },
     {
       "name": "Charge",
-      "icon": "icons/magic/light/beam-red-orange.webp",
       "changes": [
         {
           "key": "flags.midi-qol.optional.chargeAttack.damage.mwak",
@@ -197,7 +237,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/magic/light/beam-red-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!7jkooSIskRdQYyoG.ZQIcPuTrhOCCOcgZ"
     }
   ],
@@ -250,7 +304,11 @@
       "concentration": false,
       "noConcentrationCheck": true,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -312,11 +370,13 @@
   "folder": "uKPJzYb7zd1JDBYC",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "systemVersion": "3.3.1",
+    "coreVersion": "12.331",
     "createdTime": 1714333185251,
-    "modifiedTime": 1722534697390,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965529180,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

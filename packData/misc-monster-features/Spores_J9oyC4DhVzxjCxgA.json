@@ -5,7 +5,6 @@
   "effects": [
     {
       "name": "Spores",
-      "icon": "https://assets.forge-vtt.com/bazaar/core/icons/magic/earth/orb-stone-smoke-teal.webp",
       "origin": "Scene.iWXFkdtjSvbsBME0.Token.MC242QFxoXJqIfuk.Actor.o1E39Nfpl63gm1ax.Item.6xW3cGBPIoeeggce",
       "duration": {
         "rounds": 1,
@@ -73,7 +72,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "https://assets.forge-vtt.com/bazaar/core/icons/magic/earth/orb-stone-smoke-teal.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!J9oyC4DhVzxjCxgA.Aon2YoytEjBAXCPA"
     }
   ],
@@ -113,7 +126,11 @@
       "autoSaveFriendly": false,
       "offHandWeapon": false,
       "noConcentrationCheck": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "magicitems": {
       "enabled": false,
@@ -127,7 +144,8 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "default": ""
     },
     "core": {},
     "rest-recovery": {
@@ -321,6 +339,9 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
+    },
+    "region-attacher": {
+      "attachRegionToTemplate": false
     }
   },
   "system": {
@@ -404,10 +425,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.3",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1708200698459,
-    "modifiedTime": 1708714191835,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965698174,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,

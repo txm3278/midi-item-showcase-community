@@ -93,7 +93,6 @@
   "effects": [
     {
       "name": "Bite",
-      "icon": "icons/creatures/abilities/mouth-teeth-long-red.webp",
       "origin": "Actor.KxW5P09yKBGRvivJ.Item.bnzfS5rQRM6efbNj",
       "duration": {
         "startTime": null,
@@ -154,7 +153,21 @@
           "wallsBlock": "system"
         }
       },
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/creatures/abilities/mouth-teeth-long-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!pNClZrnML5PMed3l.KURZuIAkKVEs7zKA"
     }
   ],
@@ -199,7 +212,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -258,10 +275,12 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.331",
     "createdTime": 1714139228752,
-    "modifiedTime": 1714431731583,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "modifiedTime": 1724965739904,
+    "lastModifiedBy": "B2BBHntfpytXE8DP",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "ownership": {
     "default": 0,
