@@ -1,6 +1,5 @@
 import { absorbElements } from './absorbElements.js';
 import { borrowedKnowledge } from './borrowedKnowledge.js';
-import { crownOfStars } from './crownOfStars.js';
 import { flamingSphere } from './flamingSphere.js';
 import { goodberry } from './goodberry.js';
 import { magicStone } from './magicStone.js';
@@ -20,6 +19,9 @@ import { soulCage } from './soulCage.js';
 import { tashasMindWhip } from './tashasMindWhip.js';
 import { tensersTransformation } from './tensersTransformation.js';
 import { flameArrows } from './flameArrows.js';
+import { crownOfStars } from './Crown of Stars.js';
+import { produceFlame } from './Produce Flame.js';
+import { negativeEnergyFlood } from './Negative Energy Flood.js';
 
 export let spells = {
   absorbElements,
@@ -44,4 +46,6 @@ export let spells = {
   tashasMindWhip,
   tensersTransformation,
   flameArrows,
+  produceFlame,
+  negativeEnergyFlood,
 };
