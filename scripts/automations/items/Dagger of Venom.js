@@ -31,7 +31,16 @@ async function postActiveEffects() {
     await enableEffect.update({"Suppressed": true, "disabled": true});
 }
 
-await macroUtil.runWorkflows(arguments, {
+const callArguments = {
+    speaker:    speaker,
+    actor:      actor,
+    token:      token,
+    character:  character,
+    item:       item,
+    args:       args,
+    scope:      scope,
+};
+await macroUtil.runWorkflows(callArguments, {
     on : onEffect,
     off : offEffect,
     postActiveEffects : postActiveEffects

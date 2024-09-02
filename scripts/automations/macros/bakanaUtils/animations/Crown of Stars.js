@@ -5,28 +5,27 @@
  * @param token The token this effect should occur on
  * @param effect The active effect this should be tied to if any, undefined if none
  * @param moteCount The number of motes to space equally around the token
- * @param identifier A unique name if for some reason more than one of this effect is run on this actor
- * @param animationFile A JB2A animation to swirl around you
+ * @param id A unique name if for some reason more than one of this effect is run on this actor
+ * @param file A JB2A animation to swirl around you
  * @param scale Scale factor for the animation
  */
-export function crownOfStars(token, moteCount, {effect=undefined, identifier="Crown of Stars", animationFile, animationScale=0.5} = {}) {
-    macroUtil.dependsOn.requires({id:'sequencer'});
-    if (!animationFile) {
-        macroUtil.dependsOn.requiresOne([ {id:'jb2a_patreon'}, {id:'JB2A_DnD5e'} ]);
-        animationFile = 'jb2a.twinkling_stars.points07.white';
-    }
+function create(token, moteCount, {effect=undefined, id="Crown of Stars", file="jb2a.twinkling_stars.points07.white", scale=0.5} = {}) {
+    if (!macroUtil.dependsOn.hasRecommended({id:"sequencer"})) return;
+    if (file.startsWith("jb2a."))
+        if (!macroUtil.dependsOn.hasSomeRecommended([ {id:"jb2a_patreon"}, {id:"JB2A_DnD5e"} ]))
+            return;
 
     function rotateSprites(sequence) {
         sequence = sequence
             .effect()
-            .file(animationFile)
+            .file(file)
             .from(token, { cacheLocation: true });
 
         if (effect) sequence = sequence.tieToDocuments(effect);
             
         return sequence
             .attachTo(token)
-            .scale(animationScale)
+            .scale(scale)
             .fadeIn(300)
             .fadeOut(500)
             .aboveLighting()
@@ -35,7 +34,7 @@ export function crownOfStars(token, moteCount, {effect=undefined, identifier="Cr
 
     function loopDaLoop(sequence, objectName, delay) {
         return sequence
-            .loopProperty(objectName, 'rotation', {
+            .loopProperty(objectName, "rotation", {
                 from: 0,
                 to: 360,
                 duration: 5000,
@@ -45,12 +44,12 @@ export function crownOfStars(token, moteCount, {effect=undefined, identifier="Cr
 
     function createStarMoteEffect(sequence, idx) {
         sequence = rotateSprites(sequence)
-        sequence = loopDaLoop(sequence, 'sprite', 500)
-        sequence = loopDaLoop(sequence, 'spriteContainer', 0)
+        sequence = loopDaLoop(sequence, "sprite", 500)
+        sequence = loopDaLoop(sequence, "spriteContainer", 0)
         return sequence
             .spriteOffset({ x: 0.5 }, { gridUnits: true })
             .rotate((360 / moteCount) * idx)
-            .name(`${identifier} - ${token.actor.id} - ${idx}`);
+            .name(`${id} - ${idx}`);
     }
 
     let starsSequence = new Sequence();
@@ -58,3 +57,19 @@ export function crownOfStars(token, moteCount, {effect=undefined, identifier="Cr
         starsSequence = createStarMoteEffect(starsSequence, idx);
     starsSequence.play();
 }
+
+async function remove(token, {id}, idx) {
+    await Sequencer.EffectManager.endEffects({
+        name: `${id} - ${idx}`,
+        objects: token,
+      });
+}
+
+async function destroy(token, {id}) {
+    await Sequencer.EffectManager.endEffects({
+        name: `${id} - *`,
+        objects: token,
+      });
+}
+
+export const crownOfStars = { create : create, remove : remove, destroy : destroy };

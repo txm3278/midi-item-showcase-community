@@ -1,6 +1,11 @@
+// @bakanabaka
+
 async function preDamageRoll() {
-    const target = workflow.targets.first();
-    const targetType = target.actor.system.details.type.value.toLowerCase();
+    const targetToken = workflow.targets.first();
+    const targetType = targetToken.actor.system.details.type.value?.toLowerCase();
+    if (targetType == undefined || targetType == "") 
+        console.warn(`Token ${targetToken.id} has no creature type (eg 'undead, humanoid, ooze,...')`,  targetToken);
+
     if (targetType != "undead") return;
 
     const updates = {
@@ -24,11 +29,21 @@ async function preDamageApplication() {
 
 async function offEffect() {
     const zombie = game.actors.getName("Zombie");
-    if (!zombie) ui.notifications.error("No zombie actor detected");
-    else await actor.transformInto(zombie, {}, {renderSheet:false});
+    if (!zombie) zombie = fromUuidSync(macroItem.system.summons?.profiles?.first().uuid);
+    if (!zombie) ui.notifications.error("No zombie actor detected in either actor's tab or in configured summons");
+    else await actor.transformInto(zombie, {}, {renderSheet: false});
 }
 
-await macroUtil.runWorkflows(arguments, {
+const callArguments = {
+    speaker:    speaker,
+    actor:      actor,
+    token:      token,
+    character:  character,
+    item:       item,
+    args:       args,
+    scope:      scope,
+};
+await macroUtil.runWorkflows(callArguments, {
     preDamageRoll : preDamageRoll,
     preDamageApplication : preDamageApplication,
     off : offEffect,
