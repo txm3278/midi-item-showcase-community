@@ -1,5 +1,6 @@
 // @bakanabaka
 
+console.warn(arguments);
 async function preItemRoll() {
     let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
     if (!persistentData.workflowId) {
@@ -10,7 +11,7 @@ async function preItemRoll() {
 
     let configs = {consumeUsage : false};
     let options = {};
-    macroUtil.item.preItemRoll.config(configs, options);
+    macroUtil.item.preItemRoll.config(workflow, configs, options);
     // Jank -- use the uses to track the number of times it has occurred
     //    we do this because it automatically will reset on short rest this way
     const updates = {"system.save.dc" : 5 * macroItem.system.uses.value};
@@ -29,6 +30,7 @@ async function preTargetDamageApplication() {
     if (workflow.damageItem.oldHP != workflow.damageItem.hpDamage) return;
     let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
     persistentData.workflowId = workflow.id;
+    await DAE.setFlag(actor, persistentDataName, persistentData);
     await MidiQOL.completeItemUse(macroItem, {}, {});
     await macroItem.update({"system.uses.value" : macroItem.system.uses.value + 1});
     

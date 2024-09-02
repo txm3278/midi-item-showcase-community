@@ -1,4 +1,4 @@
-function config(cfgs, opts){
+function config(workflow, cfgs, opts){
     for (let key of Object.keys(opts))
         workflow.options[key] = opts[key];
     for (let key of Object.keys(cfgs))
