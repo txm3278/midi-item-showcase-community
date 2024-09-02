@@ -16,8 +16,15 @@ async function addDependents(entity, dependents) {
     await chrisPremades.utils.effectUtils.addDependent(entity, dependents);
 }
 
-async function remove(effect) {
-    await macroUtil.generic.remove(effect);
+async function remove(actorEntity, effect) {
+  if (!actorEntity) return false;
+  let appliedEffect = find(actorEntity, effect);
+  if (!appliedEffect) return false;
+  await MidiQOL.socket().executeAsGM('removeEffects', {
+    actorUuid: actorEntity.uuid,
+    effects: [appliedEffect.id],
+  });
+  return true;
 }
 
 async function update(actorEntity, effect) {
