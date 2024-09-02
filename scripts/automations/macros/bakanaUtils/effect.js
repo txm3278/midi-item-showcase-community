@@ -25,13 +25,6 @@ async function update(actorEntity, effect) {
     if (!actorEntity) return;
 }
 
-async function toggle(actorEntity, effect) {
-    if (!actorEntity) return;
-
-    if (find(actorEntity, effect)) await remove(effect);
-    else await create(actorEntity, effect);
-}
-
 async function stack(actorEntity, effect, config) {
     let tempEffect = duplicate(effect);
     const actorEffects = Array.from(actorEntity.allApplicableEffects());
@@ -57,4 +50,4 @@ async function stack(actorEntity, effect, config) {
     }
 }
 
-export const effectsApi = { create, find, remove, toggle };
+export const effectsApi = { create, find, remove };
