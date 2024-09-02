@@ -39,7 +39,18 @@ async function isDamaged() {
 async function onEffect() {}
 async function offEffect() {}
 
-await macroUtil.runWorkflows(arguments, {
+const callArguments = {  
+    speaker:    speaker,
+    actor:      actor,
+    token:      token,
+    character:  character,
+    item:       item,
+    args:       args,
+    scope:      scope,
+    workflow:   workflow,
+    options:    options
+  };
+  await macroUtil.runWorkflows(callArguments, {
     on : onEffect,
     off : offEffect,
     each  : effectEach,

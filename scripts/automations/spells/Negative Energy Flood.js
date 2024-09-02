@@ -34,7 +34,18 @@ async function offEffect() {
     else await actor.transformInto(zombie, {}, {renderSheet: false});
 }
 
-await macroUtil.runWorkflows(arguments, {
+const callArguments = {  
+    speaker:    speaker,
+    actor:      actor,
+    token:      token,
+    character:  character,
+    item:       item,
+    args:       args,
+    scope:      scope,
+    workflow:   workflow,
+    options:    options
+  };
+  await macroUtil.runWorkflows(callArguments, {
     preDamageRoll : preDamageRoll,
     preDamageApplication : preDamageApplication,
     off : offEffect,

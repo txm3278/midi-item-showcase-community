@@ -8,16 +8,35 @@
 //                      No credit required for this. Just be cool to other people.
 // ---------------------------------------------------------------------------------------------------
 
+function _workflowArgs(a) {
+    if (!a) throw `runWorkflow callArgs is empty`;
+    return [
+            a.speaker,
+            a.actor,
+            a.token,
+            a.character,
+            a.item,
+            a.args,
+            a.scope,
+            a.workflow,
+            a.options,
+            a?.scope.effect,
+            a?.scope.rolledItem,
+            a?.scope.macroItem,
+            a?.scope.midiData,
+        ];
+}
+
 /**
  * Advanced error handler for Midi Macros, wraps all code in a try/catch and helps organize code.
- * @param argumentInput The args value passed into the macro.
+ * @param callArgs The args value passed into the macro.
  * @param config Configurations defining how CompleteMidi will run.
  * @param config.verbose Verbose debug settings.
  * @param config.WORKFLOWNAME A function to run when the specified workflow occurs. (eg preCheckHits / off)
  * @param config.exceptionHandler(e) A function which runs before exit on a caught exception
  */
-async function runWorkflows(argumentInput, config) {
-  const [speaker, actor, token, character, scope, workflow, item, rolledItem, macroItem, args, options, midiData] = argumentInput;
+async function runWorkflows(callArgs, config) {
+  const [speaker, actor, token, character, item, args, scope, workflow, options, effect, rolledItem, macroItem, midiData] = _workflowArgs(callArgs);
 
   /* ---------------------------------------------------------------------------------------------
     Below this line is the main function which runs everything else... you shouldn't need to

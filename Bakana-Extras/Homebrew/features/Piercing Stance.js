@@ -15,6 +15,17 @@ async function postAttackRoll() {
     await macroUtil.effect.remove(actor, effectData);
 }
 
-await macroUtil.runWorkflows(arguments, {
+const callArguments = {  
+    speaker:    speaker,
+    actor:      actor,
+    token:      token,
+    character:  character,
+    item:       item,
+    args:       args,
+    scope:      scope,
+    workflow:   workflow,
+    options:    options
+  };
+  await macroUtil.runWorkflows(callArguments, {
     postAttackRoll : postAttackRoll
 });
