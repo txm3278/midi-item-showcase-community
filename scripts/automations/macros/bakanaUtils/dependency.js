@@ -4,12 +4,12 @@ function _isAscending(a, b, c) {
 }
 
 function _activated(dependency) {
-    let isModule = game.modules.get(dependId);
-    let entity = (isModule) ? game.modules.get(dependId) : globalThis[dependId];
-    if (dependId == "foundry") entity = game;
-    if (!entity) return false;
+    let isModule = game.modules.get(dependency);
+    let entity = (isModule) ? game.modules.get(dependency) : globalThis[dependency];
+    if (dependency == "foundry") entity = game;
+    if (!entity) return [false, undefined];
 
-    if (!entity.active && isModule) return false;
+    if (!entity.active && isModule) return [false, undefined];
     if (!entity.version) ui.notifications.warn(`${entity} does not have a version field`);
     if (minimum == undefined) minimum = entity.version ?? "0.0.0";
     if (maximum == undefined) maximum = entity.version ?? "0.0.0";
