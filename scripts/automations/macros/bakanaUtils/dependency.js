@@ -4,16 +4,18 @@ function _isAscending(a, b, c) {
 }
 
 function _activated(dependency) {
-    let isModule = game.modules.get(dependency);
-    let entity = (isModule) ? game.modules.get(dependency) : globalThis[dependency];
-    if (dependency == "foundry") entity = game;
-    if (!entity) return [false, undefined];
+    let isModule = game.modules.get(dependency.id);
+    let entity = (isModule) ? game.modules.get(dependency.id) : globalThis[dependency.id];
+    if (dependency.id == "foundry") entity = game;
 
+    if (!entity) return [false, undefined];
     if (!entity.active && isModule) return [false, undefined];
     if (!entity.version) ui.notifications.warn(`${entity} does not have a version field`);
+
+    let [minimum, maximum] = [dependency.min, dependency.max];
     if (minimum == undefined) minimum = entity.version ?? "0.0.0";
     if (maximum == undefined) maximum = entity.version ?? "0.0.0";
-    return [_isAscending(dependency.min, entity.version, dependency.max), entity?.version];
+    return [_isAscending(minimum, entity.version, maximum), entity?.version];
 }
 
 function _versionMessageAppend(dependency, version) {
@@ -30,7 +32,7 @@ function isActivated(dependency, warnMessage) {
     let [isActivated, currentVersion] = _activated(dependency);
     if (!isActivated && warnMessage) {
         if (warnMessage.length) warnMessage += '\n';
-        warnMessage += `Warning: ${dependency.id} is not between expected versions.`;
+        warnMessage += `Warning: ${dependency.id} is not between expected versions:`;
         warnMessage += _versionMessageAppend(dependency, currentVersion)
         console.warn(warnMessage);
     }
