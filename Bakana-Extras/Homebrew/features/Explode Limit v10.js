@@ -1,5 +1,5 @@
 // @bakanabaka
-// Explosion Limit v1.0.5
+// Explosion Limit v1.1.0
 
 // The first time this macro is run the user settings are locked in until the user refreshes
 // The choices apply to all actors the user is controlling and launching workflows from
@@ -102,7 +102,7 @@ async function queryUser(HTMLHeader, HTMLOptions, remainingLimit) {
                             if (radioVal) {
                                 let [numFaces, damageType] = radioVal;
                                 let userInput = document.getElementById(damageType).value;  // only the user input has this id
-                                resolve({ cancelled: false, selection: [damageType, numFaces, Math.min(userInput, remainingLimit)] });
+                                resolve({ cancelled: false, selection: [damageType, numFaces, userInput] });
                             } else {
                                 resolve({ cancelled: true, selection: undefined});
                             }
@@ -160,19 +160,21 @@ async function getExplosionChoice(optionMap, limit) {
 async function explode(optionMap, limit) {
     let explosionCount = 0;
     while (explosionCount < limit) {
-        [damageType, faces, count] = await getExplosionChoice(optionMap, limit - explosionCount);
+        const explosionsLeft = limit - explosionCount;
+        [damageType, faces, count] = await getExplosionChoice(optionMap, explosionsLeft);
         if (!damageType) break; // no valid roll options
         if (damageType == "MISCLICK") {
             ui.notifications.warn("Please select a radio button to indicate your option before pressing select!");
             continue;
         }
-        count = Math.clamp(count, 0, typeRolled[typeRolled.length-1][1]);
         if (!faces || !count) {
             if (FORCE_ALL_EXPLOSIONS) continue; 
             else break;
         }
-        
-        let typeRolled = optionMap[damageType];
+        const typeRolled = optionMap[damageType];
+        const diceLeft = typeRolled.findLast(a=>a)[1];
+        const maximumRoll = Math.min(diceLeft, explosionsLeft);
+        count = Math.clamped(count, 0, maximumRoll);
         
         let newMap = await rollExplosionDice(damageType, faces, count);
 
