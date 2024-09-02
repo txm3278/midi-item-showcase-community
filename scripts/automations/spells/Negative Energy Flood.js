@@ -29,7 +29,8 @@ async function preDamageApplication() {
 
 async function offEffect() {
     const zombie = game.actors.getName("Zombie");
-    if (!zombie) ui.notifications.error("No zombie actor detected");
+    if (!zombie) zombie = fromUuidSync(macroItem.system.summons?.profiles?.first().uuid);
+    if (!zombie) ui.notifications.error("No zombie actor detected in either actor's tab or in configured summons");
     else await actor.transformInto(zombie, {}, {renderSheet: false});
 }
 
