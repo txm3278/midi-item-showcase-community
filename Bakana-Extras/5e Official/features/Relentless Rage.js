@@ -1,6 +1,13 @@
 // @bakanabaka
 
 async function preItemRoll() {
+    let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
+    if (!persistentData.workflowId) {
+        ui.notifications.error(`${macroItem.name} can only be called from within a workflow.`);
+        workflow.aborted = true;
+        return false;
+    }
+
     let configs = {consumeUsage : false};
     let options = {};
     macroUtil.item.preItemRoll.config(configs, options);
@@ -20,15 +27,19 @@ async function preTargetDamageApplication() {
     if (!(actor.effects.find(ef => ef.name == "Rage"))) return;
     if (workflow.damageItem.oldHP == 0) return;
     if (workflow.damageItem.oldHP != workflow.damageItem.hpDamage) return;
+    let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
+    persistentData.workflowId = workflow.id;
     await MidiQOL.completeItemUse(macroItem, {}, {});
     await macroItem.update({"system.uses.value" : macroItem.system.uses.value + 1});
     
-    let persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
+    persistentData = await DAE.getFlag(actor, persistentDataName) || defaultPersistentData;
+    persistentData.workflowId = undefined;
     if (persistentData.isActive) workflow.damageItem.hpDamage -= 1;
+    await DAE.setFlag(actor, persistentDataName, persistentData);
 }
 
 const persistentDataName = `(Relentless Rage) - Persistent Data`;
-const defaultPersistentData = { isActive : false };
+const defaultPersistentData = { isActive : false, workflowId : undefined };
 
 await macroUtil.runWorkflows(arguments, {
     preItemRoll  : preItemRoll,
