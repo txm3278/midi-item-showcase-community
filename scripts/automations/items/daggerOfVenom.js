@@ -10,50 +10,51 @@ export async function daggerOfVenom({
   workflow,
   options,
 }) {
+  const macroItem = scope.macroItem;
+
   async function onEffect() {
-    await scope.macroItem.setFlag(
-      'midi-qol',
-      'onUseMacroName',
-      '[postActiveEffects]ItemMacro'
-    );
-    let poisonEffect = scope.macroItem.effects.find(
-      (ef) => ef.name == scope.macroItem.name
-    );
-    await poisonEffect.setFlag('dae', 'dontApply', false);
+    await macroItem.setFlag("midi-qol", "onUseMacroName", "[postActiveEffects]ItemMacro");
+    let poisonEffect = macroItem.effects.find(ef => ef.name == macroItem.name);
+    await poisonEffect.setFlag("dae", "dontApply", false);
 
     const updates = {
-      'system.formula': '2d10[poison]',
-      'system.save.ability': 'con',
-      'system.save.dc': 15,
+        "system.formula"      : "2d10[poison]",
+        "system.save.ability" : "con",
+        "system.save.dc"      : 15,
     };
-    await scope.macroItem.update(updates);
-  }
+    await macroItem.update(updates);
+}
 
   async function offEffect() {
-    await scope.macroItem.setFlag('midi-qol', 'onUseMacroName', '');
-    let poisonEffect = scope.macroItem.effects.find(
-      (ef) => ef.name == scope.macroItem.name
-    );
-    await poisonEffect.setFlag('dae', 'dontApply', true);
+      await macroItem.setFlag("midi-qol", "onUseMacroName", "");
+      let poisonEffect = macroItem.effects.find(ef => ef.name == macroItem.name);
+      await poisonEffect.setFlag("dae", "dontApply", true);
 
-    const updates = {
-      'system.formula': '',
-      'system.save.ability': '',
-      'system.save.dc': undefined,
-    };
-    await scope.macroItem.update(updates);
+      const updates = {
+          "system.formula"      : "",
+          "system.save.ability" : "",
+          "system.save.dc"      : undefined,
+      };
+      await macroItem.update(updates);
   }
 
   async function postActiveEffects() {
-    let enableEffect = scope.macroItem.effects.find(
-      (ef) => !ef.name.includes(scope.macroItem.name)
-    );
-    await enableEffect.update({ Suppressed: true, disabled: true });
+      let enableEffect = macroItem.effects.find(ef => !ef.name.includes(macroItem.name));
+      await enableEffect.update({"Suppressed": true, "disabled": true});
   }
 
-  await macroUtil.runWorkflows(arguments, {
-    on: onEffect,
-    off: offEffect,
-    postActiveEffects: postActiveEffects,
+  const callArguments = {
+      speaker:    speaker,
+      actor:      actor,
+      token:      token,
+      character:  character,
+      item:       item,
+      args:       args,
+      scope:      scope,
+  };
+  await macroUtil.runWorkflows(callArguments, {
+      on : onEffect,
+      off : offEffect,
+      postActiveEffects : postActiveEffects
   });
 }

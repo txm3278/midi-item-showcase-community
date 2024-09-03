@@ -19,7 +19,17 @@ export async function primevalAwareness({
     });
   }
 
-  if (macroUtil)
-    await macroUtil.runWorkflows(arguments, { postCleanup: postCleanup });
-  else await postCleanup();
+  
+  const callArguments = {
+    speaker:    speaker,
+    actor:      actor,
+    token:      token,
+    character:  character,
+    item:       item,
+    args:       args,
+    scope:      scope,
+};
+  await macroUtil.runWorkflows(callArguments, {
+    postCleanup: postCleanup 
+  });
 }

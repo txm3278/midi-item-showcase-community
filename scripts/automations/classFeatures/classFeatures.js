@@ -1,5 +1,6 @@
 import { soulOfArtifice } from './Artificer/soulOfArtifice.js';
 import { spiritShield } from './Barbarian/PathOfTheAncestrialGuardian/spiritShield.js';
+import { relentlessRage } from './Barbarian/Relentless Rage.js';
 import { vengefulAncestors } from './Barbarian/PathOfTheAncestrialGuardian/vengefulAncestors.js';
 import { sentinelAtDeathsDoor } from './Cleric/GraveDomain/sentinelAtDeathsDoor.js';
 import { blessedHealer } from './Cleric/LifeDomain/blessedHealer.js';
@@ -23,6 +24,7 @@ import { sorrowfulFate } from './Bard/CollegeOfTragedy/sorrowfulFate.js';
 export let classFeatures = {
   soulOfArtifice,
   spiritShield,
+  relentlessRage,
   vengefulAncestors,
   sentinelAtDeathsDoor,
   blessedHealer,
