@@ -101,7 +101,7 @@ export async function sorrowfulFate({
     args[0].macroPass === 'preActiveEffects'
   ) {
     // Validates that the item is the synthetic feat
-    if (scope.scope.lastArgValue.getFlag(MODULE_ID, 'sorrowfulFateDamage')) {
+    if (scope.rolledItem.getFlag(MODULE_ID, 'sorrowfulFateDamage')) {
       return await handleOnUsePreActiveEffects(workflow, scope.macroItem);
     }
   } else if (

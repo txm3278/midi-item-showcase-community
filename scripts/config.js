@@ -113,8 +113,14 @@ export function setConfig() {
         version: '1.0.3',
         authors: ['Moto Moto'],
       },
-      'Dagger Of Venom': {
-        name: 'Dagger Of Venom',
+      'Crown of Stars': {
+        name: 'Crown of Stars',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Bakana', 'Xenophes'],
+      },
+      'Dagger of Venom': {
+        name: 'Dagger of Venom',
         type: 'Item',
         version: '1.0.0',
         authors: ['Bakana'],
@@ -200,7 +206,7 @@ export function setConfig() {
       'Flame Arrows': {
         name: 'Flame Arrows',
         type: 'Spell',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Lin Dong'],
       },
       'Flame Tongue Rapier': {
@@ -372,6 +378,12 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Moto Moto'],
       },
+      'Negative Energy Flood': {
+        name: 'Negative Energy Flood',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Bakana'],
+      },
       Net: {
         name: 'Net',
         type: 'Item',
@@ -442,6 +454,12 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['Bakana'],
       },
+      'Produce Flame': {
+        name: 'Produce Flame',
+        type: 'Spell',
+        version: '1.0.0',
+        authors: ['Bakana'],
+      },
       'Protection from Poison': {
         name: 'Protection from Poison',
         type: 'Spell',
@@ -471,6 +489,12 @@ export function setConfig() {
         type: 'Generic Action',
         version: '0.1.2',
         authors: ['Fridan99'],
+      },
+      'Relentless Rage': {
+        name: 'Relentless Rage',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Bakana'],
       },
       Resurrection: {
         name: 'Resurrection',
@@ -581,6 +605,12 @@ export function setConfig() {
         type: 'Item',
         version: '1.0.0',
         authors: ['Elwin'],
+      },
+      'Tangler Grenade': {
+        name: 'Tangler Grenade',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Lukas'],
       },
       "Tasha's Mind Whip": {
         name: "Tasha's Mind Whip",

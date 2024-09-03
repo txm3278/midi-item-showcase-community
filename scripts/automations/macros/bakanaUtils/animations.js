@@ -1,5 +1,5 @@
-import { crownOfStars } from './animations/Crown of Stars.js';
+import { crownOfStars } from './animations/crownOfStars.js';
 
 export const animationApi = {
-    crownOfStars,
+  crownOfStars,
 };

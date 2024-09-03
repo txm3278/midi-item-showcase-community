@@ -1,6 +1,6 @@
 import { soulOfArtifice } from './Artificer/soulOfArtifice.js';
 import { spiritShield } from './Barbarian/PathOfTheAncestrialGuardian/spiritShield.js';
-import { relentlessRage } from './Barbarian/Relentless Rage.js';
+import { relentlessRage } from './Barbarian/relentlessRage.js';
 import { vengefulAncestors } from './Barbarian/PathOfTheAncestrialGuardian/vengefulAncestors.js';
 import { sentinelAtDeathsDoor } from './Cleric/GraveDomain/sentinelAtDeathsDoor.js';
 import { blessedHealer } from './Cleric/LifeDomain/blessedHealer.js';

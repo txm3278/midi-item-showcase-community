@@ -19,9 +19,9 @@ import { soulCage } from './soulCage.js';
 import { tashasMindWhip } from './tashasMindWhip.js';
 import { tensersTransformation } from './tensersTransformation.js';
 import { flameArrows } from './flameArrows.js';
-import { crownOfStars } from './Crown of Stars.js';
-import { produceFlame } from './Produce Flame.js';
-import { negativeEnergyFlood } from './Negative Energy Flood.js';
+import { crownOfStars } from './crownOfStars.js';
+import { produceFlame } from './produceFlame.js';
+import { negativeEnergyFlood } from './negativeEnergyFlood.js';
 
 export let spells = {
   absorbElements,

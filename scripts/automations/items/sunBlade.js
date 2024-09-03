@@ -173,19 +173,19 @@ export async function sunBlade({
         ?.delete();
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    if (!scope.scope.lastArgValue.getFlag(MODULE_ID, ACTIVATED)) {
+    if (!scope.rolledItem.getFlag(MODULE_ID, ACTIVATED)) {
       ui.notifications.warn(
         'The blade must be activated to be able to make an attack with it.'
       );
       return false;
     }
     // Adjust proficiency to account for allowed multiple base items proficiency
-    await adjustProficiency(scope.scope.lastArgValue);
+    await adjustProficiency(scope.rolledItem);
   } else if (
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
-    const activateOrigin = scope.scope.lastArgValue.getFlag(
+    const activateOrigin = scope.rolledItem.getFlag(
       MODULE_ID,
       ACTIVATE_ACTION_ORIGIN_FLAG
     );
@@ -201,7 +201,7 @@ export async function sunBlade({
       await handleActivatePostActiveEffects(scope.macroItem);
       return;
     }
-    const adjustLightOrigin = scope.scope.lastArgValue.getFlag(
+    const adjustLightOrigin = scope.rolledItem.getFlag(
       MODULE_ID,
       ADJUST_LIGHT_RADIUS_ACTION_ORIGIN_FLAG
     );

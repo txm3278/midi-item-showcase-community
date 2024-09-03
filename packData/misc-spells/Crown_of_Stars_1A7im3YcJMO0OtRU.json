@@ -1,0 +1,277 @@
+{
+  "name": "Crown of Stars",
+  "type": "spell",
+  "system": {
+    "source": {
+      "custom": "",
+      "book": "XGE",
+      "page": "152",
+      "license": ""
+    },
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Bakana</span></h2><p>Animation by Xenophes</p>",
+      "chat": ""
+    },
+    "actionType": "util",
+    "level": 7,
+    "school": "evo",
+    "properties": [
+      "vocal",
+      "somatic",
+      "mgc"
+    ],
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "target": {
+      "value": "0",
+      "units": "",
+      "type": "self",
+      "prompt": true,
+      "width": null
+    },
+    "range": {
+      "value": 0,
+      "units": "self",
+      "long": null
+    },
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "1",
+      "units": "hour"
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "ability": "",
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "formula": "",
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "cover": null,
+    "crewed": false,
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "summons": null,
+    "enchantment": null
+  },
+  "img": "icons/magic/control/control-influence-crown-yellow.webp",
+  "flags": {
+    "plutonium": {
+      "page": "spells.html",
+      "source": "XGE",
+      "hash": "crown%20of%20stars_xge",
+      "propDroppable": "spell"
+    },
+    "core": {},
+    "dae": {
+      "macro": {
+        "name": "Crown of Stars",
+        "img": "icons/magic/control/control-influence-crown-yellow.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "coreVersion": "12.331",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "midi-qol": {
+      "fumbleThreshold": null,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "exportSource": {
+      "world": "misfit-hobos",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    }
+  },
+  "effects": [
+    {
+      "name": "Crown of Stars",
+      "origin": "Actor.nAFfu59Cgt3Dllwa.Item.oLR9rLuerrXcY6tU",
+      "duration": {
+        "startTime": null,
+        "seconds": 3600,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Zt1cSbtbDN2tiFbr",
+      "changes": [
+        {
+          "key": "macro.createItem",
+          "mode": 0,
+          "value": "Compendium.midi-item-showcase-community.misc-spell-items.Item.vaOPRbZncmWHkH2T",
+          "priority": 30
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "function.MISC.macros.spells.crownOfStars, @item.level",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "itemsToDelete": [
+            "Actor.nAFfu59Cgt3Dllwa.Item.AFfO5GwF8TU4D72p",
+            "Actor.nAFfu59Cgt3Dllwa.Item.teHJ3EJQRuAnAfyg",
+            "Actor.nAFfu59Cgt3Dllwa.Item.UuI1wlUdwkZrLhJ4",
+            "Actor.nAFfu59Cgt3Dllwa.Item.S5IQDIcaFRRO1HH0"
+          ],
+          "enableCondition": "",
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "tint": "#ffffff",
+      "img": "icons/magic/control/control-influence-crown-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": 1725380658408,
+        "lastModifiedBy": "B2BBHntfpytXE8DP"
+      },
+      "_key": "!items.effects!1A7im3YcJMO0OtRU.Zt1cSbtbDN2tiFbr"
+    }
+  ],
+  "folder": null,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1725380641976,
+    "modifiedTime": 1725385672616,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "1A7im3YcJMO0OtRU",
+  "sort": 0,
+  "_key": "!items!1A7im3YcJMO0OtRU"
+}

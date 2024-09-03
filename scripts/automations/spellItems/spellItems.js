@@ -1,5 +1,5 @@
 import { misleadSwitch } from './misleadSwitch.js';
-import { starMote } from './Star Mote.js';  
+import { starMote } from './starMote.js';
 
 export let spellItems = {
   misleadSwitch,

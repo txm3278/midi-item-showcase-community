@@ -29,14 +29,14 @@ export async function colossusSlayer({
     (await DAE.getFlag(actor, persistentDataName)) || defaultPersistentData;
 
   const callArguments = {
-    speaker:    speaker,
-    actor:      actor,
-    token:      token,
-    character:  character,
-    item:       item,
-    args:       args,
-    scope:      scope,
-};
+    speaker: speaker,
+    actor: actor,
+    token: token,
+    character: character,
+    item: item,
+    args: args,
+    scope: scope,
+  };
   await macroUtil.runWorkflows(callArguments, {
     preDamageRollComplete: preDamageRollComplete, // damage die additions
   });

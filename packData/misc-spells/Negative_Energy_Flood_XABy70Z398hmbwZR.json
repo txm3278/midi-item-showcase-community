@@ -1,0 +1,267 @@
+{
+  "name": "Negative Energy Flood",
+  "type": "spell",
+  "system": {
+    "source": {
+      "custom": "",
+      "book": "XGE",
+      "page": "163",
+      "license": ""
+    },
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Bakana</span></h2>",
+      "chat": ""
+    },
+    "actionType": "save",
+    "level": 5,
+    "school": "nec",
+    "properties": [
+      "vocal",
+      "material"
+    ],
+    "materials": {
+      "value": "a broken bone and a square of black silk",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "target": {
+      "value": "0",
+      "units": "",
+      "type": "",
+      "prompt": true,
+      "width": null
+    },
+    "range": {
+      "value": 60,
+      "units": "ft",
+      "long": null
+    },
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "inst"
+    },
+    "damage": {
+      "parts": [
+        [
+          "5d12",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "save": {
+      "ability": "con",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "ability": "",
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "formula": "",
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "cover": null,
+    "crewed": false,
+    "enchantment": null,
+    "summons": null,
+    "sourceClass": ""
+  },
+  "img": "icons/skills/wounds/injury-pain-body-orange.webp",
+  "flags": {
+    "plutonium": {
+      "page": "spells.html",
+      "source": "XGE",
+      "hash": "negative%20energy%20flood_xge",
+      "propDroppable": "spell"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "saveDamage": "default",
+      "bonusSaveDamage": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preDamageRoll]function.MISC.macros.spells.negativeEnergyFlood,[preDamageApplication]function.MISC.macros.spells.negativeEnergyFlood"
+    },
+    "dae": {
+      "macro": {
+        "name": "Negative Energy Flood",
+        "img": "icons/skills/wounds/injury-pain-body-orange.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "12.331",
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "exportSource": {
+      "world": "v12-331",
+      "system": "dnd5e",
+      "coreVersion": "12.327",
+      "systemVersion": "3.3.1"
+    }
+  },
+  "effects": [
+    {
+      "name": "Zombification",
+      "origin": "Actor.kTkMddrAM60RL5vS.Item.dhYZVD8ogMOGYEVm",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": 6,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "flags": {
+        "dnd5e": {},
+        "dae": {
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnEndSource"
+          ],
+          "enableCondition": "",
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "img": "icons/skills/wounds/injury-pain-body-orange.webp",
+      "_id": "0dw4zC3Fpy3udpVy",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "function.MISC.macros.spells.negativeEnergyFlood",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!XABy70Z398hmbwZR.0dw4zC3Fpy3udpVy"
+    }
+  ],
+  "folder": null,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1725380985291,
+    "modifiedTime": 1725380985291,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "XABy70Z398hmbwZR",
+  "sort": 0,
+  "_key": "!items!XABy70Z398hmbwZR"
+}

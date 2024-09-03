@@ -9,22 +9,22 @@
 // ---------------------------------------------------------------------------------------------------
 
 function _workflowArgs(a) {
-    if (!a) throw `runWorkflow callArgs is empty`;
-    return [
-            a.speaker,
-            a.actor,
-            a.token,
-            a.character,
-            a.item,
-            a.args,
-            a.scope,
-            a?.scope.workflow,
-            a?.scope.options,
-            a?.scope.effect,
-            a?.scope.rolledItem,
-            a?.scope.macroItem,
-            a?.scope.midiData,
-        ];
+  if (!a) throw `runWorkflow callArgs is empty`;
+  return [
+    a.speaker,
+    a.actor,
+    a.token,
+    a.character,
+    a.item,
+    a.args,
+    a.scope,
+    a?.scope.workflow,
+    a?.scope.options,
+    a?.scope.effect,
+    a?.scope.rolledItem,
+    a?.scope.macroItem,
+    a?.scope.midiData,
+  ];
 }
 
 /**
@@ -36,50 +36,81 @@ function _workflowArgs(a) {
  * @param config.exceptionHandler(e) A function which runs before exit on a caught exception
  */
 async function runWorkflows(callArgs, config) {
-  const [speaker, actor, token, character, item, args, scope, workflow, options, effect, rolledItem, macroItem, midiData] = _workflowArgs(callArgs);
+  const [
+    speaker,
+    actor,
+    token,
+    character,
+    item,
+    args,
+    scope,
+    workflow,
+    options,
+    effect,
+    rolledItem,
+    macroItem,
+    midiData,
+  ] = _workflowArgs(callArgs);
 
   /* ---------------------------------------------------------------------------------------------
     Below this line is the main function which runs everything else... you shouldn't need to
     modify this unless you need some additional debug information that isn't coming back.
     --------------------------------------------------------------------------------------------*/
-   
-    let workflowReturn; 
-    const [firstArg] = args;
-    let  workflowAction = firstArg.macroPass || firstArg;
-    try {
-        if (macroUtil.debugLevel) {
-            console.group(
-            	`%c↳ (${macroItem.name}) [${workflowAction}]`,
-            	'background:black; color: white; padding:2px 5px;font-weight:bold;'
-            );
-        }
 
-        if (firstArg.tag == "OnUse" || firstArg.tag == "DamageBonus" || firstArg.tag == "TargetOnUse"){
-            if (macroUtil.debugLevel > 2) console.warn("midiWorkflow:", workflow);
-            if (!config[workflowAction]) 
-              console.warn(`Undefined workflow attempting to run : ${workflowAction}`);
-            else workflowReturn = await config[workflowAction](firstArg);
-
-            if (macroUtil.debugLevel > 1) {
-                if (workflow.aborted) console.warn("Aborted flag on workflow is set to :", workflow.aborted);
-            }
-        } else {            
-            if (!config[workflowAction]) {
-              if (workflowAction != "on" && workflowAction != "off")
-                console.warn(`Undefined workflow attempting to run : ${workflowAction}`);
-            } else workflowReturn = await config[workflowAction](args.splice(1));
-        }
-
-        if(macroUtil.debugLevel) console.groupEnd();
-        return workflowReturn;
-    } catch (e) {
-        ui.notifications.error(`An unexpected error occurred in the execution of the ${macroItem.name} ItemMacro. Please press <F12> and inspect the console errors for more information.`);
-        console.group(`%c❗❗ (${macroItem.name}) [Error in ${workflowAction}] ❗❗`, 'background:black; color: white; padding:2px 5px;font-weight:bold;');
-        console.error("Unexpected error occurred :", e);
-        if (config.exceptionHandler) await config.exceptionHandler(e);
-        console.groupEnd();
-        if(macroUtil.debugLevel) console.groupEnd(); 
+  let workflowReturn;
+  const [firstArg] = args;
+  let workflowAction = firstArg.macroPass || firstArg;
+  try {
+    if (macroUtil.debugLevel) {
+      console.group(
+        `%c↳ (${macroItem.name}) [${workflowAction}]`,
+        'background:black; color: white; padding:2px 5px;font-weight:bold;'
+      );
     }
+
+    if (
+      firstArg.tag == 'OnUse' ||
+      firstArg.tag == 'DamageBonus' ||
+      firstArg.tag == 'TargetOnUse'
+    ) {
+      if (macroUtil.debugLevel > 2) console.warn('midiWorkflow:', workflow);
+      if (!config[workflowAction])
+        console.warn(
+          `Undefined workflow attempting to run : ${workflowAction}`
+        );
+      else workflowReturn = await config[workflowAction](firstArg);
+
+      if (macroUtil.debugLevel > 1) {
+        if (workflow.aborted)
+          console.warn(
+            'Aborted flag on workflow is set to :',
+            workflow.aborted
+          );
+      }
+    } else {
+      if (!config[workflowAction]) {
+        if (workflowAction != 'on' && workflowAction != 'off')
+          console.warn(
+            `Undefined workflow attempting to run : ${workflowAction}`
+          );
+      } else workflowReturn = await config[workflowAction](args.splice(1));
+    }
+
+    if (macroUtil.debugLevel) console.groupEnd();
+    return workflowReturn;
+  } catch (e) {
+    ui.notifications.error(
+      `An unexpected error occurred in the execution of the ${macroItem.name} ItemMacro. Please press <F12> and inspect the console errors for more information.`
+    );
+    console.group(
+      `%c❗❗ (${macroItem.name}) [Error in ${workflowAction}] ❗❗`,
+      'background:black; color: white; padding:2px 5px;font-weight:bold;'
+    );
+    console.error('Unexpected error occurred :', e);
+    if (config.exceptionHandler) await config.exceptionHandler(e);
+    console.groupEnd();
+    if (macroUtil.debugLevel) console.groupEnd();
+  }
 }
 
 export const workflowApi = { runWorkflows };

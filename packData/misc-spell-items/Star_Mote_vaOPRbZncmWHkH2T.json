@@ -1,0 +1,328 @@
+{
+  "name": "Star Mote",
+  "type": "spell",
+  "img": "icons/magic/light/projectile-stars-blue.webp",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Bakana</span></h2>",
+      "chat": ""
+    },
+    "source": {
+      "custom": ""
+    },
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "inst"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "1",
+      "width": null,
+      "units": "",
+      "type": "creature",
+      "prompt": true
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "7",
+      "per": "charges",
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "4d12",
+          "radiant"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "level": 7,
+    "school": "evo",
+    "properties": [
+      "mgc"
+    ],
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "atwill",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "enchantment": null
+  },
+  "effects": [
+    {
+      "name": "Star Mote",
+      "origin": "Item.JbA3bTQGIm7yiSrm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "CGX0LaFdQGJMzQkU",
+      "changes": [
+        {
+          "key": "ATL.light.dim",
+          "mode": 4,
+          "value": "60",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.alpha",
+          "mode": 0,
+          "value": "0.4",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.color",
+          "mode": 0,
+          "value": "#ffd79e",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.luminosity",
+          "mode": 0,
+          "value": "0.5",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.bright",
+          "mode": 2,
+          "value": "30",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": "#ffffff",
+      "img": "icons/magic/light/projectile-stars-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!vaOPRbZncmWHkH2T.CGX0LaFdQGJMzQkU"
+    }
+  ],
+  "folder": null,
+  "flags": {
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postAttackRoll]function.MISC.macros.spellItems.starMote",
+      "fumbleThreshold": null,
+      "removeAttackDamageButtons": "default"
+    },
+    "autoanimations": {
+      "version": 3,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "rangeType": "spell",
+        "variant": "01",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "range",
+      "animation": "eldritchblast",
+      "color": "lightgreen",
+      "audio": {
+        "a01": {
+          "enable": false
+        }
+      },
+      "preview": false,
+      "explosions": {
+        "enable": false
+      }
+    },
+    "universalAnimations": {
+      "override": "neverPlay"
+    },
+    "itemacro": {
+      "macro": {
+        "command": "const params = args[0];\n\n                                const sourceToken = canvas.tokens.get(params.tokenId);\n\n                                const sourceActor = params.actor;\n\n                                const inFilters = { name: 'StarMoteEffect*', object: sourceToken };\n\n                                await Sequencer.EffectManager.endEffects(Sequencer.EffectManager.getEffects(inFilters).at(-1).data);\n\n                                const starsEffect = await sourceActor.effects.find(ef => ef.label === \"Crown of Stars\");\n                                const moteItem = await sourceActor.items.find(i => i.name === \"Star Mote\");\n\n                                if (moteItem.system.uses.value === 0 && starsEffect) {\n\n                                    await starsEffect.delete();\n \n                                };",
+        "name": "Star Mote",
+        "scope": "global",
+        "type": "script"
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Star Mote",
+        "img": "icons/magic/light/projectile-stars-blue.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "",
+        "author": "B2BBHntfpytXE8DP",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "coreVersion": "12.331",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "core": {},
+    "exportSource": {
+      "world": "misfit-hobos",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "3.1.2"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1725380633122,
+    "modifiedTime": 1725380633122,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "vaOPRbZncmWHkH2T",
+  "sort": 0,
+  "_key": "!items!vaOPRbZncmWHkH2T"
+}
