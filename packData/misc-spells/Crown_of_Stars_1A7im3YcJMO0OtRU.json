@@ -191,7 +191,7 @@
         {
           "key": "macro.itemMacro",
           "mode": 0,
-          "value": "function.MISC.macros.spells.crownOfStars, @item.level",
+          "value": "function.MISC.macros.spells.crownOfStars @item.level",
           "priority": 20
         }
       ],
@@ -250,7 +250,7 @@
         "systemId": "dnd5e",
         "systemVersion": "3.3.1",
         "createdTime": null,
-        "modifiedTime": 1725380658408,
+        "modifiedTime": 1725389631239,
         "lastModifiedBy": "B2BBHntfpytXE8DP"
       },
       "_key": "!items.effects!1A7im3YcJMO0OtRU.Zt1cSbtbDN2tiFbr"
