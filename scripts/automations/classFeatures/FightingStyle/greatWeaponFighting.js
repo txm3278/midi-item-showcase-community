@@ -39,7 +39,7 @@ export async function greatWeaponFighting({
   function replace(part) {
     var i = 0;
     var j = 0;
-    var modifiedPart = deepClone(part);
+    var modifiedPart = foundry.utils.deepClone(part);
     while (i >= 0) {
       let regex = /([0-9]d[0-9])/;
       i = search(modifiedPart, regex, i);

@@ -44,7 +44,6 @@ export default [
         document: 'writable',
         socket: 'writable',
         DAE: 'writable',
-        deepClone: 'writable',
         duplicate: 'writable',
         chrisPremades: 'writable',
         macroUtil: 'writable',

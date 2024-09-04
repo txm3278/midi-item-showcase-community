@@ -106,7 +106,7 @@
       "rollAttackPerTarget": "default",
       "itemCondition": "",
       "effectCondition": "",
-      "onUseMacroName": "[postActiveEffects]fucntion.MISC.macros.itemFeatures.daggerOfVenomBlackPoison"
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.itemFeatures.daggerOfVenomBlackPoison"
     },
     "dae": {
       "macro": {
@@ -172,7 +172,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724962901693,
-    "modifiedTime": 1725466787165,
+    "modifiedTime": 1725488637811,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
