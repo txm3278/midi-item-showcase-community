@@ -242,7 +242,7 @@
   "effects": [
     {
       "name": "Black Poison Applied",
-      "origin": "Item.56aExmMSUz0S4SEc",
+      "origin": "Compendium.midi-item-showcase-community.misc-items.Item.e5bUXLfLTlvOrrjQ",
       "duration": {
         "startTime": null,
         "seconds": 60,
@@ -258,7 +258,7 @@
         {
           "key": "macro.itemMacro",
           "mode": 0,
-          "value": "function.MISC.items.daggerOfVenom",
+          "value": "function.MISC.macros.items.daggerOfVenom",
           "priority": 20
         }
       ],
@@ -334,8 +334,8 @@
         "systemId": "dnd5e",
         "systemVersion": "3.3.1",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1725466859531,
+        "lastModifiedBy": "B2BBHntfpytXE8DP"
       },
       "_key": "!items.effects!e5bUXLfLTlvOrrjQ.vgZo8gCFZcddfQ4n"
     },

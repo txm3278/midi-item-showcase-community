@@ -122,7 +122,7 @@ export function setConfig() {
       'Dagger of Venom': {
         name: 'Dagger of Venom',
         type: 'Item',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Bakana'],
       },
       'Dark Ones Own Luck': {
