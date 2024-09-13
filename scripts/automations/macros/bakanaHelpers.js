@@ -6,6 +6,7 @@ import { itemApi } from './bakanaUtils/item.js';
 import { dependencyApi } from './bakanaUtils/dependency.js';
 import { animationApi } from './bakanaUtils/animations.js';
 import { genericApi } from './bakanaUtils/generic.js';
+import { sceneApi } from './bakanaUtils/scene.js';
 
 /**
  * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
@@ -23,8 +24,9 @@ function setupApiCalls(exportedFunctions) {
  * Initializes the environment with macroUtil for macros
  */
 let debugLevel = 0;
-const version = '0.12.0';
+const version = '0.12.1';
 export function setupBakanaMacros() {
+  if (globalThis.macroUtil?.version > version) return;  // only take newest changes
   // Initialize debugLevel variable
   globalThis.macroUtil = foundry.utils.mergeObject(globalThis.macroUtil ?? {}, {
     debugLevel,
@@ -39,4 +41,5 @@ export function setupBakanaMacros() {
   setupApiCalls({ dependsOn: dependencyApi });
   setupApiCalls({ animation: animationApi });
   setupApiCalls({ generic: genericApi });
+  setupApiCalls({ scene : sceneApi});
 }
