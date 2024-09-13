@@ -8,53 +8,65 @@
     // On Use : two ways to activate
     // (this item only)     Midi-QOL on Use (this item only)
     // (all items on actor) flags.midi-qol.onUseMacroName | Custom | <macroRef>,<targetOnUse>{.<source>}
-      preTargeting,
-      preItemRoll,
-      postNoAction,
-      preStart,
-      postStart,
-      preAoETargetConfirmation,
-      postAoETargetConfirmation,
-      preValidateRoll,
-      postValidateRoll,
-      prePreambleComplete,
-      preambleComplete,
-      postPreambleComplete,
-      preWaitForAttackRoll,
-      preAttackRoll,
-      postWaitForAttackRoll,
-      preAttackRollComplete,
-      preCheckHits,
-      postAttackRoll,
-      postAttackRollComplete,
-      preWaitForDamageRoll,
-      preDamageRoll,
-      postWaitForDamageRoll,
-      preConfirmRoll,
-      postConfirmRoll,
-      preDamageRollStarted,
-      postDamageRollStarted,
-      preDamageRollComplete,
-      postDamageRoll,
-      postDamageRollComplete,
-      preWaitForSaves,
-      preSave,
-      postWaitForSaves,
-      preSavesComplete,
-      postSave,
-      postSavesComplete,
-      preAllRollsComplete,
-      preDamageApplication,
-      postAllRollsComplete,
-      preApplyDynamicEffects,
-      preActiveEffects,
-      postApplyDynamicEffects,
-      preRollFinished,
-      postActiveEffects,
-      postRollFinished,
-      preCleanup,
-      postCleanup,
-      preCompleted,
+      preTargeting
+      preItemRoll
+      postNoAction
+      preStart
+      postStart
+      preAoETargetConfirmation
+      postAoETargetConfirmation
+      preValidateRoll
+      postValidateRoll
+      prePreambleComplete
+      preambleComplete
+      postPreambleComplete
+      preWaitForAttackRoll
+      preAttackRoll
+      postWaitForAttackRoll
+      preAttackRollComplete
+      isAttacked*
+      preCheckHits
+      isHit*
+      postAttackRoll
+      postAttackRollComplete
+      preWaitForDamageRoll
+      preDamageRoll
+      postWaitForDamageRoll
+      preConfirmRoll
+      postConfirmRoll
+      preDamageRollStarted
+      DamageBonus**
+      postDamageRollStarted
+      preDamageRollComplete
+      postDamageRoll
+      postDamageRollComplete
+      preWaitForSaves
+      preSave
+      isSaveSuccess*
+      isSaveFailure*
+      isSave*
+      postWaitForSaves
+      preSavesComplete
+      postSave
+      postSavesComplete
+      preAllRollsComplete
+      preTargetDamageApplication*
+      isDamaged*
+      preDamageApplication
+      postAllRollsComplete
+      preApplyDynamicEffects
+      preActiveEffects
+      postApplyDynamicEffects
+      preRollFinished
+      postActiveEffects
+      postRollFinished
+      preCleanup
+      postCleanup
+      preCompleted
+
+      No notation: OnUse
+      * TargetOnUse
+      ** DamageBonus
 
     // Target On Use Workflows
     flags.midi-qol.onUseMacroName | Custom | <macroRef>,<targetOnUse>{.<source>}
