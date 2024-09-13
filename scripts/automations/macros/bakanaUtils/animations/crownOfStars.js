@@ -17,10 +17,11 @@ function create(
     id = 'Crown of Stars',
     file = 'jb2a.twinkling_stars.points07.white',
     scale = 0.5,
+    radius = 0.5,
   } = {}
 ) {
   if (!macroUtil.dependsOn.hasRecommended({ id: 'sequencer' })) return;
-  if (file.startsWith('jb2a.'))
+  if (file.startsWith('jb2a.')) {
     if (
       !macroUtil.dependsOn.hasSomeRecommended([
         { id: 'jb2a_patreon' },
@@ -28,6 +29,7 @@ function create(
       ])
     )
       return;
+  }
 
   function rotateSprites(sequence) {
     sequence = sequence
@@ -60,7 +62,7 @@ function create(
     sequence = loopDaLoop(sequence, 'sprite', 500);
     sequence = loopDaLoop(sequence, 'spriteContainer', 0);
     return sequence
-      .spriteOffset({ x: 0.5 }, { gridUnits: true })
+      .spriteOffset({ x: radius }, { gridUnits: true })
       .rotate((360 / moteCount) * idx)
       .name(`${id} - ${idx}`);
   }
