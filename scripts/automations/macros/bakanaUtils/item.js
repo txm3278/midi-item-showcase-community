@@ -13,11 +13,11 @@ function config(workflow, cfgs, opts) {
 //    https://github.com/MotoMoto1234/Midi-Wiki/wiki/Tutorials-‐-How-to-Make-CPR-Actions-in-Token-Action-Hud
 //---------------------------------------------------------------------------------------------------------------
 
-async function syntheticItem(itemData, actor, updates = {}) {
+async function syntheticItem(itemData, actor, updates = {}, forceRecreate = false) {
   let item;
   foundry.utils.mergeObject(updates, { 'flags.world.syntheticItem': true });
 
-  if (itemData.flags?.world?.syntheticItem && itemData.parent == actor) {
+  if (itemData.flags?.world?.syntheticItem && itemData.parent == actor && !forceRecreate) {
     item = itemData;
   } else if (
     macroUtil.dependsOn.isActivated({ id: 'chris-premades', min: '0.12.27' })
