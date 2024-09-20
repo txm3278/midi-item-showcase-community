@@ -11,7 +11,7 @@ export async function colossusSlayer({
   options,
 }) {
   async function preDamageRollComplete() {
-    if (item.system.actionType != 'mwak') return;
+    if (!item.system.actionType.includes('wak')) return;
     if (macroUtil.combat.isSameTurn(persistentData.combat)) return;
     persistentData.combat = macroUtil.combat.getCombatInfo();
 
