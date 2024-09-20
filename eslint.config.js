@@ -60,6 +60,8 @@ export default [
         randomID: 'writable',
         SimpleCalendar: 'writable',
         Folder: 'writable',
+        GlobalLightSource: 'writable',
+        ClockwiseSweepPolygon: 'writable'
       },
     },
     rules: {

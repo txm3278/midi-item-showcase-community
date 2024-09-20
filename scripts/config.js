@@ -10,7 +10,7 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['Moto Moto'],
       },
-      'All of Nothing Armor': {
+      'All or Nothing Armor': {
         name: 'All of Nothing Armor',
         type: 'Item',
         homebrew: true,
