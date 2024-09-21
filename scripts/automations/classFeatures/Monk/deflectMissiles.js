@@ -31,7 +31,7 @@ export async function deflectMissiles({
   const imgPropName = game.version < 12 ? 'icon' : 'img';
   const effectData = {
     changes: [
-      { key: 'flags.midi-qol.DR.all', mode: 0, value: deflectRoll.total },
+      { key: 'system.traits.dm.midi.all', mode: 2, value: -deflectRoll.total },
     ],
     [imgPropName]: 'icons/skills/ranged/arrow-flying-white-blue.webp',
     duration: { rounds: 1 },
@@ -42,7 +42,9 @@ export async function deflectMissiles({
   await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
   if (deflectRoll.total >= args[0].workflowOptions.damageTotal) {
     let throwBack = false;
-    if (actor.items.get(scope.macroItem.system.consume.target).system.uses.value) {
+    if (
+      actor.items.get(scope.macroItem.system.consume.target).system.uses.value
+    ) {
       throwBack = await Dialog.confirm({
         title: game.i18n.localize('Return Missile'),
         content: `<p>Throw the missile back at the attacker</p>`,
