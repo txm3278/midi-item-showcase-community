@@ -12,6 +12,10 @@ export async function colossusSlayer({
 }) {
   async function preDamageRollComplete() {
     if (!item.system.actionType.includes('wak')) return;
+    const targetActorHp = workflow.targets.first()?.actor.system.attributes.hp;
+    if (!targetActorHp) return; // no target... weird
+    if (targetActorHp.value == targetActorHp.max) return;
+
     if (macroUtil.combat.isSameTurn(persistentData.combat)) return;
     persistentData.combat = macroUtil.combat.getCombatInfo();
 
