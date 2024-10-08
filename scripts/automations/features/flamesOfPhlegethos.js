@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v2.1.3
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -62,7 +62,7 @@ export async function flamesOfPhlegethos({
   // Default name of the item
   const DEFAULT_ITEM_NAME = 'Flames of Phlegethos';
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   // Normally should be one, but for test purpose can be set to an higher value
   const rerollNumber = 1;
 
@@ -181,9 +181,7 @@ export async function flamesOfPhlegethos({
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'isDamaged'
   ) {
-    if (
-      !['mwak', 'msak'].includes(scope.rolledItem?.system?.actionType)
-    ) {
+    if (!['mwak', 'msak'].includes(scope.rolledItem?.system?.actionType)) {
       // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);

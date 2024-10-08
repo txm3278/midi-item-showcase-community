@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v1.0.0
+// v1.1.0
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -62,7 +62,7 @@ export async function wardingManeuver({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Warding Maneuver';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(

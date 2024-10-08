@@ -2,12 +2,13 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v1.0.2
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, item macro [on],[off]
 //  - MidiQOL "on use" item macro, [preTargeting][postActiveEffects]
 //  - Active Token Effects
+//  - Tidy 5e Sheets (optional)
 //
 // How to configure:
 // The item details must be:
@@ -34,7 +35,7 @@
 //     - Other Damage:
 //       ["undead"].includes("@raceOrType")
 //   - This item macro code must be added to the DIME code of this item.
-// Two effects must also be added:
+// One effect must also be added:
 //   - Sun Blade:
 //      - Transfer Effect to Actor on item equip (checked)
 //      - Effects:
@@ -43,7 +44,12 @@
 // Usage:
 // When equipped and attuned, a feat is added that allows to activate/deactivate the blade.
 // When this feat is used, it allows to activate the blade, when activated an AE with the light effect
-// is added as also another feat to adjust the blade's light radius.
+// is added as also another feat to adjust the blade's light radius. If using Tidy 5e Sheets, you
+// can specify a custom section for the created feats. Edit the passive Sun Blade effect, and add
+// a section name in the value of the 'macro.itemMacro' change. If the value contains a space,
+// put the value in double quotes, e.g.: "My custom section"
+//
+//
 //
 // Description:
 // In the "on" DAE macro call (of the Sun Blade transfer effect):
@@ -102,7 +108,7 @@ export async function sunBlade({
   const REDUCE_CHOICE = 'reduce';
 
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   const dependencies = ['dae', 'midi-qol', 'ATL'];
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
@@ -145,11 +151,11 @@ export async function sunBlade({
         `flags.${MODULE_ID}.${ACTIVATED}`
       )
     ) {
-      await activateBlade(item);
+      await activateBlade(item, args[1]);
       await adjustProficiency(item);
     } else {
       // Transfer AE
-      await createActivationAction(item);
+      await createActivationAction(item, args[1]);
     }
   } else if (args[0] === 'off') {
     if (
@@ -198,7 +204,7 @@ export async function sunBlade({
         );
         return;
       }
-      await handleActivatePostActiveEffects(scope.macroItem);
+      await handleActivatePostActiveEffects(scope.macroItem, scope.rolledItem);
       return;
     }
     const adjustLightOrigin = scope.rolledItem.getFlag(
@@ -227,8 +233,9 @@ export async function sunBlade({
    *   Deletes the Blade Activation effect.
    *
    * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {Item5e} usedItem - The activate/deactivate blade item.
    */
-  async function handleActivatePostActiveEffects(sourceItem) {
+  async function handleActivatePostActiveEffects(sourceItem, usedItem) {
     // Get item with activate item origin flag
     const activated = sourceItem.getFlag(MODULE_ID, ACTIVATED);
 
@@ -242,7 +249,10 @@ export async function sunBlade({
         ?.delete();
     } else {
       // Add active effect for blade activation
-      await createBladeActivationEffect(sourceItem);
+      await createBladeActivationEffect(
+        sourceItem,
+        usedItem?.getFlag('tidy5e-sheet', 'section')
+      );
     }
   }
 
@@ -362,8 +372,9 @@ export async function sunBlade({
    * Creates the blade activation/deactivation feat item.
    *
    * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
    */
-  async function createActivationAction(sourceItem) {
+  async function createActivationAction(sourceItem, tidy5eSection) {
     const itemName = `${sourceItem.name}: Activate/Deactivate blade`;
     const activateActionItemData = {
       type: 'feat',
@@ -388,7 +399,14 @@ export async function sunBlade({
         },
       },
     };
-
+    // Support for Tidy 5e Sheets custom sections
+    if (game.modules.get('tidy5e-sheet')?.active && tidy5eSection) {
+      foundry.utils.setProperty(
+        activateActionItemData,
+        'flags.tidy5e-sheet.section',
+        tidy5eSection
+      );
+    }
     // Add item that allows activating the blade
     await sourceItem.actor?.createEmbeddedDocuments('Item', [
       activateActionItemData,
@@ -398,18 +416,20 @@ export async function sunBlade({
   /**
    * Returns the effect data for the blade's activation.
    *
-   * @param {Item5e} sourceItem the Sun Blade item.
+   * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
    *
    * @returns {object} the active effect data for the blade's activation.
    */
-  async function createBladeActivationEffect(sourceItem) {
+  async function createBladeActivationEffect(sourceItem, tidy5eSection) {
     const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
+    const itemMacroValue = tidy5eSection ? `"${tidy5eSection}"` : '';
     const bladeActivationEffectData = {
       changes: [
         {
           key: 'macro.itemMacro',
           mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: '',
+          value: itemMacroValue,
           priority: '20',
         },
         {
@@ -476,6 +496,7 @@ export async function sunBlade({
         },
       },
     };
+
     await sourceItem.actor?.createEmbeddedDocuments('ActiveEffect', [
       bladeActivationEffectData,
     ]);
@@ -486,8 +507,9 @@ export async function sunBlade({
    * It also create and add a feat to adjust the blade's light radius.
    *
    * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
    */
-  async function activateBlade(sourceItem) {
+  async function activateBlade(sourceItem, tidy5eSection) {
     // Activate blade
     const sourceName = sourceItem.name;
     const updates = {
@@ -509,7 +531,7 @@ export async function sunBlade({
       },
     };
     await sourceItem.update(updates);
-    await createAdjustLightRadiusAction(sourceItem);
+    await createAdjustLightRadiusAction(sourceItem, tidy5eSection);
   }
 
   /**
@@ -518,8 +540,9 @@ export async function sunBlade({
    * removed when the effect is deleted.
    *
    * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
    */
-  async function createAdjustLightRadiusAction(sourceItem) {
+  async function createAdjustLightRadiusAction(sourceItem, tidy5eSection) {
     const sourceName =
       sourceItem.getFlag(MODULE_ID, SOURCE_NAME) ?? DEFAULT_ITEM_NAME;
     const itemName = `${sourceName}: Adjust light radius`;
@@ -546,10 +569,18 @@ export async function sunBlade({
         },
       },
     };
+    // Support for Tidy 5e Sheets custom sections
+    if (game.modules.get('tidy5e-sheet')?.active && tidy5eSection) {
+      foundry.utils.setProperty(
+        adjustLightRadiusActionItemData,
+        'flags.tidy5e-sheet.section',
+        tidy5eSection
+      );
+    }
 
     // Add item that allows adjusting the blade's light radius
     const [adjustLightRadiusActionItem] =
-      await sourceItem.actor.createEmbeddedDocuments('Item', [
+      await sourceItem.actor?.createEmbeddedDocuments('Item', [
         adjustLightRadiusActionItemData,
       ]);
     if (adjustLightRadiusActionItem) {

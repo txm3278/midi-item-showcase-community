@@ -1,9 +1,9 @@
 {
-  "name": "Great Weapon Master Attack",
+  "name": "Unwavering Mark",
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-TQEixdySgIjVVgMy\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feat has a charge when the requirements are met.</p><p><strong>Note:</strong> <em>Great Weapon Master</em> in MISC Feat should also be added to actor.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that marks a target when a melee attack is successful.<br />\n  It can also be activated to use the special attack if one was triggered by a marked target.<br />\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>",
       "chat": ""
     },
     "source": {
@@ -21,28 +21,28 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": null,
+      "value": "",
       "width": null,
       "units": "",
       "type": "",
       "prompt": true
     },
     "range": {
-      "value": null,
+      "value": 5,
       "long": null,
       "units": ""
     },
     "uses": {
-      "value": 0,
-      "max": "1",
-      "per": "charges",
+      "value": 1,
+      "max": "@abilities.str.mod",
+      "per": "lr",
       "recovery": "",
       "prompt": true
     },
     "consume": {
       "type": "",
       "target": "",
-      "amount": null,
+      "amount": 1,
       "scale": false
     },
     "ability": "",
@@ -63,7 +63,7 @@
       "scaling": "spell"
     },
     "type": {
-      "value": "feat",
+      "value": "class",
       "subtype": ""
     },
     "requirements": "",
@@ -76,7 +76,11 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "flags": {
     "infusions": {
@@ -84,83 +88,42 @@
     },
     "obsidian": {
       "source": {
-        "type": "feat"
+        "type": "class",
+        "text": "Fighter"
       }
     },
-    "core": {},
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preItemRoll]ItemMacro",
+      "onUseMacroName": "[preTargeting]ItemMacro",
       "rollAttackPerTarget": "never",
       "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
       "effectCondition": ""
     },
     "midiProperties": {
-      "confirmTargets": "never",
       "nodam": false,
       "fulldam": false,
       "halfdam": false,
       "autoFailFriendly": false,
-      "autoSaveFriendly": false,
       "rollOther": false,
       "critOther": false,
       "offHandWeapon": false,
       "magicdam": false,
       "magiceffect": false,
       "concentration": false,
-      "noConcentrationCheck": false,
       "toggleEffect": false,
       "ignoreTotalCover": false,
+      "autoSaveFriendly": false,
+      "noConcentrationCheck": false,
+      "confirmTargets": "never",
       "idr": false,
       "idi": false,
       "idv": false,
       "ida": false
     },
-    "dae": {
-      "macro": {
-        "name": "Great Weapon Master Attack",
-        "img": "icons/weapons/axes/axe-battle-skull-black.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.greatWeaponMasterAttack(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
-    "walledtemplates": {
-      "wallsBlock": "globalDefault",
-      "wallRestriction": "globalDefault"
-    },
-    "rest-recovery": {
-      "data": {
-        "recovery": {
-          "enabled": false
-        }
-      }
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
-    },
     "magicitems": {
       "enabled": false,
-      "default": "",
       "equipped": false,
       "attuned": false,
       "charges": "0",
@@ -172,12 +135,55 @@
       "rechargeType": "t1",
       "rechargeUnit": "r1",
       "sorting": "l"
+    },
+    "core": {},
+    "dae": {
+      "macro": {
+        "name": "Unwavering Mark",
+        "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.unwaveringMark(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "ownership": {
+          "default": 3
+        },
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
     }
   },
+  "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
   "effects": [
     {
-      "name": "Great Weapon Master Attack",
-      "origin": "Item.mcD0g8NnohY8m807",
+      "origin": "Compendium.ddb-shared-compendia.ddb-override.OiAfv4qsdzOF3u5n",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -187,93 +193,95 @@
         "startRound": null,
         "startTurn": null
       },
-      "transfer": true,
       "disabled": false,
-      "_id": "WA8Y2i8D7bmZjtLr",
+      "_id": "k6VChPqCYMCeFLPJ",
       "changes": [
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "",
-          "priority": 20
-        },
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
           "value": "ItemMacro,postActiveEffects",
           "priority": 20
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
         }
       ],
-      "description": "",
-      "statuses": [],
+      "tint": "#ffffff",
+      "transfer": true,
       "flags": {
-        "times-up": {
-          "isPassive": true
-        },
+        "times-up": {},
         "dae": {
-          "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,
-          "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "endEveryTurn",
-          "specialDuration": []
+          "specialDuration": [],
+          "dontApply": false,
+          "showIcon": false,
+          "disableIncapacitated": true
+        },
+        "core": {
+          "statusId": ""
         },
         "ActiveAuras": {
           "isAura": false,
           "aura": "None",
-          "nameOverride": "",
           "radius": "",
           "alignment": "",
           "type": "",
-          "customCheck": "",
           "ignoreSelf": false,
           "height": false,
           "hidden": false,
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
+          "nameOverride": "",
+          "customCheck": "",
           "wallsBlock": "system"
         }
       },
-      "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
-      "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+      "name": "Unwavering Mark",
+      "description": "",
+      "statuses": [],
+      "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!gfrkot22Ruv9gGoj.WA8Y2i8D7bmZjtLr"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!CLK8aVRT5I5eBEyr.k6VChPqCYMCeFLPJ"
     }
   ],
-  "img": "icons/weapons/axes/axe-battle-skull-black.webp",
-  "folder": null,
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "Y4IYXHUifrP8RFnx": 3,
     "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "12.331",
-    "createdTime": 1702224079058,
-    "modifiedTime": 1724965026810,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1728332985374,
+    "modifiedTime": 1728332985374,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "gfrkot22Ruv9gGoj",
+  "folder": "ZniCDCqUBftmEiPR",
+  "_id": "CLK8aVRT5I5eBEyr",
   "sort": 0,
-  "_key": "!items!gfrkot22Ruv9gGoj"
+  "_key": "!items!CLK8aVRT5I5eBEyr"
 }

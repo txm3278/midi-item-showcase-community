@@ -85,7 +85,11 @@
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "properties": [
+      "vocal",
+      "somatic"
+    ]
   },
   "name": "Gift of Alacrity",
   "flags": {
@@ -264,7 +268,7 @@
     "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1696694555343,
-    "modifiedTime": 1724968786152,
+    "modifiedTime": 1728346188435,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

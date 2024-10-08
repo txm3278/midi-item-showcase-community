@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to make a bonus melee weapon attack when the actor scores a critical hit or brings a
 // target to 0 HP with a melee weapon.
-// v2.0.0
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][each]
@@ -65,7 +65,7 @@ export async function greatWeaponMasterAttack({
   const DEFAULT_ITEM_NAME = 'Great Weapon Master Attack';
   const MODULE_ID = 'midi-item-showcase-community';
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
@@ -204,7 +204,10 @@ export async function greatWeaponMasterAttack({
         const message = `<p><strong>${scope.macroItem.name}</strong> - You can make a special bonus attack.</p>`;
         MidiQOL.addUndoChatMessage(
           await ChatMessage.create({
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type:
+              game.release.generation >= 12
+                ? CONST.CHAT_MESSAGE_STYLES.OTHER
+                : CONST.CHAT_MESSAGE_TYPES.OTHER,
             content: message,
             speaker: ChatMessage.getSpeaker({ actor, token }),
             whisper: ChatMessage.getWhisperRecipients('GM').map((u) => u.id),

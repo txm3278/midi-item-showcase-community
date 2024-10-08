@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-mhp8QUgzhNeiToO3\" class=\"secret\">\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p></section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p></details>",
       "chat": ""
     },
     "source": {
@@ -24,7 +24,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": null,
+      "value": "",
       "width": null,
       "units": "",
       "type": "self",
@@ -79,7 +79,11 @@
       "flat": false
     },
     "summons": null,
-    "properties": []
+    "properties": [],
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "flags": {
     "obsidian": {
@@ -109,11 +113,7 @@
       "magiceffect": false,
       "concentration": false,
       "noConcentrationCheck": false,
-      "ignoreTotalCover": false,
-      "idr": false,
-      "idi": false,
-      "idv": false,
-      "ida": false
+      "ignoreTotalCover": false
     },
     "scene-packer": {
       "hash": "57fdaf62c05d08490759dc973daccc70ea3e945d",
@@ -145,10 +145,11 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l",
-      "default": ""
+      "sorting": "l"
     },
-    "core": {},
+    "core": {
+      "sourceId": "Compendium.midi-item-showcase-community.misc-feats.Item.hFU3MQBV2JOc9GFk"
+    },
     "exportSource": {
       "world": "campaign-3",
       "system": "dnd5e",
@@ -257,41 +258,41 @@
       "_id": "q5Le1zgY3WEmhZFu",
       "description": "",
       "origin": "Item.sD8SN0BIFqIdx1Ie",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!0mBFJvNS6qklBtO7.q5Le1zgY3WEmhZFu"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!dtSUJ2AMK48F81aw.q5Le1zgY3WEmhZFu"
     }
   ],
   "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
   "folder": null,
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "compendiumSource": "Compendium.midi-item-showcase-community.misc-feats.Item.hFU3MQBV2JOc9GFk",
+    "duplicateSource": null,
     "coreVersion": "12.331",
-    "createdTime": 1706483810724,
-    "modifiedTime": 1724965039697,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1728333070222,
+    "modifiedTime": 1728333070222,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3,
     "9QqTZMFq1dhCIYAR": 3
   },
-  "_id": "0mBFJvNS6qklBtO7",
+  "_id": "dtSUJ2AMK48F81aw",
   "sort": 0,
-  "_key": "!items!0mBFJvNS6qklBtO7"
+  "_key": "!items!dtSUJ2AMK48F81aw"
 }

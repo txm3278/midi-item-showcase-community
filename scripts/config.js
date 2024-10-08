@@ -26,7 +26,7 @@ export function setConfig() {
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
         type: 'Item',
-        version: '3.1.3',
+        version: '3.2.0',
         authors: ['Elwin'],
       },
       'Aspect of the Beast: Bear': {
@@ -56,7 +56,7 @@ export function setConfig() {
       Bless: {
         name: 'Bless',
         type: 'Spell',
-        version: '0.1.2',
+        version: '0.1.3',
         authors: ['Moto Moto'],
       },
       'Blessed Healer': {
@@ -80,7 +80,7 @@ export function setConfig() {
       'Channel Divinity: Vow of Enmity': {
         name: 'Channel Divinity: Vow of Enmity',
         type: 'Class Feature',
-        version: '2.1.0',
+        version: '2.3.0',
         authors: ['Elwin'],
       },
       'Clockwork Amulet': {
@@ -125,6 +125,12 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['Bakana'],
       },
+      'Dampen Elements': {
+        name: 'Dampen Elements',
+        type: 'Class Feature',
+        version: '1.1.0',
+        authors: ['Elwin'],
+      },
       'Dark Ones Own Luck': {
         name: 'Dark Ones Own Luck',
         type: 'Class Feature',
@@ -152,7 +158,7 @@ export function setConfig() {
       'Divine Allegiance': {
         name: 'Divine Allegiance',
         type: 'Class Feature',
-        version: '3.0.3',
+        version: '3.1.0',
         authors: ['Elwin'],
       },
       Divination: {
@@ -218,13 +224,13 @@ export function setConfig() {
       'Flames of Phlegethos': {
         name: 'Flames of Phlegethos',
         type: 'Feat',
-        version: '2.2.0',
+        version: '2.2.1',
         authors: ['Elwin'],
       },
       'Flash of Genius': {
         name: 'Flash of Genius',
         type: 'Class Feature',
-        version: '1.1.0',
+        version: '1.2.0',
         authors: ['Elwin'],
       },
       'Foe Slayer': {
@@ -242,13 +248,13 @@ export function setConfig() {
       'Gift of Alacrity': {
         name: 'Gift of Alacrity',
         type: 'Spell',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['Moto Moto'],
       },
       'Gift of the Metallic Dragon': {
         name: 'Gift of the Metallic Dragon',
         type: 'Feat',
-        version: '3.0.3',
+        version: '3.1.0',
         authors: ['Elwin'],
       },
       'Goggles of Object Reading': {
@@ -260,25 +266,25 @@ export function setConfig() {
       Goodberry: {
         name: 'Goodberry',
         type: 'Spell',
-        version: '2.0.5',
+        version: '2.1.0',
         authors: ['Elwin'],
       },
       'Great Weapon Master': {
         name: 'Great Weapon Master',
         type: 'Feat',
-        version: '2.1.6',
+        version: '2.2.0',
         authors: ['Elwin'],
       },
       'Great Weapon Master Attack': {
         name: 'Great Weapon Master Attack',
         type: 'Feat',
-        version: '2.1.5',
+        version: '2.2.0',
         authors: ['Elwin'],
       },
       'Guardian Emblem': {
         name: 'Guardian Emblem',
         type: 'Item',
-        version: '3.0.3',
+        version: '3.2.0',
         authors: ['Elwin'],
       },
       Healer: {
@@ -296,7 +302,7 @@ export function setConfig() {
       Immolation: {
         name: 'Immolation',
         type: 'Spell',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['Moto Moto', 'SagaTympana', 'Worthlesston'],
       },
       'Indomitable Might': {
@@ -347,6 +353,12 @@ export function setConfig() {
         type: 'Spell',
         version: '1.0.1',
         authors: ['Fridan99'],
+      },
+      'Meteor Swarm': {
+        name: 'Meteor Swarm',
+        type: 'Spell',
+        version: '1.1.0',
+        authors: ['Tyler'],
       },
       'Moon-Touched Sword, Greatsword': {
         name: 'Moon-Touched Sword, Greatsword',
@@ -439,7 +451,7 @@ export function setConfig() {
       'Power Word Pain': {
         name: 'Power Word Pain',
         type: 'Spell',
-        version: '0.1.2',
+        version: '0.1.3',
         authors: ['Xenophes'],
       },
       'Primal Champion': {
@@ -463,13 +475,13 @@ export function setConfig() {
       'Protection from Poison': {
         name: 'Protection from Poison',
         type: 'Spell',
-        version: '1.0.1',
+        version: '1.1.0',
         authors: ['Moto Moto'],
       },
       'Psionic Power: Protective Field': {
         name: 'Psionic Power: Protective Field',
         type: 'Class Feature',
-        version: '3.0.3',
+        version: '3.1.0',
         authors: ['Elwin'],
       },
       'Psychic Blades': {
@@ -517,13 +529,13 @@ export function setConfig() {
       "Sentinel at Death's Door": {
         name: "Sentinel at Death's Door",
         type: 'Class Feature',
-        version: '3.0.3',
+        version: '3.1.0',
         authors: ['Elwin'],
       },
       Sharpshooter: {
         name: 'Sharpshooter',
         type: 'Feat',
-        version: '2.0.2',
+        version: '2.1.0',
         authors: ['Elwin'],
       },
       'Shield of Missile Attraction': {
@@ -541,13 +553,13 @@ export function setConfig() {
       Snare: {
         name: 'Snare',
         type: 'Spell',
-        version: '0.1.1',
+        version: '1.0.0',
         authors: ['Quinn Dexter'],
       },
       'Sorrowful Fate': {
         name: 'Sorrowful Fate',
         type: 'Class Feature',
-        version: '1.0.0',
+        version: '1.1.0',
         authors: ['Elwin'],
       },
       'Soul Cage': {
@@ -565,7 +577,7 @@ export function setConfig() {
       'Spirit Shield': {
         name: 'Spirit Shield',
         type: 'Class Feature',
-        version: '3.0.3',
+        version: '3.1.0',
         authors: ['Elwin'],
       },
       'Spirit Totem: Bear Spirit': {
@@ -597,13 +609,13 @@ export function setConfig() {
       'Steady Aim': {
         name: 'Steady Aim',
         type: 'Class Feature',
-        version: '2.2.3',
+        version: '2.3.0',
         authors: ['Elwin'],
       },
       'Sun Blade': {
         name: 'Sun Blade',
         type: 'Item',
-        version: '1.0.0',
+        version: '1.2.0',
         authors: ['Elwin'],
       },
       'Tangler Grenade': {
@@ -640,13 +652,13 @@ export function setConfig() {
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '2.1.3',
+        version: '2.2.0',
         authors: ['Elwin'],
       },
       'Vengeful Ancestors': {
         name: 'Vengeful Ancestors',
         type: 'Class Feature',
-        version: '2.0.5',
+        version: '2.1.0',
         authors: ['Elwin'],
       },
       Vial: {
@@ -658,7 +670,7 @@ export function setConfig() {
       'Vigilant Guardian': {
         name: 'Vigilant Guardian',
         type: 'Race Feature',
-        version: '3.0.3',
+        version: '3.1.0',
         authors: ['Elwin'],
       },
       'Wand of Winter': {
@@ -670,13 +682,13 @@ export function setConfig() {
       'Warding Flare': {
         name: 'Warding Flare',
         type: 'Class Feature',
-        version: '2.0.3',
+        version: '2.1.0',
         authors: ['Elwin'],
       },
       'Warding Maneuver': {
         name: 'Warding Maneuver',
         type: 'Class Feature',
-        version: '1.0.1',
+        version: '1.1.0',
         authors: ['Elwin'],
       },
       'Wukka Nuts': {
@@ -846,6 +858,13 @@ export function setConfig() {
           name: 'Reactive',
           version: '0.1.0',
           authors: ['Muhammad2126'],
+        },
+      },
+      Lich: {
+        'Negative Energy Tether': {
+          name: 'Negative Energy Tether',
+          version: '1.2.0',
+          authors: ['Elwin'],
         },
       },
       Lindwurm: {

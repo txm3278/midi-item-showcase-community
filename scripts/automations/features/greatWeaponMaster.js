@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to toggle on/off or prompt the -5 penalty to hit and +10 bonus to the damage on a
 // heavy weapon melee attack. Note: it supports checking for melee weapon attack with a thrown property.
-// v1.3.1
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -68,7 +68,7 @@ export async function greatWeaponMaster({
   const DEFAULT_ITEM_NAME = 'Great Weapon Master';
   const MODULE_ID = 'midi-item-showcase-community';
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   const OFF_STATE = 0;
   const ON_STATE = 1;
   const PROMPT_STATE = 2;

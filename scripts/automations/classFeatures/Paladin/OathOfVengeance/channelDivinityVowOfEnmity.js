@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v2.2.0
+// v2.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -63,7 +63,7 @@ export async function channelDivinityVowOfEnmity({
   options,
 }) {
   const DEFAULT_ITEM_NAME = 'Channel Divinity: Vow of Enmity';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   const dependencies = ['dae', 'times-up', 'midi-qol'];
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {

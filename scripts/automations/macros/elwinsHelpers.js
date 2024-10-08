@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.4.0
+// v2.6.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -12,10 +12,13 @@
 // Description:
 // This macro exposes mutiple utility functions used by different item macros.
 // Exported functions (see each function for documentation):
+// - elwinHelpers.isDebugEnabled
+// - elwinHelpers.setDebugEnabled
 // - elwinHelpers.doThirdPartyReaction
 // - elwinHelpers.getTargetDivs
 // - elwinHelpers.hasItemProperty
 // - elwinHelpers.reduceAppliedDamage
+// - elwinHelpers.calculateAppliedDamage
 // - elwinHelpers.getMidiItemChatMessage
 // - elwinHelpers.insertTextIntoMidiItemCard
 // - elwinHelpers.requirementsSatisfied
@@ -50,8 +53,10 @@
 //   - thirdPartyReactionTrigger: currently supported values
 //     - tpr.isTargeted: this is called in MidiQOL preValidateRoll, which is just before it validates a target’s range from the attacker.
 //     - tpr.isPreAttacked: this is called just before the attacker’s d20 roll.
+//     - tpr.isAttacked: this is called after the the attacker’s d20 roll but before validating if a target was hit or missed.
 //     - tpr.isHit: this is called after MidiQOL validated that a target was hit.
 //     - tpr.isMissed: this is called after MidiQOL validated that a target was missed.
+//     - tpr.isPreDamaged: this is called before the attacker's damage roll.
 //     - tpr.isDamaged: this is called after MidiQOL computed the damage to be dealt to a target but before it is applied.
 //     - tpr.isHealed: this is called after MidiQOL computed the healing to be done to a target but before it is applied.
 //     - tpr.isPreCheckSave: this is called just before a saving throw check is asked from the target.
@@ -73,7 +78,7 @@
 //   - tpr.item: reaction item roll data.
 //   - tpr.actor: reaction item owner’s roll data.
 //   - tpr.actorId: actor id of the reaction item owner’s.
-//   - tpr.tokenUuid: actor UUID of the reaction item owner’s.
+//   - tpr.actorUuid: actor UUID of the reaction item owner’s.
 //   - tpr.tokenId: token id associated with the reaction item owner’s.
 //   - tpr.tokenUuid: token UUID associated with the reaction item owner’s.
 //   - tpr.canSeeTriggerSource: boolean to indicate if the owner canSee the triggerSource, usually the target but in some cases the attacker.
@@ -85,10 +90,10 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '2.4.0';
+  const VERSION = '2.6.0';
   const MACRO_NAME = 'elwin-helpers';
-  const debug = false;
   const active = true;
+  let debug = false;
   let depReqFulfilled = false;
 
   const TPR_OPTIONS = ['triggerSource', 'ignoreSelf', 'canSee', 'pre', 'post'];
@@ -157,7 +162,17 @@ export function runElwinsHelpers() {
       'handlePreAttackRollId',
       handlePreAttackRoll
     );
+    setHook(
+      'midi-qol.preCheckHits',
+      'handlePreCheckHitsId',
+      handlePreCheckHits
+    );
     setHook('midi-qol.hitsChecked', 'handleHitsCheckedId', handleHitsChecked);
+    setHook(
+      'midi-qol.preDamageRoll',
+      'handlePreDamageRollId',
+      handlePreDamageRoll
+    );
     setHook(
       'midi-qol.preTargetDamageApplication',
       'handlePreTargetDamageApplId',
@@ -173,6 +188,26 @@ export function runElwinsHelpers() {
       'handlePostCheckSavesId',
       handlePostCheckSaves
     );
+    if (
+      foundry.utils.isNewerVersion(
+        game.modules.get('midi-qol')?.version,
+        '11.6'
+      )
+    ) {
+      // Only supported since midi 11.6+
+      setHook(
+        'midi-qol.dnd5ePreCalculateDamage',
+        'handleMidiDnd5ePreCalculateDamageId',
+        handleMidiDnd5ePreCalculateDamage
+      );
+      setHook(
+        'midi-qol.dnd5eCalculateDamage',
+        'handleMidiDnd5eCalculateDamageId',
+        handleMidiDnd5eCalculateDamage
+      );
+    }
+    exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
+    exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
     // Note: keep this name to be backward compatible
     exportIdentifier('MidiQOL_doThirdPartyReaction', doThirdPartyReaction);
@@ -180,6 +215,10 @@ export function runElwinsHelpers() {
     exportIdentifier('elwinHelpers.getTargetDivs', getTargetDivs);
     exportIdentifier('elwinHelpers.hasItemProperty', hasItemProperty);
     exportIdentifier('elwinHelpers.reduceAppliedDamage', reduceAppliedDamage);
+    exportIdentifier(
+      'elwinHelpers.calculateAppliedDamage',
+      calculateAppliedDamage
+    );
     exportIdentifier(
       'elwinHelpers.getMidiItemChatMessage',
       getMidiItemChatMessage
@@ -229,6 +268,22 @@ export function runElwinsHelpers() {
     // Note: classes need to be exported after they are declared...
 
     registerRemoteFunctions();
+  }
+
+  /**
+   * Returns the debug flag value. When true, items made by Elwin will output debug info.
+   * @returns {boolean} the current debug flag value.
+   */
+  function isDebugEnabled() {
+    return debug;
+  }
+
+  /**
+   * Sets the debug flag value.
+   * @param {boolean} Enabled - The new debug flag value.
+   */
+  function setDebugEnabled(enabled) {
+    debug = enabled;
   }
 
   /**
@@ -385,6 +440,22 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Triggers isAttacked third party reactions.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   * @param {object} options - Options passed by midi qol.
+   */
+  async function handlePreCheckHits(workflow, options) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, {
+        workflow,
+        options,
+      });
+    }
+
+    await handleThirdPartyReactions(workflow, ['isAttacked'], options);
+  }
+
+  /**
    * Triggers isHit and isMissed third party reactions.
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
    * @param {object} options - Options passed by midi qol.
@@ -395,6 +466,18 @@ export function runElwinsHelpers() {
     }
 
     await handleThirdPartyReactions(workflow, ['isHit', 'isMissed'], options);
+  }
+
+  /**
+   * Triggers isPreDamaged third party reactions.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  async function handlePreDamageRoll(workflow) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreDamageRoll.`, workflow);
+    }
+
+    await handleThirdPartyReactions(workflow, ['isPreDamaged']);
   }
 
   /**
@@ -410,45 +493,44 @@ export function runElwinsHelpers() {
         options,
       });
     }
+    let appliedDamage = options?.damageItem?.appliedDamage;
+    if (!appliedDamage) {
+      // compute total damage applied to target
+      appliedDamage = options?.damageItem?.damageDetail.reduce(
+        (total, d) =>
+          total + (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
+        0
+      );
+      appliedDamage =
+        appliedDamage > 0
+          ? Math.floor(appliedDamage)
+          : Math.ceil(appliedDamage);
+    }
+
     if (
-      options.workflow?.damageItem &&
-      options.workflow.damageItem.appliedDamage !== 0 &&
+      options?.damageItem &&
+      appliedDamage !== 0 &&
       (options.workflow.hitTargets.has(target) ||
         options.workflow.hitTargetsEC.has(target) ||
         options.workflow.saveItem.hasSave)
     ) {
-      if (options.workflow.damageItem.appliedDamage > 0) {
+      // Set our own total damage to make sure it is available, currently midi does not provide a total of the non RAW damage
+      options.damageItem.elwinHelpersEffectiveDamage = appliedDamage;
+      const conditionAttr = 'workflow.damageItem?.elwinHelpersEffectiveDamage';
+      if (appliedDamage > 0) {
         await handleThirdPartyReactions(options.workflow, ['isDamaged'], {
           item: options?.item,
           target,
-          extraActivationCond: 'workflow.damageItem?.appliedDamage > 0',
+          extraActivationCond: `${conditionAttr} > 0`,
         });
       } else {
         await handleThirdPartyReactions(options.workflow, ['isHealed'], {
           item: options?.item,
           target,
-          extraActivationCond: 'workflow.damageItem?.appliedDamage < 0',
+          extraActivationCond: `${conditionAttr} < 0`,
         });
       }
     }
-  }
-
-  /**
-   * Triggers isHealed third party reactions.
-   * @param {Token5e} target - The target that is healed.
-   * @param {object} options - Options passed by midi qol.
-   */
-  async function handleIsHealed(target, options) {
-    if (debug) {
-      console.warn(`${MACRO_NAME} | handleIsHealed.`, { target, options });
-    }
-
-    await handleThirdPartyReactions(options.workflow, ['isHealed'], {
-      item: options?.item,
-      target,
-      extraActivationCond:
-        'workflow.damageItem && workflow.damageItem.appliedDamage < 0',
-    });
   }
 
   /**
@@ -461,6 +543,64 @@ export function runElwinsHelpers() {
     }
 
     await handleThirdPartyReactions(workflow, ['isPreCheckSave']);
+  }
+
+  /**
+   * Handles the midi pre calculate damage hook event to cleanup any custom damage details before computing damage.
+   *
+   * @param {Actor5e} actor - The actor being damaged.
+   * @param {DamageDescription[]} damages - Damage descriptions.
+   * @param {DamageApplicationOptions} options - Additional damage application options.
+   * @returns {boolean} Explicitly return `false` to prevent damage application.
+   *
+   */
+  function handleMidiDnd5ePreCalculateDamage(actor, damages, options) {
+    // Remove any custom damage prevention
+    while (
+      damages.find((di, idx) => {
+        if (di.type === 'none' && di.active?.DP) {
+          damages.splice(idx, 1);
+          return true;
+        }
+        return false;
+      })
+    );
+  }
+
+  /**
+   * Handles the midi calculate damage hook event to process damagePrevention option.
+   *
+   * @param {Actor5e} actor - The actor being damaged.
+   * @param {DamageDescription[]} damages - Damage descriptions.
+   * @param {DamageApplicationOptions} options - Additional damage application options.
+   * @returns {boolean} Explicitly return `false` to prevent damage application.
+   */
+  function handleMidiDnd5eCalculateDamage(actor, damages, options) {
+    if (!(options.elwinHelpers?.damagePrevention > 0)) {
+      // No damage prevention or not valid
+      return true;
+    }
+    const totalDamage = damages.reduce((total, damage) => {
+      total +
+        (['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value);
+    }, 0);
+    if (totalDamage <= 0) {
+      // No damage to prevent, do nothing
+      return true;
+    }
+    const damagePrevention = Math.min(
+      options.elwinHelpers.damagePrevention,
+      totalDamage
+    );
+    if (damagePrevention) {
+      damages.push({
+        type: 'none',
+        value: -damagePrevention,
+        active: { DP: true, multiplier: 1 },
+        properties: new Set(),
+      });
+    }
+    return true;
   }
 
   /**
@@ -696,6 +836,10 @@ export function runElwinsHelpers() {
         reactionFlavor =
           '{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction';
         break;
+      case 'isPreDamaged':
+        reactionFlavor =
+          '{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction';
+        break;
       case 'isDamaged':
       case 'preTargetDamageApplication':
         reactionFlavor =
@@ -767,6 +911,7 @@ export function runElwinsHelpers() {
         'isDamaged',
         'isHealed',
         'isAttacked',
+        'isPreDamaged',
       ].includes(reactionTriggerName)
     ) {
       const showAttackRoll =
@@ -966,6 +1111,7 @@ export function runElwinsHelpers() {
         targets = options.target ? [options.target] : [];
         break;
       case 'isHit':
+      case 'isPreDamaged':
       case 'isPreCheckSave':
       case 'isPostCheckSave':
         targets = [...workflow.hitTargets, ...workflow.hitTargetsEC];
@@ -979,6 +1125,7 @@ export function runElwinsHelpers() {
         break;
       case 'isTargeted':
       case 'isPreAttacked':
+      case 'isAttacked':
       default:
         targets = [...workflow.targets];
         break;
@@ -1665,22 +1812,201 @@ export function runElwinsHelpers() {
    *
    * @param {object} damageItem - The MidiQOL damageItem to be updated.
    * @param {number} preventedDmg - The amount of damage prevented.
+   * @param {Item5e} sourceItem - Source item of the damage prevention. (optional)
    */
-  function reduceAppliedDamage(damageItem, preventedDmg) {
-    const previousAppliedDmg = damageItem.appliedDamage;
-    let remainingPrevDmg = Math.min(previousAppliedDmg, preventedDmg);
-    damageItem.appliedDamage -= remainingPrevDmg;
-    if (remainingPrevDmg > 0 && damageItem.hpDamage > 0) {
-      const hpPrevDmg = Math.min(damageItem.hpDamage, remainingPrevDmg);
-      damageItem.hpDamage -= hpPrevDmg;
-      damageItem.newHP += hpPrevDmg;
-      remainingPrevDmg -= hpPrevDmg;
+  function reduceAppliedDamage(damageItem, preventedDmg, sourceItem) {
+    if (!(preventedDmg > 0)) {
+      // Only values greater than 0 are applied.
+      console.warn(
+        `${MACRO_NAME} | Only greater than 0 damage prevention is supported.`,
+        {
+          damageItem,
+          preventedDmg,
+          sourceItem,
+        }
+      );
+      return;
     }
-    if (remainingPrevDmg > 0 && damageItem.tempDamage > 0) {
-      const tempHpPrevDmg = Math.min(damageItem.tempDamage, remainingPrevDmg);
-      damageItem.tempDamage -= tempHpPrevDmg;
-      damageItem.newTempHP += tempHpPrevDmg;
-      remainingPrevDmg -= tempHpPrevDmg;
+    if (
+      foundry.utils.isNewerVersion(
+        game.modules.get('midi-qol')?.version,
+        '11.6'
+      )
+    ) {
+      const currentDamagePrevention =
+        foundry.utils.getProperty(
+          damageItem.calcDamageOptions,
+          'elwinHelpers.damagePrevention'
+        ) ?? 0;
+      foundry.utils.setProperty(
+        damageItem.calcDamageOptions,
+        'elwinHelpers.damagePrevention',
+        currentDamagePrevention + preventedDmg
+      );
+      const actor = fromUuidSync(damageItem.actorUuid);
+      damageItem.damageDetail = actor?.calculateDamage(
+        damageItem.rawDamageDetail,
+        damageItem.calcDamageOptions
+      );
+      calculateAppliedDamage(damageItem);
+      if (sourceItem && damageItem.details) {
+        damageItem.details.push(`${sourceItem.name} - DP`);
+      }
+      return;
+    }
+
+    let effectiveDamagePrevented;
+    if (damageItem.appliedDamage) {
+      let amount = damageItem.damageDetail.reduce(
+        (amount, d) =>
+          amount +
+          (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value ?? d.damage),
+        0
+      );
+      amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
+
+      // Adjust value for overflow damage, reduce the prevented damage by the amount of damage overflow
+      if (amount > damageItem.appliedDamage) {
+        preventedDmg -= amount - damageItem.appliedDamage;
+      }
+      const previousHpDmg = damageItem.appliedDamage;
+      let remainingPrevDmg = Math.min(previousHpDmg, preventedDmg);
+      damageItem.appliedDamage -= remainingPrevDmg;
+      if (remainingPrevDmg > 0 && damageItem.hpDamage > 0) {
+        const hpPrevDmg = Math.min(damageItem.hpDamage, remainingPrevDmg);
+        damageItem.hpDamage -= hpPrevDmg;
+        damageItem.newHP += hpPrevDmg;
+        remainingPrevDmg -= hpPrevDmg;
+      }
+      if (remainingPrevDmg > 0 && damageItem.tempDamage > 0) {
+        const tempHpPrevDmg = Math.min(damageItem.tempDamage, remainingPrevDmg);
+        damageItem.tempDamage -= tempHpPrevDmg;
+        damageItem.newTempHP += tempHpPrevDmg;
+        remainingPrevDmg -= tempHpPrevDmg;
+      }
+      effectiveDamagePrevented = Math.max(0, preventedDmg - remainingPrevDmg);
+    } else {
+      let { amount, temp, dp } = damageItem.damageDetail.reduce(
+        (acc, d) => {
+          if (d.type === 'temphp') {
+            acc.temp += d.value;
+          } else if (
+            d.type !== 'midi-none' &&
+            !(d.type === 'none' && d.active?.DP)
+          ) {
+            acc.amount += d.value;
+          } else if (d.type === 'none' && d.active?.DP) {
+            acc.dp += d.value;
+          }
+          return acc;
+        },
+        { amount: 0, temp: 0, dp: 0 }
+      );
+      amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
+
+      const damagePrevention = Math.min(
+        -dp + preventedDmg,
+        amount >= 0 ? amount : 0
+      );
+      if (damagePrevention) {
+        const dpDamage = damageItem.damageDetail.find(
+          (d) => d.type === 'none' && d.active?.DP
+        );
+        if (dpDamage) {
+          dpDamage.value = damagePrevention;
+        } else {
+          damageItem.damageDetail.push({
+            type: 'none',
+            value: -damagePrevention,
+            active: { DP: true, multiplier: 1 },
+            properties: new Set(),
+          });
+        }
+        amount -= damagePrevention;
+      }
+
+      const token = fromUuidSync(damageItem.tokenUuid);
+      const as = token.actor?.system;
+      if (!as || !as.attributes.hp) {
+        if (debug) {
+          console.warn(
+            `${MACRO_NAME} | Missing damaged token or hp attribute.`,
+            { damageItem }
+          );
+        }
+        return;
+      }
+
+      // Recompute damage
+      const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
+      const deltaHP = Math.clamp(
+        amount - deltaTemp,
+        -as.attributes.hp.damage,
+        damageItem.oldHP
+      );
+      damageItem.newHP = damageItem.oldHP - deltaHP;
+      damageItem.hpDamage = deltaHP;
+      damageItem.newTempHP = Math.floor(
+        Math.max(0, damageItem.oldTempHP - deltaTemp, temp)
+      );
+      damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
+      damageItem.elwinHelpersEffectiveDamage = amount;
+      // TODO should this reflect raw or not???
+      //damageItem.totalDamage = amount;
+
+      effectiveDamagePrevented = Math.min(damagePrevention + dp, 0);
+    }
+    if (sourceItem && damageItem.details) {
+      damageItem.details.push(
+        `${sourceItem.name} - DP [-${effectiveDamagePrevented}]`
+      );
+    }
+  }
+
+  /**
+   * Calculates the applied damage from the damageItem.
+   *
+   * @param {object} damageItem - The MidiQOL damageItem to be updated.
+   */
+  function calculateAppliedDamage(damageItem) {
+    let { amount, temp } = damageItem?.damageDetail.reduce(
+      (acc, d) => {
+        if (d.type === 'temphp') acc.temp += d.value ?? d.damage;
+        else if (d.type !== 'midi-none') acc.amount += d.value ?? d.damage;
+        return acc;
+      },
+      { amount: 0, temp: 0 }
+    );
+    const actor = fromUuidSync(damageItem.actorUuid);
+    const as = actor?.system;
+    if (!as || !as.attributes.hp) {
+      if (debug) {
+        console.warn(`${MACRO_NAME} | Missing damaged actor or hp attribute.`, {
+          damageItem,
+        });
+      }
+      return;
+    }
+
+    // Recompute damage
+    amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
+    const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
+    const deltaHP = Math.clamp(
+      amount - deltaTemp,
+      -as.attributes.hp.damage,
+      damageItem.oldHP
+    );
+    damageItem.newHP = damageItem.oldHP - deltaHP;
+    damageItem.hpDamage = deltaHP;
+    damageItem.newTempHP = Math.floor(
+      Math.max(0, damageItem.oldTempHP - deltaTemp, temp)
+    );
+    damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
+    damageItem.elwinHelpersEffectiveDamage = amount;
+    // TODO should this reflect raw or not???
+    //damageItem.totalDamage = amount;
+    if (damageItem.appliedDamage) {
+      damageItem.appliedDamage = deltaHP;
     }
   }
 
@@ -2565,10 +2891,10 @@ export function runElwinsHelpers() {
       };
     });
 
-    const render = (html) =>
-      html.find('.dialog-buttons').css({
-        'flex-direction': direction,
-      });
+    const render = (html) => {
+      const app = html.closest('.app');
+      app.find('.dialog-buttons').css({ 'flex-direction': direction });
+    };
 
     return await Dialog.wait(
       {

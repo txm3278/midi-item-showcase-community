@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an active effect, that effect will trigger a reaction by the Paladin
 // when a creature within range is damaged to allow him to use the feature to take the target's damage instead.
-// v3.0.0
+// v3.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
@@ -63,12 +63,12 @@ export async function divineAllegiance({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Divine Allegiance';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.2'
+      '2.6'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
@@ -78,6 +78,17 @@ export async function divineAllegiance({
   const dependencies = ['dae', 'midi-qol'];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
+  }
+  if (
+    !foundry.utils.isNewerVersion(
+      game.modules.get('midi-qol')?.version,
+      '11.6'
+    ) &&
+    !MidiQOL.configSettings().v3DamageApplication
+  ) {
+    ui.notifications.error(
+      `${DEFAULT_ITEM_NAME} | dnd5e v3 damage application is required.`
+    );
   }
 
   if (debug) {
@@ -157,8 +168,14 @@ export async function divineAllegiance({
       return { skip: true };
     }
     // Set damage to be applied, to be available for remote reaction
-    const preventedDmg = currentWorkflow.damageItem.appliedDamage;
-
+    const totalDamage = currentWorkflow.damageItem.damageDetail.reduce(
+      (acc, d) =>
+        acc +
+        (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value ?? d.damage),
+      0
+    );
+    const preventedDmg = totalDamage;
+    currentWorkflow.divineAllegianceAppliedDmg = preventedDmg;
     await DAE.setFlag(sourceActor, 'divineAllegianceAppliedDmg', preventedDmg);
   }
 
@@ -175,11 +192,12 @@ export async function divineAllegiance({
     sourceItem,
     thirdPartyReactionResult
   ) {
-    const preventedDmg = currentWorkflow.damageItem?.appliedDamage;
+    const preventedDmg = currentWorkflow.divineAllegianceAppliedDmg;
     if (thirdPartyReactionResult?.uuid === sourceItem.uuid && preventedDmg) {
       elwinHelpers.reduceAppliedDamage(
         currentWorkflow.damageItem,
-        preventedDmg
+        preventedDmg,
+        sourceItem
       );
     }
     if (debug) {

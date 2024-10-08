@@ -92,7 +92,10 @@
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "properties": [
+      "vocal"
+    ]
   },
   "effects": [
     {
@@ -305,10 +308,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
+    "systemVersion": "3.3.1",
     "coreVersion": "12.331",
     "createdTime": 1662520710160,
-    "modifiedTime": 1724968786152,
+    "modifiedTime": 1728346196682,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
     "duplicateSource": null

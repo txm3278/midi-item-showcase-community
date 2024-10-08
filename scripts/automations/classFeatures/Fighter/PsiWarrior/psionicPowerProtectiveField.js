@@ -4,7 +4,7 @@
 // Adds a third party reaction effect, that effect will trigger a reaction by the Fighter
 // when the fighter or a creature he can see within range is damaged to allow him to use the feature
 // to reduce the target's damage instead.
-// v3.0.0
+// v3.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
@@ -72,12 +72,12 @@ export async function psionicPowerProtectiveField({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Psionic Power: Protective Field';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.2'
+      '2.6'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
@@ -87,6 +87,17 @@ export async function psionicPowerProtectiveField({
   const dependencies = ['dae', 'midi-qol'];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
+  }
+  if (
+    !foundry.utils.isNewerVersion(
+      game.modules.get('midi-qol')?.version,
+      '11.6'
+    ) &&
+    !MidiQOL.configSettings().v3DamageApplication
+  ) {
+    ui.notifications.error(
+      `${DEFAULT_ITEM_NAME} | dnd5e v3 damage application is required.`
+    );
   }
 
   if (debug) {
@@ -182,7 +193,8 @@ export async function psionicPowerProtectiveField({
       );
       elwinHelpers.reduceAppliedDamage(
         currentWorkflow.damageItem,
-        preventedDmg
+        preventedDmg,
+        sourceItem
       );
     }
     if (debug) {

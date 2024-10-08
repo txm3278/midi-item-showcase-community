@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within range attacks to allow him to add disadvantage on the attack to hit.
-// v2.0.0
+// v2.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting][tpr.isPreAttacked]
@@ -21,7 +21,7 @@
 //   - No Full cover: (checked)
 //   - Activation Conditions
 //     - Reaction:
-//       reaction === "reaction === "tpr.isPreAttacked" && (targetUuid === tpr?.tokenUuid || ((tpr?.actor?.classes?.cleric?.levels ?? 0) >= 6) && fromUuidSync(targetUuid)?.disposition === fromUuidSync(tpr?.tokenUuid)?.disposition)"
+//       reaction === "tpr.isPreAttacked" && (targetUuid === tpr?.tokenUuid || ((tpr?.actor?.classes?.cleric?.levels ?? 0) >= 6) && fromUuidSync(targetUuid)?.disposition === fromUuidSync(tpr?.tokenUuid)?.disposition)
 //   - This item macro code must be added to the DIME code of the item.
 // One effect must also be added:
 //   - Warding Flare:
@@ -55,7 +55,7 @@ export async function wardingFlare({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Warding Flare';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(

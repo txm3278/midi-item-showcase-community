@@ -5,7 +5,7 @@
 // on the raging barbarian when a visible creature within range is damaged to allow him to use the feature
 // to reduce the target's damage.
 // If Vengeful Ancestors is present and the Barbarian has the appropriate level, it is triggered on the attacker.
-// v3.0.0
+// v3.1.0
 // Dependencies:
 //  - DAE [on][off]
 //  - Times Up
@@ -96,12 +96,12 @@ export async function spiritShield({
   const VENGEFUL_ANCESTORS_ITEM_NAME = 'Vengeful Ancestors';
   // Level at which Vengeful Ancestors is triggered
   const VENGEFUL_ANCESTORS_TRIGGER_LEVEL = 14;
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.2'
+      '2.6.0'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
@@ -111,6 +111,17 @@ export async function spiritShield({
   const dependencies = ['dae', 'times-up', 'midi-qol'];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
+  }
+  if (
+    !foundry.utils.isNewerVersion(
+      game.modules.get('midi-qol')?.version,
+      '11.6'
+    ) &&
+    !MidiQOL.configSettings().v3DamageApplication
+  ) {
+    ui.notifications.error(
+      `${DEFAULT_ITEM_NAME} | dnd5e v3 damage application is required.`
+    );
   }
 
   if (debug) {
@@ -250,9 +261,8 @@ export async function spiritShield({
     ) {
       return;
     }
-    const currentAppliedDamage = damageItem.appliedDamage;
     const preventedDmg = DAE.getFlag(sourceActor, 'spiritShieldPreventedDmg');
-    elwinHelpers.reduceAppliedDamage(damageItem, preventedDmg);
+    elwinHelpers.reduceAppliedDamage(damageItem, preventedDmg, sourceItem);
     // TODO Validate if prevented damage is total rolled or up to total damaged the target received
     //const effectivePreventedDamage = Math.max(0, currentAppliedDamage - damageItem.appliedDamage);
     //DAE.setFlag(sourceActor, "spiritShieldPreventedDmg", effectivePreventedDamage);

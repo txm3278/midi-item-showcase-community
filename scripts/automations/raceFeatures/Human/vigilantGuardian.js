@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Mark of Sentinel Human
 // when a creature within range is hit to allow him to switch places with the target.
-// v3.0.0
+// v3.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting][tpr.isHit]
@@ -59,7 +59,7 @@ export async function vigilantGuardian({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Vigilant Guardian';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(

@@ -1,14 +1,12 @@
 {
-  "name": "Divine Allegiance",
+  "name": "Psionic Power: Protective Field",
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-9L4Nh4mvFpV4iDNk\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Psi Warrior' subclass, its data value should resolve to '@scale.psi-warrior.psionic-power'. When adding this feature to an actor, you must configure the consumption on the Psionic Power.<br />RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
       "chat": ""
     },
-    "source": {
-      "custom": ""
-    },
+    "source": {},
     "activation": {
       "type": "reaction",
       "cost": 1,
@@ -21,14 +19,14 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
       "type": "ally",
       "prompt": true
     },
     "range": {
-      "value": 5,
+      "value": 30,
       "long": null,
       "units": "ft"
     },
@@ -40,20 +38,25 @@
       "prompt": true
     },
     "consume": {
-      "type": "",
-      "target": null,
-      "amount": null,
+      "type": "charges",
+      "target": "",
+      "amount": 1,
       "scale": false
     },
     "ability": "",
-    "actionType": "",
+    "actionType": "other",
     "chatFlavor": "",
     "critical": {
       "threshold": null,
       "damage": ""
     },
     "damage": {
-      "parts": [],
+      "parts": [
+        [
+          "max(@scale.psi-warrior.psionic-power +@abilities.int.mod, 1)",
+          "midi-none"
+        ]
+      ],
       "versatile": ""
     },
     "formula": "",
@@ -64,7 +67,7 @@
     },
     "type": {
       "value": "class",
-      "subtype": ""
+      "subtype": "psionicPower"
     },
     "requirements": "",
     "recharge": {
@@ -76,7 +79,11 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "flags": {
     "infusions": {
@@ -85,7 +92,7 @@
     "obsidian": {
       "source": {
         "type": "class",
-        "text": "Paladin"
+        "text": "Fighter"
       }
     },
     "midi-qol": {
@@ -109,20 +116,22 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false,
+      "ignoreTotalCover": true,
       "idr": false,
       "idi": false,
       "idv": false,
       "ida": false
     },
-    "core": {},
+    "core": {
+      "sourceId": "Item.0k3rcvGBw7FY02A1"
+    },
     "dae": {
       "macro": {
-        "name": "Divine Allegiance",
-        "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
+        "name": "Psionic Power: Protective Field",
+        "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.divineAllegiance(params);\n",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.psionicPowerProtectiveField(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -157,52 +166,37 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
-    },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
     }
   },
   "effects": [
     {
-      "name": "Divine Allegiance",
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;pre=true;post=true",
-          "priority": 20
-        }
-      ],
-      "transfer": true,
-      "_id": "9IJ6UUPYYF1mQoZc",
-      "disabled": false,
+      "name": "Psionic Power: Protective Field",
+      "origin": "Item.Ffqtl1yAQRd1XTN3",
       "duration": {
         "startTime": null,
         "seconds": null,
         "combat": null,
         "rounds": null,
         "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "startRound": 105,
+        "startTurn": 8
       },
+      "transfer": true,
+      "disabled": false,
+      "_id": "8wCjz9mOtvTTbSKc",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,tpr.isDamaged|canSee=true;pre=true;post=true",
+          "priority": 20
+        }
+      ],
       "description": "",
-      "origin": "Item.wBTKcNEUSwEuzrht",
       "statuses": [],
       "flags": {
         "times-up": {
-          "isPassive": false
+          "isPassive": true
         },
         "dae": {
           "disableIncapacitated": false,
@@ -233,41 +227,41 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
-      "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
+      "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!0SkwuPaYd7lT3Eft.9IJ6UUPYYF1mQoZc"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!4SnjEmeamh15LMhZ.8wCjz9mOtvTTbSKc"
     }
   ],
-  "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
-  "folder": "6cZX0kexN8Ekw6p0",
+  "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
+  "folder": "AGtradq44LNR36HH",
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
     "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
+    "compendiumSource": "Item.0k3rcvGBw7FY02A1",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "coreVersion": "12.331",
-    "createdTime": 1705852991498,
-    "modifiedTime": 1724964937663,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null
+    "createdTime": 1728332948017,
+    "modifiedTime": 1728332948017,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "0SkwuPaYd7lT3Eft",
+  "_id": "4SnjEmeamh15LMhZ",
   "sort": 0,
-  "_key": "!items!0SkwuPaYd7lT3Eft"
+  "_key": "!items!4SnjEmeamh15LMhZ"
 }

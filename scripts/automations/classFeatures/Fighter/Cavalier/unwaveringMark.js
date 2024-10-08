@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v2.1.0
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -73,11 +73,11 @@ export async function unwaveringMark({
 }) {
   const DEFAULT_ITEM_NAME = 'Unwavering Mark';
   const MODULE_ID = 'midi-item-showcase-community';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
+      globalThis.elwinHelpers?.version ?? '1.1',
       '2.0'
     )
   ) {
@@ -339,7 +339,7 @@ export async function unwaveringMark({
     }
     if (
       !currentWorkflow.damageList.some(
-        (d) => d.appliedDamage > 0 && d.tokenUuid !== markerTokenUuid
+        (d) => d.totalDamage > 0 && d.tokenUuid !== markerTokenUuid
       )
     ) {
       if (debug) {
@@ -394,7 +394,10 @@ export async function unwaveringMark({
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
         user: player?.id,
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        type:
+          game.release.generation >= 12
+            ? CONST.CHAT_MESSAGE_STYLES.OTHER
+            : CONST.CHAT_MESSAGE_TYPES.OTHER,
         content: message,
         speaker: ChatMessage.getSpeaker({
           actor: markerTokenActor,

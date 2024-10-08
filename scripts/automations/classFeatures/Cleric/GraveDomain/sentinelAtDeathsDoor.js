@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within range is hit by a critical to allow him to convert it to a normal hit.
-// v3.0.0
+// v3.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -60,7 +60,7 @@ export async function sentinelAtDeathsDoor({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = "Sentinel at Death's Door";
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   const dependencies = ['dae', 'midi-qol'];
   if (

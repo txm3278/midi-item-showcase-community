@@ -3,7 +3,7 @@
 // When equipped and attuned, adds an action that allows to attach the emblem to a shield or armor.
 // Once the emblem is attached, it adds a third party reaction active effect, that effect will trigger a reaction
 // on the owner when a creature within range is hit by a critical to allow him to convert it to a normal hit.
-// v3.1.0
+// v3.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, item macro [on],[off]
@@ -95,7 +95,7 @@ export async function guardianEmblem({
   const ATTACH_ACTION_ORIGIN_FLAG = 'guardian-emblem-action-origin';
   const ATTACHMENT_ORIGIN_FLAG = 'guardian-emblem-uuid';
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(

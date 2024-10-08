@@ -3,7 +3,7 @@
   "type": "equipment",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-MbOxO83wj0VjHdz7\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Warp Gate (dnd5e &lt; v3.2)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, a feat is added that allows to attach/detach to/from a shield or armor. When this feat is used, it allows to attach the emblem, once attached, it activates a third party reaction effect. It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Warp Gate (dnd5e &lt; v3.2)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, a feat is added that allows to attach/detach to/from a shield or armor. When this feat is used, it allows to attach the emblem, once attached, it activates a third party reaction effect. It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -13,12 +13,15 @@
       "custom": ""
     },
     "quantity": 1,
-    "weight": 0,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
     "price": {
       "value": 0,
       "denomination": "gp"
     },
-    "attunement": 1,
+    "attunement": "required",
     "equipped": false,
     "rarity": "uncommon",
     "identified": true,
@@ -34,7 +37,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
       "type": "ally",
@@ -105,7 +108,9 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "attuned": false,
+    "enchantment": null
   },
   "flags": {
     "midi-qol": {
@@ -178,21 +183,6 @@
       "system": "dnd5e",
       "coreVersion": "11.315",
       "systemVersion": "2.4.1"
-    },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
     }
   },
   "effects": [
@@ -254,21 +244,21 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
       "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!RG0wykjarhVnN7nn.CEQGUOX1WoREMxKj"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!RzLGkPBBoKV5i0oG.CEQGUOX1WoREMxKj"
     },
     {
       "name": "Guardian Emblem",
@@ -328,21 +318,21 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
       "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!RG0wykjarhVnN7nn.OhlssfgzGDAr77cd"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!RzLGkPBBoKV5i0oG.OhlssfgzGDAr77cd"
     }
   ],
   "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
@@ -353,16 +343,16 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "12.331",
-    "createdTime": 1706098165283,
-    "modifiedTime": 1724965258355,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1728333094502,
+    "modifiedTime": 1728333094567,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "RG0wykjarhVnN7nn",
-  "sort": 400000,
-  "_key": "!items!RG0wykjarhVnN7nn"
+  "_id": "RzLGkPBBoKV5i0oG",
+  "sort": 300000,
+  "_key": "!items!RzLGkPBBoKV5i0oG"
 }

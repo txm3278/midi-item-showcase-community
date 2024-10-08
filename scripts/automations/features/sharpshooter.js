@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Handles the ability to toggle on/off or prompt the -5 penalty to hit and +10 bonus to the damage on a ranged weapon.
-// v2.0.0
+// v2.1.0
 // Author: Elwin#1410 based on MotoMoto and Michael version
 // Dependencies:
 //  - DAE
@@ -58,7 +58,7 @@ export async function sharpshooter({
   const DEFAULT_ITEM_NAME = 'Sharpshooter';
   const MODULE_ID = 'midi-item-showcase-community';
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   const OFF_STATE = 0;
   const ON_STATE = 1;
   const PROMPT_STATE = 2;

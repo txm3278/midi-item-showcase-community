@@ -2,7 +2,7 @@
 // Read First!!!!
 // Creates a Goodberry item that expires and is deleted after 24h.
 // If the caster has the Disciple of Life feature, the healing power of the berries is increased.
-// v2.0.1
+// v2.1.0
 // Author: Elwin#1410, based on Crymic's Goodberry macro
 // Dependencies:
 //  - DAE
@@ -103,7 +103,7 @@ export async function goodberry({
   const DISCIPLE_OF_LIFE_ITEM_NAME = 'Disciple of Life';
 
   // Set to false to remove debug logging
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
@@ -665,7 +665,10 @@ ${isRealNumber.toString()}
           ' ' +
           deletedItems.map((it) => it.name).join(),
         whisper: whisperTo.map((u) => u.id),
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        type:
+          game.release.generation >= 12
+            ? CONST.CHAT_MESSAGE_STYLES.OTHER
+            : CONST.CHAT_MESSAGE_TYPES.OTHER,
       });
     }
   }

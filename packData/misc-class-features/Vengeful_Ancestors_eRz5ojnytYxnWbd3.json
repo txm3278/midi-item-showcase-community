@@ -5,7 +5,7 @@
   "img": "icons/creatures/magical/construct-iron-stomping-yellow.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-Jdv7gOxvcdBo7dVz\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the <em>Spirit Shield</em> feature.<br />\n  When used, it will damage the attacker that triggered the <em>Spirit Shield</em> by the amount of damage that was prevented from the target.</p><p><strong>Note:</strong> This feature needs to be triggered by Spirit Shield (found in MISC Class Features) to work properly.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the <em>Spirit Shield</em> feature.<br />\n  When used, it will damage the attacker that triggered the <em>Spirit Shield</em> by the amount of damage that was prevented from the target.</p><p><strong>Note:</strong> This feature needs to be triggered by Spirit Shield (found in MISC Class Features) to work properly.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -23,7 +23,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
       "type": "creature",
@@ -83,7 +83,11 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "effects": [],
   "ownership": {
@@ -165,34 +169,19 @@
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault"
-    },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
     }
   },
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "12.331",
-    "createdTime": 1694744431298,
-    "modifiedTime": 1724964875255,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1728332996071,
+    "modifiedTime": 1728332996071,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "h79YWBu4Z648pgmk",
+  "_id": "eRz5ojnytYxnWbd3",
   "sort": 0,
-  "_key": "!items!h79YWBu4Z648pgmk"
+  "_key": "!items!eRz5ojnytYxnWbd3"
 }

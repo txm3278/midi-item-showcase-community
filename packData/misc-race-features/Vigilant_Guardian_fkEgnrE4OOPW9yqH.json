@@ -1,16 +1,14 @@
 {
-  "folder": "vLsm6z71hOz8So3V",
-  "name": "Warding Flare",
+  "folder": "oyNLsCNL4S53Ghy5",
+  "name": "Vigilant Guardian",
   "type": "feat",
-  "img": "icons/magic/light/explosion-star-glow-yellow.webp",
+  "img": "icons/equipment/shield/buckler-wooden-boss-glowing-blue.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-QMiCLESDxWvdwyK1\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Enemy' to trigger reaction only on enemies.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
       "chat": ""
     },
-    "source": {
-      "custom": ""
-    },
+    "source": {},
     "activation": {
       "type": "reaction",
       "cost": 1,
@@ -23,20 +21,20 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
-      "type": "enemy",
+      "type": "ally",
       "prompt": true
     },
     "range": {
-      "value": 30,
+      "value": 5,
       "long": null,
       "units": "ft"
     },
     "uses": {
       "value": 1,
-      "max": "max(1,@abilities.wis.mod)",
+      "max": "1",
       "per": "lr",
       "recovery": "",
       "prompt": true
@@ -47,8 +45,8 @@
       "amount": null,
       "scale": false
     },
-    "ability": "",
-    "actionType": "other",
+    "ability": null,
+    "actionType": "",
     "chatFlavor": "",
     "critical": {
       "threshold": null,
@@ -65,25 +63,29 @@
       "scaling": "spell"
     },
     "type": {
-      "value": "class",
+      "value": "race",
       "subtype": ""
     },
-    "properties": [],
     "requirements": "",
     "recharge": {
       "value": null,
       "charged": false
     },
+    "properties": [],
     "attack": {
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "effects": [
     {
-      "name": "Warding Flare",
-      "origin": "Item.RGXO60NM96p3tsN3",
+      "name": "Vigilant Guardian",
+      "origin": "Item.x6ukfMYysNxqtQnD",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -93,20 +95,23 @@
         "startRound": null,
         "startTurn": null
       },
+      "transfer": true,
       "disabled": false,
-      "_id": "jPLrgv9929fkXzIz",
+      "_id": "nVkNqMNhW9Kcb6mq",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isPreAttacked|triggerSource=attacker;canSee=true;post=true",
+          "value": "ItemMacro,tpr.isHit|ignoreSelf=true;canSee=true;post=true",
           "priority": 20
         }
       ],
       "description": "",
-      "transfer": true,
       "statuses": [],
       "flags": {
+        "times-up": {
+          "isPassive": true
+        },
         "dae": {
           "disableIncapacitated": false,
           "selfTarget": false,
@@ -132,25 +137,25 @@
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "wallsBlock": "system"
+          "wallsBlock": "true"
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
-      "img": "icons/magic/light/explosion-star-glow-yellow.webp",
+      "img": "icons/equipment/shield/buckler-wooden-boss-glowing-blue.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!mJnMmEe7zp2XVm28.jPLrgv9929fkXzIz"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!fkEgnrE4OOPW9yqH.nVkNqMNhW9Kcb6mq"
     }
   ],
   "ownership": {
@@ -159,10 +164,6 @@
     "B2BBHntfpytXE8DP": 3
   },
   "flags": {
-    "walledtemplates": {
-      "wallsBlock": "globalDefault",
-      "wallRestriction": "globalDefault"
-    },
     "midiProperties": {
       "confirmTargets": "never",
       "autoFailFriendly": false,
@@ -174,32 +175,28 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": true,
+      "ignoreTotalCover": false,
       "idr": false,
       "idi": false,
       "idv": false,
       "ida": false
     },
     "midi-qol": {
-      "rollAttackPerTarget": "never",
+      "effectActivation": false,
       "itemCondition": "",
+      "reactionCondition": "reaction === \"tpr.isHit\"",
+      "otherCondition": "",
       "effectCondition": "",
-      "reactionCondition": "reaction === \"tpr.isPreAttacked\" && (targetUuid === tpr?.tokenUuid ||((tpr?.actor?.classes?.cleric?.levels ?? 0) >= 6) && fromUuidSync(targetUuid)?.disposition === fromUuidSync(tpr?.tokenUuid)?.disposition)"
-    },
-    "rest-recovery": {
-      "data": {
-        "recovery": {
-          "enabled": false
-        }
-      }
+      "onUseMacroName": "[preTargeting]ItemMacro",
+      "rollAttackPerTarget": "never"
     },
     "dae": {
       "macro": {
-        "name": "Warding Flare",
-        "img": "icons/magic/light/explosion-star-glow-yellow.webp",
+        "name": "Vigilant Guardian",
+        "img": "icons/equipment/shield/buckler-wooden-boss-glowing-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.wardingFlare(params);\n",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.raceFeatures.human.vigilantGuardian(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -218,40 +215,35 @@
         }
       }
     },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "11.315",
-      "systemVersion": "3.0.4"
-    },
-    "core": {},
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
+      "systemVersion": "2.4.1"
     }
   },
   "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "coreVersion": "12.331",
-    "createdTime": 1714926134142,
-    "modifiedTime": 1724963955632,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null
+    "createdTime": 1728333214278,
+    "modifiedTime": 1728333214278,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "mJnMmEe7zp2XVm28",
+  "_id": "fkEgnrE4OOPW9yqH",
   "sort": 0,
-  "_key": "!items!mJnMmEe7zp2XVm28"
+  "_key": "!items!fkEgnrE4OOPW9yqH"
 }

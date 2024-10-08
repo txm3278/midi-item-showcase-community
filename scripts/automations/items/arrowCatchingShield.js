@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v3.1.0
+// v3.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting][isAttacked][tpr.isTargeted]
@@ -68,7 +68,7 @@ export async function arrowCatchingShield({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Arrow-Catching Shield';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(

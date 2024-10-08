@@ -71,21 +71,21 @@
       "name": "Spirit Shield",
       "description": "",
       "statuses": [],
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
       "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!VydET5sQKmlnScMo.kNzSxJ8OjrSbindN"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!47yLItmJOcUfOgc1.kNzSxJ8OjrSbindN"
     },
     {
       "name": "Spirit Shield - TPR",
@@ -142,21 +142,21 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
       "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!VydET5sQKmlnScMo.ca75UjEzNsyVf6kH"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!47yLItmJOcUfOgc1.ca75UjEzNsyVf6kH"
     }
   ],
   "folder": "Nx5JXfL2Hcdv9LBX",
@@ -214,8 +214,7 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l",
-      "default": ""
+      "sorting": "l"
     },
     "enhanced-terrain-layer": {
       "multiple": null,
@@ -269,7 +268,7 @@
   },
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-bJHw5PhW9CC9v5ow\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that unsuspends a third party reaction effect when the Rage item is activated.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A Rage item which adds a Rage effect when activated must be configured, A scale dice value must be configured on the 'Path of the Ancestral Guardian' subclass, its data value should resolve to '@scale.path-of-the-ancestral-guardian.spirit-shield'.<br />RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that unsuspends a third party reaction effect when the Rage item is activated.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A Rage item which adds a Rage effect when activated must be configured, A scale dice value must be configured on the 'Path of the Ancestral Guardian' subclass, its data value should resolve to '@scale.path-of-the-ancestral-guardian.spirit-shield'.<br />RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -287,7 +286,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
       "type": "ally",
@@ -347,7 +346,11 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "ownership": {
     "default": 0,
@@ -356,16 +359,16 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "12.331",
-    "createdTime": 1663621622102,
-    "modifiedTime": 1724964871953,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1728332969764,
+    "modifiedTime": 1728332969764,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "VydET5sQKmlnScMo",
+  "_id": "47yLItmJOcUfOgc1",
   "sort": 0,
-  "_key": "!items!VydET5sQKmlnScMo"
+  "_key": "!items!47yLItmJOcUfOgc1"
 }

@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-RZXRPyCzzQiarUYX\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p><p><strong>Note:</strong> <em>Great Weapon Master Attack</em> in MISC Feat should also be added to actor.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p><p><strong>Note:</strong> <em>Great Weapon Master Attack</em> in MISC Feat should also be added to actor.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -21,7 +21,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": null,
+      "value": "",
       "width": null,
       "units": "",
       "type": "self",
@@ -76,7 +76,11 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "flags": {
     "obsidian": {
@@ -157,21 +161,6 @@
           "enabled": false
         }
       }
-    },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
     }
   },
   "effects": [
@@ -239,21 +228,21 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
       "img": "icons/weapons/axes/axe-battle-skull-black.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!kpNbAoNcxRNom20D.9nM4tx8rg8WlIpEW"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!TWLmCiop429z7Vkz.9nM4tx8rg8WlIpEW"
     }
   ],
   "img": "icons/weapons/axes/axe-battle-skull-black.webp",
@@ -264,16 +253,16 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "12.331",
-    "createdTime": 1702224079058,
-    "modifiedTime": 1724965025203,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1728333067649,
+    "modifiedTime": 1728333067649,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "kpNbAoNcxRNom20D",
+  "_id": "TWLmCiop429z7Vkz",
   "sort": 0,
-  "_key": "!items!kpNbAoNcxRNom20D"
+  "_key": "!items!TWLmCiop429z7Vkz"
 }

@@ -5,7 +5,7 @@
   "img": "icons/magic/control/debuff-chains-red.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-NpEgJeneEtn7Zmci\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></details>",
       "chat": ""
     },
     "source": {
@@ -158,7 +158,7 @@
         "modifiedTime": null,
         "lastModifiedBy": null
       },
-      "_key": "!items.effects!Pd6wKMgIe8KiInhL.uTsKzidAmvYyp62G"
+      "_key": "!items.effects!IBPIAp7pQk2RYIAF.uTsKzidAmvYyp62G"
     }
   ],
   "ownership": {
@@ -179,8 +179,32 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l",
-      "default": ""
+      "sorting": "l"
+    },
+    "dae": {
+      "macro": {
+        "name": "Flames of Phlegethos",
+        "img": "icons/magic/control/debuff-chains-red.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.flamesOfPhlegethos(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
     },
     "core": {},
     "walledtemplates": {
@@ -214,20 +238,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
-    },
-    "dae": {
-      "macro": {
-        "name": "Flames of Phlegethos",
-        "img": "icons/magic/control/debuff-chains-red.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.flamesOfPhlegethos(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        }
-      }
+      "systemVersion": "3.1.2"
     }
   },
   "_stats": {
@@ -236,11 +247,11 @@
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "createdTime": 1724960118963,
-    "modifiedTime": 1724965022395,
+    "createdTime": 1728333065770,
+    "modifiedTime": 1728333065770,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "Pd6wKMgIe8KiInhL",
+  "_id": "IBPIAp7pQk2RYIAF",
   "sort": 0,
-  "_key": "!items!Pd6wKMgIe8KiInhL"
+  "_key": "!items!IBPIAp7pQk2RYIAF"
 }

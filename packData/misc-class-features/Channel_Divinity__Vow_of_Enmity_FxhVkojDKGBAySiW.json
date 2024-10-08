@@ -1,53 +1,52 @@
 {
-  "folder": null,
-  "name": "Gift of the Metallic Dragon",
+  "name": "Channel Divinity: Vow of Enmity",
   "type": "feat",
-  "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
+  "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-q1eAlWcYKXBfv2q1\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item need to be used to activate. It marks the target and gives advantage to any attack made to this target. When adding this feature to an actor, you must configure the consumption on Channel Divinity.</p></details>",
       "chat": ""
     },
     "source": {
       "custom": ""
     },
     "activation": {
-      "type": "reaction",
+      "type": "bonus",
       "cost": 1,
       "condition": ""
     },
     "duration": {
-      "value": "",
-      "units": ""
+      "value": "1",
+      "units": "minute"
     },
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
-      "type": "ally",
+      "type": "creature",
       "prompt": true
     },
     "range": {
-      "value": 5,
+      "value": 10,
       "long": null,
       "units": "ft"
     },
     "uses": {
-      "value": 1,
-      "max": "@prof",
-      "per": "lr",
+      "value": null,
+      "max": "",
+      "per": null,
       "recovery": "",
       "prompt": true
     },
     "consume": {
-      "type": "",
-      "target": null,
-      "amount": null,
+      "type": "charges",
+      "target": "",
+      "amount": 1,
       "scale": false
     },
-    "ability": null,
+    "ability": "",
     "actionType": "",
     "chatFlavor": "",
     "critical": {
@@ -65,8 +64,8 @@
       "scaling": "spell"
     },
     "type": {
-      "value": "feat",
-      "subtype": ""
+      "value": "class",
+      "subtype": "channelDivinity"
     },
     "requirements": "",
     "recharge": {
@@ -78,12 +77,16 @@
       "bonus": "",
       "flat": false
     },
-    "summons": null
+    "summons": null,
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
   },
   "effects": [
     {
-      "name": "Gift of the Metallic Dragon",
-      "origin": "Item.Vui6WdIKyasm5bcI",
+      "name": "Channel Divinity: Vow of Enmity",
+      "origin": "Item.5WGgz95XhUNYBvpB",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -93,26 +96,23 @@
         "startRound": null,
         "startTurn": null
       },
-      "transfer": true,
       "disabled": false,
-      "_id": "KKgBnwQi3umjgmYk",
+      "_id": "peIeFYuPKmsoXwVo",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isHit|canSee=true;post=true",
+          "value": "ItemMacro,preAttackRoll",
           "priority": 20
         }
       ],
       "description": "",
+      "transfer": false,
       "statuses": [],
       "flags": {
-        "times-up": {
-          "isPassive": true
-        },
         "dae": {
           "disableIncapacitated": false,
-          "selfTarget": false,
+          "selfTarget": true,
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
@@ -139,51 +139,41 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
-      "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
+      "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!bbUAlJcTzDtb53Zq.KKgBnwQi3umjgmYk"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!FxhVkojDKGBAySiW.peIeFYuPKmsoXwVo"
     },
     {
-      "name": "Gift of the Metallic Dragon - AC Bonus",
-      "origin": "Item.Vui6WdIKyasm5bcI",
+      "name": "Marked by Vow of Enmity",
+      "origin": "Item.5WGgz95XhUNYBvpB",
       "duration": {
-        "rounds": null,
         "startTime": null,
         "seconds": null,
         "combat": null,
-        "turns": 1,
+        "rounds": null,
+        "turns": null,
         "startRound": null,
         "startTurn": null
       },
-      "transfer": false,
       "disabled": false,
-      "_id": "IcGaEbrOONUEKiQG",
-      "changes": [
-        {
-          "key": "system.attributes.ac.bonus",
-          "mode": 2,
-          "value": "+@prof",
-          "priority": 20
-        }
-      ],
+      "_id": "mXb3v0Eqny4tMqiI",
+      "changes": [],
       "description": "",
+      "transfer": false,
       "statuses": [],
       "flags": {
-        "times-up": {
-          "isPassive": false
-        },
         "dae": {
           "disableIncapacitated": false,
           "selfTarget": false,
@@ -194,8 +184,10 @@
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [
-            "isAttacked"
-          ]
+            "zeroHP"
+          ],
+          "enableCondition": "!statuses.has(\"unconscious\")",
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -212,61 +204,83 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
-      "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
+      "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!bbUAlJcTzDtb53Zq.IcGaEbrOONUEKiQG"
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!FxhVkojDKGBAySiW.mXb3v0Eqny4tMqiI"
     }
   ],
   "ownership": {
     "default": 0,
+    "Y4IYXHUifrP8RFnx": 3,
     "9QqTZMFq1dhCIYAR": 3,
     "B2BBHntfpytXE8DP": 3
   },
   "flags": {
-    "walledtemplates": {
-      "wallsBlock": "globalDefault",
-      "wallRestriction": "globalDefault"
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "default": ""
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "rollAttackPerTarget": "never",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": ""
     },
     "midiProperties": {
-      "confirmTargets": "never",
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
       "autoFailFriendly": false,
-      "autoSaveFriendly": false,
+      "rollOther": false,
       "critOther": false,
       "offHandWeapon": false,
       "magicdam": false,
       "magiceffect": false,
       "concentration": false,
-      "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": true,
+      "ignoreTotalCover": false,
+      "autoSaveFriendly": false,
+      "confirmTargets": "default",
+      "noConcentrationCheck": false,
       "idr": false,
       "idi": false,
       "idv": false,
       "ida": false
     },
-    "midi-qol": {
-      "effectActivation": false,
-      "itemCondition": "",
-      "reactionCondition": "reaction === \"tpr.isHit\" && !workflow.isCritical",
-      "otherCondition": "",
-      "effectCondition": "",
-      "onUseMacroName": "[preTargeting]ItemMacro",
-      "rollAttackPerTarget": "never"
+    "core": {
+      "sourceId": "Item.TuFvea9WzwTrFy1R"
     },
     "rest-recovery": {
       "data": {
@@ -275,13 +289,17 @@
         }
       }
     },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
     "dae": {
       "macro": {
-        "name": "Gift of he Metallic Dragon",
-        "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
+        "name": "Channel Divinity: Vow of Enmity",
+        "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.giftOfTheMetallicDragon(params);\n",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.channelDivinityVowOfEnmity(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -299,41 +317,20 @@
           "lastModifiedBy": null
         }
       }
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
-    },
-    "core": {},
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
     }
   },
   "_stats": {
+    "compendiumSource": "Item.TuFvea9WzwTrFy1R",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "coreVersion": "12.331",
-    "createdTime": 1706615384809,
-    "modifiedTime": 1724965023847,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null
+    "createdTime": 1728332870053,
+    "modifiedTime": 1728332870053,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "bbUAlJcTzDtb53Zq",
+  "folder": "KAZwfuQe2tARhyGL",
+  "_id": "FxhVkojDKGBAySiW",
   "sort": 0,
-  "_key": "!items!bbUAlJcTzDtb53Zq"
+  "_key": "!items!FxhVkojDKGBAySiW"
 }

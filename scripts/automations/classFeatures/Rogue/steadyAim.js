@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v1.2.0
+// v2.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [on], [off] item macro
@@ -131,7 +131,10 @@ export async function steadyAim({
     // DAE Item Macro GM call
     if (game.modules.get('monks-tokenbar')?.active) {
       const defaultMovement = game.settings.get('monks-tokenbar', 'movement');
-      const steadyAimData = DAE.getFlag(scope.lastArgValue.actorUuid, 'steady-aim');
+      const steadyAimData = DAE.getFlag(
+        scope.lastArgValue.actorUuid,
+        'steady-aim'
+      );
       if (steadyAimData.previousDefaultMovement !== defaultMovement) {
         steadyAimData.previousMovement = defaultMovement;
       }

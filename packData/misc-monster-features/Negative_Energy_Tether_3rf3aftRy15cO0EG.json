@@ -1,18 +1,19 @@
 {
-  "name": "Sorrowful Fate",
+  "folder": "HNZ55sOXQ0dAjZzZ",
+  "name": "Negative Energy Tether",
   "type": "feat",
-  "img": "icons/equipment/head/mask-craved-beige.webp",
+  "img": "icons/magic/death/skull-energy-light-purple.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<section id=\"secret-IQcucBuigMiIkBgA\" class=\"secret\">\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Bard' class, its data value should resolve to '@scale.bard.bardic-inspiration'. When adding this feature to an actor, you must configure the consumption on Bardic Inspiration.</p>\n</section>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Sequencer (to support animation between Lich and target)</li>\n   <li>JB2A (free or patreon) (to support animation between Lich and target)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "source": {
       "custom": ""
     },
     "activation": {
-      "type": "reaction",
-      "cost": 0,
+      "type": "lair",
+      "cost": 1,
       "condition": ""
     },
     "duration": {
@@ -25,28 +26,28 @@
       "value": "1",
       "width": null,
       "units": "",
-      "type": "ally",
+      "type": "creature",
       "prompt": true
     },
     "range": {
-      "value": null,
+      "value": 30,
       "long": null,
-      "units": ""
+      "units": "ft"
     },
     "uses": {
-      "value": 1,
-      "max": "1",
-      "per": "sr",
+      "value": null,
+      "max": "",
+      "per": null,
       "recovery": "",
       "prompt": true
     },
     "consume": {
-      "type": "charges",
-      "target": "",
-      "amount": 1,
+      "type": "",
+      "target": null,
+      "amount": null,
       "scale": false
     },
-    "ability": null,
+    "ability": "",
     "actionType": "",
     "attack": {
       "bonus": "",
@@ -69,7 +70,7 @@
     },
     "summons": null,
     "type": {
-      "value": "class",
+      "value": "monster",
       "subtype": ""
     },
     "properties": [],
@@ -85,39 +86,43 @@
   },
   "effects": [
     {
-      "name": "Sorrowful Fate",
-      "origin": "Item.YA8kaCO3D7saxKPF",
+      "name": "Negative Energy Tether",
+      "origin": "Item.23SrMi66mnohseWi",
       "duration": {
+        "rounds": 1,
         "startTime": null,
         "seconds": null,
         "combat": null,
-        "rounds": null,
         "turns": null,
         "startRound": null,
         "startTurn": null
       },
       "disabled": false,
-      "_id": "C0ft0r2WhkqxIFgG",
+      "_id": "bAjDOs9V0fZYdjmi",
       "changes": [
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isPreCheckSave|triggerSource=attacker;canSee=true;post=true",
+          "value": "ItemMacro,preTargetDamageApplication",
           "priority": 20
         }
       ],
       "description": "",
-      "transfer": true,
+      "transfer": false,
       "statuses": [],
       "flags": {
         "dae": {
           "disableIncapacitated": false,
+          "selfTarget": true,
+          "selfTargetAlways": false,
+          "dontApply": false,
           "stackable": "noneName",
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": [],
-          "disableCondition": ""
+          "specialDuration": [
+            "None"
+          ]
         },
         "ActiveAuras": {
           "isAura": false,
@@ -137,7 +142,7 @@
         }
       },
       "tint": "#ffffff",
-      "img": "icons/equipment/head/mask-craved-beige.webp",
+      "img": "icons/magic/death/skull-energy-light-purple.webp",
       "type": "base",
       "system": {},
       "sort": 0,
@@ -151,10 +156,73 @@
         "modifiedTime": null,
         "lastModifiedBy": null
       },
-      "_key": "!items.effects!3YMPCZXhkq4AkWLv.C0ft0r2WhkqxIFgG"
+      "_key": "!items.effects!3rf3aftRy15cO0EG.bAjDOs9V0fZYdjmi"
+    },
+    {
+      "name": "Negative Energy Tether",
+      "origin": "Item.23SrMi66mnohseWi",
+      "duration": {
+        "rounds": 1,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "YP2QLxlBrwy51W9m",
+      "changes": [],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": "#ffffff",
+      "img": "icons/magic/death/skull-energy-light-purple.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!3rf3aftRy15cO0EG.YP2QLxlBrwy51W9m"
     }
   ],
-  "folder": "oH7DGZ1ZHgDTlOVR",
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
@@ -175,7 +243,7 @@
       "magiceffect": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": true,
+      "ignoreTotalCover": false,
       "idr": false,
       "idi": false,
       "idv": false,
@@ -185,8 +253,7 @@
       "rollAttackPerTarget": "default",
       "itemCondition": "",
       "effectCondition": "",
-      "reactionCondition": "reaction === \"tpr.isPreCheckSave\" && tpr?.item.uses?.value && workflow.saveItem?.system.actionType !== \"abil\" && !workflow.saveItem?.getFlag(\"midi-qol\", \"overTimeSkillRoll\")",
-      "onUseMacroName": "[preTargeting]ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
     },
     "rest-recovery": {
       "data": {
@@ -197,11 +264,11 @@
     },
     "dae": {
       "macro": {
-        "name": "Sorrowful Fate",
-        "img": "icons/equipment/head/mask-craved-beige.webp",
+        "name": "Negative Energy Tether",
+        "img": "icons/magic/death/skull-energy-light-purple.webp",
         "type": "script",
         "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.sorrowfulFate(params);\n",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.monsters.lich.negativeEnergyTether(params);\n",
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
@@ -242,11 +309,11 @@
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "createdTime": 1724960084394,
-    "modifiedTime": 1724964881870,
+    "createdTime": 1728333152628,
+    "modifiedTime": 1728333196450,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "3YMPCZXhkq4AkWLv",
+  "_id": "3rf3aftRy15cO0EG",
   "sort": 0,
-  "_key": "!items!3YMPCZXhkq4AkWLv"
+  "_key": "!items!3rf3aftRy15cO0EG"
 }

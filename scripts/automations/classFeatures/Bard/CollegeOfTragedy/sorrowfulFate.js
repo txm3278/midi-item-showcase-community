@@ -3,7 +3,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Bard
 // when an ally or himself forces a creature to roll a saving throw. When doing so, the saving
 // throw ability is changed to Charisma and if the target fails its save it takes extra damage.
-// v1.0.2
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, macro [off]
@@ -25,7 +25,7 @@
 //   - No Full cover: (checked)
 //   - Activation Conditions
 //     - Reaction:
-//       reaction === "tpr.isPreCheckSave" && tpr?.item.uses?.value && workflow.saveItem?.system.actionType !== "abil"
+//       reaction === "tpr.isPreCheckSave" && tpr?.item.uses?.value && workflow.saveItem?.system.actionType === "save"
 //       && !workflow.saveItem?.getFlag("midi-qol", "overTimeSkillRoll")
 //   - This item macro code must be added to the DIME code of the feature.
 // Two effects must also be added:
@@ -70,7 +70,7 @@ export async function sorrowfulFate({
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Sorrowful Fate';
   const MODULE_ID = 'midi-item-showcase-community';
-  const debug = false;
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
@@ -128,7 +128,10 @@ export async function sorrowfulFate({
       (MidiQOL.configSettings().useTokenNames ? token.name : actor.name) ??
       '<unknown>';
     await ChatMessage.create({
-      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      type:
+        game.release.generation >= 12
+          ? CONST.CHAT_MESSAGE_STYLES.OTHER
+          : CONST.CHAT_MESSAGE_TYPES.OTHER,
       content: `${tokenName} is magically compelled to utter darkly poetic final words before succumbing from their injuries`,
       speaker: { user: game.users.activeGM },
       whisper: player ? [player.id] : [],
@@ -180,7 +183,10 @@ export async function sorrowfulFate({
           ? targetToken.name
           : targetToken.actor?.name) ?? '<unknown>';
       await ChatMessage.create({
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        type:
+          game.release.generation >= 12
+            ? CONST.CHAT_MESSAGE_STYLES.OTHER
+            : CONST.CHAT_MESSAGE_TYPES.OTHER,
         content: `${tokenName} is magically compelled to utter darkly poetic final words before succumbing from their injuries`,
         speaker: { user: game.users.activeGM },
         whisper: player ? [player.id] : [],
