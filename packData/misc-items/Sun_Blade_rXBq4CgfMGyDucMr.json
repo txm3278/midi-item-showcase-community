@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Tidy 5e Sheets (to support setting a custom section for the added feats)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, a feat is added that allows to activate/deactivate the blade.\n When this feat is used, it allows to activate the blade, when activated an AE with the light effect is added also as another feat to adjust the blade's light radius.\n If using Tidy 5e Sheets, you can specify a custom section for the created feats. \n Edit the passive Sun Blade effect, and add a section name in the value of the 'macro.itemMacro' change. \n If the value contains a space, put the value in double quotes, e.g.: \"My custom section\"</p></details>",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Elwin</h2><h3>Requires:</h3><ul><li>Times-up</li><li>Active Token Effects</li></ul><h3>Optionals:</h3><ul><li>Tidy 5e Sheets (to support setting a custom section for the added feats)</li></ul><p><strong>Usage:</strong></p><p>When equipped and attuned, a feat is added that allows to activate/deactivate the blade. When this feat is used, it allows to activate the blade, when activated an AE with the light effect is added also as another feat to adjust the blade's light radius. If using Tidy 5e Sheets, you can specify a custom section for the created feats. Edit the passive Sun Blade effect, and add a section name in the value of the 'macro.itemMacro' change. If the value contains a space, put the value in double quotes, e.g.: \"My custom section\"</p></details>",
       "chat": ""
     },
     "source": {
@@ -170,6 +170,21 @@
           "lastModifiedBy": null
         }
       }
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
     }
   },
   "effects": [
@@ -260,7 +275,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1728333098172,
-    "modifiedTime": 1728333098172,
+    "modifiedTime": 1732048562828,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "_id": "rXBq4CgfMGyDucMr",

@@ -1,0 +1,265 @@
+{
+  "name": "Unarmed Strike (Vampire Form Only)",
+  "type": "weapon",
+  "img": "icons/equipment/hand/gauntlet-simple-leather-brown-gold.webp",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by TreeDragon</span></h2><p>If doing damage instead of Grapple, dismiss the Grapple option when it appears. If Enhanced Damage Roll Dialog is enabled in Midi-QOL settings then you can also uncheck the 'Formula (Bludgeoning)' damage before using the Grapple option.</p>",
+      "chat": ""
+    },
+    "source": {
+      "book": "SRD 5.1",
+      "page": "",
+      "custom": "",
+      "license": "CC-BY-4.0"
+    },
+    "identified": true,
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "rarity": "",
+    "attunement": "",
+    "attuned": false,
+    "equipped": false,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "spec"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "1",
+      "width": null,
+      "units": "",
+      "type": "creature",
+      "prompt": true
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d8 + @mod",
+          "bludgeoning"
+        ],
+        [
+          "0[Grapple target instead of damage]",
+          "midi-none"
+        ]
+      ],
+      "versatile": ""
+    },
+    "enchantment": null,
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "armor": {
+      "value": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "type": {
+      "value": "simpleM",
+      "baseItem": ""
+    },
+    "magicalBonus": null,
+    "properties": [],
+    "proficient": null
+  },
+  "effects": [
+    {
+      "name": "Grapple",
+      "origin": "Item.2xFLcKxR72LhXSGt",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "flags": {
+        "dnd5e": {},
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "img": "icons/equipment/hand/gauntlet-simple-leather-brown-gold.webp",
+      "_id": "AkCTGnMgx71pkWfz",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 0,
+          "value": "rollType=skill,saveAbility=acr|ath,saveDC=18,actionSave=dialog",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [
+        "grappled"
+      ],
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!O7KHDUjjvaaB5uAa.AkCTGnMgx71pkWfz"
+    }
+  ],
+  "folder": "PVo8c24Q45DCMRkd",
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]function.MidiQOL.chooseEffect",
+      "fumbleThreshold": null,
+      "removeAttackDamageButtons": "default"
+    },
+    "exportSource": {
+      "world": "world1",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "3.3.1"
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1732047648326,
+    "modifiedTime": 1732047648357,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "O7KHDUjjvaaB5uAa",
+  "sort": 200000,
+  "_key": "!items!O7KHDUjjvaaB5uAa"
+}

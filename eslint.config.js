@@ -61,7 +61,9 @@ export default [
         SimpleCalendar: 'writable',
         Folder: 'writable',
         GlobalLightSource: 'writable',
-        ClockwiseSweepPolygon: 'writable'
+        ClockwiseSweepPolygon: 'writable',
+        Portal: 'writable',
+        AudioHelper: 'writable'
       },
     },
     rules: {

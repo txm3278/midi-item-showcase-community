@@ -368,7 +368,7 @@ export function setConfig() {
       'Hero Points': {
         name: 'Hero Points',
         type: 'Generic Feature',
-        version: '1.0.1',
+        version: '1.0.2',
         authors: ['Moto Moto'],
       },
       Immolation: {
@@ -411,7 +411,7 @@ export function setConfig() {
       'Medium Armor Master': {
         name: 'Medium Armor Master',
         type: 'Feat',
-        version: '0.1.1',
+        version: '0.1.2',
         authors: ['Muhammad2126'],
       },
       'Mental Prison': {
@@ -429,8 +429,8 @@ export function setConfig() {
       'Meteor Swarm': {
         name: 'Meteor Swarm',
         type: 'Spell',
-        version: '1.1.0',
-        authors: ['Tyler'],
+        version: '2.0.0',
+        authors: ['Bakana, Tyler'],
       },
       'Moon-Touched Sword, Greatsword': {
         name: 'Moon-Touched Sword, Greatsword',
@@ -492,7 +492,7 @@ export function setConfig() {
         version: '1.0.0',
         authors: ['Elwin'],
       },
-      'Poisoner': {
+      Poisoner: {
         name: 'Poisoner',
         type: 'Class Features',
         version: '1.0.0',
@@ -664,6 +664,13 @@ export function setConfig() {
         version: '1.1.0',
         authors: ['Elwin'],
       },
+      'Sorcerous Burst': {
+        name: 'Sorcerous Burst',
+        type: 'Spell',
+        UA: true,
+        version: '2.0.0',
+        authors: ['SagaTympana'],
+      },
       'Soul Cage': {
         name: 'Soul Cage',
         type: 'Spell',
@@ -729,7 +736,7 @@ export function setConfig() {
       "Tasha's Mind Whip": {
         name: "Tasha's Mind Whip",
         type: 'Spell',
-        version: '1.0.0',
+        version: '1.0.1',
         authors: ['Moto Moto'],
       },
       "Tenser's Transformation": {
@@ -952,7 +959,7 @@ export function setConfig() {
           name: 'Psionic Shield',
           version: '1.0.0',
           authors: ['Elwin'],
-        }
+        },
       },
       'Hobgoblin Recruit': {
         'Infernal Ichor': {
@@ -1046,99 +1053,114 @@ export function setConfig() {
       Vampire: {
         Bite: {
           name: 'Bite',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Bite (Bat or Vampire Form Only)': {
           name: 'Bite (Bat or Vampire Form Only)',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        Move: {
+          name: 'Move',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
+        },
+        Regeneration: {
+          name: 'Regeneration',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
         },
         'Unarmed Strike (Vampire Form Only)': {
           name: 'Unarmed Strike (Vampire Form Only)',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
         },
         'Unarmed Strike': {
           name: 'Unarmed Strike',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
-        },
-        'Multiattack (Vampire Form Only)': {
-          name: 'Multiattack (Vampire Form Only)',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'tposney'],
         },
       },
       'Vampire Spawn': {
         Bite: {
           name: 'Bite',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto'],
         },
         Claws: {
           name: 'Claws',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
         },
-        Multiattack: {
-          name: 'Multiattack',
-          version: '1.0.0',
-          authors: ['tposney'],
+        Regeneration: {
+          name: 'Regeneration',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
         },
       },
       'Vampire Spellcaster': {
         Bite: {
           name: 'Bite',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Bite (Bat or Vampire Form Only)': {
           name: 'Bite (Bat or Vampire Form Only)',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        Move: {
+          name: 'Move',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
+        },
+        Regeneration: {
+          name: 'Regeneration',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
         },
         'Unarmed Strike (Vampire Form Only)': {
           name: 'Unarmed Strike (Vampire Form Only)',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
         },
         'Unarmed Strike': {
           name: 'Unarmed Strike',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
-        },
-        'Multiattack (Vampire Form Only)': {
-          name: 'Multiattack (Vampire Form Only)',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'tposney'],
         },
       },
       'Vampire Warrior': {
         Bite: {
           name: 'Bite',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Bite (Bat or Vampire Form Only)': {
           name: 'Bite (Bat or Vampire Form Only)',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Moto Moto', 'thatlonelybugbear'],
+        },
+        Move: {
+          name: 'Move',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
+        },
+        Regeneration: {
+          name: 'Regeneration',
+          version: '2.0.0',
+          authors: ['TreeDragon'],
         },
         'Unarmed Strike (Vampire Form Only)': {
           name: 'Unarmed Strike (Vampire Form Only)',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
         },
         'Unarmed Strike': {
           name: 'Unarmed Strike',
-          version: '1.0.0',
+          version: '2.0.0',
           authors: ['TreeDragon', 'Christopher', 'thatlonelybugbear'],
-        },
-        'Multiattack (Vampire Form Only)': {
-          name: 'Multiattack (Vampire Form Only)',
-          version: '1.0.0',
-          authors: ['TreeDragon', 'tposney'],
         },
       },
       Vrock: {

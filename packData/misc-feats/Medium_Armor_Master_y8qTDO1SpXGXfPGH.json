@@ -79,7 +79,7 @@
   "effects": [
     {
       "name": "Medium Armour Master",
-      "origin": "Item.oLJTuA4EM7yPRnVI",
+      "origin": "Compendium.midi-item-showcase-community.misc-feats.Item.y8qTDO1SpXGXfPGH",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -96,7 +96,7 @@
         {
           "key": "system.attributes.ac.value",
           "mode": 4,
-          "value": "dae.eval((attributes.ac.equippedArmor.system.armor.type === \"medium\") ?  @attributes.ac.armor + (@abilities.dex.mod > 3 ? 3 : @abilities.dex.mod) + @attributes.ac.cover + @attributes.ac.shield + @attributes.ac.bonus : 0)",
+          "value": "dae.eval((attributes.ac.equippedArmor?.system.type.value === \"medium\") ?  @attributes.ac.armor + (@abilities.dex.mod > 3 ? 3 : @abilities.dex.mod) + @attributes.ac.cover + @attributes.ac.shield + @attributes.ac.bonus : 0)",
           "priority": 20
         }
       ],
@@ -115,7 +115,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -132,6 +133,9 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
@@ -140,8 +144,8 @@
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1732049504358,
+        "lastModifiedBy": "B2BBHntfpytXE8DP",
         "compendiumSource": null,
         "duplicateSource": null
       },

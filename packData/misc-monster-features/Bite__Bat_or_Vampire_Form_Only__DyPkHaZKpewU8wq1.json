@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by TreeDragon and Moto Moto</span></h2><p>Uses automation from Moto Moto (healing macro) and thatlonelybugbear (effect setup).</p>",
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by TreeDragon</span></h2>",
       "chat": ""
     },
     "source": {
@@ -18,13 +18,16 @@
     },
     "container": null,
     "quantity": 1,
-    "weight": 0,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
     "price": {
       "value": 0,
       "denomination": "gp"
     },
     "rarity": "",
-    "attunement": 0,
+    "attunement": "",
     "activation": {
       "type": "action",
       "cost": 1,
@@ -37,7 +40,7 @@
     "cover": null,
     "crewed": false,
     "target": {
-      "value": 1,
+      "value": "1",
       "width": null,
       "units": "",
       "type": "creature",
@@ -75,11 +78,11 @@
     "damage": {
       "parts": [
         [
-          "1d6[piercing] + @mod",
+          "1d6 + @mod",
           "piercing"
         ],
         [
-          "3d6[necrotic]",
+          "3d6",
           "necrotic"
         ]
       ],
@@ -108,7 +111,9 @@
     "magicalBonus": null,
     "properties": [],
     "equipped": true,
-    "proficient": null
+    "proficient": null,
+    "attuned": false,
+    "enchantment": null
   },
   "effects": [
     {
@@ -131,12 +136,6 @@
           "mode": 2,
           "value": "-@damageComponents.necrotic",
           "priority": 20
-        },
-        {
-          "key": "macro.actorUpdate",
-          "mode": 0,
-          "value": "@targetUuid number \"min(##attributes.hp.value,(##attributes.hp.max - @damageComponents.necrotic))\" system.attributes.hp.value",
-          "priority": 20
         }
       ],
       "description": "",
@@ -154,7 +153,9 @@
           "macroRepeat": "none",
           "specialDuration": [
             "longRest"
-          ]
+          ],
+          "enableCondition": "",
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -171,42 +172,35 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
       "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
+        "lastModifiedBy": null
       },
       "img": "icons/creatures/abilities/mouth-teeth-long-red.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!VXwDn8Ek8OrgynSu.pW3cpazlmxh207Us"
+      "_key": "!items.effects!DyPkHaZKpewU8wq1.pW3cpazlmxh207Us"
     }
   ],
   "flags": {
-    "ddbimporter": {
-      "levelBonus": false,
-      "dndbeyond": {}
-    },
-    "monsterMunch": {
-      "titleHTML": "<strong>Bite. (Bat or Vampire Form Only).</strong>",
-      "fullName": "Bite. (Bat or Vampire Form Only).",
-      "actionCopy": false,
-      "type": "action"
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "fumbleThreshold": null,
       "rollAttackPerTarget": "default",
-      "itemCondition": "['Grappled', 'Incapacitated', 'Restrained'].some(n=>fromUuidSync(targetUuid).actor.appliedEffects.some(e=>e.name===n))",
+      "itemCondition": "['Grapple', 'Grappled', 'Incapacitated', 'Restrained'].some(n=>fromUuidSync(targetUuid).actor.appliedEffects.some(e=>e.name===n))",
       "effectCondition": "",
       "onUseMacroName": "[postActiveEffects]function.MISC.macros.monsters.vampire.bite"
     },
@@ -224,7 +218,11 @@
       "concentration": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": false
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
     },
     "core": {},
     "magicitems": {
@@ -258,39 +256,41 @@
         "sort": 0,
         "flags": {},
         "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
+          "systemId": "dnd5e",
+          "systemVersion": "3.3.1",
+          "coreVersion": "12.331",
           "createdTime": null,
           "modifiedTime": null,
-          "lastModifiedBy": null
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
         }
       }
     },
     "exportSource": {
       "world": "world1",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "3.1.2"
+      "coreVersion": "12.331",
+      "systemVersion": "3.3.1"
     }
   },
   "img": "icons/creatures/abilities/mouth-teeth-long-red.webp",
   "folder": "z0m6NM18AcDx3Y9Y",
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "coreVersion": "12.331",
-    "createdTime": 1713985843503,
-    "modifiedTime": 1714431705433,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1732047652225,
+    "modifiedTime": 1732047653521,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
-  "_id": "VXwDn8Ek8OrgynSu",
-  "sort": 0,
-  "_key": "!items!VXwDn8Ek8OrgynSu"
+  "_id": "DyPkHaZKpewU8wq1",
+  "sort": 300000,
+  "_key": "!items!DyPkHaZKpewU8wq1"
 }

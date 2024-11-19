@@ -1,0 +1,212 @@
+{
+  "name": "Regeneration",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by TreeDragon</span></h2><h3 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track)\"><span style=\"font-family:Signika, sans-serif\">Cauldron of Plentiful Resources</span></li></ul>",
+      "chat": ""
+    },
+    "source": {
+      "book": "SRD 5.1",
+      "page": "",
+      "custom": "",
+      "license": "CC-BY-4.0"
+    },
+    "activation": {
+      "type": "special",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": "inst"
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "",
+      "width": null,
+      "units": "",
+      "type": "self",
+      "prompt": true
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": "",
+    "actionType": "heal",
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "20",
+          "healing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "enchantment": null,
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "flat"
+    },
+    "summons": null,
+    "type": {
+      "value": "monster",
+      "subtype": ""
+    },
+    "prerequisites": {
+      "level": null
+    },
+    "properties": [],
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "confirmTargets": "default",
+      "noConcentrationCheck": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "default": "",
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "chris-premades": {
+      "configuration": {
+        "acid": false,
+        "bludgeoning": false,
+        "cold": false,
+        "fire": false,
+        "force": false,
+        "lightning": false,
+        "piercing": false,
+        "poison": false,
+        "psychic": false,
+        "radiant": true,
+        "slashing": false,
+        "thunder": false,
+        "magic": false,
+        "zeroHP": true,
+        "necrotic": false,
+        "critical": false,
+        "threshold": 0
+      },
+      "info": {
+        "source": "world"
+      },
+      "config": {
+        "generic": {
+          "genericRegeneration": {
+            "applied": true,
+            "damageTypes": [
+              "radiant"
+            ],
+            "zeroHP": true,
+            "showIcons": true,
+            "threshold": 0,
+            "critical": false
+          }
+        }
+      },
+      "macros": {
+        "midi": {
+          "actor": [
+            "genericRegeneration"
+          ]
+        },
+        "combat": [
+          "genericRegeneration"
+        ]
+      }
+    },
+    "exportSource": {
+      "world": "world1",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "3.3.1"
+    }
+  },
+  "img": "icons/magic/life/heart-cross-strong-purple-orange.webp",
+  "folder": "PVo8c24Q45DCMRkd",
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1732047645861,
+    "modifiedTime": 1732047648357,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "ownership": {
+    "default": 0,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "_id": "COjD6elmFz6xYnXZ",
+  "sort": 100000,
+  "_key": "!items!COjD6elmFz6xYnXZ"
+}

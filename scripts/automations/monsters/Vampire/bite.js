@@ -9,9 +9,10 @@ export async function bite({
   workflow,
   options,
 }) {
-  const { damage, damageMultiplier } =
-    workflow.damageItem.damageDetail[0].find((d) => d.type === 'necrotic') ||
-    {};
+  const {
+    value: damage,
+    active: { multiplier: damageMultiplier },
+  } = workflow.damageItem.damageDetail.find((d) => d.type === 'necrotic') || {};
   if (damage && workflow.hitTargets.size === 1) {
     const dmgToApply = Math.floor(damage * damageMultiplier);
     await MidiQOL.applyTokenDamage(

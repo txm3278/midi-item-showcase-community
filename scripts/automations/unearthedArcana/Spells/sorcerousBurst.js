@@ -9,44 +9,24 @@ export async function sorcerousBurst({
   workflow,
   options,
 }) {
-  let damageTypes = [
-    {
-      label: '🧪 Acid',
-      value: 'acid',
-    },
-    {
-      label: '❄️ Cold',
-      value: 'cold',
-    },
-    {
-      label: '🔥 Fire',
-      value: 'fire',
-    },
-    {
-      label: '⚡ Lightning',
-      value: 'lightning',
-    },
-    {
-      label: '☠️ Poison',
-      value: 'poison',
-    },
-    {
-      label: '🧠 Psychic',
-      value: 'psychic',
-    },
-    {
-      label: '☁️ Thunder',
-      value: 'thunder',
-    },
-  ];
+  let damageTypes = {
+    acid: '🧪 Acid',
+    cold: '❄️ Cold',
+    fire: '🔥 Fire',
+    lightning: '⚡ Lightning',
+    poison: '☠️ Poison',
+    psychic: '🧠 Psychic',
+    thunder: '☁️ Thunder',
+  };
 
-  let selection = await warpgate.buttonDialog(
-    {
-      buttons: damageTypes,
-      title: 'Select a damage type',
-    },
-    'column'
-  );
+  const menu = new Portal.FormBuilder();
+  menu.title('Sorcerous Burst').select({
+    name: 'damageType',
+    options: damageTypes,
+    label: 'Select a damage type',
+  });
+
+  let selection = await menu.render();
 
   if (!selection) {
     return;
@@ -54,12 +34,12 @@ export async function sorcerousBurst({
 
   let damageFormula = workflow.item.system.damage.parts[0][0].replace(
     'none',
-    selection
+    selection.damageType
   );
-  let damage = [[damageFormula, selection]];
+  let damage = [[damageFormula, selection.damageType]];
   let animation, color;
 
-  switch (selection) {
+  switch (selection.damageType) {
     case 'acid':
       animation = 'rayoffrost';
       color = 'green';
