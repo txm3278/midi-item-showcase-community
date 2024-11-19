@@ -22,7 +22,10 @@ export function registerSettings() {
     type: Boolean,
     default: false,
     onChange: async (value) => {
-      if (value) await scripts.runElwinsHelpers();
+      if (value) {
+        await scripts.runElwinsHelpers();
+        await scripts.runElwinsHelpersCoating();
+      }
     },
   });
 }

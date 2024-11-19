@@ -1,0 +1,22 @@
+{
+  "name": "Tattoos",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "WSlIQrebBosRv8nH",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1732046614744,
+    "modifiedTime": 1732046614744,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!WSlIQrebBosRv8nH"
+}

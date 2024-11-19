@@ -1,0 +1,231 @@
+{
+  "folder": "GZQMCUBTyM5oF7KX",
+  "name": "Channel Divinity: Rebuke the Violent",
+  "type": "feat",
+  "img": "icons/magic/lightning/bolt-strike-blue-white.webp",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.<br />When adding this feature to an actor, you must configure the consumption on Channel Divinity.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
+      "chat": ""
+    },
+    "source": {},
+    "activation": {
+      "type": "reaction",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "target": {
+      "value": "1",
+      "width": null,
+      "units": "",
+      "type": "ally",
+      "prompt": true
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "recovery": "",
+      "prompt": true
+    },
+    "consume": {
+      "type": "charges",
+      "target": null,
+      "amount": null,
+      "scale": false
+    },
+    "ability": null,
+    "actionType": null,
+    "attack": {
+      "bonus": "",
+      "flat": false
+    },
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "summons": null,
+    "type": {
+      "value": "class",
+      "subtype": "channelDivinity"
+    },
+    "properties": [],
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "enchantment": null,
+    "prerequisites": {
+      "level": null
+    }
+  },
+  "effects": [
+    {
+      "origin": "Item.wdID9kD5E1pFbnU6",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "name": "Channel Divinity: Rebuke the Violent",
+      "_id": "VP3g3FcaoaUhLA46",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;post=true",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": "#ffffff",
+      "img": "icons/magic/lightning/bolt-strike-blue-white.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!gekdrrazHAvaw9Fu.VP3g3FcaoaUhLA46"
+    }
+  ],
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "B2BBHntfpytXE8DP": 3
+  },
+  "flags": {
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "reactionCondition": "reaction === \"tpr.isDamaged\"",
+      "onUseMacroName": "[preTargeting]ItemMacro"
+    },
+    "dae": {
+      "macro": {
+        "name": "Channel Divinity: Rebuke the Violent",
+        "img": "icons/magic/lightning/bolt-strike-blue-white.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.channelDivinityRebukeTheViolent(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "3.3.1",
+    "createdTime": 1731974893543,
+    "modifiedTime": 1731974893543,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_id": "gekdrrazHAvaw9Fu",
+  "sort": 0,
+  "_key": "!items!gekdrrazHAvaw9Fu"
+}

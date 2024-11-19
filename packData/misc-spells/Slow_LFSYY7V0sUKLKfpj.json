@@ -129,15 +129,15 @@
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "forceCEOff": true,
-      "AoETargetType": "any",
-      "AoETargetTypeIncludeSelf": true,
-      "autoTarget": "default",
+      "AoETargetType": "enemy",
+      "AoETargetTypeIncludeSelf": false,
+      "autoTarget": "none",
       "rollAttackPerTarget": "default",
-      "itemCondition": "",
+      "itemCondition": "workflow.targets.size <= 6",
       "effectCondition": ""
     },
     "midiProperties": {
-      "confirmTargets": "default",
+      "confirmTargets": "always",
       "magicdam": true,
       "magiceffect": true,
       "autoFailFriendly": false,
@@ -325,7 +325,7 @@
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
     "createdTime": 1724961733021,
-    "modifiedTime": 1724968786152,
+    "modifiedTime": 1732046891295,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {

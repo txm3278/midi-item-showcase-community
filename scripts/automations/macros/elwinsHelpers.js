@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.6.0
+// v2.7.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -37,6 +37,8 @@
 // - elwinHelpers.getMoveTowardsPosition
 // - elwinHelpers.findMovableSpaceNearDest
 // - elwinHelpers.convertCriticalToNormalHit
+// - elwinHelpers.getDamageRollOptions
+// - elwinHelpers.getMidiOnSavePropertyName
 // - elwinHelpers.getAppliedEnchantments (dnd5e v3.2+ only)
 // - elwinHelpers.deleteAppliedEnchantments (dnd5e v3.2+ only)
 // - elwinHelpers.ItemSelectionDialog
@@ -51,16 +53,16 @@
 // The value is composed of three parts, the first two are similar to those used by normal MidiQOL onUseMacroName.
 //   - macroRef: this can be an item macro, a macro, or a function, it uses the same syntax MidiQOL uses.
 //   - thirdPartyReactionTrigger: currently supported values
-//     - tpr.isTargeted: this is called in MidiQOL preValidateRoll, which is just before it validates a target’s range from the attacker.
-//     - tpr.isPreAttacked: this is called just before the attacker’s d20 roll.
-//     - tpr.isAttacked: this is called after the the attacker’s d20 roll but before validating if a target was hit or missed.
-//     - tpr.isHit: this is called after MidiQOL validated that a target was hit.
-//     - tpr.isMissed: this is called after MidiQOL validated that a target was missed.
-//     - tpr.isPreDamaged: this is called before the attacker's damage roll.
-//     - tpr.isDamaged: this is called after MidiQOL computed the damage to be dealt to a target but before it is applied.
-//     - tpr.isHealed: this is called after MidiQOL computed the healing to be done to a target but before it is applied.
-//     - tpr.isPreCheckSave: this is called just before a saving throw check is asked from the target.
-//     - tpr.isPostCheckSave: this is called after a saving throw check is asked from the target but before it is displayed.
+//     - tpr.isTargeted: this is called in the "midi-qol.preValidateRoll" hook, which is just before it validates a target’s range from the attacker.
+//     - tpr.isPreAttacked: this is called in the "midi-qol.preAttackRoll" hook, which is called before the attacker’s d20 roll.
+//     - tpr.isAttacked: this is called in the "midi-qol.preCheckHits" hook, which is called after the attacker’s d20 roll but before validating if a target was hit or missed.
+//     - tpr.isHit: this is called in the "midi-qol.hitsChecked" hook, which is called after MidiQOL validated that a target was hit.
+//     - tpr.isMissed: this is called in the "midi-qol.hitsChecked" hook, which is called after MidiQOL validated that a target was missed.
+//     - tpr.isPreDamaged: this is called in the "midi-qol.preDamageRoll" hook, which is called before the attacker's damage roll.
+//     - tpr.isDamaged: this is called in the "midi-qol.preTargetDamageApplication", which is called after MidiQOL computed the damage to be dealt to a target but before it is applied.
+//     - tpr.isHealed: this is called in the "midi-qol.preTargetDamageApplication", which is called after MidiQOL computed the healing to be done to a target but before it is applied.
+//     - tpr.isPreCheckSave: this is called in the "midi-qol.preCheckSaves", which is called just before a saving throw check is asked from the target.
+//     - tpr.isPostCheckSave: this is called in the "midi-qol.postCheckSaves", which is called after a saving throw check is asked from the target but before it is displayed.
 //   - thirdPartyReactionOptions: The options consist of a list of parameter/value pairs separated by `;`. The parameter and its value is separated by a `=`.
 //     - ignoreSelf: true or false to indicate if the owner being a target must not trigger the reaction. [default false]
 //     - triggerSource: target or attacker, determines to whom the canSee option, the item’s range and target applies. [default target]
@@ -72,7 +74,21 @@
 //
 // Example: `ItemMacro,tpr.isDamaged|ignoreSelf=true;canSee=true;pre=true;post=true`
 //
+// TPR pre macro: It is always called before prompting, it is used to set things or cleanup things, it can also be used to add complex activation condition,
+//                if it returnes the object {skip: true}, this reaction will not be prompted. This is called before the prompt in the workflow of the attacker.
+// TPR post macro: It is always called after the prompt and execution of the selected reaction even it it was cancelled or a reaction was aborted.
+//                 It should be used to cleanup and apply affects on the attacker's workflow if the proper reaction was chosen and was successful.
 // The pre and post macros are called in the item use workflow, it means that any changes to the MidiQOL workflow are live. The macro parameters are the same as any macro call with an args[0].tag value of ‘TargetOnUse’.
+//
+// The TPR pre, reaction and TPR post are all executed in the same phase of the attacker's workflow. For example if tpr.isAttacked,
+// they are executed after attack roll but before its evaluation for hit or miss.
+//
+// When the tpr reaction is called, the following attributes in options are available:
+//   options.thirdPartyReaction.trigger: name of the tpr trigger, e.g.: tpr.isDamaged
+//   options.thirdPartyReaction.itemUuids: array of reaction uuids that were prompted on a trigger for an actor owner of TPR reactions.
+//   options.thirdPartyReaction.triggerSource: target or attacker, this depends on the value configured on the thirdPartyReactionOptions of the TPR active effect
+//   options.thirdPartyReaction.targetUuid: UUID of the target of the item that triggered the TPR, only set if the triggerSource is attacker.
+//   options.thirdPartyReaction.attackerUuid: UUID of the actor that used the item that triggered the TPR, only set if the triggerSource is target.
 //
 // The reaction condition data is augmented for third party reactions. The following extra attributes are available:
 //   - tpr.item: reaction item roll data.
@@ -90,7 +106,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '2.6.0';
+  const VERSION = '2.7.0';
   const MACRO_NAME = 'elwin-helpers';
   const active = true;
   let debug = false;
@@ -255,6 +271,15 @@ export function runElwinsHelpers() {
       'elwinHelpers.convertCriticalToNormalHit',
       convertCriticalToNormalHit
     );
+    exportIdentifier('elwinHelpers.getDamageRollOptions', getDamageRollOptions);
+    exportIdentifier(
+      'elwinHelpers.getMidiOnSavePropertyName',
+      getMidiOnSavePropertyName
+    );
+    exportIdentifier(
+      'elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll',
+      disableManualEnchantmentPlacingOnUsePreItemRoll
+    );
     if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
       exportIdentifier(
         'elwinHelpers.getAppliedEnchantments',
@@ -265,6 +290,7 @@ export function runElwinsHelpers() {
         deleteAppliedEnchantments
       );
     }
+
     // Note: classes need to be exported after they are declared...
 
     registerRemoteFunctions();
@@ -338,8 +364,16 @@ export function runElwinsHelpers() {
    * @param {function} exportedValue the function or variable to export.
    */
   function exportIdentifier(exportedIdentifierName, exportedValue) {
-    if (globalThis[exportedIdentifierName]) {
-      delete globalThis[exportedIdentifierName];
+    if (foundry.utils.getProperty(globalThis, exportedIdentifierName)) {
+      const lastIndex = exportedIdentifierName.lastIndexOf('.');
+      if (lastIndex < 0) {
+        delete globalThis[exportedIdentifierName];
+      } else {
+        delete foundry.utils.getProperty(
+          globalThis,
+          exportedIdentifierName.substring(0, lastIndex)
+        )[exportedIdentifierName.substring(lastIndex + 1)];
+      }
     }
     if (active) {
       foundry.utils.setProperty(
@@ -733,7 +767,7 @@ export function runElwinsHelpers() {
       }
     }
 
-    const usedReaction = await MidiQOL.hasUsedReaction(reactionActor);
+    const usedReaction = MidiQOL.hasUsedReaction(reactionActor);
     if (usedReaction) {
       if (options?.debug) {
         console.warn(
@@ -903,16 +937,9 @@ export function runElwinsHelpers() {
 
     //{none: 'Attack Hits', d20: 'd20 roll only', all: 'Attack Roll Total', allCrit: 'Attack Roll Total + Critical'}
     if (
-      [
-        'isHit',
-        'isMissed',
-        'isCrit',
-        'isFumble',
-        'isDamaged',
-        'isHealed',
-        'isAttacked',
-        'isPreDamaged',
-      ].includes(reactionTriggerName)
+      ['isHit', 'isMissed', 'isCrit', 'isFumble', 'isAttacked'].includes(
+        reactionTriggerName
+      )
     ) {
       const showAttackRoll =
         showReactionAttackRoll ??
@@ -1007,7 +1034,7 @@ export function runElwinsHelpers() {
    * Handles the evaluation and execution of reactions, if the conditions are met, associated to the specified token uuid.
    *
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {string} trigger - The current trigger for which to evaluation possible reaction executions.
+   * @param {string} trigger - The current trigger for which to evaluate possible reaction executions.
    * @param {string} reactionTokenUuid - The token uuid of the reaction's owner.
    * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
    * @param {object} options - Options used for the evaluation and execution of the third party reactions.
@@ -1019,8 +1046,10 @@ export function runElwinsHelpers() {
     tokenReactionsInfo,
     options = {}
   ) {
-    const filteredReactions = tokenReactionsInfo.reactions.filter(
-      (reactionData) => trigger === reactionData.targetOnUse
+    let filteredReactions = tokenReactionsInfo.reactions.filter(
+      (reactionData) =>
+        trigger === reactionData.targetOnUse &&
+        reactionData.item.uuid !== workflow.itemUuid
     );
     if (!filteredReactions.length) {
       return;
@@ -1054,17 +1083,6 @@ export function runElwinsHelpers() {
         }
         return;
       }
-    }
-
-    const usedReaction = await MidiQOL.hasUsedReaction(reactionActor);
-    if (usedReaction) {
-      if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Reaction already used for actor.`,
-          reactionActor
-        );
-      }
-      return;
     }
 
     // Copied from midi-qol because this utility function is not exposed
@@ -1101,10 +1119,20 @@ export function runElwinsHelpers() {
       return;
     }
 
+    const regTrigger = trigger.replace('tpr.', '');
+    const maxLevel = maxReactionCastLevel(reactionActor);
+    const reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
+    filteredReactions = filteredReactions.filter((reactionData) =>
+      itemReaction(reactionData.item, regTrigger, maxLevel, reactionUsed)
+    );
+    if (!filteredReactions.length) {
+      return;
+    }
+
     let targets;
     let triggerItem = workflow.item;
     let roll = workflow.attackRoll;
-    const regTrigger = trigger.replace('tpr.', '');
+
     switch (regTrigger) {
       case 'isHealed':
       case 'isDamaged':
@@ -1152,14 +1180,11 @@ export function runElwinsHelpers() {
           return;
         }
 
-        const usedReaction = await MidiQOL.hasUsedReaction(reactionActor);
-        if (usedReaction) {
-          if (debug) {
-            console.warn(
-              `${MACRO_NAME} | Reaction already used for actor.`,
-              reactionActor
-            );
-          }
+        const reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
+        filteredReactions = filteredReactions.filter((reactionData) =>
+          itemReaction(reactionData.item, regTrigger, maxLevel, reactionUsed)
+        );
+        if (!filteredReactions.length) {
           return;
         }
       }
@@ -1257,11 +1282,18 @@ export function runElwinsHelpers() {
     // Check range condition
     const range = getReactionRange(reactionData);
     if (range) {
-      const tmpDist = MidiQOL.computeDistance(
-        reactionToken,
-        triggerToken,
-        range.wallsBlock
-      );
+      const tmpDist = foundry.utils.isNewerVersion(
+        game.modules.get('midi-qol').version ?? '0.0.0',
+        '11.6.25'
+      )
+        ? MidiQOL.computeDistance(reactionToken, triggerToken, {
+            wallsBlock: range.wallsBlock,
+          })
+        : MidiQOL.computeDistance(
+            reactionToken,
+            triggerToken,
+            range.wallsBlock
+          );
       if (tmpDist < 0 || tmpDist > range.value) {
         if (debug) {
           console.warn(
@@ -1856,7 +1888,7 @@ export function runElwinsHelpers() {
     }
 
     let effectiveDamagePrevented;
-    if (damageItem.appliedDamage) {
+    if (foundry.utils.hasProperty(damageItem, 'appliedDamage')) {
       let amount = damageItem.damageDetail.reduce(
         (amount, d) =>
           amount +
@@ -1969,7 +2001,13 @@ export function runElwinsHelpers() {
    * @param {object} damageItem - The MidiQOL damageItem to be updated.
    */
   function calculateAppliedDamage(damageItem) {
-    let { amount, temp } = damageItem?.damageDetail.reduce(
+    if (!damageItem) {
+      if (debug) {
+        console.warn(`${MACRO_NAME} | Missing damaged item.`, { damageItem });
+      }
+      return;
+    }
+    let { amount, temp } = damageItem.damageDetail.reduce(
       (acc, d) => {
         if (d.type === 'temphp') acc.temp += d.value ?? d.damage;
         else if (d.type !== 'midi-none') acc.amount += d.value ?? d.damage;
@@ -2005,7 +2043,7 @@ export function runElwinsHelpers() {
     damageItem.elwinHelpersEffectiveDamage = amount;
     // TODO should this reflect raw or not???
     //damageItem.totalDamage = amount;
-    if (damageItem.appliedDamage) {
+    if (foundry.utils.hasProperty(damageItem, 'appliedDamage')) {
       damageItem.appliedDamage = deltaHP;
     }
   }
@@ -2089,7 +2127,12 @@ export function runElwinsHelpers() {
       return false;
     }
 
-    const distance = MidiQOL.computeDistance(sourceToken, targetToken, true);
+    const distance = foundry.utils.isNewerVersion(
+      game.modules.get('midi-qol').version ?? '0.0.0',
+      '11.6.25'
+    )
+      ? MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true })
+      : MidiQOL.computeDistance(sourceToken, targetToken, true);
     // TODO how to support creature with reach, or creatures with reach and thrown weapon?
     const meleeDistance = 5 + (hasItemProperty(item, 'rch') ? 5 : 0);
     return distance > meleeDistance;
@@ -2177,7 +2220,12 @@ export function runElwinsHelpers() {
       return true;
     }
 
-    const distance = MidiQOL.computeDistance(sourceToken, targetToken, true);
+    const distance = foundry.utils.isNewerVersion(
+      game.modules.get('midi-qol').version ?? '0.0.0',
+      '11.6.25'
+    )
+      ? MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true })
+      : MidiQOL.computeDistance(sourceToken, targetToken, true);
     // TODO how to support creature with reach, or creatures with reach and thrown weapon?
     const meleeDistance = 5 + (hasItemProperty(item, 'rch') ? 5 : 0);
     return distance >= 0 && distance <= meleeDistance;
@@ -2403,6 +2451,53 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Returns the damage roll options based on the ones set on the first damage roll of the worflow.
+   *
+   * @param {MidiQOL.Workflow} worflow - The MidiQOL workflow from which to get the first damage roll options.
+   *
+   * @returns {object} The damage roll options based on the ones set on the first damage roll of the worflow.
+   */
+  function getDamageRollOptions(workflow) {
+    const rollOptions = workflow.damageRolls[0]?.options ?? {};
+    const isCritical = !workflow.isCritical
+      ? rollOptions.critical
+      : workflow.isCritical;
+    const options = {
+      critical: isCritical,
+      criticalBonusDamage: rollOptions.criticalBonusDamage,
+      criticalBonusDice: rollOptions.criticalBonusDice,
+      criticalMultiplier: rollOptions.criticalMultiplier,
+      multiplyNumeric: rollOptions.multiplyNumeric,
+      powerfulCritical: rollOptions.powerfulCritical,
+    };
+    return options;
+  }
+
+  /**
+   * Returns the MidiQOL property name for damage on save multiplier.
+   *
+   * @param {string} [onSave="none"] - The name of the multiplier to apply to damage if a save is sucessfull,
+   *                          one of: none, half, full.
+   * @returns {string} This MidiQOL property name for damage on save multiplier.
+   */
+  function getMidiOnSavePropertyName(onSave) {
+    let onSavePropName = 'nodam';
+    if (onSave) {
+      switch (onSave) {
+        case 'half':
+          onSavePropName = 'halfdam';
+          break;
+        case 'full':
+          onSavePropName = 'fulldam';
+          break;
+        default:
+          onSavePropName = 'nodam';
+      }
+    }
+    return onSavePropName;
+  }
+
+  /**
    * Gets the applied enchantments for the specified item uuid if any exist.
    *
    * @param {string} itemUuid - The UUID of the item for which to find associated enchantments.
@@ -2429,6 +2524,30 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Disables manual enchantment placing (for dnd5e v3.2+).
+   * This prevents the drop area that allows to select or remove the item to which an enchantment is applied.
+   *
+   * @param {object} parameters - The MidiQOL function macro parameters.
+   */
+  function disableManualEnchantmentPlacingOnUsePreItemRoll({ workflow, args }) {
+    if (debug) {
+      console.warn(
+        MACRO_NAME,
+        {
+          phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0],
+        },
+        arguments
+      );
+    }
+
+    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
+      // Disables enchantment drop area
+      workflow.config.promptEnchantment = false;
+      workflow.config.enchantmentProfile = null;
+    }
+  }
+
+  /**
    * Utility dialog to select an item from a list of items.
    *
    * @example
@@ -2444,7 +2563,7 @@ export function runElwinsHelpers() {
      *
      * @returns {string} the html content to display in the dialog.
      */
-    static async getContent(items, defaultItem) {
+    static getContent(items, defaultItem) {
       if (!defaultItem || !items.find((t) => t.id === defaultItem?.id)) {
         defaultItem = items[0];
       }
@@ -2643,11 +2762,11 @@ export function runElwinsHelpers() {
       if (!(items?.length > 0)) {
         return null;
       }
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const dialog = new this(
           {
             title,
-            content: await this.getContent(items, defaultItem),
+            content: this.getContent(items, defaultItem),
             buttons: {
               ok: {
                 icon: '<i class="fas fa-check"></i>',
@@ -2811,15 +2930,16 @@ export function runElwinsHelpers() {
      *
      * @returns {Promise<Token5e|null>}  Resolves with the selected token, if any.
      */
-    static createDialog(title, tokens, defaultToken) {
+    static async createDialog(title, tokens, defaultToken) {
       if (!(tokens?.length > 0)) {
         return null;
       }
-      return new Promise(async (resolve, reject) => {
+      const content = await this.getContent(tokens, defaultToken);
+      return new Promise((resolve, reject) => {
         const dialog = new this(
           {
             title,
-            content: await this.getContent(tokens, defaultToken),
+            content,
             buttons: {
               ok: {
                 icon: '<i class="fas fa-check"></i>',
@@ -2922,7 +3042,7 @@ export function runElwinsHelpers() {
    * @returns {object} the value associated to the selected button.
    */
   async function remoteButtonDialog(userId, data, direction) {
-    return elwinHelpers.socket.executeAsUser(
+    return globalThis.elwinHelpers.socket.executeAsUser(
       'elwinHelpers.remoteButtonDialog',
       userId,
       data,
@@ -3763,7 +3883,7 @@ export function runElwinsHelpers() {
       return undefined;
     }
     if (name.startsWith('function.')) {
-      let [func, uuid] = name.split('|');
+      // Do nothing, use the macroItem UUID contained in the macroName
     } else if (
       name.startsWith(MQItemMacroLabel) ||
       name.startsWith('ItemMacro')
@@ -3812,15 +3932,6 @@ export function runElwinsHelpers() {
   // Copied from midi-qol because its not exposed in the API
   function getI18n(key) {
     return game.i18n.localize(key);
-  }
-
-  function getI18nSystem(key) {
-    const keyHeader = game.system.id.toUpperCase();
-    return getI18n(`${keyHeader}.${key}`);
-  }
-
-  function getI18nFormat(key, data = {}) {
-    return game.i18n.format(key, data);
   }
 
   function getI18nOptions(key) {
@@ -3895,6 +4006,341 @@ export function runElwinsHelpers() {
       });
     }
     return img;
+  }
+
+  /**
+   * Returns the actor's maximum cast level for reactions.
+   *
+   * @param {Actor5e} actor - Actor for which to get the maximum cast level allowed for reactions.
+   * @returns {integer} the actor's maximum cast level for reactions.
+   */
+  function maxReactionCastLevel(actor) {
+    if (MidiQOL.maxReactionCastLevel) {
+      return MidiQOL.maxReactionCastLevel(actor);
+    }
+
+    if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
+      return 9;
+    }
+    const spells = actor.system.spells;
+    if (!spells) {
+      return 0;
+    }
+    let pactLevel = spells.pact?.value ? spells.pact?.level : 0;
+    for (let i = 9; i > pactLevel; i--) {
+      if (spells[`spell${i}`]?.value > 0) {
+        return i;
+      }
+    }
+    return pactLevel;
+  }
+
+  function itemReaction(item, triggerType, maxLevel, onlyZeroCost) {
+    if (MidiQOL.itemReaction && MidiQOL.enableNotifications) {
+      try {
+        MidiQOL.enableNotifications(false);
+        return MidiQOL.itemReaction(item, triggerType, maxLevel, onlyZeroCost);
+      } finally {
+        MidiQOL.enableNotifications(true);
+      }
+    }
+
+    if (!item.system.activation?.type?.includes('reaction')) {
+      return false;
+    }
+    if (item.system.activation?.cost > 0 && onlyZeroCost) {
+      return false;
+    }
+    if (item.type === 'spell') {
+      if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
+        return true;
+      }
+      if (item.system.preparation?.mode === 'atwill') {
+        return true;
+      }
+      if (item.system.level === 0) {
+        return true;
+      }
+      if (
+        item.system.preparation?.prepared !== true &&
+        item.system.preparation?.mode === 'prepared'
+      ) {
+        return false;
+      }
+      if (item.system.preparation?.mode !== 'innate') {
+        return item.system.level <= maxLevel;
+      }
+    }
+    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
+      if (!item.system.attuned && item.system.attunement === 'required') {
+        return false;
+      }
+    } else {
+      if (item.system.attunement === CONFIG.DND5E.attunementTypes.REQUIRED) {
+        return false;
+      }
+    }
+
+    if (
+      !checkUsage(item, {
+        consumeUsage: item.hasLimitedUses,
+        consumeResource: item.hasResource,
+        slotLevel: false,
+      })
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  //----------------------------------
+  // Adapted from dnd5e because Item5e._getUsageUpdates displays ui notifications.
+
+  /**
+   * Verify that the consumed resources used by an Item are available.
+   * If required resources are not available return false.
+   * *Note:* based on dnd5e Item5e._getUsageUpdates
+   *
+   * @param {Item5e} item - The item for which to validation usage.
+   * @param {ItemUseConfiguration} config - Configuration data for an item usage.
+   * @returns {boolean} Returns false if an item cannot be used.
+   */
+  function checkUsage(item, config) {
+    // Consume own limited uses or recharge
+    if (config.consumeUsage) {
+      const canConsume = canConsumeUses(item);
+      if (canConsume === false) {
+        return false;
+      }
+    }
+
+    // Consume Limited Resource
+    if (config.consumeResource) {
+      const canConsume = canConsumeResource(item, config);
+      if (canConsume === false) {
+        return false;
+      }
+    }
+
+    // Consume Spell Slots
+    if (config.consumeSpellSlot) {
+      const spellData = item.actor?.system.spells ?? {};
+      const level = spellData[config.slotLevel];
+      const spells = Number(level?.value ?? 0);
+      if (spells === 0) {
+        const isLeveled = /spell\d+/.test(config.slotLevel || '');
+        const labelKey = isLeveled
+          ? `DND5E.SpellLevel${this.system.level}`
+          : `DND5E.SpellProg${config.slotLevel?.capitalize()}`;
+        const label = game.i18n.localize(labelKey);
+        if (debug) {
+          console.warn(
+            `${MACRO_NAME} | ${game.i18n.format('DND5E.SpellCastNoSlots', {
+              name: item.name,
+              level: label,
+            })}`
+          );
+        }
+        return false;
+      }
+    }
+
+    // Determine whether the item can be used by testing for available concentration.
+    if (config.beginConcentrating) {
+      const { effects } = item.actor.concentration;
+
+      // Case 1: Replacing.
+      if (config.endConcentration) {
+        const replacedEffect = effects.find(
+          (i) => i.id === config.endConcentration
+        );
+        if (!replacedEffect) {
+          if (debug) {
+            console.warn(
+              `${MACRO_NAME} | ${game.i18n.localize(
+                'DND5E.ConcentratingMissingItem'
+              )}`
+            );
+          }
+          return false;
+        }
+      }
+
+      // Case 2: Starting concentration, but at limit.
+      else if (
+        effects.size >= item.actor.system.attributes.concentration.limit
+      ) {
+        if (debug) {
+          console.warn(
+            `${MACRO_NAME} | ${game.i18n.localize(
+              'DND5E.ConcentratingLimited'
+            )}`
+          );
+        }
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Validates if consuming an item's uses or recharge is possible.
+   * *Note:* based on Item5e._handleConsumeUses
+   *
+   * @param {Item5e} item The item for which to validate uses consumption.
+   * @returns {boolean}   Return false to block further progress, or return true to continue.
+   */
+  function canConsumeUses(item) {
+    const recharge = item.system.recharge || {};
+    const uses = item.system.uses || {};
+    const quantity = item.system.quantity ?? 1;
+    let used = false;
+
+    // Consume recharge.
+    if (recharge.value) {
+      if (recharge.charged) {
+        used = true;
+      }
+    }
+
+    // Consume uses (or quantity).
+    else if (uses.max && uses.per && uses.value > 0) {
+      const remaining = Math.max(uses.value - 1, 0);
+
+      if (remaining > 0 || (!remaining && !uses.autoDestroy)) {
+        used = true;
+      } else if (quantity >= 2) {
+        used = true;
+      } else if (quantity === 1) {
+        used = true;
+      }
+    }
+
+    // If the item was not used, return a warning
+    if (!used) {
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${game.i18n.format('DND5E.ItemNoUses', {
+            name: item.name,
+          })}`
+        );
+      }
+    }
+    return used;
+  }
+
+  /**
+   * Verifies if consuming an external resource is possible.
+   * *Note:* based on Item5e._handleConsumeResource
+   *
+   * @param {Item5e} item - Item for which to validate resource consumption.
+   * @param {ItemUseConfiguration} usageConfig - Configuration data for an item usage being prepared.
+   * @returns {boolean} Return false to block further progress, or return true to continue.
+   */
+  function canConsumeResource(item, usageConfig) {
+    const consume = item.system.consume || {};
+    if (!consume.type) {
+      return true;
+    }
+
+    // No consumed target
+    const typeLabel = CONFIG.DND5E.abilityConsumptionTypes[consume.type];
+    if (!consume.target) {
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${game.i18n.format(
+            'DND5E.ConsumeWarningNoResource',
+            { name: item.name, type: typeLabel }
+          )}`
+        );
+      }
+      return false;
+    }
+
+    const as = item.actor.system;
+    // Identify the consumed resource and its current quantity
+    let resource = null;
+    let amount = usageConfig.resourceAmount
+      ? usageConfig.resourceAmount
+      : consume.amount || 0;
+    if (as.spells && amount in as.spells) {
+      amount = consume.amount || 0;
+    }
+    let quantity = 0;
+    switch (consume.type) {
+      case 'attribute': {
+        const amt = usageConfig.resourceAmount;
+        const target =
+          as.spells && amt in as.spells
+            ? `spells.${amt}.value`
+            : consume.target;
+        resource = foundry.utils.getProperty(as, target);
+        quantity = resource || 0;
+        break;
+      }
+      case 'ammo':
+      case 'material':
+        resource = item.actor.items.get(consume.target);
+        quantity = resource ? resource.system.quantity : 0;
+        break;
+      case 'hitDice': {
+        const denom = !['smallest', 'largest'].includes(consume.target)
+          ? consume.target
+          : false;
+        resource = Object.values(item.actor.classes).filter(
+          (cls) => !denom || cls.system.hitDice === denom
+        );
+        quantity = resource.reduce(
+          (count, cls) => count + cls.system.levels - cls.system.hitDiceUsed,
+          0
+        );
+        break;
+      }
+      case 'charges': {
+        resource = item.actor.items.get(consume.target);
+        if (!resource) {
+          break;
+        }
+        const uses = resource.system.uses;
+        if (uses.per && uses.max) {
+          quantity = uses.value;
+        } else if (resource.system.recharge?.value) {
+          quantity = resource.system.recharge.charged ? 1 : 0;
+          amount = 1;
+        }
+        break;
+      }
+    }
+
+    // Verify that a consumed resource is available
+    if (resource === undefined) {
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${game.i18n.format('DND5E.ConsumeWarningNoSource', {
+            name: item.name,
+            type: typeLabel,
+          })}`
+        );
+      }
+      return false;
+    }
+
+    // Verify that the required quantity is available
+    let remaining = quantity - amount;
+    if (remaining < 0) {
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${game.i18n.format(
+            'DND5E.ConsumeWarningNoQuantity',
+            { name: item.name, type: typeLabel }
+          )}`
+        );
+      }
+      return false;
+    }
+    return true;
   }
 
   ////////////////// Remote functions ///////////////////////////////

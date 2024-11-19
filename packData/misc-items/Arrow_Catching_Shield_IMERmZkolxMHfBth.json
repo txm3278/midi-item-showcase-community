@@ -110,7 +110,9 @@
     "enchantment": null
   },
   "flags": {
-    "core": {},
+    "core": {
+      "sourceId": "Item.LzpyQ4WdeuTZQFFT"
+    },
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -147,7 +149,7 @@
       "effectActivation": false,
       "onUseMacroName": "[preTargeting]ItemMacro",
       "itemCondition": "",
-      "reactionCondition": "reaction === \"tpr.isTargeted\"",
+      "reactionCondition": "reaction === \"tpr.isTargeted\" && tpr?.isRangedAttack",
       "otherCondition": "",
       "effectCondition": "",
       "rollAttackPerTarget": "never"
@@ -206,7 +208,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isTargeted|ignoreSelf=true;pre=true;post=true",
+          "value": "ItemMacro,tpr.isTargeted|ignoreSelf=true;post=true",
           "priority": 20
         }
       ],
@@ -225,7 +227,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -242,6 +245,9 @@
           "nameOverride": "",
           "customCheck": "",
           "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
@@ -259,7 +265,7 @@
         "modifiedTime": null,
         "lastModifiedBy": null
       },
-      "_key": "!items.effects!dwckfwK1c7HTEnh6.WU05KztTWM52xzK5"
+      "_key": "!items.effects!IMERmZkolxMHfBth.WU05KztTWM52xzK5"
     }
   ],
   "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
@@ -270,16 +276,16 @@
     "B2BBHntfpytXE8DP": 3
   },
   "_stats": {
-    "compendiumSource": null,
+    "compendiumSource": "Item.LzpyQ4WdeuTZQFFT",
     "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "createdTime": 1728333091152,
-    "modifiedTime": 1728333094567,
+    "createdTime": 1731975112447,
+    "modifiedTime": 1731975112447,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
-  "_id": "dwckfwK1c7HTEnh6",
-  "sort": 600000,
-  "_key": "!items!dwckfwK1c7HTEnh6"
+  "_id": "IMERmZkolxMHfBth",
+  "sort": 0,
+  "_key": "!items!IMERmZkolxMHfBth"
 }

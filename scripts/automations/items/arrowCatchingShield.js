@@ -27,14 +27,14 @@
 //   - Roll a separate attack per target: Never
 //   - Activation Conditions
 //     - Reaction:
-//       reaction === "tpr.isTargeted"
+//       reaction === "tpr.isTargeted" && tpr?.isRangedAttack
 //   - This item macro code must be added to the DIME code of the item.
 // One effect must also be added:
 //   - Arrow-Catching Shield:
 //      - Transfer to actor on item equip (checked)
 //      - Effects:
 //          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,isAttacked
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isTargeted|ignoreSelf=true;pre=true;post=true
+//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isTargeted|ignoreSelf=true;post=true
 //
 // Usage:
 // This item has a passive effect (when equipped and attuned) to handle bonus AC on ranged attacks
@@ -44,8 +44,6 @@
 // In the preTargeting (item OnUse) phase of the item (in owner's workflow):
 //   Validates that item was triggered by the remote tpr.isPreAttacked target on use,
 //   otherwise the item workflow execution is aborted.
-// In the tpr.isTargeted (TargetOnUse) pre macro (in attacker's workflow) (on other target):
-//   Validates that its a ranged attack
 // In the tpr.isTargeted (TargetOnUse) post macro (in attacker's workflow) (on other target):
 //   If the owner activated the reaction, the current workflow target is switched to
 //   to the owner of the shield, midi will then call the isAttacked later on the new target.
@@ -73,7 +71,7 @@ export async function arrowCatchingShield({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.2'
+      '2.7'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
@@ -95,11 +93,6 @@ export async function arrowCatchingShield({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isTargeted.pre'
-  ) {
-    return handleOnTargetUseIsTargetedPre(workflow, token);
   } else if (
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'tpr.isTargeted.post'
@@ -141,38 +134,6 @@ export async function arrowCatchingShield({
       return false;
     }
     return true;
-  }
-
-  /**
-   * Handles the tpr.isTargeted pre macro of the Arrow-Catching Shield item in the triggering midi-qol workflow.
-   * Validates if the attack is a ranged attack.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Token5e} targetToken - The token that is targeted.
-   *
-   * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
-   */
-  function handleOnTargetUseIsTargetedPre(currentWorkflow, targetToken) {
-    if (!targetToken) {
-      // No target
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No target token.`);
-      }
-      return { skip: true };
-    }
-    if (
-      !elwinHelpers.isRangedAttack(
-        currentWorkflow.item,
-        currentWorkflow.token,
-        targetToken
-      )
-    ) {
-      // Not a ranged attack
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not a ranged attack.`);
-      }
-      return { skip: true };
-    }
   }
 
   /**

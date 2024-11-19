@@ -8,8 +8,10 @@ import { oathbow } from './oathbow.js';
 import { shieldOfMissileAttraction } from './shieldOfMissileAttraction.js';
 import { sunBlade } from './sunBlade.js';
 import { daggerOfVenom } from './daggerOfVenom.js';
+import { absorbingTattoo } from './absorbingTattoo.js';
 
 export let items = {
+  absorbingTattoo,
   arrowCatchingShield,
   clockworkAmulet,
   corpseSlayerLongbow,

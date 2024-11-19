@@ -21,6 +21,7 @@ import { flashOfGenius } from './Artificer/flashOfGenius.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
 import { sorrowfulFate } from './Bard/CollegeOfTragedy/sorrowfulFate.js';
 import { dampenElements } from './Cleric/NatureDomain/dampenElements.js';
+import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/channelDivinityRebukeTheViolent.js';
 
 export let classFeatures = {
   soulOfArtifice,
@@ -46,4 +47,5 @@ export let classFeatures = {
   channelDivinityVowOfEnmity,
   sorrowfulFate,
   dampenElements,
+  channelDivinityRebukeTheViolent,
 };

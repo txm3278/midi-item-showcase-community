@@ -4,6 +4,66 @@ export function setConfig() {
   foundry.utils.setProperty(CONFIG, moduleName, {
     module: moduleName,
     automations: {
+      'Absorbing Tattoo, Acid': {
+        name: 'Absorbing Tattoo, Acid',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Cold': {
+        name: 'Absorbing Tattoo, Cold',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Fire': {
+        name: 'Absorbing Tattoo, Fire',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Force': {
+        name: 'Absorbing Tattoo, Force',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Lightning': {
+        name: 'Absorbing Tattoo, Lightning',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Necrotic': {
+        name: 'Absorbing Tattoo, Necrotic',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Poison': {
+        name: 'Absorbing Tattoo, Poison',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Psychic': {
+        name: 'Absorbing Tattoo, Psychic',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Radiant': {
+        name: 'Absorbing Tattoo, Radiant',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Absorbing Tattoo, Thunder': {
+        name: 'Absorbing Tattoo, Thunder',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
       "Alchemist's Fire (flask)": {
         name: "Alchemist's Fire (flask)",
         type: 'Item',
@@ -26,7 +86,7 @@ export function setConfig() {
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
         type: 'Item',
-        version: '3.2.0',
+        version: '3.2.1',
         authors: ['Elwin'],
       },
       'Aspect of the Beast: Bear': {
@@ -70,6 +130,12 @@ export function setConfig() {
         type: 'Class Feature',
         version: '1.0.0',
         authors: ['Lin Dong'],
+      },
+      'Channel Divinity: Rebuke the Violent': {
+        name: 'Channel Divinity: Rebuke the Violent',
+        type: 'Class Feature',
+        version: '1.0.0',
+        authors: ['Elwin'],
       },
       'Channel Divinity: Turn the Tide': {
         name: 'Channel Divinity: Turn the Tide',
@@ -166,6 +232,12 @@ export function setConfig() {
         type: 'Spell',
         version: '1.0.1',
         authors: ['Fridan99'],
+      },
+      'Drow Posion': {
+        name: 'Drow Poison',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
       },
       'Dungeon Delver': {
         name: 'Dungeon Delver',
@@ -414,6 +486,24 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['Bakana'],
       },
+      'Poison, Basic (vial)': {
+        name: 'Poison, Basic (vial)',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Poisoner': {
+        name: 'Poisoner',
+        type: 'Class Features',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
+      'Potent Poison': {
+        name: 'Potent Poison',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
       'Potion of Healing': {
         name: 'Potion of Healing',
         type: 'Item',
@@ -490,6 +580,12 @@ export function setConfig() {
         version: '1.0.1',
         authors: ['SagaTympana'],
       },
+      'Purple Worm Poison': {
+        name: 'Purple Worm Poison',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
       'Raise Dead': {
         name: 'Raise Dead',
         type: 'Spell',
@@ -532,6 +628,12 @@ export function setConfig() {
         version: '3.1.0',
         authors: ['Elwin'],
       },
+      'Serpent Venom': {
+        name: 'Serpent Venom',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
       Sharpshooter: {
         name: 'Sharpshooter',
         type: 'Feat',
@@ -547,7 +649,7 @@ export function setConfig() {
       Slow: {
         name: 'Slow',
         type: 'Spell',
-        version: '1.1.0',
+        version: '1.1.1',
         authors: ['Moto Moto'],
       },
       Snare: {
@@ -703,6 +805,12 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Moto Moto'],
       },
+      'Wyvern Poison': {
+        name: 'Wyvern Poison',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
     },
     monsterAutomations: {
       'Adrix, The Hammer': {
@@ -838,6 +946,13 @@ export function setConfig() {
           version: '1.0.1',
           authors: ['Moto Moto'],
         },
+      },
+      'Goblin Psi Commander': {
+        'Psionic Shield': {
+          name: 'Psionic Shield',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        }
       },
       'Hobgoblin Recruit': {
         'Infernal Ichor': {
