@@ -4,8 +4,8 @@
   "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
   "system": {
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Optional:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">5e Resources Plus</span></p></li></ul><p>Requires the user to change the resource value in the first effect(Hero Points - D20) cause the item is set to use resource 6 which requires 5e resources+</p>",
-      "chat": ""
+      "chat": "",
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2>"
     },
     "source": {
       "custom": ""
@@ -34,8 +34,8 @@
       "units": "self"
     },
     "uses": {
-      "value": 1,
-      "max": "10",
+      "value": 0,
+      "max": "20",
       "per": "charges",
       "recovery": "",
       "prompt": true
@@ -91,9 +91,9 @@
   "effects": [
     {
       "name": "Hero Points - D20",
-      "origin": "Actor.aPN70SAkmQnjjmJa.Item.AsRLHvJnZdfGeA6s",
+      "origin": "Item.SS0ZjtULi0iAdhAf",
       "duration": {
-        "startTime": null,
+        "startTime": 21814653286,
         "seconds": null,
         "combat": null,
         "rounds": null,
@@ -131,19 +131,116 @@
         {
           "key": "flags.midi-qol.optional.heroPoints.count",
           "mode": 5,
-          "value": "@resources.fourth.value",
+          "value": "ItemUses.Hero Points",
           "priority": 20
         },
         {
-          "key": "system.resources.fourth.label",
+          "key": "flags.midi-qol.optional.heroPoints.skill.fail.all",
           "mode": 5,
-          "value": "Hero Points",
+          "value": "+1d6",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "overlay": false
+        },
+        "effectmacro": {
+          "onCombatStart": {
+            "script": "const effectImage = effect.img;\nawait foundry.applications.api.DialogV2.prompt({\n    window: { title: \"Hero Points Reminder\" },\n    position: {width: 400},\n    content: `<img src=\"${effectImage}\">\n    \n    ${actor.name} can add 1d6 to their initiative with their Hero Points feature if they want to.`\n})"
+          },
+          "dnd5e": {
+            "rollDeathSave": {
+              "script": "const effectImage = effect.img;\nawait foundry.applications.api.DialogV2.prompt({\n    window: { title: \"Hero Points Reminder\" },\n    position: {width: 400},\n    content: `<img src=\"${effectImage}\">\n    \n    ${actor.name} can add 1d6 to their Death Saving Throws with their Hero Points feature if they want to.`\n})"
+            }
+          }
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "3.3.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!f8SrkGFoBtNpPLpt.qeiFHv5QSZb8epC0"
+    },
+    {
+      "name": "Hero Points - Damage",
+      "origin": "Item.SS0ZjtULi0iAdhAf",
+      "duration": {
+        "startTime": 21814653286,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "0Y7tVS9k1gnfqfah",
+      "changes": [
+        {
+          "key": "flags.midi-qol.optional.heroPointsDamage.label",
+          "mode": 5,
+          "value": "Roll a Hero die into your damage roll?",
           "priority": 20
         },
         {
-          "key": "system.resources.fourth.max",
+          "key": "flags.midi-qol.optional.heroPointsDamage.count",
           "mode": 5,
-          "value": "10",
+          "value": "ItemUses.Hero Points",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.heroPointsDamage.damage.all",
+          "mode": 5,
+          "value": "+1d6",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.heroPointsDamage.criticalDamage",
+          "mode": 0,
+          "value": "1",
           "priority": 20
         }
       ],
@@ -185,99 +282,6 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "3.3.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
-      },
-      "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!wRm4ehNwyn5eYMuF.qeiFHv5QSZb8epC0"
-    },
-    {
-      "name": "Hero Points - Damage",
-      "origin": "Item.Eo6fkerraCTBGSuk",
-      "duration": {
-        "startTime": 21814348676,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "0Y7tVS9k1gnfqfah",
-      "changes": [
-        {
-          "key": "flags.midi-qol.optional.heroPointsDamage.label",
-          "mode": 5,
-          "value": "Roll a Hero die into your damage roll?",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.heroPointsDamage.count",
-          "mode": 5,
-          "value": "@resources.fourth.value",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.heroPointsDamage.damage.all",
-          "mode": 5,
-          "value": "+1d6",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.heroPointsDamage.criticalDamage",
-          "mode": 0,
-          "value": "1",
-          "priority": 20
-        }
-      ],
-      "description": "<p>With this option, a character starts with 5 hero point at 1st level. Each time the character gains a level, he or she loses any unspent hero points and gains a new total equal to 5 + half the character's level.</p><p>A player can spend a hero point whenever he or she makes an attack roll, an ability check, or a saving throw The player can spend the hero point after the roll is made but before any of its results are applied. Spending the hero point allows the player to roll a d6 and add it to the d20, possibly turning a failure into a success. A player can spend only 1 hero point per roll.</p><p>In addition, whenever a character fails a death saving throw, the player can spend one hero point to turn the failure into a success.</p>",
-      "transfer": true,
-      "statuses": [],
-      "flags": {
-        "dae": {
-          "disableIncapacitated": false,
-          "selfTarget": false,
-          "selfTargetAlways": false,
-          "dontApply": false,
-          "stackable": "noneName",
-          "showIcon": false,
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": [],
-          "disableCondition": ""
-        },
-        "ActiveAuras": {
-          "isAura": false,
-          "aura": "None",
-          "nameOverride": "",
-          "radius": "",
-          "alignment": "",
-          "type": "",
-          "customCheck": "",
-          "ignoreSelf": false,
-          "height": false,
-          "hidden": false,
-          "displayTemp": false,
-          "hostile": false,
-          "onlyOnce": false,
-          "wallsBlock": "system"
-        },
-        "core": {
-          "overlay": false
-        }
-      },
-      "tint": "#ffffff",
-      "_stats": {
         "compendiumSource": "Item.Eo6fkerraCTBGSuk.ActiveEffect.qeiFHv5QSZb8epC0",
         "duplicateSource": null,
         "coreVersion": "12.331",
@@ -291,13 +295,13 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!wRm4ehNwyn5eYMuF.0Y7tVS9k1gnfqfah"
+      "_key": "!items.effects!f8SrkGFoBtNpPLpt.0Y7tVS9k1gnfqfah"
     },
     {
       "name": "Hero Points - Heal",
-      "origin": "Item.Eo6fkerraCTBGSuk",
+      "origin": "Item.SS0ZjtULi0iAdhAf",
       "duration": {
-        "startTime": 21814348676,
+        "startTime": 21814653286,
         "seconds": null,
         "combat": null,
         "rounds": null,
@@ -317,7 +321,7 @@
         {
           "key": "flags.midi-qol.optional.heroPointsHeal.count",
           "mode": 5,
-          "value": "@resources.fourth.value",
+          "value": "ItemUses.Hero Points",
           "priority": 20
         },
         {
@@ -327,7 +331,7 @@
           "priority": 20
         }
       ],
-      "description": "<p>With this option, a character starts with 5 hero point at 1st level. Each time the character gains a level, he or she loses any unspent hero points and gains a new total equal to 5 + half the character's level.</p><p>A player can spend a hero point whenever he or she makes an attack roll, an ability check, or a saving throw The player can spend the hero point after the roll is made but before any of its results are applied. Spending the hero point allows the player to roll a d6 and add it to the d20, possibly turning a failure into a success. A player can spend only 1 hero point per roll.</p><p>In addition, whenever a character fails a death saving throw, the player can spend one hero point to turn the failure into a success.</p>",
+      "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {
@@ -378,14 +382,14 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!wRm4ehNwyn5eYMuF.bhsXTssMsUiD1C8E"
+      "_key": "!items.effects!f8SrkGFoBtNpPLpt.bhsXTssMsUiD1C8E"
     }
   ],
   "folder": null,
   "flags": {
     "scene-packer": {
-      "hash": "de7a5c2055daed3ac8de4ffa51ff15acd627a3c2",
-      "sourceId": "Item.oAvADAgIMgJPAOfr"
+      "hash": "7e8f938b2d2d1a076c24d1377a1d8517f38f67a9",
+      "sourceId": "Item.SS0ZjtULi0iAdhAf"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -461,6 +465,9 @@
         "source": "world"
       }
     },
+    "link-item-resource-5e": {
+      "resource-link": "fourth"
+    },
     "exportSource": {
       "world": "one-way-out",
       "system": "dnd5e",
@@ -474,15 +481,15 @@
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "createdTime": 1732049300487,
-    "modifiedTime": 1732049300487,
+    "createdTime": 1732136971603,
+    "modifiedTime": 1732136971603,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
-  "_id": "wRm4ehNwyn5eYMuF",
+  "_id": "f8SrkGFoBtNpPLpt",
   "sort": 0,
-  "_key": "!items!wRm4ehNwyn5eYMuF"
+  "_key": "!items!f8SrkGFoBtNpPLpt"
 }

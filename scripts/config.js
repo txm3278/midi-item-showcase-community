@@ -402,6 +402,12 @@ export function setConfig() {
         version: '0.1.1',
         authors: ['Moto Moto'],
       },
+      Lucky: {
+        name: 'Lucky',
+        type: 'Feat',
+        version: '1.0.1',
+        authors: ['Moto Moto'],
+      },
       'Mage Hand': {
         name: 'Mage Hand',
         type: 'Spell',

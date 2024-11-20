@@ -2,8 +2,8 @@
   "type": "spell",
   "system": {
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Times Up</span></p></li></ul>",
-      "chat": ""
+      "chat": "",
+      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Moto Moto</span></h2><h3 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.25em;border-bottom:none;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Requires:</span></h3><ul style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;padding:0px 0px 0px 1.5em;color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-size:13px;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><li style=\"box-sizing:border-box;user-select:text\"><p style=\"box-sizing:border-box;user-select:text;margin:0.5em 0px;margin-block-end:0px\"><span style=\"font-family:Signika, sans-serif\">Times Up</span></p></li></ul>"
     },
     "source": {
       "book": "Player’s Handbook (2014)",
@@ -91,8 +91,7 @@
     "scaling": {
       "mode": "none",
       "formula": ""
-    },
-    "sourceClass": ""
+    }
   },
   "name": "Slow",
   "flags": {
@@ -123,13 +122,16 @@
         "Control",
         "Debuff"
       ],
-      "version": "5.2.27",
-      "effectsApplied": true
+      "version": "5.2.38",
+      "effectsApplied": true,
+      "chrisEffectsApplied": true,
+      "chrisPreEffectName": "Slow",
+      "isLegacy": true
     },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "forceCEOff": true,
-      "AoETargetType": "enemy",
+      "AoETargetType": "any",
       "AoETargetTypeIncludeSelf": false,
       "autoTarget": "none",
       "rollAttackPerTarget": "default",
@@ -183,10 +185,14 @@
         }
       }
     },
+    "scene-packer": {
+      "sourceId": "Item.QGpAmb7OnzqY7kfS",
+      "hash": "d775ae92587072c43bfd48e08fadf8bbecfb6d6c"
+    },
     "exportSource": {
       "world": "one-way-out",
       "system": "dnd5e",
-      "coreVersion": "12.330",
+      "coreVersion": "12.331",
       "systemVersion": "3.3.1"
     }
   },
@@ -297,7 +303,7 @@
       },
       "name": "Slow",
       "statuses": [],
-      "_id": "7H184UCaBc5I3ohL",
+      "_id": "zdtu6WmPyVpyAlhv",
       "type": "base",
       "system": {},
       "description": "",
@@ -310,10 +316,10 @@
         "systemId": "dnd5e",
         "systemVersion": "3.3.1",
         "createdTime": null,
-        "modifiedTime": 1724966691650,
-        "lastModifiedBy": "B2BBHntfpytXE8DP"
+        "modifiedTime": null,
+        "lastModifiedBy": null
       },
-      "_key": "!items.effects!LFSYY7V0sUKLKfpj.7H184UCaBc5I3ohL"
+      "_key": "!items.effects!JJMy0TQdeLEQae0b.zdtu6WmPyVpyAlhv"
     }
   ],
   "img": "icons/creatures/webs/webthin-blue.webp",
@@ -324,15 +330,15 @@
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "3.3.1",
-    "createdTime": 1724961733021,
-    "modifiedTime": 1732050343507,
+    "createdTime": 1732136176842,
+    "modifiedTime": 1732136290614,
     "lastModifiedBy": "B2BBHntfpytXE8DP"
   },
   "ownership": {
     "default": 0,
     "B2BBHntfpytXE8DP": 3
   },
-  "_id": "LFSYY7V0sUKLKfpj",
-  "sort": 1000000,
-  "_key": "!items!LFSYY7V0sUKLKfpj"
+  "_id": "JJMy0TQdeLEQae0b",
+  "sort": 0,
+  "_key": "!items!JJMy0TQdeLEQae0b"
 }

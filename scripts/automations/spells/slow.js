@@ -14,7 +14,31 @@ export async function slow({
     await foundry.applications.api.DialogV2.prompt({
       window: { title: 'Effect Reminder' },
       position: { width: 400 },
-      content: `<img src="${effectImage}"><br/><br/>${actor.name} can use either an action or a bonus action, not both. Regardless of the creature's abilities or magic items, it can't make more than one melee or ranged attack during its turn.`,
+      content: `<img src="${effectImage}">
+        
+        ${actor.name} can use an Action OR a Bonus Action.
+        
+        <br>
+        
+        Can only make ONE attack.
+        
+        <br>
+        
+        Cannot take Reactions.
+        
+        <br>
+        
+        When casting a (1-Action) spell, roll a d20.
+        
+        <hl>
+        
+        Automatically applied:
+        
+        <ul style="margin: 0;">
+        <li>1/2 Speed</li>
+        <li>-2 to AC</li>
+        <li>-2 to Dex Saves</li>
+        </ul>`,
     });
   }
 }
