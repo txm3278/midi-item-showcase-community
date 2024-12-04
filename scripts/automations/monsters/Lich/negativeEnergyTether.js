@@ -4,7 +4,7 @@
 // When used, adds an effect on the target and on the owner. When the owner is damaged, a save is
 // triggered on the tethered creature, if failed it takes half the owner's damage and the owners
 // applied damage is reduced by half.
-// v1.2.0
+// v1.3.0
 // Dependencies:
 //  - DAE
 //  - Times up
@@ -72,7 +72,7 @@ export async function negativeEnergyTether({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.6.0'
+      '2.6'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;

@@ -4,7 +4,7 @@
 // Adds a third party reaction effect, that effect will trigger a reaction by the Fighter
 // when the fighter or a creature he can see within range is damaged to allow him to use the feature
 // to reduce the target's damage instead.
-// v3.1.0
+// v3.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
@@ -224,13 +224,10 @@ export async function psionicPowerProtectiveField({
       // No actor found
       return;
     }
-    await DAE.setFlag(
-      sourceActor,
-      'protectiveFieldPreventedDmg',
-      currentWorkflow.damageTotal
-    );
+    const total = currentWorkflow.damageRolls?.[0]?.total ?? 0;
+    await DAE.setFlag(sourceActor, 'protectiveFieldPreventedDmg', total);
 
-    const infoMsg = `<p>You prevent <strong>${currentWorkflow.damageTotal}</strong> points of damage to <strong>\${tokenName}</strong>.</p>`;
+    const infoMsg = `<p>You prevent <strong>${total}</strong> points of damage to <strong>\${tokenName}</strong>.</p>`;
     await elwinHelpers.insertTextIntoMidiItemCard(
       'beforeButtons',
       workflow,

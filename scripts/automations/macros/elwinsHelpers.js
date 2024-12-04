@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.7.0
+// v2.7.1
 // Dependencies:
 //  - MidiQOL
 //
@@ -106,7 +106,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '2.7.0';
+  const VERSION = '2.7.1';
   const MACRO_NAME = 'elwin-helpers';
   const active = true;
   let debug = false;
@@ -614,10 +614,12 @@ export function runElwinsHelpers() {
       // No damage prevention or not valid
       return true;
     }
-    const totalDamage = damages.reduce((total, damage) => {
-      total +
-        (['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value);
-    }, 0);
+    const totalDamage = damages.reduce(
+      (total, damage) =>
+        total +
+        (['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
+      0
+    );
     if (totalDamage <= 0) {
       // No damage to prevent, do nothing
       return true;

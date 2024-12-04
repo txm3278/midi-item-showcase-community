@@ -5,7 +5,7 @@
 // on the raging barbarian when a visible creature within range is damaged to allow him to use the feature
 // to reduce the target's damage.
 // If Vengeful Ancestors is present and the Barbarian has the appropriate level, it is triggered on the attacker.
-// v3.1.0
+// v3.2.0
 // Dependencies:
 //  - DAE [on][off]
 //  - Times Up
@@ -101,7 +101,7 @@ export async function spiritShield({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.6.0'
+      '2.6'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
@@ -360,13 +360,11 @@ export async function spiritShield({
       // No actor found
       return;
     }
-    await DAE.setFlag(
-      sourceActor,
-      'spiritShieldPreventedDmg',
-      currentWorkflow.damageTotal
-    );
 
-    const infoMsg = `<p>You prevent <strong>${currentWorkflow.damageTotal}</strong> points of damage to <strong>\${tokenName}</strong>.</p>`;
+    const total = currentWorkflow.damageRolls?.[0]?.total ?? 0;
+    await DAE.setFlag(sourceActor, 'spiritShieldPreventedDmg', total);
+
+    const infoMsg = `<p>You prevent <strong>${total}</strong> points of damage to <strong>\${tokenName}</strong>.</p>`;
     await elwinHelpers.insertTextIntoMidiItemCard(
       'beforeButtons',
       workflow,

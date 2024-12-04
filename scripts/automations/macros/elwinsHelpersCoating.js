@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v1.0.0
+// v1.0.1
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -154,7 +154,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '1.0.0';
+  const VERSION = '1.0.1';
   const MACRO_NAME = 'elwin-helpers-coating';
   const MODULE_ID = 'midi-item-showcase-community';
   const WORLD_MODULE_ID = 'world';
@@ -590,9 +590,9 @@ export function runElwinsHelpersCoating() {
           ? true
           : appliedCoating.allowedDamageTypes.reduce(
               (acc, dmgType) =>
-                (acc = acc.concat(
+                acc.concat(
                   DEFAULT_ALLOWED_AMMO_TYPES_BY_DMG_TYPE.get(dmgType) ?? []
-                )),
+                ),
               []
             );
       appliedCoating.type ??= itemUsed.system.type?.value ?? 'poison';
