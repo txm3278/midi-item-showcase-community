@@ -10,7 +10,7 @@ env:
   # FoundryVTT uses this URL to check whether the current module version that
   # is installed is the latest version. This URL should NOT change,
   # otherwise FoundryVTT won't be able to perform this check.
-  latest_manifest_url: "https://github.com/${{github.repository}}/releases/latest/download/module.json"
+  latest_manifest_url: "https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json"
 
   # The URL to the module archive associated with the module release being
   # processed by this workflow.
@@ -93,14 +93,3 @@ jobs:
           artifacts: './module.json, ./module.zip'
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
-
-  github-releases-to-discord:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Github Releases To Discord
-        uses: SethCohen/github-releases-to-discord@v1.16.2
-        with:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
-          username: "Midi Items Showcase - Community Release"
