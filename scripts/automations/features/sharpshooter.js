@@ -1,30 +1,11 @@
 // ##################################################################################################
 // Read First!!!!
 // Handles the ability to toggle on/off or prompt the -5 penalty to hit and +10 bonus to the damage on a ranged weapon.
-// v2.1.0
+// v3.0.0
 // Author: Elwin#1410 based on MotoMoto and Michael version
 // Dependencies:
 //  - DAE
-//  - MidiQOL "on use" item macro [preItemRoll],[preAttackRoll]
-//
-// The item details must be:
-//   - Feature Type: Feat
-//   - Activation Cost: None
-//   - Target: Self
-//   - Range: Self
-//   - Action type: (empty)
-// The Feature Midi-QOL must be:
-//   - Don't Apply Convenient Effect (checked)
-//   - Midi-qol Item Properties:
-//     - Toggle effect (checked to toggle the feature on/off when using it, unchecked to be prompted to use the feature when the condition are met)
-//   - This item macro code must be added to the DIME code of this feat.
-// One effect must also be added:
-//   - Sharpshooter:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.sharpShooter | Custom | 1
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,preItemRoll
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,preAttackRoll
+//  - MidiQOL "on use" item macro [preItemRoll],[preAttackRoll],[postActiveEffects]
 //
 // Usage:
 // This is a feat that can be toggled on or off, when the midi property "Toggle effect" is checked, when unchecked, a dialog to activate the feature
@@ -32,15 +13,19 @@
 // and toggled on or the prompt to activate was accepted, an effect to give -5 penalty to hit and a +10 bonus to damage is granted for this attack.
 //
 // Description:
-// In the preItemRoll (OnUse) phase (on any item):
+// In the preItemRoll (OnUse) phase (on any owner's item):
 //   If the midi toggle effect property is checked:
 //     If the used item is this feat, toggle the effect, else set to prompt to not activate on attack.
 //   Else:
 //     Set to prompt to activate on attack.
-// In the preAttackRoll (OnUse) phase (on any item):
-//   If the item is a ranged weapon and the actor is proficient with it,
-//   it adds an AE to give -5 penaly to ranged weapon attack and +10 bonus to damage from a ranged weapon attack.
+// In the preAttackRoll (OnUse) phase (on any owner's item):
+//   Validates that the item is a ranged weapon and the actor is proficient with it.
+//   If the feat "Toggle effect" is unchecked a dialog is prompted to activate the feat on this attack.
+//   If the feat is toggled on or the activation has been accepted, it adds an AE to give -5 penaly to ranged weapon attack and
+//   +10 bonus to damage from a ranged weapon attack.
 //   This AE only last for one attack.
+// In the postActiveEffects (OnUse) phase (on Sharpshooter Toggle activity):
+//   Sets the state to the next state on->off, off->on, and adds or deletes the toggled on AE if the new state is toggled on or toggled off.
 // ###################################################################################################
 
 export async function sharpshooter({
@@ -102,56 +87,78 @@ export async function sharpshooter({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
+    return await handleOnUsePreItemRoll(workflow, scope.macroItem);
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
+    await handleOnUsePreAttackRoll(workflow, scope.macroItem);
+  } else if (
+    args[0].tag === 'OnUse' &&
+    args[0].macroPass === 'postActiveEffects'
+  ) {
+    if (isToggleActivity(workflow, scope.macroItem)) {
+      await handleOnUsePostActiveEffectsToggle(scope.macroItem, actor);
+    }
+  }
+
+  /**
+   * Adjust the behavior of Sharpshooter feat depending on the value of the midi toggle effect property.
+   * If the midi toggle effect property is checked:
+   *   If the activity used is not this feat's Toggle activity and the state was set to prompt: set the state to toggle off.
+   * Else:
+   *   Set prompt to activate on attack.
+   *   Delete the toggled on effect.
+   *   If the activity used is this feat's Toggle activity: block this activity's workflow and prompts a warning.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Sharpshooter item.
+   * @param {Actor5e} sourceActor - The owner of the Sharpshooter item.
+   *
+   * @returns true if the activity workflow can continue, false otherwise.
+   */
+  async function handleOnUsePreItemRoll(
+    currentWorkflow,
+    sourceItem,
+    sourceActor
+  ) {
     const toggleEffect = foundry.utils.getProperty(
-      scope.macroItem,
+      sourceItem,
       'flags.midiProperties.toggleEffect'
     );
-    let removeActiveEffect = false;
     if (toggleEffect) {
-      const gwmState =
-        scope.macroItem.getFlag(MODULE_ID, 'sharpshooterState') ?? OFF_STATE;
-      if (scope.rolledItem.uuid !== scope.macroItem.uuid) {
+      const sharpshooterState =
+        sourceItem.getFlag(MODULE_ID, 'sharpshooterState') ?? OFF_STATE;
+      if (currentWorkflow.itemUuid !== sourceItem.uuid) {
         // Reset state to toggle off if prompt
-        if (gwmState === PROMPT_STATE) {
-          await scope.macroItem.setFlag(
-            MODULE_ID,
-            'sharpshooterState',
-            OFF_STATE
-          );
+        if (sharpshooterState === PROMPT_STATE) {
+          await sourceItem.setFlag(MODULE_ID, 'sharpshooterState', OFF_STATE);
         }
-        return true;
-      }
-      await scope.macroItem.setFlag(
-        MODULE_ID,
-        'sharpshooterState',
-        STATES.get(gwmState)
-      );
-      if (STATES.get(gwmState) === ON_STATE) {
-        // Add AE for toggle mode on
-        await addToggledOnEffect(scope.macroItem);
-      } else {
-        removeActiveEffect = true;
       }
     } else {
-      await scope.macroItem.setFlag(
-        MODULE_ID,
-        'sharpshooterState',
-        PROMPT_STATE
-      );
-      removeActiveEffect = true;
-    }
-    if (removeActiveEffect) {
-      // Remove AE for toggle mode
-      await actor.effects
+      await sourceItem.setFlag(MODULE_ID, 'sharpshooterState', PROMPT_STATE);
+      await sourceActor.effects
         .find((ae) => ae.getFlag(MODULE_ID, 'sharpshooterToggledOn'))
         ?.delete();
+      if (isToggleActivity(currentWorkflow, sourceItem)) {
+        const msg = `${sourceItem.name} | The ${
+          currentWorkflow.activity.name ?? 'Toggle'
+        } activity can only be triggered when the item Midi property 'Toggle effect' is checked.`;
+        ui.notifications.warn(msg);
+        return false;
+      }
     }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
-    if (
-      scope.rolledItem?.type !== 'weapon' ||
-      scope.rolledItem?.system?.actionType !== 'rwak' ||
-      !scope.rolledItem?.system?.prof?.hasProficiency
-    ) {
+    return true;
+  }
+
+  /**
+   * When the attack is made with a ranged weapon and the actor is proficient with it,
+   * if in prompt mode ask if the bonus/malus should be added before adding an AE, otherwise if toggled on adds an AE for the bonus/malus.
+   * This AE only last for one attack.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Sharpshooter item.
+   */
+  async function handleOnUsePreAttackRoll(currentWorkflow, sourceItem) {
+    const usedItem = currentWorkflow.item;
+    if (!isRangedWeapon(usedItem) || !usedItem?.system?.prof?.hasProficiency) {
       // Only works on proficient ranged weapons
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a ranged weapon.`);
@@ -159,7 +166,7 @@ export async function sharpshooter({
       return;
     }
 
-    const sharpshooterState = scope.macroItem.getFlag(
+    const sharpshooterState = sourceItem.getFlag(
       MODULE_ID,
       'sharpshooterState'
     );
@@ -167,8 +174,8 @@ export async function sharpshooter({
       return;
     } else if (sharpshooterState === PROMPT_STATE) {
       const activate = await Dialog.confirm({
-        title: `${scope.macroItem.name} - Activation`,
-        content: `<p>Use ${scope.macroItem.name}? (-5 to attack, +10 to damage)</p>`,
+        title: `${sourceItem.name} - Activation`,
+        content: `<p>Use ${sourceItem.name}? (-5 to attack, +10 to damage)</p>`,
         rejectClode: false,
         options: { classes: ['dialog', 'dnd5e'] },
       });
@@ -178,7 +185,65 @@ export async function sharpshooter({
     }
 
     // Add an AE for -5 to hit +10 dmg
-    await addMalusBonusActiveEffect(scope.macroItem);
+    await addMalusBonusActiveEffect(sourceItem);
+  }
+
+  /**
+   * Sets the state to the next state on->off, off->on, and adds or deletes the toggled on AE if the new state is toggled on or toggled off.
+   *
+   * @param {Item5e} sourceItem - The Sharpshooter item.
+   * @param {Actor5e} sourceActor - The owner of the Sharpshooter item.
+   */
+  async function handleOnUsePostActiveEffectsToggle(sourceItem, sourceActor) {
+    const sharpshooterState =
+      sourceItem.getFlag(MODULE_ID, 'sharpshooterState') ?? OFF_STATE;
+    await sourceItem.setFlag(
+      MODULE_ID,
+      'sharpshooterState',
+      STATES.get(sharpshooterState)
+    );
+
+    const bonusMalusEffect = sourceActor.effects.find((ae) =>
+      ae.getFlag(MODULE_ID, 'sharpshooterToggledOn')
+    );
+    if (STATES.get(sharpshooterState) === ON_STATE) {
+      // Add AE for toggle mode on
+      if (!bonusMalusEffect) {
+        await addToggledOnEffect(sourceItem);
+      }
+    } else {
+      await bonusMalusEffect?.delete();
+    }
+  }
+
+  /**
+   * Returns true if the current workflow activity is the toggle activity of the Sharpshooter item.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Sharpshooter item.
+   *
+   * @returns {boolean} True if the current workflow activity is the toggle activity
+   *                    of the Sharpshooter item, false otherwise.
+   */
+  function isToggleActivity(currentWorkflow, sourceItem) {
+    return (
+      sourceItem.uuid === currentWorkflow.itemUuid &&
+      currentWorkflow.activity?.identifier === 'toggle'
+    );
+  }
+
+  /**
+   * Validates if the specified item is a ranged weapon.
+   *
+   * @param {Item5e} usedItem - The item to validate.
+   *
+   * @returns {boolean} True if item is a ranged weapon, false otherwise.
+   */
+  function isRangedWeapon(usedItem) {
+    return (
+      usedItem?.type === 'weapon' &&
+      ['simpleR', 'martialR'].includes(usedItem?.system?.type?.value)
+    );
   }
 
   /**
@@ -188,15 +253,14 @@ export async function sharpshooter({
    */
   async function addToggledOnEffect(sourceItem) {
     // Add AE for toggle mode on
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const effectData = {
       changes: [],
-      [imgPropName]: sourceItem.img,
+      img: sourceItem.img,
       name: `${sourceItem.name} - Toggled On`,
       origin: sourceItem.uuid,
       transfer: false,
       flags: {
-        dae: { showIcon: true },
+        dae: { stackable: 'noneName', showIcon: true },
         [MODULE_ID]: {
           sharpshooterToggledOn: true,
         },
@@ -214,7 +278,6 @@ export async function sharpshooter({
    */
   async function addMalusBonusActiveEffect(sourceItem) {
     // Add an AE for -5 to hit +10 dmg
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const effectData = {
       changes: [
         {
@@ -233,15 +296,11 @@ export async function sharpshooter({
       duration: {
         turns: 1,
       },
-      [imgPropName]: sourceItem.img,
+      img: sourceItem.img,
       name: `${sourceItem.name} - Bonus`,
       origin: sourceItem.uuid,
       transfer: false,
-      flags: {
-        dae: {
-          specialDuration: ['1Attack'],
-        },
-      },
+      'flags.dae': { stackable: 'noneName', specialDuration: ['1Attack'] },
     };
     await sourceItem.actor.createEmbeddedDocuments('ActiveEffect', [
       effectData,

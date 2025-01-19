@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.7.1
+// v3.0.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -14,17 +14,19 @@
 // Exported functions (see each function for documentation):
 // - elwinHelpers.isDebugEnabled
 // - elwinHelpers.setDebugEnabled
-// - elwinHelpers.doThirdPartyReaction
 // - elwinHelpers.getTargetDivs
 // - elwinHelpers.hasItemProperty
 // - elwinHelpers.reduceAppliedDamage
 // - elwinHelpers.calculateAppliedDamage
-// - elwinHelpers.getMidiItemChatMessage
 // - elwinHelpers.insertTextIntoMidiItemCard
 // - elwinHelpers.requirementsSatisfied
 // - elwinHelpers.selectTargetsWithinX
+// - elwinHelpers.isRangedAttackActivity
+// - elwinHelpers.isRangedWeaponAttackActivity
 // - elwinHelpers.isRangedAttack
 // - elwinHelpers.isRangedWeaponAttack
+// - elwinHelpers.isMeleeAttackActivity
+// - elwinHelpers.isMeleeWeaponAttackActivity
 // - elwinHelpers.isMeleeAttack
 // - elwinHelpers.isMeleeWeaponAttack
 // - elwinHelpers.isMidiHookStillValid
@@ -37,10 +39,12 @@
 // - elwinHelpers.getMoveTowardsPosition
 // - elwinHelpers.findMovableSpaceNearDest
 // - elwinHelpers.convertCriticalToNormalHit
+// - elwinHelpers.adjustAttackRollTargetAC
 // - elwinHelpers.getDamageRollOptions
 // - elwinHelpers.getMidiOnSavePropertyName
-// - elwinHelpers.getAppliedEnchantments (dnd5e v3.2+ only)
-// - elwinHelpers.deleteAppliedEnchantments (dnd5e v3.2+ only)
+// - elwinHelpers.getAppliedEnchantments
+// - elwinHelpers.deleteAppliedEnchantments
+// - elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -106,13 +110,15 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '2.7.1';
+  const VERSION = '3.0.0';
   const MACRO_NAME = 'elwin-helpers';
   const active = true;
   let debug = false;
   let depReqFulfilled = false;
 
   const TPR_OPTIONS = ['triggerSource', 'ignoreSelf', 'canSee', 'pre', 'post'];
+
+  /*eslint no-undef: "error"*/
 
   /**
    * Third party reaction options.
@@ -136,7 +142,10 @@ export function runElwinsHelpers() {
    * Token Third party reaction data.
    * @typedef {object} ReactionData
    * @property {Token5e} token - The token having the third party reaction.
-   * @property {Item5e} item - The thrird party reaction item.
+   * @property {Item5e} item - The third party reaction item.
+   * @property {Activity[]} activities - The third party reaction activities.
+   * @property {Activity[]} allowedActivities - The third party reaction activities allowed for the current trigger,
+   *                                            this is overwritten at each trigger execution.
    * @property {string} macroName - The name of the macro or function to be called for pre/post macros.
    * @property {string} targetOnUse - The target on use that triggers this reaction.
    * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
@@ -147,25 +156,17 @@ export function runElwinsHelpers() {
    */
 
   const dependencies = ['midi-qol'];
-  if (requirementsSatisfied(MACRO_NAME, dependencies)) {
+  if (
+    requirementsSatisfied(MACRO_NAME, dependencies) &&
+    foundry.utils.isNewerVersion(
+      game.modules.get('midi-qol')?.version,
+      '12.4.9'
+    )
+  ) {
     depReqFulfilled = true;
 
     // Set a version to facilitate dependency check
     exportIdentifier('elwinHelpers.version', VERSION);
-
-    // Set ReactionFilter only for midi version before 11.3.13
-    if (
-      !foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol').version ?? '0.0.0',
-        '11.3.12.99'
-      )
-    ) {
-      setHook(
-        'midi-qol.ReactionFilter',
-        'handleReactionFilterHookId',
-        handleThirdPartyReactionFilter
-      );
-    }
 
     setHook('midi-qol.postStart', 'handlePostStart', handlePostStart);
     setHook(
@@ -204,40 +205,26 @@ export function runElwinsHelpers() {
       'handlePostCheckSavesId',
       handlePostCheckSaves
     );
-    if (
-      foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol')?.version,
-        '11.6'
-      )
-    ) {
-      // Only supported since midi 11.6+
-      setHook(
-        'midi-qol.dnd5ePreCalculateDamage',
-        'handleMidiDnd5ePreCalculateDamageId',
-        handleMidiDnd5ePreCalculateDamage
-      );
-      setHook(
-        'midi-qol.dnd5eCalculateDamage',
-        'handleMidiDnd5eCalculateDamageId',
-        handleMidiDnd5eCalculateDamage
-      );
-    }
+    setHook(
+      'midi-qol.dnd5ePreCalculateDamage',
+      'handleMidiDnd5ePreCalculateDamageId',
+      handleMidiDnd5ePreCalculateDamage
+    );
+    setHook(
+      'midi-qol.dnd5eCalculateDamage',
+      'handleMidiDnd5eCalculateDamageId',
+      handleMidiDnd5eCalculateDamage
+    );
     exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
     exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
     // Note: keep this name to be backward compatible
-    exportIdentifier('MidiQOL_doThirdPartyReaction', doThirdPartyReaction);
-    exportIdentifier('elwinHelpers.doThirdPartyReaction', doThirdPartyReaction);
     exportIdentifier('elwinHelpers.getTargetDivs', getTargetDivs);
     exportIdentifier('elwinHelpers.hasItemProperty', hasItemProperty);
     exportIdentifier('elwinHelpers.reduceAppliedDamage', reduceAppliedDamage);
     exportIdentifier(
       'elwinHelpers.calculateAppliedDamage',
       calculateAppliedDamage
-    );
-    exportIdentifier(
-      'elwinHelpers.getMidiItemChatMessage',
-      getMidiItemChatMessage
     );
     exportIdentifier(
       'elwinHelpers.insertTextIntoMidiItemCard',
@@ -248,8 +235,24 @@ export function runElwinsHelpers() {
       requirementsSatisfied
     );
     exportIdentifier('elwinHelpers.selectTargetsWithinX', selectTargetsWithinX);
+    exportIdentifier(
+      'elwinHelpers.isRangedAttackActivity',
+      isRangedAttackActivity
+    );
+    exportIdentifier(
+      'elwinHelpers.isRangedWeaponAttackActivity',
+      isRangedWeaponAttackActivity
+    );
     exportIdentifier('elwinHelpers.isRangedAttack', isRangedAttack);
     exportIdentifier('elwinHelpers.isRangedWeaponAttack', isRangedWeaponAttack);
+    exportIdentifier(
+      'elwinHelpers.isMeleeAttackActivity',
+      isMeleeAttackActivity
+    );
+    exportIdentifier(
+      'elwinHelpers.isMeleeWeaponAttackActivity',
+      isMeleeWeaponAttackActivity
+    );
     exportIdentifier('elwinHelpers.isMeleeAttack', isMeleeAttack);
     exportIdentifier('elwinHelpers.isMeleeWeaponAttack', isMeleeWeaponAttack);
     exportIdentifier('elwinHelpers.isMidiHookStillValid', isMidiHookStillValid);
@@ -271,25 +274,31 @@ export function runElwinsHelpers() {
       'elwinHelpers.convertCriticalToNormalHit',
       convertCriticalToNormalHit
     );
+    exportIdentifier(
+      'elwinHelpers.adjustAttackRollTargetAC',
+      adjustAttackRollTargetAC
+    );
     exportIdentifier('elwinHelpers.getDamageRollOptions', getDamageRollOptions);
     exportIdentifier(
       'elwinHelpers.getMidiOnSavePropertyName',
       getMidiOnSavePropertyName
     );
     exportIdentifier(
+      'elwinHelpers.getAppliedEnchantments',
+      getAppliedEnchantments
+    );
+    exportIdentifier(
+      'elwinHelpers.deleteAppliedEnchantments',
+      deleteAppliedEnchantments
+    );
+    exportIdentifier(
       'elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll',
       disableManualEnchantmentPlacingOnUsePreItemRoll
     );
-    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-      exportIdentifier(
-        'elwinHelpers.getAppliedEnchantments',
-        getAppliedEnchantments
-      );
-      exportIdentifier(
-        'elwinHelpers.deleteAppliedEnchantments',
-        deleteAppliedEnchantments
-      );
-    }
+    exportIdentifier(
+      'elwinHelpers.getEquippedMeleeWeapons',
+      getEquippedMeleeWeapons
+    );
 
     // Note: classes need to be exported after they are declared...
 
@@ -382,46 +391,6 @@ export function runElwinsHelpers() {
         exportedValue
       );
     }
-  }
-
-  /**
-   * Filters the received reactions. If the item that triggered the manual reaction is a
-   * third party reaction source item, removes all reactions that are not the source item.
-   *
-   * @param {Array} reactions Array of reaction items and/or Magic Items 2 references.
-   * @param {object} options Reaction options (should contain the item that triggered the reaction)
-   * @param {string} triggerType Type of reaction that was triggered.
-   * @param {Array} reactionItemList list of reaction item UUIDs and/or Magic Items 2 references.
-   *
-   * @returns {boolean} true if the filtered reactions contains at least one item, false otherwise.
-   */
-  function handleThirdPartyReactionFilter(reactions, options, triggerType, _) {
-    if (debug) {
-      console.warn(`${MACRO_NAME} | handleThirdPartyReactionFilter`, {
-        reactions,
-        options,
-        triggerType,
-      });
-    }
-    // Only filter when reactionmanual was triggered and the item triggering it was a third party reaction.
-    if (
-      triggerType !== 'reactionmanual' ||
-      !options?.thirdPartyReaction?.trigger ||
-      !options?.thirdPartyReaction?.itemUuid
-    ) {
-      return true;
-    }
-    // Only keep manual reactions matching item uuid
-    const reactionToKeep = reactions.find(
-      (itemRef) =>
-        itemRef instanceof CONFIG.Item.documentClass &&
-        itemRef.uuid === options?.thirdPartyReaction?.itemUuid
-    );
-    reactions.length = 0;
-    if (reactionToKeep) {
-      reactions.push(reactionToKeep);
-    }
-    return reactions.length > 0;
   }
 
   /**
@@ -532,7 +501,7 @@ export function runElwinsHelpers() {
       // compute total damage applied to target
       appliedDamage = options?.damageItem?.damageDetail.reduce(
         (total, d) =>
-          total + (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
+          (total += ['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
         0
       );
       appliedDamage =
@@ -616,8 +585,9 @@ export function runElwinsHelpers() {
     }
     const totalDamage = damages.reduce(
       (total, damage) =>
-        total +
-        (['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
+        (total += ['temphp', 'midi-none'].includes(damage.type)
+          ? 0
+          : damage.value),
       0
     );
     if (totalDamage <= 0) {
@@ -649,191 +619,6 @@ export function runElwinsHelpers() {
     }
 
     await handleThirdPartyReactions(workflow, ['isPostCheckSave']);
-  }
-
-  /**
-   * Validates if the conditions for a reaction item are met before sending a remote request to prompt a dialog with
-   * the reaction to the player associated to the reaction item's owner and execute it if the player selects it.
-   *
-   * @example
-   *  if (args[0].tag === "TargetOnUse" && args[0].macroPass === "isAttacked") {
-   *    const targetToken = token; // or options.token
-   *
-   *    // TODO Check required conditions for the reaction to trigger
-   *
-   *    const result = await elwinHelpers.doThirdPartyReaction(
-   *      workflow.item,
-   *      targetToken,
-   *      macroItem,
-   *      "isAttacked",
-   *      {attackRoll: workflow.attackRoll}
-   *    );
-   *    if (result?.uuid === macroItem.uuid) {
-   *      // Do things that must be done in the attackers workflow
-   *    }
-   *  }
-   *
-   * The reaction item can protect against manual triggering with a preTargeting on use item by validating
-   * the workflow.options:
-   *  if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
-   *    if (
-   *      workflow.options?.thirdPartyReaction?.trigger !== "isAttacked" ||
-   *      workflow.options?.thirdPartyReaction?.itemUuid !== rolledItem.uuid
-   *    ) {
-   *      // Reaction should only be triggered by aura
-   *      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the owner is targeted by a ranged attack.`;
-   *      ui.notifications.warn(msg);
-   *      return false;
-   *    }
-   *    return true;
-   *  }
-   *
-   * @see {@link https://discord.com/channels/915186263609454632/1178366243812684006/1178366243812684006} Arrow-Catching Shield
-   *
-   *
-   * @param {Item5e} triggerItem the item that triggered the reaction, usually the item used (workflow.item).
-   * @param {Token5e} triggerToken the token which initiated the third party reaction, usually the target of an attack (options.token).
-   * @param {Item5e} reactionItem the reaction item to be prompted.
-   * @param {string} reactionTriggerName name of the TargetOnUse macroPass on which the reaction that was triggered.
-   * @param {object} options reaction options
-   * @param {boolean} options.debug  if true will also log some warnings that are considered normal conditions, false by default.
-   * @param {Token5e} options.reactionTokenUuid token UUID from which the reaction will executed,
-   *                                            if not specified MidiQOL.tokenForActor(reactionItem.actor)?.document.uuid will be used.
-   * @param {boolean} options.attackRoll current attackRoll, used to display the reaction flavor depending on the trigger, undefined by default.
-   * @param {boolean|undefined} options.showReactionAttackRoll flag to indicate if the attack roll should be shown to the reaction or not,
-   *                                                           if undefined the midi setting is used.
-   * @param {object} options.reactionOptions options that will be merged with the default ones and passed to the remote reaction.
-   *
-   * @returns {{name: string, uuid: string, ac: number}} reaction result properties.
-   */
-  async function doThirdPartyReaction(
-    triggerItem,
-    triggerToken,
-    reactionItem,
-    reactionTriggerName,
-    options = {
-      debug: false,
-      reactionTokenUuid: undefined,
-      attackRoll: undefined,
-    }
-  ) {
-    // Copied from midi-qol because this utility function is not exposed
-    function getReactionSetting(user) {
-      if (!user) {
-        return 'none';
-      }
-      return user.isGM
-        ? MidiQOL.configSettings().gmDoReactions
-        : MidiQOL.configSettings().doReactions;
-    }
-
-    const noResult = { name: 'None', uuid: undefined };
-
-    const reactionActor = reactionItem?.actor;
-    if (!reactionActor?.flags) {
-      console.warn(
-        `${MACRO_NAME} | Missing reaction actor or actor flags.`,
-        reactionActor
-      );
-      return noResult;
-    }
-
-    let reactionToken = null;
-    let reactionTokenUuid = options?.reactionTokenUuid;
-    if (reactionTokenUuid) {
-      reactionToken = fromUuidSync(reactionTokenUuid);
-    } else {
-      reactionToken = MidiQOL.tokenForActor(reactionActor);
-      reactionTokenUuid = reactionToken?.document.uuid;
-    }
-    if (!reactionToken) {
-      console.warn(
-        `${MACRO_NAME} | No token for the reaction actor could be found.`,
-        {
-          reactionActor,
-          reactionTokenUuid,
-        }
-      );
-      return noResult;
-    }
-
-    if (MidiQOL.checkRule('incapacitated')) {
-      if (MidiQOL.checkIncapacitated(reactionActor)) {
-        if (options?.debug) {
-          console.warn(
-            `${MACRO_NAME} | Actor is incapacitated.`,
-            reactionActor
-          );
-        }
-        return noResult;
-      }
-    }
-
-    const usedReaction = MidiQOL.hasUsedReaction(reactionActor);
-    if (usedReaction) {
-      if (options?.debug) {
-        console.warn(
-          `${MACRO_NAME} | Reaction already used for actor.`,
-          reactionActor
-        );
-      }
-      return noResult;
-    }
-
-    // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
-    let player = MidiQOL.playerForActor(reactionActor);
-    if (getReactionSetting(player) === 'none') {
-      if (options?.debug) {
-        console.warn(
-          `${MACRO_NAME} | Reaction settings set to none for player.`,
-          player
-        );
-      }
-      return noResult;
-    }
-
-    if (!player?.active) {
-      // Find first active GM player
-      player = game.users?.activeGM;
-    }
-    if (!player?.active) {
-      console.warn(
-        `${MACRO_NAME} | No active player or GM for actor.`,
-        reactionActor
-      );
-      return noResult;
-    }
-
-    // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
-    const reactionOptions = foundry.utils.mergeObject(
-      {
-        itemUuid: triggerItem.uuid,
-        thirdPartyReaction: {
-          trigger: reactionTriggerName,
-          itemUuid: reactionItem.uuid,
-        },
-        workflowOptions: { targetConfirmation: 'none' },
-      },
-      options?.reactionOptions ?? {}
-    );
-    const data = {
-      tokenUuid: reactionTokenUuid,
-      reactionItemList: [reactionItem.uuid],
-      triggerTokenUuid: triggerToken.document.uuid,
-      reactionFlavor: getReactionFlavor({
-        user: player,
-        reactionTriggerName,
-        triggerToken,
-        triggerItem,
-        reactionToken,
-        roll: options.attackRoll,
-        showReactionAttackRoll: options.showReactionAttackRoll,
-      }),
-      triggerType: 'reactionmanual',
-      options: reactionOptions,
-    };
-
-    return MidiQOL.socket().executeAsUser('chooseReactions', player.id, data);
   }
 
   /**
@@ -1009,8 +794,9 @@ export function runElwinsHelpers() {
    * @param {object} options - Options to override some defaults or change the execution behavior.
    */
   async function handleThirdPartyReactions(workflow, triggerList, options) {
-    options ??= workflow.options;
+    options ??= workflow?.options;
     if (
+      !workflow ||
       !(MidiQOL.configSettings().allowUseMacro && !options.noTargetOnuseMacro)
     ) {
       return;
@@ -1048,6 +834,7 @@ export function runElwinsHelpers() {
     tokenReactionsInfo,
     options = {}
   ) {
+    // TODO filter out all activities for the same item?
     let filteredReactions = tokenReactionsInfo.reactions.filter(
       (reactionData) =>
         trigger === reactionData.targetOnUse &&
@@ -1195,24 +982,33 @@ export function runElwinsHelpers() {
           (r) => r.data.tokenUuid === target.document.uuid
         );
       }
-      const allowedReactions = filteredReactions.filter((reactionData) =>
-        canTriggerReaction(
-          workflow,
-          triggerItem,
-          reactionToken,
-          tokenReactionsInfo,
-          target,
-          reactionData,
-          options
-        )
-      );
+      filteredReactions = filteredReactions
+        .map((reactionData) => {
+          reactionData.allowedActivities = reactionData.activities.filter(
+            (activity) =>
+              canTriggerReactionActivity(
+                workflow,
+                triggerItem,
+                reactionToken,
+                tokenReactionsInfo,
+                target,
+                reactionData,
+                activity,
+                options
+              )
+          );
+          return reactionData.allowedActivities.length
+            ? reactionData
+            : undefined;
+        })
+        .filter((d) => d);
       await callReactionsForToken(
         workflow,
         reactionToken,
         player,
         trigger,
         target,
-        allowedReactions,
+        filteredReactions,
         roll,
         options
       );
@@ -1229,19 +1025,21 @@ export function runElwinsHelpers() {
    * @param {Token5e} reactionToken - The token of the reaction's owner.
    * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
    * @param {Token5e} target - The target of the trigger item.
-   * @param {object} reactionData - The reaction data of the possible reaction.
+   * @param {ReactionData} reactionData - The reaction data of the possible reaction.
+   * @param {Activity} actibity - The activity from the reaction data to test.
    * @param {object} options - Options that can be used in the different validations.
    * @param {string} options.extraActivationCond - Extra activation condition to be evaluated.
    *
    * @returns {boolean} true if the reaction can be triggered, false otherwise.
    */
-  function canTriggerReaction(
+  function canTriggerReactionActivity(
     workflow,
     triggerItem,
     reactionToken,
     tokenReactionsInfo,
     target,
     reactionData,
+    activity,
     options = {}
   ) {
     const self = reactionToken.document.uuid === target.document.uuid;
@@ -1261,7 +1059,7 @@ export function runElwinsHelpers() {
 
     // Check allowed disposition condition
     let allowedDisposition;
-    const disposition = getReactionDisposition(reactionData);
+    const disposition = getReactionDisposition(activity);
     if (disposition) {
       allowedDisposition = reactionToken.document.disposition * disposition;
     }
@@ -1271,7 +1069,7 @@ export function runElwinsHelpers() {
     ) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: disposition not allowed.`,
+          `${MACRO_NAME} | canTriggerReactionActivity - ${reactionData.item.name}-${activity.name}: disposition not allowed.`,
           {
             allowedDisposition,
             triggerTokenDisp: triggerToken.document.disposition,
@@ -1282,24 +1080,15 @@ export function runElwinsHelpers() {
     }
 
     // Check range condition
-    const range = getReactionRange(reactionData);
+    const range = getReactionRange(activity);
     if (range) {
-      const tmpDist = foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol').version ?? '0.0.0',
-        '11.6.25'
-      )
-        ? MidiQOL.computeDistance(reactionToken, triggerToken, {
-            wallsBlock: range.wallsBlock,
-          })
-        : MidiQOL.computeDistance(
-            reactionToken,
-            triggerToken,
-            range.wallsBlock
-          );
+      const tmpDist = MidiQOL.computeDistance(reactionToken, triggerToken, {
+        wallsBlock: range.wallsBlock,
+      });
       if (tmpDist < 0 || tmpDist > range.value) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: invalid distance.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: invalid distance.`,
             {
               distance: tmpDist,
               allowedDistance: range,
@@ -1329,16 +1118,13 @@ export function runElwinsHelpers() {
     if (!self && reactionData.canSee && !canSeeTriggerSource) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: can't see trigger token.`
+          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: can't see trigger token.`
         );
       }
       return false;
     }
 
-    const reactionCondition = foundry.utils.getProperty(
-      reactionData.item ?? {},
-      'flags.midi-qol.reactionCondition'
-    );
+    const reactionCondition = activity.reactionCondition;
     if (!reactionCondition && !options?.extraActivationCond) {
       return true;
     }
@@ -1347,12 +1133,31 @@ export function runElwinsHelpers() {
       reaction: reactionData.targetOnUse,
       tpr: {
         item: reactionData.item?.getRollData()?.item ?? {},
+        activity,
         actor: reactionToken?.actor.getRollData() ?? {},
         actorId: reactionToken?.actor?.id,
         actorUuid: reactionToken?.actor?.uuid,
         tokenId: reactionToken?.id,
         tokenUuid: reactionToken?.document.uuid,
         canSeeTriggerSource,
+        get isMeleeAttackActivity() {
+          return isMeleeAttackActivity(workflow.attackMode, workflow.activity);
+        },
+        get isMeleeWeaponAttackActivity() {
+          return isMeleeWeaponAttackActivity(
+            workflow.attackMode,
+            workflow.activity
+          );
+        },
+        get isRangedAttackActivity() {
+          return isRangedAttackActivity(workflow.attackMode, workflow.activity);
+        },
+        get isRangedWeaponAttackActivity() {
+          return isRangedWeaponAttackActivity(
+            workflow.attackMode,
+            workflow.activity
+          );
+        },
         get isMeleeAttack() {
           return isMeleeAttack(workflow.item, workflow.token, target);
         },
@@ -1382,7 +1187,7 @@ export function runElwinsHelpers() {
       if (!returnValue) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: extra activation condition not met.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: extra activation condition not met.`,
             {
               extraActivationCond: options.extraActivationCond,
             }
@@ -1396,7 +1201,7 @@ export function runElwinsHelpers() {
     if (reactionCondition) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item?.name} using condition ${reactionCondition}`,
+          `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${activity.name} using condition ${reactionCondition}`,
           { extraData }
         );
       }
@@ -1409,7 +1214,7 @@ export function runElwinsHelpers() {
       ) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: reaction condition not met.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: reaction condition not met.`,
             reactionCondition
           );
         }
@@ -1420,16 +1225,16 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the disposition if any found for the specified reaction data.
+   * Returns the disposition if any found for the specified activity.
    *
-   * @param {object} reactionData - The reaction data for which to retrived the disposition.
+   * @param {Activity} activity - The activity for which to retrieve the disposition.
    *
    * @returns {number} the relative disposition compared to the trigger source.
    */
-  function getReactionDisposition(reactionData) {
+  function getReactionDisposition(activity) {
     const targetType = foundry.utils.getProperty(
-      reactionData.item,
-      'system.target.type'
+      activity,
+      'target.affects.type'
     );
     if (targetType === 'ally') {
       return CONST.TOKEN_DISPOSITIONS.FRIENDLY;
@@ -1440,41 +1245,46 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the range data if any found for the specified reaction data.
+   * Returns the range data if any found for the specified activity.
    *
-   * @param {object} reactionData - The reaction data for which to retrived the range data.
+   * @param {Activity} activity - The activity for which to retrieve the range.
    *
-   * @returns {{value: number, wallsBlock: {boolean}}} range data for the specified reaction data,
+   * @returns {{value: number, wallsBlock: {boolean}}} range data for the specified activity,
    * the data is composed of a value which is the range and wallsBlock, a boolean to indicate
    * if walls should block or not the distance computation.
    */
-  function getReactionRange(reactionData) {
+  function getReactionRange(activity) {
     const range = {};
-    range.value = getRangeFromItem(reactionData.item);
+    range.value = getRangeFromActivity(activity);
     range.wallsBlock = !foundry.utils.getProperty(
-      reactionData.item,
+      activity.item,
       'flags.midiProperties.ignoreTotalCover'
     );
 
-    return range.value ? range : undefined;
+    return range?.value !== undefined || range?.value == null
+      ? range
+      : undefined;
   }
 
   /**
-   * Returns the range data if any found for the specified item.
+   * Returns the range data if any found for the specified activity.
    *
    * Note: the code was inspired from the checkRange function from midi-qol utils.ts.
    *
-   * @param {Item5e} item - The item for which to retrieve the range data.
+   * @param {Activity} activity - The activity for which to retrieve the range data.
    *
-   * @returns {number} range for the specified item converted in the canvas scene grid units if possible,
+   * @returns {number} range for the specified activity converted in the canvas scene grid units if possible,
    */
-  function getRangeFromItem(item) {
-    if (!item?.system?.range?.value) {
+  function getRangeFromActivity(activity) {
+    if (
+      activity?.range?.value === null ||
+      activity?.range?.value === undefined
+    ) {
       return undefined;
     }
-    let range = item.system.range.value;
-    if (item?.system?.range?.units) {
-      switch (item.system.range.units) {
+    let range = activity.range.value;
+    if (activity.range.units) {
+      switch (activity.range.units) {
         case 'mi': // miles - assume grid units are feet or miles - ignore furlongs/chains whatever
           if (
             ['feet', 'ft'].includes(
@@ -1608,7 +1418,7 @@ export function runElwinsHelpers() {
    * @param {User} user - the user associated to the reaction token, or the GM is none active.
    * @param {string} reactionTrigger - the third party reaction trigger.
    * @param {Token5e} target - the target of the third party reaction trigger.
-   * @param {ReactionData[]} reactions - list of reaction data from which the reaction token can choose to activate.
+   * @param {ReactionData[]} reactions - list of reaction data with their allowed activities from which the reaction token can choose to activate.
    * @param {Roll} roll - The D20 roll of the attack, saving throw or ability test.
    * @param {object} options - options to pass to macros.
    */
@@ -1627,19 +1437,21 @@ export function runElwinsHelpers() {
     }
     const reactionsByTriggerSources = [];
     const reactionsByAttacker = reactions.filter(
-      (rd) => rd.triggerSource === 'attacker'
+      (reactionData) => reactionData.triggerSource === 'attacker'
     );
     if (reactionsByAttacker.length) {
       reactionsByTriggerSources.push(reactionsByAttacker);
     }
     const reactionsByTarget = reactions.filter(
-      (rd) => rd.triggerSource === 'target'
+      (reactionData) => reactionData.triggerSource === 'target'
     );
     if (reactionsByTarget.length) {
       reactionsByTriggerSources.push(reactionsByTarget);
     }
+    // TODO HERE handle calling activities
     for (let reactionsByTriggerSource of reactionsByTriggerSources) {
-      const reactionsToSkip = new Set();
+      const triggerSource = reactionsByTriggerSource[0]?.triggerSource;
+      const validReactionActivities = [];
       const preReactionOptions = foundry.utils.mergeObject(
         { actor: target.actor, token: target },
         options?.reactionOptions ?? {}
@@ -1659,6 +1471,9 @@ export function runElwinsHelpers() {
                 }
               );
             }
+            preReactionOptions.thirdPartyReactionActivities =
+              reactionData.allowedActivities.map((a) => a.uuid);
+
             let [result] = await workflow.callMacros(
               workflow.item,
               reactionData.macroName,
@@ -1667,32 +1482,40 @@ export function runElwinsHelpers() {
               preReactionOptions
             );
             if (result?.skip) {
-              reactionsToSkip.add(reactionData);
+              if (result.activities?.length) {
+                const toRemove = new Set(result.activities);
+                validReactionActivities.push(
+                  ...reactionData.allowedActivities.filter(
+                    (a) => !toRemove.has(a)
+                  )
+                );
+              }
+            } else {
+              validReactionActivities.push(...reactionData.allowedActivities);
             }
+          } else {
+            validReactionActivities.push(...reactionData.allowedActivities);
           }
         } catch (error) {
           console.error(`${MACRO_NAME} | error in preReaction.`, error);
-          reactionsToSkip.add(reactionData);
         }
       }
-      const validReactions = reactionsByTriggerSource.filter(
-        (rd) => !reactionsToSkip.has(rd)
-      );
 
-      const noResult = { name: 'None', uuid: undefined };
-      let result = noResult;
+      let result = { name: 'None', uuid: undefined };
       try {
-        if (!validReactions.length) {
+        if (!validReactionActivities.length) {
           continue;
         }
         // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
-        const reactionUuids = validReactions.map((rd) => rd.item?.uuid);
+        const reactionActivityUuids = validReactionActivities.map(
+          (a) => a.uuid
+        );
         const reactionOptions = foundry.utils.mergeObject(
           {
             itemUuid: options?.item?.uuid ?? workflow.itemUuid,
             thirdPartyReaction: {
               trigger: reactionTrigger,
-              itemUuids: reactionUuids,
+              activityUuids: reactionActivityUuids,
             },
             workflowOptions: { targetConfirmation: 'none' },
           },
@@ -1702,9 +1525,9 @@ export function runElwinsHelpers() {
         foundry.utils.setProperty(
           reactionOptions.thirdPartyReaction,
           'triggerSource',
-          validReactions[0].triggerSource
+          triggerSource
         );
-        if (validReactions[0].triggerSource === 'attacker') {
+        if (triggerSource === 'attacker') {
           foundry.utils.setProperty(
             reactionOptions.thirdPartyReaction,
             'targetUuid',
@@ -1722,7 +1545,7 @@ export function runElwinsHelpers() {
 
         const data = {
           tokenUuid: reactionToken.document.uuid,
-          reactionItemList: reactionUuids,
+          reactionActivityList: reactionActivityUuids,
           triggerTokenUuid: reactionTargetUuid,
           reactionFlavor: getReactionFlavor({
             user,
@@ -1820,10 +1643,7 @@ export function runElwinsHelpers() {
     );
     const targetName = MidiQOL.getTokenPlayerName(targetToken);
     const playerText = textTemplate.replace('${tokenName}', targetName);
-    if (foundry.utils.isNewerVersion(game.system.version, '3')) {
-      return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
-    }
-    return `<div class="midi-qol-target-npc-GM">${gmText}</div><div class="midi-qol-target-npc-Player">${playerText}</div>`;
+    return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
   }
 
   /**
@@ -1835,10 +1655,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the item has the property, false otherwise.
    */
   function hasItemProperty(item, propName) {
-    if (foundry.utils.isNewerVersion(game.system.version, '3')) {
-      return item.system?.properties?.has(propName);
-    }
-    return item.system?.properties?.[propName];
+    return item.system?.properties?.has(propName);
   }
 
   /**
@@ -1861,139 +1678,24 @@ export function runElwinsHelpers() {
       );
       return;
     }
-    if (
-      foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol')?.version,
-        '11.6'
-      )
-    ) {
-      const currentDamagePrevention =
-        foundry.utils.getProperty(
-          damageItem.calcDamageOptions,
-          'elwinHelpers.damagePrevention'
-        ) ?? 0;
-      foundry.utils.setProperty(
+    const currentDamagePrevention =
+      foundry.utils.getProperty(
         damageItem.calcDamageOptions,
-        'elwinHelpers.damagePrevention',
-        currentDamagePrevention + preventedDmg
-      );
-      const actor = fromUuidSync(damageItem.actorUuid);
-      damageItem.damageDetail = actor?.calculateDamage(
-        damageItem.rawDamageDetail,
-        damageItem.calcDamageOptions
-      );
-      calculateAppliedDamage(damageItem);
-      if (sourceItem && damageItem.details) {
-        damageItem.details.push(`${sourceItem.name} - DP`);
-      }
-      return;
-    }
-
-    let effectiveDamagePrevented;
-    if (foundry.utils.hasProperty(damageItem, 'appliedDamage')) {
-      let amount = damageItem.damageDetail.reduce(
-        (amount, d) =>
-          amount +
-          (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value ?? d.damage),
-        0
-      );
-      amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
-
-      // Adjust value for overflow damage, reduce the prevented damage by the amount of damage overflow
-      if (amount > damageItem.appliedDamage) {
-        preventedDmg -= amount - damageItem.appliedDamage;
-      }
-      const previousHpDmg = damageItem.appliedDamage;
-      let remainingPrevDmg = Math.min(previousHpDmg, preventedDmg);
-      damageItem.appliedDamage -= remainingPrevDmg;
-      if (remainingPrevDmg > 0 && damageItem.hpDamage > 0) {
-        const hpPrevDmg = Math.min(damageItem.hpDamage, remainingPrevDmg);
-        damageItem.hpDamage -= hpPrevDmg;
-        damageItem.newHP += hpPrevDmg;
-        remainingPrevDmg -= hpPrevDmg;
-      }
-      if (remainingPrevDmg > 0 && damageItem.tempDamage > 0) {
-        const tempHpPrevDmg = Math.min(damageItem.tempDamage, remainingPrevDmg);
-        damageItem.tempDamage -= tempHpPrevDmg;
-        damageItem.newTempHP += tempHpPrevDmg;
-        remainingPrevDmg -= tempHpPrevDmg;
-      }
-      effectiveDamagePrevented = Math.max(0, preventedDmg - remainingPrevDmg);
-    } else {
-      let { amount, temp, dp } = damageItem.damageDetail.reduce(
-        (acc, d) => {
-          if (d.type === 'temphp') {
-            acc.temp += d.value;
-          } else if (
-            d.type !== 'midi-none' &&
-            !(d.type === 'none' && d.active?.DP)
-          ) {
-            acc.amount += d.value;
-          } else if (d.type === 'none' && d.active?.DP) {
-            acc.dp += d.value;
-          }
-          return acc;
-        },
-        { amount: 0, temp: 0, dp: 0 }
-      );
-      amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
-
-      const damagePrevention = Math.min(
-        -dp + preventedDmg,
-        amount >= 0 ? amount : 0
-      );
-      if (damagePrevention) {
-        const dpDamage = damageItem.damageDetail.find(
-          (d) => d.type === 'none' && d.active?.DP
-        );
-        if (dpDamage) {
-          dpDamage.value = damagePrevention;
-        } else {
-          damageItem.damageDetail.push({
-            type: 'none',
-            value: -damagePrevention,
-            active: { DP: true, multiplier: 1 },
-            properties: new Set(),
-          });
-        }
-        amount -= damagePrevention;
-      }
-
-      const token = fromUuidSync(damageItem.tokenUuid);
-      const as = token.actor?.system;
-      if (!as || !as.attributes.hp) {
-        if (debug) {
-          console.warn(
-            `${MACRO_NAME} | Missing damaged token or hp attribute.`,
-            { damageItem }
-          );
-        }
-        return;
-      }
-
-      // Recompute damage
-      const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
-      const deltaHP = Math.clamp(
-        amount - deltaTemp,
-        -as.attributes.hp.damage,
-        damageItem.oldHP
-      );
-      damageItem.newHP = damageItem.oldHP - deltaHP;
-      damageItem.hpDamage = deltaHP;
-      damageItem.newTempHP = Math.floor(
-        Math.max(0, damageItem.oldTempHP - deltaTemp, temp)
-      );
-      damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
-      damageItem.elwinHelpersEffectiveDamage = amount;
-      // TODO should this reflect raw or not???
-      //damageItem.totalDamage = amount;
-
-      effectiveDamagePrevented = Math.min(damagePrevention + dp, 0);
-    }
+        'elwinHelpers.damagePrevention'
+      ) ?? 0;
+    foundry.utils.setProperty(
+      damageItem.calcDamageOptions,
+      'elwinHelpers.damagePrevention',
+      currentDamagePrevention + preventedDmg
+    );
+    const actor = fromUuidSync(damageItem.actorUuid);
+    damageItem.damageDetail = actor?.calculateDamage(
+      damageItem.rawDamageDetail,
+      damageItem.calcDamageOptions
+    );
+    calculateAppliedDamage(damageItem);
     if (sourceItem && damageItem.details) {
-      damageItem.details.push(
-        `${sourceItem.name} - DP [-${effectiveDamagePrevented}]`
-      );
+      damageItem.details.push(`${sourceItem.name} - DP`);
     }
   }
 
@@ -2011,8 +1713,8 @@ export function runElwinsHelpers() {
     }
     let { amount, temp } = damageItem.damageDetail.reduce(
       (acc, d) => {
-        if (d.type === 'temphp') acc.temp += d.value ?? d.damage;
-        else if (d.type !== 'midi-none') acc.amount += d.value ?? d.damage;
+        if (d.type === 'temphp') acc.temp += d.value;
+        else if (d.type !== 'midi-none') acc.amount += d.value;
         return acc;
       },
       { amount: 0, temp: 0 }
@@ -2051,6 +1753,61 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Returns true if the attack is a ranged attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string} attackMode - The attack mode selected for the attack activity.
+   * @param {Activity} activity - The activity used to attack.
+   *
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isRangedAttackActivity(attackMode, activity) {
+    return isRangedAttackActivityByType(null, attackMode, activity);
+  }
+
+  /**
+   * Returns true if the attack is a ranged attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string} attackMode - The attack mode selected for the attack activity.
+   * @param {Activity} activity - The activity used to attack.
+   *
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isRangedWeaponAttackActivity(attackMode, activity) {
+    return isRangedAttackActivityByType(
+      ['simpleM', 'martialM', 'simpleR', 'martialR'],
+      attackMode,
+      activity
+    );
+  }
+
+  /**
+   * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string[]|null} weaponTypes - Array of supported weapon types.
+   * @param {string} attackMode - The attack mode selected for the attack activity.
+   * @param {Activity} activity - The activity the used for the attack.
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isRangedAttackActivityByType(weaponTypes, attackMode, activity) {
+    if (
+      weaponTypes !== null &&
+      !weaponTypes.includes(activity?.item?.system.type?.value)
+    ) {
+      return false;
+    }
+    if (activity?.type !== 'attack') {
+      return false;
+    }
+    const attackType = activity.attack?.type?.value;
+    return (
+      attackType === 'ranged' ||
+      (attackType === 'melee' &&
+        hasItemProperty(activity.item, 'thr') &&
+        attackMode?.startsWith('thrown'))
+    );
+  }
+
+  /**
    * Returns true if the attack is a ranged attack. It also supports melee weapons with the thrown property.
    *
    * @param {Item5e} item - The item used to attack.
@@ -2067,7 +1824,7 @@ export function runElwinsHelpers() {
     checkThrownWeapons = true
   ) {
     return isRangedAttackByType(
-      ['rwak', 'rsak'],
+      null,
       item,
       sourceToken,
       targetToken,
@@ -2093,7 +1850,7 @@ export function runElwinsHelpers() {
     checkThrownWeapons = true
   ) {
     return isRangedAttackByType(
-      ['rwak'],
+      ['simpleM', 'martialM', 'simpleR', 'martialR'],
       item,
       sourceToken,
       targetToken,
@@ -2104,7 +1861,7 @@ export function runElwinsHelpers() {
   /**
    * Returns true if the attack is a ranged attack. It also supports melee weapons with the thrown property.
    *
-   * @param {string[]} actionType - Array of supported ranged action types.
+   * @param {string[]|null} weaponTypes - Array of supported weapon types.
    * @param {Item5e} item - The item used to attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
@@ -2113,31 +1870,95 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the attack is a ranged attack.
    */
   function isRangedAttackByType(
-    actionTypes,
+    weaponTypes,
     item,
     sourceToken,
     targetToken,
     checkThrownWeapons = true
   ) {
-    if (actionTypes.includes(item?.system?.actionType)) {
+    if (
+      weaponTypes !== null &&
+      !weaponTypes.includes(item?.system.type?.value)
+    ) {
+      return false;
+    }
+    const activity = item?.system?.activities?.getByType('attack')?.[0];
+    if (!activity) {
+      return false;
+    }
+
+    const attackType = activity.attack?.type?.value;
+    if (attackType === 'ranged') {
       return true;
     }
     if (!checkThrownWeapons) {
       return false;
     }
-    if (item?.system?.actionType !== 'mwak' || !hasItemProperty(item, 'thr')) {
+    if (attackType !== 'melee' || !hasItemProperty(item, 'thr')) {
       return false;
     }
 
-    const distance = foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol').version ?? '0.0.0',
-      '11.6.25'
-    )
-      ? MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true })
-      : MidiQOL.computeDistance(sourceToken, targetToken, true);
-    // TODO how to support creature with reach, or creatures with reach and thrown weapon?
-    const meleeDistance = 5 + (hasItemProperty(item, 'rch') ? 5 : 0);
+    const distance = MidiQOL.computeDistance(sourceToken, targetToken, {
+      wallsBlock: true,
+    });
+    // TODO check if distance if in ft, how to support creature with reach, or creatures with reach and thrown weapon?
+    const meleeDistance = hasItemProperty(item, 'rch')
+      ? item.range?.reach ?? 10
+      : 5;
     return distance > meleeDistance;
+  }
+
+  /**
+   * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string} attackMode - The attack mode selected for the attack activity.
+   * @param {Activity} activity - The activity used to attack.
+   *
+   * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
+   */
+  function isMeleeAttackActivity(attackMode, activity) {
+    return isMeleeAttackActivityByType(null, attackMode, activity);
+  }
+
+  /**
+   * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string} attackMode - The attack mode selected for the attack activity.
+   * @param {Activity} activity - The activity used to attack.
+   *
+   * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
+   */
+  function isMeleeWeaponAttackActivity(attackMode, activity) {
+    return isMeleeAttackActivityByType(
+      ['simpleM', 'martialM'],
+      attackMode,
+      activity
+    );
+  }
+
+  /**
+   * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string[]|null} weaponTypes - Array of supported weapon types.
+   * @param {string} attackMode - The attack mode selected for the attack activity.
+   * @param {Activity} activity - The activity the used for the attack.
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isMeleeAttackActivityByType(weaponTypes, attackMode, activity) {
+    if (
+      weaponTypes !== null &&
+      !weaponTypes.includes(activity?.item?.system.type?.value)
+    ) {
+      return false;
+    }
+    if (
+      activity?.type !== 'attack' ||
+      activity?.attack?.type?.value !== 'melee'
+    ) {
+      return false;
+    }
+
+    return !attackMode?.startsWith('thrown');
   }
 
   /**
@@ -2158,7 +1979,7 @@ export function runElwinsHelpers() {
     checkThrownWeapons = true
   ) {
     return isMeleeAttackByType(
-      ['mwak', 'msak'],
+      null,
       item,
       sourceToken,
       targetToken,
@@ -2184,7 +2005,7 @@ export function runElwinsHelpers() {
     checkThrownWeapons = true
   ) {
     return isMeleeAttackByType(
-      ['mwak'],
+      ['simpleM', 'martialM'],
       item,
       sourceToken,
       targetToken,
@@ -2196,7 +2017,7 @@ export function runElwinsHelpers() {
    * Returns true if the attack was a successful melee attack. It also handle the case of
    * weapons with the thrown property on a target that is farther than melee distance.
    *
-   * @param {string[]} actionType - Array of supported melee action types.
+   * @param {string[]|null} weaponTypes - Array of supported weapon types.
    * @param {Item5e} item - The item the used for the attack.
    * @param {Token5e} sourceToken - The source token.
    * @param {Token5e} targetToken - The target token.
@@ -2204,13 +2025,25 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the attack was a successful melee weapon attack, false otherwise.
    */
   function isMeleeAttackByType(
-    actionTypes,
+    weaponTypes,
     item,
     sourceToken,
     targetToken,
     checkThrownWeapons = true
   ) {
-    if (!actionTypes.includes(item?.system?.actionType)) {
+    if (
+      weaponTypes !== null &&
+      !weaponTypes.includes(item?.system.type?.value)
+    ) {
+      return false;
+    }
+    const activity = item?.system?.activities?.getByType('attack')?.[0];
+    if (!activity) {
+      return false;
+    }
+
+    const attackType = activity.attack?.type?.value;
+    if (attackType !== 'melee') {
       return false;
     }
 
@@ -2218,18 +2051,17 @@ export function runElwinsHelpers() {
       return true;
     }
 
-    if (item?.system?.actionType !== 'mwak' || !hasItemProperty(item, 'thr')) {
+    if (!hasItemProperty(item, 'thr')) {
       return true;
     }
 
-    const distance = foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol').version ?? '0.0.0',
-      '11.6.25'
-    )
-      ? MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true })
-      : MidiQOL.computeDistance(sourceToken, targetToken, true);
-    // TODO how to support creature with reach, or creatures with reach and thrown weapon?
-    const meleeDistance = 5 + (hasItemProperty(item, 'rch') ? 5 : 0);
+    const distance = MidiQOL.computeDistance(sourceToken, targetToken, {
+      wallsBlock: true,
+    });
+    // TODO check if distance if in ft, how to support creature with reach, or creatures with reach and thrown weapon?
+    const meleeDistance = hasItemProperty(item, 'rch')
+      ? item.range?.reach ?? 10
+      : 5;
     return distance >= 0 && distance <= meleeDistance;
   }
 
@@ -2280,25 +2112,6 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the Midi item chat message for the specified workflow.
-   *
-   * @param {MidiQOL.workflow} workflow - The current MidiQOL workflow for which to get the item chat message.
-   *
-   * @returns {ChatMessage5e} - The Midi item chat message for the specified workflow.
-   */
-  function getMidiItemChatMessage(workflow) {
-    if (
-      foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol').version ?? '0.0.0',
-        '11.4.1'
-      )
-    ) {
-      return MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
-    }
-    return game.messages.get(workflow.itemCardId);
-  }
-
-  /**
    * Inserts text into a Midi item chat message before the card buttons div and updates it.
    *
    * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
@@ -2321,13 +2134,7 @@ export function runElwinsHelpers() {
       default:
         searchRegex =
           /(<\/section>)(\s*<div class="card-buttons midi-buttons">)/m;
-        if (!foundry.utils.isNewerVersion(game.system.version, '3')) {
-          searchRegex = /(<\/div>)(\s*<div class="card-buttons">)/m;
-        }
         break;
-    }
-    if (!foundry.utils.isNewerVersion(game.system.version, '3')) {
-      replaceString = `$1\n<br/>${text}\n$2`;
     }
     content = content.replace(searchRegex, replaceString);
     await chatMessage.update({ content: content });
@@ -2341,7 +2148,7 @@ export function runElwinsHelpers() {
    * @param {string} text - The text to insert in the MidiQOL item card.
    */
   async function insertTextIntoMidiItemCard(position, workflow, text) {
-    const chatMessage = getMidiItemChatMessage(workflow);
+    const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
     if (!chatMessage) {
       console.error(`${MACRO_NAME} | Could not find workflow item card`, {
         workflow,
@@ -2453,6 +2260,34 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Adjust the workflow attack roll target AC, it is used by dnd5e chat message to display the attack result.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  function adjustAttackRollTargetAC(workflow) {
+    // TODO remove if midi-qol fixes this in checkHits or displayAttackRoll
+    const targets = workflow.targets;
+    if (workflow.attackRoll?.dice.length) {
+      const targetAC =
+        targets.size === 1
+          ? workflow.hitDisplayData[targets.first().document.uuid].ac
+          : null;
+      workflow.attackRoll.options.target = targetAC;
+      workflow.attackRoll.dice[0].options.target = targetAC;
+    }
+    const chatMessage = workflow.chatCard;
+    let content = chatMessage && foundry.utils.duplicate(chatMessage.content);
+    if (chatMessage) {
+      // Remove sucesss/failure from attack otherwise dnd5e will add them without removing the previous result
+      content = content.replace(
+        /class="dice-total[^"]*"/,
+        'class="dice-total"'
+      );
+      chatMessage.content = content;
+    }
+  }
+
+  /**
    * Returns the damage roll options based on the ones set on the first damage roll of the worflow.
    *
    * @param {MidiQOL.Workflow} worflow - The MidiQOL workflow from which to get the first damage roll options.
@@ -2506,9 +2341,7 @@ export function runElwinsHelpers() {
    * @returns {ActiveEffect5e[]} list of applied enchantments.
    */
   function getAppliedEnchantments(itemUuid) {
-    return CONFIG.Item.dataModels.consumable.schema.fields.enchantment.model.appliedEnchantments(
-      itemUuid
-    );
+    return dnd5e.registry.enchantments.applied(itemUuid);
   }
 
   /**
@@ -2542,11 +2375,42 @@ export function runElwinsHelpers() {
       );
     }
 
-    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-      // Disables enchantment drop area
-      workflow.config.promptEnchantment = false;
-      workflow.config.enchantmentProfile = null;
-    }
+    // Disables enchantment drop area
+    Hooks.once('dnd5e.preUseActivity', (activity, usageConfig, _, __) => {
+      const activityWorkflow = MidiQOL.Workflow.getWorkflow(activity.uuid);
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          activity.item?.name,
+          'dnd5e.preUseActivity',
+          activity.name,
+          workflow,
+          activityWorkflow,
+          debug
+        )
+      ) {
+        return;
+      }
+      foundry.utils.setProperty(usageConfig, 'enchantmentProfile', null);
+    });
+  }
+
+  /**
+   * Returns a list of equipped melee weapons for the specified actor.
+   *
+   * @param {Actor5e} sourceActor token actor
+   * @returns {Item5e[]} A list of equipped melee weapons.
+   */
+  function getEquippedMeleeWeapons(sourceActor) {
+    return (
+      sourceActor?.itemTypes.weapon.filter(
+        (w) =>
+          w.system.equipped &&
+          ['simpleM', 'martialM'].includes(w.system.type?.value) &&
+          w.system.activities
+            ?.getByType('attack')
+            .some((a) => a.actionType === 'mwak')
+      ) ?? []
+    );
   }
 
   /**
@@ -2577,31 +2441,18 @@ export function runElwinsHelpers() {
         const ctx = {};
         ctx.selected =
           defaultItem && defaultItem.id === item.id ? ' checked' : '';
-        if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-          if (item.system.attunement) {
-            ctx.attunement = item.system.attuned
-              ? {
-                  cls: 'attuned',
-                  title: game.i18n.localize('DND5E.AttunementAttuned'),
-                }
-              : {
-                  cls: 'not-attuned',
-                  title: game.i18n.localize(
-                    CONFIG.DND5E.attunementTypes[item.system.attunement]
-                  ),
-                };
-          }
-        } else {
-          ctx.attunement = {
-            [CONFIG.DND5E.attunementTypes.REQUIRED]: {
-              cls: '',
-              tooltip: game.i18n.localize('DND5E.AttunementRequired'),
-            },
-            [CONFIG.DND5E.attunementTypes.ATTUNED]: {
-              cls: 'active',
-              tooltip: game.i18n.localize('DND5E.AttunementAttuned'),
-            },
-          }[item.system.attunement];
+        if (item.system.attunement) {
+          ctx.attunement = item.system.attuned
+            ? {
+                cls: 'attuned',
+                title: game.i18n.localize('DND5E.AttunementAttuned'),
+              }
+            : {
+                cls: 'not-attuned',
+                title: game.i18n.localize(
+                  CONFIG.DND5E.attunementTypes[item.system.attunement]
+                ),
+              };
         }
         if ('equipped' in item.system) {
           ctx.equip = {
@@ -3821,7 +3672,9 @@ export function runElwinsHelpers() {
 
     if (
       !reactionItem ||
-      !reactionItem?.system?.activation?.type?.includes('reaction')
+      !reactionItem?.system?.activities?.some((activity) =>
+        activity.activation?.type?.includes('reaction')
+      )
     ) {
       console.warn(
         `${MACRO_NAME} | No reaction item found, skipping registration.`,
@@ -3843,6 +3696,9 @@ export function runElwinsHelpers() {
     tokenReactionsInfo.reactions.push({
       token: reactionToken,
       item: reactionItem,
+      activities: reactionItem.system.activities.filter((activity) =>
+        activity.activation?.type?.includes('reaction')
+      ),
       macroName,
       targetOnUse,
       triggerSource: options.triggerSource ?? 'target',
@@ -4037,7 +3893,7 @@ export function runElwinsHelpers() {
     return pactLevel;
   }
 
-  function itemReaction(item, triggerType, maxLevel, onlyZeroCost) {
+  async function itemReaction(item, triggerType, maxLevel, onlyZeroCost) {
     if (MidiQOL.itemReaction && MidiQOL.enableNotifications) {
       try {
         MidiQOL.enableNotifications(false);
@@ -4047,53 +3903,56 @@ export function runElwinsHelpers() {
       }
     }
 
-    if (!item.system.activation?.type?.includes('reaction')) {
+    if (!item.system.activities) {
       return false;
     }
-    if (item.system.activation?.cost > 0 && onlyZeroCost) {
-      return false;
-    }
-    if (item.type === 'spell') {
-      if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
-        return true;
+    for (let activity of item.system.activities) {
+      if (!activity.activation?.type?.includes('reaction')) {
+        continue;
       }
-      if (item.system.preparation?.mode === 'atwill') {
-        return true;
+      if (activity.activation.type !== 'reaction') {
+        console.warn(
+          `midi-qol | itemReaction | item ${item.name} ${activity.name} has a reaction type of ${activity.activation.type} which is deprecated - please update to reaction and reaction conditions`
+        );
       }
-      if (item.system.level === 0) {
-        return true;
+
+      if ((activity.activation?.value ?? 1) > 0 && onlyZeroCost) {
+        continue; // TODO can't specify 0 cost reactions in dnd5e 4.x - have to find another way
       }
-      if (
-        item.system.preparation?.prepared !== true &&
-        item.system.preparation?.mode === 'prepared'
-      ) {
-        return false;
+      if (item.type === 'spell') {
+        if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
+          return true;
+        }
+        if (['atwill', 'innate'].includes(item.system.preparation.mode)) {
+          return true;
+        }
+        if (item.system.level === 0) {
+          return true;
+        }
+        if (
+          item.system.preparation?.prepared !== true &&
+          item.system.preparation?.mode === 'prepared'
+        ) {
+          continue;
+        }
+        if (item.system.level <= maxLevel) {
+          return true;
+        }
       }
-      if (item.system.preparation?.mode !== 'innate') {
-        return item.system.level <= maxLevel;
-      }
-    }
-    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
+
       if (!item.system.attuned && item.system.attunement === 'required') {
-        return false;
+        continue;
       }
-    } else {
-      if (item.system.attunement === CONFIG.DND5E.attunementTypes.REQUIRED) {
-        return false;
+      const results = await activity._prepareUsageUpdates({
+        consume: true,
+        returnErrors: true,
+      });
+      if (foundry.utils.getType(results) === 'Object') {
+        return true;
       }
+      return !results?.length;
     }
-
-    if (
-      !checkUsage(item, {
-        consumeUsage: item.hasLimitedUses,
-        consumeResource: item.hasResource,
-        slotLevel: false,
-      })
-    ) {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
   //----------------------------------
@@ -4295,7 +4154,7 @@ export function runElwinsHelpers() {
           (cls) => !denom || cls.system.hitDice === denom
         );
         quantity = resource.reduce(
-          (count, cls) => count + cls.system.levels - cls.system.hitDiceUsed,
+          (count, cls) => (count += cls.system.levels - cls.system.hitDiceUsed),
           0
         );
         break;

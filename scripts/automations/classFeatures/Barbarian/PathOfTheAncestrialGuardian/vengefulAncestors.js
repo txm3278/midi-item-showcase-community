@@ -2,42 +2,23 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Damages the attacker that triggered Spirit Shield by the amount of damage that was prevented.
-// v2.1.0
+// v3.0.0
 // Dependencies:
 //  - DAE
-//  - MidiQOL "on use" actor and item macro [preItemRoll][preDamageRoll]
+//  - MidiQOL "on use" actor and item macro [preItemRoll]
 //  - Elwin Helpers world script
-//  Note: A Rage item which adds a Rage effect when activated must be configured, and the Spirit Shield item
-//        made by Elwin is needed to trigger this feature.
-//
-// How to configure:
-// The Feature details must be:
-//   - Feature Type: Class Feature
-//   - Activation cost: Special
-//   - Target: 1 Creature
-//   - Action Type: Other
-//   - Damage formula:
-//     @flags.dae.spiritShieldPreventedDmg | Force
-//   - Chat Message Flavor: Your Ancestors retaliates!
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before the item is rolled
-//       ItemMacro | Before Damage Roll
-//   - Confirm Targets: Never
-//   - Roll a separate attack per target: Never
-//   - This item macro code must be added to the DIME code of this feature.
 //
 // Usage:
 // This is a special feature that can only be triggered by the Spirit Shield feature.
 // When used, it will damage the attacker that triggered the Spirit Shield by the amount of
 // damage that was prevented from the target.
 //
+// Note: A Rage item which adds a Rage effect when activated must be configured, and the Spirit Shield item
+//       made by Elwin is needed to trigger this feature.
 //
 // Description:
-// In the preItemRoll phase of Vengeful Ancestors item:
-//   Blocks the item use if the barbarian is not raging or if it was not triggered by Spirit Shield.
-// In the preDamageRoll phase of Vengeful Ancestors item:
-//   Forces the display of targets because it's not displayed by default when there is no attack roll.
+// In the preItemRoll phase of the Retribution Damage activity:
+//   Blocks the activity use if the barbarian is not raging or if it was not triggered by Spirit Shield.
 // ###################################################################################################
 
 export async function vengefulAncestors({
@@ -53,17 +34,17 @@ export async function vengefulAncestors({
 }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Vengeful Ancestors';
-  // Default name of the Rage effect, normally same as the feature
-  const RAGE_EFFECT_NAME = 'Rage';
+  // Default identifier of the Rage feature
+  const RAGE_ITEM_IDENT = 'rage';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.0'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -82,9 +63,20 @@ export async function vengefulAncestors({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
     const macroData = args[0];
-    if (!actor.appliedEffects?.find((ae) => ae.name === RAGE_EFFECT_NAME)) {
+
+    const rage = actor.itemTypes.feat.find(
+      (i) => i.identifier === RAGE_ITEM_IDENT
+    );
+    const rageEffect = rage
+      ? actor.appliedEffects?.find(
+          (ae) => !ae.transfer && ae.origin?.startsWith(rage.uuid)
+        )
+      : undefined;
+    if (!rageEffect) {
       // The Barbarian must be in Rage
-      ui.notifications.warn(`${DEFAULT_ITEM_NAME} | Barbarian is not in Rage.`);
+      ui.notifications.warn(
+        `${scope.macroItem.name} | Barbarian is not in ${rage?.name ?? 'Rage'}.`
+      );
       return false;
     }
     if (
@@ -93,7 +85,7 @@ export async function vengefulAncestors({
     ) {
       // This feature can only be triggered by Spirit Shield
       ui.notifications.warn(
-        `${DEFAULT_ITEM_NAME} | This feature can only be triggered by Spirit Shield.`
+        `${scope.macroItem.name} | This feature can only be triggered by Spirit Shield.`
       );
       return false;
     }
@@ -105,8 +97,5 @@ export async function vengefulAncestors({
       }
       return false;
     }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
-    // Force display of targets because it's not displayed by default when there is no attack roll.
-    await workflow.displayTargets(workflow.whisperAttackCard);
   }
 }

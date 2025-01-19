@@ -4,49 +4,27 @@
 // When used, adds an effect on the target and on the owner. When the owner is damaged, a save is
 // triggered on the tethered creature, if failed it takes half the owner's damage and the owners
 // applied damage is reduced by half.
-// v1.3.0
+// v2.0.0
 // Dependencies:
 //  - DAE
 //  - Times up
-//  - MidiQOL "on use" actor macro [preTargetDamageApplication][postActiveEffects]
+//  - MidiQOL "on use" actor macro [preTargetDamageApplication],[postActiveEffects]
 //  - Elwin Helpers world script
 //  - Sequencer (optional)
 //  - JB2A free or patreon (optional)
-//
-// Note: Midi must be configured to use DND5E damage calculation.
-//
-// How to configure:
-// The Feature details must be:
-//   - Feature Type: Monster Feature
-//   - Activation cost: 1 Lair Action
-//   - Action Type: (empty)
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | After Active Effects
-//   - This item macro code must be added to the DIME code of this feature.
-// One effect must also be added:
-//   - Negative Energy Tether:
-//      - Transfer Effect to Actor on ItemEquip (unchecked)
-//      - Apply to self when item applies target effects (checked)
-//      - Duration: 1 Round
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,preTargetDamageApplication
-//   - Negative Energy Tether:
-//      - Transfer Effect to Actor on ItemEquip (unchecked)
-//      - Duration: 1 Round
 //
 // Usage:
 // This item needs to be used to activate. When activated the effects are applied.
 //
 // Description:
-// In the postActiveEffects (item onUse) phase of Negative Energy Tether item (in owner's workflow):
+// In the postActiveEffects (OnUse) phase of Negative Energy Tether: Create Tether activity (in owner's workflow):
 //   Updates the self active effect to delete the target active effect when deleted and vice versa and
 //   creates a sequencer effect between the owner and the target if the required modules are active.
-// In the postActiveEffects (item onUse) phase of Negative Energy Tether: Share Damage item (in owner's workflow):
+// In the postActiveEffects (OnUse) phase of Negative Energy Tether: Share Damage activity (in owner's workflow):
 //   If the target failed its save, creates a chat message to explain why the damage applied to the owner from
 //   the original attack was reduced.
 // In the preTargetDamageApplication (TargetOnUse) phase (in attacker's workflow) (on owner):
-//   Computes the damage to be shared with the tethered creature and executes a remote completeItemUse
+//   Computes the damage to be shared with the tethered creature and executes remotely Share Damage activity
 //   to apply the damage on the tethered creature if it fails its save. If the remote workflow
 //   completed sucessfully and the target failed its save, reduce the damage to be applied by the amount
 //   shared with the tethered creature.
@@ -72,27 +50,16 @@ export async function negativeEnergyTether({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.6'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
   const dependencies = ['dae', 'times-up', 'midi-qol'];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
-  }
-  if (
-    !foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol')?.version,
-      '11.6'
-    ) &&
-    !MidiQOL.configSettings().v3DamageApplication
-  ) {
-    ui.notifications.error(
-      `${DEFAULT_ITEM_NAME} | dnd5e v3 damage application is required.`
-    );
   }
 
   if (debug) {
@@ -104,14 +71,12 @@ export async function negativeEnergyTether({
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-    if (
-      scope.rolledItem?.getFlag(MODULE_ID, 'negativeEnergyTetherShareDamage')
-    ) {
-      // The share damage feat
+    if (workflow.activity?.identifier === 'create-tether') {
+      // Create tether activity
+      await handleCreateTetherOnUsePostActiveEffects(workflow, scope.macroItem);
+    } else if (workflow.activity?.identifier === 'share-damage') {
+      // Share damage activity
       await handleShareDamageOnUsePostActiveEffects(workflow, scope.macroItem);
-    } else {
-      // The original item
-      await handleOnUsePostActiveEffects(workflow, scope.macroItem);
     }
   } else if (
     args[0].tag === 'TargetOnUse' &&
@@ -125,23 +90,26 @@ export async function negativeEnergyTether({
   }
 
   /**
-   * Handles the postActiveEffects of the Negative Energy Tether item.
-   * Makes the self AE and target AE dependent on each others and
-   * creates a sequencer effect between the owner and the target if the required modules are active.
+   * Handles the postActiveEffects of the Negative Energy Tether: Create Tether activity.
+   * Makes the self AE and target AE dependent on each others and creates a sequencer effect
+   * between the owner and the target if the required modules are active.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Item5e} sourceItem - The Negative Energy Tether item.
    */
-  async function handleOnUsePostActiveEffects(currentWorkflow, sourceItem) {
-    if (currentWorkflow.applicationTargets.size < 1) {
+  async function handleCreateTetherOnUsePostActiveEffects(
+    currentWorkflow,
+    sourceItem
+  ) {
+    if (!currentWorkflow.effectTargets?.size) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No effect applied to target.`);
       }
       return;
     }
-    const tokenTarget = currentWorkflow.applicationTargets.first();
-    const appliedEffect = tokenTarget.actor?.appliedEffects.find(
-      (ae) => ae.origin === sourceItem.uuid
+    const tokenTarget = currentWorkflow.effectTargets.first();
+    const appliedEffect = tokenTarget.actor?.appliedEffects.find((ae) =>
+      ae.origin?.startsWith(sourceItem.uuid)
     );
     if (!appliedEffect) {
       if (debug) {
@@ -153,8 +121,8 @@ export async function negativeEnergyTether({
     }
 
     // Find AE on self to add delete flag
-    const selfEffect = currentWorkflow.actor.effects.find(
-      (ae) => ae.origin === sourceItem.uuid
+    const selfEffect = currentWorkflow.actor.effects.find((ae) =>
+      ae.origin?.startsWith(sourceItem.uuid)
     );
     if (!selfEffect) {
       if (debug) {
@@ -170,10 +138,7 @@ export async function negativeEnergyTether({
     });
     await selfEffect.update({ changes });
     await selfEffect.addDependent(appliedEffect);
-    await MidiQOL.socket().executeAsGM('addDependent', {
-      concentrationEffectUuid: appliedEffect.uuid,
-      dependentUuid: selfEffect.uuid,
-    });
+    await MidiQOL.addDependent(appliedEffect, selfEffect);
 
     if (
       !game.modules.get('sequencer')?.active ||
@@ -217,7 +182,7 @@ export async function negativeEnergyTether({
     const damageList = [];
     for (let damageEntry of currentWorkflow.damageDetail) {
       damageList.push(
-        `${damageEntry.damage} ${
+        `${damageEntry.value} ${
           CONFIG.DND5E.damageTypes[damageEntry.type]?.label ?? damageEntry.type
         }`
       );
@@ -231,10 +196,7 @@ export async function negativeEnergyTether({
     const infoMsg = `${targetDivs}${newTargetDivs}`;
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
-        type:
-          game.release.generation >= 12
-            ? CONST.CHAT_MESSAGE_STYLES.OTHER
-            : CONST.CHAT_MESSAGE_TYPES.OTHER,
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: infoMsg,
         speaker: ChatMessage.getSpeaker({
           actor: currentWorkflow.actor,
@@ -312,53 +274,28 @@ export async function negativeEnergyTether({
     // Build the shared damage to apply to the tethered creature.
     const damageParts = [];
     for (let damageEntry of damageToTether) {
-      damageParts.push([
-        `(${damageEntry.value}[${damageEntry.type}])`,
-        damageEntry.type,
-      ]);
+      const part = {
+        custom: {
+          enabled: true,
+          formula: `${damageEntry.value}`,
+        },
+        types: [damageEntry.type],
+      };
+      damageParts.push(part);
     }
 
-    const featData = {
-      type: 'feat',
-      name: `${sourceItem.name} - Share Damage`,
-      img: sourceItem.img,
-      system: {
-        actionType: 'save',
-        damage: { parts: damageParts },
-        target: { type: 'creature', value: 1 },
-        save: { ability: 'con', dc: 18, scaling: 'flat' },
-      },
-      flags: {
-        midiProperties: {
-          saveDamage: 'nodam',
-        },
-        'midi-qol': {
-          onUseMacroName: `[postActiveEffects]ItemMacro.${sourceItem.uuid}`,
-        },
-        [MODULE_ID]: {
-          negativeEnergyTetherShareDamage: true,
-        },
-      },
-    };
-    const feat = new CONFIG.Item.documentClass(featData, {
-      parent: targetActor,
-      temporary: true,
-    });
-
-    const tetheredTokenUuid = targetActor.getFlag(
-      MODULE_ID,
-      'negativeEnergyTetherTarget'
+    // Fetch Share damage activity
+    const shareDamageActivity = sourceItem.system.activities?.find(
+      (a) => a.identifier === 'share-damage'
     );
-    const options = {
-      targetUuids: [tetheredTokenUuid],
-      configureDialog: false,
-      workflowOptions: {
-        fastForwardDamage: true,
-        targetConfirmation: 'none',
-        autoRollDamage: 'always',
-      },
-      workflowData: true,
-    };
+    if (!shareDamageActivity) {
+      if (debug) {
+        console.warn(
+          `${DEFAULT_ITEM_NAME} | Could not find valid the Share Damage activity.`
+        );
+      }
+      return;
+    }
 
     // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
     let player = MidiQOL.playerForActor(targetActor);
@@ -373,15 +310,31 @@ export async function negativeEnergyTether({
       return;
     }
 
+    // Save shared damage for formula in activity
+    await shareDamageActivity.update({ 'damage.parts': damageParts });
+
+    const tetheredTokenUuid = targetActor.getFlag(
+      MODULE_ID,
+      'negativeEnergyTetherTarget'
+    );
+
+    const config = {
+      midiOptions: {
+        targetUuids: [tetheredTokenUuid],
+        configureDialog: false,
+        workflowOptions: { autoRollDamage: 'always', autoFastDamage: true },
+        workflowData: true,
+      },
+    };
+
     const data = {
-      itemData: feat.toObject(),
+      activityUuid: shareDamageActivity.uuid,
       actorUuid: targetActor.uuid,
-      targetUuids: options.targetUuids,
-      options,
+      config,
     };
 
     const otherWorkflowData = await MidiQOL.socket().executeAsUser(
-      'completeItemUse',
+      'completeActivityUse',
       player.id,
       data
     );

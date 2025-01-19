@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v2.2.0
+// v3.0.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -13,21 +13,6 @@
 //  - Elwin Helpers world script
 //  - Token Magic FX (optional)
 //  - Dice So Nice (optional)
-//
-// How to configure:
-// The item details must be:
-//   - Feature Type: Feat
-//   - Activation cost: (empty)
-//   - Action type: (empty)
-// The Feature Midi-QOL must be:
-//   - Confirm Targets: Never
-//   - Roll a separate attack per target: Never
-//   - This item macro code must be added to the DIME code of this feat.
-// One effect must also be added:
-//   - Flames of Phlegethos:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,postDamageRoll
 //
 // Usage:
 // This is a passive feat, it will trigger when the requirements for the different effects are met.
@@ -44,7 +29,7 @@
 //   If it was a melee attack and the attacker that damaged the caster is within 5' of him,
 //   a midi-qol.RollComplete hook it registered to use a temporary item on the target's player.
 // In the midi-qol.RollComplete hook (in attacker's workflow )
-//   Excecutes the temporary item use on the target's player to apply the reactive damage to the attacker.
+//   Excecutes an activity use on the target's player to apply the reactive damage to the attacker.
 //   Note: This is done, to not interfere with other effects the attack could have.
 // ###################################################################################################
 
@@ -69,10 +54,10 @@ export async function flamesOfPhlegethos({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.0'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -89,27 +74,20 @@ export async function flamesOfPhlegethos({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postDamageRoll') {
-    if (
-      scope.rolledItem?.type !== 'spell' ||
-      !(workflow.damageRolls?.length ?? workflow.damageRoll)
-    ) {
+    if (scope.rolledItem?.type !== 'spell' || !workflow.damageRolls?.length) {
       // Only works on spell with damage rolls
       return;
     }
     // TODO check also for other dmg?
-    const fireDmg = scope.rolledItem?.system.damage?.parts.some(
-      ([formula, type]) => type === 'fire' || formula?.includes('[fire]')
-    );
+    const fireDmg =
+      workflow.damageRolls.some((r) => r.options?.type === 'fire') ||
+      workflow.defaultDamageType === 'fire';
     if (!fireDmg) {
       // Spell must do fire damage to trigger effect
       return;
     }
 
-    // TODO simplify when support for dnd5e 2.4.1 is removed
-    const fireLabel =
-      CONFIG.DND5E.damageTypes['fire'].label ??
-      CONFIG.DND5E.damageTypes['fire'];
-    let damageRolls = workflow.damageRolls ?? [workflow.damageRoll];
+    let damageRolls = workflow.damageRolls;
     const diceToReroll = damageRolls
       .map((roll) =>
         roll.dice.map((die) => ({ type: roll.options?.type, die }))
@@ -117,9 +95,7 @@ export async function flamesOfPhlegethos({
       .flat()
       .filter(
         (data) =>
-          ['fire', fireLabel].includes(
-            data.die.options?.flavor || data.type || workflow.defaultDamageType
-          ) &&
+          (data.type ?? workflow.defaultDamageType) === 'fire' &&
           data.die.results.some((r) => r.active && r.result <= rerollNumber)
       )
       .map((d) => d.die);
@@ -181,7 +157,8 @@ export async function flamesOfPhlegethos({
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'isDamaged'
   ) {
-    if (!['mwak', 'msak'].includes(scope.rolledItem?.system?.actionType)) {
+    // TODO check thrown weapons?
+    if (workflow.activity?.attack?.type?.value !== 'melee') {
       // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);
@@ -216,26 +193,14 @@ export async function flamesOfPhlegethos({
       return;
     }
 
-    const featData = {
-      type: 'feat',
-      name: `${scope.macroItem.name} - Reactive Damage`,
-      img: scope.macroItem.img,
-      system: {
-        actionType: 'other',
-        damage: { parts: [['1d4[fire]', 'fire']] },
-        target: { type: 'creature', value: 1 },
-      },
-    };
-    const feat = new CONFIG.Item.documentClass(featData, {
-      parent: actor,
-      temporary: true,
-    });
-
-    const options = {
-      targetUuids: [workflow.tokenUuid],
-      configureDialog: false,
-      workflowOptions: { fastForwardDamage: true, targetConfirmation: 'none' },
-    };
+    const reativeDamageActivity =
+      scope.macroItem.system.activities?.getByType('damage')?.[0];
+    if (!reativeDamageActivity) {
+      console.warn(
+        `${DEFAULT_ITEM_NAME} | Could not find valid the damage activity for ${scope.macroItem.name}.`
+      );
+      return;
+    }
 
     // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
     let player = MidiQOL.playerForActor(actor);
@@ -250,14 +215,21 @@ export async function flamesOfPhlegethos({
       return;
     }
 
+    const config = {
+      midiOptions: {
+        targetUuids: [workflow.tokenUuid],
+        configureDialog: false,
+        workflowOptions: { autoFastDamage: true, targetConfirmation: 'none' },
+      },
+    };
     if (player?.isGM) {
-      options.workflowOptions.autoRollDamage = 'always';
+      config.midiOptions.workflowOptions.autoRollDamage = 'always';
     }
+
     const data = {
-      itemData: feat.toObject(),
+      activityUuid: reativeDamageActivity.uuid,
       actorUuid: actor.uuid,
-      targetUuids: options.targetUuids,
-      options,
+      config,
     };
 
     // Register hook to call retribution damage after roll is complete
@@ -268,7 +240,7 @@ export async function flamesOfPhlegethos({
           !elwinHelpers.isMidiHookStillValid(
             DEFAULT_ITEM_NAME,
             'midi-qol.RollComplete',
-            feat.name,
+            scope.macroItem.name,
             workflow,
             currentWorkflow,
             debug
@@ -277,7 +249,7 @@ export async function flamesOfPhlegethos({
           return;
         }
         await MidiQOL.socket().executeAsUser(
-          'completeItemUse',
+          'completeActivityUse',
           player.id,
           data
         );
@@ -375,7 +347,6 @@ export async function flamesOfPhlegethos({
    * @returns {object} the active effect data for the light and Token Magic FX flames.
    */
   function getFlamesEffectData(sourceItem) {
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const flamesEffectData = {
       changes: [
         {
@@ -431,12 +402,13 @@ export async function flamesOfPhlegethos({
         rounds: 1,
         turns: 1,
       },
-      [imgPropName]: sourceItem.img,
+      img: sourceItem.img,
       name: `${sourceItem.name} - Flames`,
       origin: sourceItem.uuid,
       transfer: false,
       flags: {
         dae: {
+          stackable: 'noneName',
           specialDuration: ['turnEndSource'],
         },
       },

@@ -3,45 +3,22 @@
 // Read First!!!!
 // Adds an active effect, that effect will trigger a reaction by the Paladin
 // when a creature within range is damaged to allow him to use the feature to take the target's damage instead.
-// v3.1.0
+// v4.0.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
 //  - Elwin Helpers world script
 //
-// How to configure:
-// The Feature details must be:
-//   - Feature Type: Class Feature
-//   - Activation cost: 1 Reaction
-//   - Target: 1 Ally (RAW it's Creature, but use Ally to trigger reaction on allies only)
-//   - Range: 5 Feet
-//   - Action Type: (empty)
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//       ItemMacro | After Active Effects
-//   - Confirm Targets: Never
-//   - Roll a separate attack per target: Never
-//   - Activation Conditions
-//     - Reaction:
-//       reaction === "tpr.isDamaged"
-//   - This item macro code must be added to the DIME code of this feature.
-// One effect must also be added:
-//   - Divine Allegiance:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isDamaged|ignoreSelf=true;pre=true;post=true
-//
 // Usage:
 // This item has a passive effect that adds a third party reaction effect.
-// It is also a reaction item that gets triggered by the third party reaction effect when appropriate.
+// It is also a reaction activity that gets triggered by the third party reaction effect when appropriate.
 //
 // Description:
 // There are multiple calls of this item macro, dependending on the trigger.
-// In the preTargeting (item OnUse) phase of the item (in owner's workflow):
+// In the preTargeting (item OnUse) phase of the activity (in owner's workflow):
 //   Validates that item was triggered by the remote tpr.isDamaged target on use,
-//   otherwise the item workflow execution is aborted.
-// In the postActiveEffects (item onUse) phase of the item (in owner's workflow):
+//   otherwise the activity workflow execution is aborted.
+// In the postActiveEffects (item onUse) phase of the activity (in owner's workflow):
 //   The total damage to be taken for the target specified in a flag is applied to the owner's hp
 //   and the flag is unset.
 // In the tpr.isDamaged (TargetOnUse) pre macro (in attacker's workflow) (on other target):
@@ -68,27 +45,16 @@ export async function divineAllegiance({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.6'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
   const dependencies = ['dae', 'midi-qol'];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
-  }
-  if (
-    !foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol')?.version,
-      '11.6'
-    ) &&
-    !MidiQOL.configSettings().v3DamageApplication
-  ) {
-    ui.notifications.error(
-      `${DEFAULT_ITEM_NAME} | dnd5e v3 damage application is required.`
-    );
   }
 
   if (debug) {
@@ -127,7 +93,7 @@ export async function divineAllegiance({
   }
 
   /**
-   * Handles the preTargeting phase of the Divine Allegiance item.
+   * Handles the preTargeting phase of the Divine Allegiance activity.
    * Validates that the reaction was triggered by the tpr.isDamaged target on use.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -139,12 +105,12 @@ export async function divineAllegiance({
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !==
         'tpr.isDamaged' ||
-      !currentWorkflow.options?.thirdPartyReaction?.itemUuids?.includes(
-        sourceItem.uuid
+      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
+        currentWorkflow.activity?.uuid
       )
     ) {
       // Reaction should only be triggered by aura
-      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the Paladin is damaged.`;
+      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the Paladin is damaged.`;
       ui.notifications.warn(msg);
       return false;
     }
@@ -152,7 +118,7 @@ export async function divineAllegiance({
   }
 
   /**
-   * Handles the tpr.isDamaged pre macro of the Divine Allegiance item in the triggering midi-qol workflow.
+   * Handles the tpr.isDamaged pre macro of the Divine Allegiance activity in the triggering midi-qol workflow.
    * Sets a flag on the owner with the damage to be taken, will be used by the reaction.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -170,8 +136,7 @@ export async function divineAllegiance({
     // Set damage to be applied, to be available for remote reaction
     const totalDamage = currentWorkflow.damageItem.damageDetail.reduce(
       (acc, d) =>
-        acc +
-        (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value ?? d.damage),
+        acc + (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
       0
     );
     const preventedDmg = totalDamage;
@@ -180,7 +145,7 @@ export async function divineAllegiance({
   }
 
   /**
-   * Handles the tpr.isDamaged post macro of the Divine Allegiance item.
+   * Handles the tpr.isDamaged post macro of the Divine Allegiance activity.
    * If the reaction was used and completed successfully, reduces the item's owner hp by the amount of damage that the target would have taken.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -193,7 +158,12 @@ export async function divineAllegiance({
     thirdPartyReactionResult
   ) {
     const preventedDmg = currentWorkflow.divineAllegianceAppliedDmg;
-    if (thirdPartyReactionResult?.uuid === sourceItem.uuid && preventedDmg) {
+    if (
+      sourceItem.system.activities?.some(
+        (a) => a.uuid === thirdPartyReactionResult?.uuid
+      ) &&
+      preventedDmg
+    ) {
       elwinHelpers.reduceAppliedDamage(
         currentWorkflow.damageItem,
         preventedDmg,
@@ -210,7 +180,7 @@ export async function divineAllegiance({
   }
 
   /**
-   * Handles the postActiveEffects phase of the Divine Allegiance item.
+   * Handles the postActiveEffects phase of the Divine Allegiance activity.
    * The owner of the feature HP's are reduced by the damage to be applied to the target.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.

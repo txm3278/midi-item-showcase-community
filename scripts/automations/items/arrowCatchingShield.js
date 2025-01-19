@@ -3,53 +3,28 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v3.2.0
+// v4.0.0
 // Dependencies:
 //  - DAE
-//  - MidiQOL "on use" actor macro [preTargeting][isAttacked][tpr.isTargeted]
+//  - MidiQOL "on use" actor macro [preTargeting],[isAttacked],[tpr.isTargeted]
 //  - Elwin Helpers world script
-//
-// How to configure:
-// The Feature details must be:
-//   - Equipement Type: Shield
-//   - Attunement: Attunement Required
-//   - Proficiency: Automatic
-//   - Activation cost: 1 Reaction
-//   - Target: 1 Ally (RAW it's Creature, but use Ally to trigger reaction only on allies)
-//   - Range: 5 Feet
-//   - Action Type: Other
-//   - Damage formula: (empty)
-//   - Chat Message Flavor: You become the target of the ranged attack instead.
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//   - Confirm Targets: Never
-//   - Roll a separate attack per target: Never
-//   - Activation Conditions
-//     - Reaction:
-//       reaction === "tpr.isTargeted" && tpr?.isRangedAttack
-//   - This item macro code must be added to the DIME code of the item.
-// One effect must also be added:
-//   - Arrow-Catching Shield:
-//      - Transfer to actor on item equip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,isAttacked
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isTargeted|ignoreSelf=true;post=true
 //
 // Usage:
 // This item has a passive effect (when equipped and attuned) to handle bonus AC on ranged attacks
 // on owner of shield and to handle the reaction when it's not the owner of the shield that is targeted.
 //
+// Note: RAW target should be Creature, but use Ally to trigger reaction only on allies.
+//
 // Description:
-// In the preTargeting (item OnUse) phase of the item (in owner's workflow):
-//   Validates that item was triggered by the remote tpr.isPreAttacked target on use,
-//   otherwise the item workflow execution is aborted.
+// In the preTargeting (item OnUse) phase of the reaction activity (in owner's workflow):
+//   Validates that activity was triggered by the remote tpr.isTargeted target on use,
+//   otherwise the activity workflow execution is aborted.
 // In the tpr.isTargeted (TargetOnUse) post macro (in attacker's workflow) (on other target):
 //   If the owner activated the reaction, the current workflow target is switched to
 //   to the owner of the shield, midi will then call the isAttacked later on the new target.
 // In the isAttacked (TargetOnUse) trigger (in attacker's workflow) (on owner):
 //   Verifies if the attack is a ranged attack (melee weapons with the thrown property are supported).
-//   If its a ranged attack and the target is the owner of the shield, an AE that adds an AC bonus is
+//   If it's a ranged attack and the target is the owner of the shield, an AE that adds an AC bonus is
 //   added on the owner for a duration of "isAttacked".
 // ###################################################################################################
 
@@ -71,10 +46,10 @@ export async function arrowCatchingShield({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.7'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -112,7 +87,7 @@ export async function arrowCatchingShield({
   }
 
   /**
-   * Handles the preTargeting phase of the Arrow-Catching Shield item midi-qol workflow.
+   * Handles the preTargeting phase of the Arrow-Catching Shield reaction activity.
    * Validates that the reaction was triggered by the tpr.isTargeted target on use.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -124,12 +99,12 @@ export async function arrowCatchingShield({
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !==
         'tpr.isTargeted' ||
-      !currentWorkflow.options?.thirdPartyReaction?.itemUuids?.includes(
-        sourceItem.uuid
+      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
+        currentWorkflow.activity?.uuid
       )
     ) {
       // Reaction should only be triggered by aura
-      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the owner is targeted by a ranged attack.`;
+      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the owner is targeted by a ranged attack.`;
       ui.notifications.warn(msg);
       return false;
     }
@@ -137,7 +112,7 @@ export async function arrowCatchingShield({
   }
 
   /**
-   * Handles the tpr.isTargeted post macro of the Arrow-Catching Shield item in the triggering midi-qol workflow.
+   * Handles the tpr.isTargeted post macro of the Arrow-Catching Shield item.
    * If the reaction was used and completed successfully, the target is changed to the owner of the shield.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -156,7 +131,11 @@ export async function arrowCatchingShield({
         thirdPartyReactionResult,
       });
     }
-    if (thirdPartyReactionResult?.uuid !== sourceItem.uuid) {
+    if (
+      !sourceItem.system.activities?.some(
+        (a) => a.uuid === thirdPartyReactionResult?.uuid
+      )
+    ) {
       return;
     }
     const sourceActor = sourceItem.actor;
@@ -196,14 +175,14 @@ export async function arrowCatchingShield({
     const infoMsg = `${targetDivs}${newTargetDivs}`;
     await elwinHelpers.insertTextIntoMidiItemCard(
       'beforeHitsDisplay',
-      workflow,
+      currentWorkflow,
       infoMsg
     );
   }
 
   /**
    * Handles the isAttacked target on use of the Arrow-Catching Shield item.
-   * Validates that the attack is a ranged attack on the onwer and if its the case
+   * Validates that the attack is a ranged attack on the onwer and if it's the case
    * adds an AE to give an AC bonus to the onwer.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -237,7 +216,6 @@ export async function arrowCatchingShield({
     }
     // Owner of shield
     // create an active effect on target to give bonus AC
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const targetEffectData = {
       changes: [
         // flag for AC bonus
@@ -248,15 +226,13 @@ export async function arrowCatchingShield({
           priority: 20,
         },
       ],
-
+      duration: { turns: 1 },
+      transfer: false,
       origin: sourceItem.uuid, //flag the effect as associated to the source item used
-      [imgPropName]: sourceItem.img,
+      img: sourceItem.img,
       name: `${sourceItem.name} - Bonus AC`,
+      'flags.dae': { specialDuration: ['isAttacked'], stackable: 'noneName' },
     };
-    targetEffectData.duration = currentWorkflow.inCombat ? { turns: 1 } : {};
-    foundry.utils.setProperty(targetEffectData, 'flags.dae.specialDuration', [
-      'isAttacked',
-    ]);
 
     await MidiQOL.socket().executeAsGM('createEffects', {
       actorUuid: targetToken.actor.uuid,

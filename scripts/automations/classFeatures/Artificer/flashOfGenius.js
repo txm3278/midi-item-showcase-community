@@ -3,54 +3,23 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Artificer
 // when a creature within range rolls a saving throw or ability check to allow them to add a bonus on the roll.
-// v1.2.0
+// v2.0.0
 // Dependencies:
 //  - DAE
 //  - Times Up
 //  - MidiQOL "on use" item/actor macro [preTargeting][preActiveEffects][tpr.isPostCheckSave]
 //  - Elwin Helpers world script
 //
-// How to configure:
-// The Feature details must be:
-//   - Feature Type: Class Feature
-//   - Activation cost: 1 Reaction
-//   - Target: 1 Ally (RAW it's Creature, but use Ally to trigger reaction on allies only)
-//   - Range: 30 feet
-//   - Action Type: (empty)
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//       ItemMacro | Before Active Effects
-//   - Confirm Targets: Never
-//   - No Full cover: (checked)
-//   - Activation Conditions
-//     - Reaction:
-//       reaction === "tpr.isPostCheckSave"
-//   - This item macro code must be added to the DIME code of this feature.
-// Two effects must also be added:
-//   - Flash of Genius:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isPostCheckSave|canSee=true;post=true
-//   - Flash of Genius - Bonus:
-//      - Transfer Effect to Actor on ItemEquip (unchecked)
-//      - Duration: 1 Turn
-//      - Special Duration: Expires if the character rolls: ability check
-//                          Expires if the character rolls: saving throw
-//      - Effects:
-//          - system.bonuses.abilities.check | Add | + @abilities.int.mod
-//          - system.bonuses.abilities.save | Add | + @abilities.int.mod
-//
 // Usage:
 // This item has a passive effect that adds a third party reaction effect.
-// It is also a reaction item that gets triggered by the third party reaction effect when appropriate or it can be triggered manually.
+// It is also a reaction activity that gets triggered by the third party reaction effect when appropriate or it can be triggered manually.
 //
 // Description:
-// In the preTargeting (item OnUse) phase of the Flash of Genius item (in owner's workflow):
-//   Validates that item was triggered manually or by the remote tpr.isPostCheckSave target on use,
-//   otherwise the item workflow execution is aborted.
-// In the preActiveEffects (item OnUse) phase of the Flash of Genius item (in owner's workflow):
-//   Validates that item was triggered manually otherwise it disables the application of the bonus AE.
+// In the preTargeting (item OnUse) phase of the activity (in owner's workflow):
+//   Validates that activity was triggered manually or by the remote tpr.isPostCheckSave target on use,
+//   otherwise the activity workflow execution is aborted.
+// In the preActiveEffects (item OnUse) phase of the activity (in owner's workflow):
+//   Validates that the activity was triggered manually otherwise it disables the application of the bonus AE.
 // In the tpr.isPostCheckSave (TargetOnUse) post macro (in attacker's workflow) (on owner or other target):
 //   If the reaction was used and completed successfully, a bonus is added to the target save roll,
 //   and the success is reevaluated, then the workflow's save data for the target is updated accordingly.
@@ -74,10 +43,10 @@ export async function flashOfGenius({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.4'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -115,7 +84,7 @@ export async function flashOfGenius({
   }
 
   /**
-   * Handles the preItemRoll phase of the Flash of Genius item midi-qol workflow.
+   * Handles the preTargeting phase of the Flash of Genius activity.
    * Validates that the reaction was triggered manually or by the tpr.isPostCheckSave target on use.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -128,12 +97,12 @@ export async function flashOfGenius({
       currentWorkflow.options?.isReaction &&
       (currentWorkflow.options?.thirdPartyReaction?.trigger !==
         'tpr.isPostCheckSave' ||
-        !currentWorkflow.options?.thirdPartyReaction?.itemUuids?.includes(
-          sourceItem.uuid
+        !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
+          currentWorkflow.activity?.uuid
         ))
     ) {
       // Reaction should only be triggered by third party reaction AE or manually
-      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature needs to roll a save or an ability test.`;
+      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature needs to roll a save or an ability test.`;
       ui.notifications.warn(msg);
       return false;
     }
@@ -141,7 +110,7 @@ export async function flashOfGenius({
   }
 
   /**
-   * Handles the preActiveEffects phase of the Flash of Genius item midi-qol workflow.
+   * Handles the preActiveEffects phase of the Flash of Genius activity.
    * Disables the application of AE on target when the reaction is not triggered manually.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -149,14 +118,14 @@ export async function flashOfGenius({
    *                                                    otherwise undefined.
    */
   function handleOnUsePreActiveEffects(currentWorkflow) {
-    // Do not apply AE on target when reaction is triggered manually.
+    // Apply AE on target only when reaction is triggered manually.
     if (currentWorkflow.options?.isReaction) {
       return { haltEffectsApplication: true };
     }
   }
 
   /**
-   * Handles the tpr.isPostCheckSave post reaction of the Flash of Genius item in the triggering midi-qol workflow.
+   * Handles the tpr.isPostCheckSave post reaction of the Flash of Genius activity in the triggering midi-qol workflow.
    * If the reaction was used and completed successfully, adds the int bonus to the rolled check and revalidates if it
    * can transform a failed check into a success.
    *
@@ -171,7 +140,11 @@ export async function flashOfGenius({
     target,
     thirdPartyReactionResult
   ) {
-    if (thirdPartyReactionResult?.uuid !== sourceItem.uuid) {
+    if (
+      !sourceItem.system.activities?.some(
+        (a) => a.uuid === thirdPartyReactionResult?.uuid
+      )
+    ) {
       return;
     }
     const sourceActor = sourceItem.actor;
@@ -185,10 +158,11 @@ export async function flashOfGenius({
     );
     if (
       !saveDisplayDatum ||
-      saveDisplayDatum?.rollDetail?.options?.targetValue === undefined
+      !saveDisplayDatum?.rollDetail ||
+      currentWorkflow.saveDC === undefined
     ) {
       console.warn(
-        `${DEFAULT_ITEM_NAME} | No saveDisplayData found for the target or missing rollDetail.`,
+        `${DEFAULT_ITEM_NAME} | No saveDisplayData found for the target, missing rollDetail or missing saveDC.`,
         {
           currentWorkflow,
           target,
@@ -196,20 +170,15 @@ export async function flashOfGenius({
       );
       return;
     }
+
     const abilityMod = sourceActor.getRollData().abilities?.int?.mod ?? 0;
+    const bonusRoll = await new Roll(`${abilityMod}`).evaluate();
+    saveDisplayDatum.rollDetail = MidiQOL.addRollTo(
+      saveDisplayDatum.rollDetail,
+      bonusRoll
+    );
 
     saveDisplayDatum.rollTotal += abilityMod;
-
-    saveDisplayDatum.rollDetail.terms.push(
-      await new OperatorTerm({ operator: '+' }).evaluate()
-    );
-    saveDisplayDatum.rollDetail.terms.push(
-      await new NumericTerm({ number: abilityMod }).evaluate()
-    );
-
-    saveDisplayDatum.rollDetail._total += abilityMod;
-    saveDisplayDatum.rollDetail.resetFormula();
-
     saveDisplayDatum.rollHTML = await MidiQOL.midiRenderRoll(
       saveDisplayDatum.rollDetail
     );
@@ -217,8 +186,7 @@ export async function flashOfGenius({
     // TODO support fumble on saves???
     if (currentWorkflow.failedSaves?.has(target)) {
       // validate if the added bonus makes the save successful
-      const dc = saveDisplayDatum.rollDetail.options.targetValue;
-      if (saveDisplayDatum.rollTotal < dc) {
+      if (saveDisplayDatum.rollTotal < currentWorkflow.saveDC) {
         // Nothing to do, it still fails
         return;
       }

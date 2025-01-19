@@ -2,31 +2,12 @@
 // Read First!!!!
 // Allows to create potent poison doses, to apply poisons to weapon or ammunitions a bonus action,
 // to ignore poison resistance, and adds proficiency with poisoner's kit.
-// v1.0.0
+// v2.0.0
 // Author: Elwin#1410 based on WurstKorn
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" item macro, [preTargeting][preItemRoll][postActiveEffects]
 //  - Elwin Helpers world script
-//
-// How to configure:
-// The feature details must be:
-//   - Feature Type: Feat
-//   - Activation cost: 1 Hour
-//   - Target: Self
-//   - Action Type: (empty)
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before the item is rolled
-//       ItemMacro | After Active Effects
-//   - This item macro code must be added to the DIME code of this item.
-// One effect must also be added:
-//   - Poisoner:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,preTargeting
-//          - system.tools.pois.prof | Custom | Proficient
-//          - system.traits.idr.value | Add | Poison
 //
 // Usage:
 // This is item must be used to activate its effect. It also adds active effects to give proficiency
@@ -34,8 +15,9 @@
 //
 // Description:
 // In the preTargeting (actor OnUse) phase of any item (in owner's workflow):
-//   If the item rolled is of system type poison and has an appliedCoating flag in an AE,
-//   change it's activation to a bonus action if it's not already the case
+//   If the item rolled is of system type poison and the current activity
+//   has an identifier equal to "apply-coating", change it's activation to a bonus action
+//   if it's not already the case.
 // In the preItemRoll (item OnUse) phase of the Poisoners (in owner's workflow):
 //   Validates that the owner has a Poisoner's Kit and at least 50gp in its inventory.
 // In the postActiveEffects phase of the Poisoner (in owner's workflow):
@@ -61,16 +43,17 @@ export async function poisoner({
   const MODULE_ID = 'midi-item-showcase-community';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
-  const DEFAULT_POISONERS_KIT_NAME = "Poisoner's Kit";
+  const DEFAULT_POISONERS_KIT_IDENT = 'poisoners-kit';
   const DEFAULT_POTENT_POISON_NAME = 'Potent Poison';
+  const DEFAULT_POTENT_POISON_IDENT = 'potent-poison';
 
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.7'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -89,35 +72,57 @@ export async function poisoner({
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    const hasAppliedCoatingValue =
+    const isApplyPoison =
       workflow.item?.system.type?.value === 'poison' &&
-      workflow.item?.effects.some(
-        (ae) =>
-          ae.name === workflow.item?.name &&
-          ae.transfer === false &&
-          ae.getFlag('dae', 'dontApply') === true &&
-          ae.changes.some(
-            (c) => c.key === `flags.${MODULE_ID}.appliedCoating` && c.value
-          )
-      );
-    if (!hasAppliedCoatingValue) {
+      workflow.activity?.type === 'enchant' &&
+      workflow.activity?.identifier === 'apply-coating';
+    if (!isApplyPoison) {
+      // Not an apply poison activity
       return;
     }
-    if (workflow.item?.system.activation?.type === 'bonus') {
+    // Note: we need to get the activity from scope.rolledItem, because workflow.activity is a clone
+    // and MidiActivityMixin.confirmCanProceed uses this to check for bonus or reaction activation types.
+    // TOD change this if midi changes to always use the clone instead of this.
+    const applyPoisonActivity = scope.rolledItem.system.activities?.get(
+      workflow.activity.id
+    );
+    if (applyPoisonActivity?.activation?.type === 'bonus') {
+      // Already a bonus action
       return;
     }
-    foundry.utils.setProperty(workflow.item, 'system.activation.type', 'bonus');
+    // Change activation type to special so it is not considered as an Attack Action
+    const updates = {};
+    const activation = foundry.utils.deepClone(
+      applyPoisonActivity.activation ?? {}
+    );
+    activation.type = 'bonus';
+    activation.cost = 1;
+    foundry.utils.setProperty(
+      updates,
+      `system.activities.${workflow.activity.id}.activation`,
+      activation
+    );
+
+    const usedItemCopy = workflow.item.clone(updates, { keepId: true });
+    workflow.item = usedItemCopy;
+    workflow.activity.activation = activation;
+    applyPoisonActivity.activation = activation;
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
-    if (!actor.items.getName(DEFAULT_POISONERS_KIT_NAME)) {
+    if (workflow.activity?.identifier !== 'brew-poison') {
+      return;
+    }
+    if (
+      !actor.items.find((i) => i.identifier === DEFAULT_POISONERS_KIT_IDENT)
+    ) {
       ui.notifications.warn(
-        `${DEFAULT_ITEM_NAME} | You need the Poisoner's Kit to create Potent Poison`
+        `${scope.macroItem.name} | You need the Poisoner's Kit to create ${DEFAULT_POTENT_POISON_NAME}`
       );
       return false;
     }
     let gold = actor.system.currency?.gp ?? 0;
     if (gold < 50) {
       ui.notifications.warn(
-        `${DEFAULT_ITEM_NAME} | You need at least 50gp to create ${DEFAULT_POTENT_POISON_NAME}. You have: ${gold}gp.`
+        `${scope.macroItem.name} | You need at least 50gp to create ${DEFAULT_POTENT_POISON_NAME}. You have: ${gold}gp.`
       );
       return false;
     }
@@ -125,15 +130,13 @@ export async function poisoner({
     args[0].tag === 'OnUse' &&
     args[0].macroPass === 'postActiveEffects'
   ) {
-    const gold = actor.system.currency?.gp ?? 0;
-    const newGold = gold - 50;
     let quantity = actor.system.attributes?.prof ?? 0;
 
     const potentPoisonVialItem = actor.items.find(
       (i) =>
         i.type === 'consumable' &&
         i.system.type?.value === 'poison' &&
-        i.name === DEFAULT_POTENT_POISON_NAME
+        i.identifier === DEFAULT_POTENT_POISON_IDENT
     );
     let potentPoisonVialItemData;
     if (potentPoisonVialItem) {
@@ -147,7 +150,6 @@ export async function poisoner({
       );
     }
 
-    await actor.update({ 'system.currency.gp': newGold });
     if (potentPoisonVialItem) {
       await potentPoisonVialItem.update({ 'system.quantity': quantity });
     } else {
@@ -167,7 +169,7 @@ export async function poisoner({
       (i) =>
         i.type === 'consumable' &&
         i.system.type?.value === 'poison' &&
-        i.name === DEFAULT_POTENT_POISON_NAME
+        i.identifier === DEFAULT_POTENT_POISON_IDENT
     );
     if (debug) {
       console.warn(
@@ -179,12 +181,12 @@ export async function poisoner({
     if (!potentPoison) {
       const compendiumIndex = await game.packs
         .get(`${MISC_MODULE_ID}.misc-items`)
-        .getIndex({ fields: ['type', 'name', 'system.type'] });
+        .getIndex({ fields: ['type', 'name', 'identifier', 'system.type'] });
       const potentPoisonUuid = compendiumIndex.find(
         (id) =>
           id.type === 'consumable' &&
           id.system.type?.value === 'poison' &&
-          id.name === DEFAULT_POTENT_POISON_NAME
+          id.identifier === DEFAULT_POTENT_POISON_IDENT
       )?.uuid;
       if (potentPoisonUuid) {
         potentPoison = await fromUuid(potentPoisonUuid);
@@ -210,35 +212,72 @@ export async function poisoner({
     return {
       name: 'Potent Poison',
       type: 'consumable',
+      img: 'icons/consumables/potions/potion-tube-corked-orange.webp',
       system: {
         description: {
           value:
-            '<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Warp Gate (dnd5e < v3.2)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment (or a mutation for dnd5e < v3.2) that applies a poison coating on the selected weapon or ammunition.</p></details>\n',
-          chat: '',
+            '<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>',
         },
         source: {
-          custom: '',
           book: "Tasha's Cauldron of Everything",
           page: 'pg. 80',
-          license: '',
+          revision: 1,
+          rules: '2014',
         },
         quantity: 1,
-        weight: 0,
         price: { value: 100, denomination: 'gp' },
         identified: true,
-        activation: { type: 'action', cost: 1 },
-        duration: { value: '1', units: 'minute' },
-        target: { type: 'self' },
-        uses: {
-          value: 1,
-          max: '1',
-          per: 'charges',
-          recovery: '',
-          autoDestroy: true,
-          prompt: true,
-        },
+        uses: { max: '1', autoDestroy: true },
         unidentified: { description: 'Gear' },
         type: { value: 'poison', subtype: 'injury' },
+        activities: {
+          hY59afcW2HXvGfaZ: {
+            type: 'save',
+            _id: 'hY59afcW2HXvGfaZ',
+            activation: { type: 'special' },
+            description: { chatFlavor: 'Apply poison effect' },
+            duration: { units: 'inst' },
+            effects: [{ _id: 'flmuyOHEgBDkMwtI', onSave: false }],
+            range: { units: 'any' },
+            target: { affects: { count: '1', type: 'creature' } },
+            damage: {
+              parts: [{ number: 2, denomination: 8, types: ['poison'] }],
+              onSave: 'none',
+            },
+            save: {
+              ability: ['con'],
+              dc: { calculation: '', formula: '14' },
+            },
+            useConditionText: 'workflow?.hitTargets?.size === 1',
+            midiProperties: {
+              confirmTargets: 'never',
+              automationOnly: true,
+              identifier: 'coating-effect',
+            },
+            name: 'Poison - Effect',
+          },
+          T6UQ9vqnheqpf3qU: {
+            type: 'enchant',
+            _id: 'T6UQ9vqnheqpf3qU',
+            activation: { type: 'action' },
+            consumption: {
+              targets: [{ type: 'itemUses', value: '1', target: '' }],
+            },
+            description: { chatFlavor: 'Apply poison to weapon or ammo' },
+            duration: { units: 'inst' },
+            effects: [
+              {
+                _id: 'MrESIQ1i7yNgiwvQ',
+                riders: { activity: ['hY59afcW2HXvGfaZ'] },
+              },
+            ],
+            range: { units: 'self' },
+            restrictions: { allowMagical: true },
+            midiProperties: { identifier: 'apply-coating' },
+            name: 'Apply Poison',
+          },
+        },
+        identifier: 'potent-poison',
       },
       flags: {
         'midi-qol': {
@@ -248,21 +287,47 @@ export async function poisoner({
       },
       effects: [
         {
-          icon: 'icons/consumables/potions/potion-tube-corked-orange.webp',
           name: 'Potent Poison',
+          img: 'icons/consumables/potions/potion-tube-corked-orange.webp',
+          _id: 'flmuyOHEgBDkMwtI',
+          type: 'base',
+          disabled: true,
+          duration: { rounds: 1, turns: 1 },
+          transfer: false,
+          statuses: ['poisoned'],
+          flags: {
+            dae: {
+              stackable: 'noneNameOnly',
+              specialDuration: ['turnEndSource'],
+            },
+          },
+        },
+        {
+          type: 'enchantment',
+          name: 'Potent Poison - Application',
+          img: 'icons/consumables/potions/potion-tube-corked-orange.webp',
+          disabled: true,
+          _id: 'MrESIQ1i7yNgiwvQ',
           changes: [
             {
-              key: 'flags.midi-item-showcase-community.appliedCoating',
+              key: 'name',
               mode: 5,
-              value:
-                '{\n  "damage": {\n    "formula": "2d8",\n    "type": "poison"\n  },\n  "save": {\n    "dc": 14\n  },\n  "effect": {\n    "statuses": ["poisoned"],\n    "duration": {"rounds": 1, "turns": 1},\n    "specialDurations": ["turnEndSource"]\n  }\n}',
+              value: '{} [Poisoned]',
+              priority: 20,
+            },
+            {
+              key: 'system.description.value',
+              mode: 5,
+              value: '<p><em>Poisoned by Potent Poison</em></p>{}',
               priority: 20,
             },
           ],
           transfer: false,
+          flags: {
+            dae: { stackable: 'noneNameOnly' },
+          },
         },
       ],
-      img: 'icons/consumables/potions/potion-tube-corked-orange.webp',
     };
   }
 }

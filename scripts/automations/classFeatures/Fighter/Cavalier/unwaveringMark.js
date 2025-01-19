@@ -2,57 +2,42 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v2.2.0
+// v3.0.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
 //  - Times Up
-//  - MidiQOL "on use" item macro, [preTargeting][preAttackRoll][postActiveEffects]
+//  - MidiQOL "on use" item macro, [preTargeting][preAttackRoll][preDamageRoll][postActiveEffects]
 //  - Elwin Helpers world script
-//
-// How to configure:
-// The item details must be:
-//   - Feature Type: Class Feature
-//   - Activation cost: 1 Bonus Action
-//   - Limited Uses: x of @abilities.str.mod per Long Rest
-//   - Uses Prompt: (checked)
-//   - Action Type: (empty)
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//   - Confirm Targets: Never
-//   - Roll a separate attack per target: Never
-//   - This item macro code must be added to the DIME code of this feature.
-// One effect must also be added:
-//   - Unwavering Mark:
-//      - Effect disabled if actor incapacitated (checked)
-//      - Transfer to actor on item equip (checked)
-//      - Duration:
-//        - Macro Repeat: End of each turn: Run effect macros at the end of the characters turn
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,postActiveEffects
-//          - macro.itemMacro | Custom |
 //
 // Usage:
 // This item has a passive effect that marks a target when a melee attack is successful.
 // It can also be activated to use the Special Attack if one was triggered by a marked target.
 // When activated if a marked target triggered a special attack, an attack with a selected weapon
 // is made with an additional damage bonus.
-// Note: The mark is not removed if the marker dies or is incapacitated, the mark effect must be deleted manually.
 //
 // Description:
-// In the preTargeting phase of the Unwavering Mark item:
-//   Verifies if a marked target triggered a special attack. If not, the item usage is aborted.
-// In the postActiveEffects of an item from a marked target:
-//   If a target that was not the marker received damage from an attack, it flags the marker that
-//   this marked target triggered a special attack.
-// In the postActiveEffects phase of an item from the owner of an Unwavering Mark item:
+// In the preTargeting phase of the Unwavering Mark Bonus Attack activity (in owner's workflow):
+//   Verifies if a marked target triggered a special attack. If not, the activity use is aborted.
+// In the preDamageRoll phase of the Unwavering Mark special weapon attack activity (in owner's workflow):
+//   if the attack was triggered by the Unwavering Mark Bonus Attack activity,
+//   adds a hook on dnd5e.preRollDamageV2 to add damage bonus.
+// In the dnd5e.preRollDamageV2 hook (in owner's workflow):
+//   If the workflow associated to the current activity is the same as the one for the special attack,
+//   adds a damage bonus to the roll config.
+// In the postActiveEffects phase of an item from the owner of an Unwavering Mark item (in owner's workflow):
 //   It adds an active effect that gives disadvantage on attacks made by the marked target
 //   that does not target the marker if he is within 5ft.
-// In the postActiveEffects phase of the Unwavering Mark item:
+// In the postActiveEffects phase of the Unwavering Mark Bonus Attack activity (in owner's workflow):
 //   If a special attack was triggered by a marked target, makes a meele weapon attack with an additional damage bonus.
 //   If more than one melee weapon is equipped, it prompts for which weapon to use.
 //   If more than one target triggered a special attack, it prompts for which target to attack.
+// In the preAttackRoll of an item from a marked target (in the attacker's workflow):
+//   If the marked target attacks another target than the marker and the marker is
+//   within range, the attacker has disadvantage on his attack roll.
+// In the postActiveEffects of an item from a marked target (in the attacker's workflow):
+//   If a target that was not the marker received damage from an attack, it flags the marker that
+//   this marked target triggered a special attack.
 // When the owner of the Unwavering Mark turn ends [each]:
 //   Resets the marked targets and the triggered special attacks flag.
 // When the Marked by Unwavering Mark expires [off]:
@@ -78,10 +63,10 @@ export async function unwaveringMark({
   if (
     !foundry.utils.isNewerVersion(
       globalThis.elwinHelpers?.version ?? '1.1',
-      '2.0'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -98,8 +83,11 @@ export async function unwaveringMark({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    if (scope.macroItem.uuid !== scope.rolledItem?.uuid) {
-      // Do nothing if item used is not the source item
+    if (
+      scope.macroItem.uuid !== scope.rolledItem?.uuid ||
+      workflow.activity?.identifier !== 'bonus-attack'
+    ) {
+      // Do nothing if item used is not the bonus attack activity from source item
       return true;
     }
 
@@ -112,15 +100,17 @@ export async function unwaveringMark({
     );
     if (specialAttackTargetTokens.length === 0) {
       ui.notifications.warn(
-        `${DEFAULT_ITEM_NAME} | No marked target triggered the Special Attack action.`
+        `${scope.macroItem.name} | No marked target triggered the Special Attack action.`
       );
       return false;
     }
 
-    const filteredWeapons = getEquippedMeleeWeapons(actor);
+    const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(actor);
     if (filteredWeapons.length === 0) {
       const warnMsg = 'No melee weapon equipped.';
-      ui.notifications.warn(`${DEFAULT_ITEM_NAME} | No melee weapon equipped.`);
+      ui.notifications.warn(
+        `${scope.macroItem.name} | No melee weapon equipped.`
+      );
       return false;
     }
     return true;
@@ -128,6 +118,11 @@ export async function unwaveringMark({
     if (actor.getFlag(MODULE_ID, 'unwaveringMark.markerTokenUuid')) {
       // When the marked target makes an attack
       handlePreAttackRollByMarkedTarget(workflow, scope.macroItem);
+    }
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
+    if (workflow?.options?.unwaveringMarkSpecialWeaponAttack) {
+      // When the special weapon attack rolls damage
+      handlePreDamageRollForSpecialWeaponAttack(workflow, scope.macroItem);
     }
   } else if (
     args[0].tag === 'OnUse' &&
@@ -208,21 +203,9 @@ export async function unwaveringMark({
    */
   function getTargetTokens(targetTokenUuids) {
     const targetTokens = targetTokenUuids
-      .map((uuid) => MidiQOL.MQfromUuid(uuid).object)
+      .map((uuid) => fromUuidSync(uuid).object)
       .filter((t) => t);
     return targetTokens;
-  }
-
-  /**
-   * Returns an array of equipped melee weapons for the specified actor.
-   *
-   * @param {Actor5e} sourceActor token actor
-   * @returns {Item5e[]} array of equipped melee weapons.
-   */
-  function getEquippedMeleeWeapons(sourceActor) {
-    return sourceActor.itemTypes.weapon.filter(
-      (w) => w.system.equipped && w.system.actionType === 'mwak'
-    );
   }
 
   /**
@@ -394,10 +377,7 @@ export async function unwaveringMark({
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
         user: player?.id,
-        type:
-          game.release.generation >= 12
-            ? CONST.CHAT_MESSAGE_STYLES.OTHER
-            : CONST.CHAT_MESSAGE_TYPES.OTHER,
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: message,
         speaker: ChatMessage.getSpeaker({
           actor: markerTokenActor,
@@ -429,6 +409,16 @@ export async function unwaveringMark({
     }
 
     const targetToken = currentWorkflow.hitTargets.first();
+    if (
+      !currentWorkflow.damageDetail?.some(
+        (dt) => dt.value > 0 && !['temphp', 'midi-none'].includes(dt.type)
+      )
+    ) {
+      if (debug) {
+        console.warn(`${DEFAULT_ITEM_NAME} | No damage dealt.`);
+      }
+      return;
+    }
 
     if (
       !elwinHelpers.isMeleeWeaponAttack(
@@ -499,8 +489,7 @@ export async function unwaveringMark({
         options: { 'expiry-reason': `new-unwavering-mark:${sourceItem.uuid}` },
       });
     }
-    // create an active effect to set advantage on attack rolls on target only
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
+    // create an active effect to set disadvantage on attack rolls not made on marker
     const targetEffectData = {
       changes: [
         // flag to indicate marker
@@ -532,23 +521,17 @@ export async function unwaveringMark({
           priority: 20,
         },
       ],
+      duration: { rounds: 1, turns: 1 },
       origin: sourceItem.uuid, //flag the effect as associated to the source item
+      transfer: false,
       disabled: false,
-      [imgPropName]: sourceItem.img,
+      img: sourceItem.img,
       name: targetEffectName,
+      'flags.dae': {
+        specialDuration: ['turnEndSource'],
+        stackable: 'noneNameOnly',
+      },
     };
-    targetEffectData.duration = currentWorkflow.inCombat
-      ? { rounds: 1, turns: 1 }
-      : { seconds: CONFIG.time.roundTime + 1 };
-
-    foundry.utils.setProperty(targetEffectData, 'flags.dae.specialDuration', [
-      'turnEndSource',
-    ]);
-    foundry.utils.setProperty(
-      targetEffectData,
-      'flags.dae.stackable',
-      'noneNameOnly'
-    );
 
     await MidiQOL.socket().executeAsGM('createEffects', {
       actorUuid: targetActor.uuid,
@@ -585,7 +568,7 @@ export async function unwaveringMark({
       return;
     }
 
-    const filteredWeapons = getEquippedMeleeWeapons(sourceActor);
+    const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(sourceActor);
     if (filteredWeapons.length === 0) {
       // Should not happen, this should be checked on the preTargeting phase
       return;
@@ -640,50 +623,62 @@ export async function unwaveringMark({
       return;
     }
 
-    const weaponCopy = weaponItem.toObject();
-    delete weaponCopy._id;
     // Change activation type to special so it is not considered as an Attack Action
-    weaponCopy.system.activation = foundry.utils.deepClone(
-      weaponCopy.system.activation ?? {}
-    );
-    weaponCopy.system.activation.type = 'special';
-    weaponCopy.system.activation.cost = null;
+    const updates = {};
 
-    // Add bonus to the weapon damage and to versatile one if the weapon supports it
-    const dmgBonus = Math.floor(
-      (macroData.rollData.classes?.fighter?.levels ?? 1) / 2
+    foundry.utils.setProperty(
+      updates,
+      'name',
+      `${weaponItem.name} [${sourceItem.name}]`
     );
-    weaponCopy.system.damage.parts[0][0] += ` + ${dmgBonus}`;
-    if (
-      weaponCopy.isVersatile &&
-      elwinHelpers.hasItemProperty(weaponCopy, 'ver')
-    ) {
-      weaponCopy.system.damage.versatile += ` + ${dmgBonus}`;
+
+    // Change activation type to special so it is not considered as an Attack Action
+    for (let attackActivity of weaponItem.system.activities?.getByType(
+      'attack'
+    ) ?? []) {
+      const activation = foundry.utils.deepClone(
+        attackActivity.activation ?? {}
+      );
+      activation.type = 'special';
+      activation.cost = null;
+      foundry.utils.setProperty(
+        updates,
+        `system.activities.${attackActivity.id}.activation`,
+        activation
+      );
     }
+    // Create a modified weapon
+    const weaponCopy = weaponItem.clone(updates, { keepId: true });
 
-    weaponCopy.name = `${weaponItem.name} [${sourceItem.name}]`;
-    const attackItem = new CONFIG.Item.documentClass(weaponCopy, {
-      parent: sourceActor,
-      temporary: true,
-    });
-    const options = {
-      targetUuids: [selectedTarget.document.uuid],
-      showFullCard: false,
-      createWorkflow: true,
-      configureDialog: true,
-      advantage: true,
-      workflowOptions: {
-        autoRollAttack: true,
+    const config = {
+      midiOptions: {
+        targetUuids: [selectedTarget.document.uuid],
         advantage: true,
-        targetConfirmation: 'none',
+        workflowOptions: {
+          autoRollAttack: true,
+          advantage: true,
+          targetConfirmation: 'none',
+        },
+        unwaveringMarkSpecialWeaponAttack: true,
       },
     };
-    const result = await MidiQOL.completeItemUse(attackItem, {}, options);
+
+    const result = await MidiQOL.completeItemUseV2(weaponCopy, config);
+    // Remove damage bonus hook if it was registered
+    if (result?.unwaveringMarkPreDamageHookId) {
+      Hooks.off('dnd5e.preRollDamageV2', result.unwaveringMarkPreDamageHookId);
+    }
     if (!result || result.aborted) {
       // Special attack was cancelled
       console.warn(
         `${DEFAULT_ITEM_NAME} | Special attack was cancelled, reallocate spent resource if needed.`
       );
+      const consumed = MidiQOL.getCachedChatMessage(
+        result?.itemCardUuid
+      )?.getFlag('dnd5e', 'use.consumed');
+      if (consumed) {
+        await result?.activity?.refund(consumed);
+      }
       return;
     }
 
@@ -692,6 +687,52 @@ export async function unwaveringMark({
       sourceActor,
       'unwaveringMark.specialAttackTargetTokenUuids'
     );
+  }
+
+  /**
+   * Registers a hook on dnd5e.preRollDamageV2 to add a damage bonus for the special attack damage.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow midi-qol workflow.
+   * @param {Item5e} sourceItem The Unwavering Mark item.
+   */
+  function handlePreDamageRollForSpecialWeaponAttack(currentWorkflow) {
+    const dmgBonus = Math.floor(
+      (currentWorkflow.actor?.getRollData().classes?.fighter?.levels ?? 1) / 2
+    );
+    if (!currentWorkflow.activity) {
+      if (debug) {
+        console.warn(
+          `${DEFAULT_ITEM_NAME} | Missing activity.`,
+          currentWorkflow
+        );
+      }
+      return;
+    }
+    if (!currentWorkflow.unwaveringMarkPreDamageHookId) {
+      const unwaveringMarkPreDamageHookId = Hooks.on(
+        'dnd5e.preRollDamageV2',
+        (rollConfig, dialogConfig, messageConfig) => {
+          if (rollConfig?.subject?.workflow === currentWorkflow) {
+            rollConfig.rolls[0]?.parts?.push(dmgBonus);
+          } else {
+            // Different activity workflow, remove hook
+            if (debug) {
+              console.warn(
+                `${DEFAULT_ITEM_NAME} | dnd5e.preRollDamageV2 called on different workflow`,
+                {
+                  rollConfig,
+                  dialogConfig,
+                  messageConfig,
+                }
+              );
+            }
+            Hooks.off('dnd5e.preRollDamageV2', unwaveringMarkPreDamageHookId);
+          }
+        }
+      );
+      currentWorkflow.unwaveringMarkPreDamageHookId =
+        unwaveringMarkPreDamageHookId;
+    }
   }
 
   /**
@@ -742,13 +783,8 @@ export async function unwaveringMark({
    * @returns {boolean} true if the passive active effect associated to this item is active, false otherwise.
    */
   function isPassiveEffectActiveForItem(sourceItem) {
-    let aePredicate = undefined;
-    if (CONFIG.ActiveEffect.legacyTransferral) {
-      aePredicate = (ae) =>
-        ae.flags?.dae?.transfer && ae.origin === sourceItem.uuid;
-    } else {
-      aePredicate = (ae) => ae.transfer && ae.parent?.uuid === sourceItem.uuid;
-    }
+    let aePredicate = (ae) =>
+      ae.transfer && ae.parent?.uuid === sourceItem.uuid;
     return sourceItem?.actor?.appliedEffects.find(aePredicate) !== undefined;
   }
 

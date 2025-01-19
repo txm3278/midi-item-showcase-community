@@ -3,44 +3,22 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Mark of Sentinel Human
 // when a creature within range is hit to allow him to switch places with the target.
-// v3.1.0
+// v4.0.0
 // Dependencies:
 //  - DAE
-//  - MidiQOL "on use" actor macro [preTargeting][tpr.isHit]
+//  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
 //  - Helwin Helpers world script
-//
-// How to configure:
-// The Feature details must be:
-//   - Feature Type: Race Feature
-//   - Activation cost: 1 Reaction
-//   - Target: 1 Ally (RAW it's Creature, but use Ally to trigger reaction only on allies)
-//   - Range: 5 Feet
-//   - Limited Uses: 1 of 1 per Long Rest
-//   - Uses Prompt: (checked)
-//   - Action Type: (empty)
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//   - Confirm Targets: Never
-//   - Roll a separate attack per target: Never
-//   - Activation Conditions
-//     - Reaction:
-//       reaction === "tpr.isHit"
-//   - This item macro code must be added to the DIME code of this feature.
-// One effect must also be added:
-//   - Vigilant Guardian:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isHit|ignoreSelf=true;canSee=true;post=true
 //
 // Usage:
 // This item has a passive effect that adds a third party reaction active effect.
 // It is also a reaction item that gets triggered by the third party reaction effect when appropriate.
 //
+// Note: RAW target should be Creature, but use Ally to trigger reaction only on allies.
+//
 // Description:
-// In the preTargeting (item OnUse) phase of the Vigilant Guardian item (in owner's workflow):
-//   Validates that item was triggered by the remote tpr.isHit target on use,
-//   otherwise the item workflow execution is aborted.
+// In the preTargeting (OnUse) phase of the Vigilant Guardian reaction activity (in owner's workflow):
+//   Validates that activity was triggered by the remote tpr.isHit target on use,
+//   otherwise the activity workflow execution is aborted.
 // In the tpr.isHit (TargetOnUse) post macro (in attacker's workflow) (on other target):
 //   If the reaction was used and completed successfully, the current workflow target is switched to the owner
 //   of the Vigilant Guardian item.
@@ -64,10 +42,10 @@ export async function vigilantGuardian({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.2'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -106,7 +84,7 @@ export async function vigilantGuardian({
   }
 
   /**
-   * Handles the preTargeting phase of the Vigilant Guardian item midi-qol workflow.
+   * Handles the preTargeting phase of the Vigilant Guardian reaction activity.
    * Validates that the reaction was triggered by the tpr.isHit remote reaction.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
@@ -117,12 +95,12 @@ export async function vigilantGuardian({
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-      !currentWorkflow.options?.thirdPartyReaction?.itemUuids?.includes(
-        sourceItem.uuid
+      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.some((u) =>
+        sourceItem.system.activities?.some((a) => a.uuid === u)
       )
     ) {
       // Reaction should only be triggered by third party reaction effect
-      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the owner is hit.`;
+      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the owner is hit.`;
       ui.notifications.warn(msg);
       return false;
     }
@@ -149,7 +127,11 @@ export async function vigilantGuardian({
         thirdPartyReactionResult,
       });
     }
-    if (thirdPartyReactionResult?.uuid !== sourceItem.uuid) {
+    if (
+      !sourceItem.system.activities?.some(
+        (a) => a.uuid === thirdPartyReactionResult?.uuid
+      )
+    ) {
       return;
     }
 

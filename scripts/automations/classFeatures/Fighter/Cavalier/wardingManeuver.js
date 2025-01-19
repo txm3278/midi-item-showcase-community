@@ -3,40 +3,18 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v1.1.0
+// v2.0.0
 // Dependencies:
 //  - DAE
 //  - Times Up
-//  - MidiQOL "on use" actor macro [preTargeting][postActiveEffects][tpr.isHit]
+//  - MidiQOL "on use" actor macro [preTargeting],[postActiveEffects],[tpr.isHit]
 //  - Elwin Helpers world script
-//
-// How to configure:
-// The Feature details must be:
-//   - Activation cost: 1 Reaction
-//   - Target: 1 Ally (RAW it's Creature, but use Ally to trigger reaction only on allies)
-//   - Range: 5 feet
-//   - Limited Uses: x of max(@abilities.con.mod,1) per Long Rest
-//   - Uses Prompt: (checked)
-//   - Action Type: Other
-//   - Damage formula:
-//     1d8 | None
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//       ItemMacro | After Active Effects
-//   - Activation Conditions
-//     - Reaction:
-//       reaction === "tpr.isHit" && fromUuidSync(tpr.actorUuid)?.items.some(i => ((i.type === "weapon" && ["simpleM", "martialM"].includes(i.system?.type?.value)) || (i.type === "equipment" && i.system?.type?.value === "shield")) && i.system.equipped)
-//   - This item macro code must be added to the DIME code of the item.
-// One effect must also be added:
-//   - Warding Maneuver:
-//      - Transfer Effect to Actor on ItemEquip (checked)
-//      - Effects:
-//          - flags.midi-qol.onUseMacroName | Custom | ItemMacro,tpr.isHit|canSee=true;post=true
 //
 // Usage:
 // This item has a passive effect that adds a third party reaction effect.
 // It is also a reaction item that gets triggered by the third party reaction effect when appropriate.
+//
+// Note: RAW target should be Creature, but use Ally to trigger reaction only on allies
 //
 // Description:
 // In the preTargeting (item OnUse) phase of the Warding Maneuver item (in owner's workflow):
@@ -67,10 +45,10 @@ export async function wardingManeuver({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '2.2.2'
+      '3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -93,7 +71,7 @@ export async function wardingManeuver({
     args[0].tag === 'TargetOnUse' &&
     args[0].macroPass === 'tpr.isHit.post'
   ) {
-    handleTargetOnUseIsHitPost(
+    await handleTargetOnUseIsHitPost(
       workflow,
       token,
       scope.macroItem,
@@ -107,10 +85,10 @@ export async function wardingManeuver({
   }
 
   /**
-   * Handles the preTargeting phase of the Warding Maneuver item midi-qol workflow.
+   * Handles the preTargeting phase of the Warding Maneuver reaction activity workflow.
    * Validates that the reaction was triggered by the isHit phase.
    *
-   * @param {MidiQOL.Workflow} currentWorkflow - midi-qol current workflow.
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Item5E} sourceItem - The Warding Maneuver item.
    *
    * @returns {boolean} true if all requirements are fulfilled, false otherwise.
@@ -118,12 +96,12 @@ export async function wardingManeuver({
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-      !currentWorkflow.options?.thirdPartyReaction?.itemUuids?.includes(
-        sourceItem.uuid
+      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
+        currentWorkflow.activity?.uuid
       )
     ) {
       // Reaction should only be triggered by third party reactions
-      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature is hit.`;
+      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature is hit.`;
       ui.notifications.warn(msg);
       return false;
     }
@@ -146,13 +124,17 @@ export async function wardingManeuver({
    * @param {Item5e} sourceItem - The Warding Maneuver item.
    * @param {object} thirdPartyReactionResult - The third party reaction result.
    */
-  function handleTargetOnUseIsHitPost(
+  async function handleTargetOnUseIsHitPost(
     currentWorkflow,
     targetToken,
     sourceItem,
     thirdPartyReactionResult
   ) {
-    if (thirdPartyReactionResult?.uuid !== sourceItem.uuid) {
+    if (
+      !sourceItem.system.activities?.some(
+        (a) => a.uuid === thirdPartyReactionResult?.uuid
+      )
+    ) {
       return;
     }
 
@@ -167,13 +149,15 @@ export async function wardingManeuver({
     }
 
     // Recompute checkHits to take into account the AC bonus
-    // TODO remove noOnuseMacro when dnd v2.4.1 support is removed
     currentWorkflow.checkHits({
       noProvokeReaction: true,
-      noOnuseMacro: true,
       noOnUseMacro: true,
       noTargetOnuseMacro: true,
     });
+    // Adjust attack roll target AC, it is used by dnd5e chat message to display the attack result
+    elwinHelpers.adjustAttackRollTargetAC(currentWorkflow);
+    // Redisplay attack roll for new result
+    await currentWorkflow.displayAttackRoll();
 
     // Register postCleanup hook to delete added AE in case of a miss (there is no isMissed special duration)
     if (!currentWorkflow.hitTargets.has(targetToken)) {
@@ -193,8 +177,8 @@ export async function wardingManeuver({
             return;
           }
           // Delete AE if it's still on the target (when attack was a hit but missed due to AE bonus)
-          const effectUuid = targetToken.actor?.effects.find(
-            (ae) => ae.origin === sourceItem.uuid
+          const effectUuid = targetToken.actor?.effects.find((ae) =>
+            ae.origin?.startsWith(sourceItem.uuid)
           )?.uuid;
           if (effectUuid) {
             await MidiQOL.socket().executeAsGM('removeEffect', { effectUuid });
@@ -232,19 +216,21 @@ export async function wardingManeuver({
       return;
     }
 
-    const acBonus = currentWorkflow.damageRolls[0]?.total;
-    if (!acBonus) {
+    const acBonus = currentWorkflow.utilityRolls?.reduce(
+      (acc, r) => acc + r.total,
+      0
+    );
+    if (acBonus === undefined) {
       if (debug) {
         // No AC bonus skip AE
         console.warn(`${DEFAULT_ITEM_NAME} | No AC bonus.`, {
-          damageRolls: currentWorkflow.damageRolls,
+          utilityRolls: currentWorkflow.utilityRolls,
         });
       }
       return;
     }
 
     // create an active effect on target for AC bonus and damage resistance in case it still hits.
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
     const duration = sourceItem.actor?.inCombat
       ? { turns: 1, rounds: 0 }
       : { seconds: 1 };
@@ -269,12 +255,10 @@ export async function wardingManeuver({
       transfer: false,
       origin: sourceItem.uuid, // flag the effect as associated to the source item used
       duration,
-      [imgPropName]: sourceItem.img,
+      img: sourceItem.img,
       name: `${sourceItem.name} - AC Bonus/Damage Resistance`,
+      'flags.dae': { specialDuration: ['isHit'], stackable: 'noneName' },
     };
-    foundry.utils.setProperty(targetEffectData, 'flags.dae.specialDuration', [
-      'isHit',
-    ]);
 
     await MidiQOL.socket().executeAsGM('createEffects', {
       actorUuid: targetActor.uuid,

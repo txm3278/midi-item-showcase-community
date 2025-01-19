@@ -600,10 +600,10 @@ export async function forage({
   };
 
   // Add the rations and waterskins to the actor
-  if (actor.items.find((i) => i.name === 'Rations (1 day)')) {
-    let currentRations = actor.items.getName('Rations (1 day)').system.quantity;
+  if (actor.items.find((i) => i.name === 'Rations')) {
+    let currentRations = actor.items.getName('Rations').system.quantity;
     await actor.items
-      .getName('Rations (1 day)')
+      .getName('Rations')
       .update({ system: { quantity: currentRations + numberRations } });
   } else {
     await actor.createEmbeddedDocuments('Item', [newRations]);
