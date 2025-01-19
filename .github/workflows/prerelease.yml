@@ -1,5 +1,5 @@
 
-name: Create Module Files For GitHub Release
+name: Create Module Files For GitHub PreRelease
 
 
 env:
@@ -20,7 +20,7 @@ env:
 on:
   # Only run this workflow when a release is published.
   release:
-    types: [released]
+    types: [prereleased]
 
 
 jobs:
@@ -93,15 +93,6 @@ jobs:
           artifacts: './module.json, ./module.zip'
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
-
-      # Release to Foundry
-      - name: Publish Module to FoundryVTT Website
-        id: publish-to-foundry-website
-        uses: cs96and/FoundryVTT-release-package@v1
-        with:
-          package-token: ${{ secrets.PACKAGE_TOKEN }}
-          manifest-url: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json
-          notes-url: https://github.com/${{github.repository}}/releases/tag/${{env.VERSION}}
 
   github-releases-to-discord:
     runs-on: ubuntu-latest
