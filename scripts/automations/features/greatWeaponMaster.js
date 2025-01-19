@@ -118,7 +118,7 @@ export async function greatWeaponMaster({
     if (isToggleActivity(workflow, scope.macroItem)) {
       await handleOnUsePostActiveEffectsToggle(scope.macroItem, actor);
     } else if (isBonusAttackActivity(workflow, scope.macroItem)) {
-      await handleOnUsePostActiveEffectsBonusAttack(workflow, sourceItem);
+      await handleOnUsePostActiveEffectsBonusAttack(workflow, scope.macroItem);
     } else if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
       await handleOnUsePostActiveEffectsOtherItems(
         workflow,

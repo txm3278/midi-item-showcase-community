@@ -1,6 +1,6 @@
 {
   "name": "midi-item-showcase-community",
-  "version": "1.3.6",
+  "version": "1.4.0-beta1",
   "description": "A collection of Midi Automations from the Posney's Foundry Automation Discord",
   "main": "./scripts/module.js",
   "type": "module",
