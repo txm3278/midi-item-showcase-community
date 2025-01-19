@@ -1,5 +1,5 @@
 
-name: Create Module Files For GitHub Release
+name: Create Module Files For GitHub PreRelease
 
 
 env:
