@@ -22,8 +22,8 @@
         "type": "system",
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
-          "minimum": "3.3.1",
-          "verified": "3.3.1"
+          "minimum": "4.1.2",
+          "verified": "4.1.2"
         }
       }
     ],
@@ -31,10 +31,10 @@
       {
         "id": "midi-qol",
         "type": "module",
-        "manifest": "https://gitlab.com/tposney/midi-qol/raw/v10/package/module.json",
+        "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "verified": "11.5.5",
-          "minimum": "11.5.5"
+          "verified": "12.4.23",
+          "minimum": "12.4.23"
         }
       }
     ]
