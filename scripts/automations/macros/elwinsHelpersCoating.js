@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.0.0
+// v2.0.2
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -18,6 +18,7 @@
 // - elwinHelpers.coating.handleCoatingItemOnUsePostActiveEffects
 // - elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects
 // - elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll
+// - elwinHelpers.coating,handleCoatingEffectActivityConditionalStatuses
 //
 // To use this coating framwork you must a create a consumable with the following pattern:
 //   - Consumable Type: Poison [or any other type]
@@ -51,9 +52,10 @@
 //                     (true means all types allowed, undefined means use default mapping of damage type to ammo type).
 //  maxWeaponHits - The maximum number of hits allowed before the coating wears off. (default value of 1, 0 means no limit)
 //  maxAmmo - The maximum number of ammos than can be coated with one dose (default value of 1, 0 means ammo not allowed).
-//  conditionalStatuses - Array of conditional statuses to be added to the coating effect activity AE when a coated weapon or ammo hits if the condition is met.
-//    status - Status that can be added to the coating effect activity AE.
-//    condition - MidiQOL condition expression to determine if the conditional status can be added or not to the statuses of the coating effect activity AE.
+//  conditionalStatuses - Array of conditional statuses to be applied when a coated weapon or ammo hits if the condition is met.
+//    status - Status to apply when the weapon or ammo hits.
+//    specialDurations - Special durations to set on the conditional status.
+//    condition - MidiQOL condition expression to determine if the conditional status can be applied or not on hit.
 //
 // Note: the condition for the conditionalStatuses contains extra data that contains the target save total and DC,
 //       this allows for example to add an extra status depending on the level of save failure.
@@ -67,6 +69,7 @@
 //    "conditionalStatuses": [
 //      {
 //        "status": "unconscious",
+//        "specialDurations": ["isDamaged"],
 //        "condition": "target.statuses?.has('poisoned') && (targetData?.saveTotal + 5) <= targetData?.saveDC"
 //      }
 //    ]
@@ -81,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '2.0.0';
+  const VERSION = '2.0.2';
   const MACRO_NAME = 'elwin-helpers-coating';
   const MODULE_ID = 'midi-item-showcase-community';
   const WORLD_MODULE_ID = 'world';
@@ -108,13 +111,12 @@ export function runElwinsHelpersCoating() {
     ['bludgeoning', ['slingBullet']],
   ]);
 
-  /*eslint no-undef: "error"*/
-
   /**
-   * Conditional statuses that can be added to the coating item effect AE.
+   * Conditional statuses to be applied when a coated weapon or ammo hits if the condition is met.
    * @typedef ConditionalAppliedCoatingStatuses
-   * @property {string} status - Status that can be added to the coating item effect AE.
-   * @property {string} condition - MidiQOL condition expression to determine if the conditional status can be added or not to the statuses of the coating item active effect.
+   * @property {string} status - Status to apply when the weapon or ammo hits.
+   * @property {string[]} specialDurations - Special durations to set on the conditional status.
+   * @property {string} condition - MidiQOL condition expression to determine if the conditional status can be applied or not on a hit.
    */
 
   /**
@@ -162,6 +164,10 @@ export function runElwinsHelpersCoating() {
       'elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll',
       handleCoatedItemOnUsePostDamageRoll
     );
+    exportIdentifier(
+      'elwinHelpers.coating.handleCoatingEffectActivityConditionalStatuses',
+      handleCoatingEffectActivityConditionalStatuses
+    );
   }
 
   /**
@@ -172,10 +178,10 @@ export function runElwinsHelpersCoating() {
     if (
       !foundry.utils.isNewerVersion(
         globalThis?.elwinHelpers?.version ?? '1.1',
-        '3.0'
+        '3.1'
       )
     ) {
-      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.0.0`;
+      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.1.0`;
       ui.notifications.error(errorMsg);
       return false;
     }
@@ -350,20 +356,43 @@ export function runElwinsHelpersCoating() {
     // Removes previous enchantment if it exists
     await elwinHelpers.deleteAppliedEnchantments(workflow.activity.uuid);
     // Add enchantment to weapon or ammo
-    const enchantmentEffect = await ActiveEffect.create(enchantmentEffectData, {
-      parent: coatedItem,
-      keepOrigin: true,
-      dnd5e: {
-        activityId: workflow.activity.id,
-        enchantmentProfile: enchantmentEffectData._id,
-      },
-    });
-    if (!enchantmentEffect) {
-      console.error(
-        `${MACRO_NAME} | Enchantment effect could not be created.`,
-        enchantmentEffectData
-      );
+    const itemCard = game.messages.get(workflow.itemCardId);
+    if (!itemCard) {
+      console.error(`${MACRO_NAME} | Item chat message could not be found.`, {
+        workflow,
+      });
       return;
+    }
+    // We need set temporarely the profile just to allow the enchantment to be properly created with riders,
+    // it's the only way to make it work with items that are destroyed, we cannot leave it, otherwise the drop
+    // area will be displayed.
+    foundry.utils.setProperty(
+      itemCard,
+      'flags.dnd5e.use.enchantmentProfile',
+      enchantmentEffectData._id
+    );
+    try {
+      const enchantmentEffect = await ActiveEffect.create(
+        enchantmentEffectData,
+        {
+          parent: coatedItem,
+          keepOrigin: true,
+          chatMessageOrigin: workflow.itemCardId,
+        }
+      );
+      if (!enchantmentEffect) {
+        console.error(
+          `${MACRO_NAME} | Enchantment effect could not be created.`,
+          enchantmentEffectData
+        );
+        return;
+      }
+    } finally {
+      foundry.utils.setProperty(
+        itemCard,
+        'flags.dnd5e.use.enchantmentProfile',
+        null
+      );
     }
 
     // Make the proper adjustments for Ammo Tracker
@@ -825,7 +854,7 @@ export function runElwinsHelpersCoating() {
       },
     });
 
-    const statusIds = new Set();
+    const statusEffectsData = [];
     for (let conditionalStatus of appliedCoating.conditionalStatuses) {
       if (!conditionalStatus?.condition || !conditionalStatus?.status) {
         continue;
@@ -839,7 +868,7 @@ export function runElwinsHelpersCoating() {
         }
       );
       if (returnValue) {
-        statusIds.add(conditionalStatus.status);
+        statusEffectsData.push(conditionalStatus);
       } else {
         if (debug) {
           console.warn(
@@ -853,16 +882,16 @@ export function runElwinsHelpersCoating() {
         }
       }
     }
-    if (statusIds.size) {
-      const statuses = await addStatusEffects(
+    if (statusEffectsData.length) {
+      const statusEffects = await addStatusEffects(
         coatedItem.uuid,
         target.actor?.uuid,
-        statusIds
+        statusEffectsData
       );
       // Make the added statuses dependent on the first coated effect applied AE
-      for (let status of statuses) {
+      for (let statusEffect of statusEffects) {
         // TODO change this when MidiQOL supports more than one effect like ActiveEffect.addDependent
-        await MidiQOL.addDependent(coatedEffectAe, status);
+        await MidiQOL.addDependent(coatedEffectAe, statusEffect);
       }
     }
   }
@@ -944,12 +973,7 @@ export function runElwinsHelpersCoating() {
 
     coatingEffectActivity.workflow = workflow;
 
-    const config = {};
-    const rollOptions = workflow.damageRolls?.[0]?.options ?? {};
-    config.isCritical = !workflow.isCritical
-      ? rollOptions.critical
-      : workflow.isCritical;
-
+    const config = elwinHelpers.getDamageRollOptions(workflow);
     config.midiOptions ??= {};
     config.midiOptions.fastForward = workflow.midiOptions?.fastForwardDamage;
     config.midiOptions.updateWorkflow = false; // rollFormula will try and restart the workflow
@@ -1012,15 +1036,26 @@ export function runElwinsHelpersCoating() {
    *
    * @param {string} origin - The origin of the status effect.
    * @param {string} actorUuid - The uuid of the actor on which to add the status effect.
-   * @param {string[]} statusIds - List of status ids to be added.
+   * @param {ConditionalAppliedCoatingStatuses[]} conditionalStatuses - List of conditional status to be added.
    * @returns {ActiveEffect5e[]} A list of status effects that were added to the specified actor.
    */
-  async function addStatusEffects(origin, actorUuid, statusIds) {
+  async function addStatusEffects(origin, actorUuid, conditionalStatuses) {
     const effects = [];
-    for (let statusId of statusIds) {
-      let effect = await ActiveEffect.implementation.fromStatusEffect(statusId);
-      effect.updateSource({ origin });
-      effects.push(effect);
+    for (let conditionalStatus of conditionalStatuses) {
+      let effectData = (
+        await ActiveEffect.implementation.fromStatusEffect(
+          conditionalStatus.status
+        )
+      ).toObject();
+      effectData.origin = origin;
+      if (conditionalStatus.specialDurations?.length) {
+        foundry.utils.setProperty(
+          effectData,
+          'flags.dae.specialDuration',
+          conditionalStatus.specialDurations
+        );
+      }
+      effects.push(effectData);
     }
     return await MidiQOL.createEffects({
       actorUuid,

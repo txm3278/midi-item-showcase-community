@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v2.0.0
+// v2.0.1
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -177,11 +177,14 @@ export async function wardingManeuver({
             return;
           }
           // Delete AE if it's still on the target (when attack was a hit but missed due to AE bonus)
-          const effectUuid = targetToken.actor?.effects.find((ae) =>
+          const effectId = targetToken.actor?.effects.find((ae) =>
             ae.origin?.startsWith(sourceItem.uuid)
-          )?.uuid;
-          if (effectUuid) {
-            await MidiQOL.socket().executeAsGM('removeEffect', { effectUuid });
+          )?.id;
+          if (effectId) {
+            await MidiQOL.removeEffects({
+              actorUuid: targetToken.actor.uuid,
+              effects: [effectId],
+            });
           }
         }
       );
@@ -260,7 +263,7 @@ export async function wardingManeuver({
       'flags.dae': { specialDuration: ['isHit'], stackable: 'noneName' },
     };
 
-    await MidiQOL.socket().executeAsGM('createEffects', {
+    await MidiQOL.createEffects({
       actorUuid: targetActor.uuid,
       effects: [targetEffectData],
     });

@@ -1,0 +1,509 @@
+{
+  "name": "Drow Hand Crossbow",
+  "type": "weapon",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item applies the drow poison effect on a hit including extra unconscious status when the save failed by 5 or more.</p></details>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "Basic Rules pg 307",
+      "revision": 1,
+      "rules": "2024"
+    },
+    "quantity": 1,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "attunement": "",
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "cover": null,
+    "crewed": false,
+    "range": {
+      "value": 30,
+      "long": 120,
+      "units": "ft",
+      "reach": null
+    },
+    "uses": {
+      "max": "",
+      "recovery": [],
+      "spent": 0
+    },
+    "damage": {
+      "versatile": {
+        "number": null,
+        "denomination": null,
+        "bonus": "",
+        "types": [],
+        "custom": {
+          "enabled": false,
+          "formula": ""
+        },
+        "scaling": {
+          "mode": "",
+          "number": null,
+          "formula": ""
+        }
+      },
+      "base": {
+        "number": 1,
+        "denomination": 6,
+        "bonus": "",
+        "types": [
+          "piercing"
+        ],
+        "custom": {
+          "enabled": false,
+          "formula": ""
+        },
+        "scaling": {
+          "mode": "",
+          "number": null,
+          "formula": ""
+        }
+      }
+    },
+    "armor": {
+      "value": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "properties": [
+      "amm",
+      "lgt",
+      "lod"
+    ],
+    "proficient": 1,
+    "unidentified": {
+      "description": ""
+    },
+    "type": {
+      "value": "martialR",
+      "baseItem": ""
+    },
+    "activities": {
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "attack",
+        "activation": {
+          "type": "action",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "value": "30",
+          "units": "ft",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": ""
+          },
+          "affects": {
+            "count": "",
+            "type": "",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": true,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "attack": {
+          "ability": "dex",
+          "bonus": "",
+          "critical": {
+            "threshold": null
+          },
+          "flat": false,
+          "type": {
+            "value": "ranged",
+            "classification": "weapon"
+          }
+        },
+        "damage": {
+          "critical": {
+            "bonus": ""
+          },
+          "includeBase": true,
+          "parts": []
+        },
+        "sort": 0,
+        "useConditionText": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "identifier": "attack",
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "attackMode": "oneHanded",
+        "ammunition": "",
+        "otherActivityId": "dnd5eactivity100",
+        "otherActivityUuid": "",
+        "name": "Attack",
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      },
+      "dnd5eactivity100": {
+        "_id": "dnd5eactivity100",
+        "type": "save",
+        "activation": {
+          "type": "special",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "grjnvTkjcY1QJ1fZ",
+            "onSave": false
+          }
+        ],
+        "range": {
+          "value": "30",
+          "units": "ft",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": ""
+          },
+          "affects": {
+            "count": "1",
+            "type": "creature",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": true,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "damage": {
+          "onSave": "none",
+          "parts": [],
+          "critical": {
+            "allow": false
+          }
+        },
+        "save": {
+          "ability": [
+            "con"
+          ],
+          "dc": {
+            "calculation": "",
+            "formula": "13"
+          }
+        },
+        "sort": 0,
+        "useConditionText": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "never",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": true,
+          "otherActivityCompatible": true,
+          "identifier": "coating-effect",
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "name": "Drow Poison Effect",
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      }
+    },
+    "identifier": "drow-hand-crossbow",
+    "container": null,
+    "attuned": false,
+    "ammunition": {
+      "type": ""
+    },
+    "magicalBonus": null,
+    "mastery": ""
+  },
+  "effects": [
+    {
+      "changes": [],
+      "duration": {
+        "seconds": 3600,
+        "startTime": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "tint": "#ffffff",
+      "transfer": false,
+      "disabled": false,
+      "flags": {
+        "dae": {
+          "transfer": false,
+          "stackable": "noneName",
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ddbimporter": {
+          "disabled": false,
+          "originName": "Hand Crossbow"
+        },
+        "midi-qol": {
+          "forceCEOff": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "name": "Drow Poison Effect",
+      "statuses": [
+        "poisoned"
+      ],
+      "_id": "grjnvTkjcY1QJ1fZ",
+      "description": "",
+      "origin": null,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.4",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!CeFzXVfRx4uFxrqs.grjnvTkjcY1QJ1fZ"
+    }
+  ],
+  "flags": {
+    "monsterMunch": {
+      "titleHTML": "<strong>Hand Crossbow.</strong>",
+      "fullName": "Hand Crossbow.",
+      "actionCopy": false
+    },
+    "midiProperties": {
+      "fulldam": true,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "midi-qol": {
+      "forceCEOff": true,
+      "fumbleThreshold": null,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Drow Hand Crossbow",
+        "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.items.drowHandCrossbow(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "12.331",
+          "systemId": "dnd5e",
+          "systemVersion": "4.3.3",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    }
+  },
+  "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+  "folder": null,
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "_stats": {
+    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-monsters.Actor.b0jgwVlvScrn5izR.Item.IUzNT4YYfC9rpdlr",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.4",
+    "createdTime": 1740458004085,
+    "modifiedTime": 1740458004099,
+    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+  },
+  "_id": "CeFzXVfRx4uFxrqs",
+  "_key": "!items!CeFzXVfRx4uFxrqs"
+}

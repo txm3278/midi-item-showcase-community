@@ -1,0 +1,459 @@
+{
+  "name": "Great Weapon Master",
+  "type": "feat",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a feat that can be toggled on or off, when the midi property \"Toggle effect\" is checked and the Toggle activity is used, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements. One item use will be added when the requirements are met and remove it at the end of the owner's turn. Having an item use allows to use the Bonus Attack Activity.</p></details>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "Player's Handbook pg 167",
+      "revision": 1,
+      "rules": "2014"
+    },
+    "uses": {
+      "max": "",
+      "recovery": [],
+      "spent": null
+    },
+    "type": {
+      "value": "feat",
+      "subtype": "general"
+    },
+    "requirements": "",
+    "properties": [],
+    "activities": {
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "utility",
+        "activation": {
+          "type": "",
+          "value": null,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": "Toggle Bonus/Malus"
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "units": "self",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "affects": {
+            "count": "",
+            "type": "",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": false,
+          "override": false
+        },
+        "uses": {
+          "spent": null,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "",
+          "name": "",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": 0,
+        "useConditionText": "",
+        "effectConditionText": "",
+        "name": "Toggle",
+        "midiProperties": {
+          "identifier": "toggle",
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      },
+      "gCJEoaY3nm0E9jbK": {
+        "type": "utility",
+        "_id": "gCJEoaY3nm0E9jbK",
+        "sort": 0,
+        "activation": {
+          "type": "bonus",
+          "value": null,
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": [
+            {
+              "type": "activityUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ]
+        },
+        "description": {
+          "chatFlavor": "Bonus Attack"
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "override": false,
+          "units": "self",
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "count": "",
+            "type": ""
+          },
+          "override": false,
+          "prompt": false
+        },
+        "uses": {
+          "spent": 1,
+          "recovery": [],
+          "max": "1"
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "formula": "",
+          "name": ""
+        },
+        "useConditionText": "",
+        "effectConditionText": "",
+        "name": "Bonus Attack",
+        "midiProperties": {
+          "identifier": "bonus-attack",
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      }
+    },
+    "identifier": "great-weapon-master",
+    "enchant": {},
+    "prerequisites": {
+      "level": null,
+      "repeatable": false
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false
+  },
+  "flags": {
+    "obsidian": {
+      "source": {
+        "type": "feat"
+      }
+    },
+    "core": {},
+    "midi-qol": {
+      "effectActivation": false,
+      "forceCEOff": true,
+      "forceCEOn": false,
+      "rollAttackPerTarget": "never",
+      "itemCondition": "",
+      "effectCondition": "",
+      "fumbleThreshold": null,
+      "removeAttackDamageButtons": "default",
+      "AoETargetType": "any",
+      "AoETargetTypeIncludeSelf": false,
+      "autoTarget": "default",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "onUseMacroName": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "never",
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "rollOther": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": true,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "dae": {
+      "macro": {
+        "name": "Great Weapon Master",
+        "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.greatWeaponMaster(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": "dnd5e",
+          "systemVersion": "4.1.2",
+          "coreVersion": "12.331",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
+        }
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "11.315",
+      "systemVersion": "2.4.1"
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "tidy5e-sheet": {
+      "section": "",
+      "actionSection": ""
+    },
+    "midi-item-showcase-community": {
+      "greatWeaponMasterState": 1
+    }
+  },
+  "effects": [
+    {
+      "name": "Great Weapon Master - Passive",
+      "origin": "Item.ugjpZDElvU1Kaamt",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "transfer": true,
+      "disabled": false,
+      "_id": "9nM4tx8rg8WlIpEW",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,preItemRoll",
+          "priority": 0
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,preAttackRoll",
+          "priority": 0
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,postActiveEffects",
+          "priority": 0
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "endEveryTurn",
+          "specialDuration": [],
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        },
+        "core": {
+          "sheetClass": "core.DAEActiveEffectConfig",
+          "overlay": false
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.4",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!rNGTibeChZkWTSJ1.9nM4tx8rg8WlIpEW"
+    }
+  ],
+  "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+  "folder": null,
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "_stats": {
+    "compendiumSource": "Item.DS20pNCAcdjibFJV",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.4",
+    "createdTime": 1740458324205,
+    "modifiedTime": 1740458324215,
+    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+  },
+  "_id": "rNGTibeChZkWTSJ1",
+  "_key": "!items!rNGTibeChZkWTSJ1"
+}

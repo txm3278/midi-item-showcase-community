@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v4.0.0
+// v4.0.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[isAttacked],[tpr.isTargeted]
@@ -46,7 +46,7 @@ export async function arrowCatchingShield({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
+      '3.1'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
@@ -203,7 +203,7 @@ export async function arrowCatchingShield({
     }
     if (
       !elwinHelpers.isRangedAttack(
-        currentWorkflow.item,
+        currentWorkflow.activity,
         currentWorkflow.token,
         targetToken
       )
@@ -234,7 +234,7 @@ export async function arrowCatchingShield({
       'flags.dae': { specialDuration: ['isAttacked'], stackable: 'noneName' },
     };
 
-    await MidiQOL.socket().executeAsGM('createEffects', {
+    await MidiQOL.createEffects({
       actorUuid: targetToken.actor.uuid,
       effects: [targetEffectData],
     });

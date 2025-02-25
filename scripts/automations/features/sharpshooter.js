@@ -1,11 +1,12 @@
 // ##################################################################################################
 // Read First!!!!
 // Handles the ability to toggle on/off or prompt the -5 penalty to hit and +10 bonus to the damage on a ranged weapon.
-// v3.0.0
+// v3.0.1
 // Author: Elwin#1410 based on MotoMoto and Michael version
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" item macro [preItemRoll],[preAttackRoll],[postActiveEffects]
+//  - Elwin Helpers world script
 //
 // Usage:
 // This is a feat that can be toggled on or off, when the midi property "Toggle effect" is checked, when unchecked, a dialog to activate the feature
@@ -53,30 +54,20 @@ export async function sharpshooter({
     [PROMPT_STATE, ON_STATE],
   ]);
 
-  const dependencies = ['dae', 'midi-qol'];
-  if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '3.1'
+    )
+  ) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    ui.notifications.error(errorMsg);
     return;
   }
 
-  /**
-   * If the requirements are met, returns true, false otherwise.
-   *
-   * @param {string} name - The name of the item for which to check the dependencies.
-   * @param {string[]} dependencies - The array of module ids which are required.
-   *
-   * @returns {boolean} true if the requirements are met, false otherwise.
-   */
-  function requirementsSatisfied(name, dependencies) {
-    let missingDep = false;
-    dependencies.forEach((dep) => {
-      if (!game.modules.get(dep)?.active) {
-        const errorMsg = `${name} | ${dep} must be installed and active.`;
-        ui.notifications.error(errorMsg);
-        console.warn(errorMsg);
-        missingDep = true;
-      }
-    });
-    return !missingDep;
+  const dependencies = ['dae', 'midi-qol'];
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return;
   }
 
   if (debug) {
@@ -87,7 +78,7 @@ export async function sharpshooter({
     );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
-    return await handleOnUsePreItemRoll(workflow, scope.macroItem);
+    return await handleOnUsePreItemRoll(workflow, scope.macroItem, actor);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
     await handleOnUsePreAttackRoll(workflow, scope.macroItem);
   } else if (
@@ -158,10 +149,26 @@ export async function sharpshooter({
    */
   async function handleOnUsePreAttackRoll(currentWorkflow, sourceItem) {
     const usedItem = currentWorkflow.item;
-    if (!isRangedWeapon(usedItem) || !usedItem?.system?.prof?.hasProficiency) {
+    if (
+      !elwinHelpers.isRangedWeapon(usedItem) ||
+      !usedItem?.system?.prof?.hasProficiency
+    ) {
       // Only works on proficient ranged weapons
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a ranged weapon.`);
+      }
+      return;
+    }
+    if (
+      !elwinHelpers.isRangedWeaponAttack(
+        currentWorkflow.activity,
+        currentWorkflow.token,
+        currentWorkflow.targets.first()
+      )
+    ) {
+      // Only works on ranged weapon attacks
+      if (debug) {
+        console.warn(`${DEFAULT_ITEM_NAME} | Not a ranged weapon attack.`);
       }
       return;
     }
@@ -229,20 +236,6 @@ export async function sharpshooter({
     return (
       sourceItem.uuid === currentWorkflow.itemUuid &&
       currentWorkflow.activity?.identifier === 'toggle'
-    );
-  }
-
-  /**
-   * Validates if the specified item is a ranged weapon.
-   *
-   * @param {Item5e} usedItem - The item to validate.
-   *
-   * @returns {boolean} True if item is a ranged weapon, false otherwise.
-   */
-  function isRangedWeapon(usedItem) {
-    return (
-      usedItem?.type === 'weapon' &&
-      ['simpleR', 'martialR'].includes(usedItem?.system?.type?.value)
     );
   }
 

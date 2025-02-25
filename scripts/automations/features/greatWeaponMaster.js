@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.0.0
+// v3.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -76,7 +76,7 @@ export async function greatWeaponMaster({
   if (
     !foundry.utils.isNewerVersion(
       globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
+      '3.1'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
@@ -128,26 +128,18 @@ export async function greatWeaponMaster({
     }
   } else if (args[0] === 'on') {
     // Clear item state when first applied
-    await getBonusAttackActivity(item)?.update({
-      'uses.max': '0',
-      'uses.spent': 0,
-      midiAutomationOnly: true,
-    });
+    await getBonusAttackActivity(item)?.update({ 'uses.spent': 1 });
   } else if (args[0] === 'each') {
     // Reset the Heavy Weapon Master Attack bonus action to 0 charge
     const attackActivity = getBonusAttackActivity(item);
     if (
-      attackActivity?.uses?.max > 0 ||
+      attackActivity?.uses?.spent !== 1 ||
       foundry.utils.getProperty(
         actor,
         `flags.${MODULE_ID}.greatWeaponMaster.bonus`
       )
     ) {
-      await attackActivity?.update({
-        'uses.max': '0',
-        'uses.spent': 0,
-        midiAutomationOnly: true,
-      });
+      await attackActivity?.update({ 'uses.spent': 1 });
       await actor.setFlag(MODULE_ID, 'greatWeaponMaster.bonus', false);
     }
   }
@@ -275,11 +267,11 @@ export async function greatWeaponMaster({
   async function handleOnUsePreAttackRoll(currentWorkflow, sourceItem) {
     const usedItem = currentWorkflow.item;
     if (
-      usedItem?.type !== 'weapon' ||
+      !elwinHelpers.isMeleeWeapon(usedItem) ||
       !elwinHelpers.hasItemProperty(usedItem, 'hvy') ||
       !usedItem?.system?.prof?.hasProficiency ||
       !elwinHelpers.isMeleeWeaponAttack(
-        usedItem,
+        currentWorkflow.activity,
         currentWorkflow.token,
         currentWorkflow.targets.first()
       )
@@ -437,10 +429,7 @@ export async function greatWeaponMaster({
     }
     if (allowBonusAction) {
       // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
-      await getBonusAttackActivity(sourceItem)?.update({
-        'uses.max': '1',
-        midiAutomationOnly: false,
-      });
+      await getBonusAttackActivity(sourceItem)?.update({ 'uses.spent': 0 });
       await currentWorkflow.actor.setFlag(MODULE_ID, 'greatWeaponMaster', {
         bonus: true,
         weaponChoiceId: usedItem.id,

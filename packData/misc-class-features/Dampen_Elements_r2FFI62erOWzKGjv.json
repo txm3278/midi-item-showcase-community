@@ -1,0 +1,307 @@
+{
+  "name": "Dampen Elements",
+  "type": "feat",
+  "img": "icons/commodities/gems/pearl-brown-red.webp",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
+      "chat": ""
+    },
+    "source": {
+      "revision": 1,
+      "rules": "2014"
+    },
+    "cover": null,
+    "crewed": false,
+    "uses": {
+      "max": "",
+      "recovery": [],
+      "spent": 0
+    },
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "properties": [],
+    "requirements": "",
+    "activities": {
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "utility",
+        "activation": {
+          "type": "reaction",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "value": "30",
+          "units": "ft",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "affects": {
+            "count": "1",
+            "type": "ally",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": false,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "",
+          "name": "",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": 0,
+        "useConditionText": "reaction === \"tpr.isDamaged\" && workflow.damageItem?.damageDetail.some(d => [\"acid\", \"cold\", \"fire\", \"lightning\", \"thunder\"].includes(d.type) && d.value > 0 && d.active?.resistance !== true)",
+        "effectConditionText": "",
+        "name": "Reaction",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "identifier": "",
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      }
+    },
+    "identifier": "dampen-elements",
+    "enchant": {},
+    "prerequisites": {
+      "level": null,
+      "repeatable": false
+    },
+    "advancement": []
+  },
+  "effects": [
+    {
+      "name": "Dampen Elements",
+      "origin": "Item.grPTeRTBbKDRrOLp",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "8xnFFaXhkcVJHvFp",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,tpr.isDamaged|pre=true;post=true",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.4",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "img": "icons/commodities/gems/pearl-brown-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!r2FFI62erOWzKGjv.8xnFFaXhkcVJHvFp"
+    }
+  ],
+  "folder": "SCwd4ncvs4HT4t0E",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "flags": {
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault"
+    },
+    "midiProperties": {
+      "confirmTargets": "never",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "never",
+      "itemCondition": "",
+      "effectCondition": "",
+      "reactionCondition": "",
+      "onUseMacroName": "[preTargeting]ItemMacro,[postActiveEffects]ItemMacro",
+      "AoETargetType": "any",
+      "AoETargetTypeIncludeSelf": true,
+      "autoTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "otherCondition": ""
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Dampen Elements",
+        "img": "icons/commodities/gems/pearl-brown-red.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.dampenElements(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "tidy5e-sheet": {
+      "section": "",
+      "actionSection": ""
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Item.wzrwIEyLZESXmt45",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.4",
+    "createdTime": 1740458221954,
+    "modifiedTime": 1740458221992,
+    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+  },
+  "_id": "r2FFI62erOWzKGjv",
+  "_key": "!items!r2FFI62erOWzKGjv"
+}

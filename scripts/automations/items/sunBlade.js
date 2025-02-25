@@ -2,7 +2,7 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.0.0
+// v2.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE

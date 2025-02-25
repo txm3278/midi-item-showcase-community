@@ -124,7 +124,7 @@ export async function goodberry({
       (i) => i.identifier === DISCIPLE_OF_LIFE_ITEM_IDENT
     );
     if (ALLOW_DISCIPLE_OF_LIFE_EXTRA_HEALING && discipleOfLife) {
-      healingValue += 2 + workflow.castData?.castLevel ?? 1;
+      healingValue += 2 + (workflow.castData?.castLevel ?? 1);
       const infoMsg = `<p>Your ${discipleOfLife.name} feature enhances the berries effectiveness.</p>`;
       await elwinHelpers.insertTextIntoMidiItemCard(
         'beforeButtons',

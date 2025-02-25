@@ -1,0 +1,510 @@
+{
+  "name": "Sorrowful Fate",
+  "type": "feat",
+  "img": "icons/equipment/head/mask-craved-beige.webp",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Bard' class, its data value should resolve to '@scale.bard.bardic-inspiration'. When adding this feature to an actor, you must configure the consumption on Bardic Inspiration.</p>\n</details>",
+      "chat": ""
+    },
+    "source": {
+      "revision": 1,
+      "rules": "2014"
+    },
+    "cover": null,
+    "crewed": false,
+    "uses": {
+      "max": "1",
+      "recovery": [
+        {
+          "period": "sr",
+          "type": "recoverAll"
+        }
+      ],
+      "spent": 0
+    },
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "properties": [],
+    "requirements": "",
+    "activities": {
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "utility",
+        "activation": {
+          "type": "reaction",
+          "value": 0,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "",
+              "scaling": {}
+            }
+          ],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "units": "any",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "affects": {
+            "count": "1",
+            "type": "ally",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": true,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "",
+          "name": "",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": 0,
+        "useConditionText": "reaction === \"tpr.isPreCheckSave\" && workflow.saveActivity?.save",
+        "effectConditionText": "",
+        "name": "Reaction",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "identifier": "",
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      },
+      "R27JMKg3zz7dzbeE": {
+        "type": "damage",
+        "_id": "R27JMKg3zz7dzbeE",
+        "sort": 0,
+        "activation": {
+          "type": "",
+          "value": null,
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": []
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "5qx6CPCZ6RbhLBDO"
+          }
+        ],
+        "range": {
+          "override": false,
+          "units": "any",
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "count": "1",
+            "type": "creature",
+            "special": ""
+          },
+          "override": false,
+          "prompt": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "damage": {
+          "critical": {
+            "allow": false
+          },
+          "parts": [
+            {
+              "custom": {
+                "enabled": true,
+                "formula": "@scale.bard.bardic-inspiration"
+              },
+              "number": null,
+              "denomination": 0,
+              "bonus": "",
+              "types": [
+                "psychic"
+              ],
+              "scaling": {
+                "number": 1
+              }
+            }
+          ]
+        },
+        "useConditionText": "",
+        "effectConditionText": "",
+        "name": "Damage",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "identifier": "",
+          "displayActivityName": false,
+          "rollMode": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      }
+    },
+    "identifier": "sorrowful-fate",
+    "enchant": {},
+    "prerequisites": {
+      "level": 3,
+      "repeatable": false
+    },
+    "advancement": []
+  },
+  "effects": [
+    {
+      "name": "Sorrowful Fate",
+      "origin": "Item.YA8kaCO3D7saxKPF",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "C0ft0r2WhkqxIFgG",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,tpr.isPreCheckSave|triggerSource=attacker;canSee=true;post=true",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.4",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "img": "icons/equipment/head/mask-craved-beige.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!wgkw2RIh7uWie0JG.C0ft0r2WhkqxIFgG"
+    },
+    {
+      "name": "Sorrowful Fate - Regret",
+      "img": "icons/equipment/head/mask-craved-beige.webp",
+      "origin": "Item.YA8kaCO3D7saxKPF",
+      "_id": "5qx6CPCZ6RbhLBDO",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "zeroHP"
+          ]
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.4",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!wgkw2RIh7uWie0JG.5qx6CPCZ6RbhLBDO"
+    }
+  ],
+  "folder": "oH7DGZ1ZHgDTlOVR",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "flags": {
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": true,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "reactionCondition": "",
+      "onUseMacroName": "[preTargeting]ItemMacro,[preActiveEffects]ItemMacro",
+      "AoETargetType": "any",
+      "AoETargetTypeIncludeSelf": true,
+      "autoTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "otherCondition": ""
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Sorrowful Fate",
+        "img": "icons/equipment/head/mask-craved-beige.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.sorrowfulFate(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "systemId": null,
+          "systemVersion": null,
+          "coreVersion": null,
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null
+        }
+      }
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      },
+      "migratedUses": 1
+    },
+    "tidy5e-sheet": {
+      "section": "",
+      "actionSection": ""
+    }
+  },
+  "_stats": {
+    "compendiumSource": "Item.ke5IFJMfAeqGvv6Y",
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.4",
+    "createdTime": 1740458252564,
+    "modifiedTime": 1740458252592,
+    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+  },
+  "_id": "wgkw2RIh7uWie0JG",
+  "_key": "!items!wgkw2RIh7uWie0JG"
+}

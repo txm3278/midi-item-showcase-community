@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.0.0
+// v3.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -63,7 +63,7 @@ export async function unwaveringMark({
   if (
     !foundry.utils.isNewerVersion(
       globalThis.elwinHelpers?.version ?? '1.1',
-      '3.0'
+      '3.1'
     )
   ) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
@@ -422,7 +422,7 @@ export async function unwaveringMark({
 
     if (
       !elwinHelpers.isMeleeWeaponAttack(
-        currentWorkflow.item,
+        currentWorkflow.activity,
         sourceToken,
         targetToken
       )
@@ -484,8 +484,9 @@ export async function unwaveringMark({
     // Remove previous effects
     const targetEffectToDelete = targetActor.effects.getName(targetEffectName);
     if (targetEffectToDelete) {
-      await MidiQOL.socket().executeAsGM('removeEffect', {
-        effectUuid: targetEffectToDelete.uuid,
+      await MidiQOL.removeEffects({
+        actorUuid: targetActor.uuid,
+        effects: [targetEffectToDelete.id],
         options: { 'expiry-reason': `new-unwavering-mark:${sourceItem.uuid}` },
       });
     }
@@ -533,7 +534,7 @@ export async function unwaveringMark({
       },
     };
 
-    await MidiQOL.socket().executeAsGM('createEffects', {
+    await MidiQOL.createEffects({
       actorUuid: targetActor.uuid,
       effects: [targetEffectData],
     });

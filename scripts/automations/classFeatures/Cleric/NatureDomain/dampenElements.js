@@ -4,7 +4,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within is damaged by elemental damage type to allow him to add resistance to this type
 // of damage before the damage is applied.
-// v2.0.0
+// v2.0.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting][postActiveEffects][tpr.isDamaged]
@@ -281,7 +281,7 @@ export async function dampenElements({
         },
       },
     };
-    await MidiQOL.socket().executeAsGM('createEffects', {
+    await MidiQOL.createEffects({
       actorUuid: targetActor.uuid,
       effects: [targetEffectData],
     });
