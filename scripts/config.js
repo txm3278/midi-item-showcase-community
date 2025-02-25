@@ -67,7 +67,7 @@ export function setConfig() {
       'Arrow-Catching Shield': {
         name: 'Arrow-Catching Shield',
         type: 'Item',
-        version: '4.0.0',
+        version: '4.0.1',
         authors: ['Elwin'],
       },
       'Channel Divinity: Rebuke the Violent': {
@@ -85,7 +85,7 @@ export function setConfig() {
       'Dampen Elements': {
         name: 'Dampen Elements',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Divine Allegiance': {
@@ -94,10 +94,16 @@ export function setConfig() {
         version: '4.0.0',
         authors: ['Elwin'],
       },
+      'Drow Hand Crossbow': {
+        name: 'Drow Hand Crossbow',
+        type: 'Item',
+        version: '1.0.0',
+        authors: ['Elwin'],
+      },
       'Drow Posion': {
         name: 'Drow Poison',
         type: 'Item',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Flames of Phlegethos': {
@@ -133,7 +139,7 @@ export function setConfig() {
       'Great Weapon Master': {
         name: 'Great Weapon Master',
         type: 'Feat',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Guardian Emblem': {
@@ -193,7 +199,7 @@ export function setConfig() {
       Sharpshooter: {
         name: 'Sharpshooter',
         type: 'Feat',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Sorrowful Fate': {
@@ -217,13 +223,13 @@ export function setConfig() {
       'Sun Blade': {
         name: 'Sun Blade',
         type: 'Item',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Unwavering Mark': {
         name: 'Unwavering Mark',
         type: 'Class Feature',
-        version: '3.0.0',
+        version: '3.0.1',
         authors: ['Elwin'],
       },
       'Vengeful Ancestors': {
@@ -247,7 +253,7 @@ export function setConfig() {
       'Warding Maneuver': {
         name: 'Warding Maneuver',
         type: 'Class Feature',
-        version: '2.0.0',
+        version: '2.0.1',
         authors: ['Elwin'],
       },
       'Wyvern Poison': {
