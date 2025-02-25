@@ -1,4 +1,6 @@
 import { compilePack, extractPack } from '@foundryvtt/foundryvtt-cli';
+import fs from 'fs';
+
 let packs = [
   'misc-actions',
   'misc-class-features',
@@ -16,9 +18,19 @@ let packs = [
 let actorPacks = ['misc-actors'];
 
 for (let i of packs) {
-  await compilePack('./packData/' + i, './packs/' + i, { log: true });
+  let path = './packData/' + i;
+  if (fs.existsSync(path)) {
+    await compilePack(path, './packs/' + i, { log: true });
+  } else {
+    console.warn(`Directory ${path} does not exist.`);
+  }
 }
 
 for (let i of actorPacks) {
-  await compilePack('./packData/' + i, './packs/' + i, { log: true });
+  let path = './packData/' + i;
+  if (fs.existsSync(path)) {
+    await compilePack(path, './packs/' + i, { log: true });
+  } else {
+    console.warn(`Directory ${path} does not exist.`);
+  }
 }
