@@ -2,6 +2,7 @@
   "folder": "ojpw3VkGZrVSGYdG",
   "name": "Steady Aim",
   "type": "feat",
+  "_id": "94Gfad2iTpFDJHJU",
   "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
   "system": {
     "description": {
@@ -101,17 +102,9 @@
         "useConditionText": "",
         "effectConditionText": "",
         "name": "Aim",
-        "macroData": {
-          "name": "",
-          "command": ""
-        },
-        "ignoreTraits": {
-          "idi": false,
-          "idr": false,
-          "idv": false,
-          "ida": false
-        },
         "midiProperties": {
+          "identifier": "aim",
+          "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -122,10 +115,20 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
-          "identifier": "",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "useConditionReason": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -168,7 +171,7 @@
       "transfer": false,
       "flags": {
         "core": {
-          "statusId": ""
+          "overlay": false
         },
         "dae": {
           "stackable": "noneName",
@@ -180,9 +183,11 @@
           "transfer": false,
           "disableIncapacitated": false,
           "selfTarget": false,
-          "selfTargetAlways": false,
+          "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false
+          "showIcon": false,
+          "enableCondition": "",
+          "disableCondition": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -198,7 +203,16 @@
           "hidden": false,
           "displayTemp": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "nameOverride": "",
+          "customCheck": "",
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
@@ -206,14 +220,14 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1741552422660,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
@@ -251,7 +265,7 @@
       "transfer": false,
       "flags": {
         "core": {
-          "statusId": ""
+          "overlay": false
         },
         "dae": {
           "stackable": "noneName",
@@ -261,9 +275,11 @@
           "transfer": false,
           "disableIncapacitated": false,
           "selfTarget": false,
-          "selfTargetAlways": false,
+          "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false
+          "showIcon": false,
+          "enableCondition": "",
+          "disableCondition": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -279,7 +295,16 @@
           "hidden": false,
           "displayTemp": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "nameOverride": "",
+          "customCheck": "",
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
@@ -287,14 +312,14 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1741552428407,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
@@ -307,6 +332,7 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
@@ -411,8 +437,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     },
     "dnd5e": {
       "riders": {
@@ -426,15 +452,12 @@
     }
   },
   "_stats": {
-    "compendiumSource": "Item.VEZ2XXHtBlpBoQsT",
-    "duplicateSource": null,
-    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458262969,
-    "modifiedTime": 1740458262996,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1663621622129,
+    "modifiedTime": 1741409235929,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_id": "94Gfad2iTpFDJHJU",
   "_key": "!items!94Gfad2iTpFDJHJU"
 }

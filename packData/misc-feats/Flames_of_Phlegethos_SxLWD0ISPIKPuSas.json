@@ -2,10 +2,11 @@
   "folder": null,
   "name": "Flames of Phlegethos",
   "type": "feat",
+  "_id": "SxLWD0ISPIKPuSas",
   "img": "icons/magic/control/debuff-chains-red.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></details>\n",
       "chat": ""
     },
     "source": {
@@ -105,17 +106,10 @@
         "useConditionText": "",
         "effectConditionText": "",
         "name": "Reactive Damage",
-        "macroData": {
-          "name": "",
-          "command": ""
-        },
-        "ignoreTraits": {
-          "idi": false,
-          "idr": false,
-          "idv": false,
-          "ida": false
-        },
         "midiProperties": {
+          "otherActivityCompatible": false,
+          "automationOnly": true,
+          "identifier": "reactive-damage",
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -125,11 +119,20 @@
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
-          "otherActivityCompatible": true,
-          "identifier": "",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "useConditionReason": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -207,14 +210,14 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/magic/control/debuff-chains-red.webp",
       "type": "base",
@@ -227,6 +230,7 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
@@ -309,8 +313,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "3.1.2"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     },
     "dnd5e": {
       "riders": {
@@ -324,15 +328,12 @@
     }
   },
   "_stats": {
-    "compendiumSource": "Item.us4myaff4fkCJCt0",
-    "duplicateSource": null,
-    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458322619,
-    "modifiedTime": 1740458322633,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1663621622118,
+    "modifiedTime": 1741407984723,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_id": "SxLWD0ISPIKPuSas",
   "_key": "!items!SxLWD0ISPIKPuSas"
 }

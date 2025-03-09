@@ -2,7 +2,7 @@
 // Read First!!!!
 // Creates a Goodberry item that expires and is deleted after 24h.
 // If the caster has the Disciple of Life feature, the healing power of the berries is increased.
-// v3.0.0
+// v3.1.0
 // Author: Elwin#1410, based on Crymic's Goodberry macro
 // Dependencies:
 //  - DAE
@@ -65,6 +65,7 @@
 //
 // ###################################################################################################
 
+
 export async function goodberry({
   speaker,
   actor,
@@ -76,7 +77,7 @@ export async function goodberry({
   workflow,
   options,
 }) {
-  // Default name of the item
+// Default name of the item
   const DEFAULT_ITEM_NAME = 'Goodberry';
   const MODULE_ID = 'midi-item-showcase-community';
   const SPELL_DURATION = 60 * 60 * 24;
@@ -90,12 +91,7 @@ export async function goodberry({
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -106,11 +102,7 @@ export async function goodberry({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
@@ -120,17 +112,11 @@ export async function goodberry({
     const expirationTime = game.time.worldTime + SPELL_DURATION;
     let batchId = getBatchId(expirationTime);
     let healingValue = 1;
-    const discipleOfLife = tokenActor.items.find(
-      (i) => i.identifier === DISCIPLE_OF_LIFE_ITEM_IDENT
-    );
+    const discipleOfLife = tokenActor.items.find((i) => i.identifier === DISCIPLE_OF_LIFE_ITEM_IDENT);
     if (ALLOW_DISCIPLE_OF_LIFE_EXTRA_HEALING && discipleOfLife) {
       healingValue += 2 + (workflow.castData?.castLevel ?? 1);
       const infoMsg = `<p>Your ${discipleOfLife.name} feature enhances the berries effectiveness.</p>`;
-      await elwinHelpers.insertTextIntoMidiItemCard(
-        'beforeButtons',
-        workflow,
-        infoMsg
-      );
+      await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
     }
 
     const newItemData = {
@@ -142,7 +128,7 @@ export async function goodberry({
           '9DkQO4yYAeqHjC1W': {
             type: 'heal',
             activation: {
-              type: 'action',
+              type: workflow.item.system.source?.rules === '2024' ? 'bonus' : 'action',
             },
             consumption: {
               targets: [
@@ -179,6 +165,7 @@ export async function goodberry({
         description: {
           value: game.i18n.localize(i18nGoodberry.description),
         },
+        properties: ['mgc'],
         uses: {
           spent: 0,
           recovery: [],
@@ -198,8 +185,7 @@ export async function goodberry({
       },
       flags: {
         'midi-qol': {
-          onUseMacroName:
-            '[preTargeting]ItemMacro,[preItemRoll]ItemMacro,[postActiveEffects]ItemMacro',
+          onUseMacroName: '[preTargeting]ItemMacro,[preItemRoll]ItemMacro,[postActiveEffects]ItemMacro',
         },
         [MODULE_ID]: { goodberry: { expirationTime: expirationTime } },
         dae: {
@@ -216,25 +202,17 @@ export async function goodberry({
       },
     };
     if (game.modules.get('rest-recovery')?.active) {
-      foundry.utils.setProperty(
-        newItemData,
-        'flags.rest-recovery.data.consumable.dayWorth',
-        true
-      );
+      foundry.utils.setProperty(newItemData, 'flags.rest-recovery.data.consumable.dayWorth', true);
     }
 
-    const [newItem] = await tokenActor.createEmbeddedDocuments('Item', [
-      newItemData,
-    ]);
+    const [newItem] = await tokenActor.createEmbeddedDocuments('Item', [newItemData]);
     // When about time is present, register a callback to delete the item when it expires
     if (game.modules.get('about-time')?.active) {
       const eventId = abouttime.doAt(
         expirationTime,
         deleteGoodberries,
         macroData.actorUuid,
-        game.i18n.format(i18nGoodberry.expirationEventWarn, {
-          actorName: tokenActor.name,
-        })
+        game.i18n.format(i18nGoodberry.expirationEventWarn, { actorName: tokenActor.name })
       );
       const goodberryEvent = {
         expirationTime: expirationTime,
@@ -243,13 +221,15 @@ export async function goodberry({
       };
       await newItem.setFlag(MODULE_ID, 'goodberry', goodberryEvent);
     }
+    const message = `<p>10 <strong>${workflow.item.name}</strong> were added to your inventory.</p>`;
+    await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', workflow, message);
   }
 
   /**
-   * Initializes the i18n texts used by this item.
-   *
-   * @returns {object} The i18n keys to use with `game.i18n.localize` and `game.i18n.format`.
-   */
+ * Initializes the i18n texts used by this item.
+ *
+ * @returns {object} The i18n keys to use with `game.i18n.localize` and `game.i18n.format`.
+ */
   function initLocalization() {
     const i18nPrefix = 'world.dnd5e.spells.goodberry';
     const i18nKeys = {
@@ -266,14 +246,12 @@ export async function goodberry({
     // by adding the i18nKeys and their corresponding texts into game.i18n.translations.
     const i18nData = {
       description:
-        '<p>Eating a berry restores 1 hit point, and the berry provides enough nourishment to sustain a creature for one day.</p>',
+      '<p>Eating a berry restores 1 hit point, and the berry provides enough nourishment to sustain a creature for one day.</p>',
       expirationOnUseWarn: 'The berries lost their potency and vanish',
-      expirationEventWarn:
-        'Some berries lost their potency and vanish from {actorName}:',
+      expirationEventWarn: 'Some berries lost their potency and vanish from {actorName}:',
     };
 
-    const existingData =
-      foundry.utils.getProperty(game.i18n.translations, i18nPrefix) ?? {};
+    const existingData = foundry.utils.getProperty(game.i18n.translations, i18nPrefix) ?? {};
     foundry.utils.setProperty(
       game.i18n.translations,
       i18nPrefix,
@@ -322,103 +300,72 @@ ${isRealNumber.toString()}
   }
 
   /**
-   * Handles the preTrageting phase of the workflow. Validates that the good berries are not expired, when expired the workflow
-   * is cancelled and the berries are delete. If About Time is active, it registers a call back to delete the berries when they expire.
-   * If there are no selected targets and the current midi setting does not allow late targeting, it selects the actor's token and
-   * setup a hook on midi-qol.RollComplete to unselect it after.
-   *
-   * @param {MidiQOL.Workflow} gbWorkflow The current workflow.
-   * @returns {boolean} true if the workflow should continue, false otherwise.
-   */
+ * Handles the preTrageting phase of the workflow. Validates that the good berries are not expired, when expired the workflow
+ * is cancelled and the berries are delete. If About Time is active, it registers a call back to delete the berries when they expire.
+ * If there are no selected targets and the current midi setting does not allow late targeting, it selects the actor's token and
+ * setup a hook on midi-qol.RollComplete to unselect it after.
+ *
+ * @param {MidiQOL.Workflow} gbWorkflow The current workflow.
+ * @returns {boolean} true if the workflow should continue, false otherwise.
+ */
   async function handleGoodBerryPreTargeting(gbWorkflow) {
-    // Reset target type each time this item is used
-    // This is to revert to the initial state if workflow was cancelled.
+  // Reset target type each time this item is used
+  // This is to revert to the initial state if workflow was cancelled.
     if (gbWorkflow.activity.target.affects.type !== 'creature') {
-      const newTargetAffects = foundry.utils.deepClone(
-        gbWorkflow.activity.target.affects
-      );
+      const newTargetAffects = foundry.utils.deepClone(gbWorkflow.activity.target.affects);
       newTargetAffects.count = '1';
       newTargetAffects.type = 'creature';
       gbWorkflow.activity.target.affects = newTargetAffects;
     }
 
     const i18nGoodberry = initLocalization();
-    const expirationTime =
-      foundry.utils.getProperty(
-        gbWorkflow.item,
-        `flags.${MODULE_ID}.goodberry.expirationTime`
-      ) ?? 0;
+    const expirationTime = foundry.utils.getProperty(gbWorkflow.item, `flags.${MODULE_ID}.goodberry.expirationTime`) ?? 0;
     if (game.time.worldTime >= expirationTime) {
-      ui.notifications.warn(
-        game.i18n.localize(i18nGoodberry.expirationOnUseWarn)
-      );
+      ui.notifications.warn(game.i18n.localize(i18nGoodberry.expirationOnUseWarn));
       await gbWorkflow.item.delete();
       return false;
     }
     // When about time is present, register a callback to delete the item when it expires if not already registerd
     if (game.modules.get('about-time')?.active) {
-      if (
-        gbWorkflow.item.getFlag(MODULE_ID, 'goodberry')?.actorUuid !==
-        gbWorkflow.actor.uuid
-      ) {
+      if (gbWorkflow.item.getFlag(MODULE_ID, 'goodberry')?.actorUuid !== gbWorkflow.actor.uuid) {
         const eventId = abouttime.doAt(
           expirationTime,
           deleteGoodberries,
           gbWorkflow.actor.uuid,
-          game.i18n.format(i18nGoodberry.expirationEventWarn, {
-            actorName: gbWorkflow.actor.name,
-          })
+          game.i18n.format(i18nGoodberry.expirationEventWarn, { actorName: gbWorkflow.actor.name })
         );
-        const goodberryEvent = {
-          expirationTime: expirationTime,
-          eventId: eventId,
-          actorUuid: gbWorkflow.actor.uuid,
-        };
+        const goodberryEvent = { expirationTime: expirationTime, eventId: eventId, actorUuid: gbWorkflow.actor.uuid };
         await gbWorkflow.item.setFlag(MODULE_ID, 'goodberry', goodberryEvent);
       }
     }
     if (!game.user?.targets?.size) {
-      const targetConfirmation = game.settings.get(
-        'midi-qol',
-        'TargetConfirmation'
-      ) ?? { enabled: false };
+      const targetConfirmation = game.settings.get('midi-qol', 'TargetConfirmation') ?? { enabled: false };
       if (!targetConfirmation.enabled || !targetConfirmation.noneTargeted) {
         if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | Change to self:`, {
-            targetConfirmation,
-          });
+          console.warn(`${DEFAULT_ITEM_NAME} | Change to self:`, { targetConfirmation });
         }
 
         // Change target to self
-        const newTargetAffects = foundry.utils.deepClone(
-          gbWorkflow.activity.target.affects
-        );
+        const newTargetAffects = foundry.utils.deepClone(gbWorkflow.activity.target.affects);
         newTargetAffects.type = 'self';
         gbWorkflow.activity.target.affects = newTargetAffects;
 
         // Register hook to reset target type after workflow completion
-        Hooks.once(
-          `midi-qol.postCleanup.${gbWorkflow.item.uuid}`,
-          (currentWorkflow) => {
-            if (currentWorkflow.activity.target.affects.type !== 'self') {
-              console.warn(`${DEFAULT_ITEM_NAME} | Target type already reset.`);
-              return;
-            }
-            const newTargetAffects = foundry.utils.deepClone(
-              currentWorkflow.activity.target.affects
-            );
-            newTargetAffects.count = '1';
-            newTargetAffects.type = 'creature';
-            currentWorkflow.activity.target.affects = newTargetAffects;
+        Hooks.once(`midi-qol.postCleanup.${gbWorkflow.item.uuid}`, (currentWorkflow) => {
+          if (currentWorkflow.activity.target.affects.type !== 'self') {
+            console.warn(`${DEFAULT_ITEM_NAME} | Target type already reset.`);
+            return;
           }
-        );
+          const newTargetAffects = foundry.utils.deepClone(currentWorkflow.activity.target.affects);
+          newTargetAffects.count = '1';
+          newTargetAffects.type = 'creature';
+          currentWorkflow.activity.target.affects = newTargetAffects;
+        });
       }
     } else {
-      // Make sure the last set to self if was changed back
+    // Make sure the last set to self if was changed back
       if (gbWorkflow.activity.target.affects.type === 'self') {
-        const newTargetAffects = foundry.utils.deepClone(
-          gbWorkflow.activity.target.affects
-        );
+        const newTargetAffects = foundry.utils.deepClone(gbWorkflow.activity.target.affects);
         newTargetAffects.count = '1';
         newTargetAffects.type = 'creature';
         gbWorkflow.activity.target.affects = newTargetAffects;
@@ -428,36 +375,25 @@ ${isRealNumber.toString()}
   }
 
   /**
-   * Handles the preItemRoll phase of the workflow. If the target is not the one that used the item and
-   * Rest Recovery is active, sets the proper hooks to handle the benefits of the consumption on the target.
-   *
-   * @param {MidiQOL.Workflow} gbWorkflow The current workflow.
-   */
+ * Handles the preItemRoll phase of the workflow. If the target is not the one that used the item and
+ * Rest Recovery is active, sets the proper hooks to handle the benefits of the consumption on the target.
+ *
+ * @param {MidiQOL.Workflow} gbWorkflow The current workflow.
+ */
   async function handleGoodBerryPreItemRoll(gbWorkflow) {
-    // Note: we auto roll and fast forward because the healing is a fixed value.
-    foundry.utils.setProperty(
-      gbWorkflow,
-      'workflowOptions.autoRollDamage',
-      'always'
-    );
-    foundry.utils.setProperty(
-      gbWorkflow,
-      'workflowOptions.autoFastDamage',
-      true
-    );
+  // Note: we auto roll and fast forward because the healing is a fixed value.
+    foundry.utils.setProperty(gbWorkflow, 'workflowOptions.autoRollDamage', 'always');
+    foundry.utils.setProperty(gbWorkflow, 'workflowOptions.autoFastDamage', true);
 
     if (gbWorkflow.targets.first()?.id !== gbWorkflow.token.id) {
       if (
         game.modules.get('rest-recovery')?.active &&
-        foundry.utils.getProperty(
-          gbWorkflow.item,
-          'flags.rest-recovery.data.consumable'
-        ) &&
-        game.settings.get('rest-recovery', 'enable-food-and-water')
+      foundry.utils.getProperty(gbWorkflow.item, 'flags.rest-recovery.data.consumable') &&
+      game.settings.get('rest-recovery', 'enable-food-and-water')
       ) {
-        // Prevent Rest Recovery to apply to owner of item
-        Hooks.once('dnd5e.preUseActivity', (activity, _, __, ___) => {
-          const activityWorkflow = MidiQOL.Workflow.getWorkflow(activity.uuid);
+      // Prevent Rest Recovery to apply to owner of item
+        Hooks.once('dnd5e.preUseActivity', (activity, usageConfig, _, __) => {
+          const activityWorkflow = usageConfig.workflow;
           if (
             !elwinHelpers.isMidiHookStillValid(
               activity.item?.name,
@@ -474,8 +410,8 @@ ${isRealNumber.toString()}
         });
 
         // Register hook to keep handle usage consumption, we need to keep the usage info in the useItem hook
-        Hooks.once('dnd5e.activityConsumption', (activity, _, __, updates) => {
-          const activityWorkflow = MidiQOL.Workflow.getWorkflow(activity.uuid);
+        Hooks.once('dnd5e.activityConsumption', (activity, usageConfig, _, updates) => {
+          const activityWorkflow = usageConfig.Workflow;
           if (
             !elwinHelpers.isMidiHookStillValid(
               activity.item?.name,
@@ -490,22 +426,19 @@ ${isRealNumber.toString()}
           }
           // Keep usage updates in current workflow with current item, because the item will possibly
           // be updated before the postActiveEffects phase is called.
-          gbWorkflow.goodberryItem = {
-            origItem: activity.item?.toObject(),
-            updates,
-          };
+          gbWorkflow.goodberryItem = { origItem: activity.item?.toObject(), updates };
         });
       }
     }
   }
 
   /**
-   * Handles postActiveEffects phase of the workflow. If Rest Recovery is active and food and water setting is enabled,
-   * also handles food or food and water consumption for an actor other than the owner of the good berry.
-   * This duplicates some code from Rest Recovery because it doesn't currently support it.
-   *
-   * @param {MidiQOL.Workflow} gbWorkflow The current workflow.
-   */
+ * Handles postActiveEffects phase of the workflow. If Rest Recovery is active and food and water setting is enabled,
+ * also handles food or food and water consumption for an actor other than the owner of the good berry.
+ * This duplicates some code from Rest Recovery because it doesn't currently support it.
+ *
+ * @param {MidiQOL.Workflow} gbWorkflow The current workflow.
+ */
   async function handleGoodBerryPostActiveEffects(gbWorkflow) {
     const targetToken = gbWorkflow.targets?.first();
     if (!targetToken) {
@@ -514,12 +447,9 @@ ${isRealNumber.toString()}
     if (
       !(
         targetToken.id !== gbWorkflow.token.id &&
-        game.modules.get('rest-recovery')?.active &&
-        foundry.utils.getProperty(
-          gbWorkflow.item,
-          'flags.rest-recovery.data.consumable'
-        ) &&
-        game.settings.get('rest-recovery', 'enable-food-and-water')
+      game.modules.get('rest-recovery')?.active &&
+      foundry.utils.getProperty(gbWorkflow.item, 'flags.rest-recovery.data.consumable') &&
+      game.settings.get('rest-recovery', 'enable-food-and-water')
       )
     ) {
       return;
@@ -528,9 +458,7 @@ ${isRealNumber.toString()}
     // Handle consumption by target different than owner of item
     const [actorUpdates, message] = getActorConsumableUpdates(
       gbWorkflow.goodberryItem?.origItem ?? {},
-      gbWorkflow.goodberryItem?.updates?.item?.find(
-        (data) => data._id === gbWorkflow.item.id
-      ) ?? {},
+      gbWorkflow.goodberryItem?.updates?.item?.find((data) => data._id === gbWorkflow.item.id) ?? {},
       targetToken.actor
     );
 
@@ -552,11 +480,11 @@ ${isRealNumber.toString()}
   }
 
   /**
-   * Deletes expired good berries from an actor.
-   *
-   * @param {string} actorUuid UUID of actor for which to process expired good berries.
-   * @param {string} goodberryExpirationEventWarn Warning message to be displayed in chat if some berries were deleted.
-   */
+ * Deletes expired good berries from an actor.
+ *
+ * @param {string} actorUuid UUID of actor for which to process expired good berries.
+ * @param {string} goodberryExpirationEventWarn Warning message to be displayed in chat if some berries were deleted.
+ */
   async function deleteGoodberries(actorUuid, goodberryExpirationEventWarn) {
     const tokenOrActor = await fromUuid(actorUuid);
     let actor;
@@ -572,15 +500,8 @@ ${isRealNumber.toString()}
     const now = game.time.worldTime;
     const itemsToDelete = actor.itemTypes.consumable.filter(
       (it) =>
-        foundry.utils.getProperty(
-          it,
-          `flags.${MODULE_ID}.goodberry.expirationTime`
-        ) &&
-        now >=
-          foundry.utils.getProperty(
-            it,
-            `flags.${MODULE_ID}.goodberry.expirationTime`
-          )
+        foundry.utils.getProperty(it, `flags.${MODULE_ID}.goodberry.expirationTime`) &&
+      now >= foundry.utils.getProperty(it, `flags.${MODULE_ID}.goodberry.expirationTime`)
     );
     if (itemsToDelete.length > 0) {
       const deletedItems = await actor.deleteEmbeddedDocuments(
@@ -594,15 +515,8 @@ ${isRealNumber.toString()}
       }
       await ChatMessage.create({
         user: game.user?.id,
-        speaker: {
-          scene: game.canvas.scene?.id,
-          alias: game.user?.name,
-          user: game.user?.id,
-        },
-        content:
-          goodberryExpirationEventWarn +
-          ' ' +
-          deletedItems.map((it) => it.name).join(),
+        speaker: { scene: game.canvas.scene?.id, alias: game.user?.name, user: game.user?.id },
+        content: goodberryExpirationEventWarn + ' ' + deletedItems.map((it) => it.name).join(),
         whisper: whisperTo.map((u) => u.id),
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
       });
@@ -610,7 +524,7 @@ ${isRealNumber.toString()}
   }
 
   function getBatchId(expirationTime) {
-    // World setting for goodberry
+  // World setting for goodberry
     if (!game.settings?.settings?.has('world.dnd5e.goodberry.batchIdFormat')) {
       game.settings?.register('world', 'dnd5e.goodberry.batchIdFormat', {
         name: 'Goodberry batch id format',
@@ -621,9 +535,7 @@ ${isRealNumber.toString()}
         config: true,
       });
     }
-    const batchIdFormat =
-      game.settings?.get('world', 'dnd5e.goodberry.batchIdFormat') ??
-      'date-time';
+    const batchIdFormat = game.settings?.get('world', 'dnd5e.goodberry.batchIdFormat') ?? 'date-time';
     let batchId;
     if (batchIdFormat === 'uuid') {
       batchId = foundry.utils.randomID();
@@ -641,28 +553,18 @@ ${isRealNumber.toString()}
   // The following functions were copied from Rest Recovery because they are not exported in its API
   //
   function getActorConsumableUpdates(item, data, consumingActor) {
-    const consumable = foundry.utils.getProperty(
-      item,
-      'flags.rest-recovery.data.consumable'
-    );
+    const consumable = foundry.utils.getProperty(item, 'flags.rest-recovery.data.consumable');
 
     const actorUpdates = {};
 
-    let {
-      actorRequiredFood,
-      actorRequiredWater,
-      actorFoodSatedValue,
-      actorWaterSatedValue,
-    } = getActorConsumableValues(consumingActor);
+    let { actorRequiredFood, actorRequiredWater, actorFoodSatedValue, actorWaterSatedValue } =
+    getActorConsumableValues(consumingActor);
 
     const oldSpent = foundry.utils.getProperty(item, 'system.uses.spent');
-    const newSpent =
-      foundry.utils.getProperty(data, 'system.uses.spent') ?? oldSpent + 1;
+    const newSpent = foundry.utils.getProperty(data, 'system.uses.spent') ?? oldSpent + 1;
     const oldQuantity = foundry.utils.getProperty(item, 'system.quantity');
-    const newQuantity =
-      foundry.utils.getProperty(data, 'system.quantity') ?? oldQuantity - 1;
-    const chargesUsed =
-      newSpent > oldSpent ? newSpent - oldSpent : oldQuantity - newQuantity;
+    const newQuantity = foundry.utils.getProperty(data, 'system.quantity') ?? oldQuantity - 1;
+    const chargesUsed = newSpent > oldSpent ? newSpent - oldSpent : oldQuantity - newQuantity;
 
     let message;
 
@@ -674,73 +576,57 @@ ${isRealNumber.toString()}
         ? actorWaterSatedValue
         : actorWaterSatedValue + chargesUsed;
 
-      const localize =
-        'REST-RECOVERY.Chat.ConsumedBoth' +
-        (consumable.dayWorth ? 'DayWorth' : '');
+      const localize = 'REST-RECOVERY.Chat.ConsumedBoth' + (consumable.dayWorth ? 'DayWorth' : '');
       message =
-        '<p>' +
-        game.i18n.format(localize, {
-          actorName: consumingActor.name,
-          itemName: item.name,
-          charges: chargesUsed,
-        }) +
-        '</p>';
+      '<p>' +
+      game.i18n.format(localize, {
+        actorName: consumingActor.name,
+        itemName: item.name,
+        charges: chargesUsed,
+      }) +
+      '</p>';
 
       if (!consumable.dayWorth) {
         message +=
-          actorUpdates['flags.rest-recovery.data.sated.food'] >=
-          actorRequiredFood
-            ? '<p>' +
-              game.i18n.localize('REST-RECOVERY.Chat.SatedFood') +
-              '</p>'
-            : '<p>' +
-              game.i18n.format('REST-RECOVERY.Chat.RequiredSatedFood', {
-                units:
-                  actorRequiredFood -
-                  actorUpdates['flags.rest-recovery.data.sated.food'],
-              }) +
-              '</p>';
+        actorUpdates['flags.rest-recovery.data.sated.food'] >= actorRequiredFood
+          ? '<p>' + game.i18n.localize('REST-RECOVERY.Chat.SatedFood') + '</p>'
+          : '<p>' +
+            game.i18n.format('REST-RECOVERY.Chat.RequiredSatedFood', {
+              units: actorRequiredFood - actorUpdates['flags.rest-recovery.data.sated.food'],
+            }) +
+            '</p>';
         message +=
-          actorUpdates['flags.rest-recovery.data.sated.water'] >=
-          actorRequiredWater
-            ? '<p>' +
-              game.i18n.localize('REST-RECOVERY.Chat.SatedWater') +
-              '</p>'
-            : '<p>' +
-              game.i18n.format('REST-RECOVERY.Chat.RequiredSatedWater', {
-                units:
-                  actorRequiredWater -
-                  actorUpdates['flags.rest-recovery.data.sated.water'],
-              }) +
-              '</p>';
+        actorUpdates['flags.rest-recovery.data.sated.water'] >= actorRequiredWater
+          ? '<p>' + game.i18n.localize('REST-RECOVERY.Chat.SatedWater') + '</p>'
+          : '<p>' +
+            game.i18n.format('REST-RECOVERY.Chat.RequiredSatedWater', {
+              units: actorRequiredWater - actorUpdates['flags.rest-recovery.data.sated.water'],
+            }) +
+            '</p>';
       }
     } else if (item.system.type?.subtype === 'food') {
       actorUpdates['flags.rest-recovery.data.sated.food'] = consumable.dayWorth
         ? 100000000000
         : actorFoodSatedValue + chargesUsed;
 
-      const localize =
-        'REST-RECOVERY.Chat.ConsumedFood' +
-        (consumable.dayWorth ? 'DayWorth' : '');
+      const localize = 'REST-RECOVERY.Chat.ConsumedFood' + (consumable.dayWorth ? 'DayWorth' : '');
       message =
-        '<p>' +
-        game.i18n.format(localize, {
-          actorName: consumingActor.name,
-          itemName: item.name,
-          charges: chargesUsed,
-        }) +
-        '</p>';
+      '<p>' +
+      game.i18n.format(localize, {
+        actorName: consumingActor.name,
+        itemName: item.name,
+        charges: chargesUsed,
+      }) +
+      '</p>';
 
       message +=
-        actorUpdates['flags.rest-recovery.data.sated.food'] >= actorRequiredFood
-          ? '<p>' + game.i18n.localize('REST-RECOVERY.Chat.SatedFood') + '</p>'
-          : '<p>' +
-            game.i18n.format('REST-RECOVERY.Chat.RequiredSatedFood', {
-              units:
-                actorRequiredFood -
-                actorUpdates['flags.rest-recovery.data.sated.food'],
-            }) +
-            '</p>';
+      actorUpdates['flags.rest-recovery.data.sated.food'] >= actorRequiredFood
+        ? '<p>' + game.i18n.localize('REST-RECOVERY.Chat.SatedFood') + '</p>'
+        : '<p>' +
+          game.i18n.format('REST-RECOVERY.Chat.RequiredSatedFood', {
+            units: actorRequiredFood - actorUpdates['flags.rest-recovery.data.sated.food'],
+          }) +
+          '</p>';
     }
     // Note: type water only not supported
 
@@ -748,60 +634,29 @@ ${isRealNumber.toString()}
   }
 
   function getActorConsumableValues(actor) {
-    const actorFoodSatedValue =
-      foundry.utils.getProperty(actor, 'flags.rest-recovery.data.sated.food') ??
-      0;
-    const actorWaterSatedValue =
-      foundry.utils.getProperty(
-        actor,
-        'flags.rest-recovery.data.sated.water'
-      ) ?? 0;
+    const actorFoodSatedValue = foundry.utils.getProperty(actor, 'flags.rest-recovery.data.sated.food') ?? 0;
+    const actorWaterSatedValue = foundry.utils.getProperty(actor, 'flags.rest-recovery.data.sated.water') ?? 0;
 
-    const actorNeedsNoFoodWater = foundry.utils.getProperty(
-      actor,
-      'flags.dnd5e.noFoodWater'
-    );
-    const actorNeedsNoFood = foundry.utils.getProperty(
-      actor,
-      'flags.dae.rest-recovery.force.noFood'
-    );
-    const actorNeedsNoWater = foundry.utils.getProperty(
-      actor,
-      'flags.dae.rest-recovery.force.noWater'
-    );
+    const actorNeedsNoFoodWater = foundry.utils.getProperty(actor, 'flags.dnd5e.noFoodWater');
+    const actorNeedsNoFood = foundry.utils.getProperty(actor, 'flags.dae.rest-recovery.force.noFood');
+    const actorNeedsNoWater = foundry.utils.getProperty(actor, 'flags.dae.rest-recovery.force.noWater');
 
-    const foodUnitsSetting = game.settings.get(
-      'rest-recovery',
-      'food-units-per-day'
-    );
+    const foodUnitsSetting = game.settings.get('rest-recovery', 'food-units-per-day');
     const actorRequiredFoodUnits =
-      foundry.utils.getProperty(
-        actor,
-        'flags.dae.rest-recovery.require.food'
-      ) ?? foundry.utils.getProperty(actor, 'flags.dnd5e.foodUnits');
+    foundry.utils.getProperty(actor, 'flags.dae.rest-recovery.require.food') ??
+    foundry.utils.getProperty(actor, 'flags.dnd5e.foodUnits');
     let actorRequiredFood =
-      isRealNumber(actorRequiredFoodUnits) && foodUnitsSetting !== 0
-        ? actorRequiredFoodUnits
-        : foodUnitsSetting;
+    isRealNumber(actorRequiredFoodUnits) && foodUnitsSetting !== 0 ? actorRequiredFoodUnits : foodUnitsSetting;
 
-    const waterUnitsSetting = game.settings.get(
-      'rest-recovery',
-      'water-units-per-day'
-    );
+    const waterUnitsSetting = game.settings.get('rest-recovery', 'water-units-per-day');
     const actorRequiredWaterUnits =
-      foundry.utils.getProperty(
-        actor,
-        'flags.dae.rest-recovery.require.water'
-      ) ?? foundry.utils.getProperty(actor, 'flags.dnd5e.waterUnits');
+    foundry.utils.getProperty(actor, 'flags.dae.rest-recovery.require.water') ??
+    foundry.utils.getProperty(actor, 'flags.dnd5e.waterUnits');
     let actorRequiredWater =
-      isRealNumber(actorRequiredWaterUnits) && waterUnitsSetting !== 0
-        ? actorRequiredWaterUnits
-        : waterUnitsSetting;
+    isRealNumber(actorRequiredWaterUnits) && waterUnitsSetting !== 0 ? actorRequiredWaterUnits : waterUnitsSetting;
 
-    actorRequiredFood =
-      actorNeedsNoFoodWater || actorNeedsNoFood ? 0 : actorRequiredFood;
-    actorRequiredWater =
-      actorNeedsNoFoodWater || actorNeedsNoWater ? 0 : actorRequiredWater;
+    actorRequiredFood = actorNeedsNoFoodWater || actorNeedsNoFood ? 0 : actorRequiredFood;
+    actorRequiredWater = actorNeedsNoFoodWater || actorNeedsNoWater ? 0 : actorRequiredWater;
 
     return {
       actorRequiredFood,
@@ -812,8 +667,7 @@ ${isRealNumber.toString()}
   }
 
   function isRealNumber(inNumber) {
-    return (
-      !isNaN(inNumber) && typeof inNumber === 'number' && isFinite(inNumber)
-    );
+    return !isNaN(inNumber) && typeof inNumber === 'number' && isFinite(inNumber);
   }
+
 }

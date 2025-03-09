@@ -2,10 +2,11 @@
   "folder": null,
   "name": "Gift of the Metallic Dragon",
   "type": "feat",
+  "_id": "Swc1K3banqeKXzH1",
   "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>\n",
       "chat": ""
     },
     "source": {
@@ -110,17 +111,9 @@
         "useConditionText": "reaction === \"tpr.isHit\" && !workflow.isCritical",
         "effectConditionText": "",
         "name": "Reaction",
-        "macroData": {
-          "name": "",
-          "command": ""
-        },
-        "ignoreTraits": {
-          "idi": false,
-          "idr": false,
-          "idv": false,
-          "ida": false
-        },
         "midiProperties": {
+          "identifier": "reaction",
+          "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -131,10 +124,20 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
-          "identifier": "",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "useConditionReason": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -212,14 +215,14 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
       "type": "base",
@@ -288,14 +291,14 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
       "type": "base",
@@ -304,10 +307,11 @@
       "_key": "!items.effects!Swc1K3banqeKXzH1.IcGaEbrOONUEKiQG"
     }
   ],
-  "sort": 200000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
@@ -383,8 +387,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     },
     "dnd5e": {
       "riders": {
@@ -399,15 +403,12 @@
     }
   },
   "_stats": {
-    "compendiumSource": "Item.ABc3QHIw623SO5Ab",
-    "duplicateSource": null,
-    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458323325,
-    "modifiedTime": 1740458323338,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1706615384809,
+    "modifiedTime": 1741408208613,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_id": "Swc1K3banqeKXzH1",
   "_key": "!items!Swc1K3banqeKXzH1"
 }

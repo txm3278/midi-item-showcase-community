@@ -15,13 +15,14 @@
 //       It will do so on the next actor update, this is due to when DAE evaluates the expression. This could probably
 //       fixed in a future DAE version.
 //       The Utter Vow activity consumption must be set to the Channel Divinity item when added to an actor.
-//
+// 
 // Description:
 // In the preAttackRoll phase of any item activity of the marker (in owner's workflow):
 //   Gives advantage to the marker if the target is marked by him.
 // In the postActiveEffects phase of this feature's activity (in owner's workflow):
 //   Updates the self active effect to delete the target active effect when deleted and vice versa.
 // ###################################################################################################
+
 
 export async function channelDivinityVowOfEnmity({
   speaker,
@@ -43,13 +44,13 @@ export async function channelDivinityVowOfEnmity({
   }
 
   /**
-   * If the requirements are met, returns true, false otherwise.
-   *
-   * @param {string} name - The name of the item for which to check the dependencies.
-   * @param {string[]} dependencies - The array of module ids which are required.
-   *
-   * @returns {boolean} true if the requirements are met, false otherwise.
-   */
+ * If the requirements are met, returns true, false otherwise.
+ *
+ * @param {string} name - The name of the item for which to check the dependencies.
+ * @param {string[]} dependencies - The array of module ids which are required.
+ *
+ * @returns {boolean} true if the requirements are met, false otherwise.
+ */
   function requirementsSatisfied(name, dependencies) {
     let missingDep = false;
     dependencies.forEach((dep) => {
@@ -64,11 +65,7 @@ export async function channelDivinityVowOfEnmity({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
     if (!workflow.targets?.size) {
@@ -78,15 +75,11 @@ export async function channelDivinityVowOfEnmity({
       return;
     }
     const allTargetsMarked = workflow.targets.every((t) =>
-      t.actor?.appliedEffects.some(
-        (ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid)
-      )
+      t.actor?.appliedEffects.some((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid))
     );
     if (!allTargetsMarked) {
       if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not all targets are marked.`, {
-          targets: workflow.targets,
-        });
+        console.warn(`${DEFAULT_ITEM_NAME} | Not all targets are marked.`, { targets: workflow.targets });
       }
       return;
     }
@@ -94,10 +87,7 @@ export async function channelDivinityVowOfEnmity({
     workflow.advantage = true;
     workflow.attackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
     workflow.advReminderAttackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
-  } else if (
-    args[0].tag === 'OnUse' &&
-    args[0].macroPass === 'postActiveEffects'
-  ) {
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     if (!workflow.effectTargets?.size) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No effect applied to target.`);
@@ -112,17 +102,13 @@ export async function channelDivinityVowOfEnmity({
     );
     if (!appliedEffect) {
       if (debug) {
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | No applied effect found on target actor.`
-        );
+        console.warn(`${DEFAULT_ITEM_NAME} | No applied effect found on target actor.`);
       }
       return;
     }
 
     // Find AE on self to add dependency
-    const selfEffect = actor.appliedEffects.find(
-      (ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid)
-    );
+    const selfEffect = actor.appliedEffects.find((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid));
     if (!selfEffect) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No self effect found on actor.`);
@@ -132,4 +118,5 @@ export async function channelDivinityVowOfEnmity({
     await selfEffect.addDependent(appliedEffect);
     await MidiQOL.addDependent(appliedEffect, selfEffect);
   }
+
 }

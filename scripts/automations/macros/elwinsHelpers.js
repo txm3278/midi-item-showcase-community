@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.1.0
+// v3.2.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -43,6 +43,10 @@
 // - elwinHelpers.getAppliedEnchantments
 // - elwinHelpers.deleteAppliedEnchantments
 // - elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll
+// - elwinHelpers.getAutomatedEnchantmentSelectedProfile
+// - elwinHelpers.applyEnchantmentToItem
+// - elwinHelpers.getEquippedMeleeWeapons
+// - elwinHelpers.getRules
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -108,7 +112,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '3.1.0';
+  const VERSION = '3.2.0';
   const MACRO_NAME = 'elwin-helpers';
   const active = true;
   let debug = false;
@@ -117,47 +121,44 @@ export function runElwinsHelpers() {
   const TPR_OPTIONS = ['triggerSource', 'ignoreSelf', 'canSee', 'pre', 'post'];
 
   /**
-   * Third party reaction options.
-   * @typedef {object} TprOptions
-   * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
-   * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
-   * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
-   * @property {boolean} pre - Flag to indicate if a pre macro most be called before prompting for reactions.
-   * @property {boolean} post - Flag to indicate if a post macro most be called after prompting for reactions.
-   *
-   */
+ * Third party reaction options.
+ * @typedef {object} TprOptions
+ * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
+ * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
+ * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
+ * @property {boolean} pre - Flag to indicate if a pre macro most be called before prompting for reactions.
+ * @property {boolean} post - Flag to indicate if a post macro most be called after prompting for reactions.
+ *
+ */
   /**
-   * Token third party reactions info.
-   * @typedef {object} TokenReactionsInfo
-   * @property {ReactionData[]} reactions - List of reaction data associated to a token.
-   * @property {boolean} canSeeAttacker - Flag to indicate of the owner of the reaction canSee the attacker.
-   * @property {Map<Token5e, boolean>} canSeeTargets - Map of flags mapped by token to indicate if the owner of the reaction canSee a target.
-   */
+ * Token third party reactions info.
+ * @typedef {object} TokenReactionsInfo
+ * @property {ReactionData[]} reactions - List of reaction data associated to a token.
+ * @property {boolean} canSeeAttacker - Flag to indicate of the owner of the reaction canSee the attacker.
+ * @property {Map<Token5e, boolean>} canSeeTargets - Map of flags mapped by token to indicate if the owner of the reaction canSee a target.
+ */
 
   /**
-   * Token Third party reaction data.
-   * @typedef {object} ReactionData
-   * @property {Token5e} token - The token having the third party reaction.
-   * @property {Item5e} item - The third party reaction item.
-   * @property {Activity[]} activities - The third party reaction activities.
-   * @property {Activity[]} allowedActivities - The third party reaction activities allowed for the current trigger,
-   *                                            this is overwritten at each trigger execution.
-   * @property {string} macroName - The name of the macro or function to be called for pre/post macros.
-   * @property {string} targetOnUse - The target on use that triggers this reaction.
-   * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
-   * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
-   * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
-   * @property {boolean} preMacro - Flag to indicate if a pre macro most be called before prompting for reactions.
-   * @property {boolean} postMacro - Flag to indicate if a post macro most be called after prompting for reactions.
-   */
+ * Token Third party reaction data.
+ * @typedef {object} ReactionData
+ * @property {Token5e} token - The token having the third party reaction.
+ * @property {Item5e} item - The third party reaction item.
+ * @property {Activity[]} activities - The third party reaction activities.
+ * @property {Activity[]} allowedActivities - The third party reaction activities allowed for the current trigger,
+ *                                            this is overwritten at each trigger execution.
+ * @property {string} macroName - The name of the macro or function to be called for pre/post macros.
+ * @property {string} targetOnUse - The target on use that triggers this reaction.
+ * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
+ * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
+ * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
+ * @property {boolean} preMacro - Flag to indicate if a pre macro most be called before prompting for reactions.
+ * @property {boolean} postMacro - Flag to indicate if a post macro most be called after prompting for reactions.
+ */
 
   const dependencies = ['midi-qol'];
   if (
     requirementsSatisfied(MACRO_NAME, dependencies) &&
-    foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol')?.version,
-      '12.4.21'
-    )
+  foundry.utils.isNewerVersion(game.modules.get('midi-qol')?.version, '12.4.30')
   ) {
     depReqFulfilled = true;
 
@@ -165,52 +166,16 @@ export function runElwinsHelpers() {
     exportIdentifier('elwinHelpers.version', VERSION);
 
     setHook('midi-qol.postStart', 'handlePostStart', handlePostStart);
-    setHook(
-      'midi-qol.preValidateRoll',
-      'handlePreValidateRollId',
-      handlePreValidateRoll
-    );
-    setHook(
-      'midi-qol.preAttackRoll',
-      'handlePreAttackRollId',
-      handlePreAttackRoll
-    );
-    setHook(
-      'midi-qol.preCheckHits',
-      'handlePreCheckHitsId',
-      handlePreCheckHits
-    );
+    setHook('midi-qol.preValidateRoll', 'handlePreValidateRollId', handlePreValidateRoll);
+    setHook('midi-qol.preAttackRoll', 'handlePreAttackRollId', handlePreAttackRoll);
+    setHook('midi-qol.preCheckHits', 'handlePreCheckHitsId', handlePreCheckHits);
     setHook('midi-qol.hitsChecked', 'handleHitsCheckedId', handleHitsChecked);
-    setHook(
-      'midi-qol.preDamageRoll',
-      'handlePreDamageRollId',
-      handlePreDamageRoll
-    );
-    setHook(
-      'midi-qol.preTargetDamageApplication',
-      'handlePreTargetDamageApplId',
-      handlePreTargetDamageApplication
-    );
-    setHook(
-      'midi-qol.preCheckSaves',
-      'handlePreCheckSavesId',
-      handlePreCheckSaves
-    );
-    setHook(
-      'midi-qol.postCheckSaves',
-      'handlePostCheckSavesId',
-      handlePostCheckSaves
-    );
-    setHook(
-      'midi-qol.dnd5ePreCalculateDamage',
-      'handleMidiDnd5ePreCalculateDamageId',
-      handleMidiDnd5ePreCalculateDamage
-    );
-    setHook(
-      'midi-qol.dnd5eCalculateDamage',
-      'handleMidiDnd5eCalculateDamageId',
-      handleMidiDnd5eCalculateDamage
-    );
+    setHook('midi-qol.preDamageRoll', 'handlePreDamageRollId', handlePreDamageRoll);
+    setHook('midi-qol.preTargetDamageApplication', 'handlePreTargetDamageApplId', handlePreTargetDamageApplication);
+    setHook('midi-qol.preCheckSaves', 'handlePreCheckSavesId', handlePreCheckSaves);
+    setHook('midi-qol.postCheckSaves', 'handlePostCheckSavesId', handlePostCheckSaves);
+    setHook('midi-qol.dnd5ePreCalculateDamage', 'handleMidiDnd5ePreCalculateDamageId', handleMidiDnd5ePreCalculateDamage);
+    setHook('midi-qol.dnd5eCalculateDamage', 'handleMidiDnd5eCalculateDamageId', handleMidiDnd5eCalculateDamage);
     exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
     exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
@@ -218,18 +183,9 @@ export function runElwinsHelpers() {
     exportIdentifier('elwinHelpers.getTargetDivs', getTargetDivs);
     exportIdentifier('elwinHelpers.hasItemProperty', hasItemProperty);
     exportIdentifier('elwinHelpers.reduceAppliedDamage', reduceAppliedDamage);
-    exportIdentifier(
-      'elwinHelpers.calculateAppliedDamage',
-      calculateAppliedDamage
-    );
-    exportIdentifier(
-      'elwinHelpers.insertTextIntoMidiItemCard',
-      insertTextIntoMidiItemCard
-    );
-    exportIdentifier(
-      'elwinHelpers.requirementsSatisfied',
-      requirementsSatisfied
-    );
+    exportIdentifier('elwinHelpers.calculateAppliedDamage', calculateAppliedDamage);
+    exportIdentifier('elwinHelpers.insertTextIntoMidiItemCard', insertTextIntoMidiItemCard);
+    exportIdentifier('elwinHelpers.requirementsSatisfied', requirementsSatisfied);
     exportIdentifier('elwinHelpers.selectTargetsWithinX', selectTargetsWithinX);
     exportIdentifier('elwinHelpers.isWeapon', isWeapon);
     exportIdentifier('elwinHelpers.isMeleeWeapon', isMeleeWeapon);
@@ -245,39 +201,21 @@ export function runElwinsHelpers() {
     exportIdentifier('elwinHelpers.buttonDialog', buttonDialog);
     exportIdentifier('elwinHelpers.remoteButtonDialog', remoteButtonDialog);
     exportIdentifier('elwinHelpers.getAttackSegment', getAttackSegment);
-    exportIdentifier(
-      'elwinHelpers.getMoveTowardsPosition',
-      getMoveTowardsPosition
-    );
-    exportIdentifier(
-      'elwinHelpers.findMovableSpaceNearDest',
-      findMovableSpaceNearDest
-    );
-    exportIdentifier(
-      'elwinHelpers.convertCriticalToNormalHit',
-      convertCriticalToNormalHit
-    );
-    exportIdentifier(
-      'elwinHelpers.adjustAttackRollTargetAC',
-      adjustAttackRollTargetAC
-    );
+    exportIdentifier('elwinHelpers.getMoveTowardsPosition', getMoveTowardsPosition);
+    exportIdentifier('elwinHelpers.findMovableSpaceNearDest', findMovableSpaceNearDest);
+    exportIdentifier('elwinHelpers.convertCriticalToNormalHit', convertCriticalToNormalHit);
+    exportIdentifier('elwinHelpers.adjustAttackRollTargetAC', adjustAttackRollTargetAC);
     exportIdentifier('elwinHelpers.getDamageRollOptions', getDamageRollOptions);
-    exportIdentifier(
-      'elwinHelpers.getAppliedEnchantments',
-      getAppliedEnchantments
-    );
-    exportIdentifier(
-      'elwinHelpers.deleteAppliedEnchantments',
-      deleteAppliedEnchantments
-    );
+    exportIdentifier('elwinHelpers.getAppliedEnchantments', getAppliedEnchantments);
+    exportIdentifier('elwinHelpers.deleteAppliedEnchantments', deleteAppliedEnchantments);
     exportIdentifier(
       'elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll',
       disableManualEnchantmentPlacingOnUsePreItemRoll
     );
-    exportIdentifier(
-      'elwinHelpers.getEquippedMeleeWeapons',
-      getEquippedMeleeWeapons
-    );
+    exportIdentifier('elwinHelpers.getAutomatedEnchantmentSelectedProfile', getAutomatedEnchantmentSelectedProfile);
+    exportIdentifier('elwinHelpers.applyEnchantmentToItem', applyEnchantmentToItem);
+    exportIdentifier('elwinHelpers.getEquippedMeleeWeapons', getEquippedMeleeWeapons);
+    exportIdentifier('elwinHelpers.getRules', getRules);
 
     // Note: classes need to be exported after they are declared...
 
@@ -285,29 +223,29 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the debug flag value. When true, items made by Elwin will output debug info.
-   * @returns {boolean} the current debug flag value.
-   */
+ * Returns the debug flag value. When true, items made by Elwin will output debug info.
+ * @returns {boolean} the current debug flag value.
+ */
   function isDebugEnabled() {
     return debug;
   }
 
   /**
-   * Sets the debug flag value.
-   * @param {boolean} Enabled - The new debug flag value.
-   */
+ * Sets the debug flag value.
+ * @param {boolean} Enabled - The new debug flag value.
+ */
   function setDebugEnabled(enabled) {
     debug = enabled;
   }
 
   /**
-   * If the requirements are met, returns true, false otherwise.
-   *
-   * @param {string} name - The name of the item for which to check the dependencies.
-   * @param {string[]} dependencies - The array of module ids which are required.
-   *
-   * @returns {boolean} true if the requirements are met, false otherwise.
-   */
+ * If the requirements are met, returns true, false otherwise.
+ *
+ * @param {string} name - The name of the item for which to check the dependencies.
+ * @param {string[]} dependencies - The array of module ids which are required.
+ *
+ * @returns {boolean} true if the requirements are met, false otherwise.
+ */
   function requirementsSatisfied(name, dependencies) {
     let missingDep = false;
     dependencies.forEach((dep) => {
@@ -322,71 +260,56 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Removes the previous hook is defined and register a new hook if the macro is active.
-   *
-   * @param {string} hookName the name of the hook event on which to register the function.
-   * @param {string} hookNameId the name of the hook, used for saving a reference to the registered hook.
-   * @param {function} hookFunction the function to register on the hook event.
-   */
+ * Removes the previous hook is defined and register a new hook if the macro is active.
+ *
+ * @param {string} hookName the name of the hook event on which to register the function.
+ * @param {string} hookNameId the name of the hook, used for saving a reference to the registered hook.
+ * @param {function} hookFunction the function to register on the hook event.
+ */
   function setHook(hookName, hookNameId, hookFunction) {
-    const hookId = foundry.utils.getProperty(
-      globalThis,
-      `${MACRO_NAME}.${hookNameId}`
-    );
+    const hookId = foundry.utils.getProperty(globalThis, `${MACRO_NAME}.${hookNameId}`);
     if (hookId) {
       Hooks.off(hookName, hookId);
     }
     if (active) {
-      foundry.utils.setProperty(
-        globalThis,
-        `${MACRO_NAME}.${hookNameId}`,
-        Hooks.on(hookName, hookFunction)
-      );
+      foundry.utils.setProperty(globalThis, `${MACRO_NAME}.${hookNameId}`, Hooks.on(hookName, hookFunction));
     }
   }
 
   /**
-   * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
-   *
-   * @param {string} exportedIdentifierName the name of the exported function.
-   * @param {function} exportedValue the function or variable to export.
-   */
+ * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
+ *
+ * @param {string} exportedIdentifierName the name of the exported function.
+ * @param {function} exportedValue the function or variable to export.
+ */
   function exportIdentifier(exportedIdentifierName, exportedValue) {
     if (foundry.utils.getProperty(globalThis, exportedIdentifierName)) {
       const lastIndex = exportedIdentifierName.lastIndexOf('.');
       if (lastIndex < 0) {
         delete globalThis[exportedIdentifierName];
       } else {
-        delete foundry.utils.getProperty(
-          globalThis,
-          exportedIdentifierName.substring(0, lastIndex)
-        )[exportedIdentifierName.substring(lastIndex + 1)];
+        delete foundry.utils.getProperty(globalThis, exportedIdentifierName.substring(0, lastIndex))[
+          exportedIdentifierName.substring(lastIndex + 1)
+        ];
       }
     }
     if (active) {
-      foundry.utils.setProperty(
-        globalThis,
-        exportedIdentifierName,
-        exportedValue
-      );
+      foundry.utils.setProperty(globalThis, exportedIdentifierName, exportedValue);
     }
   }
 
   /**
-   * Registers all the third party reactions from all the current tokens on the scene.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Registers all the third party reactions from all the current tokens on the scene.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function handlePostStart(workflow) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePostStart.`, workflow);
     }
     for (let token of game.canvas.tokens.placeables) {
-      const actorOnUseMacros = foundry.utils.getProperty(
-        token.actor ?? {},
-        'flags.midi-qol.onUseMacroParts'
-      );
+      const actorOnUseMacros = foundry.utils.getProperty(token.actor ?? {}, 'flags.midi-qol.onUseMacroParts');
       if (!actorOnUseMacros) {
-        // Skip this actor does not have any on use macros
+      // Skip this actor does not have any on use macros
         continue;
       }
       await registerThirdPartyReactions(
@@ -398,9 +321,9 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isTargeted third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Triggers isTargeted third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function handlePreValidateRoll(workflow) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePreValidateRoll.`, workflow);
@@ -410,9 +333,9 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isPreAttacked third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Triggers isPreAttacked third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function handlePreAttackRoll(workflow) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePreAttackRoll.`, workflow);
@@ -422,26 +345,23 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isAttacked third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {object} options - Options passed by midi qol.
-   */
+ * Triggers isAttacked third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {object} options - Options passed by midi qol.
+ */
   async function handlePreCheckHits(workflow, options) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, {
-        workflow,
-        options,
-      });
+      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, { workflow, options });
     }
 
     await handleThirdPartyReactions(workflow, ['isAttacked'], options);
   }
 
   /**
-   * Triggers isHit and isMissed third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {object} options - Options passed by midi qol.
-   */
+ * Triggers isHit and isMissed third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {object} options - Options passed by midi qol.
+ */
   async function handleHitsChecked(workflow, options) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handleHitsChecked.`, { workflow, options });
@@ -451,9 +371,9 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isPreDamaged third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Triggers isPreDamaged third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function handlePreDamageRoll(workflow) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePreDamageRoll.`, workflow);
@@ -463,40 +383,33 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isDamaged or isHealed third party reactions.
-   *
-   * @param {Token5e} target - The target that is damaged/healed.
-   * @param {object} options - Options passed by midi qol.
-   */
+ * Triggers isDamaged or isHealed third party reactions.
+ *
+ * @param {Token5e} target - The target that is damaged/healed.
+ * @param {object} options - Options passed by midi qol.
+ */
   async function handlePreTargetDamageApplication(target, options) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreTargetDamageApplication.`, {
-        target,
-        options,
-      });
+      console.warn(`${MACRO_NAME} | handlePreTargetDamageApplication.`, { target, options });
     }
     let appliedDamage = options?.damageItem?.appliedDamage;
     if (!appliedDamage) {
-      // compute total damage applied to target
+    // compute total damage applied to target
       appliedDamage = options?.damageItem?.damageDetail.reduce(
-        (total, d) =>
-          (total += ['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
+        (total, d) => (total += ['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
         0
       );
-      appliedDamage =
-        appliedDamage > 0
-          ? Math.floor(appliedDamage)
-          : Math.ceil(appliedDamage);
+      appliedDamage = appliedDamage > 0 ? Math.floor(appliedDamage) : Math.ceil(appliedDamage);
     }
 
     if (
       options?.damageItem &&
-      appliedDamage !== 0 &&
-      (options.workflow.hitTargets.has(target) ||
-        options.workflow.hitTargetsEC.has(target) ||
-        options.workflow.saveItem.hasSave)
+    appliedDamage !== 0 &&
+    (options.workflow.hitTargets.has(target) ||
+      options.workflow.hitTargetsEC.has(target) ||
+      options.workflow.hasSave)
     ) {
-      // Set our own total damage to make sure it is available, currently midi does not provide a total of the non RAW damage
+    // Set our own total damage to make sure it is available, currently midi does not provide a total of the non RAW damage
       options.damageItem.elwinHelpersEffectiveDamage = appliedDamage;
       const conditionAttr = 'workflow.damageItem?.elwinHelpersEffectiveDamage';
       if (appliedDamage > 0) {
@@ -516,9 +429,9 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isPreCheckSave third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Triggers isPreCheckSave third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function handlePreCheckSaves(workflow) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePreCheckSaves.`, { workflow });
@@ -528,16 +441,16 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Handles the midi pre calculate damage hook event to cleanup any custom damage details before computing damage.
-   *
-   * @param {Actor5e} actor - The actor being damaged.
-   * @param {DamageDescription[]} damages - Damage descriptions.
-   * @param {DamageApplicationOptions} options - Additional damage application options.
-   * @returns {boolean} Explicitly return `false` to prevent damage application.
-   *
-   */
+ * Handles the midi pre calculate damage hook event to cleanup any custom damage details before computing damage.
+ *
+ * @param {Actor5e} actor - The actor being damaged.
+ * @param {DamageDescription[]} damages - Damage descriptions.
+ * @param {DamageApplicationOptions} options - Additional damage application options.
+ * @returns {boolean} Explicitly return `false` to prevent damage application.
+ *
+ */
   function handleMidiDnd5ePreCalculateDamage(actor, damages, options) {
-    // Remove any custom damage prevention
+  // Remove any custom damage prevention
     while (
       damages.find((di, idx) => {
         if (di.type === 'none' && di.active?.DP) {
@@ -550,33 +463,27 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Handles the midi calculate damage hook event to process damagePrevention option.
-   *
-   * @param {Actor5e} actor - The actor being damaged.
-   * @param {DamageDescription[]} damages - Damage descriptions.
-   * @param {DamageApplicationOptions} options - Additional damage application options.
-   * @returns {boolean} Explicitly return `false` to prevent damage application.
-   */
+ * Handles the midi calculate damage hook event to process damagePrevention option.
+ *
+ * @param {Actor5e} actor - The actor being damaged.
+ * @param {DamageDescription[]} damages - Damage descriptions.
+ * @param {DamageApplicationOptions} options - Additional damage application options.
+ * @returns {boolean} Explicitly return `false` to prevent damage application.
+ */
   function handleMidiDnd5eCalculateDamage(actor, damages, options) {
     if (!(options.elwinHelpers?.damagePrevention > 0)) {
-      // No damage prevention or not valid
+    // No damage prevention or not valid
       return true;
     }
     const totalDamage = damages.reduce(
-      (total, damage) =>
-        (total += ['temphp', 'midi-none'].includes(damage.type)
-          ? 0
-          : damage.value),
+      (total, damage) => (total += ['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
       0
     );
     if (totalDamage <= 0) {
-      // No damage to prevent, do nothing
+    // No damage to prevent, do nothing
       return true;
     }
-    const damagePrevention = Math.min(
-      options.elwinHelpers.damagePrevention,
-      totalDamage
-    );
+    const damagePrevention = Math.min(options.elwinHelpers.damagePrevention, totalDamage);
     if (damagePrevention) {
       damages.push({
         type: 'none',
@@ -589,9 +496,9 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isPostCheckSave third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Triggers isPostCheckSave third party reactions.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function handlePostCheckSaves(workflow) {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePostCheckSaves.`, { workflow });
@@ -601,98 +508,77 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the reaction flavor for the reaction dialog.
-   * @param {object} data - The parameters for the reaction flavor.
-   * @param {User} data.user - The user to which the reaction dialog will be displayed.
-   * @param {string} data.reactionTriggerName - Name of the TargetOnUse macroPass on which the reaction that was triggered.
-   * @param {Token5e} data.triggerToken - The token which initiated the third party reaction, usually the target of an attack (options.token).
-   * @param {Item5e} data.triggerItem - The item that triggered the reaction, usually the item used (workflow.item).
-   * @param {Token5e} data.reactionToken - The token for which the reaction dialog will be displayed.
-   * @param {Roll} data.roll - Current D20 roll (attack roll, saving throw or ability test).
-   * @param {boolean|undefined} data.showReactionAttackRoll - Option of what detail of the roll should be shown for the reaction,
-   *                                                          if undefined the midi setting is used.
-   *
-   * @returns {string} the flavor for the reaction trigger.
-   */
+ * Returns the reaction flavor for the reaction dialog.
+ * @param {object} data - The parameters for the reaction flavor.
+ * @param {User} data.user - The user to which the reaction dialog will be displayed.
+ * @param {string} data.reactionTriggerName - Name of the TargetOnUse macroPass on which the reaction that was triggered.
+ * @param {Token5e} data.triggerToken - The token which initiated the third party reaction, usually the target of an attack (options.token).
+ * @param {Item5e} data.triggerItem - The item that triggered the reaction, usually the item used (workflow.item).
+ * @param {Token5e} data.reactionToken - The token for which the reaction dialog will be displayed.
+ * @param {Roll} data.roll - Current D20 roll (attack roll, saving throw or ability test).
+ * @param {boolean|undefined} data.showReactionAttackRoll - Option of what detail of the roll should be shown for the reaction,
+ *                                                          if undefined the midi setting is used.
+ *
+ * @returns {string} the flavor for the reaction trigger.
+ */
   function getReactionFlavor(data) {
-    const {
-      user,
-      reactionTriggerName,
-      triggerToken,
-      triggerItem,
-      reactionToken,
-      roll,
-      showReactionAttackRoll,
-    } = data;
+    const { user, reactionTriggerName, triggerToken, triggerItem, reactionToken, roll, showReactionAttackRoll } = data;
 
     let reactionFlavor = 'Unknow reaction trigger!';
     switch (reactionTriggerName) {
       case 'isPreAttacked':
       case 'preAttack':
-        reactionFlavor =
-          '{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isAttacked':
-        reactionFlavor =
-          '{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isPreDamaged':
-        reactionFlavor =
-          '{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isDamaged':
       case 'preTargetDamageApplication':
-        reactionFlavor =
-          '{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isHealed':
-        reactionFlavor =
-          '{actorName} is healed by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is healed by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isTargeted':
       case 'prePreambleComplete':
-        reactionFlavor =
-          '{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isMissed':
-        reactionFlavor =
-          '{actorName} is missed by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is missed by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isCriticalHit':
-        reactionFlavor =
-          '{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isFumble':
-        reactionFlavor =
-          '{actorName} is attacked by {itemName} which fumbled and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is attacked by {itemName} which fumbled and {reactionActorName} can use a reaction';
         break;
       case 'preTargetSave':
       case 'isAboutToSave':
       case 'isPreCheckSave':
       case 'isPostCheckSave':
-        reactionFlavor =
-          '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isSaveSuccess':
         reactionFlavor =
-          '{actorName} succeeded on a save because of {itemName} and {reactionActorName} can use a reaction';
+        '{actorName} succeeded on a save because of {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isSaveFailure':
-        reactionFlavor =
-          '{actorName} failed on a save because of {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} failed on a save because of {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isMoved':
-        reactionFlavor =
-          '{actorName} is moved and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is moved and {reactionActorName} can use a reaction';
         break;
       case 'postTargetEffectApplication':
         reactionFlavor =
-          '{actorName} has been applied effects because of {itemName} and {reactionActorName} can use a reaction';
+        '{actorName} has been applied effects because of {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isHit':
       default:
-        reactionFlavor =
-          '{actorName} is hit by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is hit by {itemName} and {reactionActorName} can use a reaction';
         break;
     }
     reactionFlavor = game.i18n.format(reactionFlavor, {
@@ -702,60 +588,44 @@ export function runElwinsHelpers() {
     });
 
     //{none: 'Attack Hits', d20: 'd20 roll only', all: 'Attack Roll Total', allCrit: 'Attack Roll Total + Critical'}
-    if (
-      ['isHit', 'isMissed', 'isCrit', 'isFumble', 'isAttacked'].includes(
-        reactionTriggerName
-      )
-    ) {
-      const showAttackRoll =
-        showReactionAttackRoll ??
-        MidiQOL.configSettings().showReactionAttackRoll;
+    if (['isHit', 'isMissed', 'isCrit', 'isFumble', 'isAttacked'].includes(reactionTriggerName)) {
+      const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
       const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
       switch (showAttackRoll) {
         case 'all':
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            roll?.total ?? ''
-          }</h4>`;
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''}`;
           break;
         case 'allCrit': {
           const criticalString = roll?.isCritical
             ? `<span style="color: green">(${getI18n('DND5E.Critical')})</span>`
             : '';
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            roll?.total ?? ''
-          } ${criticalString}</h4>`;
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''} ${criticalString}`;
           break;
         }
         case 'd20': {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ??
-              roll.terms[0]?.total
+            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ''
             : roll?.terms[0]?.total ?? '';
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
+          reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
         default:
       }
     }
     if (['isPostCheckSave'].includes(reactionTriggerName)) {
-      // Note: we use the same config as the attack to determine is the TPR owner can see of the Roll.
-      const showAttackRoll =
-        showReactionAttackRoll ??
-        MidiQOL.configSettings().showReactionAttackRoll;
+    // Note: we use the same config as the attack to determine is the TPR owner can see of the Roll.
+      const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
       const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
       switch (showAttackRoll) {
         case 'all':
         case 'allCrit':
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            roll?.total ?? ''
-          }</h4>`;
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''}`;
           break;
         case 'd20': {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ??
-              roll.terms[0]?.total
+            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ''
             : roll?.terms[0]?.total ?? '';
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
+          reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
         default:
@@ -766,46 +636,37 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Handles third party reactions for the specied triggers.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {string[]} triggerList - List of reaction triggers needing to be handled.
-   * @param {object} options - Options to override some defaults or change the execution behavior.
-   */
+ * Handles third party reactions for the specied triggers.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {string[]} triggerList - List of reaction triggers needing to be handled.
+ * @param {object} options - Options to override some defaults or change the execution behavior.
+ */
   async function handleThirdPartyReactions(workflow, triggerList, options) {
     options ??= workflow?.options;
-    if (
-      !workflow ||
-      !(MidiQOL.configSettings().allowUseMacro && !options.noTargetOnuseMacro)
-    ) {
+    if (!workflow || !(MidiQOL.configSettings().allowUseMacro && !options.noTargetOnuseMacro)) {
       return;
     }
 
     for (let trigger of triggerList) {
-      // Add Third Party Reactions trigger prefix
+    // Add Third Party Reactions trigger prefix
       trigger = 'tpr.' + trigger;
       for (let tokenUuid of Object.keys(workflow.thirdPartyReactions ?? {})) {
         const tokenReactionsInfo = workflow.thirdPartyReactions[tokenUuid];
-        await handleThirdPartyReactionsForToken(
-          workflow,
-          trigger,
-          tokenUuid,
-          tokenReactionsInfo,
-          options
-        );
+        await handleThirdPartyReactionsForToken(workflow, trigger, tokenUuid, tokenReactionsInfo, options);
       }
     }
   }
 
   /**
-   * Handles the evaluation and execution of reactions, if the conditions are met, associated to the specified token uuid.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {string} trigger - The current trigger for which to evaluate possible reaction executions.
-   * @param {string} reactionTokenUuid - The token uuid of the reaction's owner.
-   * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
-   * @param {object} options - Options used for the evaluation and execution of the third party reactions.
-   */
+ * Handles the evaluation and execution of reactions, if the conditions are met, associated to the specified token uuid.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {string} trigger - The current trigger for which to evaluate possible reaction executions.
+ * @param {string} reactionTokenUuid - The token uuid of the reaction's owner.
+ * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
+ * @param {object} options - Options used for the evaluation and execution of the third party reactions.
+ */
   async function handleThirdPartyReactionsForToken(
     workflow,
     trigger,
@@ -813,11 +674,9 @@ export function runElwinsHelpers() {
     tokenReactionsInfo,
     options = {}
   ) {
-    // TODO filter out all activities for the same item?
+  // TODO filter out all activities for the same item?
     let filteredReactions = tokenReactionsInfo.reactions.filter(
-      (reactionData) =>
-        trigger === reactionData.targetOnUse &&
-        reactionData.item.uuid !== workflow.itemUuid
+      (reactionData) => trigger === reactionData.targetOnUse && reactionData.item.uuid !== workflow.itemUuid
     );
     if (!filteredReactions.length) {
       return;
@@ -825,29 +684,20 @@ export function runElwinsHelpers() {
 
     const reactionToken = fromUuidSync(reactionTokenUuid)?.object;
     if (!reactionToken) {
-      console.warn(
-        `${MACRO_NAME} | Missing reaction token.`,
-        reactionTokenUuid
-      );
+      console.warn(`${MACRO_NAME} | Missing reaction token.`, reactionTokenUuid);
       return;
     }
 
     const reactionActor = reactionToken.actor;
     if (!reactionActor?.flags) {
-      console.warn(
-        `${MACRO_NAME} | Missing reaction actor or actor flags.`,
-        reactionToken
-      );
+      console.warn(`${MACRO_NAME} | Missing reaction actor or actor flags.`, reactionToken);
       return;
     }
 
     if (MidiQOL.checkRule('incapacitated')) {
       if (MidiQOL.checkIncapacitated(reactionActor)) {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | Actor is incapacitated.`,
-            reactionActor
-          );
+          console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
         }
         return;
       }
@@ -858,32 +708,24 @@ export function runElwinsHelpers() {
       if (!user) {
         return 'none';
       }
-      return user.isGM
-        ? MidiQOL.configSettings().gmDoReactions
-        : MidiQOL.configSettings().doReactions;
+      return user.isGM ? MidiQOL.configSettings().gmDoReactions : MidiQOL.configSettings().doReactions;
     }
 
     // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
     let player = MidiQOL.playerForActor(reactionActor);
     if (getReactionSetting(player) === 'none') {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Reaction settings set to none for player.`,
-          player
-        );
+        console.warn(`${MACRO_NAME} | Reaction settings set to none for player.`, player);
       }
       return;
     }
 
     if (!player?.active) {
-      // Find first active GM player
+    // Find first active GM player
       player = game.users?.activeGM;
     }
     if (!player?.active) {
-      console.warn(
-        `${MACRO_NAME} | No active player or GM for actor.`,
-        reactionActor
-      );
+      console.warn(`${MACRO_NAME} | No active player or GM for actor.`, reactionActor);
       return;
     }
 
@@ -906,11 +748,7 @@ export function runElwinsHelpers() {
         targets = [...workflow.hitTargets, ...workflow.hitTargetsEC];
         break;
       case 'isMissed':
-        targets = [
-          ...workflow.targets
-            .difference(workflow.hitTargets)
-            .difference(workflow.hitTargetsEC),
-        ];
+        targets = [...workflow.targets.difference(workflow.hitTargets).difference(workflow.hitTargetsEC)];
         break;
       case 'isTargeted':
       case 'isPreAttacked':
@@ -926,26 +764,18 @@ export function runElwinsHelpers() {
 
     let first = true;
     for (let target of targets) {
-      // Check each call after first in case the the status changed or the reaction was used
+    // Check each call after first in case the the status changed or the reaction was used
       let reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
       if (!first) {
-        if (
-          MidiQOL.checkRule('incapacitated') &&
-          MidiQOL.checkIncapacitated(reactionActor)
-        ) {
+        if (MidiQOL.checkRule('incapacitated') && MidiQOL.checkIncapacitated(reactionActor)) {
           if (debug) {
-            console.warn(
-              `${MACRO_NAME} | Actor is incapacitated.`,
-              reactionActor
-            );
+            console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
           }
           return;
         }
       }
       if (['isPostCheckSave'].includes(regTrigger)) {
-        roll = workflow.saveRolls?.find(
-          (r) => r.data.tokenUuid === target.document.uuid
-        );
+        roll = workflow.saveRolls?.find((r) => r.data.tokenUuid === target.document.uuid);
       }
       const tmpFilteredReactions = [];
       for (let reactionData of filteredReactions) {
@@ -974,38 +804,29 @@ export function runElwinsHelpers() {
         }
       }
       filteredReactions = tmpFilteredReactions;
-      await callReactionsForToken(
-        workflow,
-        reactionToken,
-        player,
-        trigger,
-        target,
-        filteredReactions,
-        roll,
-        options
-      );
+      await callReactionsForToken(workflow, reactionToken, player, trigger, target, filteredReactions, roll, options);
       first = false;
     }
   }
 
   /**
-   * Validates if a reaction should be triggered. Some of the validation are the range and disposition between the reaction owner's
-   * and the trigger source, and the reaction activation condition.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {Item5e} triggerItem - The item that triggered a possible reaction.
-   * @param {Token5e} reactionToken - The token of the reaction's owner.
-   * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
-   * @param {Token5e} target - The target of the trigger item.
-   * @param {ReactionData} reactionData - The reaction data of the possible reaction.
-   * @param {Activity} activity - The activity from the reaction data to test.
-   * @param {boolean} reactionUsed - If the actor has already used a reaction.
-   * @param {number} maxCastLevel - Maximum cast level allowed for reaction spells.
-   * @param {object} options - Options that can be used in the different validations.
-   * @param {string} options.extraActivationCond - Extra activation condition to be evaluated.
-   *
-   * @returns {boolean} true if the reaction can be triggered, false otherwise.
-   */
+ * Validates if a reaction should be triggered. Some of the validation are the range and disposition between the reaction owner's
+ * and the trigger source, and the reaction activation condition.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {Item5e} triggerItem - The item that triggered a possible reaction.
+ * @param {Token5e} reactionToken - The token of the reaction's owner.
+ * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
+ * @param {Token5e} target - The target of the trigger item.
+ * @param {ReactionData} reactionData - The reaction data of the possible reaction.
+ * @param {Activity} activity - The activity from the reaction data to test.
+ * @param {boolean} reactionUsed - If the actor has already used a reaction.
+ * @param {number} maxCastLevel - Maximum cast level allowed for reaction spells.
+ * @param {object} options - Options that can be used in the different validations.
+ * @param {string} options.extraActivationCond - Extra activation condition to be evaluated.
+ *
+ * @returns {boolean} true if the reaction can be triggered, false otherwise.
+ */
   async function canTriggerReactionActivity(
     workflow,
     triggerItem,
@@ -1023,15 +844,12 @@ export function runElwinsHelpers() {
     // Check self condition
     if (reactionData.ignoreSelf && self) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | canTriggerReaction- ${reactionData.item.name}: self not allowed.`
-        );
+        console.warn(`${MACRO_NAME} | canTriggerReaction- ${reactionData.item.name}: self not allowed.`);
       }
       return false;
     }
 
-    const triggerToken =
-      reactionData.triggerSource === 'attacker' ? workflow.token : target;
+    const triggerToken = reactionData.triggerSource === 'attacker' ? workflow.token : target;
 
     // Check allowed disposition condition
     let allowedDisposition;
@@ -1039,17 +857,14 @@ export function runElwinsHelpers() {
     if (disposition) {
       allowedDisposition = reactionToken.document.disposition * disposition;
     }
-    if (
-      disposition &&
-      allowedDisposition !== triggerToken.document.disposition
-    ) {
+    if (disposition && allowedDisposition !== triggerToken.document.disposition) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | canTriggerReactionActivity - ${reactionData.item.name}-${activity.name}: disposition not allowed.`,
-          {
-            allowedDisposition,
-            triggerTokenDisp: triggerToken.document.disposition,
-          }
+        `${MACRO_NAME} | canTriggerReactionActivity - ${reactionData.item.name}-${activity.name}: disposition not allowed.`,
+        {
+          allowedDisposition,
+          triggerTokenDisp: triggerToken.document.disposition,
+        }
         );
       }
       return false;
@@ -1058,17 +873,15 @@ export function runElwinsHelpers() {
     // Check range condition
     const range = getReactionRange(activity);
     if (range) {
-      const tmpDist = MidiQOL.computeDistance(reactionToken, triggerToken, {
-        wallsBlock: range.wallsBlock,
-      });
+      const tmpDist = MidiQOL.computeDistance(reactionToken, triggerToken, { wallsBlock: range.wallsBlock });
       if (tmpDist < 0 || tmpDist > range.value) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: invalid distance.`,
-            {
-              distance: tmpDist,
-              allowedDistance: range,
-            }
+          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: invalid distance.`,
+          {
+            distance: tmpDist,
+            allowedDistance: range,
+          }
           );
         }
         return false;
@@ -1079,14 +892,10 @@ export function runElwinsHelpers() {
     // Cache canSee results in reactionsInfo
     let canSeeTriggerSource;
     if (reactionData.triggerSource === 'attacker') {
-      canSeeTriggerSource = tokenReactionsInfo.canSeeAttacker ??=
-        MidiQOL.canSee(reactionToken, workflow.token);
+      canSeeTriggerSource = tokenReactionsInfo.canSeeAttacker ??= MidiQOL.canSee(reactionToken, workflow.token);
     } else {
       if (!tokenReactionsInfo.canSeeTargets?.has(target)) {
-        (tokenReactionsInfo.canSeeTargets ??= new Map()).set(
-          target,
-          MidiQOL.canSee(reactionToken, target)
-        );
+        (tokenReactionsInfo.canSeeTargets ??= new Map()).set(target, MidiQOL.canSee(reactionToken, target));
       }
       canSeeTriggerSource = tokenReactionsInfo.canSeeTargets.get(target);
     }
@@ -1094,7 +903,7 @@ export function runElwinsHelpers() {
     if (!self && reactionData.canSee && !canSeeTriggerSource) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: can't see trigger token.`
+        `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: can't see trigger token.`
         );
       }
       return false;
@@ -1121,58 +930,33 @@ export function runElwinsHelpers() {
         tokenUuid: reactionToken?.document.uuid,
         canSeeTriggerSource,
         get isMeleeAttack() {
-          return isMeleeAttack(
-            workflow.activity,
-            workflow.token,
-            target,
-            workflow.attackMode
-          );
+          return isMeleeAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
         get isMeleeWeaponAttack() {
-          return isMeleeWeaponAttack(
-            workflow.activity,
-            workflow.token,
-            target,
-            workflow.attackMode
-          );
+          return isMeleeWeaponAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
         get isRangedAttack() {
-          return isRangedAttack(
-            workflow.activity,
-            workflow.token,
-            target,
-            workflow.attackMode
-          );
+          return isRangedAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
         get isRangedWeaponAttack() {
-          return isRangedWeaponAttack(
-            workflow.activity,
-            workflow.token,
-            target,
-            workflow.attackMode
-          );
+          return isRangedWeaponAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
       },
     };
 
     // Check extra activation condition for this trigger
     if (options?.extraActivationCond) {
-      const returnValue = evalReactionActivationCondition(
-        workflow,
-        options.extraActivationCond,
-        target,
-        {
-          item: triggerItem,
-          extraData,
-        }
-      );
+      const returnValue = evalReactionActivationCondition(workflow, options.extraActivationCond, target, {
+        item: triggerItem,
+        extraData,
+      });
       if (!returnValue) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: extra activation condition not met.`,
-            {
-              extraActivationCond: options.extraActivationCond,
-            }
+          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: extra activation condition not met.`,
+          {
+            extraActivationCond: options.extraActivationCond,
+          }
           );
         }
         return false;
@@ -1183,8 +967,8 @@ export function runElwinsHelpers() {
     if (reactionCondition) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${activity.name} using condition ${reactionCondition}`,
-          { extraData }
+        `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${activity.name} using condition ${reactionCondition}`,
+        { extraData }
         );
       }
 
@@ -1196,8 +980,8 @@ export function runElwinsHelpers() {
       ) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: reaction condition not met.`,
-            reactionCondition
+          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: reaction condition not met.`,
+          reactionCondition
           );
         }
         return false;
@@ -1207,17 +991,14 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the disposition if any found for the specified activity.
-   *
-   * @param {Activity} activity - The activity for which to retrieve the disposition.
-   *
-   * @returns {number} the relative disposition compared to the trigger source.
-   */
+ * Returns the disposition if any found for the specified activity.
+ *
+ * @param {Activity} activity - The activity for which to retrieve the disposition.
+ *
+ * @returns {number} the relative disposition compared to the trigger source.
+ */
   function getReactionDisposition(activity) {
-    const targetType = foundry.utils.getProperty(
-      activity,
-      'target.affects.type'
-    );
+    const targetType = foundry.utils.getProperty(activity, 'target.affects.type');
     if (targetType === 'ally') {
       return CONST.TOKEN_DISPOSITIONS.FRIENDLY;
     } else if (targetType === 'enemy') {
@@ -1227,71 +1008,51 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the range data if any found for the specified activity.
-   *
-   * @param {Activity} activity - The activity for which to retrieve the range.
-   *
-   * @returns {{value: number, wallsBlock: {boolean}}} range data for the specified activity,
-   * the data is composed of a value which is the range and wallsBlock, a boolean to indicate
-   * if walls should block or not the distance computation.
-   */
+ * Returns the range data if any found for the specified activity.
+ *
+ * @param {Activity} activity - The activity for which to retrieve the range.
+ *
+ * @returns {{value: number, wallsBlock: {boolean}}} range data for the specified activity,
+ * the data is composed of a value which is the range and wallsBlock, a boolean to indicate
+ * if walls should block or not the distance computation.
+ */
   function getReactionRange(activity) {
     const range = {};
     range.value = getRangeFromActivity(activity);
-    range.wallsBlock = !foundry.utils.getProperty(
-      activity.item,
-      'flags.midiProperties.ignoreTotalCover'
-    );
+    range.wallsBlock = !foundry.utils.getProperty(activity.item, 'flags.midiProperties.ignoreTotalCover');
 
-    return range?.value !== undefined || range?.value == null
-      ? range
-      : undefined;
+    return range?.value !== undefined || range?.value == null ? range : undefined;
   }
 
   /**
-   * Returns the range data if any found for the specified activity.
-   *
-   * Note: the code was inspired from the checkRange function from midi-qol utils.ts.
-   *
-   * @param {Activity} activity - The activity for which to retrieve the range data.
-   *
-   * @returns {number} range for the specified activity converted in the canvas scene grid units if possible,
-   */
+ * Returns the range data if any found for the specified activity.
+ *
+ * Note: the code was inspired from the checkRange function from midi-qol utils.ts.
+ *
+ * @param {Activity} activity - The activity for which to retrieve the range data.
+ *
+ * @returns {number} range for the specified activity converted in the canvas scene grid units if possible,
+ */
   function getRangeFromActivity(activity) {
-    if (
-      activity?.range?.value === null ||
-      activity?.range?.value === undefined
-    ) {
+    if (activity?.range?.value === null || activity?.range?.value === undefined) {
       return undefined;
     }
     let range = activity.range.value;
     if (activity.range.units) {
       switch (activity.range.units) {
         case 'mi': // miles - assume grid units are feet or miles - ignore furlongs/chains whatever
-          if (
-            ['feet', 'ft'].includes(
-              canvas?.scene?.grid.units?.toLocaleLowerCase()
-            )
-          ) {
+          if (['feet', 'ft'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 5280;
-          } else if (
-            ['yards', 'yd', 'yds'].includes(
-              canvas?.scene?.grid.units?.toLocaleLowerCase()
-            )
-          ) {
+          } else if (['yards', 'yd', 'yds'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 1760;
           }
           break;
         case 'km': // kilometeres - assume grid units are meters or kilometers
-          if (
-            ['meter', 'm', 'meters', 'metre', 'metres'].includes(
-              canvas?.scene?.grid.units?.toLocaleLowerCase()
-            )
-          ) {
+          if (['meter', 'm', 'meters', 'metre', 'metres'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 1000;
           }
           break;
-        // "none" "self" "ft" "m" "any" "spec":
+          // "none" "self" "ft" "m" "any" "spec":
         default:
           break;
       }
@@ -1300,21 +1061,16 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Evaluates a reaction activation condition.
-   *
-   * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
-   * @param {string} condition - the condition to evaluate.
-   * @param {Token5e} target - the target
-   * @param {object} options - options for the condition evaluation.
-   *
-   * @returns {boolean} true if the condition evaluates to true, false otherwise.
-   */
-  function evalReactionActivationCondition(
-    workflow,
-    condition,
-    target,
-    options = {}
-  ) {
+ * Evaluates a reaction activation condition.
+ *
+ * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
+ * @param {string} condition - the condition to evaluate.
+ * @param {Token5e} target - the target
+ * @param {object} options - options for the condition evaluation.
+ *
+ * @returns {boolean} true if the condition evaluates to true, false otherwise.
+ */
+  function evalReactionActivationCondition(workflow, condition, target, options = {}) {
     if (options.errorReturn === undefined) {
       options.errorReturn = false;
     }
@@ -1322,15 +1078,15 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Evaluates an activation condition.
-   *
-   * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
-   * @param {string} condition - the condition to evaluate.
-   * @param {Token5e} target - the target
-   * @param {object} options - options for the condition evaluation.
-   *
-   * @returns {boolean} true if the condition evaluates to true, false otherwise.
-   */
+ * Evaluates an activation condition.
+ *
+ * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
+ * @param {string} condition - the condition to evaluate.
+ * @param {Token5e} target - the target
+ * @param {object} options - options for the condition evaluation.
+ *
+ * @returns {boolean} true if the condition evaluates to true, false otherwise.
+ */
   function evalActivationCondition(workflow, condition, target, options = {}) {
     if (condition === undefined || condition === '') {
       return true;
@@ -1343,21 +1099,17 @@ export function runElwinsHelpers() {
       item: options.item,
     });
     options.errorReturn ??= true;
-    const returnValue = MidiQOL.evalCondition(
-      condition,
-      workflow.conditionData,
-      options
-    );
+    const returnValue = MidiQOL.evalCondition(condition, workflow.conditionData, options);
     return returnValue;
   }
 
   /**
-   * Returns the disposition value for the specified disposition string.
-   *
-   * @param {string} disposition - the disposition to convert to its value.
-   *
-   * @returns {number} the disposition value.
-   */
+ * Returns the disposition value for the specified disposition string.
+ *
+ * @param {string} disposition - the disposition to convert to its value.
+ *
+ * @returns {number} the disposition value.
+ */
   function getDispositionFor(disposition) {
     if (/^-?\d+$/.test(disposition)) {
       return Number(disposition);
@@ -1374,36 +1126,26 @@ export function runElwinsHelpers() {
       case 'all':
         return null;
     }
-    const validStrings = [
-      '-2',
-      '-1',
-      '0',
-      '1',
-      'FRIENDLY',
-      'HOSTILE',
-      'NEUTRAL',
-      'SECRET',
-      'all',
-    ];
+    const validStrings = ['-2', '-1', '0', '1', 'FRIENDLY', 'HOSTILE', 'NEUTRAL', 'SECRET', 'all'];
     throw new Error(
-      `${MACRO_NAME} | Disposition ${disposition} is invalid. Disposition must be one of "${validStrings}"`
+    `${MACRO_NAME} | Disposition ${disposition} is invalid. Disposition must be one of "${validStrings}"`
     );
   }
 
   /**
-   * Calls MidiQOL remote chooseReactions for a token having third party reactions for the trigger.
-   * Calls the associated pre macro if defined for each triggered reaction, then calls the remote chooseReactions and
-   * finally calls the associated post macro if defined.
-   *
-   * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
-   * @param {Toke5e} reactionToken - the token having third party reactions.
-   * @param {User} user - the user associated to the reaction token, or the GM is none active.
-   * @param {string} reactionTrigger - the third party reaction trigger.
-   * @param {Token5e} target - the target of the third party reaction trigger.
-   * @param {ReactionData[]} reactions - list of reaction data with their allowed activities from which the reaction token can choose to activate.
-   * @param {Roll} roll - The D20 roll of the attack, saving throw or ability test.
-   * @param {object} options - options to pass to macros.
-   */
+ * Calls MidiQOL remote chooseReactions for a token having third party reactions for the trigger.
+ * Calls the associated pre macro if defined for each triggered reaction, then calls the remote chooseReactions and
+ * finally calls the associated post macro if defined.
+ *
+ * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
+ * @param {Toke5e} reactionToken - the token having third party reactions.
+ * @param {User} user - the user associated to the reaction token, or the GM is none active.
+ * @param {string} reactionTrigger - the third party reaction trigger.
+ * @param {Token5e} target - the target of the third party reaction trigger.
+ * @param {ReactionData[]} reactions - list of reaction data with their allowed activities from which the reaction token can choose to activate.
+ * @param {Roll} roll - The D20 roll of the attack, saving throw or ability test.
+ * @param {object} options - options to pass to macros.
+ */
   async function callReactionsForToken(
     workflow,
     reactionToken,
@@ -1418,15 +1160,11 @@ export function runElwinsHelpers() {
       return;
     }
     const reactionsByTriggerSources = [];
-    const reactionsByAttacker = reactions.filter(
-      (reactionData) => reactionData.triggerSource === 'attacker'
-    );
+    const reactionsByAttacker = reactions.filter((reactionData) => reactionData.triggerSource === 'attacker');
     if (reactionsByAttacker.length) {
       reactionsByTriggerSources.push(reactionsByAttacker);
     }
-    const reactionsByTarget = reactions.filter(
-      (reactionData) => reactionData.triggerSource === 'target'
-    );
+    const reactionsByTarget = reactions.filter((reactionData) => reactionData.triggerSource === 'target');
     if (reactionsByTarget.length) {
       reactionsByTriggerSources.push(reactionsByTarget);
     }
@@ -1440,21 +1178,17 @@ export function runElwinsHelpers() {
       );
       for (let reactionData of reactionsByTriggerSource) {
         try {
-          // TODO allow return values to pass options to reaction?
+        // TODO allow return values to pass options to reaction?
           if (reactionData.macroName && reactionData.preMacro) {
             if (debug) {
-              console.warn(
-                `${MACRO_NAME} | calling Third Party Reaction pre macro.`,
-                {
-                  workflow,
-                  reactionData,
-                  reactionTrigger,
-                  preReactionOptions,
-                }
-              );
+              console.warn(`${MACRO_NAME} | calling Third Party Reaction pre macro.`, {
+                workflow,
+                reactionData,
+                reactionTrigger,
+                preReactionOptions,
+              });
             }
-            preReactionOptions.thirdPartyReactionActivities =
-              reactionData.allowedActivities.map((a) => a.uuid);
+            preReactionOptions.thirdPartyReactionActivities = reactionData.allowedActivities.map((a) => a.uuid);
 
             let [result] = await workflow.callMacros(
               workflow.item,
@@ -1466,11 +1200,7 @@ export function runElwinsHelpers() {
             if (result?.skip) {
               if (result.activities?.length) {
                 const toRemove = new Set(result.activities);
-                validReactionActivities.push(
-                  ...reactionData.allowedActivities.filter(
-                    (a) => !toRemove.has(a)
-                  )
-                );
+                validReactionActivities.push(...reactionData.allowedActivities.filter((a) => !toRemove.has(a)));
               }
             } else {
               validReactionActivities.push(...reactionData.allowedActivities);
@@ -1489,9 +1219,7 @@ export function runElwinsHelpers() {
           continue;
         }
         // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
-        const reactionActivityUuids = validReactionActivities.map(
-          (a) => a.uuid
-        );
+        const reactionActivityUuids = validReactionActivities.map((a) => a.uuid);
         const reactionOptions = foundry.utils.mergeObject(
           {
             itemUuid: options?.item?.uuid ?? workflow.itemUuid,
@@ -1504,24 +1232,12 @@ export function runElwinsHelpers() {
           options?.reactionOptions ?? {}
         );
         let reactionTargetUuid;
-        foundry.utils.setProperty(
-          reactionOptions.thirdPartyReaction,
-          'triggerSource',
-          triggerSource
-        );
+        foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'triggerSource', triggerSource);
         if (triggerSource === 'attacker') {
-          foundry.utils.setProperty(
-            reactionOptions.thirdPartyReaction,
-            'targetUuid',
-            target.document.uuid
-          );
+          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'targetUuid', target.document.uuid);
           reactionTargetUuid = workflow.tokenUuid;
         } else {
-          foundry.utils.setProperty(
-            reactionOptions.thirdPartyReaction,
-            'attackerUuid',
-            workflow.tokenUuid
-          );
+          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'attackerUuid', workflow.tokenUuid);
           reactionTargetUuid = target.document.uuid;
         }
 
@@ -1541,11 +1257,7 @@ export function runElwinsHelpers() {
           options: reactionOptions,
         };
 
-        result = await MidiQOL.socket().executeAsUser(
-          'chooseReactions',
-          user.id,
-          data
-        );
+        result = await MidiQOL.socket().executeAsUser('chooseReactions', user.id, data);
       } finally {
         const postReactionOptions = foundry.utils.mergeObject(
           {
@@ -1557,18 +1269,15 @@ export function runElwinsHelpers() {
         );
         for (let reactionData of reactionsByTriggerSource) {
           try {
-            // TODO only call if reaction chosen or has preMacro
+          // TODO only call if reaction chosen or has preMacro
             if (reactionData.macroName && reactionData.postMacro) {
               if (debug) {
-                console.warn(
-                  `${MACRO_NAME} | calling Third Party Reaction post macro.`,
-                  {
-                    workflow,
-                    reactionData,
-                    reactionTrigger,
-                    postReactionOptions,
-                  }
-                );
+                console.warn(`${MACRO_NAME} | calling Third Party Reaction post macro.`, {
+                  workflow,
+                  reactionData,
+                  reactionTrigger,
+                  postReactionOptions,
+                });
               }
               await workflow.callMacros(
                 workflow.item,
@@ -1587,15 +1296,15 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the token name that can be displayed for the specified user.
-   * Note: Extended from MidiQOL to allow passing a user instead of taking game.user.
-   *
-   * @param {User} user - The user to which the token name will be displayed.
-   * @param {Token5e} token - The token for which to display the name.
-   * @param {boolean} checkGM - If true, indicate that a GM user should be shown the token.name.
-   *
-   * @returns {string} The token name to be displayed to the specified user.
-   */
+ * Returns the token name that can be displayed for the specified user.
+ * Note: Extended from MidiQOL to allow passing a user instead of taking game.user.
+ *
+ * @param {User} user - The user to which the token name will be displayed.
+ * @param {Token5e} token - The token for which to display the name.
+ * @param {boolean} checkGM - If true, indicate that a GM user should be shown the token.name.
+ *
+ * @returns {string} The token name to be displayed to the specified user.
+ */
   function getTokenPlayerName(user, token, checkGM = false) {
     if (!token) {
       return game.user?.name;
@@ -1612,70 +1321,58 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns a string containing two midi target divs, one to be displayed to GM and another one to be displayed to players.
-   *
-   * @param {Token5e} targetToken - The token for which to display the name.
-   * @param {string} textTemplate - The text template which should contain the target variable (${tokenName}) to replaced by the proper one.
-   *
-   * @returns {string} Div texts for GM and non GM player.
-   */
+ * Returns a string containing two midi target divs, one to be displayed to GM and another one to be displayed to players.
+ *
+ * @param {Token5e} targetToken - The token for which to display the name.
+ * @param {string} textTemplate - The text template which should contain the target variable (${tokenName}) to replaced by the proper one.
+ *
+ * @returns {string} Div texts for GM and non GM player.
+ */
   function getTargetDivs(targetToken, textTemplate) {
-    const gmText = textTemplate.replace(
-      '${tokenName}',
-      getTokenName(targetToken)
-    );
+    const gmText = textTemplate.replace('${tokenName}', getTokenName(targetToken));
     const targetName = MidiQOL.getTokenPlayerName(targetToken);
     const playerText = textTemplate.replace('${tokenName}', targetName);
     return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
   }
 
   /**
-   * Returns true if the item has the property.
-   *
-   * @param {Item5e} item - Item to test for a property
-   * @param {string} propName - Name of the property to test.
-   *
-   * @returns {boolean} true if the item has the property, false otherwise.
-   */
+ * Returns true if the item has the property.
+ *
+ * @param {Item5e} item - Item to test for a property
+ * @param {string} propName - Name of the property to test.
+ *
+ * @returns {boolean} true if the item has the property, false otherwise.
+ */
   function hasItemProperty(item, propName) {
     return item?.system?.properties?.has(propName);
   }
 
   /**
-   * Reduces the applied damage from the damageItem by preventedDmg.
-   *
-   * @param {object} damageItem - The MidiQOL damageItem to be updated.
-   * @param {number} preventedDmg - The amount of damage prevented.
-   * @param {Item5e} sourceItem - Source item of the damage prevention. (optional)
-   */
+ * Reduces the applied damage from the damageItem by preventedDmg.
+ *
+ * @param {object} damageItem - The MidiQOL damageItem to be updated.
+ * @param {number} preventedDmg - The amount of damage prevented.
+ * @param {Item5e} sourceItem - Source item of the damage prevention. (optional)
+ */
   function reduceAppliedDamage(damageItem, preventedDmg, sourceItem) {
     if (!(preventedDmg > 0)) {
-      // Only values greater than 0 are applied.
-      console.warn(
-        `${MACRO_NAME} | Only greater than 0 damage prevention is supported.`,
-        {
-          damageItem,
-          preventedDmg,
-          sourceItem,
-        }
-      );
+    // Only values greater than 0 are applied.
+      console.warn(`${MACRO_NAME} | Only greater than 0 damage prevention is supported.`, {
+        damageItem,
+        preventedDmg,
+        sourceItem,
+      });
       return;
     }
     const currentDamagePrevention =
-      foundry.utils.getProperty(
-        damageItem.calcDamageOptions,
-        'elwinHelpers.damagePrevention'
-      ) ?? 0;
+    foundry.utils.getProperty(damageItem.calcDamageOptions, 'elwinHelpers.damagePrevention') ?? 0;
     foundry.utils.setProperty(
       damageItem.calcDamageOptions,
       'elwinHelpers.damagePrevention',
       currentDamagePrevention + preventedDmg
     );
     const actor = fromUuidSync(damageItem.actorUuid);
-    damageItem.damageDetail = actor?.calculateDamage(
-      damageItem.rawDamageDetail,
-      damageItem.calcDamageOptions
-    );
+    damageItem.damageDetail = actor?.calculateDamage(damageItem.rawDamageDetail, damageItem.calcDamageOptions);
     calculateAppliedDamage(damageItem);
     if (sourceItem && damageItem.details) {
       damageItem.details.push(`${sourceItem.name} - DP`);
@@ -1683,10 +1380,10 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Calculates the applied damage from the damageItem.
-   *
-   * @param {object} damageItem - The MidiQOL damageItem to be updated.
-   */
+ * Calculates the applied damage from the damageItem.
+ *
+ * @param {object} damageItem - The MidiQOL damageItem to be updated.
+ */
   function calculateAppliedDamage(damageItem) {
     if (!damageItem) {
       if (debug) {
@@ -1706,9 +1403,7 @@ export function runElwinsHelpers() {
     const as = actor?.system;
     if (!as || !as.attributes.hp) {
       if (debug) {
-        console.warn(`${MACRO_NAME} | Missing damaged actor or hp attribute.`, {
-          damageItem,
-        });
+        console.warn(`${MACRO_NAME} | Missing damaged actor or hp attribute.`, { damageItem });
       }
       return;
     }
@@ -1716,16 +1411,10 @@ export function runElwinsHelpers() {
     // Recompute damage
     amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
     const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
-    const deltaHP = Math.clamp(
-      amount - deltaTemp,
-      -as.attributes.hp.damage,
-      damageItem.oldHP
-    );
+    const deltaHP = Math.clamp(amount - deltaTemp, -as.attributes.hp.damage, damageItem.oldHP);
     damageItem.newHP = damageItem.oldHP - deltaHP;
     damageItem.hpDamage = deltaHP;
-    damageItem.newTempHP = Math.floor(
-      Math.max(0, damageItem.oldTempHP - deltaTemp, temp)
-    );
+    damageItem.newTempHP = Math.floor(Math.max(0, damageItem.oldTempHP - deltaTemp, temp));
     damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
     damageItem.elwinHelpersEffectiveDamage = amount;
     // TODO should this reflect raw or not???
@@ -1736,95 +1425,65 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the item is a ramged weapon.
-   *
-   * @param {Item5e} item - The item used.
-   *
-   * @returns {boolean} true if the item is a ranged weapon, false otherwise.
-   */
+ * Returns true if the item is a ramged weapon.
+ *
+ * @param {Item5e} item - The item used.
+ *
+ * @returns {boolean} true if the item is a ranged weapon, false otherwise.
+ */
   function isWeapon(item) {
-    return (
-      item?.type === 'weapon' &&
-      ['simpleM', 'martialM', 'simpleR', 'martialR'].includes(
-        item?.system.type?.value
-      )
-    );
+    return item?.type === 'weapon' && ['simpleM', 'martialM', 'simpleR', 'martialR'].includes(item?.system.type?.value);
   }
 
   /**
-   * Returns true if the item is a melee weapon.
-   *
-   * @param {Item5e} item - The item used.
-   *
-   * @returns {boolean} true if the item is a melee weapon, false otherwise.
-   */
+ * Returns true if the item is a melee weapon.
+ *
+ * @param {Item5e} item - The item used.
+ *
+ * @returns {boolean} true if the item is a melee weapon, false otherwise.
+ */
   function isMeleeWeapon(item) {
-    return (
-      item?.type === 'weapon' &&
-      ['simpleM', 'martialM'].includes(item?.system.type?.value)
-    );
+    return item?.type === 'weapon' && ['simpleM', 'martialM'].includes(item?.system.type?.value);
   }
 
   /**
-   * Returns true if the item is a ramged weapon.
-   *
-   * @param {Item5e} item - The item used.
-   *
-   * @returns {boolean} true if the item is a ranged weapon, false otherwise.
-   */
+ * Returns true if the item is a ramged weapon.
+ *
+ * @param {Item5e} item - The item used.
+ *
+ * @returns {boolean} true if the item is a ranged weapon, false otherwise.
+ */
   function isRangedWeapon(item) {
-    return (
-      item?.type === 'weapon' &&
-      ['simpleR', 'martialR'].includes(item?.system.type?.value)
-    );
+    return item?.type === 'weapon' && ['simpleR', 'martialR'].includes(item?.system.type?.value);
   }
 
   /**
-   * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property.
-   *
-   * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
-   * @param {Token5e} sourceToken - The attacker's token.
-   * @param {Token5e} targetToken - The target's token.
-   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
-   */
-  function isMeleeAttack(
-    activityOrItem,
-    sourceToken,
-    targetToken,
-    attackMode = '',
-    checkThrownWeapons = true
-  ) {
-    return isMeleeAttackByClassification(
-      null,
-      activityOrItem,
-      sourceToken,
-      targetToken,
-      attackMode,
-      checkThrownWeapons
-    );
+ * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property.
+ *
+ * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
+ * @param {Token5e} sourceToken - The attacker's token.
+ * @param {Token5e} targetToken - The target's token.
+ * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+ * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+ *
+ * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
+ */
+  function isMeleeAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+    return isMeleeAttackByClassification(null, activityOrItem, sourceToken, targetToken, attackMode, checkThrownWeapons);
   }
 
   /**
-   * Returns true if the attack is a melee weapon attack. It also handle the case of weapons with the thrown property.
-   *
-   * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
-   * @param {Token5e} sourceToken - The attacker's token.
-   * @param {Token5e} targetToken - The target's token.
-   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
-   */
-  function isMeleeWeaponAttack(
-    activityOrItem,
-    sourceToken,
-    targetToken,
-    attackMode = '',
-    checkThrownWeapons = true
-  ) {
+ * Returns true if the attack is a melee weapon attack. It also handle the case of weapons with the thrown property.
+ *
+ * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
+ * @param {Token5e} sourceToken - The attacker's token.
+ * @param {Token5e} targetToken - The target's token.
+ * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+ * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+ *
+ * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
+ */
+  function isMeleeWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
     return isMeleeAttackByClassification(
       ['weapon'],
       activityOrItem,
@@ -1836,16 +1495,16 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is melee attack. It also handle the case of weapons with the thrown property.
-   *
-   * @param {string[]|null} classifications - Array of supported attack classifications.
-   * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
-   * @param {Token5e} sourceToken - The attacker's token.
-   * @param {Token5e} targetToken - The target's token.
-   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
-   */
+ * Returns true if the attack is melee attack. It also handle the case of weapons with the thrown property.
+ *
+ * @param {string[]|null} classifications - Array of supported attack classifications.
+ * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
+ * @param {Token5e} sourceToken - The attacker's token.
+ * @param {Token5e} targetToken - The target's token.
+ * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+ * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+ * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+ */
   function isMeleeAttackByClassification(
     classifications,
     activityOrItem,
@@ -1861,17 +1520,11 @@ export function runElwinsHelpers() {
     if (!activity || !activity.item) {
       return false;
     }
-    if (
-      activity?.type !== 'attack' ||
-      activity?.attack?.type?.value !== 'melee'
-    ) {
+    if (activity?.type !== 'attack' || activity?.attack?.type?.value !== 'melee') {
       return false;
     }
 
-    if (
-      classifications !== null &&
-      !classifications.includes(activity.attack.type.classification)
-    ) {
+    if (classifications !== null && !classifications.includes(activity.attack.type.classification)) {
       return false;
     }
 
@@ -1888,62 +1541,40 @@ export function runElwinsHelpers() {
       return true;
     }
 
-    const distance = MidiQOL.computeDistance(sourceToken, targetToken, {
-      wallsBlock: true,
-    });
+    const distance = MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true });
     // Note: reach on activities is set from melee weapon item range if not overriden.
     // TODO use grid default instead of 5
-    const meleeDistance =
-      activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
+    const meleeDistance = activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
     return distance >= 0 && distance <= meleeDistance;
   }
 
   /**
-   * Returns true if the attack is a ranged attack. It also handle the case of weapons with the thrown property.
-   *
-   * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
-   * @param {Token5e} sourceToken - The attacker's token.
-   * @param {Token5e} targetToken - The target's token.
-   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
-   */
-  function isRangedAttack(
-    activityOrItem,
-    sourceToken,
-    targetToken,
-    attackMode = '',
-    checkThrownWeapons = true
-  ) {
-    return isRangedAttackByClassification(
-      null,
-      activityOrItem,
-      sourceToken,
-      targetToken,
-      attackMode,
-      checkThrownWeapons
-    );
+ * Returns true if the attack is a ranged attack. It also handle the case of weapons with the thrown property.
+ *
+ * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
+ * @param {Token5e} sourceToken - The attacker's token.
+ * @param {Token5e} targetToken - The target's token.
+ * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+ * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+ *
+ * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+ */
+  function isRangedAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+    return isRangedAttackByClassification(null, activityOrItem, sourceToken, targetToken, attackMode, checkThrownWeapons);
   }
 
   /**
-   * Returns true if the attack is a ranged weapon attack. It also handle the case of weapons with the thrown property.
-   *
-   * @param {Activity|Item5e} activity - The activity or item used to attack.
-   * @param {Token5e} sourceToken - The attacker's token.
-   * @param {Token5e} targetToken - The target's token.
-   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
-   */
-  function isRangedWeaponAttack(
-    activityOrItem,
-    sourceToken,
-    targetToken,
-    attackMode = '',
-    checkThrownWeapons = true
-  ) {
+ * Returns true if the attack is a ranged weapon attack. It also handle the case of weapons with the thrown property.
+ *
+ * @param {Activity|Item5e} activity - The activity or item used to attack.
+ * @param {Token5e} sourceToken - The attacker's token.
+ * @param {Token5e} targetToken - The target's token.
+ * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+ * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+ *
+ * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+ */
+  function isRangedWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
     return isRangedAttackByClassification(
       ['weapon'],
       activityOrItem,
@@ -1955,16 +1586,16 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
-   *
-   * @param {string[]|null} classifications - Array of supported attack classifications.
-   * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
-   * @param {Token5e} sourceToken - The attacker's token.
-   * @param {Token5e} targetToken - The target's token.
-   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
-   */
+ * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
+ *
+ * @param {string[]|null} classifications - Array of supported attack classifications.
+ * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
+ * @param {Token5e} sourceToken - The attacker's token.
+ * @param {Token5e} targetToken - The target's token.
+ * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+ * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+ * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+ */
   function isRangedAttackByClassification(
     classifications,
     activityOrItem,
@@ -1985,10 +1616,7 @@ export function runElwinsHelpers() {
       return false;
     }
 
-    if (
-      classifications !== null &&
-      !classifications.includes(activity.attack.type.classification)
-    ) {
+    if (classifications !== null && !classifications.includes(activity.attack.type.classification)) {
       return false;
     }
 
@@ -2007,53 +1635,40 @@ export function runElwinsHelpers() {
       return false;
     }
 
-    const distance = MidiQOL.computeDistance(sourceToken, targetToken, {
-      wallsBlock: true,
-    });
+    const distance = MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true });
     // Note: reach on activities is set from melee weapon item range if not overriden.
     // TODO use grid default instead of 5
-    const meleeDistance =
-      activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
+    const meleeDistance = activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
     return distance > meleeDistance;
   }
 
   /**
-   * Selects all the tokens that are within X distance of the source token for the current game user.
-   *
-   * @param {Token} sourceToken - The reference token from which to compute the distance.
-   * @param {number} distance - The distance from the reference token.
-   * @param {object} options - Optional parameters.
-   * @param {number} [options.disposition=null] - The disposition of tokens: same(1), opposite(-1), neutral(0), ignore(null).
-   * @param {boolean} [options.includeSource=false] - Flag to indicate if the reference token should be included or not in the selected targets.
-   * @param {boolean} [options.updateSelected=true] - Flag to indicate if the user's target selection should be updated.
-   * @param {boolean} [options.isSeen=false] - Flag to indicate if the targets must be sensed by the source token.
-   *
-   * @returns {Token5e[]} An array of Token instances that were selected.
-   */
+ * Selects all the tokens that are within X distance of the source token for the current game user.
+ *
+ * @param {Token} sourceToken - The reference token from which to compute the distance.
+ * @param {number} distance - The distance from the reference token.
+ * @param {object} options - Optional parameters.
+ * @param {number} [options.disposition=null] - The disposition of tokens: same(1), opposite(-1), neutral(0), ignore(null).
+ * @param {boolean} [options.includeSource=false] - Flag to indicate if the reference token should be included or not in the selected targets.
+ * @param {boolean} [options.updateSelected=true] - Flag to indicate if the user's target selection should be updated.
+ * @param {boolean} [options.isSeen=false] - Flag to indicate if the targets must be sensed by the source token.
+ *
+ * @returns {Token5e[]} An array of Token instances that were selected.
+ */
   function selectTargetsWithinX(
     sourceToken,
     distance,
-    options = {
-      disposition: null,
-      includeSource: false,
-      updateSelected: true,
-      isSeen: false,
-    }
+    options = { disposition: null, includeSource: false, updateSelected: true, isSeen: false }
   ) {
     options.disposition ??= null;
     options.includeSource ??= false;
     options.updateSelected ??= true;
     options.isSeen ??= false;
 
-    let aoeTargets = MidiQOL.findNearby(
-      options.disposition,
-      sourceToken,
-      distance,
-      {
-        isSeen: options.isSeen,
-        includeToken: options.includeSource,
-      }
-    );
+    let aoeTargets = MidiQOL.findNearby(options.disposition, sourceToken, distance, {
+      isSeen: options.isSeen,
+      includeToken: options.includeSource,
+    });
 
     const aoeTargetIds = aoeTargets.map((t) => t.document.id);
     if (options.updateSelected) {
@@ -2064,17 +1679,13 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Inserts text into a Midi item chat message before the card buttons div and updates it.
-   *
-   * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
-   * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
-   * @param {string} text - The text to insert in the chat message.
-   */
-  async function insertTextBeforeButtonsIntoMidiItemChatMessage(
-    position,
-    chatMessage,
-    text
-  ) {
+ * Inserts text into a Midi item chat message before the card buttons div and updates it.
+ *
+ * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
+ * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
+ * @param {string} text - The text to insert in the chat message.
+ */
+  async function insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text) {
     let content = foundry.utils.deepClone(chatMessage.content);
     let searchRegex = undefined;
     let replaceString = `$1\n${text}\n$2`;
@@ -2085,7 +1696,7 @@ export function runElwinsHelpers() {
       case 'beforeButtons':
       default:
         searchRegex =
-          /(<\/section>)(\s*<div class="card-buttons midi-buttons">)/m;
+        /(<\/section>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
         break;
     }
     content = content.replace(searchRegex, replaceString);
@@ -2093,63 +1704,46 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Inserts text into a Midi item chat message before the card buttons div and updates it.
-   *
-   * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
-   * @param {MidiQOL.workflow} workflow - The current MidiQOL workflow for which to update the item card.
-   * @param {string} text - The text to insert in the MidiQOL item card.
-   */
+ * Inserts text into a Midi item chat message before the card buttons div and updates it.
+ *
+ * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
+ * @param {MidiQOL.workflow} workflow - The current MidiQOL workflow for which to update the item card.
+ * @param {string} text - The text to insert in the MidiQOL item card.
+ */
   async function insertTextIntoMidiItemCard(position, workflow, text) {
     const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
     if (!chatMessage) {
-      console.error(`${MACRO_NAME} | Could not find workflow item card`, {
-        workflow,
-      });
+      console.error(`${MACRO_NAME} | Could not find workflow item card`, { workflow });
       return;
     }
-    await insertTextBeforeButtonsIntoMidiItemChatMessage(
-      position,
-      chatMessage,
-      text
-    );
+    await insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text);
   }
 
   /**
-   * Validates the workflow on which a Midi hook was registered is the same as the one when it is called
-   * and that the workflow was not aborted.
-   *
-   * @param {string} itemName - The name of the item which registered the hook.
-   * @param {string} hookName - The name of the Midi hook.
-   * @param {string} actionName - The name of the item to be called in the hook.
-   * @param {MidiQOL.Workflow} originWorkflow - The workflow during which the hook was registered.
-   * @param {MidiQOL.Workflow} currentWorkflow - The workflow when the hook is called.
-   * @param {boolean} [debug=false] - Flag to indicate if debug info must be written to the console.
-   *
-   * @returns {boolean} true is the hook is still valid, false otherwise.
-   */
-  function isMidiHookStillValid(
-    itemName,
-    hookName,
-    actionName,
-    originWorkflow,
-    currentWorkflow,
-    debug = false
-  ) {
+ * Validates the workflow on which a Midi hook was registered is the same as the one when it is called
+ * and that the workflow was not aborted.
+ *
+ * @param {string} itemName - The name of the item which registered the hook.
+ * @param {string} hookName - The name of the Midi hook.
+ * @param {string} actionName - The name of the item to be called in the hook.
+ * @param {MidiQOL.Workflow} originWorkflow - The workflow during which the hook was registered.
+ * @param {MidiQOL.Workflow} currentWorkflow - The workflow when the hook is called.
+ * @param {boolean} [debug=false] - Flag to indicate if debug info must be written to the console.
+ *
+ * @returns {boolean} true is the hook is still valid, false otherwise.
+ */
+  function isMidiHookStillValid(itemName, hookName, actionName, originWorkflow, currentWorkflow, debug = false) {
     if (originWorkflow !== currentWorkflow) {
       if (debug) {
-        // Not same workflow do nothing
-        console.warn(
-          `${itemName} | ${hookName} hook called from a different workflow.`
-        );
+      // Not same workflow do nothing
+        console.warn(`${itemName} | ${hookName} hook called from a different workflow.`);
       }
       return false;
     }
     if (currentWorkflow.aborted) {
       if (debug) {
-        // Workflow was aborted do not trigger action
-        console.warn(
-          `${itemName} | workflow was aborted, ${actionName} is also cancelled.`
-        );
+      // Workflow was aborted do not trigger action
+        console.warn(`${itemName} | workflow was aborted, ${actionName} is also cancelled.`);
       }
       return false;
     }
@@ -2157,13 +1751,13 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Converts a workflow's critical into a normal hit.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Converts a workflow's critical into a normal hit.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   async function convertCriticalToNormalHit(workflow) {
     if (!workflow.isCritical) {
-      // Not a critical hit, do nothing
+    // Not a critical hit, do nothing
       return;
     }
 
@@ -2175,23 +1769,18 @@ export function runElwinsHelpers() {
     for (let tokenUuid of Object.keys(workflow.hitDisplayData)) {
       if (
         !workflow.hitTargets.some((t) => t.document.uuid === tokenUuid) &&
-        !workflow.hitTargetsEC.some((t) => t.document.uuid === tokenUuid)
+      !workflow.hitTargetsEC.some((t) => t.document.uuid === tokenUuid)
       ) {
-        // Skip targets that are not hit.
+      // Skip targets that are not hit.
         continue;
       }
       const hitDisplay = workflow.hitDisplayData[tokenUuid];
       // TODO remove? seems to not be used anymore...
       hitDisplay.hitResultNumeric = workflow.useActiveDefence
         ? ''
-        : `${workflow.attackTotal}/${
-            hitDisplay.ac ? Math.abs(workflow.attackTotal - hitDisplay.ac) : '-'
-          }`;
+        : `${workflow.attackTotal}/${hitDisplay.ac ? Math.abs(workflow.attackTotal - hitDisplay.ac) : '-'}`;
 
-      if (
-        game.user?.isGM &&
-        ['hitDamage', 'all'].includes(configSettings.hideRollDetails)
-      ) {
+      if (game.user?.isGM && ['hitDamage', 'all'].includes(configSettings.hideRollDetails)) {
         hitDisplay.hitSymbol = 'fa-tick';
       } else {
         hitDisplay.hitSymbol = 'fa-check';
@@ -2199,60 +1788,47 @@ export function runElwinsHelpers() {
     }
     // Redisplay roll and hits with the new data
     if (debug) {
-      console.warn(`${MACRO_NAME} | Hit display data after updates.`, {
-        hitDisplayData: workflow.hitDisplayData,
-      });
+      console.warn(`${MACRO_NAME} | Hit display data after updates.`, { hitDisplayData: workflow.hitDisplayData });
     }
 
     await workflow.displayAttackRoll(configSettings.mergeCard);
-    await workflow.displayHits(
-      workflow.whisperAttackCard,
-      configSettings.mergeCard
-    );
+    await workflow.displayHits(workflow.whisperAttackCard, configSettings.mergeCard);
   }
 
   /**
-   * Adjust the workflow attack roll target AC, it is used by dnd5e chat message to display the attack result.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   */
+ * Adjust the workflow attack roll target AC, it is used by dnd5e chat message to display the attack result.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
   function adjustAttackRollTargetAC(workflow) {
-    // TODO remove if midi-qol fixes this in checkHits or displayAttackRoll
+  // TODO remove if midi-qol fixes this in checkHits or displayAttackRoll
     const targets = workflow.targets;
     if (workflow.attackRoll?.dice.length) {
-      const targetAC =
-        targets.size === 1
-          ? workflow.hitDisplayData[targets.first().document.uuid].ac
-          : null;
+      const targetAC = targets.size === 1 ? workflow.hitDisplayData[targets.first().document.uuid].ac : null;
       workflow.attackRoll.options.target = targetAC;
       workflow.attackRoll.dice[0].options.target = targetAC;
     }
     const chatMessage = workflow.chatCard;
     let content = chatMessage && foundry.utils.duplicate(chatMessage.content);
     if (chatMessage) {
-      // Remove sucesss/failure from attack otherwise dnd5e will add them without removing the previous result
-      content = content.replace(
-        /class="dice-total[^"]*"/,
-        'class="dice-total"'
-      );
+    // Remove sucesss/failure from attack otherwise dnd5e will add them without removing the previous result
+      content = content.replace(/class="dice-total[^"]*"/, 'class="dice-total"');
       chatMessage.content = content;
     }
   }
 
   /**
-   * Returns the damage roll options based on the options set on the first damage roll of the worflow.
-   *
-   * @param {MidiQOL.Workflow} worflow - The MidiQOL workflow from which to get the first damage roll options.
-   *
-   * @returns {object} The damage roll options based on the ones set on the first damage roll of the worflow.
-   */
+ * Returns the damage roll options based on the options set on the first damage roll of the worflow.
+ *
+ * @param {MidiQOL.Workflow} worflow - The MidiQOL workflow from which to get the first damage roll options.
+ *
+ * @returns {object} The damage roll options based on the ones set on the first damage roll of the worflow.
+ */
   function getDamageRollOptions(workflow) {
     const dmgRollOptions = workflow.damageRolls?.[0]?.options ?? {};
     const options = {
       isCritical: dmgRollOptions.isCritical ?? workflow.isCritical,
-      critical: dmgRollOptions.critical
-        ? foundry.utils.deepClone(dmgRollOptions.critical)
-        : {},
+      critical: dmgRollOptions.critical ? foundry.utils.deepClone(dmgRollOptions.critical) : {},
     };
     // Remove allow flag to let default for another roll to be used
     if (options.critical.allow) {
@@ -2262,23 +1838,23 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Gets the applied enchantments for the specified item uuid if any exist.
-   *
-   * @param {string} itemUuid - The UUID of the item for which to find associated enchantments.
-   * @returns {ActiveEffect5e[]} list of applied enchantments.
-   */
-  function getAppliedEnchantments(itemUuid) {
-    return dnd5e.registry.enchantments.applied(itemUuid);
+ * Gets the applied enchantments for the specified item or activity uuid if any exist.
+ *
+ * @param {string} entityUuid - The UUID of the item or activity for which to find associated enchantments.
+ * @returns {ActiveEffect5e[]} list of applied enchantments.
+ */
+  function getAppliedEnchantments(entityUuid) {
+    return dnd5e.registry.enchantments.applied(entityUuid);
   }
 
   /**
-   * Deletes the applied enchantments on the specified item uuid.
-   *
-   * @param {string} itemUuid - The UUID of the item for which to delete the associated enchantments.
-   * @returns {ActiveEffect5e[]} the list of applied enchantments that was deleted.
-   */
-  async function deleteAppliedEnchantments(itemUuid) {
-    const appliedEnchantements = getAppliedEnchantments(itemUuid);
+ * Deletes the applied enchantments on the specified item or activity uuid.
+ *
+ * @param {string} entityUuid - The UUID of the item or activity for which to delete the associated enchantments.
+ * @returns {ActiveEffect5e[]} the list of applied enchantments that was deleted.
+ */
+  async function deleteAppliedEnchantments(entityUuid) {
+    const appliedEnchantements = getAppliedEnchantments(entityUuid);
     for (let activeEffect of appliedEnchantements) {
       await activeEffect.delete();
     }
@@ -2286,27 +1862,29 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Disables manual enchantment placing (for dnd5e v3.2+).
-   * This prevents the drop area that allows to select or remove the item to which an enchantment is applied.
-   *
-   * @param {object} parameters - The MidiQOL function macro parameters.
-   */
+ * Disables manual enchantment placing and configuration dialog if enchantment already exists.
+ * This prevents the drop area that allows to select or remove the item to which an enchantment is applied.
+ *
+ * **Note:** By default dialog configuration is disabled if an enchantment is already applied, unless *workflow.elwinOptions.disableConfigDialogIfEnchantExists* is false.
+ *
+ * @param {object} parameters - The MidiQOL function macro parameters.
+ */
   function disableManualEnchantmentPlacingOnUsePreItemRoll({ workflow, args }) {
     if (debug) {
-      console.warn(
-        MACRO_NAME,
-        {
-          phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0],
-        },
-        arguments
-      );
+      console.warn(MACRO_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    }
+    if (workflow.activity?.type !== 'enchant') {
+    // Skip activities that are not enchantments.
+      return;
     }
 
-    // Disables enchantment drop area
-    Hooks.once(
-      'dnd5e.preUseActivity',
-      (activity, usageConfig, dialogConfig, _) => {
-        const activityWorkflow = MidiQOL.Workflow.getWorkflow(activity.uuid);
+    // Disables dialog configuration
+    if (
+      (workflow.elwinOptions?.disableConfigDialogIfEnchantExists ?? true) &&
+    elwinHelpers.getAppliedEnchantments(workflow.activity?.uuid)?.length
+    ) {
+      Hooks.once('dnd5e.preUseActivity', (activity, usageConfig, dialogConfig, __) => {
+        const activityWorkflow = usageConfig.worflow;
         if (
           !elwinHelpers.isMidiHookStillValid(
             activity.item?.name,
@@ -2319,16 +1897,13 @@ export function runElwinsHelpers() {
         ) {
           return;
         }
-        foundry.utils.setProperty(usageConfig, 'enchantmentProfile', null);
-        foundry.utils.setProperty(
-          dialogConfig,
-          'options.display.create.enchantment',
-          false
-        );
-      }
-    );
+        dialogConfig.configure = false;
+      });
+    }
+
+    // Disables enchantment drop area, but keep selected profile
     Hooks.once('dnd5e.preCreateUsageMessage', (activity, messageConfig) => {
-      const activityWorkflow = MidiQOL.Workflow.getWorkflow(activity.uuid);
+      const activityWorkflow = messageConfig.workflow;
       if (
         !elwinHelpers.isMidiHookStillValid(
           activity.item?.name,
@@ -2341,50 +1916,121 @@ export function runElwinsHelpers() {
       ) {
         return;
       }
+      // Keep selected profile in workflow
+      if (activityWorkflow) {
+        foundry.utils.setProperty(
+          activityWorkflow,
+          'elwinOptions.enchantmentProfile',
+          foundry.utils.getProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`)
+        );
+      }
       // Clear profile from message to prevent drop area.
-      foundry.utils.setProperty(
-        messageConfig,
-        `data.flags.${game.system.id}.use.enchantmentProfile`,
-        null
-      );
+      foundry.utils.setProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`, null);
     });
   }
 
   /**
-   * Returns a list of equipped melee weapons for the specified actor.
-   *
-   * @param {Actor5e} sourceActor token actor
-   * @returns {Item5e[]} A list of equipped melee weapons.
-   */
+ * Returns the selected enchantment profile for automated enchantment application.
+ * To be used when disableManualEnchantmentPlacingOnUsePreItemRoll is set on the item.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ */
+  function getAutomatedEnchantmentSelectedProfile(workflow) {
+    if (workflow.activity?.type !== 'enchant') {
+      return undefined;
+    }
+    const enchantmentProfile = workflow.elwinOptions?.enchantmentProfile;
+    return enchantmentProfile
+      ? workflow.activity?.effects.find((e) => e._id === enchantmentProfile)
+      : workflow.activity?.effects?.[0];
+  }
+
+  /**
+ * Apply programmatically an enchantment to the specified item.
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {object} enchantmentEffectData - The enchantment effect data to apply.
+ * @param {Item5e} itemToEnchant- The item to enchant.
+ * @param {boolean} deleteExisting=true - Deletes any existing enchantment having workflow.activity.uuid as origin.
+ * @returns {ActiveEffect5e} The applied enchantment effect.
+ */
+  async function applyEnchantmentToItem(workflow, enchantmentEffectData, itemToEnchant, deleteExisting = true) {
+  // Removes previous enchantment if it exists
+    if (deleteExisting) {
+      await elwinHelpers.deleteAppliedEnchantments(workflow.activity.uuid);
+    }
+
+    // Set current activity has the origin
+    enchantmentEffectData.origin = workflow.activity.uuid;
+
+    // Add enchantment to item
+    const itemCard = game.messages.get(workflow.itemCardId);
+    if (!itemCard) {
+      console.error(`${MACRO_NAME} | Item chat message could not be found.`, { workflow });
+      return;
+    }
+    // We need set temporarely the profile just to allow the enchantment to be properly created with riders,
+    // it's the only way to make it work with items that are destroyed, we cannot leave it, otherwise the drop
+    // area will be displayed.
+    foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', enchantmentEffectData._id);
+    try {
+      return await ActiveEffect.create(enchantmentEffectData, {
+        parent: itemToEnchant,
+        keepOrigin: true,
+        chatMessageOrigin: workflow.itemCardId,
+      });
+    } finally {
+      foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', null);
+      // Force message ui update, because it can happen that an update of the the item card occurs during the time
+      // the enchantmentProfile is set, which renders the enchantmentEnricher (drop area), this forces it to be removed.
+      await ui.chat.updateMessage(itemCard);
+    }
+  }
+
+  /**
+ * Returns a list of equipped melee weapons for the specified actor.
+ *
+ * @param {Actor5e} sourceActor token actor
+ * @returns {Item5e[]} A list of equipped melee weapons.
+ */
   function getEquippedMeleeWeapons(sourceActor) {
     return (
       sourceActor?.itemTypes.weapon.filter(
         (w) =>
           w.system.equipped &&
-          ['simpleM', 'martialM'].includes(w.system.type?.value) &&
-          w.system.activities
-            ?.getByType('attack')
-            .some((a) => a.actionType === 'mwak')
+        ['simpleM', 'martialM'].includes(w.system.type?.value) &&
+        w.system.activities
+          ?.getByType('attack')
+          .some((a) => a.attack.type.value === 'melee' && a.attack.type.classification === 'weapon')
       ) ?? []
     );
   }
 
   /**
-   * Utility dialog to select an item from a list of items.
-   *
-   * @example
-   * const items = _token.actor.itemTypes.weapon;
-   * const selectedItem = await ItemSelectionDialog.createDialog("Select a Weapon", items, items?.[0]);
-   */
+ * Returns the rules version of the specified item.
+ *
+ * @param {Item5e} item - The item for which to determine the rules version.
+ * @returns {string} 'legacy' or 'modern' depending on the item's source rules.
+ */
+  function getRules(item) {
+    return ['2014', ''].includes(item.system?.source?.rules ?? '') ? 'legacy' : 'modern';
+  }
+
+  /**
+ * Utility dialog to select an item from a list of items.
+ *
+ * @example
+ * const items = _token.actor.itemTypes.weapon;
+ * const selectedItem = await ItemSelectionDialog.createDialog("Select a Weapon", items, items?.[0]);
+ */
   class ItemSelectionDialog extends Dialog {
-    /**
-     * Returns the html content for the dialog generated using the specified values.
-     *
-     * @param {Item5e[]} items - List of items
-     * @param {Item5e} defaultItem - Default item, if null or not part of items, the first one is used.
-     *
-     * @returns {string} the html content to display in the dialog.
-     */
+  /**
+   * Returns the html content for the dialog generated using the specified values.
+   *
+   * @param {Item5e[]} items - List of items
+   * @param {Item5e} defaultItem - Default item, if null or not part of items, the first one is used.
+   *
+   * @returns {string} the html content to display in the dialog.
+   */
     static getContent(items, defaultItem) {
       if (!defaultItem || !items.find((t) => t.id === defaultItem?.id)) {
         defaultItem = items[0];
@@ -2395,43 +2041,31 @@ export function runElwinsHelpers() {
           continue;
         }
         const ctx = {};
-        ctx.selected =
-          defaultItem && defaultItem.id === item.id ? ' checked' : '';
+        ctx.selected = defaultItem && defaultItem.id === item.id ? ' checked' : '';
         if (item.system.attunement) {
           ctx.attunement = item.system.attuned
             ? {
-                cls: 'attuned',
-                title: game.i18n.localize('DND5E.AttunementAttuned'),
-              }
+              cls: 'attuned',
+              title: game.i18n.localize('DND5E.AttunementAttuned'),
+            }
             : {
-                cls: 'not-attuned',
-                title: game.i18n.localize(
-                  CONFIG.DND5E.attunementTypes[item.system.attunement]
-                ),
-              };
+              cls: 'not-attuned',
+              title: game.i18n.localize(CONFIG.DND5E.attunementTypes[item.system.attunement]),
+            };
         }
         if ('equipped' in item.system) {
           ctx.equip = {
             cls: item.system.equipped ? 'active' : '',
-            tooltip: game.i18n.localize(
-              item.system.equipped ? 'DND5E.Equipped' : 'DND5E.Unequipped'
-            ),
+            tooltip: game.i18n.localize(item.system.equipped ? 'DND5E.Equipped' : 'DND5E.Unequipped'),
           };
         }
-        ctx.quantity =
-          item.type === 'consumable' ? `[${item.system.quantity}]` : '';
-        ctx.subtitle = [
-          item.system.type?.label,
-          item.isActive ? item.labels.activation : null,
-        ].filterJoin(' &bull; ');
+        ctx.quantity = item.type === 'consumable' ? `[${item.system.quantity}]` : '';
+        ctx.subtitle = [item.system.type?.label, item.isActive ? item.labels.activation : null].filterJoin(' &bull; ');
         ctx.tags =
-          item.labels.properties
-            ?.filter((prop) => prop.icon)
-            .map(
-              (prop) =>
-                `<span aria-label="${prop.label}"><dnd5e-icon src="${prop.icon}"></dnd5e-icon></span>`
-            )
-            .join(' ') ?? '';
+        item.labels.properties
+          ?.filter((prop) => prop.icon)
+          .map((prop) => `<span aria-label="${prop.label}"><dnd5e-icon src="${prop.icon}"></dnd5e-icon></span>`)
+          .join(' ') ?? '';
 
         itemContent += `
       <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${ctx.selected}>
@@ -2558,15 +2192,15 @@ export function runElwinsHelpers() {
     }
 
     /**
-     * A helper constructor function which displays the item selection dialog.
-     *
-     * @param {string} title - The title to display.
-     * @param {Token5e[]} items - List of items from which to select an item.
-     * @param {Token5e} defaultItem - If specified, item to be selected by default,
-     *                                if null or not part of items, the first one is used.
-     *
-     * @returns {Promise<Item5e|null>}  Resolves with the selected item, if any.
-     */
+   * A helper constructor function which displays the item selection dialog.
+   *
+   * @param {string} title - The title to display.
+   * @param {Token5e[]} items - List of items from which to select an item.
+   * @param {Token5e} defaultItem - If specified, item to be selected by default,
+   *                                if null or not part of items, the first one is used.
+   *
+   * @returns {Promise<Item5e|null>}  Resolves with the selected item, if any.
+   */
     static createDialog(title, items, defaultItem) {
       if (!(items?.length > 0)) {
         return null;
@@ -2581,9 +2215,7 @@ export function runElwinsHelpers() {
                 icon: '<i class="fas fa-check"></i>',
                 label: 'Select',
                 callback: (html) => {
-                  const selectedItemId = html.find(
-                    "input[type='radio'][name='item']:checked"
-                  )[0]?.value;
+                  const selectedItemId = html.find("input[type='radio'][name='item']:checked")[0]?.value;
                   resolve(items.find((t) => t.id === selectedItemId));
                 },
               },
@@ -2604,21 +2236,21 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Utility dialog to select a token from a list of tokens.
-   *
-   * @example
-   * const targets = game.canvas.tokens.placeables;
-   * const selectedTarget = await TokenSelectionDialog.createDialog("Select Target", targets, targets?.[0]);
-   */
+ * Utility dialog to select a token from a list of tokens.
+ *
+ * @example
+ * const targets = game.canvas.tokens.placeables;
+ * const selectedTarget = await TokenSelectionDialog.createDialog("Select Target", targets, targets?.[0]);
+ */
   class TokenSelectionDialog extends Dialog {
-    /**
-     * Returns the html content for the dialog generated using the specified values.
-     *
-     * @param {Token5e[]} tokens - List of tokens
-     * @param {Token5e} defaultToken - Default token, if null or not part of tokens, the first one is used.
-     *
-     * @returns {string} the html content to display in the dialog.
-     */
+  /**
+   * Returns the html content for the dialog generated using the specified values.
+   *
+   * @param {Token5e[]} tokens - List of tokens
+   * @param {Token5e} defaultToken - Default token, if null or not part of tokens, the first one is used.
+   *
+   * @returns {string} the html content to display in the dialog.
+   */
     static async getContent(tokens, defaultToken) {
       let tokenContent = '';
       if (!defaultToken || !tokens.find((t) => t.id === defaultToken?.id)) {
@@ -2628,8 +2260,7 @@ export function runElwinsHelpers() {
         if (!token?.id) {
           continue;
         }
-        const selected =
-          defaultToken && defaultToken.id === token.id ? ' checked' : '';
+        const selected = defaultToken && defaultToken.id === token.id ? ' checked' : '';
         const tokenImg = await getTokenImage(token);
         const tokenName = MidiQOL.getTokenPlayerName(token, true);
         tokenContent += `<div style="flex-grow: 1"><label class="radio-label">
@@ -2701,18 +2332,15 @@ export function runElwinsHelpers() {
         let imgs = html[0].getElementsByTagName('img');
         for (let i of imgs) {
           i.style.border = 'none';
-          i.closest('.radio-label').addEventListener(
-            'click',
-            async function () {
-              const token = getToken(i.id);
-              //@ts-expect-error .ping
-              if (token) await canvas?.ping(token.center);
-            }
-          );
+          i.closest('.radio-label').addEventListener('click', async function () {
+            const token = getToken(i.id);
+            //@ts-expect-error .ping
+            if (token) await canvas?.ping(token.center);
+          });
           i.closest('.radio-label').addEventListener('mouseover', function () {
             const token = getToken(i.id);
             if (token) {
-              //@ts-expect-error .ping
+            //@ts-expect-error .ping
               token.hover = true;
               token.refresh();
             }
@@ -2720,7 +2348,7 @@ export function runElwinsHelpers() {
           i.closest('.radio-label').addEventListener('mouseout', function () {
             const token = getToken(i.id);
             if (token) {
-              //@ts-expect-error .ping
+            //@ts-expect-error .ping
               token.hover = false;
               token.refresh();
             }
@@ -2730,15 +2358,15 @@ export function runElwinsHelpers() {
     }
 
     /**
-     * A helper constructor function which displays the token selection dialog.
-     *
-     * @param {string} title - The title to display.
-     * @param {Token5e[]} tokens - List of tokens from which to select a token.
-     * @param {Token5e} defaultToken - If specified, token to be selected by default,
-     *                                 if null or not part of tokens, the first one is used.
-     *
-     * @returns {Promise<Token5e|null>}  Resolves with the selected token, if any.
-     */
+   * A helper constructor function which displays the token selection dialog.
+   *
+   * @param {string} title - The title to display.
+   * @param {Token5e[]} tokens - List of tokens from which to select a token.
+   * @param {Token5e} defaultToken - If specified, token to be selected by default,
+   *                                 if null or not part of tokens, the first one is used.
+   *
+   * @returns {Promise<Token5e|null>}  Resolves with the selected token, if any.
+   */
     static async createDialog(title, tokens, defaultToken) {
       if (!(tokens?.length > 0)) {
         return null;
@@ -2754,9 +2382,7 @@ export function runElwinsHelpers() {
                 icon: '<i class="fas fa-check"></i>',
                 label: 'Select', // TODO localize
                 callback: (html) => {
-                  const selectedTokenId = html.find(
-                    "input[type='radio'][name='token']:checked"
-                  )[0]?.value;
+                  const selectedTokenId = html.find("input[type='radio'][name='token']:checked")[0]?.value;
                   resolve(tokens.find((t) => t.id === selectedTokenId));
                 },
               },
@@ -2777,39 +2403,39 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the numeric value of the specified actor's size value.
-   *
-   * @param {Actor5e} actor actor for which to get the size value.
-   *
-   * @returns {number} the numeric value of the specified actor's size value.
-   */
+ * Returns the numeric value of the specified actor's size value.
+ *
+ * @param {Actor5e} actor actor for which to get the size value.
+ *
+ * @returns {number} the numeric value of the specified actor's size value.
+ */
   function getActorSizeValue(actor) {
     return getSizeValue(actor?.system?.traits?.size ?? 'med');
   }
 
   /**
-   * Returns the numeric value of the specified size.
-   *
-   * @param {string} size  the size name for which to get the size value.
-   *
-   * @returns {number} the numeric value of the specified size.
-   */
+ * Returns the numeric value of the specified size.
+ *
+ * @param {string} size  the size name for which to get the size value.
+ *
+ * @returns {number} the numeric value of the specified size.
+ */
   function getSizeValue(size) {
     return Object.keys(CONFIG.DND5E.actorSizes).indexOf(size ?? 'med');
   }
 
   /**
-   * Helper function to create a simple dialog with labeled buttons and associated data.
-   *
-   * @param {object} data - The dialog's data.
-   * @param {{label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
-   * @param {string} [data.title] - Dialog's title.
-   * @param {string} [data.content] - Dialog's html content.
-   * @param {object} [data.options] - Dialog's options.
-   * @param {string} [direction = 'row'] - Controls layout direction of the dialog's buttons. 'column' or 'row' accepted.
-   *
-   * @returns {object} the value associated to the selected button.
-   */
+ * Helper function to create a simple dialog with labeled buttons and associated data.
+ *
+ * @param {object} data - The dialog's data.
+ * @param {{label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
+ * @param {string} [data.title] - Dialog's title.
+ * @param {string} [data.content] - Dialog's html content.
+ * @param {object} [data.options] - Dialog's options.
+ * @param {string} [direction = 'row'] - Controls layout direction of the dialog's buttons. 'column' or 'row' accepted.
+ *
+ * @returns {object} the value associated to the selected button.
+ */
   async function buttonDialog(data, direction) {
     const buttons = {};
 
@@ -2826,48 +2452,37 @@ export function runElwinsHelpers() {
     };
 
     return await Dialog.wait(
-      {
-        title: data.title,
-        content: data.content ?? '',
-        buttons,
-        render,
-        close: () => null,
-      },
+      { title: data.title, content: data.content ?? '', buttons, render, close: () => null },
       { classes: ['dnd5e', 'dialog'], height: '100%', ...data.options },
       {}
     );
   }
 
   /**
-   * Helper function to create a simple dialog with labeled buttons and associated data.
-   *
-   * @param {object} data - The dialog's data.
-   * @param {{label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
-   * @param {string} [data.title] - Dialog's title.
-   * @param {string} [data.content] - Dialog's html content.
-   * @param {object} [data.options] - Dialog's options.
-   * @param {string} [direction = 'row'] - Controls layout direction of the dialog's buttons. 'column' or 'row' accepted.
-   *
-   * @returns {object} the value associated to the selected button.
-   */
+ * Helper function to create a simple dialog with labeled buttons and associated data.
+ *
+ * @param {object} data - The dialog's data.
+ * @param {{label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
+ * @param {string} [data.title] - Dialog's title.
+ * @param {string} [data.content] - Dialog's html content.
+ * @param {object} [data.options] - Dialog's options.
+ * @param {string} [direction = 'row'] - Controls layout direction of the dialog's buttons. 'column' or 'row' accepted.
+ *
+ * @returns {object} the value associated to the selected button.
+ */
   async function remoteButtonDialog(userId, data, direction) {
-    return globalThis.elwinHelpers.socket.executeAsUser(
-      'elwinHelpers.remoteButtonDialog',
-      userId,
-      data,
-      direction
-    );
+    return globalThis.elwinHelpers.socket.executeAsUser('elwinHelpers.remoteButtonDialog', userId, data, direction);
   }
 
   /**
-   * Returns the intersection point on the target token between the source token and target token and the ray used to compute the intersection.
-   * The possible segments are computed using the same algo as MidiQOL uses to compute attack distances.
-   *
-   * @param {Token5e} sourceToken - The source token.
-   * @param {Token5e} targetToken - The target token.
-   *
-   * @returns {{point: {x: number, y: number}, ray: Ray}} the intersection point between the source token and target token and the ray used to compute the intersection.
-   */
+ * Returns the intersection point on the target token between the source token and target token and the ray used to compute the intersection.
+ * The possible segments are computed using the same algo as MidiQOL uses to compute attack distances.
+ *
+ * @param {Token5e} sourceToken - The source token.
+ * @param {Token5e} targetToken - The target token.
+ *
+ * @returns {{point: {x: number, y: number}, ray: Ray}} the intersection point between the source token and target token and the ray used to compute the intersection.
+ */
   function getAttackSegment(sourceToken, targetToken) {
     if (!canvas || !canvas.scene || !canvas.grid || !canvas.dimensions) {
       return undefined;
@@ -2887,48 +2502,26 @@ export function runElwinsHelpers() {
     if (segments.length === 0) {
       return undefined;
     }
-    const segmentDistances = simpleMeasureDistances(segments, {
-      gridSpaces: true,
-    });
+    const segmentDistances = simpleMeasureDistances(segments, { gridSpaces: true });
     if (MidiQOL.configSettings()?.optionalRules.distanceIncludesHeight) {
-      const heightDifference = calculateTokeHeightDifference(
-        sourceToken,
-        targetToken
-      );
+      const heightDifference = calculateTokeHeightDifference(sourceToken, targetToken);
       segmentDistances.forEach(
-        (distance, index, arr) =>
-          (arr[index] = getDistanceAdjustedByVerticalDist(
-            distance,
-            heightDifference
-          ))
+        (distance, index, arr) => (arr[index] = getDistanceAdjustedByVerticalDist(distance, heightDifference))
       );
     }
     if (debug) {
-      console.warn(
-        `${MACRO_NAME} | getAttackSegment (simpleMeasureDistances)`,
-        {
-          segments,
-          segmentDistances,
-        }
-      );
+      console.warn(`${MACRO_NAME} | getAttackSegment (simpleMeasureDistances)`, {
+        segments,
+        segmentDistances,
+      });
     }
-    const idxShortestSegment = segmentDistances.indexOf(
-      Math.min(...segmentDistances)
-    );
+    const idxShortestSegment = segmentDistances.indexOf(Math.min(...segmentDistances));
     if (idxShortestSegment < 0) {
       return undefined;
     }
-    const targetRect = new PIXI.Rectangle(
-      targetToken.x,
-      targetToken.y,
-      targetToken.w,
-      targetToken.h
-    ).getBounds();
+    const targetRect = new PIXI.Rectangle(targetToken.x, targetToken.y, targetToken.w, targetToken.h).getBounds();
     const targetRay = segments[idxShortestSegment].ray;
-    const intersectSegments = targetRect.segmentIntersections(
-      targetRay.A,
-      targetRay.B
-    );
+    const intersectSegments = targetRect.segmentIntersections(targetRay.A, targetRay.B);
     if (debug) {
       console.warn(`${MACRO_NAME} | getAttackSegment (insersectSegments)`, {
         targetRect,
@@ -2943,20 +2536,17 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Get the distance segments between two objects. Based on midi-qol code used in getDistance.
-   *
-   * @param {Token5e} t1 - The first token.
-   * @param {Token5e} t2 - The second token.
-   * @param {boolean} wallBlocking - Whether to consider walls as blocking.
-   *
-   * @return {{ray: Ray}[]} an array of segments representing the distance between the two tokens.
-   */
+ * Get the distance segments between two objects. Based on midi-qol code used in getDistance.
+ *
+ * @param {Token5e} t1 - The first token.
+ * @param {Token5e} t2 - The second token.
+ * @param {boolean} wallBlocking - Whether to consider walls as blocking.
+ *
+ * @return {{ray: Ray}[]} an array of segments representing the distance between the two tokens.
+ */
   function getDistanceSegments(t1, t2, wallBlocking = false) {
     const actor = t1.actor;
-    const ignoreWallsFlag = foundry.utils.getProperty(
-      actor,
-      'flags.midi-qol.ignoreWalls'
-    );
+    const ignoreWallsFlag = foundry.utils.getProperty(actor, 'flags.midi-qol.ignoreWalls');
     if (ignoreWallsFlag) {
       wallBlocking = false;
     }
@@ -2971,31 +2561,27 @@ export function runElwinsHelpers() {
     for (x = t1StartX; x < t1.document.width; x++) {
       for (y = t1StartY; y < t1.document.height; y++) {
         const origin = new PIXI.Point(
-          //        ...canvas.grid.getCenter(
+        //        ...canvas.grid.getCenter(
           Math.round(t1.document.x + canvas.dimensions.size * x),
           Math.round(t1.document.y + canvas.dimensions.size * y)
-          //       )
+        //       )
         );
         for (x1 = t2StartX; x1 < t2.document.width; x1++) {
           for (y1 = t2StartY; y1 < t2.document.height; y1++) {
             const dest = new PIXI.Point(
-              //            ...canvas.grid.getCenter(
+            //            ...canvas.grid.getCenter(
               Math.round(t2.document.x + canvas.dimensions.size * x1),
               Math.round(t2.document.y + canvas.dimensions.size * y1)
-              //          )
+            //          )
             );
             const r = new Ray(origin, dest);
             if (wallBlocking) {
-              const collisionCheck =
-                CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
-                  mode: 'any',
-                  type: 'move',
-                });
+              const collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
+                mode: 'any',
+                type: 'move',
+              });
               if (debug) {
-                console.warn(`${MACRO_NAME} | getDistanceSegments`, {
-                  segment: { ray: r },
-                  collisionCheck,
-                });
+                console.warn(`${MACRO_NAME} | getDistanceSegments`, { segment: { ray: r }, collisionCheck });
               }
               if (collisionCheck) {
                 continue;
@@ -3010,19 +2596,16 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Based on midi-qol measureDistances function.
-   * Measure distances for given segments with optional grid spaces.
-   *
-   * @param {{{ray: Ray}}[]} segments - Array of segments to measure distances for.
-   * @param {object} options - Optional object with grid spaces configuration.
-   *
-   * @return {number[]} Array of distances for each segment.
-   */
+ * Based on midi-qol measureDistances function.
+ * Measure distances for given segments with optional grid spaces.
+ *
+ * @param {{{ray: Ray}}[]} segments - Array of segments to measure distances for.
+ * @param {object} options - Optional object with grid spaces configuration.
+ *
+ * @return {number[]} Array of distances for each segment.
+ */
   function simpleMeasureDistances(segments, options = {}) {
-    if (
-      canvas?.grid?.grid.constructor.name !== 'BaseGrid' ||
-      !options.gridSpaces
-    ) {
+    if (canvas?.grid?.grid.constructor.name !== 'BaseGrid' || !options.gridSpaces) {
       const distances = canvas?.grid?.measureDistances(segments, options);
       return distances;
     }
@@ -3050,73 +2633,64 @@ export function runElwinsHelpers() {
       nDiagonal += nd;
 
       if (rule === '5105') {
-        // Alternative DMG Movement
-        const nd10 =
-          Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
+      // Alternative DMG Movement
+        const nd10 = Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
         const spaces = nd10 * 2 + (nd - nd10) + ns;
         return spaces * d.distance;
       } else if (rule === 'EUCL') {
-        // Euclidean Measurement
+      // Euclidean Measurement
         const nx = Math.max(0, Math.abs(r.dx / d.size));
         const ny = Math.max(0, Math.abs(r.dy / d.size));
         return Math.ceil(Math.hypot(nx, ny) * grid?.distance);
       } else {
-        // Standard PHB Movement
+      // Standard PHB Movement
         return Math.max(nx, ny) * grid.distance;
       }
     });
   }
 
   /**
-   * Calculate the height difference between two tokens based on their elevation and dimensions.
-   *
-   * @param {Token5e} t1 - The first token.
-   * @param {Token5e} t2 - The second token.
-   *
-   * @return {number} the height difference between the two tokens
-   */
+ * Calculate the height difference between two tokens based on their elevation and dimensions.
+ *
+ * @param {Token5e} t1 - The first token.
+ * @param {Token5e} t2 - The second token.
+ *
+ * @return {number} the height difference between the two tokens
+ */
   function calculateTokeHeightDifference(t1, t2) {
     const t1Elevation = t1.document.elevation ?? 0;
     const t2Elevation = t2.document.elevation ?? 0;
     const t1TopElevation =
-      t1Elevation +
-      Math.max(t1.document.height, t1.document.width) *
-        (canvas?.dimensions?.distance ?? 5);
+    t1Elevation + Math.max(t1.document.height, t1.document.width) * (canvas?.dimensions?.distance ?? 5);
     const t2TopElevation =
-      t2Elevation +
-      Math.min(t2.document.height, t2.document.width) *
-        (canvas?.dimensions?.distance ?? 5); // assume t2 is trying to make itself small
+    t2Elevation + Math.min(t2.document.height, t2.document.width) * (canvas?.dimensions?.distance ?? 5); // assume t2 is trying to make itself small
 
     let heightDifference = 0;
     if (
       (t2Elevation > t1Elevation && t2Elevation < t1TopElevation) ||
-      (t1Elevation > t2Elevation && t1Elevation < t2TopElevation)
+    (t1Elevation > t2Elevation && t1Elevation < t2TopElevation)
     ) {
-      //check if bottom elevation of each token is within the other token's elevation space, if so make the height difference 0
+    //check if bottom elevation of each token is within the other token's elevation space, if so make the height difference 0
       heightDifference = 0;
     } else if (t1Elevation < t2Elevation) {
-      // t2 above t1
-      heightDifference =
-        Math.max(0, t2Elevation - t1TopElevation) +
-        (canvas?.dimensions?.distance ?? 5);
+    // t2 above t1
+      heightDifference = Math.max(0, t2Elevation - t1TopElevation) + (canvas?.dimensions?.distance ?? 5);
     } else if (t1Elevation > t2Elevation) {
-      // t1 above t2
-      heightDifference =
-        Math.max(0, t1Elevation - t2TopElevation) +
-        (canvas?.dimensions?.distance ?? 5);
+    // t1 above t2
+      heightDifference = Math.max(0, t1Elevation - t2TopElevation) + (canvas?.dimensions?.distance ?? 5);
     }
 
     return heightDifference;
   }
 
   /**
-   * Returns the total measured distance for the specified horizDistance and vertDistance.
-   *
-   * @param {number} horizDistance - Horizontal distance.
-   * @param {number} vertDistance - Vertical distance.
-   *
-   * @returns {number} the total measured distance including the vertical distance.
-   */
+ * Returns the total measured distance for the specified horizDistance and vertDistance.
+ *
+ * @param {number} horizDistance - Horizontal distance.
+ * @param {number} vertDistance - Vertical distance.
+ *
+ * @returns {number} the total measured distance including the vertical distance.
+ */
   function getDistanceAdjustedByVerticalDist(horizDistance, vertDistance) {
     const rule = canvas.grid.diagonalRule;
     let distance = horizDistance;
@@ -3129,42 +2703,30 @@ export function runElwinsHelpers() {
         distance = distance + Math.floor(nd / 2 / dimension) * dimension;
       }
     } else {
-      distance = Math.sqrt(
-        vertDistance * vertDistance + horizDistance * horizDistance
-      );
+      distance = Math.sqrt(vertDistance * vertDistance + horizDistance * horizDistance);
     }
     return distance;
   }
 
   /**
-   * Returns the position where to move the token so its border is next to the specified point.
-   *
-   * @param {Token5e} token - The token to be moved.
-   * @param {{x: number, y: number}} point - The point next to which to move the token.
-   * @param {object} options - Options
-   * @param {boolean} [options.snapToGrid] - If the the returned position will be snapped to grid or not.
-   *
-   * @returns {{x: number, y: number}} the position where to move the token so its border is next to the specified point.
-   */
-  function getMoveTowardsPosition(
-    token,
-    point,
-    options = { snapToGrid: true }
-  ) {
+ * Returns the position where to move the token so its border is next to the specified point.
+ *
+ * @param {Token5e} token - The token to be moved.
+ * @param {{x: number, y: number}} point - The point next to which to move the token.
+ * @param {object} options - Options
+ * @param {boolean} [options.snapToGrid] - If the the returned position will be snapped to grid or not.
+ *
+ * @returns {{x: number, y: number}} the position where to move the token so its border is next to the specified point.
+ */
+  function getMoveTowardsPosition(token, point, options = { snapToGrid: true }) {
     const moveTowardsRay = new Ray(token.center, point);
-    const tokenIntersects = token.bounds.segmentIntersections(
-      moveTowardsRay.A,
-      moveTowardsRay.B
-    );
+    const tokenIntersects = token.bounds.segmentIntersections(moveTowardsRay.A, moveTowardsRay.B);
     if (!tokenIntersects?.length) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | getMoveTowardsPosition no segmentIntersections found`,
-          {
-            tokenBounds: token.bounds,
-            moveTowardsRay,
-          }
-        );
+        console.warn(`${MACRO_NAME} | getMoveTowardsPosition no segmentIntersections found`, {
+          tokenBounds: token.bounds,
+          moveTowardsRay,
+        });
       }
       return undefined;
     }
@@ -3175,66 +2737,42 @@ export function runElwinsHelpers() {
       moveTowardsRay.B,
       moveTowardsRay.distance - centerToBounds.distance
     );
-    const tokenPos = {
-      x: rayToCenter.B.x - token.w / 2,
-      y: rayToCenter.B.y - token.h / 2,
-    };
+    const tokenPos = { x: rayToCenter.B.x - token.w / 2, y: rayToCenter.B.y - token.h / 2 };
     let tokenPosSnapped = undefined;
     if (options?.snapToGrid && canvas.grid.type !== CONST.GRID_TYPES.GRIDLESS) {
       const isTiny = token.document.width < 1 && token.document.height < 1;
       const interval = canvas.grid.isHex ? 1 : isTiny ? 2 : 1;
-      tokenPosSnapped = canvas.grid.getSnappedPosition(
-        tokenPos.x,
-        tokenPos.y,
-        interval,
-        { token }
-      );
+      tokenPosSnapped = canvas.grid.getSnappedPosition(tokenPos.x, tokenPos.y, interval, { token });
     }
     if (debug) {
-      console.warn(`${MACRO_NAME} | getMoveTowardsPosition`, {
-        tokenPos,
-        tokenPosSnapped,
-      });
+      console.warn(`${MACRO_NAME} | getMoveTowardsPosition`, { tokenPos, tokenPosSnapped });
     }
     return tokenPosSnapped ? tokenPosSnapped : tokenPos;
   }
 
   /**
-   * Returns a position near the specified destPos where the specified token can be moved.
-   * There must be no collision betwen the token current position and the token destination position,
-   * if the destination position is occupied an altenative position can be returned but there must be no
-   * collision between the initial destination position and the new proposed one.
-   * An unoccupied space will be prioritized over an occupied one. If a nearToken is specified
-   * the position returned must be adjacent to this token.
-   *
-   * @param {Token5e} token - The token for which to find a space where it could be moved.
-   * @param {{x: number, y: number}} destPos - The token's tentative destination position.
-   * @param {Token5e} nearToken - If defined, the final position of the token must be adjacent to this token.
-   *
-   * @returns {{pos: {x: number, y: number}, occupied: boolean}} the token's preferred final destination with a flag to indicate if its already occupied by another token.
-   */
+ * Returns a position near the specified destPos where the specified token can be moved.
+ * There must be no collision betwen the token current position and the token destination position,
+ * if the destination position is occupied an altenative position can be returned but there must be no
+ * collision between the initial destination position and the new proposed one.
+ * An unoccupied space will be prioritized over an occupied one. If a nearToken is specified
+ * the position returned must be adjacent to this token.
+ *
+ * @param {Token5e} token - The token for which to find a space where it could be moved.
+ * @param {{x: number, y: number}} destPos - The token's tentative destination position.
+ * @param {Token5e} nearToken - If defined, the final position of the token must be adjacent to this token.
+ *
+ * @returns {{pos: {x: number, y: number}, occupied: boolean}} the token's preferred final destination with a flag to indicate if its already occupied by another token.
+ */
   function findMovableSpaceNearDest(token, destPos, nearToken) {
-    const tokenInitialDestBounds = new PIXI.Rectangle(
-      destPos.x,
-      destPos.y,
-      token.w,
-      token.h
-    ).getBounds();
-    if (
-      token.checkCollision(tokenInitialDestBounds.center, {
-        type: 'move',
-        mode: 'any',
-      })
-    ) {
+    const tokenInitialDestBounds = new PIXI.Rectangle(destPos.x, destPos.y, token.w, token.h).getBounds();
+    if (token.checkCollision(tokenInitialDestBounds.center, { type: 'move', mode: 'any' })) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | findMovableSpaceNearDest (wall collision initial destination)`,
-          {
-            tokenCenterPos: token.center,
-            tokenDestCenterPos: tokenInitialDestBounds.center,
-            wallCollision: true,
-          }
-        );
+        console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (wall collision initial destination)`, {
+          tokenCenterPos: token.center,
+          tokenDestCenterPos: tokenInitialDestBounds.center,
+          wallCollision: true,
+        });
       }
       return undefined;
     }
@@ -3250,25 +2788,18 @@ export function runElwinsHelpers() {
       gridDistance = isTiny ? 1 : size;
     }
 
-    const posGen = nearbyPositionsGenerator(
-      destPos,
-      gridIncrement,
-      gridDistance
-    );
+    const posGen = nearbyPositionsGenerator(destPos, gridIncrement, gridDistance);
 
     let nearTokenShape = undefined;
     if (nearToken) {
       if (canvas.grid.isHex) {
-        // Use padded poly otherwise overlaps does not work for certain adjacent grid spaces.
+      // Use padded poly otherwise overlaps does not work for certain adjacent grid spaces.
         const points = canvas.grid.grid.getBorderPolygon(
           nearToken.document.width,
           nearToken.document.height,
           CONFIG.Canvas.objectBorderThickness
         );
-        nearTokenShape = new PIXI.Polygon(points).translate(
-          nearToken.x,
-          nearToken.y
-        );
+        nearTokenShape = new PIXI.Polygon(points).translate(nearToken.x, nearToken.y);
       } else {
         nearTokenShape = nearToken.bounds;
       }
@@ -3286,10 +2817,7 @@ export function runElwinsHelpers() {
           o.t.document.height,
           -CONFIG.Canvas.objectBorderThickness
         );
-        const currentTokenShape = new PIXI.Polygon(points).translate(
-          o.t.x,
-          o.t.y
-        );
+        const currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
         return currentTokenShape.overlaps(token.testCollisitionShape);
       };
     }
@@ -3299,72 +2827,39 @@ export function runElwinsHelpers() {
 
     while (!(testIter = posGen.next()).done) {
       const testPos = testIter.value;
-      const testPosSnapped = canvas.grid.getSnappedPosition(
-        testPos.x,
-        testPos.y,
-        interval,
-        { token }
-      );
+      const testPosSnapped = canvas.grid.getSnappedPosition(testPos.x, testPos.y, interval, { token });
       let adjTargetShape;
       let adjTargetForNeighborTestShape;
 
       if (canvas.grid.isHex) {
         if (isTiny) {
-          // For Tiny in hex grid we use a complete grid space to test touches near token
-          const tmpPos = canvas.grid.getSnappedPosition(
-            testPos.x,
-            testPos.y,
-            interval
-          );
+        // For Tiny in hex grid we use a complete grid space to test touches near token
+          const tmpPos = canvas.grid.getSnappedPosition(testPos.x, testPos.y, interval);
           const tmpPoints = canvas.grid.grid.getBorderPolygon(1, 1, 0);
-          adjTargetForNeighborTestShape = new PIXI.Polygon(tmpPoints).translate(
-            tmpPos.x,
-            tmpPos.y
-          );
+          adjTargetForNeighborTestShape = new PIXI.Polygon(tmpPoints).translate(tmpPos.x, tmpPos.y);
         }
-        const points = canvas.grid.grid.getBorderPolygon(
-          token.document.width,
-          token.document.height,
-          0
-        );
-        adjTargetShape = new PIXI.Polygon(points).translate(
-          testPosSnapped.x,
-          testPosSnapped.y
-        );
+        const points = canvas.grid.grid.getBorderPolygon(token.document.width, token.document.height, 0);
+        adjTargetShape = new PIXI.Polygon(points).translate(testPosSnapped.x, testPosSnapped.y);
       } else {
-        adjTargetShape = new PIXI.Rectangle(
-          testPosSnapped.x,
-          testPosSnapped.y,
-          token.w,
-          token.h
-        ).getBounds();
+        adjTargetShape = new PIXI.Rectangle(testPosSnapped.x, testPosSnapped.y, token.w, token.h).getBounds();
       }
 
-      const paddedAdjTargetShape = adjTargetShape
-        .clone()
-        .pad(-CONFIG.Canvas.objectBorderThickness);
+      const paddedAdjTargetShape = adjTargetShape.clone().pad(-CONFIG.Canvas.objectBorderThickness);
       const paddedAdjTargetBounds =
-        paddedAdjTargetShape instanceof PIXI.Rectangle
-          ? paddedAdjTargetShape
-          : paddedAdjTargetShape.getBounds();
+      paddedAdjTargetShape instanceof PIXI.Rectangle ? paddedAdjTargetShape : paddedAdjTargetShape.getBounds();
 
       let touchesNearToken = true;
       let insideNearToken = false;
       if (nearToken) {
         adjTargetForNeighborTestShape ??= adjTargetShape;
-        touchesNearToken = nearTokenShape.overlaps(
-          adjTargetForNeighborTestShape
-        );
+        touchesNearToken = nearTokenShape.overlaps(adjTargetForNeighborTestShape);
         insideNearToken = nearTokenShape.overlaps(paddedAdjTargetShape);
       }
       if (debug) {
         console.warn(`${MACRO_NAME} | findMovableSpaceNearDest iter`, {
           testPos,
           testPosSnapped,
-          testGrid: canvas.grid.grid.getGridPositionFromPixels(
-            testPosSnapped.x,
-            testPosSnapped.y
-          ),
+          testGrid: canvas.grid.grid.getGridPositionFromPixels(testPosSnapped.x, testPosSnapped.y),
           touchesNearToken,
           insideNearToken,
           nearTokenShape,
@@ -3384,38 +2879,30 @@ export function runElwinsHelpers() {
       });
       if (wallCollision) {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | findMovableSpaceNearDest (wall collision)`,
-            {
-              testPos,
-              testPosCenter,
-              origin: token.center,
-              wallCollision,
-            }
-          );
+          console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (wall collision)`, {
+            testPos,
+            testPosCenter,
+            origin: token.center,
+            wallCollision,
+          });
         }
         continue;
       }
       // Set shape on current token to be used by grid collision test
       token.testCollisitionShape = paddedAdjTargetShape;
-      const overlappingTokens = quadtree.getObjects(paddedAdjTargetBounds, {
-        collisionTest,
-      });
+      const overlappingTokens = quadtree.getObjects(paddedAdjTargetBounds, { collisionTest });
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | findMovableSpaceNearDest (token collision)`,
-          {
-            testPos,
-            testPosSnapped,
-            testPosCenter,
-            origin: token.center,
-            tokenCollision: !!overlappingTokens.size,
-            overlappingTokens,
-          }
-        );
+        console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (token collision)`, {
+          testPos,
+          testPosSnapped,
+          testPosCenter,
+          origin: token.center,
+          tokenCollision: !!overlappingTokens.size,
+          overlappingTokens,
+        });
       }
       if (overlappingTokens.size) {
-        // Location occupied by other token keep it in case no other not blocked by wall found
+      // Location occupied by other token keep it in case no other not blocked by wall found
         occupiedDestinations.push(testPosSnapped);
       } else {
         unoccupiedDestinations.push(testPosSnapped);
@@ -3431,30 +2918,23 @@ export function runElwinsHelpers() {
     return unoccupiedDestinations.length
       ? { pos: unoccupiedDestinations[0], occupied: false }
       : occupiedDestinations.length
-      ? { pos: occupiedDestinations[0], occupied: true }
-      : undefined;
+    ? { pos: occupiedDestinations[0], occupied: true }
+    : undefined;
   }
 
   /**
-   * Generator of positions that are around the specified startingPoint up to the specified grid distance.
-   * Note: this was inspired by warpgate's PlaceableFit.
-   *
-   * @param {{x: number, y: number}} startingPoint - The starting position from which to find positions around the starting point.
-   * @param {number} gridIncrement - The grid increment to use around the starting point to include in the iteration,
-   *                                 fractions of grid distance is allowed but only for square grids, e.g.: 0.5.
-   * @param {number} gridDistance - The maximum grid distance around the starting point to include in the iteration.
-   *
-   * @returns the generator function of positions around the specific startingPoint.
-   */
-  function* nearbyPositionsGenerator(
-    startingPoint,
-    gridIncrement,
-    gridDistance
-  ) {
-    const gridLoc = canvas.grid.grid.getGridPositionFromPixels(
-      startingPoint.x,
-      startingPoint.y
-    );
+ * Generator of positions that are around the specified startingPoint up to the specified grid distance.
+ * Note: this was inspired by warpgate's PlaceableFit.
+ *
+ * @param {{x: number, y: number}} startingPoint - The starting position from which to find positions around the starting point.
+ * @param {number} gridIncrement - The grid increment to use around the starting point to include in the iteration,
+ *                                 fractions of grid distance is allowed but only for square grids, e.g.: 0.5.
+ * @param {number} gridDistance - The maximum grid distance around the starting point to include in the iteration.
+ *
+ * @returns the generator function of positions around the specific startingPoint.
+ */
+  function* nearbyPositionsGenerator(startingPoint, gridIncrement, gridDistance) {
+    const gridLoc = canvas.grid.grid.getGridPositionFromPixels(startingPoint.x, startingPoint.y);
     // Adjust starting location for partial grid distance increment on square grids only
     if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
       const dim = canvas.dimensions.size;
@@ -3498,13 +2978,13 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns an array of grid locations corresponding to the specified location neighbors.
-   *
-   * @param {number[]} loc - Array containing a grid location's a row and column.
-   * @param {number} gridIncrement - The grid increment, should be 1 for small or larger creatures and 0.5 for tiny ones.
-   *
-   * @returns {number[][]} array containing the grid locations' row and column of the specified loc neighbors.
-   */
+ * Returns an array of grid locations corresponding to the specified location neighbors.
+ *
+ * @param {number[]} loc - Array containing a grid location's a row and column.
+ * @param {number} gridIncrement - The grid increment, should be 1 for small or larger creatures and 0.5 for tiny ones.
+ *
+ * @returns {number[][]} array containing the grid locations' row and column of the specified loc neighbors.
+ */
   function getNeighbors(loc, gridIncrement) {
     const [row, col] = loc;
     if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
@@ -3525,26 +3005,18 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Registers third party reactions for the specified token.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQL workflow.
-   * @param {Token5e} reactionToken - The token for which to register third party reactions.
-   * @param {OnUseMacros} onUseMacros - On use macros of the token matching the current trigger from which to extract the reaction data.
-   */
-  async function registerThirdPartyReactions(
-    workflow,
-    reactionToken,
-    onUseMacros
-  ) {
+ * Registers third party reactions for the specified token.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQL workflow.
+ * @param {Token5e} reactionToken - The token for which to register third party reactions.
+ * @param {OnUseMacros} onUseMacros - On use macros of the token matching the current trigger from which to extract the reaction data.
+ */
+  async function registerThirdPartyReactions(workflow, reactionToken, onUseMacros) {
     if (!onUseMacros?.length) {
       return;
     }
     if (debug) {
-      console.warn(`${MACRO_NAME} | registerThirdPartyReactions.`, {
-        workflow,
-        reactionToken,
-        onUseMacros,
-      });
+      console.warn(`${MACRO_NAME} | registerThirdPartyReactions.`, { workflow, reactionToken, onUseMacros });
     }
     for (let onUseMacro of onUseMacros) {
       const optionParts = onUseMacro.option.split(/\s*\|\s*/);
@@ -3557,7 +3029,7 @@ export function runElwinsHelpers() {
 
           if (name && value) {
             if (!TPR_OPTIONS.includes(name)) {
-              // Skip unknown options
+            // Skip unknown options
               continue;
             }
             switch (name) {
@@ -3574,33 +3046,21 @@ export function runElwinsHelpers() {
           }
         }
       }
-      await registerThirdPartyReaction(
-        workflow,
-        reactionToken,
-        onUseMacro.macroName,
-        targetOnUse,
-        options
-      );
+      await registerThirdPartyReaction(workflow, reactionToken, onUseMacro.macroName, targetOnUse, options);
     }
   }
 
   /**
-   * Registers the reaction associated to macroName that can be triggered by the specified targetOnUse and token,
-   * in the current workflow.
-   *
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {Token5e} reactionToken - The token for which to register third party reactions.
-   * @param {string} macroName - The macroName
-   * @param {string} targetOnUse - The targetOnUse trigger
-   * @param {TprOptions} options - Options for the reaction registration.
-   */
-  async function registerThirdPartyReaction(
-    workflow,
-    reactionToken,
-    macroName,
-    targetOnUse,
-    options = {}
-  ) {
+ * Registers the reaction associated to macroName that can be triggered by the specified targetOnUse and token,
+ * in the current workflow.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+ * @param {Token5e} reactionToken - The token for which to register third party reactions.
+ * @param {string} macroName - The macroName
+ * @param {string} targetOnUse - The targetOnUse trigger
+ * @param {TprOptions} options - Options for the reaction registration.
+ */
+  async function registerThirdPartyReaction(workflow, reactionToken, macroName, targetOnUse, options = {}) {
     if (debug) {
       console.warn(`${MACRO_NAME} | registerThirdPartyReaction.`, {
         workflow,
@@ -3611,14 +3071,13 @@ export function runElwinsHelpers() {
       });
     }
     if (!reactionToken?.actor) {
-      console.warn(
-        `${MACRO_NAME} | No actor for reaction token.`,
-        reactionToken
-      );
+      console.warn(`${MACRO_NAME} | No actor for reaction token.`, reactionToken);
       return;
     }
-    let { item: reactionItem, activity: reactionActivity } =
-      await getItemOrActivityFromMacroName(macroName, reactionToken.actor);
+    let { item: reactionItem, activity: reactionActivity } = await getItemOrActivityFromMacroName(
+      macroName,
+      reactionToken.actor
+    );
     if (options.activityUuid) {
       reactionActivity = await fromUuid(options.activityUuid);
       reactionItem = reactionActivity?.item;
@@ -3629,89 +3088,75 @@ export function runElwinsHelpers() {
 
     // Note: cast activities and linked spell items are not supported for TPRs
     if (reactionItem?.system.linkedActivity) {
-      console.warn(
-        `${MACRO_NAME} | Spells linked to cast activities are not supported, skipping registration.`,
+      console.warn(`${MACRO_NAME} | Spells linked to cast activities are not supported, skipping registration.`, {
+        workflow,
+        reactionToken,
+        macroName,
+        targetOnUse,
+        options,
+        reactionItem,
+        reactionActivity,
+      });
+      return false;
+    }
+
+    if (reactionActivity) {
+      if (!reactionActivity?.item || reactionActivity?.activation?.type !== 'reaction') {
+        console.warn(
+        `${MACRO_NAME} | Macro activity is not a reaction or does not have an item, skipping registration.`,
         {
           workflow,
           reactionToken,
           macroName,
           targetOnUse,
           options,
-          reactionItem,
           reactionActivity,
         }
-      );
-      return false;
-    }
-
-    if (reactionActivity) {
-      if (
-        !reactionActivity?.item ||
-        reactionActivity?.activation?.type !== 'reaction'
-      ) {
-        console.warn(
-          `${MACRO_NAME} | Macro activity is not a reaction or does not have an item, skipping registration.`,
-          {
-            workflow,
-            reactionToken,
-            macroName,
-            targetOnUse,
-            options,
-            reactionActivity,
-          }
         );
         return;
       }
       if (reactionActivity.type === 'cast') {
         console.warn(
-          `${MACRO_NAME} | Macro activity is a cast activity which are not supported, skipping registration.`,
-          {
-            workflow,
-            reactionToken,
-            macroName,
-            targetOnUse,
-            options,
-            reactionActivity,
-          }
+        `${MACRO_NAME} | Macro activity is a cast activity which are not supported, skipping registration.`,
+        {
+          workflow,
+          reactionToken,
+          macroName,
+          targetOnUse,
+          options,
+          reactionActivity,
+        }
         );
         return false;
       }
     }
     if (
       !reactionActivity &&
-      !reactionItem?.system?.activities?.some(
-        (activity) =>
-          activity.activation?.type === 'reaction' && activity.type !== 'cast'
-      )
+    !reactionItem?.system?.activities?.some(
+      (activity) => activity.activation?.type === 'reaction' && activity.type !== 'cast'
+    )
     ) {
-      console.warn(
-        `${MACRO_NAME} | No supported reaction items found, skipping registration.`,
-        {
-          workflow,
-          reactionToken,
-          macroName,
-          targetOnUse,
-          options,
-          reactionItem,
-        }
-      );
+      console.warn(`${MACRO_NAME} | No supported reaction items found, skipping registration.`, {
+        workflow,
+        reactionToken,
+        macroName,
+        targetOnUse,
+        options,
+        reactionItem,
+      });
       return;
     }
 
     workflow.thirdPartyReactions ??= {};
-    const tokenReactionsInfo = (workflow.thirdPartyReactions[
-      reactionToken.document.uuid
-    ] ??= { reactions: [] });
+    const tokenReactionsInfo = (workflow.thirdPartyReactions[reactionToken.document.uuid] ??= { reactions: [] });
     tokenReactionsInfo.reactions.push({
       token: reactionToken,
       item: reactionItem,
       activities: reactionActivity
         ? [reactionActivity]
         : reactionItem.system.activities.filter(
-            (activity) =>
-              activity.activation?.type === 'reaction' &&
-              activity.type !== 'cast'
-          ),
+          (activity) => activity.activation?.type === 'reaction' && activity.type !== 'cast'
+        ),
       macroName,
       targetOnUse,
       triggerSource: options.triggerSource ?? 'target',
@@ -3723,15 +3168,15 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the item associated to the specifed macro name.
-   *
-   * Note: this uses the same logic has MidiQOL in Workflow.callMacro.
-   *
-   * @param {string} macroName - Name of the macro which should be associated to an item.
-   * @param {Actor5e} actor - The current workflow actor.
-   *
-   * @returns {{{Item5e} item, {Activity} activity} the item or activity associated to the specifed macroName.
-   */
+ * Returns the item associated to the specifed macro name.
+ *
+ * Note: this uses the same logic has MidiQOL in Workflow.callMacro.
+ *
+ * @param {string} macroName - Name of the macro which should be associated to an item.
+ * @param {Actor5e} actor - The current workflow actor.
+ *
+ * @returns {{{Item5e} item, {Activity} activity} the item or activity associated to the specifed macroName.
+ */
   async function getItemOrActivityFromMacroName(macroName, actor) {
     let MQItemMacroLabel = getI18n('midi-qol.ItemMacroText');
     if (MQItemMacroLabel === 'midi-qol.ItemMacroText') {
@@ -3749,15 +3194,12 @@ export function runElwinsHelpers() {
     if (uuid?.length > 0) {
       let macroEntity = fromUuidSync(uuid);
       if (macroEntity) {
-        if (
-          macroEntity instanceof ActiveEffect &&
-          macroEntity.parent instanceof Item
-        ) {
+        if (macroEntity instanceof ActiveEffect && macroEntity.parent instanceof Item) {
           macroItem = macroEntity.parent;
         } else if (macroEntity instanceof Item) {
           macroItem = macroEntity;
         } else if (macroEntity.item) {
-          // it points to an activity
+        // it points to an activity
           macroItem = macroEntity.item;
           macroActivity = macroEntity;
         }
@@ -3767,13 +3209,10 @@ export function runElwinsHelpers() {
       return undefined;
     }
     if (name.startsWith('function.')) {
-      // Do nothing, use the macroItem UUID contained in the macroName
-    } else if (
-      name.startsWith(MQItemMacroLabel) ||
-      name.startsWith('ItemMacro')
-    ) {
+    // Do nothing, use the macroItem UUID contained in the macroName
+    } else if (name.startsWith(MQItemMacroLabel) || name.startsWith('ItemMacro')) {
       if (name === 'ItemMacro' || name === MQItemMacroLabel) {
-        // Do nothing, use the macroItem UUID contained in the macroName
+      // Do nothing, use the macroItem UUID contained in the macroName
       } else {
         const parts = name.split('.');
         const itemNameOrUuid = parts.slice(1).join('.');
@@ -3787,8 +3226,7 @@ export function runElwinsHelpers() {
           macroItem = actor.items.find(
             (i) =>
               i.name === itemNameOrUuid &&
-              (foundry.utils.getProperty(i.flags, 'dae.macro') ??
-                foundry.utils.getProperty(i.flags, 'itemacro.macro'))
+            (foundry.utils.getProperty(i.flags, 'dae.macro') ?? foundry.utils.getProperty(i.flags, 'itemacro.macro'))
           );
         }
         if (!macroItem && uuid) {
@@ -3798,31 +3236,24 @@ export function runElwinsHelpers() {
           } else {
             itemId = uuid.split('.').slice(-1)[0];
           }
-          const itemData = actor.effects.find(
-            (effect) => effect.flags.dae?.itemData?._id === itemId
-          )?.flags.dae.itemData;
+          const itemData = actor.effects.find((effect) => effect.flags.dae?.itemData?._id === itemId)?.flags.dae.itemData;
           if (itemData) {
             macroItem = itemData;
           }
         }
       }
-    } else if (
-      name.startsWith(MQActivityMacroLabel) ||
-      name.startsWith('ActivityMacro')
-    ) {
-      // ActivityMacro
-      // ActivityMacro.uuid
-      // ActivityMacro.identifier
-      // ActivityMacro.ActivityName
+    } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith('ActivityMacro')) {
+    // ActivityMacro
+    // ActivityMacro.uuid
+    // ActivityMacro.identifier
+    // ActivityMacro.ActivityName
       if (name === MQActivityMacroLabel || name === 'ActivityMacro') {
-        // Do nothing
+      // Do nothing
       } else {
         const parts = name.split('.');
         const activitySpec = parts.slice(1).join('.');
         let itemToUse = macroItem;
-        const activityOrItem = activitySpec
-          ? await fromUuid(activitySpec)
-          : macroActivity;
+        const activityOrItem = activitySpec ? await fromUuid(activitySpec) : macroActivity;
         if (activityOrItem instanceof Item) {
           itemToUse = activityOrItem;
         } else {
@@ -3835,8 +3266,7 @@ export function runElwinsHelpers() {
         const itemId = parts.at(-1);
         if (!macroActivity) {
           macroActivity = itemToUse?.system.activities?.find(
-            (activity) =>
-              activity.identifier === itemId && activity.macro?.command
+            (activity) => activity.identifier === itemId && activity.macro?.command
           );
         }
         if (!macroActivity) {
@@ -3853,13 +3283,11 @@ export function runElwinsHelpers() {
           const activity = itemToUse?.system.activities?.contents[0];
           macroActivity ??= activity?.macro.command ? activity : undefined;
         } else if (!macroActivity) {
-          macroActivity ??= activityOrItem?.macro.command
-            ? activityOrItem
-            : undefined;
+          macroActivity ??= activityOrItem?.macro.command ? activityOrItem : undefined;
         }
       }
     } else {
-      // get a world/compendium macro.
+    // get a world/compendium macro.
       if (name.startsWith('Macro.')) {
         name = name.replace('Macro.', '');
       }
@@ -3869,14 +3297,11 @@ export function runElwinsHelpers() {
         if (itemOrMacro instanceof Item) {
           macroItem = itemOrMacro;
         } else if (itemOrMacro instanceof Macro) {
-          // Do nothing, use
+        // Do nothing, use
         }
       }
     }
-    return {
-      item: macroActivity ? macroActivity.item : macroItem,
-      activity: macroActivity,
-    };
+    return { item: macroActivity ? macroActivity.item : macroItem, activity: macroActivity };
   }
 
   async function checkActivityUsage(activity, maxCastLevel, usedReaction) {
@@ -3887,18 +3312,14 @@ export function runElwinsHelpers() {
 
     if ((activity.activation?.value ?? 1) > 0 && usedReaction) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: reaction used and cost not zero.`
-        );
+        console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: reaction used and cost not zero.`);
       }
       return false; // TODO can't specify 0 cost reactions in dnd5e 4.x - have to find another way
     }
 
     if (!item.system.attuned && item.system.attunement === 'required') {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: item not attuned.`
-        );
+        console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: item not attuned.`);
       }
       return false;
     }
@@ -3906,20 +3327,15 @@ export function runElwinsHelpers() {
     // Note: third party reactions on cast activities are not supported, they are filtered on registration
     let isValid = false;
     if (item.type === 'spell') {
-      if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
+      if (configSettings.ignoreSpellReactionRestriction) {
         isValid = true;
       } else if (['atwill', 'innate'].includes(item.system.preparation.mode)) {
         isValid = true;
       } else if (item.system.level === 0) {
         isValid = true;
-      } else if (
-        item.system.preparation?.prepared !== true &&
-        item.system.preparation?.mode === 'prepared'
-      ) {
+      } else if (item.system.preparation?.prepared !== true && item.system.preparation?.mode === 'prepared') {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: spell not prepared.`
-          );
+          console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: spell not prepared.`);
         }
         return false;
       } else if (item.system.level <= maxCastLevel) {
@@ -3927,15 +3343,11 @@ export function runElwinsHelpers() {
       }
     } else {
       const config = activity._prepareUsageConfig({ create: false });
-      const canUse = await activity._prepareUsageUpdates(config, {
-        returnErrors: true,
-      });
+      const canUse = await activity._prepareUsageUpdates(config, { returnErrors: true });
       if (canUse instanceof Array) {
-        // insufficent uses available
+      // insufficent uses available
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: insufficent uses available.`
-          );
+          console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: insufficent uses available.`);
         }
         return false;
       }
@@ -3957,10 +3369,10 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the token name to be displayed in messages.
-   * @param {Token5e} entity
-   * @returns {string} the token name to be displayed.
-   */
+ * Returns the token name to be displayed in messages.
+ * @param {Token5e} entity
+ * @returns {string} the token name to be displayed.
+ */
   function getTokenName(entity) {
     if (!entity) {
       return '<unknown>';
@@ -4003,33 +3415,27 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the token image to display.
-   * @param {Token5e} token the token for which to determine the image.
-   * @returns {Promise<String>} the token image to display.
-   */
+ * Returns the token image to display.
+ * @param {Token5e} token the token for which to determine the image.
+ * @returns {Promise<String>} the token image to display.
+ */
   async function getTokenImage(token) {
     let img = token.document?.texture.src ?? token.actor?.img;
-    if (
-      MidiQOL.configSettings().usePlayerPortrait &&
-      token.actor?.type === 'character'
-    ) {
+    if (MidiQOL.configSettings().usePlayerPortrait && token.actor?.type === 'character') {
       img = token.actor?.img ?? token.document?.texture.src;
     }
     if (VideoHelper.hasVideoExtension(img ?? '')) {
-      img = await game.video.createThumbnail(img ?? '', {
-        width: 100,
-        height: 100,
-      });
+      img = await game.video.createThumbnail(img ?? '', { width: 100, height: 100 });
     }
     return img;
   }
 
   /**
-   * Returns the actor's maximum cast level for reactions.
-   *
-   * @param {Actor5e} actor - Actor for which to get the maximum cast level allowed for reactions.
-   * @returns {integer} the actor's maximum cast level for reactions.
-   */
+ * Returns the actor's maximum cast level for reactions.
+ *
+ * @param {Actor5e} actor - Actor for which to get the maximum cast level allowed for reactions.
+ * @returns {integer} the actor's maximum cast level for reactions.
+ */
   function maxReactionCastLevel(actor) {
     if (MidiQOL.maxReactionCastLevel) {
       return MidiQOL.maxReactionCastLevel(actor);
@@ -4063,4 +3469,5 @@ export function runElwinsHelpers() {
   async function _remoteButtonDialog(data, direction) {
     return await buttonDialog(data, direction);
   }
+
 }

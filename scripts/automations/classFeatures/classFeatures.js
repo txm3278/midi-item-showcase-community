@@ -10,6 +10,7 @@ import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDiv
 import { sorrowfulFate } from './Bard/CollegeOfTragedy/sorrowfulFate.js';
 import { dampenElements } from './Cleric/NatureDomain/dampenElements.js';
 import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/channelDivinityRebukeTheViolent.js';
+import { steadyAim } from './Rogue/steadyAim.js';
 
 export let classFeatures = {
   spiritShield,
@@ -24,4 +25,5 @@ export let classFeatures = {
   sorrowfulFate,
   dampenElements,
   channelDivinityRebukeTheViolent,
+  steadyAim,
 };
