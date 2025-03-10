@@ -309,7 +309,7 @@ export function setConfig() {
         },
         Poisoner: {
           name: 'Poisoner',
-          type: 'Class Features',
+          type: 'Feat',
           version: '1.0.0',
           authors: ['Elwin'],
         },
@@ -328,6 +328,12 @@ export function setConfig() {
         'Serpent Venom': {
           name: 'Serpent Venom',
           type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
+        'Sharpshooter': {
+          name: 'Sharpshooter',
+          type: 'Feat',
           version: '1.0.0',
           authors: ['Elwin'],
         },
