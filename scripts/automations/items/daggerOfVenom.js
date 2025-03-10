@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Allows to cover the blade with poison and applies the poison effect on a hit.
-// v1.0.0
+// v2.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -85,7 +85,7 @@ export async function daggerOfVenom({
     } else if (currentWorkflow.activity.identifier === 'attack') {
       if (!currentWorkflow.hitTargets?.size || currentWorkflow.aborted) {
         if (debug) {
-          console.warn(`${MACRO_NAME} | No target hit or workflow was aborted.`, currentWorkflow);
+          console.warn(`${DEFAULT_ITEM_NAME} | No target hit or workflow was aborted.`, currentWorkflow);
         }
         return;
       }

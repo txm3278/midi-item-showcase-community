@@ -66,6 +66,7 @@ export default [
         AudioHelper: 'writable',
         dnd5e: 'writable',
         abouttime: 'writable',
+        FormDataExtended: 'writable'
       },
     },
     rules: {

@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.2.0
+// v3.2.1
 // Dependencies:
 //  - MidiQOL
 //
@@ -112,7 +112,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpers() {
-  const VERSION = '3.2.0';
+  const VERSION = '3.2.1';
   const MACRO_NAME = 'elwin-helpers';
   const active = true;
   let debug = false;
@@ -3327,7 +3327,7 @@ export function runElwinsHelpers() {
     // Note: third party reactions on cast activities are not supported, they are filtered on registration
     let isValid = false;
     if (item.type === 'spell') {
-      if (configSettings.ignoreSpellReactionRestriction) {
+      if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
         isValid = true;
       } else if (['atwill', 'innate'].includes(item.system.preparation.mode)) {
         isValid = true;
