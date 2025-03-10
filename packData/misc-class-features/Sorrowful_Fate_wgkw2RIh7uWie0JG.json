@@ -1,10 +1,11 @@
 {
   "name": "Sorrowful Fate",
   "type": "feat",
+  "_id": "wgkw2RIh7uWie0JG",
   "img": "icons/equipment/head/mask-craved-beige.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br />It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Bard' class, its data value should resolve to '@scale.bard.bardic-inspiration'. When adding this feature to an actor, you must configure the consumption on Bardic Inspiration.</p>\n</details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Bard' class, its data value should resolve to '@scale.bard.bardic-inspiration'. When adding this feature to an actor, you must configure the consumption on Bardic Inspiration.</p>\n</details>\n",
       "chat": ""
     },
     "source": {
@@ -104,17 +105,9 @@
         "useConditionText": "reaction === \"tpr.isPreCheckSave\" && workflow.saveActivity?.save",
         "effectConditionText": "",
         "name": "Reaction",
-        "macroData": {
-          "name": "",
-          "command": ""
-        },
-        "ignoreTraits": {
-          "idi": false,
-          "idr": false,
-          "idv": false,
-          "ida": false
-        },
         "midiProperties": {
+          "identifier": "reaction",
+          "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -125,10 +118,20 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
-          "identifier": "",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "useConditionReason": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -217,17 +220,9 @@
         "useConditionText": "",
         "effectConditionText": "",
         "name": "Damage",
-        "macroData": {
-          "name": "",
-          "command": ""
-        },
-        "ignoreTraits": {
-          "idi": false,
-          "idr": false,
-          "idv": false,
-          "ida": false
-        },
         "midiProperties": {
+          "identifier": "damage",
+          "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -238,10 +233,20 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
-          "identifier": "",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "useConditionReason": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -314,14 +319,14 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/equipment/head/mask-craved-beige.webp",
       "type": "base",
@@ -400,10 +405,10 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "systemVersion": "4.1.1",
+        "createdTime": 1732393700880,
+        "modifiedTime": 1732393823992,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!wgkw2RIh7uWie0JG.5qx6CPCZ6RbhLBDO"
     }
@@ -413,6 +418,7 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
@@ -493,18 +499,21 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     }
   },
   "_stats": {
-    "compendiumSource": "Item.ke5IFJMfAeqGvv6Y",
-    "duplicateSource": null,
-    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458252564,
-    "modifiedTime": 1740458252592,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1719977584629,
+    "modifiedTime": 1741409005265,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_id": "wgkw2RIh7uWie0JG",
   "_key": "!items!wgkw2RIh7uWie0JG"
 }

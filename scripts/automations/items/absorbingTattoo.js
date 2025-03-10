@@ -19,6 +19,7 @@
 //   Validates that the item is equipped and attuned, otherwise aborts the item use.
 // ###################################################################################################
 
+
 export async function absorbingTattoo({
   speaker,
   actor,
@@ -30,17 +31,12 @@ export async function absorbingTattoo({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = 'Absorbing Tattoo';
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -51,19 +47,14 @@ export async function absorbingTattoo({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
     if (!scope.rolledItem.system.equipped || !scope.rolledItem.system.attuned) {
-      // The Item must be equipped and attuned
-      ui.notifications.warn(
-        `${scope.rolledItem.name} | The tattoo must be equipped and attuned.`
-      );
+    // The Item must be equipped and attuned
+      ui.notifications.warn(`${scope.rolledItem.name} | The tattoo must be equipped and attuned.`);
       return false;
     }
   }
+
 }

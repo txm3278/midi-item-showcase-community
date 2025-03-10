@@ -28,6 +28,7 @@
 //   added on the owner for a duration of "isAttacked".
 // ###################################################################################################
 
+
 export async function arrowCatchingShield({
   speaker,
   actor,
@@ -39,16 +40,11 @@ export async function arrowCatchingShield({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = 'Arrow-Catching Shield';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.1'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.1')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -59,51 +55,33 @@ export async function arrowCatchingShield({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isTargeted.post'
-  ) {
-    // Other target, handle reaction
-    await handleTargetOnUseIsTargetedPost(
-      workflow,
-      token,
-      scope.macroItem,
-      options?.thirdPartyReactionResult
-    );
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'isAttacked'
-  ) {
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isTargeted.post') {
+  // Other target, handle reaction
+    await handleTargetOnUseIsTargetedPost(workflow, token, scope.macroItem, options?.thirdPartyReactionResult);
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isAttacked') {
     await handleTargetOnUseIsAttacked(workflow, token, scope.macroItem);
   }
 
   /**
-   * Handles the preTargeting phase of the Arrow-Catching Shield reaction activity.
-   * Validates that the reaction was triggered by the tpr.isTargeted target on use.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Arrow-Catching Shield item.
-   *
-   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
-   */
+ * Handles the preTargeting phase of the Arrow-Catching Shield reaction activity.
+ * Validates that the reaction was triggered by the tpr.isTargeted target on use.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Arrow-Catching Shield item.
+ *
+ * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+ */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !==
-        'tpr.isTargeted' ||
-      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
-        currentWorkflow.activity?.uuid
-      )
+      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isTargeted' ||
+    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-      // Reaction should only be triggered by aura
+    // Reaction should only be triggered by aura
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the owner is targeted by a ranged attack.`;
       ui.notifications.warn(msg);
       return false;
@@ -112,39 +90,25 @@ export async function arrowCatchingShield({
   }
 
   /**
-   * Handles the tpr.isTargeted post macro of the Arrow-Catching Shield item.
-   * If the reaction was used and completed successfully, the target is changed to the owner of the shield.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Token5e} targetToken - The target token that is attacked.
-   * @param {Item5e} sourceItem - The Arrow-Catching Shield item.
-   * @param {object} thirdPartyReactionResult - The third party reaction result.
-   */
-  async function handleTargetOnUseIsTargetedPost(
-    currentWorkflow,
-    targetToken,
-    sourceItem,
-    thirdPartyReactionResult
-  ) {
+ * Handles the tpr.isTargeted post macro of the Arrow-Catching Shield item.
+ * If the reaction was used and completed successfully, the target is changed to the owner of the shield.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Token5e} targetToken - The target token that is attacked.
+ * @param {Item5e} sourceItem - The Arrow-Catching Shield item.
+ * @param {object} thirdPartyReactionResult - The third party reaction result.
+ */
+  async function handleTargetOnUseIsTargetedPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
     if (debug) {
-      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', {
-        thirdPartyReactionResult,
-      });
+      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
     }
-    if (
-      !sourceItem.system.activities?.some(
-        (a) => a.uuid === thirdPartyReactionResult?.uuid
-      )
-    ) {
+    if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
     }
     const sourceActor = sourceItem.actor;
 
     if (!sourceActor || !targetToken) {
-      console.error(
-        `${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`,
-        { sourceActor, targetToken }
-      );
+      console.error(`${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`, { sourceActor, targetToken });
       return;
     }
 
@@ -164,51 +128,34 @@ export async function arrowCatchingShield({
     game.user?.broadcastActivity({ targets: targetIds });
 
     // Add info about target switch
-    const targetDivs = elwinHelpers.getTargetDivs(
-      targetToken,
-      'The target <strong>${tokenName}</strong>'
-    );
+    const targetDivs = elwinHelpers.getTargetDivs(targetToken, 'The target <strong>${tokenName}</strong>');
     const newTargetDivs = elwinHelpers.getTargetDivs(
       sourceToken,
-      `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
+    `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
     );
     const infoMsg = `${targetDivs}${newTargetDivs}`;
-    await elwinHelpers.insertTextIntoMidiItemCard(
-      'beforeHitsDisplay',
-      currentWorkflow,
-      infoMsg
-    );
+    await elwinHelpers.insertTextIntoMidiItemCard('beforeHitsDisplay', currentWorkflow, infoMsg);
   }
 
   /**
-   * Handles the isAttacked target on use of the Arrow-Catching Shield item.
-   * Validates that the attack is a ranged attack on the onwer and if it's the case
-   * adds an AE to give an AC bonus to the onwer.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Token5e} targetToken - The target token that is attacked.
-   * @param {Item5e} sourceItem - The Arrow-Catching Shield item.
-   */
-  async function handleTargetOnUseIsAttacked(
-    currentWorkflow,
-    targetToken,
-    sourceItem
-  ) {
+ * Handles the isAttacked target on use of the Arrow-Catching Shield item.
+ * Validates that the attack is a ranged attack on the onwer and if it's the case
+ * adds an AE to give an AC bonus to the onwer.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Token5e} targetToken - The target token that is attacked.
+ * @param {Item5e} sourceItem - The Arrow-Catching Shield item.
+ */
+  async function handleTargetOnUseIsAttacked(currentWorkflow, targetToken, sourceItem) {
     if (!targetToken || !targetToken?.actor) {
-      // No target
+    // No target
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No target token or actor.`);
       }
       return;
     }
-    if (
-      !elwinHelpers.isRangedAttack(
-        currentWorkflow.activity,
-        currentWorkflow.token,
-        targetToken
-      )
-    ) {
-      // Not a ranged attack
+    if (!elwinHelpers.isRangedAttack(currentWorkflow.activity, currentWorkflow.token, targetToken)) {
+    // Not a ranged attack
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a ranged attack.`);
       }
@@ -218,7 +165,7 @@ export async function arrowCatchingShield({
     // create an active effect on target to give bonus AC
     const targetEffectData = {
       changes: [
-        // flag for AC bonus
+      // flag for AC bonus
         {
           key: 'system.attributes.ac.bonus',
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
@@ -234,9 +181,7 @@ export async function arrowCatchingShield({
       'flags.dae': { specialDuration: ['isAttacked'], stackable: 'noneName' },
     };
 
-    await MidiQOL.createEffects({
-      actorUuid: targetToken.actor.uuid,
-      effects: [targetEffectData],
-    });
+    await MidiQOL.createEffects({ actorUuid: targetToken.actor.uuid, effects: [targetEffectData] });
   }
+
 }

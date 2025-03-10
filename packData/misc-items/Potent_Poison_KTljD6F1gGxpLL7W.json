@@ -3,13 +3,13 @@
   "type": "consumable",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>\n",
       "chat": ""
     },
     "source": {
       "custom": "",
       "book": "Tasha's Cauldron of Everything",
-      "page": "pg. 80",
+      "page": "80",
       "license": "",
       "revision": 1,
       "rules": "2014"
@@ -172,9 +172,11 @@
           "autoTargetAction": "default",
           "otherActivityCompatible": true,
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
         },
         "name": "Poison - Effect",
+        "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -289,9 +291,11 @@
           "autoTargetAction": "default",
           "otherActivityCompatible": true,
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
         },
         "name": "Apply Poison",
+        "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -357,6 +361,12 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     }
   },
   "effects": [
@@ -426,7 +436,7 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null
@@ -456,7 +466,7 @@
       ],
       "duration": {
         "startTime": null,
-        "seconds": null,
+        "seconds": 60,
         "combat": null,
         "rounds": null,
         "turns": null,
@@ -496,7 +506,13 @@
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "wallsBlock": "system"
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "_stats": {
@@ -504,10 +520,10 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1740964932191,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!KTljD6F1gGxpLL7W.MrESIQ1i7yNgiwvQ"
     }
@@ -517,19 +533,18 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn",
-    "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458030684,
-    "modifiedTime": 1740458030700,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.3",
+    "createdTime": 1740082857614,
+    "modifiedTime": 1740663101184,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "sort": 0,
+  "sort": 100000,
   "_id": "KTljD6F1gGxpLL7W",
   "_key": "!items!KTljD6F1gGxpLL7W"
 }

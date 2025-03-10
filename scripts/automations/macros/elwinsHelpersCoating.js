@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.0.2
+// v2.1.0
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '2.0.2';
+  const VERSION = '2.1.0';
   const MACRO_NAME = 'elwin-helpers-coating';
   const MODULE_ID = 'midi-item-showcase-community';
   const WORLD_MODULE_ID = 'world';
@@ -97,12 +97,7 @@ export function runElwinsHelpersCoating() {
   const AMMO_TRACKER_MOD = 'ammo-tracker-fvtt';
 
   // Default allowed weapon types
-  const DEFAULT_ALLOWED_WEAPON_TYPES = [
-    'simpleM',
-    'martialM',
-    'simpleR',
-    'martialR',
-  ];
+  const DEFAULT_ALLOWED_WEAPON_TYPES = ['simpleM', 'martialM', 'simpleR', 'martialR'];
   // Default allowed weapon damage types
   const DEAULT_ALLOWED_DMG_TYPES = ['slashing', 'piercing'];
   // Default mapping between damage type and ammo type
@@ -112,12 +107,12 @@ export function runElwinsHelpersCoating() {
   ]);
 
   /**
-   * Conditional statuses to be applied when a coated weapon or ammo hits if the condition is met.
-   * @typedef ConditionalAppliedCoatingStatuses
-   * @property {string} status - Status to apply when the weapon or ammo hits.
-   * @property {string[]} specialDurations - Special durations to set on the conditional status.
-   * @property {string} condition - MidiQOL condition expression to determine if the conditional status can be applied or not on a hit.
-   */
+ * Conditional statuses to be applied when a coated weapon or ammo hits if the condition is met.
+ * @typedef ConditionalAppliedCoatingStatuses
+ * @property {string} status - Status to apply when the weapon or ammo hits.
+ * @property {string[]} specialDurations - Special durations to set on the conditional status.
+ * @property {string} condition - MidiQOL condition expression to determine if the conditional status can be applied or not on a hit.
+ */
 
   /**
  * Applied coating effect values.
@@ -137,21 +132,12 @@ export function runElwinsHelpersCoating() {
  */
 
   const dependencies = ['midi-qol'];
-  if (
-    hasValidElwinHelpersVersion() &&
-    globalThis.elwinHelpers?.requirementsSatisfied(MACRO_NAME, dependencies)
-  ) {
-    // Set a version to facilitate dependency check
+  if (hasValidElwinHelpersVersion() && globalThis.elwinHelpers?.requirementsSatisfied(MACRO_NAME, dependencies)) {
+  // Set a version to facilitate dependency check
     exportIdentifier('elwinHelpers.coating.version', VERSION);
 
-    exportIdentifier(
-      'elwinHelpers.coating.getCoatingWeaponFilter',
-      getCoatingWeaponFilter
-    );
-    exportIdentifier(
-      'elwinHelpers.coating.getCoatingAmmoFilter',
-      getCoatingAmmoFilter
-    );
+    exportIdentifier('elwinHelpers.coating.getCoatingWeaponFilter', getCoatingWeaponFilter);
+    exportIdentifier('elwinHelpers.coating.getCoatingAmmoFilter', getCoatingAmmoFilter);
     exportIdentifier(
       'elwinHelpers.coating.handleCoatingItemOnUsePostActiveEffects',
       handleCoatingItemOnUsePostActiveEffects
@@ -160,10 +146,7 @@ export function runElwinsHelpersCoating() {
       'elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects',
       handleCoatedItemOnUsePostActiveEffects
     );
-    exportIdentifier(
-      'elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll',
-      handleCoatedItemOnUsePostDamageRoll
-    );
+    exportIdentifier('elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll', handleCoatedItemOnUsePostDamageRoll);
     exportIdentifier(
       'elwinHelpers.coating.handleCoatingEffectActivityConditionalStatuses',
       handleCoatingEffectActivityConditionalStatuses
@@ -171,17 +154,12 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
-   * Returns true if elwin helpers' version is valid for this world script.
-   * @returns {boolean} true if elwin helpers' version is valid for this world script.
-   */
+ * Returns true if elwin helpers' version is valid for this world script.
+ * @returns {boolean} true if elwin helpers' version is valid for this world script.
+ */
   function hasValidElwinHelpersVersion() {
-    if (
-      !foundry.utils.isNewerVersion(
-        globalThis?.elwinHelpers?.version ?? '1.1',
-        '3.1'
-      )
-    ) {
-      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.1.0`;
+    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.2.0`;
       ui.notifications.error(errorMsg);
       return false;
     }
@@ -189,128 +167,97 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
-   * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
-   *
-   * @param {string} exportedIdentifierName the name of the exported function.
-   * @param {function} exportedValue the function or variable to export.
-   */
+ * Removes a previously exported function or variable and exports the specifed function or variable if the macro is active.
+ *
+ * @param {string} exportedIdentifierName the name of the exported function.
+ * @param {function} exportedValue the function or variable to export.
+ */
   function exportIdentifier(exportedIdentifierName, exportedValue) {
     if (foundry.utils.getProperty(globalThis, exportedIdentifierName)) {
       const lastIndex = exportedIdentifierName.lastIndexOf('.');
-      delete foundry.utils.getProperty(
-        globalThis,
-        exportedIdentifierName.substring(0, lastIndex)
-      )[exportedIdentifierName.substring(lastIndex + 1)];
+      delete foundry.utils.getProperty(globalThis, exportedIdentifierName.substring(0, lastIndex))[
+        exportedIdentifierName.substring(lastIndex + 1)
+      ];
     }
     if (active) {
-      foundry.utils.setProperty(
-        globalThis,
-        exportedIdentifierName,
-        exportedValue
-      );
+      foundry.utils.setProperty(globalThis, exportedIdentifierName, exportedValue);
     }
   }
 
   /**
-   * Returns a weapon filter function for the specified options.
-   * The filter will receive as a param, a weapon item.
-   * It returns true if the weapon does not have ammo and both of allowedWeaponTypes and allowedDamageTypes options are true (AND between options).
-   *
-   * @param {object} options - The options for the weapon filter.
-   * @param {string[]|true} options.allowedWeaponTypes - The allowed weapon types (true means all types allowed).
-   * @param {string[]|true} options.allowedDamageTypes - The allowed damage types (true means all types allowed).
-   * @returns {function} a weapon filter for the specified options.
-   */
+ * Returns a weapon filter function for the specified options.
+ * The filter will receive as a param, a weapon item.
+ * It returns true if the weapon does not have ammo and both of allowedWeaponTypes and allowedDamageTypes options are true (AND between options).
+ *
+ * @param {object} options - The options for the weapon filter.
+ * @param {string[]|true} options.allowedWeaponTypes - The allowed weapon types (true means all types allowed).
+ * @param {string[]|true} options.allowedDamageTypes - The allowed damage types (true means all types allowed).
+ * @returns {function} a weapon filter for the specified options.
+ */
   function getCoatingWeaponFilter({ allowedWeaponTypes, allowedDamageTypes }) {
     return function (item) {
       return (
         !item.system?.properties?.has('amm') &&
-        (allowedWeaponTypes === true ||
-          allowedWeaponTypes.includes(item.system?.type?.value)) &&
-        (allowedDamageTypes === true ||
-          item.system?.damage?.base?.types?.some((type) =>
-            allowedDamageTypes.includes(type)
-          ))
+      (allowedWeaponTypes === true || allowedWeaponTypes.includes(item.system?.type?.value)) &&
+      (allowedDamageTypes === true ||
+        item.system?.damage?.base?.types?.some((type) => allowedDamageTypes.includes(type)))
       );
     };
   }
 
   /**
-   * Returns an ammo filter function for the specified options.
-   * The filter will receive as a param, a consumable item of type ammo.
-   * It returns true if either of allowedAmmoTypes or allowedDamageTypes options are true (OR between options).
-   *
-   * @param {object} options - The options for the ammo filter.
-   * @param {string[]|true} options.allowedAmmoTypes - The allowed ammo types (true means all types allowed).
-   * @param {string[]|true} options.allowedDamageTypes - The allowed damage types (true means all types allowed).
-   * @returns {function} an ammo filter for the specified options.
-   */
+ * Returns an ammo filter function for the specified options.
+ * The filter will receive as a param, a consumable item of type ammo.
+ * It returns true if either of allowedAmmoTypes or allowedDamageTypes options are true (OR between options).
+ *
+ * @param {object} options - The options for the ammo filter.
+ * @param {string[]|true} options.allowedAmmoTypes - The allowed ammo types (true means all types allowed).
+ * @param {string[]|true} options.allowedDamageTypes - The allowed damage types (true means all types allowed).
+ * @returns {function} an ammo filter for the specified options.
+ */
   function getCoatingAmmoFilter({ allowedAmmoTypes, allowedDamageTypes }) {
     return function (item) {
       return (
         (allowedAmmoTypes === true && allowedDamageTypes === true) ||
-        (allowedAmmoTypes !== true &&
-          allowedAmmoTypes.includes(item.system.type?.subtype)) ||
-        (allowedDamageTypes !== true &&
-          item.system?.damage?.parts?.some((part) =>
-            allowedDamageTypes.includes(part[1])
-          ))
+      (allowedAmmoTypes !== true && allowedAmmoTypes.includes(item.system.type?.subtype)) ||
+      (allowedDamageTypes !== true && item.system?.damage?.parts?.some((part) => allowedDamageTypes.includes(part[1])))
       );
     };
   }
 
   /**
-   * Handles the coating of a weapon or ammo.
-   * Selects a weapon or ammunition on which to apply the coating defined on the item's AE (in the appliedCoating flag).
-   * Once selected, creates a macro to handle the coated item and coating effect and apply an enchantment on the selected
-   * item to be coated. If the Ammo Tracker module is active, updates its values if necessary.
-   *
-   * @param {object} parameters - The MidiQOL macro parameters and custom optional ones for coating application.
-   * @param {Actor5e} parameters.actor - The actor that used the item.
-   * @param {MidiQOL.Workflow} parameters.workflow - The MidiQOL current workflow.
-   * @param {Item5e} parameters.rolledItem - The item used.
-   * @param {function|undefined} parameters.weaponFilter - A custom weapon filter to be used to select allowed weapons.
-   *                            (by default one is created using the values from the appliedCoating effect flag using getCoatingWeaponFilter)
-   * @param {function|undefined} parameters.ammoFilter - A custom ammo filter to be used to select allowed ammos.
-   *                            (by default one is created using the values from the appliedCoating effect flag using getCoatingAmmoFilter)
-   */
-  async function handleCoatingItemOnUsePostActiveEffects({
-    actor,
-    workflow,
-    rolledItem,
-    weaponFilter,
-    ammoFilter,
-  }) {
+ * Handles the coating of a weapon or ammo.
+ * Selects a weapon or ammunition on which to apply the coating defined on the item's AE (in the appliedCoating flag).
+ * Once selected, creates a macro to handle the coated item and coating effect and apply an enchantment on the selected
+ * item to be coated. If the Ammo Tracker module is active, updates its values if necessary.
+ *
+ * @param {object} parameters - The MidiQOL macro parameters and custom optional ones for coating application.
+ * @param {Actor5e} parameters.actor - The actor that used the item.
+ * @param {MidiQOL.Workflow} parameters.workflow - The MidiQOL current workflow.
+ * @param {Item5e} parameters.rolledItem - The item used.
+ * @param {function|undefined} parameters.weaponFilter - A custom weapon filter to be used to select allowed weapons.
+ *                            (by default one is created using the values from the appliedCoating effect flag using getCoatingWeaponFilter)
+ * @param {function|undefined} parameters.ammoFilter - A custom ammo filter to be used to select allowed ammos.
+ *                            (by default one is created using the values from the appliedCoating effect flag using getCoatingAmmoFilter)
+ */
+  async function handleCoatingItemOnUsePostActiveEffects({ actor, workflow, rolledItem, weaponFilter, ammoFilter }) {
     if (debug) {
-      console.warn(
-        MACRO_NAME,
-        { phase: `${workflow?.tag}-${workflow?.macroPass}` },
-        arguments
-      );
+      console.warn(MACRO_NAME, { phase: `${workflow?.tag}-${workflow?.macroPass}` }, arguments);
     }
-    if (
-      workflow.activity?.type !== 'enchant' &&
-      workflow.activity?.identifier !== APPLY_COATING_IDENT
-    ) {
-      // Not the apply coating enchant activity
+    if (workflow.activity?.type !== 'enchant' && workflow.activity?.identifier !== APPLY_COATING_IDENT) {
+    // Not the apply coating enchant activity
       return;
     }
     const appliedCoating = getAppliedCoating(workflow, rolledItem);
     if (!appliedCoating) {
       return;
     }
-    const enchantmentData = validateEnchantment(rolledItem, workflow.activity);
+    const enchantmentData = validateEnchantment(workflow, rolledItem);
     if (!enchantmentData) {
       return;
     }
 
-    const {
-      allowedWeaponTypes,
-      allowedDamageTypes,
-      allowedAmmoTypes,
-      maxAmmo,
-      maxWeaponHits,
-    } = appliedCoating;
+    const { allowedWeaponTypes, allowedDamageTypes, allowedAmmoTypes, maxAmmo, maxWeaponHits } = appliedCoating;
     weaponFilter ??= getCoatingWeaponFilter({
       allowedWeaponTypes,
       allowedDamageTypes,
@@ -321,22 +268,14 @@ export function runElwinsHelpersCoating() {
         allowedDamageTypes,
       });
     }
-    console.warn(`${MACRO_NAME} | filters`, {
+    console.warn(`${MACRO_NAME} | filters`, { weaponFilter, ammoFilter, maxAmmo });
+    const { selectedItem, coatedItem } = await selectCoatingWeaponOrAmmo(actor, rolledItem, {
       weaponFilter,
       ammoFilter,
       maxAmmo,
     });
-    const { selectedItem, coatedItem } = await selectCoatingWeaponOrAmmo(
-      actor,
-      rolledItem,
-      {
-        weaponFilter,
-        ammoFilter,
-        maxAmmo,
-      }
-    );
     if (!selectedItem || !coatedItem) {
-      // Not selected item or item to be coated
+    // Not selected item or item to be coated
       return;
     }
 
@@ -351,99 +290,54 @@ export function runElwinsHelpersCoating() {
       appliedCoating,
       enchantmentData.riderActivity
     );
-    enchantmentEffectData.origin = workflow.activity.uuid;
 
-    // Removes previous enchantment if it exists
-    await elwinHelpers.deleteAppliedEnchantments(workflow.activity.uuid);
-    // Add enchantment to weapon or ammo
-    const itemCard = game.messages.get(workflow.itemCardId);
-    if (!itemCard) {
-      console.error(`${MACRO_NAME} | Item chat message could not be found.`, {
-        workflow,
-      });
+    const coatingItemOrigName = coatedItem.name;
+    const enchantmentEffect = await elwinHelpers.applyEnchantmentToItem(workflow, enchantmentEffectData, coatedItem);
+    if (!enchantmentEffect) {
+      console.error(`${MACRO_NAME} | Enchantment effect could not be created.`, enchantmentEffectData);
       return;
     }
-    // We need set temporarely the profile just to allow the enchantment to be properly created with riders,
-    // it's the only way to make it work with items that are destroyed, we cannot leave it, otherwise the drop
-    // area will be displayed.
-    foundry.utils.setProperty(
-      itemCard,
-      'flags.dnd5e.use.enchantmentProfile',
-      enchantmentEffectData._id
-    );
-    try {
-      const enchantmentEffect = await ActiveEffect.create(
-        enchantmentEffectData,
-        {
-          parent: coatedItem,
-          keepOrigin: true,
-          chatMessageOrigin: workflow.itemCardId,
-        }
-      );
-      if (!enchantmentEffect) {
-        console.error(
-          `${MACRO_NAME} | Enchantment effect could not be created.`,
-          enchantmentEffectData
-        );
-        return;
-      }
-    } finally {
-      foundry.utils.setProperty(
-        itemCard,
-        'flags.dnd5e.use.enchantmentProfile',
-        null
-      );
-    }
+
+    // Add message about coating
+    const infoMsg = `<p><strong>${rolledItem.name}</strong> was applied to <strong>${coatingItemOrigName}</strong>.</p>`;
+    await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
 
     // Make the proper adjustments for Ammo Tracker
     if (
       game.modules.get(AMMO_TRACKER_MOD)?.active &&
-      selectedItem.type === 'consumable' &&
-      coatedItem.id !== selectedItem.id &&
-      actor.type === 'character'
+    selectedItem.type === 'consumable' &&
+    coatedItem.id !== selectedItem.id &&
+    actor.type === 'character'
     ) {
       for (let combat of game.combats) {
         const actorAmmoAttr = `projectileData.${actor.id}`;
         const actorAmmo = combat.getFlag(AMMO_TRACKER_MOD, actorAmmoAttr);
         if (actorAmmo?.[selectedItem.id]) {
           const updatedActorAmmo = foundry.utils.deepClone(actorAmmo);
-          updatedActorAmmo[selectedItem.id] =
-            updatedActorAmmo[selectedItem.id] - appliedCoating.uses;
+          updatedActorAmmo[selectedItem.id] = updatedActorAmmo[selectedItem.id] - appliedCoating.uses;
           updatedActorAmmo[coatedItem.id] = appliedCoating.uses;
-          await combat.setFlag(
-            AMMO_TRACKER_MOD,
-            actorAmmoAttr,
-            updatedActorAmmo
-          );
+          await combat.setFlag(AMMO_TRACKER_MOD, actorAmmoAttr, updatedActorAmmo);
         }
       }
     }
   }
 
   /**
-   * Returns the applied coating for the specified item. The values are converted from a stringified JSON.
-   * The values must be set in an active effect having the same name as the item,
-   * for which 'Apply Effect to Actor' is not checked, that 'Don't apply the effect' is checked and
-   * contains a change for which the key is flags.[world|"midi-item-showcase-community].apppliedCoating.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The MidiQOL current workflow.
-   * @param {Item5e} itemUsed - The item used to apply the coating.
-   * @returns {AppliedCoating} The applied coating value of the item.
-   */
+ * Returns the applied coating for the specified item. The values are converted from a stringified JSON.
+ * The values must be set in an active effect having the same name as the item,
+ * for which 'Apply Effect to Actor' is not checked, that 'Don't apply the effect' is checked and
+ * contains a change for which the key is flags.[world|"midi-item-showcase-community].apppliedCoating.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The MidiQOL current workflow.
+ * @param {Item5e} itemUsed - The item used to apply the coating.
+ * @returns {AppliedCoating} The applied coating value of the item.
+ */
   function getAppliedCoating(currentWorkflow, itemUsed) {
-    // Get applied coating default values if not defined
+  // Get applied coating default values if not defined
     const appliedCoatingValue = itemUsed.effects
-      .find(
-        (ae) =>
-          ae.type !== 'enchantment' &&
-          !ae.transfer &&
-          ae.getFlag('dae', 'dontApply') === true
-      )
+      .find((ae) => ae.type !== 'enchantment' && !ae.transfer && ae.getFlag('dae', 'dontApply') === true)
       ?.changes.find((c) =>
-        [
-          `flags.${WORLD_MODULE_ID}.appliedCoating`,
-          `flags.${MISC_MODULE_ID}.appliedCoating`,
-        ].includes(c.key)
+        [`flags.${WORLD_MODULE_ID}.appliedCoating`, `flags.${MISC_MODULE_ID}.appliedCoating`].includes(c.key)
       )?.value;
     try {
       const appliedCoating = JSON.parse(appliedCoatingValue ?? '{}');
@@ -454,61 +348,48 @@ export function runElwinsHelpersCoating() {
       appliedCoating.allowedWeaponTypes ??= DEFAULT_ALLOWED_WEAPON_TYPES;
       appliedCoating.allowedDamageTypes ??= DEAULT_ALLOWED_DMG_TYPES;
       appliedCoating.allowedAmmoTypes ??=
-        appliedCoating.allowedDamageTypes === true
-          ? true
-          : appliedCoating.allowedDamageTypes.reduce(
-              (acc, dmgType) =>
-                (acc = acc.concat(
-                  DEFAULT_ALLOWED_AMMO_TYPES_BY_DMG_TYPE.get(dmgType) ?? []
-                )),
-              []
-            );
+      appliedCoating.allowedDamageTypes === true
+        ? true
+        : appliedCoating.allowedDamageTypes.reduce(
+            (acc, dmgType) => (acc = acc.concat(DEFAULT_ALLOWED_AMMO_TYPES_BY_DMG_TYPE.get(dmgType) ?? [])),
+            []
+          );
       return appliedCoating;
     } catch (error) {
       console.error(
-        `${itemUsed.name} | Invalid json value in special AE with appliedCoating flag value.`,
-        itemUsed,
-        appliedCoatingValue,
-        error
+      `${itemUsed.name} | Invalid json value in special AE with appliedCoating flag value.`,
+      itemUsed,
+      appliedCoatingValue,
+      error
       );
       return undefined;
     }
   }
 
   /**
-   * Returns the selected weapon or ammo to be coated and the effective item to be coated.
-   * It can be different if the quantity of the selected weapon or ammo differs from what is allowed.
-   * In that case a copy of the selected item is created and its quantity adjusted to the allowed one and
-   * the quantity of original selected item is also adjusted.
-   *
-   * @param {Actor5e} actor - The actor using the item.
-   * @param {Item5e} itemUsed - The item used to apply the coating.
-   * @param {object} options - Options for filtering the choice of weapons and ammos.
-   * @param {function} options.weaponFilter - Weapon filter.
-   * @param {function} options.ammoFilter - Ammo filter.
-   * @param {number} options.maxAmmo - Maximum number of ammo on which the coating can be applied in one use.
-   * @returns {{selectedItem: Item5e, coatedItem: Item5e}} The selected weapon and the coated item, it may be different if the
-   *          selectedItem had a greater quantity than the one allowed for coating.
-   */
-  async function selectCoatingWeaponOrAmmo(
-    actor,
-    itemUsed,
-    { weaponFilter, ammoFilter, maxAmmo }
-  ) {
-    // Filter to remove items with 0 quantity and those already coated
-    const basicFilter = (i) =>
-      i.system?.quantity > 0 && !i.getFlag(MODULE_ID, 'appliedCoating.origin');
+ * Returns the selected weapon or ammo to be coated and the effective item to be coated.
+ * It can be different if the quantity of the selected weapon or ammo differs from what is allowed.
+ * In that case a copy of the selected item is created and its quantity adjusted to the allowed one and
+ * the quantity of original selected item is also adjusted.
+ *
+ * @param {Actor5e} actor - The actor using the item.
+ * @param {Item5e} itemUsed - The item used to apply the coating.
+ * @param {object} options - Options for filtering the choice of weapons and ammos.
+ * @param {function} options.weaponFilter - Weapon filter.
+ * @param {function} options.ammoFilter - Ammo filter.
+ * @param {number} options.maxAmmo - Maximum number of ammo on which the coating can be applied in one use.
+ * @returns {{selectedItem: Item5e, coatedItem: Item5e}} The selected weapon and the coated item, it may be different if the
+ *          selectedItem had a greater quantity than the one allowed for coating.
+ */
+  async function selectCoatingWeaponOrAmmo(actor, itemUsed, { weaponFilter, ammoFilter, maxAmmo }) {
+  // Filter to remove items with 0 quantity and those already coated
+    const basicFilter = (i) => i.system?.quantity > 0 && !i.getFlag(MODULE_ID, 'appliedCoating.origin');
     const defaultWeaponFilter = (i) => !i.system?.properties?.has('amm');
 
-    let itemChoices = actor.itemTypes.weapon.filter(
-      (i) => basicFilter(i) && (weaponFilter ?? defaultWeaponFilter)(i)
-    );
+    let itemChoices = actor.itemTypes.weapon.filter((i) => basicFilter(i) && (weaponFilter ?? defaultWeaponFilter)(i));
     if (maxAmmo && ammoFilter) {
       itemChoices = itemChoices.concat(
-        actor.itemTypes.consumable.filter(
-          (i) =>
-            i.system?.type?.value === 'ammo' && basicFilter(i) && ammoFilter(i)
-        )
+        actor.itemTypes.consumable.filter((i) => i.system?.type?.value === 'ammo' && basicFilter(i) && ammoFilter(i))
       );
     }
 
@@ -517,27 +398,20 @@ export function runElwinsHelpersCoating() {
     }
 
     const selectedItem = await elwinHelpers.ItemSelectionDialog.createDialog(
-      `⚔️ ${itemUsed.name}: Choose your Weapon${
-        maxAmmo && ammoFilter ? ' or Ammo' : ''
-      }`,
-      itemChoices,
-      null
+    `⚔️ ${itemUsed.name}: Choose your Weapon${maxAmmo && ammoFilter ? ' or Ammo' : ''}`,
+    itemChoices,
+    null
     );
     if (!selectedItem) {
-      console.error(
-        `${MACRO_NAME} | selectWeaponOrAmmo: Weapon or ammo selection was cancelled.`
-      );
+      console.error(`${MACRO_NAME} | selectWeaponOrAmmo: Weapon or ammo selection was cancelled.`);
       return { selectedItem: undefined, coatedItem: undefined };
     }
 
     let coatedItem = selectedItem;
-    const allowedQuantity =
-      selectedItem.type === 'consumable'
-        ? Math.min(maxAmmo ?? 1, selectedItem.system.quantity)
-        : 1;
+    const allowedQuantity = selectedItem.type === 'consumable' ? Math.min(maxAmmo ?? 1, selectedItem.system.quantity) : 1;
 
     if (allowedQuantity !== selectedItem.system.quantity) {
-      // Split item with allowed quantity
+    // Split item with allowed quantity
       let itemData = selectedItem.toObject();
       delete itemData._id;
       itemData.system.quantity = allowedQuantity;
@@ -554,79 +428,62 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
-   * Validates if the apply coating enchant activity is configured properly with an effect and a coated effect rider activity.
-   *
-   * @param {Item5e} coatingItem - The item used to apply a coating to another item.
-   * @param {Activity} applyCoatingActivity - The apply coating enchant activity.
-   * @returns {object|undefined} The enchantment profile if valid, undefined otherwise.
-   */
-  function validateEnchantment(coatingItem, applyCoatingActivity) {
+ * Validates if the apply coating enchant activity is configured properly with an effect and a coated effect rider activity.
+ *
+ * @param {MidiQOL.Workflow} - The MidiQOL current workflow.
+ * @param {Item5e} coatingItem - The item used to apply a coating to another item.
+ * @returns {object|undefined} The enchantment profile if valid, undefined otherwise.
+ */
+  function validateEnchantment(workflow, coatingItem) {
+    const applyCoatingActivity = workflow.activity;
     const enchantmentProfiles = applyCoatingActivity.availableEnchantments;
     if (!enchantmentProfiles?.length || enchantmentProfiles?.length > 1) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity must have one and only one enchantement profile.`
+      `${MACRO_NAME} | The ${applyCoatingActivity.name} activity must have one and only one enchantement profile.`
       );
       return undefined;
     }
-    const enchantmentProfile = enchantmentProfiles[0];
-    if (!enchantmentProfile.effect) {
+    const enchantmentProfile = elwinHelpers.getAutomatedEnchantmentSelectedProfile(workflow);
+    if (!enchantmentProfile?.effect) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one enchantment effect.`
+      `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one enchantment effect.`
       );
       return undefined;
     }
     const coatedEffectActivities = enchantmentProfile.riders?.activity
-      .filter(
-        (activityId) =>
-          coatingItem.system.activities?.get(activityId)?.identifier ===
-          COATING_EFFECT_IDENT
-      )
+      .filter((activityId) => coatingItem.system.activities?.get(activityId)?.identifier === COATING_EFFECT_IDENT)
       ?.map((activityId) => coatingItem.system.activities?.get(activityId));
     if (!coatedEffectActivities?.size || coatedEffectActivities?.size > 1) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one and only one rider activity with a "coating-effect" identifier.`
+      `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one and only one rider activity with a "coating-effect" identifier.`
       );
       return undefined;
     }
     const coatedEffectActivity = coatedEffectActivities.first();
-    if (
-      coatedEffectActivity.hasAttack ||
-      (!coatedEffectActivity.save && !coatedEffectActivity.hasDamage)
-    ) {
+    if (coatedEffectActivity.hasAttack || (!coatedEffectActivity.save && !coatedEffectActivity.hasDamage)) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile rider activity must not be an attack and must have damage or a save.`
+      `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile rider activity must not be an attack and must have damage or a save.`
       );
       return undefined;
     }
-    if (
-      !coatedEffectActivity.save &&
-      coatedEffectActivity.hasDamage &&
-      coatedEffectActivity.effects?.length
-    ) {
+    if (!coatedEffectActivity.save && coatedEffectActivity.hasDamage && coatedEffectActivity.effects?.length) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile damage rider activity must not have effects.`
+      `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile damage rider activity must not have effects.`
       );
       return undefined;
     }
-    return {
-      effect: enchantmentProfile.effect,
-      riderActivity: coatedEffectActivity,
-    };
+    return { effect: enchantmentProfile.effect, riderActivity: coatedEffectActivity };
   }
 
   /**
-   * Returns the enchantment data for the application of the coating on the item to be coated.
-   *
-   * @param {ActiveEffect5e} enchantmentEffect - The enchantment effect to apply the coating.
-   * @param {AppliedCoating} appliedCoating - Info about the coating to be applied.
-   * @param {Activity} coatingEffectActivity - The rider coating effect activity of the enchantment.
-   * @returns {object} the enchantment data for the application of the coating on the item to be coated.
-   */
-  function getCoatingApplicationEnchantment(
-    enchantmentEffect,
-    appliedCoating,
-    coatingEffectActivity
-  ) {
+ * Returns the enchantment data for the application of the coating on the item to be coated.
+ *
+ * @param {ActiveEffect5e} enchantmentEffect - The enchantment effect to apply the coating.
+ * @param {AppliedCoating} appliedCoating - Info about the coating to be applied.
+ * @param {Activity} coatingEffectActivity - The rider coating effect activity of the enchantment.
+ * @returns {object} the enchantment data for the application of the coating on the item to be coated.
+ */
+  function getCoatingApplicationEnchantment(enchantmentEffect, appliedCoating, coatingEffectActivity) {
     const enchantmentEffectData = enchantmentEffect.toObject();
 
     // Poison applied data
@@ -640,17 +497,15 @@ export function runElwinsHelpersCoating() {
     enchantmentEffectData.changes.push({
       key: `flags.midi-qol.onUseMacroName`,
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value:
-        'function.elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects,postActiveEffects',
+      value: 'function.elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects,postActiveEffects',
       priority: 20,
     });
     if (coatingEffectActivity.hasDamage && !coatingEffectActivity.save) {
-      // Add bonus damage for the coating effect
+    // Add bonus damage for the coating effect
       enchantmentEffectData.changes.push({
         key: `flags.midi-qol.onUseMacroName`,
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value:
-          'function.elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll,postDamageRoll',
+        value: 'function.elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll,postDamageRoll',
         priority: 20,
       });
     }
@@ -658,38 +513,23 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
-   * Handles the application of the coating effect activity when a coated weapon or ammo hits.
-   *
-   * @param {object} parameters - The MidiQOL macro parameters
-   * @param {MidiQOL.Workflow} parameters.workflow - The MidiQOL current workflow.
-   * @param {Item5e} parameters.rolledItem - The item used.
-   */
-  async function handleCoatedItemOnUsePostActiveEffects({
-    workflow,
-    rolledItem,
-  }) {
+ * Handles the application of the coating effect activity when a coated weapon or ammo hits.
+ *
+ * @param {object} parameters - The MidiQOL macro parameters
+ * @param {MidiQOL.Workflow} parameters.workflow - The MidiQOL current workflow.
+ * @param {Item5e} parameters.rolledItem - The item used.
+ */
+  async function handleCoatedItemOnUsePostActiveEffects({ workflow, rolledItem }) {
     if (debug) {
-      console.warn(
-        MACRO_NAME,
-        { phase: `${workflow.tag}-${workflow.macroPass}` },
-        arguments
-      );
+      console.warn(MACRO_NAME, { phase: `${workflow.tag}-${workflow.macroPass}` }, arguments);
     }
-    if (
-      !(
-        workflow.activity?.identifier === COATING_EFFECT_IDENT ||
-        workflow.activity?.hasAttack
-      )
-    ) {
-      // Skip, only an attack or the coating effect activity are supported
+    if (!(workflow.activity?.identifier === COATING_EFFECT_IDENT || workflow.activity?.hasAttack)) {
+    // Skip, only an attack or the coating effect activity are supported
       return;
     }
     if (!workflow.hitTargets?.size || workflow.aborted) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | No target hit or workflow was aborted.`,
-          workflow
-        );
+        console.warn(`${MACRO_NAME} | No target hit or workflow was aborted.`, workflow);
       }
       return;
     }
@@ -697,43 +537,29 @@ export function runElwinsHelpersCoating() {
     const coatedItem = rolledItem;
     const appliedCoating = coatedItem.getFlag(MODULE_ID, 'appliedCoating');
     if (!appliedCoating) {
-      console.error(
-        `${MACRO_NAME} | Missing appliedCoating flag on coated weapon or ammo.`
-      );
+      console.error(`${MACRO_NAME} | Missing appliedCoating flag on coated weapon or ammo.`);
       return;
     }
-    if (
-      workflow.item?.uuid !== coatedItem.uuid &&
-      workflow.ammo?.uuid !== coatedItem.uuid
-    ) {
+    if (workflow.item?.uuid !== coatedItem.uuid && workflow.ammo?.uuid !== coatedItem.uuid) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Skip, called from a workflow on another item attack activity than the coated one.`
-        );
+        console.warn(`${MACRO_NAME} | Skip, called from a workflow on another item attack activity than the coated one.`);
       }
       return;
     }
 
     const target = workflow.hitTargets.first();
-    handleCoatingEffectActivityConditionalStatuses(
-      workflow,
-      coatedItem,
-      target,
-      appliedCoating
-    );
+    handleCoatingEffectActivityConditionalStatuses(workflow, coatedItem, target, appliedCoating);
 
     // Call complete activity use with coating effect activity on first hit target
     try {
-      // Only trigger coating item effect activity if there is some damage or active effet that needs to be triggered by it.
-      // And the current activity is not the coating effect or has not already handled the coating effect activity as an other activity.
-      const coatingEffectActivity = coatedItem.system.activities.find(
-        (a) => a.identifier === COATING_EFFECT_IDENT
-      );
+    // Only trigger coating item effect activity if there is some damage or active effet that needs to be triggered by it.
+    // And the current activity is not the coating effect or has not already handled the coating effect activity as an other activity.
+      const coatingEffectActivity = coatedItem.system.activities.find((a) => a.identifier === COATING_EFFECT_IDENT);
       if (
         coatingEffectActivity &&
-        workflow.activity?.uuid !== coatingEffectActivity.uuid &&
-        workflow.otherActivity?.uuid !== coatingEffectActivity.uuid &&
-        (coatingEffectActivity.save || coatingEffectActivity.effects?.length)
+      workflow.activity?.uuid !== coatingEffectActivity.uuid &&
+      workflow.otherActivity?.uuid !== coatingEffectActivity.uuid &&
+      (coatingEffectActivity.save || coatingEffectActivity.effects?.length)
       ) {
         if (coatingEffectActivity.useCondition) {
           const conditionData = MidiQOL.createConditionData({
@@ -741,14 +567,10 @@ export function runElwinsHelpersCoating() {
             target,
           });
           if (
-            !(await MidiQOL.evalCondition(
-              coatingEffectActivity.useCondition,
-              conditionData,
-              {
-                async: true,
-                errorReturn: false,
-              }
-            ))
+            !(await MidiQOL.evalCondition(coatingEffectActivity.useCondition, conditionData, {
+              async: true,
+              errorReturn: false,
+            }))
           ) {
             return;
           }
@@ -763,14 +585,14 @@ export function runElwinsHelpersCoating() {
         await MidiQOL.completeActivityUse(coatingEffectActivity, config);
       }
     } finally {
-      // When the coated item has uses, update uses
+    // When the coated item has uses, update uses
       if (appliedCoating.uses) {
         const newUses = appliedCoating.uses - 1;
         if (newUses > 0) {
           appliedCoating.uses = newUses;
           await updateAppliedCoatingForEnchantment(appliedCoating, coatedItem);
         } else {
-          // The maximum uses has been reached, the poisoned weapon effect expires...
+        // The maximum uses has been reached, the poisoned weapon effect expires...
           await elwinHelpers.deleteAppliedEnchantments(appliedCoating.origin);
         }
       }
@@ -778,65 +600,45 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
-   * Handles adding the conditional statuses if at least one of the coating effect associated AEs
-   * was applied to the target.
-   *
-   * @param {MidiQOL.Workflow} workflow - The MidiQOL current workflow.
-   * @param {Item5e} coatedItem - The coated item.
-   * @param {Token5e} target - The target on which to apply conditional statuses.
-   * @param {AppliedCoating} appliedCoating - The applied coating config.
-   */
-  async function handleCoatingEffectActivityConditionalStatuses(
-    workflow,
-    coatedItem,
-    target,
-    appliedCoating
-  ) {
+ * Handles adding the conditional statuses if at least one of the coating effect associated AEs
+ * was applied to the target.
+ *
+ * @param {MidiQOL.Workflow} workflow - The MidiQOL current workflow.
+ * @param {Item5e} coatedItem - The coated item.
+ * @param {Token5e} target - The target on which to apply conditional statuses.
+ * @param {AppliedCoating} appliedCoating - The applied coating config.
+ */
+  async function handleCoatingEffectActivityConditionalStatuses(workflow, coatedItem, target, appliedCoating) {
     if (foundry.utils.isEmpty(appliedCoating?.conditionalStatuses)) {
       return;
     }
 
     // Should only be called by coating effect activity
-    const mainActivity =
-      workflow.activity?.identifier === COATING_EFFECT_IDENT
-        ? workflow.activity
-        : null;
-    const otherActivity =
-      workflow.otherActivity?.identifier === COATING_EFFECT_IDENT
-        ? workflow.otherActivity
-        : null;
+    const mainActivity = workflow.activity?.identifier === COATING_EFFECT_IDENT ? workflow.activity : null;
+    const otherActivity = workflow.otherActivity?.identifier === COATING_EFFECT_IDENT ? workflow.otherActivity : null;
     if (!mainActivity && !otherActivity) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Only a coating effect activity or otherActivity are supported.`,
-          {
-            activity: workflow.activity,
-            otherActivity: workflow.otherActivity,
-          }
-        );
+        console.warn(`${MACRO_NAME} | Only a coating effect activity or otherActivity are supported.`, {
+          activity: workflow.activity,
+          otherActivity: workflow.otherActivity,
+        });
       }
       return;
     }
     const activity = {
-      applicableEffects: mainActivity
-        ? mainActivity.applicableEffects
-        : otherActivity.applicableEffects,
-      effectTargets: mainActivity
-        ? workflow.effectTargets
-        : workflow.otherEffectTargets,
+      applicableEffects: mainActivity ? mainActivity.applicableEffects : otherActivity.applicableEffects,
+      effectTargets: mainActivity ? workflow.effectTargets : workflow.otherEffectTargets,
     };
 
     if (!activity.effectTargets?.has(target)) {
-      // No applicable effects were applied to this target skip conditionals
+    // No applicable effects were applied to this target skip conditionals
       return;
     }
     const coatedEffectAe = target.actor?.effects?.find(
-      (ae) =>
-        ae.origin?.startsWith(coatedItem.uuid) &&
-        activity.applicableEffects?.some((ae2) => ae2.name === ae.name)
+      (ae) => ae.origin?.startsWith(coatedItem.uuid) && activity.applicableEffects?.some((ae2) => ae2.name === ae.name)
     );
     if (!coatedEffectAe) {
-      // No effects applied to this target skip conditionals
+    // No effects applied to this target skip conditionals
       return;
     }
 
@@ -847,9 +649,7 @@ export function runElwinsHelpersCoating() {
       extraData: {
         targetData: {
           saveDC: workflow.saveDC,
-          saveTotal: workflow.saveDisplayData?.find(
-            (sdd) => sdd.target === target
-          )?.rollTotal,
+          saveTotal: workflow.saveDisplayData?.find((sdd) => sdd.target === target)?.rollTotal,
         },
       },
     });
@@ -859,86 +659,67 @@ export function runElwinsHelpersCoating() {
       if (!conditionalStatus?.condition || !conditionalStatus?.status) {
         continue;
       }
-      const returnValue = await MidiQOL.evalCondition(
-        conditionalStatus.condition,
-        conditionData,
-        {
-          errorReturn: false,
-          async: true,
-        }
-      );
+      const returnValue = await MidiQOL.evalCondition(conditionalStatus.condition, conditionData, {
+        errorReturn: false,
+        async: true,
+      });
       if (returnValue) {
         statusEffectsData.push(conditionalStatus);
       } else {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | Condition to add conditional status was not fulfilled.`,
-            {
-              condition: conditionalStatus.condition,
-              conditionalStatus,
-              returnValue,
-            }
-          );
+          console.warn(`${MACRO_NAME} | Condition to add conditional status was not fulfilled.`, {
+            condition: conditionalStatus.condition,
+            conditionalStatus,
+            returnValue,
+          });
         }
       }
     }
     if (statusEffectsData.length) {
-      const statusEffects = await addStatusEffects(
-        coatedItem.uuid,
-        target.actor?.uuid,
-        statusEffectsData
-      );
+      const statusEffects = await addStatusEffects(coatedItem.uuid, target.actor?.uuid, statusEffectsData);
       // Make the added statuses dependent on the first coated effect applied AE
       for (let statusEffect of statusEffects) {
-        // TODO change this when MidiQOL supports more than one effect like ActiveEffect.addDependent
+      // TODO change this when MidiQOL supports more than one effect like ActiveEffect.addDependent
         await MidiQOL.addDependent(coatedEffectAe, statusEffect);
       }
     }
   }
 
   /**
-   * Handles the coating effect bonus damage that occurs during the coated item worflow.
-   *
-   * @param {object} parameters - The MidiQOL macro parameters
-   * @param {MidiQOL.Workflow} parameters.workflow - The MidiQOL current workflow.
-   * @param {Item5e} parameters.rolledItem - The item used.
-   */
+ * Handles the coating effect bonus damage that occurs during the coated item worflow.
+ *
+ * @param {object} parameters - The MidiQOL macro parameters
+ * @param {MidiQOL.Workflow} parameters.workflow - The MidiQOL current workflow.
+ * @param {Item5e} parameters.rolledItem - The item used.
+ */
   async function handleCoatedItemOnUsePostDamageRoll({ workflow, rolledItem }) {
     if (debug) {
-      console.warn(
-        MACRO_NAME,
-        { phase: `${workflow.tag}-${workflow.macroPass}` },
-        arguments
-      );
+      console.warn(MACRO_NAME, { phase: `${workflow.tag}-${workflow.macroPass}` }, arguments);
     }
     if (!workflow.activity?.hasAttack) {
-      // Skip, not an attack activity
+    // Skip, not an attack activity
       return;
     }
     if (!workflow.hitTargets?.size) {
-      // No target hit, do nothing
+    // No target hit, do nothing
       return;
     }
     if (workflow.otherActivity?.identifier === COATING_EFFECT_IDENT) {
-      // Skip, extra damage already handled by otherActivity
+    // Skip, extra damage already handled by otherActivity
       return;
     }
     if (workflow.hitTargets.size > 1) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Bonus damage can be applied to only one hit target, skip.`
-        );
+        console.warn(`${MACRO_NAME} | Bonus damage can be applied to only one hit target, skip.`);
       }
       return;
     }
     const coatedItem = rolledItem;
     const target = workflow.hitTargets.first();
     // Get coating effect activity
-    const coatingEffectActivity = coatedItem.system.activities.find(
-      (a) => a.identifier === COATING_EFFECT_IDENT
-    );
+    const coatingEffectActivity = coatedItem.system.activities.find((a) => a.identifier === COATING_EFFECT_IDENT);
     if (!coatingEffectActivity.hasDamage || coatingEffectActivity.save) {
-      // Skip, coating effect activity has no extra damage or has a save
+    // Skip, coating effect activity has no extra damage or has a save
       return;
     }
 
@@ -948,32 +729,24 @@ export function runElwinsHelpersCoating() {
         target,
         item: coatedItem,
       });
-      const returnValue = await MidiQOL.evalCondition(
-        coatingEffectActivity.useCondition,
-        conditionData,
-        {
-          errorReturn: false,
-          async: true,
-        }
-      );
+      const returnValue = await MidiQOL.evalCondition(coatingEffectActivity.useCondition, conditionData, {
+        errorReturn: false,
+        async: true,
+      });
       if (!returnValue) {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | Condition to apply bonus damage was not fulfilled.`,
-            {
-              condition: coatingEffectActivity.useCondition,
-              conditionData,
-              returnValue,
-            }
-          );
+          console.warn(`${MACRO_NAME} | Condition to apply bonus damage was not fulfilled.`, {
+            condition: coatingEffectActivity.useCondition,
+            conditionData,
+            returnValue,
+          });
         }
         return;
       }
     }
 
-    coatingEffectActivity.workflow = workflow;
-
     const config = elwinHelpers.getDamageRollOptions(workflow);
+    config.workflow = workflow;
     config.midiOptions ??= {};
     config.midiOptions.fastForward = workflow.midiOptions?.fastForwardDamage;
     config.midiOptions.updateWorkflow = false; // rollFormula will try and restart the workflow
@@ -984,15 +757,9 @@ export function runElwinsHelpersCoating() {
       dialog.configure = !dialog.configure;
     }
 
-    const coatedBonusDamageRolls = await coatingEffectActivity.rollDamage(
-      config,
-      dialog,
-      { create: false }
-    );
+    const coatedBonusDamageRolls = await coatingEffectActivity.rollDamage(config, dialog, { create: false });
     if (coatedBonusDamageRolls?.length) {
-      coatedBonusDamageRolls.forEach(
-        (r) => (r.options.flavor = `${coatingEffectActivity.name}`)
-      );
+      coatedBonusDamageRolls.forEach((r) => (r.options.flavor = `${coatingEffectActivity.name}`));
       let bonusDamageRolls = workflow.bonusDamageRolls ?? [];
       bonusDamageRolls.push(...coatedBonusDamageRolls);
 
@@ -1001,66 +768,48 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
-   * Updates the appliedCoating flag of a coating enchantment on a coated item.
-   *
-   * @param {AppliedCoating} appliedCoating - The info about the applied coating.
-   * @param {Item5e} coatedItem - The coated item for which to update its coating enchantment.
-   */
-  async function updateAppliedCoatingForEnchantment(
-    appliedCoating,
-    coatedItem
-  ) {
-    // Get enchantment AE
+ * Updates the appliedCoating flag of a coating enchantment on a coated item.
+ *
+ * @param {AppliedCoating} appliedCoating - The info about the applied coating.
+ * @param {Item5e} coatedItem - The coated item for which to update its coating enchantment.
+ */
+  async function updateAppliedCoatingForEnchantment(appliedCoating, coatedItem) {
+  // Get enchantment AE
     const coatingEnchantment = coatedItem.effects.find(
       (ae) => ae.isAppliedEnchantment && ae.origin === appliedCoating.origin
     );
     const appliedCoatingKey = `flags.${MODULE_ID}.appliedCoating`;
     if (!coatingEnchantment?.changes.find((c) => c.key === appliedCoatingKey)) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Missing appliedCoating flag from enchantment AE`,
-          coatedItem
-        );
+        console.warn(`${MACRO_NAME} | Missing appliedCoating flag from enchantment AE`, coatedItem);
       }
       return;
     }
     // Update value
     const newChanges = foundry.utils.deepClone(coatingEnchantment.changes);
-    newChanges.find((c) => c.key === appliedCoatingKey).value =
-      JSON.stringify(appliedCoating);
+    newChanges.find((c) => c.key === appliedCoatingKey).value = JSON.stringify(appliedCoating);
     await coatingEnchantment.update({ changes: newChanges });
   }
 
   /**
-   * Creates status effects on the specified actor uuid.
-   *
-   * @param {string} origin - The origin of the status effect.
-   * @param {string} actorUuid - The uuid of the actor on which to add the status effect.
-   * @param {ConditionalAppliedCoatingStatuses[]} conditionalStatuses - List of conditional status to be added.
-   * @returns {ActiveEffect5e[]} A list of status effects that were added to the specified actor.
-   */
+ * Creates status effects on the specified actor uuid.
+ *
+ * @param {string} origin - The origin of the status effect.
+ * @param {string} actorUuid - The uuid of the actor on which to add the status effect.
+ * @param {ConditionalAppliedCoatingStatuses[]} conditionalStatuses - List of conditional status to be added.
+ * @returns {ActiveEffect5e[]} A list of status effects that were added to the specified actor.
+ */
   async function addStatusEffects(origin, actorUuid, conditionalStatuses) {
     const effects = [];
     for (let conditionalStatus of conditionalStatuses) {
-      let effectData = (
-        await ActiveEffect.implementation.fromStatusEffect(
-          conditionalStatus.status
-        )
-      ).toObject();
+      let effectData = (await ActiveEffect.implementation.fromStatusEffect(conditionalStatus.status)).toObject();
       effectData.origin = origin;
       if (conditionalStatus.specialDurations?.length) {
-        foundry.utils.setProperty(
-          effectData,
-          'flags.dae.specialDuration',
-          conditionalStatus.specialDurations
-        );
+        foundry.utils.setProperty(effectData, 'flags.dae.specialDuration', conditionalStatus.specialDurations);
       }
       effects.push(effectData);
     }
-    return await MidiQOL.createEffects({
-      actorUuid,
-      effects,
-      options: { keepId: true },
-    });
+    return await MidiQOL.createEffects({ actorUuid, effects, options: { keepId: true } });
   }
+
 }

@@ -24,6 +24,7 @@
 //   of the Vigilant Guardian item.
 // ###################################################################################################
 
+
 export async function vigilantGuardian({
   speaker,
   actor,
@@ -35,16 +36,11 @@ export async function vigilantGuardian({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = 'Vigilant Guardian';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -55,51 +51,39 @@ export async function vigilantGuardian({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isHit.post'
-  ) {
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
     if (!token) {
-      // No target
+    // No target
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No target token.`);
       }
       return;
     }
-    await handleTargetOnUseIsHitPost(
-      workflow,
-      token,
-      scope.macroItem,
-      options?.thirdPartyReactionResult
-    );
+    await handleTargetOnUseIsHitPost(workflow, token, scope.macroItem, options?.thirdPartyReactionResult);
   }
 
   /**
-   * Handles the preTargeting phase of the Vigilant Guardian reaction activity.
-   * Validates that the reaction was triggered by the tpr.isHit remote reaction.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem The Vigilant Guardian item.
-   *
-   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
-   */
+ * Handles the preTargeting phase of the Vigilant Guardian reaction activity.
+ * Validates that the reaction was triggered by the tpr.isHit remote reaction.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem The Vigilant Guardian item.
+ *
+ * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+ */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.some((u) =>
-        sourceItem.system.activities?.some((a) => a.uuid === u)
-      )
+    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.some((u) =>
+      sourceItem.system.activities?.some((a) => a.uuid === u)
+    )
     ) {
-      // Reaction should only be triggered by third party reaction effect
+    // Reaction should only be triggered by third party reaction effect
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the owner is hit.`;
       ui.notifications.warn(msg);
       return false;
@@ -108,40 +92,26 @@ export async function vigilantGuardian({
   }
 
   /**
-   * Handles the tpr.isHit post macro of the Vigilant Guardian item in the triggering midi-qol workflow.
-   * If the reaction was used and completed successfully, the target is changed to the owner of the Vigilant Guardian.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Token5e} targetToken - The target token that is hit.
-   * @param {Item5e} sourceItem - The Vigilant Guardian item.
-   * @param {object} thirdPartyReactionResult - The third party reaction result.
-   */
-  async function handleTargetOnUseIsHitPost(
-    currentWorkflow,
-    targetToken,
-    sourceItem,
-    thirdPartyReactionResult
-  ) {
+ * Handles the tpr.isHit post macro of the Vigilant Guardian item in the triggering midi-qol workflow.
+ * If the reaction was used and completed successfully, the target is changed to the owner of the Vigilant Guardian.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Token5e} targetToken - The target token that is hit.
+ * @param {Item5e} sourceItem - The Vigilant Guardian item.
+ * @param {object} thirdPartyReactionResult - The third party reaction result.
+ */
+  async function handleTargetOnUseIsHitPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
     if (debug) {
-      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', {
-        thirdPartyReactionResult,
-      });
+      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
     }
-    if (
-      !sourceItem.system.activities?.some(
-        (a) => a.uuid === thirdPartyReactionResult?.uuid
-      )
-    ) {
+    if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
     }
 
     const sourceActor = sourceItem.actor;
 
     if (!sourceActor || !targetToken) {
-      console.error(
-        `${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`,
-        { sourceActor, targetToken }
-      );
+      console.error(`${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`, { sourceActor, targetToken });
       return;
     }
 
@@ -171,31 +141,24 @@ export async function vigilantGuardian({
     currentWorkflow.processCriticalFlags();
 
     // Keep previous data because displayTargets clear the current data
-    const previousHitData =
-      currentWorkflow.hitDisplayData[targetToken.document.uuid] ?? {};
+    const previousHitData = currentWorkflow.hitDisplayData[targetToken.document.uuid] ?? {};
 
     // Display new target
     await currentWorkflow.displayTargets(currentWorkflow.whisperAttackCard);
 
     // Set hitDisplay that was cleared by displayTargets
     if (currentWorkflow.hitDisplayData[sourceToken.document.uuid]) {
-      const hitDisplay =
-        currentWorkflow.hitDisplayData[sourceToken.document.uuid];
+      const hitDisplay = currentWorkflow.hitDisplayData[sourceToken.document.uuid];
       hitDisplay.hitStyle = previousHitData.hitStyle;
       hitDisplay.hitSymbol = previousHitData.hitSymbol;
       hitDisplay.hitClass = previousHitData.hitClass;
       hitDisplay.attackType = previousHitData.attackType;
-      hitDisplay.ac = Number.parseInt(
-        sourceActor.system.attributes?.ac?.value ?? 10
-      );
+      hitDisplay.ac = Number.parseInt(sourceActor.system.attributes?.ac?.value ?? 10);
       hitDisplay.bonusAC = 0;
       hitDisplay.attackTotal = currentWorkflow.attackTotal;
 
       // We just display hits or criticals because the previous numeric values are not relevant anymore
-      if (
-        game.user?.isGM &&
-        ['hitDamage', 'all'].includes(configSettings.hideRollDetails)
-      ) {
+      if (game.user?.isGM && ['hitDamage', 'all'].includes(configSettings.hideRollDetails)) {
         hitDisplay.hitSymbol = 'fa-tick';
       } else if (currentWorkflow.isCritical) {
         hitDisplay.hitSymbol = 'fa-check-double';
@@ -207,9 +170,7 @@ export async function vigilantGuardian({
         hitDisplay.hitResultNumeric = '++';
       } else {
         hitDisplay.hitString = game.i18n.localize('midi-qol.hits');
-        hitDisplay.hitResultNumeric = `${hitDisplay.attackTotal}/${
-          hitDisplay.attackTotal - hitDisplay.ac
-        }`;
+        hitDisplay.hitResultNumeric = `${hitDisplay.attackTotal}/${hitDisplay.attackTotal - hitDisplay.ac}`;
       }
     }
     // If the critical flag changed, redisplay attack roll
@@ -217,10 +178,7 @@ export async function vigilantGuardian({
       await currentWorkflow.displayAttackRoll(configSettings.mergeCard);
     }
     // Redisplay hits with the new data
-    await currentWorkflow.displayHits(
-      currentWorkflow.whisperAttackCard,
-      configSettings.mergeCard
-    );
+    await currentWorkflow.displayHits(currentWorkflow.whisperAttackCard, configSettings.mergeCard);
 
     // Swap places
     const targetPos = { x: targetToken.document.x, y: targetToken.document.y };
@@ -234,19 +192,13 @@ export async function vigilantGuardian({
     game.user?.broadcastActivity({ targets: targetIds });
 
     // Add info about target switch
-    const targetDivs = elwinHelpers.getTargetDivs(
-      targetToken,
-      'The hit target <strong>${tokenName}</strong>'
-    );
+    const targetDivs = elwinHelpers.getTargetDivs(targetToken, 'The hit target <strong>${tokenName}</strong>');
     const newTargetDivs = elwinHelpers.getTargetDivs(
       sourceToken,
-      `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
+    `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
     );
     const infoMsg = `${targetDivs}${newTargetDivs}`;
-    await elwinHelpers.insertTextIntoMidiItemCard(
-      'beforeHitsDisplay',
-      currentWorkflow,
-      infoMsg
-    );
+    await elwinHelpers.insertTextIntoMidiItemCard('beforeHitsDisplay', currentWorkflow, infoMsg);
   }
+
 }

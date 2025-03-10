@@ -31,6 +31,7 @@
 //   specified in the flag set by the executed reaction on the item's owner.
 // ###################################################################################################
 
+
 export async function psionicPowerProtectiveField({
   speaker,
   actor,
@@ -42,16 +43,11 @@ export async function psionicPowerProtectiveField({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = 'Psionic Power: Protective Field';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -62,103 +58,66 @@ export async function psionicPowerProtectiveField({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    // MidiQOL OnUse item macro for Psionic Power: Protective Field
+  // MidiQOL OnUse item macro for Psionic Power: Protective Field
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isDamaged.pre'
-  ) {
-    // MidiQOL TargetOnUse pre macro for Psionic Power: Protective Field pre reaction in the triggering midi-qol workflow
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.pre') {
+  // MidiQOL TargetOnUse pre macro for Psionic Power: Protective Field pre reaction in the triggering midi-qol workflow
 
     // Remove previous damage prevention value
     await DAE.unsetFlag(scope.macroItem.actor, 'protectiveFieldPreventedDmg');
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isDamaged.post'
-  ) {
-    // MidiQOL TargetOnUse post macro for Psionic Power: Protective Field post reaction
-    handleIsDamagedPost(
-      workflow,
-      scope.macroItem,
-      options?.thirdPartyReactionResult
-    );
-  } else if (
-    args[0].tag === 'OnUse' &&
-    args[0].macroPass === 'postActiveEffects'
-  ) {
-    // MidiQOL OnUse item macro for Psionic Power: Protective Field
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.post') {
+  // MidiQOL TargetOnUse post macro for Psionic Power: Protective Field post reaction
+    handleIsDamagedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  // MidiQOL OnUse item macro for Psionic Power: Protective Field
     await handleOnUsePostActiveEffects(workflow, actor);
   }
 
   /**
-   * Handles the preTargeting phase of the reaction activity.
-   * Validates that the reaction was triggered by the tpr.isDamaged phase.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Psionic Power: Protective Field item.
-   *
-   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
-   */
+ * Handles the preTargeting phase of the reaction activity.
+ * Validates that the reaction was triggered by the tpr.isDamaged phase.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Psionic Power: Protective Field item.
+ *
+ * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+ */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !==
-        'tpr.isDamaged' ||
-      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
-        currentWorkflow.activity?.uuid
-      )
+      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
+    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-      // Reaction should only be triggered by third party reaction
+    // Reaction should only be triggered by third party reaction
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the Fighter is damaged.`;
       ui.notifications.warn(msg);
       return false;
     }
 
-    foundry.utils.setProperty(
-      currentWorkflow,
-      'options.workflowOptions.autoFastDamage',
-      true
-    );
+    foundry.utils.setProperty(currentWorkflow, 'options.workflowOptions.autoFastDamage', true);
     return true;
   }
 
   /**
-   * Handles the tpr.isDamaged post reaction execution of the activity in the triggering midi-qol workflow.
-   * If the reaction was used and completed successfully, reduces the damage aplied to the target by the rolled amount of the reaction.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Psionic Power: Protective Field item.
-   * @param {object} thirdPartyReactionResult - The third party reaction result.
-   */
-  function handleIsDamagedPost(
-    currentWorkflow,
-    sourceItem,
-    thirdPartyReactionResult
-  ) {
+ * Handles the tpr.isDamaged post reaction execution of the activity in the triggering midi-qol workflow.
+ * If the reaction was used and completed successfully, reduces the damage aplied to the target by the rolled amount of the reaction.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Psionic Power: Protective Field item.
+ * @param {object} thirdPartyReactionResult - The third party reaction result.
+ */
+  function handleIsDamagedPost(currentWorkflow, sourceItem, thirdPartyReactionResult) {
     const sourceActor = sourceItem.actor;
     if (
-      sourceItem.system.activities?.some(
-        (a) => a.uuid === thirdPartyReactionResult?.uuid
-      ) &&
-      currentWorkflow.damageItem &&
-      DAE.getFlag(sourceActor, 'protectiveFieldPreventedDmg') > 0
+      sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid) &&
+    currentWorkflow.damageItem &&
+    DAE.getFlag(sourceActor, 'protectiveFieldPreventedDmg') > 0
     ) {
-      const preventedDmg = DAE.getFlag(
-        sourceActor,
-        'protectiveFieldPreventedDmg'
-      );
-      elwinHelpers.reduceAppliedDamage(
-        currentWorkflow.damageItem,
-        preventedDmg,
-        sourceItem
-      );
+      const preventedDmg = DAE.getFlag(sourceActor, 'protectiveFieldPreventedDmg');
+      elwinHelpers.reduceAppliedDamage(currentWorkflow.damageItem, preventedDmg, sourceItem);
     }
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Reaction result`, {
@@ -170,27 +129,24 @@ export async function psionicPowerProtectiveField({
   }
 
   /**
-   * Handles the postActiveEffects of the reaction activity.
-   * The owner of the feature HP's are reduced by the damage to be applied to the target.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Actor5e} sourceActor - The owner of the Psionic Power: Protective Field item.
-   */
+ * Handles the postActiveEffects of the reaction activity.
+ * The owner of the feature HP's are reduced by the damage to be applied to the target.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Actor5e} sourceActor - The owner of the Psionic Power: Protective Field item.
+ */
   async function handleOnUsePostActiveEffects(currentWorkflow, sourceActor) {
     const targetToken = currentWorkflow.targets.first();
     if (!targetToken) {
-      // No target found
+    // No target found
       return;
     }
     const targetActor = targetToken.actor;
     if (!targetActor) {
-      // No actor found
+    // No actor found
       return;
     }
-    const total = currentWorkflow.utilityRolls?.reduce(
-      (acc, r) => acc + r.total,
-      0
-    );
+    const total = currentWorkflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
     await DAE.setFlag(sourceActor, 'protectiveFieldPreventedDmg', total);
 
     const infoMsg = `<p>You prevent <strong>${total}</strong> points of damage to <strong>\${tokenName}</strong>.</p>`;
@@ -200,4 +156,5 @@ export async function psionicPowerProtectiveField({
       elwinHelpers.getTargetDivs(targetToken, infoMsg)
     );
   }
+
 }

@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that marks a target when a melee attack is successful.<br />\n  It can also be activated to use the special attack if one was triggered by a marked target.<br />\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that marks a target when a melee attack is successful.<br>\n  It can also be activated to use the special attack if one was triggered by a marked target.<br>\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>\n",
       "chat": ""
     },
     "source": {
@@ -107,6 +107,7 @@
         "name": "Bonus Attack",
         "midiProperties": {
           "identifier": "bonus-attack",
+          "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -117,10 +118,11 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
         },
+        "useConditionReason": "",
         "macroData": {
           "name": "",
           "command": ""
@@ -248,8 +250,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     },
     "dnd5e": {
       "riders": {
@@ -338,14 +340,14 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1734623735010,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
       "type": "base",
@@ -357,21 +359,19 @@
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
-    "Y4IYXHUifrP8RFnx": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "compendiumSource": "Item.BUSFV4O0MgfSXR2C",
-    "duplicateSource": null,
-    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458268096,
-    "modifiedTime": 1740458268125,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1672329111608,
+    "modifiedTime": 1741409323819,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "folder": "ZniCDCqUBftmEiPR",
-  "sort": 100000,
   "_id": "2zk3mKbJ40DNcWET",
+  "sort": 100000,
   "_key": "!items!2zk3mKbJ40DNcWET"
 }

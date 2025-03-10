@@ -5,13 +5,16 @@
   "img": "icons/magic/lightning/bolt-forked-large-blue.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect (when equipped and attuned) that adds a resistance to the tattoo damage type. It is also a reaction that gets triggered when appropriate.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect (when equipped and attuned) that adds a resistance to the tattoo damage type. It is also a reaction that gets triggered when appropriate.</p></details>\n",
       "chat": "<p>You use your reaction to gain immunity against that instance of the damage, and regain a number of hit points equal to half the damage you would have taken.</p>"
     },
     "source": {
-      "custom": "Tasha’s Cauldron of Everything pg 119",
+      "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "Tasha’s Cauldron of Everything",
+      "page": "119",
+      "license": ""
     },
     "identified": true,
     "unidentified": {
@@ -147,6 +150,7 @@
         "name": "Reaction",
         "midiProperties": {
           "identifier": "reaction",
+          "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -157,10 +161,11 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
         },
+        "useConditionReason": "",
         "macroData": {
           "name": "",
           "command": ""
@@ -240,14 +245,14 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/magic/lightning/bolt-forked-large-blue.webp",
       "type": "base",
@@ -318,14 +323,14 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
         "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1736964860495,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "compendiumSource": null,
+        "duplicateSource": null
       },
       "img": "icons/magic/lightning/bolt-forked-large-blue.webp",
       "type": "base",
@@ -334,10 +339,11 @@
       "_key": "!items.effects!cX5SxFe06hUhPrwD.vQ6eDiUkN4v02dfi"
     }
   ],
-  "sort": 150000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
@@ -413,17 +419,21 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     }
   },
   "_stats": {
-    "compendiumSource": "Item.QJrtYhPmevNEzkCS",
-    "duplicateSource": null,
-    "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740457986756,
-    "modifiedTime": 1740457986771,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1729868023803,
+    "modifiedTime": 1741406587883,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "cX5SxFe06hUhPrwD",
   "_key": "!items!cX5SxFe06hUhPrwD"

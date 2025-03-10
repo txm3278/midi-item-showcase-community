@@ -23,6 +23,7 @@
 //   a normal hit.
 // ###################################################################################################
 
+
 export async function sentinelAtDeathsDoor({
   speaker,
   actor,
@@ -34,17 +35,12 @@ export async function sentinelAtDeathsDoor({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = "Sentinel at Death's Door";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   const dependencies = ['dae', 'midi-qol'];
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -54,50 +50,37 @@ export async function sentinelAtDeathsDoor({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isHit.post'
-  ) {
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
     if (!token) {
-      // No target
+    // No target
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No target token.`);
       }
       return;
     }
-    await handleTargetOnUseIsHitPost(
-      workflow,
-      scope.macroItem,
-      options?.thirdPartyReactionResult
-    );
+    await handleTargetOnUseIsHitPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
   }
 
   /**
-   * Handles the preTargeting phase of the Sentinel at Death's Door reaction activity.
-   * Validates that the reaction was triggered by the tpr.isHit remote reaction.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Sentinel at Death's Door item.
-   *
-   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
-   */
+ * Handles the preTargeting phase of the Sentinel at Death's Door reaction activity.
+ * Validates that the reaction was triggered by the tpr.isHit remote reaction.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Sentinel at Death's Door item.
+ *
+ * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+ */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
-        currentWorkflow.activity?.uuid
-      )
+    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-      // Reaction should only be triggered by third party reaction
+    // Reaction should only be triggered by third party reaction
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature or the owner is hit.`;
       ui.notifications.warn(msg);
       return false;
@@ -106,30 +89,21 @@ export async function sentinelAtDeathsDoor({
   }
 
   /**
-   * Handles the tpr.isHit post macro of the Sentinel at Death's Door item.
-   * If the reaction was used and completed successfully, converts a critical hit on the target into a normal hit.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Sentinel at Death's Door item.
-   * @param {object} thirdPartyReactionResult - The third party reaction result.
-   */
-  async function handleTargetOnUseIsHitPost(
-    currentWorkflow,
-    sourceItem,
-    thirdPartyReactionResult
-  ) {
+ * Handles the tpr.isHit post macro of the Sentinel at Death's Door item.
+ * If the reaction was used and completed successfully, converts a critical hit on the target into a normal hit.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Sentinel at Death's Door item.
+ * @param {object} thirdPartyReactionResult - The third party reaction result.
+ */
+  async function handleTargetOnUseIsHitPost(currentWorkflow, sourceItem, thirdPartyReactionResult) {
     if (debug) {
-      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', {
-        thirdPartyReactionResult,
-      });
+      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
     }
-    if (
-      sourceItem.system.activities?.some(
-        (a) => a.uuid === thirdPartyReactionResult?.uuid
-      )
-    ) {
-      // Convert critical hits into normal hit
+    if (sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
+    // Convert critical hits into normal hit
       await elwinHelpers.convertCriticalToNormalHit(currentWorkflow);
     }
   }
+
 }

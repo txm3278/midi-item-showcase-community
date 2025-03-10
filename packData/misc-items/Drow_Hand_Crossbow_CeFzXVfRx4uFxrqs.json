@@ -3,13 +3,16 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item applies the drow poison effect on a hit including extra unconscious status when the save failed by 5 or more.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item applies the Drow poison effect on a hit including extra unconscious status when the save failed by 5 or more.</p></details>",
       "chat": ""
     },
     "source": {
-      "custom": "Basic Rules pg 307",
+      "custom": "",
       "revision": 1,
-      "rules": "2024"
+      "rules": "2014",
+      "book": "Basic Rules",
+      "page": "307",
+      "license": ""
     },
     "quantity": 1,
     "weight": {
@@ -91,7 +94,7 @@
     },
     "type": {
       "value": "martialR",
-      "baseItem": ""
+      "baseItem": "handcrossbow"
     },
     "activities": {
       "dnd5eactivity000": {
@@ -198,13 +201,15 @@
           "otherActivityCompatible": true,
           "identifier": "attack",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
         },
         "attackMode": "oneHanded",
         "ammunition": "",
         "otherActivityId": "dnd5eactivity100",
         "otherActivityUuid": "",
         "name": "Attack",
+        "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -216,7 +221,7 @@
         "_id": "dnd5eactivity100",
         "type": "save",
         "activation": {
-          "type": "special",
+          "type": "",
           "value": 1,
           "condition": "",
           "override": false
@@ -318,9 +323,11 @@
           "otherActivityCompatible": true,
           "identifier": "coating-effect",
           "displayActivityName": false,
-          "rollMode": "default"
+          "rollMode": "default",
+          "chooseEffects": false
         },
         "name": "Drow Poison Effect",
+        "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -413,10 +420,10 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.4",
+        "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1740067677009,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
       "type": "base",
@@ -484,26 +491,31 @@
           "duplicateSource": null
         }
       }
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
     }
   },
   "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
+  "_id": "CeFzXVfRx4uFxrqs",
   "folder": null,
   "sort": 100000,
   "ownership": {
     "default": 0,
     "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-monsters.Actor.b0jgwVlvScrn5izR.Item.IUzNT4YYfC9rpdlr",
-    "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.4",
-    "createdTime": 1740458004085,
-    "modifiedTime": 1740458004099,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
+    "systemVersion": "4.3.6",
+    "createdTime": 1740067196108,
+    "modifiedTime": 1741544286447,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_id": "CeFzXVfRx4uFxrqs",
   "_key": "!items!CeFzXVfRx4uFxrqs"
 }

@@ -1,0 +1,544 @@
+{
+  "name": "Poison, Basic",
+  "type": "consumable",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>\n",
+      "chat": ""
+    },
+    "source": {
+      "custom": "",
+      "revision": 1,
+      "rules": "2024",
+      "book": "Player’s Handbook (2024)",
+      "page": "",
+      "license": ""
+    },
+    "quantity": 1,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 100,
+      "denomination": "gp"
+    },
+    "attunement": "",
+    "rarity": "",
+    "identified": true,
+    "uses": {
+      "max": "1",
+      "recovery": [],
+      "autoDestroy": true,
+      "spent": 0
+    },
+    "damage": {
+      "base": {
+        "number": null,
+        "denomination": null,
+        "types": [],
+        "custom": {
+          "enabled": false
+        },
+        "scaling": {
+          "number": 1
+        }
+      },
+      "replace": false
+    },
+    "properties": [],
+    "unidentified": {
+      "description": "Gear"
+    },
+    "type": {
+      "value": "poison",
+      "subtype": "injury"
+    },
+    "container": null,
+    "magicalBonus": null,
+    "equipped": false,
+    "activities": {
+      "h1Q1sF1Z7yHmnByf": {
+        "type": "enchant",
+        "_id": "h1Q1sF1Z7yHmnByf",
+        "sort": 300000,
+        "activation": {
+          "type": "bonus",
+          "value": null,
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "",
+              "scaling": {}
+            }
+          ]
+        },
+        "description": {
+          "chatFlavor": "Apply poison to weapon or ammo"
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "5vZP4aLdeD5HdDw4",
+            "level": {
+              "min": null,
+              "max": null
+            },
+            "riders": {
+              "activity": [
+                "HeW6gvm3zEBo8Uol"
+              ],
+              "effect": [],
+              "item": []
+            }
+          }
+        ],
+        "range": {
+          "override": false,
+          "units": "self",
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "count": "",
+            "type": ""
+          },
+          "override": false,
+          "prompt": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "enchant": {
+          "identifier": ""
+        },
+        "restrictions": {
+          "allowMagical": true,
+          "categories": [],
+          "properties": [],
+          "type": ""
+        },
+        "name": "Apply Poison",
+        "midiProperties": {
+          "identifier": "apply-coating",
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        }
+      },
+      "HeW6gvm3zEBo8Uol": {
+        "type": "damage",
+        "_id": "HeW6gvm3zEBo8Uol",
+        "sort": 0,
+        "activation": {
+          "type": "",
+          "value": null,
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": []
+        },
+        "description": {
+          "chatFlavor": "Apply the poison effect"
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "override": false,
+          "units": "any",
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": "creature",
+            "count": "1",
+            "special": ""
+          },
+          "override": false,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "damage": {
+          "critical": {
+            "allow": false
+          },
+          "parts": [
+            {
+              "custom": {
+                "enabled": false,
+                "formula": ""
+              },
+              "number": 1,
+              "denomination": 4,
+              "bonus": "",
+              "types": [
+                "poison"
+              ],
+              "scaling": {
+                "number": 1
+              }
+            }
+          ]
+        },
+        "useConditionText": "workflow?.hitTargets?.size === 1",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": true,
+          "otherActivityCompatible": true,
+          "identifier": "coating-effect",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "name": "Poison - Effect",
+        "useConditionReason": ""
+      }
+    },
+    "identifier": "poison-basic",
+    "attuned": false
+  },
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn"
+    },
+    "rest-recovery": {
+      "data": {
+        "consumable": {
+          "enabled": false,
+          "dayWorth": false
+        },
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
+    "midi-qol": {
+      "fumbleThreshold": null,
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preItemRoll]function.elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll,[postActiveEffects]function.elwinHelpers.coating.handleCoatingItemOnUsePostActiveEffects",
+      "AoETargetType": "any",
+      "autoTarget": "default",
+      "reactionCondition": "",
+      "otherCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "dae": {},
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      },
+      "migratedUses": 1
+    },
+    "tidy5e-sheet": {
+      "section": "",
+      "actionSection": ""
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.6"
+    }
+  },
+  "effects": [
+    {
+      "origin": "Actor.YAjfi4ZsIEJbjXMU.Item.TpORQgI8pcguakxW",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "name": "Basic Poison - Config",
+      "_id": "9gwRmnhyRtkIR4EC",
+      "changes": [
+        {
+          "key": "flags.midi-item-showcase-community.appliedCoating",
+          "mode": 5,
+          "value": "{\n  \"maxAmmo\": 3,\n}",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": true,
+          "stackable": "noneNameOnly",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.3",
+        "createdTime": null,
+        "modifiedTime": 1740083348510,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!9Zt5CjnF2U2imQw1.9gwRmnhyRtkIR4EC"
+    },
+    {
+      "type": "enchantment",
+      "name": "Basic Poison - Application",
+      "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
+      "disabled": true,
+      "_id": "5vZP4aLdeD5HdDw4",
+      "system": {},
+      "changes": [
+        {
+          "key": "name",
+          "mode": 5,
+          "value": "{} [Poisoned]",
+          "priority": 20
+        },
+        {
+          "key": "system.description.value",
+          "mode": 5,
+          "value": "<p><em>Poisoned by Poison, Basic (vial)</em></p>{}",
+          "priority": 20
+        }
+      ],
+      "duration": {
+        "startTime": null,
+        "seconds": 60,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneNameOnly",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.3",
+        "createdTime": 1736190429922,
+        "modifiedTime": 1740083227577,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "_key": "!items.effects!9Zt5CjnF2U2imQw1.5vZP4aLdeD5HdDw4"
+    }
+  ],
+  "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
+  "folder": "82KvnvMjqGlKNrww",
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.6",
+    "coreVersion": "12.331",
+    "createdTime": 1696175338841,
+    "modifiedTime": 1741495923916,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+  },
+  "_id": "9Zt5CjnF2U2imQw1",
+  "sort": 100000,
+  "_key": "!items!9Zt5CjnF2U2imQw1"
+}

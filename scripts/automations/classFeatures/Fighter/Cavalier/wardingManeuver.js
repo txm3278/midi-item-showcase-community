@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v2.0.1
+// v2.1.0
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -27,6 +27,7 @@
 //   Applies an AE to add an AC bonus (using the rolled "damage") and damage resistance to the target.
 // ###################################################################################################
 
+
 export async function wardingManeuver({
   speaker,
   actor,
@@ -38,16 +39,11 @@ export async function wardingManeuver({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = 'Warding Maneuver';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -58,98 +54,65 @@ export async function wardingManeuver({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (
-    args[0].tag === 'TargetOnUse' &&
-    args[0].macroPass === 'tpr.isHit.post'
-  ) {
-    await handleTargetOnUseIsHitPost(
-      workflow,
-      token,
-      scope.macroItem,
-      options?.thirdPartyReactionResult
-    );
-  } else if (
-    args[0].tag === 'OnUse' &&
-    args[0].macroPass === 'postActiveEffects'
-  ) {
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
+    await handleTargetOnUseIsHitPost(workflow, token, scope.macroItem, options?.thirdPartyReactionResult);
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     await handleOnUsePostActiveEffects(workflow, scope.macroItem);
   }
 
   /**
-   * Handles the preTargeting phase of the Warding Maneuver reaction activity workflow.
-   * Validates that the reaction was triggered by the isHit phase.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5E} sourceItem - The Warding Maneuver item.
-   *
-   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
-   */
+ * Handles the preTargeting phase of the Warding Maneuver reaction activity workflow.
+ * Validates that the reaction was triggered by the isHit phase.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5E} sourceItem - The Warding Maneuver item.
+ *
+ * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+ */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(
-        currentWorkflow.activity?.uuid
-      )
+    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-      // Reaction should only be triggered by third party reactions
+    // Reaction should only be triggered by third party reactions
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature is hit.`;
       ui.notifications.warn(msg);
       return false;
     }
 
-    foundry.utils.setProperty(
-      currentWorkflow,
-      'options.workflowOptions.fastForwardDamage',
-      true
-    );
+    foundry.utils.setProperty(currentWorkflow, 'options.workflowOptions.autoFastDamage', true);
     return true;
   }
 
   /**
-   * Handles the tpr.isHit post reaction of the Warding Maneuver item in the triggering midi-qol workflow.
-   * If the reaction was used and completed successfully, recomputes if the target was hit to include
-   * the AC bonus that was added.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Token5e} targetToken - The target token that is hit.
-   * @param {Item5e} sourceItem - The Warding Maneuver item.
-   * @param {object} thirdPartyReactionResult - The third party reaction result.
-   */
-  async function handleTargetOnUseIsHitPost(
-    currentWorkflow,
-    targetToken,
-    sourceItem,
-    thirdPartyReactionResult
-  ) {
-    if (
-      !sourceItem.system.activities?.some(
-        (a) => a.uuid === thirdPartyReactionResult?.uuid
-      )
-    ) {
+ * Handles the tpr.isHit post reaction of the Warding Maneuver item in the triggering midi-qol workflow.
+ * If the reaction was used and completed successfully, recomputes if the target was hit to include
+ * the AC bonus that was added.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Token5e} targetToken - The target token that is hit.
+ * @param {Item5e} sourceItem - The Warding Maneuver item.
+ * @param {object} thirdPartyReactionResult - The third party reaction result.
+ */
+  async function handleTargetOnUseIsHitPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
+    if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
     }
 
     const sourceActor = sourceItem.actor;
 
     if (!sourceActor || !targetToken) {
-      console.error(
-        `${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`,
-        { sourceActor, targetToken }
-      );
+      console.error(`${DEFAULT_ITEM_NAME} | Missing sourceActor or targetToken`, { sourceActor, targetToken });
       return;
     }
 
     // Recompute checkHits to take into account the AC bonus
-    currentWorkflow.checkHits({
+    await currentWorkflow.checkHits({
       noProvokeReaction: true,
       noOnUseMacro: true,
       noTargetOnuseMacro: true,
@@ -161,85 +124,68 @@ export async function wardingManeuver({
 
     // Register postCleanup hook to delete added AE in case of a miss (there is no isMissed special duration)
     if (!currentWorkflow.hitTargets.has(targetToken)) {
-      Hooks.once(
-        `midi-qol.postCleanup.${currentWorkflow.itemUuid}`,
-        async (currentWorkflow2) => {
-          if (
-            !elwinHelpers.isMidiHookStillValid(
-              DEFAULT_ITEM_NAME,
-              'midi-qol.postCleanup',
-              "'delete Bonus AC AE'",
-              currentWorkflow,
-              currentWorkflow2,
-              debug
-            )
-          ) {
-            return;
-          }
-          // Delete AE if it's still on the target (when attack was a hit but missed due to AE bonus)
-          const effectId = targetToken.actor?.effects.find((ae) =>
-            ae.origin?.startsWith(sourceItem.uuid)
-          )?.id;
-          if (effectId) {
-            await MidiQOL.removeEffects({
-              actorUuid: targetToken.actor.uuid,
-              effects: [effectId],
-            });
-          }
+      Hooks.once(`midi-qol.postCleanup.${currentWorkflow.itemUuid}`, async (currentWorkflow2) => {
+        if (
+          !elwinHelpers.isMidiHookStillValid(
+            DEFAULT_ITEM_NAME,
+            'midi-qol.postCleanup',
+            "'delete Bonus AC AE'",
+            currentWorkflow,
+            currentWorkflow2,
+            debug
+          )
+        ) {
+          return;
         }
-      );
+        // Delete AE if it's still on the target (when attack was a hit but missed due to AE bonus)
+        const effectId = targetToken.actor?.effects.find((ae) => ae.origin?.startsWith(sourceItem.uuid))?.id;
+        if (effectId) {
+          await MidiQOL.removeEffects({ actorUuid: targetToken.actor.uuid, effects: [effectId] });
+        }
+      });
     }
   }
 
   /**
-   * Handles the postActiveEffects of the Warding Maneuver item midi-qol workflow.
-   * An AE is applied to add an AC bonus and damage resistance to the target.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Warding Maneuver item.
-   */
+ * Handles the postActiveEffects of the Warding Maneuver item midi-qol workflow.
+ * An AE is applied to add an AC bonus and damage resistance to the target.
+ *
+ * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Warding Maneuver item.
+ */
   async function handleOnUsePostActiveEffects(currentWorkflow, sourceItem) {
     const targetToken = currentWorkflow.targets.first();
     if (!targetToken) {
-      // No target found
+    // No target found
       return;
     }
     const targetActor = targetToken.actor;
     if (!targetActor) {
-      // No actor found
+    // No actor found
       return;
     }
     if (currentWorkflow.aborted) {
       if (debug) {
-        // Workflow was aborted do not trigger action
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | Workflow was aborted, ${sourceItem.name} is also cancelled.`
-        );
+      // Workflow was aborted do not trigger action
+        console.warn(`${DEFAULT_ITEM_NAME} | Workflow was aborted, ${sourceItem.name} is also cancelled.`);
       }
       return;
     }
 
-    const acBonus = currentWorkflow.utilityRolls?.reduce(
-      (acc, r) => acc + r.total,
-      0
-    );
+    const acBonus = currentWorkflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
     if (acBonus === undefined) {
       if (debug) {
-        // No AC bonus skip AE
-        console.warn(`${DEFAULT_ITEM_NAME} | No AC bonus.`, {
-          utilityRolls: currentWorkflow.utilityRolls,
-        });
+      // No AC bonus skip AE
+        console.warn(`${DEFAULT_ITEM_NAME} | No AC bonus.`, { utilityRolls: currentWorkflow.utilityRolls });
       }
       return;
     }
 
     // create an active effect on target for AC bonus and damage resistance in case it still hits.
-    const duration = sourceItem.actor?.inCombat
-      ? { turns: 1, rounds: 0 }
-      : { seconds: 1 };
+    const duration = sourceItem.actor?.inCombat ? { turns: 1, rounds: 0 } : { seconds: 1 };
     const targetEffectData = {
       changes: [
-        // Flag to add AC bonus
+      // Flag to add AC bonus
         {
           key: 'system.attributes.ac.bonus',
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
@@ -263,9 +209,7 @@ export async function wardingManeuver({
       'flags.dae': { specialDuration: ['isHit'], stackable: 'noneName' },
     };
 
-    await MidiQOL.createEffects({
-      actorUuid: targetActor.uuid,
-      effects: [targetEffectData],
-    });
+    await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });
   }
+
 }

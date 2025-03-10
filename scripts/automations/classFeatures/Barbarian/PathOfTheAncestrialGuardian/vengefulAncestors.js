@@ -21,6 +21,7 @@
 //   Blocks the activity use if the barbarian is not raging or if it was not triggered by Spirit Shield.
 // ###################################################################################################
 
+
 export async function vengefulAncestors({
   speaker,
   actor,
@@ -32,18 +33,13 @@ export async function vengefulAncestors({
   workflow,
   options,
 }) {
-  // Default name of the feature
+// Default name of the feature
   const DEFAULT_ITEM_NAME = 'Vengeful Ancestors';
   // Default identifier of the Rage feature
   const RAGE_ITEM_IDENT = 'rage';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (
-    !foundry.utils.isNewerVersion(
-      globalThis?.elwinHelpers?.version ?? '1.1',
-      '3.0'
-    )
-  ) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -54,48 +50,35 @@ export async function vengefulAncestors({
   }
 
   if (debug) {
-    console.warn(
-      DEFAULT_ITEM_NAME,
-      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
-    );
+    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
     const macroData = args[0];
 
-    const rage = actor.itemTypes.feat.find(
-      (i) => i.identifier === RAGE_ITEM_IDENT
-    );
+    const rage = actor.itemTypes.feat.find((i) => i.identifier === RAGE_ITEM_IDENT);
     const rageEffect = rage
-      ? actor.appliedEffects?.find(
-          (ae) => !ae.transfer && ae.origin?.startsWith(rage.uuid)
-        )
+      ? actor.appliedEffects?.find((ae) => !ae.transfer && ae.origin?.startsWith(rage.uuid))
       : undefined;
     if (!rageEffect) {
-      // The Barbarian must be in Rage
-      ui.notifications.warn(
-        `${scope.macroItem.name} | Barbarian is not in ${rage?.name ?? 'Rage'}.`
-      );
+    // The Barbarian must be in Rage
+      ui.notifications.warn(`${scope.macroItem.name} | Barbarian is not in ${rage?.name ?? 'Rage'}.`);
       return false;
     }
     if (
       !workflow.options?.spiritShieldVengefulAncestorsTrigger ||
-      !(DAE.getFlag(actor, 'spiritShieldPreventedDmg') > 0)
+    !(DAE.getFlag(actor, 'spiritShieldPreventedDmg') > 0)
     ) {
-      // This feature can only be triggered by Spirit Shield
-      ui.notifications.warn(
-        `${scope.macroItem.name} | This feature can only be triggered by Spirit Shield.`
-      );
+    // This feature can only be triggered by Spirit Shield
+      ui.notifications.warn(`${scope.macroItem.name} | This feature can only be triggered by Spirit Shield.`);
       return false;
     }
     if (workflow.targets.size !== 1) {
       if (debug) {
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | There must be one and only one target.`
-        );
+        console.warn(`${DEFAULT_ITEM_NAME} | There must be one and only one target.`);
       }
       return false;
     }
   }
+
 }
