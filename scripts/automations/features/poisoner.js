@@ -2,7 +2,7 @@
 // Read First!!!!
 // Allows to create potent poison doses, to apply poisons to weapon or ammunitions a bonus action,
 // to ignore poison resistance, and adds proficiency with poisoner's kit.
-// v2.1.0
+// v2.1.1
 // Author: Elwin#1410 based on WurstKorn
 // Dependencies:
 //  - DAE
@@ -192,7 +192,7 @@ export async function poisoner({
           id.type === 'consumable' &&
         id.system.type?.value === 'poison' &&
         id.system.identifier === DEFAULT_POTENT_POISON_IDENT &&
-        elwinHelpers.getRules(i) === rules
+        elwinHelpers.getRules(id) === rules
       )?.uuid;
       if (potentPoisonUuid) {
         potentPoison = await fromUuid(potentPoisonUuid);

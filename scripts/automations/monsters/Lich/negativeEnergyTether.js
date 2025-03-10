@@ -4,7 +4,7 @@
 // When used, adds an effect on the target and on the owner. When the owner is damaged, a save is
 // triggered on the tethered creature, if failed it takes half the owner's damage and the owners
 // applied damage is reduced by half.
-// v2.0.0
+// v2.0.1
 // Dependencies:
 //  - DAE
 //  - Times up
@@ -223,7 +223,7 @@ export async function negativeEnergyTether({
 
     // Build the shared damage to apply to the tethered creature.
     const damageParts = [];
-    for (damageEntry of damageToTether) {
+    for (let damageEntry of damageToTether) {
       const part = {
         custom: {
           enabled: true,

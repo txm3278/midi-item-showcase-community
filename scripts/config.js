@@ -89,6 +89,12 @@ export function setConfig() {
           version: '3.0.1',
           authors: ['Elwin'],
         },
+        'Dagger of Venom': {
+          name: 'Dagger of Venom',
+          type: 'Item',
+          version: '2.0.1',
+          authors: ['Elwin'],
+        },
         'Dampen Elements': {
           name: 'Dampen Elements',
           type: 'Class Feature',
@@ -158,7 +164,7 @@ export function setConfig() {
         Poisoner: {
           name: 'Poisoner',
           type: 'Class Features',
-          version: '2.1.0',
+          version: '2.1.1',
           authors: ['Elwin'],
         },
         'Potent Poison': {
@@ -267,6 +273,12 @@ export function setConfig() {
         },
         'Arrow-Catching Shield': {
           name: 'Arrow-Catching Shield',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
+        'Dagger of Venom': {
+          name: 'Dagger of Venom',
           type: 'Item',
           version: '1.0.0',
           authors: ['Elwin'],
