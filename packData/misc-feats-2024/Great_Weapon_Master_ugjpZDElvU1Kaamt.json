@@ -199,13 +199,13 @@
         {
           "key": "flags.midi-qol.optional.GWM.damage.mwak",
           "mode": 0,
-          "value": "+@mod",
+          "value": "+@prof",
           "priority": 20
         },
         {
           "key": "flags.midi-qol.optional.GWM.damage.rwak",
           "mode": 0,
-          "value": "+@mod",
+          "value": "+@prof",
           "priority": 20
         },
         {
