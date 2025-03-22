@@ -119,10 +119,46 @@ export function setConfig() {
           version: '2.0.2',
           authors: ['Elwin'],
         },
+        'Fighting Style: Great Weapon Fighting': {
+          name: 'Fighting Style: Great Weapon Fighting',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['Elwin', 'WurstKorn'],
+        },
         'Flames of Phlegethos': {
           name: 'Flames of Phlegethos',
           type: 'Feat',
           version: '3.1.0',
+          authors: ['Elwin'],
+        },
+        'Flame Tongue Greatsword': {
+          name: 'Flame Tongue Greatsword',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin'],
+        },
+        'Flame Tongue Longsword': {
+          name: 'Flame Tongue Longsword',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin'],
+        },
+        'Flame Tongue Rapier': {
+          name: 'Flame Tongue Rapier',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
+        },
+        'Flame Tongue Scimitar': {
+          name: 'Flame Tongue Scimitar',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin'],
+        },
+        'Flame Tongue Shortsword': {
+          name: 'Flame Tongue Shortsword',
+          type: 'Item',
+          version: '2.0.0',
           authors: ['Elwin'],
         },
         'Flash of Genius': {
@@ -154,6 +190,36 @@ export function setConfig() {
           type: 'Item',
           version: '4.1.0',
           authors: ['Elwin'],
+        },
+        'Moon-Touched Greatsword': {
+          name: 'Moon-Touched Greatsword',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
+        },
+        'Moon-Touched Longsword': {
+          name: 'Moon-Touched Longsword',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
+        },
+        'Moon-Touched Rapier': {
+          name: 'Moon-Touched Rapier',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
+        },
+        'Moon-Touched Scimitar': {
+          name: 'Moon-Touched Scimitar',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
+        },
+        'Moon-Touched Shortword': {
+          name: 'Moon-Touched Shortword',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
         },
         'Poison, Basic (vial)': {
           name: 'Poison, Basic (vial)',
@@ -224,7 +290,7 @@ export function setConfig() {
         'Sun Blade': {
           name: 'Sun Blade',
           type: 'Item',
-          version: '2.1.0',
+          version: '2.2.0',
           authors: ['Elwin'],
         },
         'Unwavering Mark': {
@@ -283,11 +349,23 @@ export function setConfig() {
           version: '1.0.0',
           authors: ['Elwin'],
         },
+        'Flame Tongue': {
+          name: 'Flame Tongue',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
           version: '1.0.0',
           authors: ['Elwin'],
+        },
+        'Great Weapon Fighting': {
+          name: 'Great Weapon Fighting',
+          type: 'Feat',
+          version: '1.0.0',
+          authors: ['Elwin', 'WurstKorn'],
         },
         'Great Weapon Master': {
           name: 'Great Weapon Master',
@@ -340,7 +418,7 @@ export function setConfig() {
         'Sun Blade': {
           name: 'Sun Blade',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.1.0',
           authors: ['Elwin'],
         },
         'Wyvern Poison': {

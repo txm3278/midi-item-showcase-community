@@ -2,11 +2,11 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.1.0
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - MidiQOL "on use" item macro, [preTargeting][postActiveEffects]
+//  - MidiQOL "on use" item macro, [postActiveEffects]
 //  - Active Token Effects
 //  - Elwin Helpers world script
 //  - Cauldron of Plentiful Resources (optional, support for VAE buttons)
@@ -19,12 +19,6 @@
 // To deactivate the blade, the same activate/deactivate blade activity can be used.
 //
 // Description:
-// In the preTargeting (OnUse) phase of the Sun Blade activities (in owner's workflow):
-//   If the blade is not activated and the current activity is the attack or adjust light radius one:
-//     The activity workflow execution is aborted and a notification is displayed to the user.
-//   If blade is not activated and the current activity is the current activity is the activate/deactivate one:
-//     Validates that item is equipped and attuned, otherwise the activity workflow execution is aborted and
-//     a notification is displayed to the user.
 // In the postActiveEffects (OnUse) phase of the activate/deactivate activity (in owner's workflow):
 //   If the blade is not activated:
 //     Creates and applies an enchantment activation effect on the item, also creates an active effect on
@@ -38,19 +32,8 @@
 //     active effect.
 // ###################################################################################################
 
-
-export async function sunBlade({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the item
+export async function sunBlade({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the item
   const DEFAULT_ITEM_NAME = 'Sun Blade';
   const MODULE_ID = 'midi-item-showcase-community';
   const ACTIVATED = 'sunblade-activated';
@@ -66,60 +49,25 @@ export async function sunBlade({
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
   const dependencies = ['dae', 'midi-qol', 'ATL'];
-  if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
 
-  /**
- * If the requirements are met, returns true, false otherwise.
- *
- * @param {string} name - The name of the item for which to check the dependencies.
- * @param {string[]} dependencies - The array of module ids which are required.
- *
- * @returns {boolean} true if the requirements are met, false otherwise.
- */
-  function requirementsSatisfied(name, dependencies) {
-    let missingDep = false;
-    dependencies.forEach((dep) => {
-      if (!game.modules.get(dep)?.active) {
-        const errorMsg = `${name} | ${dep} must be installed and active.`;
-        ui.notifications.error(errorMsg);
-        console.warn(errorMsg);
-        missingDep = true;
-      }
-    });
-    return !missingDep;
-  }
-
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    if (!scope.rolledItem.getFlag(MODULE_ID, ACTIVATED)) {
-      let warnMsg;
-      if (workflow.activity?.identifier === 'attack') {
-        warnMsg = `${scope.macroItem.name} | The blade must be activated to be able to make an attack with it.`;
-      } else if (workflow.activity?.identifier === ADJUST_LIGHT_RADIUS_IDENT) {
-        warnMsg = `${scope.macroItem.name} | The blade must be activated to be able to adjust the light radius.`;
-      } else if (
-        workflow.activity?.identifier === ACTIVATE_BLADE_IDENT &&
-      !(scope.rolledItem.system.equipped && scope.rolledItem.system.attuned)
-      ) {
-        warnMsg = `${scope.macroItem.name} | The item must be equipped and attuned to be able to activate the blade.`;
-      }
-      if (warnMsg) {
-        ui.notifications.warn(warnMsg);
-        return false;
-      }
-    }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     if (workflow.activity?.identifier === ACTIVATE_BLADE_IDENT) {
       await handleActivatePostActiveEffects(workflow, scope.macroItem);
     } else if (workflow.activity?.identifier === ADJUST_LIGHT_RADIUS_IDENT) {
@@ -128,28 +76,32 @@ export async function sunBlade({
   }
 
   /**
- * Handles the postActiveEffects of the Sun Blade - Activate/Deactivate Blade activity.
- * If the Sun Blade is not activated:
- *   Creates and applies an enchantment activation effect on the item, also creates an active effect on
- *   the current actor to update the light config of the token.
- *   Updates the enchantment active effect and the light active effect to make them dependent on each other.
- * If the blade is activated:
- *   Deletes the applied enchantment active effect.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
- * @param {Item5e} sourceItem - The Sun Blade item.
- */
+   * Handles the postActiveEffects of the Sun Blade - Activate/Deactivate Blade activity.
+   * If the Sun Blade is not activated:
+   *   Creates and applies an enchantment activation effect on the item, also creates an active effect on
+   *   the current actor to update the light config of the token.
+   *   Updates the enchantment active effect and the light active effect to make them dependent on each other.
+   * If the blade is activated:
+   *   Deletes the applied enchantment active effect.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
+   * @param {Item5e} sourceItem - The Sun Blade item.
+   */
   async function handleActivatePostActiveEffects(currentWorkflow, sourceItem) {
-  // Get applied enchantements for this item
+    // Get applied enchantements for this item
     const enchantements = elwinHelpers.getAppliedEnchantments(currentWorkflow.activity.uuid);
     if (enchantements?.length) {
-    // Remove enchantment
+      // Remove enchantment
       await elwinHelpers.deleteAppliedEnchantments(currentWorkflow.activity.uuid);
 
       // Add message about blade deactivation
-      await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', currentWorkflow, '<p>The blade was deactivated.</p>');
+      await elwinHelpers.insertTextIntoMidiItemCard(
+        'beforeButtons',
+        currentWorkflow,
+        '<p>The blade was deactivated.</p>'
+      );
     } else {
-    // Add enchantment active effect for blade activation
+      // Add enchantment active effect for blade activation
       const enchantmentEffectData = elwinHelpers
         .getAutomatedEnchantmentSelectedProfile(currentWorkflow)
         ?.effect.toObject();
@@ -181,10 +133,12 @@ export async function sunBlade({
         if (!foundry.utils.getProperty(sourceItem, 'flags.chris-premades.info.identifier')) {
           await sourceItem.setFlag('chris-premades', 'info.identifier', sourceItem.identifier);
         }
-        const adjustLightActivity = sourceItem.system.activities?.find((a) => a.identifier === ADJUST_LIGHT_RADIUS_IDENT);
+        const adjustLightActivity = sourceItem.system.activities?.find(
+          (a) => a.identifier === ADJUST_LIGHT_RADIUS_IDENT
+        );
         if (
           adjustLightActivity &&
-        !chrisPremades.utils.activityUtils.getActivityByIdentifier(sourceItem, ADJUST_LIGHT_RADIUS_IDENT)
+          !chrisPremades.utils.activityUtils.getActivityByIdentifier(sourceItem, ADJUST_LIGHT_RADIUS_IDENT)
         ) {
           await chrisPremades.utils.activityUtils.setIdentifier(adjustLightActivity, ADJUST_LIGHT_RADIUS_IDENT);
         }
@@ -212,19 +166,23 @@ export async function sunBlade({
       }
 
       // Add message about blade activation
-      await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', currentWorkflow, '<p>The blade was activated.</p>');
+      await elwinHelpers.insertTextIntoMidiItemCard(
+        'beforeButtons',
+        currentWorkflow,
+        '<p>The blade was activated.</p>'
+      );
     }
   }
 
   /**
- * Handles the postActiveEffects of the Sun Blade - Adjust Light Radius activity.
- * Prompts the owner to choose between enlarge or reduce.
- * Then applies the change to the light radius on the activation effect.
- * The radius can only be enlarged/reduced up to a maximum/minimum.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
- * @param {Item5e} sourceItem - The Sun Blade item.
- */
+   * Handles the postActiveEffects of the Sun Blade - Adjust Light Radius activity.
+   * Prompts the owner to choose between enlarge or reduce.
+   * Then applies the change to the light radius on the activation effect.
+   * The radius can only be enlarged/reduced up to a maximum/minimum.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
+   * @param {Item5e} sourceItem - The Sun Blade item.
+   */
   async function handleAdjustLightRadiusPostActiveEffects(currentWorkflow, sourceItem) {
     const lightEffect = sourceItem.actor?.effects.find(
       (ae) => ae.type !== 'enchantment' && ae.origin?.startsWith(sourceItem.uuid)
@@ -251,7 +209,7 @@ export async function sunBlade({
     //   choice = REDUCE_CHOICE;
     // }
     if (!choice) {
-    // Ask which option to apply
+      // Ask which option to apply
       const sourceName = sourceItem._source?.name ?? DEFAULT_ITEM_NAME;
       choice = await foundry.applications.api.DialogV2.wait({
         window: { title: `${sourceName} - Enlarge/Reduce Light Radius` },
@@ -288,49 +246,32 @@ export async function sunBlade({
       text = `The maximum bright and dim light radius was reached (${MAX_LIGHT_RADIUS}/${MAX_LIGHT_RADIUS * 2}).`;
     } else {
       text = `The bright and dim light radius was ${
-      choice === ENLARGE_CHOICE ? 'increased' : 'decreased'
-    } (${newLightRadius}/${newLightRadius * 2}).`;
+        choice === ENLARGE_CHOICE ? 'increased' : 'decreased'
+      } (${newLightRadius}/${newLightRadius * 2}).`;
     }
-    await insertTextBeforeButtonsIntoMidiItemChatMessage(
-      MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid),
-      text
-    );
+    await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', currentWorkflow, text);
   }
 
   /**
- * Inserts text into a Midi item chat message before the card buttons div and updates it.
- *
- * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
- * @param {string} text - The text to insert in the chat message.
- */
-  async function insertTextBeforeButtonsIntoMidiItemChatMessage(chatMessage, text) {
-    let content = foundry.utils.deepClone(chatMessage.content);
-    const searchRegex = /(<\/section>)(\s*<div class="card-buttons midi-buttons">)/m;
-    const replaceString = `$1\n${text}\n$2`;
-    content = content.replace(searchRegex, replaceString);
-    await chatMessage.update({ content });
-  }
-
-  /**
- * Adjust the proficiency with the Sun Blade item depending on the current state of the item
- * and the proficiencies of the parent actor. This is used to take into account that the Sun Blade
- * supports proficency with long sword and short sword.
- *
- * @param {Item5e} sourceItem - The Sun Blade item.
- * @param {object} enchantmentEffectData - The enchantment effect data to be applied.
- */
+   * Adjust the proficiency with the Sun Blade item depending on the current state of the item
+   * and the proficiencies of the parent actor. This is used to take into account that the Sun Blade
+   * supports proficency with long sword and short sword.
+   *
+   * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {object} enchantmentEffectData - The enchantment effect data to be applied.
+   */
   async function adjustProficiency(sourceItem, enchantmentEffectData) {
     let proficencyValue;
     if (sourceItem.system.proficient === null) {
       if (!sourceItem.system.prof.multiplier && isProficient(sourceItem)) {
-      // Force proficiency
+        // Force proficiency
         proficencyValue = 1;
       }
     } else if (sourceItem.system.proficient === 1 && !isProficient(sourceItem)) {
-    // Force not proficiency
+      // Force not proficiency
       proficencyValue = 0;
     } else if (sourceItem.system.proficient === 0 && isProficient(sourceItem)) {
-    // Force proficiency
+      // Force proficiency
       proficencyValue = 1;
     }
     if (proficencyValue) {
@@ -344,12 +285,12 @@ export async function sunBlade({
   }
 
   /**
- * Validate that the item's parent is proficient with the Sun Blade.
- * An actor can be proficient if he has proficiency in long sword or short sword
- * .
- * @param {Item5e} sourceItem - The Sun Blade item.
- * @returns {boolean} True if the item's parent is proficient with the Sun Blade, false otherwise.
- */
+   * Validate that the item's parent is proficient with the Sun Blade.
+   * An actor can be proficient if he has proficiency in long sword or short sword
+   * .
+   * @param {Item5e} sourceItem - The Sun Blade item.
+   * @returns {boolean} True if the item's parent is proficient with the Sun Blade, false otherwise.
+   */
   function isProficient(sourceItem) {
     const actor = sourceItem.actor;
     if (!actor) {
@@ -362,8 +303,8 @@ export async function sunBlade({
     const weaponType = sourceItem.system.type;
     const itemProf = config[weaponType.value];
     const actorProfs = actor.system.traits?.weaponProf?.value ?? new Set();
-    const isProficient = actorProfs.has(itemProf) || actorProfs.has(weaponType.baseItem) || actorProfs.has('shortsword');
+    const isProficient =
+      actorProfs.has(itemProf) || actorProfs.has(weaponType.baseItem) || actorProfs.has('shortsword');
     return isProficient;
   }
-
 }
