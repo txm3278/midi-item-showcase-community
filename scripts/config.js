@@ -92,7 +92,7 @@ export function setConfig() {
         'Dagger of Venom': {
           name: 'Dagger of Venom',
           type: 'Item',
-          version: '2.0.1',
+          version: '2.0.2',
           authors: ['Elwin'],
         },
         'Dampen Elements': {
@@ -346,7 +346,7 @@ export function setConfig() {
         'Dagger of Venom': {
           name: 'Dagger of Venom',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Elwin'],
         },
         'Flame Tongue': {

@@ -6,7 +6,7 @@
   "img": "icons/weapons/daggers/dagger-poisoned.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Bakana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. It also has an activity to cover the blade with poison.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Bakana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. It also has an activity to cover the blade with poison.</p></details>",
       "chat": ""
     },
     "source": {
@@ -215,7 +215,9 @@
           "identifier": "attack",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -225,7 +227,7 @@
         },
         "attackMode": "oneHanded",
         "ammunition": "",
-        "otherActivityId": "",
+        "otherActivityId": "none",
         "otherActivityUuid": "",
         "name": "Attack",
         "useConditionReason": ""
@@ -345,7 +347,9 @@
           "identifier": "poison-effect",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -354,7 +358,8 @@
           "postRemoveConditionText": ""
         },
         "name": "Poison - Effect",
-        "useConditionReason": ""
+        "useConditionReason": "",
+        "otherActivityId": ""
       },
       "JtKstra1sl6pVptH": {
         "type": "enchant",
@@ -461,7 +466,9 @@
           "identifier": "cover-blade-with-poison",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -777,7 +784,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1741109003679,
-    "modifiedTime": 1741407214621,
+    "modifiedTime": 1742747575121,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!e5bUXLfLTlvOrrjQ"
