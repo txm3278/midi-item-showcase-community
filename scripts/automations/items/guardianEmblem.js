@@ -3,7 +3,7 @@
 // When equipped and attuned, adds an action that allows to attach the emblem to a shield or armor.
 // Once the emblem is attached, it adds a third party reaction active effect, that effect will trigger a reaction
 // on the owner when a creature within range is hit by a critical to allow him to convert it to a normal hit.
-// v4.1.0
+// v4.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, item macro [off]
@@ -44,19 +44,8 @@
 //   a normal hit.
 // ###################################################################################################
 
-
-export async function guardianEmblem({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the item
+export async function guardianEmblem({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the item
   const DEFAULT_ITEM_NAME = 'Guardian Emblem';
   const MODULE_ID = 'midi-item-showcase-community';
   const ATTACH_ACTION_ORIGIN_FLAG = 'guardian-emblem-action-origin';
@@ -64,7 +53,7 @@ export async function guardianEmblem({
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -75,11 +64,15 @@ export async function guardianEmblem({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0] === 'off') {
-  // When not attuned nor equipped, remove enchantment
+    // When not attuned nor equipped, remove enchantment
     await elwinHelpers.deleteAppliedEnchantments(
       item?.system.activities?.find((a) => a.identifier === 'attach-detach')?.uuid
     );
@@ -91,7 +84,7 @@ export async function guardianEmblem({
     return handleTargetOnUseIsHitPre(scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
     if (!token) {
-    // No target
+      // No target
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No target token.`);
       }
@@ -106,31 +99,31 @@ export async function guardianEmblem({
   }
 
   /**
- * Handles the preTargeting phase of the Guardian Emblem reaction activity.
- * Validates that the reaction was triggered by the tpr.isHit remove reaction.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Guardian Emblem item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Guardian Emblem reaction activity.
+   * Validates that the reaction was triggered by the tpr.isHit remove reaction.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Guardian Emblem item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
       currentWorkflow.activity?.identifier === 'reaction' &&
-    (currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-      !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.some((u) =>
-        sourceItem.system.activities?.some((a) => a.uuid === u)
-      ))
+      (currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
+        !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.some((u) =>
+          sourceItem.system.activities?.some((a) => a.uuid === u)
+        ))
     ) {
-    // Reaction should only be triggered by third party reaction
+      // Reaction should only be triggered by third party reaction
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature or the owner is hit.`;
       ui.notifications.warn(msg);
       return false;
     } else if (
       currentWorkflow.activity?.identifier === 'attach-detach' &&
-    !(sourceItem.system?.equipped && sourceItem.system?.attuned)
+      !(sourceItem.system?.equipped && sourceItem.system?.attuned)
     ) {
-    // Attach/Detach can only be used when item is equipped and attuned
+      // Attach/Detach can only be used when item is equipped and attuned
       const msg = `${sourceItem.name} | This activity can only be used when the item is equipped and attuned.`;
       ui.notifications.warn(msg);
       return false;
@@ -139,12 +132,12 @@ export async function guardianEmblem({
   }
 
   /**
- * Handles the tpr.isHit pre macro of the Guardian Emblem item in the triggering midi-qol workflow.
- * Validates that the emblem is attached to an item and that this item is equipped.
- *
- * @param {Item5e} sourceItem - The Guardian Emblem item.
- * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
- */
+   * Handles the tpr.isHit pre macro of the Guardian Emblem item in the triggering midi-qol workflow.
+   * Validates that the emblem is attached to an item and that this item is equipped.
+   *
+   * @param {Item5e} sourceItem - The Guardian Emblem item.
+   * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
+   */
   function handleTargetOnUseIsHitPre(sourceItem) {
     const attachedItem = sourceItem.actor?.items.find(
       (i) => i.getFlag(MODULE_ID, ATTACHMENT_ORIGIN_FLAG) === sourceItem.uuid
@@ -164,46 +157,46 @@ export async function guardianEmblem({
   }
 
   /**
- * Handles the tpr.isHit post macro of the Guardian Emblem item in the triggering midi-qol workflow.
- * If the reaction was used and completed successfully, converts a critical hit on the target into a normal hit.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Token5e} targetToken - The target token that is hit.
- * @param {Item5e} sourceItem - The Guardian Emblem item.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isHit post macro of the Guardian Emblem item in the triggering midi-qol workflow.
+   * If the reaction was used and completed successfully, converts a critical hit on the target into a normal hit.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Token5e} targetToken - The target token that is hit.
+   * @param {Item5e} sourceItem - The Guardian Emblem item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   async function handleTargetOnUseIsHitPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
     if (debug) {
       console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
     }
     if (sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
-    // Convert critical hits into normal hit
+      // Convert critical hits into normal hit
       await elwinHelpers.convertCriticalToNormalHit(currentWorkflow);
     }
   }
 
   /**
- * Handles the postActiveEffects of the Guardian Emblem - Attach/Detach feat.
- * If the emblem is not attached:
- *   Prompts a dialog to choose from a list of shield or armors and attach the emblem
- *   on the selected item. This is done through an enchantment (dnd5e v3.2+) or using a mutation (dnd5e < v3.2),
- *   then enables the item's third party reaction effect.
- * If the emblem is attached:
- *   Delete the "attached" enchantment (dnd5e v3.2+) or revert the mutation (dnd5e < v3.2),
- *   then disables the item's third party reaction effect.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Token5e} sourceToken - The token owner of the Guardian Emblem item.
- * @param {Item5e} sourceItem - The Guardian Emblem item.
- */
+   * Handles the postActiveEffects of the Guardian Emblem - Attach/Detach feat.
+   * If the emblem is not attached:
+   *   Prompts a dialog to choose from a list of shield or armors and attach the emblem
+   *   on the selected item. This is done through an enchantment (dnd5e v3.2+) or using a mutation (dnd5e < v3.2),
+   *   then enables the item's third party reaction effect.
+   * If the emblem is attached:
+   *   Delete the "attached" enchantment (dnd5e v3.2+) or revert the mutation (dnd5e < v3.2),
+   *   then disables the item's third party reaction effect.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Token5e} sourceToken - The token owner of the Guardian Emblem item.
+   * @param {Item5e} sourceItem - The Guardian Emblem item.
+   */
   async function handleAttachPostActiveEffects(currentWorkflow, sourceToken, sourceItem) {
     let attachedItems;
     // Get applied enchantements for this item
     attachedItems = elwinHelpers.getAppliedEnchantments(currentWorkflow.activity.uuid);
 
     if (attachedItems?.length) {
-    // Detach emblem
-    // Remove enchantment
+      // Detach emblem
+      // Remove enchantment
       await elwinHelpers.deleteAppliedEnchantments(currentWorkflow.activity.uuid);
       // Find third party reaction effect to disable it
       await activateThirdPartyReaction(sourceItem, false);
@@ -212,7 +205,7 @@ export async function guardianEmblem({
       const infoMsg = `<p>The emblem was detached from ${attachedItems[0]?.parent.name ?? 'unknown'}.</p>`;
       await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', currentWorkflow, infoMsg);
     } else {
-    // Choose armor and attach emblem
+      // Choose armor and attach emblem
       const armorChoices = sourceToken.actor.itemTypes.equipment.filter(
         (i) => i.isArmor && !i.getFlag(MODULE_ID, ATTACHMENT_ORIGIN_FLAG)
       );
@@ -222,9 +215,9 @@ export async function guardianEmblem({
       }
 
       const selectedArmor = await elwinHelpers.ItemSelectionDialog.createDialog(
-      `⚔️ ${sourceItem.name}: Choose an Armor or Shield`,
-      armorChoices,
-      null
+        `⚔️ ${sourceItem.name}: Choose an Armor or Shield`,
+        armorChoices,
+        null
       );
       if (!selectedArmor) {
         console.error(`${DEFAULT_ITEM_NAME} | Armor or shield selection was cancelled.`);
@@ -265,13 +258,13 @@ export async function guardianEmblem({
   }
 
   /**
- * Enables or disables the third party reaction effect.
- *
- * @param {Item5e} sourceItem - The Guardian Emblem item.
- * @param {boolean} activate - Flag to indicate if the third party reaction effect must be activate or deactivated.
- */
+   * Enables or disables the third party reaction effect.
+   *
+   * @param {Item5e} sourceItem - The Guardian Emblem item.
+   * @param {boolean} activate - Flag to indicate if the third party reaction effect must be activate or deactivated.
+   */
   async function activateThirdPartyReaction(sourceItem, activate) {
-  // Find third party reaction effect to enable it
+    // Find third party reaction effect to enable it
     const sourceActor = sourceItem.actor;
     if (!sourceActor) {
       if (debug) {
@@ -282,8 +275,8 @@ export async function guardianEmblem({
     let tprEffect = undefined;
     const aePredicate = (ae) =>
       ae.transfer &&
-    ae.parent?.uuid === sourceItem.uuid &&
-    ae.changes.some((c) => c.key === 'flags.midi-qol.onUseMacroName' && c.value.includes('tpr.isHit'));
+      ae.parent?.uuid === sourceItem.uuid &&
+      ae.changes.some((c) => c.key === 'flags.midi-qol.onUseMacroName' && c.value.includes('tpr.isHit'));
 
     if (activate) {
       tprEffect = [...sourceActor.allApplicableEffects()].find(aePredicate);
@@ -300,5 +293,4 @@ export async function guardianEmblem({
     }
     await tprEffect.update({ disabled: !activate });
   }
-
 }

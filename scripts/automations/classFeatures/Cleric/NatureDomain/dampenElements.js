@@ -4,7 +4,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within is damaged by elemental damage type to allow him to add resistance to this type
 // of damage before the damage is applied.
-// v2.0.1
+// v2.0.2
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting][postActiveEffects][tpr.isDamaged]
@@ -28,23 +28,12 @@
 //   and recomputes the applied damage.
 // ###################################################################################################
 
-
-export async function dampenElements({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the feature
+export async function dampenElements({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Dampen Elements';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -55,36 +44,40 @@ export async function dampenElements({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.pre') {
-  // MidiQOL TargetOnUse pre macro for Dampen Elements pre reaction in the triggering midi-qol workflow
+    // MidiQOL TargetOnUse pre macro for Dampen Elements pre reaction in the triggering midi-qol workflow
     return await handleTargetOnUseIsDamagedPre(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.post') {
     await handleTargetOnUseIsDamagedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-  // MidiQOL OnUse item macro for Dampen Elements
+    // MidiQOL OnUse item macro for Dampen Elements
     await handleOnUsePostActiveEffects(workflow, scope.macroItem, actor);
   }
 
   /**
- * Handles the preTargeting phase of the Dampen Elements item midi-qol workflow.
- * Validates that the reaction was triggered by the tpr.isDamaged phase.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - midi-qol current workflow.
- * @param {Item5E} sourceItem - The Dampen Elements item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Dampen Elements item midi-qol workflow.
+   * Validates that the reaction was triggered by the tpr.isDamaged phase.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - midi-qol current workflow.
+   * @param {Item5E} sourceItem - The Dampen Elements item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
-    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
+      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-    // Reaction should only be triggered by third party reactions
+      // Reaction should only be triggered by third party reactions
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature is damaged by element damage type.`;
       ui.notifications.warn(msg);
       return false;
@@ -93,17 +86,17 @@ export async function dampenElements({
   }
 
   /**
- * Handles the tpr.isDamaged pre macro of the Dampen Elements item in the triggering midi-qol workflow.
- * Sets a flag on the owner with the elemental damage types from which to choose to apply resistance.
- * It will be used by the reaction.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Dampen Elements item.
- *
- * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
- */
+   * Handles the tpr.isDamaged pre macro of the Dampen Elements item in the triggering midi-qol workflow.
+   * Sets a flag on the owner with the elemental damage types from which to choose to apply resistance.
+   * It will be used by the reaction.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Dampen Elements item.
+   *
+   * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
+   */
   async function handleTargetOnUseIsDamagedPre(currentWorkflow, sourceItem) {
-  // Sets the elemental damage types of the damage to be applied.
+    // Sets the elemental damage types of the damage to be applied.
     const sourceActor = sourceItem.actor;
 
     if (!sourceActor) {
@@ -112,7 +105,9 @@ export async function dampenElements({
     }
     const damages = currentWorkflow.damageItem?.damageDetail.filter(
       (d) =>
-        ['acid', 'cold', 'fire', 'lightning', 'thunder'].includes(d.type) && d.value > 0 && d.active?.resistance !== true
+        ['acid', 'cold', 'fire', 'lightning', 'thunder'].includes(d.type) &&
+        d.value > 0 &&
+        d.active?.resistance !== true
     );
     if (!damages.length) {
       if (debug) {
@@ -127,18 +122,18 @@ export async function dampenElements({
   }
 
   /**
- * Handles the tpr.isDamaged post reaction of the Dampen Elements item in the triggering midi-qol workflow.
- * If the reaction was used and completed successfully, adds resistance to the selected elemental damage type.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Dampen Elements item.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isDamaged post reaction of the Dampen Elements item in the triggering midi-qol workflow.
+   * If the reaction was used and completed successfully, adds resistance to the selected elemental damage type.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Dampen Elements item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   async function handleTargetOnUseIsDamagedPost(currentWorkflow, sourceItem, thirdPartyReactionResult) {
     const dampenElementsFlag = DAE.getFlag(sourceItem.actor, 'dampenElements');
     if (
       !sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid) ||
-    !dampenElementsFlag?.damages.length
+      !dampenElementsFlag?.damages.length
     ) {
       return;
     }
@@ -167,18 +162,18 @@ export async function dampenElements({
   }
 
   /**
- * Handles the postActiveEffects of the Dampen Elements item midi-qol workflow.
- * A flag is added to the Barbarian with the damage reduction to be applied and the item card
- * is updated to inform of the damage reduction to be applied on the target.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Dampen Elements item.
- * @param {Actor5e} sourceActor - The owner of the Dampen Elements item.
- */
+   * Handles the postActiveEffects of the Dampen Elements item midi-qol workflow.
+   * A flag is added to the Barbarian with the damage reduction to be applied and the item card
+   * is updated to inform of the damage reduction to be applied on the target.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Dampen Elements item.
+   * @param {Actor5e} sourceActor - The owner of the Dampen Elements item.
+   */
   async function handleOnUsePostActiveEffects(currentWorkflow, sourceItem, sourceActor) {
     const targetToken = currentWorkflow.targets.first();
     if (!targetToken) {
-    // No target found
+      // No target found
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Target found.`);
       }
@@ -186,7 +181,7 @@ export async function dampenElements({
     }
     const targetActor = targetToken.actor;
     if (!targetActor) {
-    // No actor found
+      // No actor found
       console.warn(`${DEFAULT_ITEM_NAME} | Target actor found.`, targetActor);
       return;
     }
@@ -200,7 +195,7 @@ export async function dampenElements({
 
     let selectedType = dampenElementsFlag.damages[0]?.type;
     if (dampenElementsFlag.damages.length > 1) {
-    // Prompts a dialog to choose to which type to apply resistance
+      // Prompts a dialog to choose to which type to apply resistance
       selectedType = await chooseDamageType(sourceItem, dampenElementsFlag.damages);
     }
     if (selectedType) {
@@ -210,7 +205,7 @@ export async function dampenElements({
     // Create an active effect to add resistance to selected type
     const targetEffectData = {
       changes: [
-      // resistance to damage
+        // resistance to damage
         {
           key: 'system.traits.dr.value',
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
@@ -229,13 +224,13 @@ export async function dampenElements({
   }
 
   /**
- * Prompts a dialog to choose a damage type from a list of types.
- *
- * @param {Item5e} sourceItem the source item.
- * @param {Array<object>} damages the type and value of damages from which to choose.
- *
- * @returns {string} the selected damage type.
- */
+   * Prompts a dialog to choose a damage type from a list of types.
+   *
+   * @param {Item5e} sourceItem the source item.
+   * @param {Array<object>} damages the type and value of damages from which to choose.
+   *
+   * @returns {string} the selected damage type.
+   */
   async function chooseDamageType(sourceItem, damages) {
     const data = {
       buttons: damages.map((d) => ({
@@ -246,5 +241,4 @@ export async function dampenElements({
     };
     return await elwinHelpers.buttonDialog(data, 'column');
   }
-
 }

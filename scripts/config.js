@@ -80,7 +80,7 @@ export function setConfig() {
         'Channel Divinity: Rebuke the Violent': {
           name: 'Channel Divinity: Rebuke the Violent',
           type: 'Class Feature',
-          version: '2.1.0',
+          version: '2.1.1',
           authors: ['Elwin'],
         },
         'Channel Divinity: Vow of Enmity': {
@@ -104,7 +104,7 @@ export function setConfig() {
         'Divine Allegiance': {
           name: 'Divine Allegiance',
           type: 'Class Feature',
-          version: '4.0.1',
+          version: '4.0.2',
           authors: ['Elwin'],
         },
         'Drow Hand Crossbow': {
@@ -128,7 +128,7 @@ export function setConfig() {
         'Flames of Phlegethos': {
           name: 'Flames of Phlegethos',
           type: 'Feat',
-          version: '3.1.0',
+          version: '3.1.1',
           authors: ['Elwin'],
         },
         'Flame Tongue Greatsword': {
@@ -164,31 +164,31 @@ export function setConfig() {
         'Flash of Genius': {
           name: 'Flash of Genius',
           type: 'Class Feature',
-          version: '2.0.1',
+          version: '2.0.2',
           authors: ['Elwin'],
         },
         'Gift of the Metallic Dragon': {
           name: 'Gift of the Metallic Dragon',
           type: 'Feat',
-          version: '4.1.0',
+          version: '4.1.1',
           authors: ['Elwin'],
         },
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
-          version: '3.1.0',
+          version: '3.1.1',
           authors: ['Elwin'],
         },
         'Great Weapon Master': {
           name: 'Great Weapon Master',
           type: 'Feat',
-          version: '3.0.2',
+          version: '3.0.3',
           authors: ['Elwin'],
         },
         'Guardian Emblem': {
           name: 'Guardian Emblem',
           type: 'Item',
-          version: '4.1.0',
+          version: '4.1.1',
           authors: ['Elwin'],
         },
         'Moon-Touched Greatsword': {
@@ -242,7 +242,7 @@ export function setConfig() {
         'Psionic Power: Protective Field': {
           name: 'Psionic Power: Protective Field',
           type: 'Class Feature',
-          version: '4.0.1',
+          version: '4.0.2',
           authors: ['Elwin'],
         },
         'Purple Worm Poison': {
@@ -254,7 +254,7 @@ export function setConfig() {
         "Sentinel at Death's Door": {
           name: "Sentinel at Death's Door",
           type: 'Class Feature',
-          version: '4.0.1',
+          version: '4.0.2',
           authors: ['Elwin'],
         },
         'Serpent Venom': {
@@ -272,13 +272,13 @@ export function setConfig() {
         'Sorrowful Fate': {
           name: 'Sorrowful Fate',
           type: 'Class Feature',
-          version: '2.1.0',
+          version: '2.1.1',
           authors: ['Elwin'],
         },
         'Spirit Shield': {
           name: 'Spirit Shield',
           type: 'Class Feature',
-          version: '4.0.1',
+          version: '4.0.2',
           authors: ['Elwin'],
         },
         'Steady Aim': {
@@ -296,31 +296,31 @@ export function setConfig() {
         'Unwavering Mark': {
           name: 'Unwavering Mark',
           type: 'Class Feature',
-          version: '3.0.2',
+          version: '3.0.3',
           authors: ['Elwin'],
         },
         'Vengeful Ancestors': {
           name: 'Vengeful Ancestors',
           type: 'Class Feature',
-          version: '3.0.1',
+          version: '3.0.2',
           authors: ['Elwin'],
         },
         'Vigilant Guardian': {
           name: 'Vigilant Guardian',
           type: 'Race Feature',
-          version: '4.0.1',
+          version: '4.0.2',
           authors: ['Elwin'],
         },
         'Warding Flare': {
           name: 'Warding Flare',
           type: 'Class Feature',
-          version: '3.0.1',
+          version: '3.0.2',
           authors: ['Elwin'],
         },
         'Warding Maneuver': {
           name: 'Warding Maneuver',
           type: 'Class Feature',
-          version: '2.1.0',
+          version: '2.1.1',
           authors: ['Elwin'],
         },
         'Wyvern Poison': {
@@ -340,7 +340,7 @@ export function setConfig() {
         'Arrow-Catching Shield': {
           name: 'Arrow-Catching Shield',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.0.2',
           authors: ['Elwin'],
         },
         'Dagger of Venom': {
@@ -358,7 +358,7 @@ export function setConfig() {
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Elwin'],
         },
         'Great Weapon Fighting': {
@@ -434,14 +434,14 @@ export function setConfig() {
         'Goblin Psi Commander': {
           'Psionic Shield': {
             name: 'Psionic Shield',
-            version: '2.1.0',
+            version: '2.1.1',
             authors: ['Elwin'],
           },
         },
         Lich: {
           'Negative Energy Tether': {
             name: 'Negative Energy Tether',
-            version: '2.0.1',
+            version: '2.0.2',
             authors: ['Elwin'],
           },
         },

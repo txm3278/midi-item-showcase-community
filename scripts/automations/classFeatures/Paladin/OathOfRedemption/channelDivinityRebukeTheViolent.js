@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an active effect, that effect will trigger a reaction by the Paladin when a creature within range
 // is damaged to allow him to use the feature to apply retribution damage to the attacker.
-// v2.1.0
+// v2.1.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[tpr.isDamaged]
@@ -27,7 +27,6 @@
 //   The retribution activity is used to apply the retribution damage to the attacker on the Rebuke the Violent item owner's client.
 // ###################################################################################################
 
-
 export async function channelDivinityRebukeTheViolent({
   speaker,
   actor,
@@ -39,11 +38,11 @@ export async function channelDivinityRebukeTheViolent({
   workflow,
   options,
 }) {
-// Default name of the feature
+  // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Channel Divinity: Rebuke the Violent';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -55,35 +54,39 @@ export async function channelDivinityRebukeTheViolent({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-  // MidiQOL OnUse item macro for Rebuke the Violent
+    // MidiQOL OnUse item macro for Rebuke the Violent
     return handleOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.post') {
-  // MidiQOL TargetOnUse post item macro for Rebuke the Violent post reaction
+    // MidiQOL TargetOnUse post item macro for Rebuke the Violent post reaction
     await handleTargetOnUseIsDamagedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
   }
 
   /**
- * Handles the preTargeting phase of the Rebuke the Violent item.
- * Validates that the reaction was triggered by the tpr.isDamaged target on use.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Rebuke the Violent item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Rebuke the Violent item.
+   * Validates that the reaction was triggered by the tpr.isDamaged target on use.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Rebuke the Violent item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (currentWorkflow.activity?.type !== 'reaction') {
       return true;
     }
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
-    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
+      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-    // Reaction should only be triggered by aura
+      // Reaction should only be triggered by aura
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the Paladin is damaged.`;
       ui.notifications.warn(msg);
       return false;
@@ -92,13 +95,13 @@ export async function channelDivinityRebukeTheViolent({
   }
 
   /**
- * Handles the tpr.isDamaged post macro of the Rebuke the Violent item.
- * If the reaction was used and completed successfully, an activity is used to apply the retribution damage to the attacker.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Rebuke the Violent item.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isDamaged post macro of the Rebuke the Violent item.
+   * If the reaction was used and completed successfully, an activity is used to apply the retribution damage to the attacker.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Rebuke the Violent item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   async function handleTargetOnUseIsDamagedPost(currentWorkflow, sourceItem, thirdPartyReactionResult) {
     if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
@@ -112,12 +115,12 @@ export async function channelDivinityRebukeTheViolent({
 
     // Set damage to be applied, to be available for remote reaction
     const totalDamage =
-    currentWorkflow.damageItem?.damageDetail?.reduce(
-      (acc, d) => acc + (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
-      0
-    ) ?? 0;
+      currentWorkflow.damageItem?.damageDetail?.reduce(
+        (acc, d) => acc + (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
+        0
+      ) ?? 0;
     if (!(totalDamage > 0)) {
-    // No damage dealt
+      // No damage dealt
       return;
     }
     // Build the retribution damage to apply to the attacker.
@@ -135,7 +138,7 @@ export async function channelDivinityRebukeTheViolent({
     // Send the item roll to user's client, after the completion of this workflow
     let player = MidiQOL.playerForActor(sourceActor);
     if (!player?.active) {
-    // Find first active GM player
+      // Find first active GM player
       player = game.users?.activeGM;
     }
     if (!player) {
@@ -143,11 +146,11 @@ export async function channelDivinityRebukeTheViolent({
       return;
     }
 
-    const config = {
+    const usage = {
       midiOptions: {
         targetUuids: [currentWorkflow.tokenUuid],
         configureDialog: false,
-        workflowOptions: { autoRollDamage: 'always', autoFastDamage: true },
+        workflowOptions: { autoRollDamage: 'always', fastForwardDamage: true },
         targetConfirmation: 'none',
       },
     };
@@ -155,7 +158,7 @@ export async function channelDivinityRebukeTheViolent({
     const data = {
       activityUuid: retributionActivity.uuid,
       actorUuid: sourceActor.uuid,
-      config,
+      usage,
     };
 
     // Register hook to call retribution damage after roll is complete
@@ -175,5 +178,4 @@ export async function channelDivinityRebukeTheViolent({
       await MidiQOL.socket().executeAsUser('completeActivityUse', player.id, data);
     });
   }
-
 }

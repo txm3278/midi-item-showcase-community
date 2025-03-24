@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.3.0
+// v3.3.1
 // Dependencies:
 //  - MidiQOL
 //
@@ -114,7 +114,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.3.0';
+  const VERSION = '3.3.1';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
@@ -360,27 +360,25 @@ export function runElwinsHelpers() {
   /**
    * Triggers isAttacked third party reactions.
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {object} options - Options passed by midi qol.
    */
-  async function handlePreCheckHits(workflow, options) {
+  async function handlePreCheckHits(workflow) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, { workflow, options });
+      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isAttacked'], options);
+    await handleThirdPartyReactions(workflow, ['isAttacked']);
   }
 
   /**
    * Triggers isHit and isMissed third party reactions.
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {object} options - Options passed by midi qol.
    */
-  async function handleHitsChecked(workflow, options) {
+  async function handleHitsChecked(workflow) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handleHitsChecked.`, { workflow, options });
+      console.warn(`${MACRO_NAME} | handleHitsChecked.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isHit', 'isMissed'], options);
+    await handleThirdPartyReactions(workflow, ['isHit', 'isMissed']);
   }
 
   /**
@@ -741,8 +739,8 @@ export function runElwinsHelpers() {
    * @param {object} options - Options to override some defaults or change the execution behavior.
    */
   async function handleThirdPartyReactions(workflow, triggerList, options) {
-    options ??= workflow?.options;
-    if (!workflow || !(MidiQOL.configSettings().allowUseMacro && !options.noTargetOnuseMacro)) {
+    options ??= {};
+    if (!workflow || !(MidiQOL.configSettings().allowUseMacro && !workflow.workflowOptions?.noTargetOnuseMacro)) {
       return;
     }
 
@@ -1266,7 +1264,7 @@ export function runElwinsHelpers() {
     if (reactionsByTarget.length) {
       reactionsByTriggerSources.push(reactionsByTarget);
     }
-    // TODO HERE handle calling activities
+
     for (let reactionsByTriggerSource of reactionsByTriggerSources) {
       const triggerSource = reactionsByTriggerSource[0]?.triggerSource;
       const validReactionActivities = [];
@@ -1875,7 +1873,7 @@ export function runElwinsHelpers() {
 
     workflow.isCritical = false;
     // Set flag for other feature to not put back a critical or least consider it...
-    workflow.options.noCritical = true;
+    workflow.workflowOptions.noCritical = true;
 
     const configSettings = MidiQOL.configSettings();
     for (let tokenUuid of Object.keys(workflow.hitDisplayData)) {

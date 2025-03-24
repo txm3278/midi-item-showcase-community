@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v3.1.0
+// v3.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -33,26 +33,15 @@
 //   Note: This is done, to not interfere with other effects the attack could have.
 // ###################################################################################################
 
-
-export async function flamesOfPhlegethos({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the item
+export async function flamesOfPhlegethos({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the item
   const DEFAULT_ITEM_NAME = 'Flames of Phlegethos';
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   // Normally should be one, but for test purpose can be set to an higher value
   const rerollNumber = 1;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -63,17 +52,22 @@ export async function flamesOfPhlegethos({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postDamageRoll') {
     if (scope.rolledItem?.type !== 'spell' || !workflow.damageRolls?.length) {
-    // Only works on spell with damage rolls
+      // Only works on spell with damage rolls
       return;
     }
-    // TODO check also for other dmg?
-    const fireDmg = workflow.damageRolls.some((r) => r.options?.type === 'fire') || workflow.defaultDamageType === 'fire';
+    // TODO check also for other or bonus dmg?
+    const fireDmg =
+      workflow.damageRolls.some((r) => r.options?.type === 'fire') || workflow.defaultDamageType === 'fire';
     if (!fireDmg) {
-    // Spell must do fire damage to trigger effect
+      // Spell must do fire damage to trigger effect
       return;
     }
 
@@ -84,7 +78,7 @@ export async function flamesOfPhlegethos({
       .filter(
         (data) =>
           (data.type ?? workflow.defaultDamageType) === 'fire' &&
-        data.die.results.some((r) => r.active && r.result <= rerollNumber)
+          data.die.results.some((r) => r.active && r.result <= rerollNumber)
       )
       .map((d) => d.die);
 
@@ -110,7 +104,7 @@ export async function flamesOfPhlegethos({
     }
 
     if (activateFlames) {
-    // Add active effect for aura (for reactive damage) and flames effects
+      // Add active effect for aura (for reactive damage) and flames effects
       const flamesEffectData = getFlamesEffectData(scope.macroItem);
 
       // Delete the effect if it already exists before reapplying it
@@ -122,8 +116,8 @@ export async function flamesOfPhlegethos({
 
       await actor.createEmbeddedDocuments('ActiveEffect', [flamesEffectData]);
       const message = `<p><strong>${scope.macroItem.name}</strong> - ${elwinHelpers.getTokenName(
-      token
-    )} is wreathed in flames</p>`;
+        token
+      )} is wreathed in flames</p>`;
       MidiQOL.addUndoChatMessage(
         await ChatMessage.create({
           content: message,
@@ -132,9 +126,9 @@ export async function flamesOfPhlegethos({
       );
     }
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isDamaged') {
-  // TODO check thrown weapons?
+    // TODO check thrown weapons?
     if (workflow.activity?.attack?.type?.value !== 'melee') {
-    // Not a melee attack...
+      // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);
       }
@@ -144,13 +138,19 @@ export async function flamesOfPhlegethos({
     const targetToken = workflow.token;
 
     if (!actor || !token || !targetToken || workflow.actorUuid === scope.macroItem?.parent.uuid) {
-    // Missing info or attacker is the owner of the feat...
-      console.warn(`${DEFAULT_ITEM_NAME} | Missing info or attacker hits himself`, actor, token, targetToken, scope.macroItem);
+      // Missing info or attacker is the owner of the feat...
+      console.warn(
+        `${DEFAULT_ITEM_NAME} | Missing info or attacker hits himself`,
+        actor,
+        token,
+        targetToken,
+        scope.macroItem
+      );
       return;
     }
     const dist = MidiQOL.computeDistance(token, targetToken, true);
     if (dist < 0 || dist > 5) {
-    // Attacker farther than 5'
+      // Attacker farther than 5'
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Attacker is farther than 5'`);
       }
@@ -166,7 +166,7 @@ export async function flamesOfPhlegethos({
     // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
     let player = MidiQOL.playerForActor(actor);
     if (!player?.active) {
-    // Find first active GM player
+      // Find first active GM player
       player = game.users?.activeGM;
     }
     if (!player) {
@@ -174,21 +174,21 @@ export async function flamesOfPhlegethos({
       return;
     }
 
-    const config = {
+    const usage = {
       midiOptions: {
         targetUuids: [workflow.tokenUuid],
         configureDialog: false,
-        workflowOptions: { autoFastDamage: true, targetConfirmation: 'none' },
+        workflowOptions: { fastForwardDamage: true, targetConfirmation: 'none' },
       },
     };
     if (player?.isGM) {
-      config.midiOptions.workflowOptions.autoRollDamage = 'always';
+      usage.midiOptions.workflowOptions.autoRollDamage = 'always';
     }
 
     const data = {
       activityUuid: reativeDamageActivity.uuid,
       actorUuid: actor.uuid,
-      config,
+      usage,
     };
 
     // Register hook to call retribution damage after roll is complete
@@ -210,13 +210,13 @@ export async function flamesOfPhlegethos({
   }
 
   /**
- * Prompts the user of the token if he wants to activate the flames and/or reroll dice.
- *
- * @param {Item5e} sourceItem the feat item.
- * @param {Dice[]} diceToReroll array of dice that needs to be rerolled.
- * @param {number} rerollNumber the number limit up to when the dice are rerolled.
- * @returns an array of two booleans, the first for the flame activation, the second for the dice reroll.
- */
+   * Prompts the user of the token if he wants to activate the flames and/or reroll dice.
+   *
+   * @param {Item5e} sourceItem the feat item.
+   * @param {Dice[]} diceToReroll array of dice that needs to be rerolled.
+   * @param {number} rerollNumber the number limit up to when the dice are rerolled.
+   * @returns an array of two booleans, the first for the flame activation, the second for the dice reroll.
+   */
   async function promptActivateFlamesAndOrRerollDice(sourceItem, diceToReroll, rerollNumber) {
     let choices = [
       new foundry.data.fields.BooleanField({ initial: true, label: 'Activate flames' }).toFormGroup(
@@ -254,11 +254,11 @@ export async function flamesOfPhlegethos({
   }
 
   /**
- * Reroll dice for which result were lower or equal to the specified rerollNumber.
- * If DSN is enabled, also show the rerolled dice with DSN.
- *
- * @param {Dice} dice the dice to reroll.
- */
+   * Reroll dice for which result were lower or equal to the specified rerollNumber.
+   * If DSN is enabled, also show the rerolled dice with DSN.
+   *
+   * @param {Dice} dice the dice to reroll.
+   */
   async function rollNewDice(dice) {
     let terms = [];
     dice.forEach((die) => {
@@ -283,12 +283,12 @@ export async function flamesOfPhlegethos({
   }
 
   /**
- * Returns the effect data for the light and Token Magic FX flames.
- *
- * @param {Item5e} sourceItem the feat item.
- *
- * @returns {object} the active effect data for the light and Token Magic FX flames.
- */
+   * Returns the effect data for the light and Token Magic FX flames.
+   *
+   * @param {Item5e} sourceItem the feat item.
+   *
+   * @returns {object} the active effect data for the light and Token Magic FX flames.
+   */
   function getFlamesEffectData(sourceItem) {
     const flamesEffectData = {
       changes: [
@@ -370,12 +370,11 @@ export async function flamesOfPhlegethos({
   }
 
   /**
- * Wait for the specified number of milliseconds.
- *
- * @param {number} ms number of ms to wait.
- */
+   * Wait for the specified number of milliseconds.
+   *
+   * @param {number} ms number of ms to wait.
+   */
   async function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-
 }

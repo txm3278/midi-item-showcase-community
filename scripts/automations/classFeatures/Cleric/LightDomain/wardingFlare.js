@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within range attacks to allow him to add disadvantage on the attack to hit.
-// v3.0.0
+// v3.0.2
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting][tpr.isPreAttacked]
@@ -24,23 +24,12 @@
 //   disadvantage.
 // ###################################################################################################
 
-
-export async function wardingFlare({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the feature
+export async function wardingFlare({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Warding Flare';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -51,7 +40,11 @@ export async function wardingFlare({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
@@ -61,20 +54,20 @@ export async function wardingFlare({
   }
 
   /**
- * Handles the preTargeting phase of the Warding Flare reaction activity workflow.
- * Validates that the reaction was triggered by the isPreAttacked phase.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5E} sourceItem - The Warding Flare item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Warding Flare reaction activity workflow.
+   * Validates that the reaction was triggered by the isPreAttacked phase.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5E} sourceItem - The Warding Flare item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isPreAttacked' ||
-    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isPreAttacked' ||
+      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-    // Reaction should only be triggered by third party reactions
+      // Reaction should only be triggered by third party reactions
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature attacks.`;
       ui.notifications.warn(msg);
       return false;
@@ -83,13 +76,13 @@ export async function wardingFlare({
   }
 
   /**
- * Handles the tpr.isPreAttacked post reaction of the Warding Flare item in the triggering midi-qol workflow.
- * If the reaction was used and completed successfully, adds disadvantage to the attack roll.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Warding Flare item.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isPreAttacked post reaction of the Warding Flare item in the triggering midi-qol workflow.
+   * If the reaction was used and completed successfully, adds disadvantage to the attack roll.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Warding Flare item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   function handleTargetOnUseIsPreAttackedPost(currentWorkflow, sourceItem, thirdPartyReactionResult) {
     if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
@@ -113,5 +106,4 @@ export async function wardingFlare({
     currentWorkflow.attackAdvAttribution.add(disValue);
     currentWorkflow.disadvantage = true;
   }
-
 }
