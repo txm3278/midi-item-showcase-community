@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>",
       "chat": ""
     },
     "source": {
@@ -42,7 +42,7 @@
         "custom": {
           "enabled": false
         },
-        "number": 1,
+        "number": null,
         "denomination": 0,
         "bonus": "",
         "types": [],
@@ -54,8 +54,8 @@
         "custom": {
           "enabled": false
         },
-        "number": 1,
-        "denomination": 8,
+        "number": null,
+        "denomination": 0,
         "bonus": "",
         "types": [
           "radiant"
@@ -81,7 +81,7 @@
     ],
     "proficient": null,
     "unidentified": {
-      "description": "Longsword"
+      "description": "<p>Longsword</p>"
     },
     "type": {
       "value": "martialM",
@@ -366,7 +366,7 @@
           "properties": [],
           "type": ""
         },
-        "useConditionText": "",
+        "useConditionText": "item.equipped && item.attuned",
         "effectConditionText": "",
         "macroData": {
           "name": "",
@@ -396,7 +396,7 @@
           "chooseEffects": false
         },
         "name": "Activate/Deactivate Blade",
-        "useConditionReason": "",
+        "useConditionReason": "The sword must be equipped and attuned to activate the blade",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -743,6 +743,30 @@
           "mode": 5,
           "value": "{} (Activated)",
           "priority": 20
+        },
+        {
+          "key": "system.damage.base.number",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "system.damage.base.denomination",
+          "mode": 5,
+          "value": "8",
+          "priority": 20
+        },
+        {
+          "key": "system.damage.versatile.number",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "system.damage.versatile.denomination",
+          "mode": 5,
+          "value": "10",
+          "priority": 20
         }
       ],
       "duration": {
@@ -787,7 +811,13 @@
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "wallsBlock": "system"
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "_stats": {
@@ -795,9 +825,9 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.1.2",
+        "systemVersion": "4.3.6",
         "createdTime": 1736733898505,
-        "modifiedTime": 1736773807400,
+        "modifiedTime": 1742247246854,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!bPWsI93aNpuANbJe.6CqUePYaCOnGRxYa"
@@ -813,10 +843,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.3",
+    "systemVersion": "4.3.6",
     "coreVersion": "12.331",
     "createdTime": 1696175315462,
-    "modifiedTime": 1740892238058,
+    "modifiedTime": 1742615188965,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "bPWsI93aNpuANbJe",

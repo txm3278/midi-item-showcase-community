@@ -4,7 +4,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the owner of the feat
 // when himself or a creature within range is hit to allow him to add an AC bonus that could
 // turn the hit into a miss.
-// v4.1.0
+// v4.1.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -23,7 +23,6 @@
 //   taken into account the AC bonus and validate if the attack is still a hit.
 // ###################################################################################################
 
-
 export async function giftOfTheMetallicDragon({
   speaker,
   actor,
@@ -35,11 +34,11 @@ export async function giftOfTheMetallicDragon({
   workflow,
   options,
 }) {
-// Default name of the feature
+  // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Gift of the Metallic Dragon';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -50,14 +49,18 @@ export async function giftOfTheMetallicDragon({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
     if (!token) {
-    // No target
+      // No target
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No target token.`);
       }
@@ -68,20 +71,20 @@ export async function giftOfTheMetallicDragon({
   }
 
   /**
- * Handles the preTargeting phase of the Gift of the Metallic Dragon item.
- * Validates that the reaction was triggered by the tpr.isHit phase.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Gift of the Metallic Dragon item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Gift of the Metallic Dragon item.
+   * Validates that the reaction was triggered by the tpr.isHit phase.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Gift of the Metallic Dragon item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
-    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
+      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-    // Reaction should only be triggered by third party reaction effect
+      // Reaction should only be triggered by third party reaction effect
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature or the owner is hit.`;
       ui.notifications.warn(msg);
       return false;
@@ -90,14 +93,14 @@ export async function giftOfTheMetallicDragon({
   }
 
   /**
- * Handles the tpr.isHit post reaction of the Gift of the Metallic Dragon item in the triggering midi-qol workflow.
- * If the reaction was used and completed successfully, adds an AC bonus which could convert a hit on the target into a miss.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Token5e} targetToken - The target token that is hit.
- * @param {Item5e} sourceItem - The Gift of the Metallic Dragon item.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isHit post reaction of the Gift of the Metallic Dragon item in the triggering midi-qol workflow.
+   * If the reaction was used and completed successfully, adds an AC bonus which could convert a hit on the target into a miss.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Token5e} targetToken - The target token that is hit.
+   * @param {Item5e} sourceItem - The Gift of the Metallic Dragon item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   async function handleTargetOnUseIsHitPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
     if (debug) {
       console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
@@ -132,5 +135,4 @@ export async function giftOfTheMetallicDragon({
     // Redisplay attack roll for new result
     await currentWorkflow.displayAttackRoll();
   }
-
 }

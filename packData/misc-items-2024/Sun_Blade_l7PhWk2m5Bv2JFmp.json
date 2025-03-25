@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>undefined</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>",
       "chat": ""
     },
     "source": {
@@ -45,7 +45,7 @@
         "custom": {
           "enabled": false
         },
-        "number": 1,
+        "number": null,
         "denomination": 0,
         "bonus": "",
         "types": [],
@@ -57,8 +57,8 @@
         "custom": {
           "enabled": false
         },
-        "number": 1,
-        "denomination": 8,
+        "number": null,
+        "denomination": 0,
         "bonus": "",
         "types": [
           "radiant"
@@ -369,7 +369,7 @@
           "properties": [],
           "type": ""
         },
-        "useConditionText": "",
+        "useConditionText": "item.equipped && item.attuned",
         "effectConditionText": "",
         "macroData": {
           "name": "",
@@ -405,7 +405,7 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "useConditionReason": ""
+        "useConditionReason": "The sword must be equipped and attuned to activate the blade"
       },
       "RZXnbNx7y4NTwGuf": {
         "type": "damage",
@@ -752,6 +752,30 @@
           "mode": 5,
           "value": "{} (Activated)",
           "priority": 20
+        },
+        {
+          "key": "system.damage.base.number",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "system.damage.base.denomination",
+          "mode": 5,
+          "value": "8",
+          "priority": 20
+        },
+        {
+          "key": "system.damage.versatile.number",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "system.damage.versatile.denomination",
+          "mode": 5,
+          "value": "10",
+          "priority": 20
         }
       ],
       "duration": {
@@ -812,7 +836,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": 1740892012908,
+        "modifiedTime": 1742247355116,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!l7PhWk2m5Bv2JFmp.6CqUePYaCOnGRxYa"
@@ -831,7 +855,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1740541404224,
-    "modifiedTime": 1741496583152,
+    "modifiedTime": 1742247383879,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "sort": 100000,

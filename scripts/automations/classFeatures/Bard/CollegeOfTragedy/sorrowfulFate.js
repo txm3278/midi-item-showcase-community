@@ -3,7 +3,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Bard
 // when an ally or himself forces a creature to roll a saving throw. When doing so, the saving
 // throw ability is changed to Charisma and if the target fails its save it takes extra damage.
-// v2.1.0
+// v2.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, macro [off]
@@ -34,24 +34,13 @@
 //   target to die in a dramatic way.
 // ###################################################################################################
 
-
-export async function sorrowfulFate({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the feature
+export async function sorrowfulFate({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Sorrowful Fate';
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -62,12 +51,16 @@ export async function sorrowfulFate({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preActiveEffects') {
-  // Validates that the item is the damage activity
+    // Validates that the item is the damage activity
     if (workflow.activity?.type === 'damage') {
       return await handleOnUsePreActiveEffects(workflow);
     }
@@ -75,7 +68,7 @@ export async function sorrowfulFate({
     handleTargetOnUseIsPreCheckSavePost(workflow, scope.macroItem, token, options?.thirdPartyReactionResult);
   } else if (args[0] === 'off') {
     if (foundry.utils.getProperty(scope.lastArgValue, 'expiry-reason') !== 'midi-qol:zeroHP') {
-    // Not expired due to zero HP
+      // Not expired due to zero HP
       return;
     }
     // Output a chat message to remind actor of making a scene while dying
@@ -90,23 +83,23 @@ export async function sorrowfulFate({
   }
 
   /**
- * Handles the preTargeting phase of the Sorrowful Fate activity.
- * If the activity is a reaction, validates that the reaction was triggered by the isPreCheckSave phase.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Sorrowful Fate item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Sorrowful Fate activity.
+   * If the activity is a reaction, validates that the reaction was triggered by the isPreCheckSave phase.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Sorrowful Fate item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (currentWorkflow.activity?.type !== 'utility') {
       return true;
     }
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isPreCheckSave' ||
-    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isPreCheckSave' ||
+      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-    // Reaction should only be triggered by third party reactions
+      // Reaction should only be triggered by third party reactions
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature forces another creature to make a saving throw.`;
       ui.notifications.warn(msg);
       return false;
@@ -115,21 +108,21 @@ export async function sorrowfulFate({
   }
 
   /**
- * Handles the preActiveEffects phase of the 'Sorrowful Fate - Damage' item midi-qol workflow.
- * Disables the application of AE on target when it already has 0 HP.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @return {{haltEffectsApplication: true}|undefined} If target has 0 HP returns an object to stop midi from applying the AE,
- *                                                    otherwise undefined.
- */
+   * Handles the preActiveEffects phase of the 'Sorrowful Fate - Damage' item midi-qol workflow.
+   * Disables the application of AE on target when it already has 0 HP.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @return {{haltEffectsApplication: true}|undefined} If target has 0 HP returns an object to stop midi from applying the AE,
+   *                                                    otherwise undefined.
+   */
   async function handleOnUsePreActiveEffects(currentWorkflow) {
-  // Do not apply AE on target when it has 0 HP.
+    // Do not apply AE on target when it has 0 HP.
     const targetToken = currentWorkflow.targets.first();
     if (targetToken?.actor?.system?.attributes?.hp?.value === 0) {
-    // Output a chat message to remind actor of making a scene while dying
+      // Output a chat message to remind actor of making a scene while dying
       const player = MidiQOL.playerFor(targetToken);
       const tokenName =
-      (MidiQOL.configSettings().useTokenNames ? targetToken.name : targetToken.actor?.name) ?? '<unknown>';
+        (MidiQOL.configSettings().useTokenNames ? targetToken.name : targetToken.actor?.name) ?? '<unknown>';
       await ChatMessage.create({
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: `${tokenName} is magically compelled to utter darkly poetic final words before succumbing from their injuries`,
@@ -141,20 +134,19 @@ export async function sorrowfulFate({
   }
 
   /**
- * Handles the tpr.isPreCheckSave post reaction of the Sorrowful Fate item in the triggering midi-qol workflow.
- * If the reaction was used and completed successfully, changes the current save item ability to Charisma and
- * registers a hook to inflict extra damage on a failed save.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Sorrowful Fate item.
- * @param {Token5e} target - The target.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isPreCheckSave post reaction of the Sorrowful Fate item in the triggering midi-qol workflow.
+   * If the reaction was used and completed successfully, changes the current save item ability to Charisma and
+   * registers a hook to inflict extra damage on a failed save.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Sorrowful Fate item.
+   * @param {Token5e} target - The target.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   function handleTargetOnUseIsPreCheckSavePost(currentWorkflow, sourceItem, target, thirdPartyReactionResult) {
     if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
     }
-    // TODO check save activity
     if (!currentWorkflow.saveActivity?.save) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Activity is not a save.`, currentWorkflow);
@@ -166,8 +158,8 @@ export async function sorrowfulFate({
     const updates = {};
     foundry.utils.setProperty(
       updates,
-    `system.activities.${currentWorkflow.saveActivity.id}.save.ability`,
-    new Set(['cha'])
+      `system.activities.${currentWorkflow.saveActivity.id}.save.ability`,
+      new Set(['cha'])
     );
 
     // TODO support saveActivity on other item???
@@ -182,10 +174,10 @@ export async function sorrowfulFate({
         !elwinHelpers.isMidiHookStillValid(
           DEFAULT_ITEM_NAME,
           'midi-qol.RollComplete',
-        `${sourceItem.name} - Damage`,
-        currentWorkflow,
-        currentWorkflow2,
-        debug
+          `${sourceItem.name} - Damage`,
+          currentWorkflow,
+          currentWorkflow2,
+          debug
         )
       ) {
         return;
@@ -212,7 +204,7 @@ export async function sorrowfulFate({
 
       let player = MidiQOL.playerForActor(sourceActor);
       if (!player?.active) {
-      // Find first active GM player
+        // Find first active GM player
         player = game.users?.activeGM;
       }
       if (!player?.active) {
@@ -220,22 +212,21 @@ export async function sorrowfulFate({
         return;
       }
 
-      const config = {
+      const usage = {
         midiOptions: {
           targetUuids: [target.document.uuid],
           configureDialog: false,
-          workflowOptions: { autoFastDamage: true, targetConfirmation: 'none' },
+          workflowOptions: { fastForwardDamage: true, targetConfirmation: 'none' },
         },
       };
 
       const data = {
         activityUuid: bonusDamageActivity.uuid,
         actorUuid: sourceActor.uuid,
-        config,
+        usage,
       };
 
       await MidiQOL.socket().executeAsUser('completeActivityUse', player.id, data);
     });
   }
-
 }

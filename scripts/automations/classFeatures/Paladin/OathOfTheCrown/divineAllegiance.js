@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an active effect, that effect will trigger a reaction by the Paladin
 // when a creature within range is damaged to allow him to use the feature to take the target's damage instead.
-// v4.0.0
+// v4.0.2
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
@@ -27,23 +27,12 @@
 //   If the reaction was used and completed successfully, the target's damage is reduced to zero.
 // ###################################################################################################
 
-
-export async function divineAllegiance({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the feature
+export async function divineAllegiance({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Divine Allegiance';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -54,38 +43,42 @@ export async function divineAllegiance({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-  // MidiQOL OnUse item macro for Divine Allegiance
+    // MidiQOL OnUse item macro for Divine Allegiance
     return handleOnUsePreTargeting(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.pre') {
-  // MidiQOL TargetOnUse pre macro for Divine Allegiance pre reaction
+    // MidiQOL TargetOnUse pre macro for Divine Allegiance pre reaction
     return await handleTargetOnUseIsDamagedPre(workflow, scope.macroItem);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.post') {
-  // MidiQOL TargetOnUse post item macro for Divine Allegiance post reaction
+    // MidiQOL TargetOnUse post item macro for Divine Allegiance post reaction
     handleTargetOnUseIsDamagedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-  // MidiQOL OnUse item macro for Divine Allegiance
+    // MidiQOL OnUse item macro for Divine Allegiance
     await handleOnUsePostActiveEffects(workflow, actor);
   }
 
   /**
- * Handles the preTargeting phase of the Divine Allegiance activity.
- * Validates that the reaction was triggered by the tpr.isDamaged target on use.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Divine Allegiance item.
- *
- * @returns {boolean} true if all requirements are fulfilled, false otherwise.
- */
+   * Handles the preTargeting phase of the Divine Allegiance activity.
+   * Validates that the reaction was triggered by the tpr.isDamaged target on use.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Divine Allegiance item.
+   *
+   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
+   */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.options?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
-    !currentWorkflow.options?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isDamaged' ||
+      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
-    // Reaction should only be triggered by aura
+      // Reaction should only be triggered by aura
       const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the Paladin is damaged.`;
       ui.notifications.warn(msg);
       return false;
@@ -94,14 +87,14 @@ export async function divineAllegiance({
   }
 
   /**
- * Handles the tpr.isDamaged pre macro of the Divine Allegiance activity in the triggering midi-qol workflow.
- * Sets a flag on the owner with the damage to be taken, will be used by the reaction.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Divine Allegiance item.
- *
- * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
- */
+   * Handles the tpr.isDamaged pre macro of the Divine Allegiance activity in the triggering midi-qol workflow.
+   * Sets a flag on the owner with the damage to be taken, will be used by the reaction.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Divine Allegiance item.
+   *
+   * @returns {object} undefined when all conditions are met, an object with skip attribute to true if the reaction must be skipped.
+   */
   async function handleTargetOnUseIsDamagedPre(currentWorkflow, sourceItem) {
     const sourceActor = sourceItem.actor;
 
@@ -120,13 +113,13 @@ export async function divineAllegiance({
   }
 
   /**
- * Handles the tpr.isDamaged post macro of the Divine Allegiance activity.
- * If the reaction was used and completed successfully, reduces the item's owner hp by the amount of damage that the target would have taken.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Divine Allegiance item.
- * @param {object} thirdPartyReactionResult - The third party reaction result.
- */
+   * Handles the tpr.isDamaged post macro of the Divine Allegiance activity.
+   * If the reaction was used and completed successfully, reduces the item's owner hp by the amount of damage that the target would have taken.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Divine Allegiance item.
+   * @param {object} thirdPartyReactionResult - The third party reaction result.
+   */
   function handleTargetOnUseIsDamagedPost(currentWorkflow, sourceItem, thirdPartyReactionResult) {
     const preventedDmg = currentWorkflow.divineAllegianceAppliedDmg;
     if (sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid) && preventedDmg) {
@@ -142,21 +135,21 @@ export async function divineAllegiance({
   }
 
   /**
- * Handles the postActiveEffects phase of the Divine Allegiance activity.
- * The owner of the feature HP's are reduced by the damage to be applied to the target.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
- * @param {Actor5e} sourceActor - The owner of the Divine Allegiance item.
- */
+   * Handles the postActiveEffects phase of the Divine Allegiance activity.
+   * The owner of the feature HP's are reduced by the damage to be applied to the target.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
+   * @param {Actor5e} sourceActor - The owner of the Divine Allegiance item.
+   */
   async function handleOnUsePostActiveEffects(currentWorkflow, sourceActor) {
     const targetToken = currentWorkflow.targets.first();
     if (!targetToken) {
-    // No target found
+      // No target found
       return;
     }
     const targetActor = targetToken.actor;
     if (!targetActor) {
-    // No actor found
+      // No actor found
       return;
     }
     const appliedDmg = DAE.getFlag(sourceActor, 'divineAllegianceAppliedDmg');
@@ -170,5 +163,4 @@ export async function divineAllegiance({
       elwinHelpers.getTargetDivs(targetToken, infoMsg)
     );
   }
-
 }
