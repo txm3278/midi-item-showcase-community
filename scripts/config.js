@@ -122,7 +122,7 @@ export function setConfig() {
         'Fighting Style: Great Weapon Fighting': {
           name: 'Fighting Style: Great Weapon Fighting',
           type: 'Class Feature',
-          version: '1.0.0',
+          version: '1.1.0',
           authors: ['Elwin', 'WurstKorn'],
         },
         'Flames of Phlegethos': {
@@ -296,7 +296,7 @@ export function setConfig() {
         'Unwavering Mark': {
           name: 'Unwavering Mark',
           type: 'Class Feature',
-          version: '3.0.3',
+          version: '3.1.0',
           authors: ['Elwin'],
         },
         'Vengeful Ancestors': {
@@ -364,7 +364,7 @@ export function setConfig() {
         'Great Weapon Fighting': {
           name: 'Great Weapon Fighting',
           type: 'Feat',
-          version: '1.0.0',
+          version: '1.1.0',
           authors: ['Elwin', 'WurstKorn'],
         },
         'Great Weapon Master': {
@@ -445,8 +445,23 @@ export function setConfig() {
             authors: ['Elwin'],
           },
         },
+        Medusa: {
+          'Petrifying Gaze': {
+            name: 'Petrifying Gaze',
+            version: '1.0.0',
+            authors: ['Elwin', 'Moto Moto'],
+          },
+        },
       },
-      modern: {},
+      modern: {
+        Medusa: {
+          'Petrifying Gaze': {
+            name: 'Petrifying Gaze',
+            version: '1.0.0',
+            authors: ['Elwin'],
+          },
+        },
+      },
     },
   });
 }

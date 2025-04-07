@@ -28,7 +28,7 @@
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
           "minimum": "4.3.3",
-          "verified": "4.3.6"
+          "verified": "4.3.8"
         }
       }
     ],
@@ -38,7 +38,7 @@
         "type": "module",
         "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "verified": "12.4.34",
+          "verified": "12.4.39",
           "minimum": "12.4.34"
         }
       }
@@ -219,6 +219,17 @@
       }
     },
     {
+      "name": "misc-monster-features-2024",
+      "label": "MISC Monster Features",
+      "path": "packs/misc-monster-features-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "misc-spells-2024",
       "label": "MISC Spells",
       "path": "packs/misc-spells-2024",
@@ -257,7 +268,7 @@
           "name": "2024",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": ["misc-feats-2024", "misc-spells-2024", "misc-items-2024"]
+          "packs": ["misc-feats-2024", "misc-monster-features-2024", "misc-spells-2024", "misc-items-2024"]
         },
         {
           "name": "Internal",

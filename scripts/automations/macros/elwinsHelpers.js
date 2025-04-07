@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.3.1
+// v3.4.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -48,6 +48,7 @@
 // - elwinHelpers.applyEnchantmentToItem
 // - elwinHelpers.getEquippedMeleeWeapons
 // - elwinHelpers.getRules
+// - elwinHelpers.registerWorkflowHook
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -114,7 +115,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.3.1';
+  const VERSION = '3.4.0';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
@@ -229,6 +230,7 @@ export function runElwinsHelpers() {
     exportIdentifier('elwinHelpers.applyEnchantmentToItem', applyEnchantmentToItem);
     exportIdentifier('elwinHelpers.getEquippedMeleeWeapons', getEquippedMeleeWeapons);
     exportIdentifier('elwinHelpers.getRules', getRules);
+    exportIdentifier('elwinHelpers.registerWorkflowHook', registerWorkflowHook);
 
     // Note: classes need to be exported after they are declared...
 
@@ -2243,6 +2245,35 @@ export function runElwinsHelpers() {
    */
   function getRules(item) {
     return ['2014', ''].includes(item.system?.source?.rules ?? '') ? 'legacy' : 'modern';
+  }
+
+  /**
+   * Registers a callback on an event for the duration of the specified workflow.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   * @param {string} event - Name of the event on which to hook the callback.
+   * @param {function} callback - The function to be executed when the event is triggered.
+   */
+  function registerWorkflowHook(workflow, event, callback) {
+    const elwinHelpersHooks = foundry.utils.getProperty(workflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
+    const firstHook = foundry.utils.isEmpty(elwinHelpersHooks);
+    if (elwinHelpersHooks[event]) {
+      // A hook for this event has already been registered for this workflow, remove previous
+      Hooks.off(event, elwinHelpersHooks[event]);
+    }
+    elwinHelpersHooks[event] = Hooks.on(event, callback);
+    foundry.utils.setProperty(workflow, 'workflowOptions.elwinHelpers.hooks', elwinHelpersHooks);
+    if (firstHook) {
+      const eventUuid = workflow.activity?.uuid ?? workflow.item?.uuid;
+      Hooks.once(`midi-qol.postCleanup${eventUuid ? '.' + eventUuid : ''}`, (currentWorkflow) => {
+        const tmpElwinHelpersHooks =
+          foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
+        for (let event of Object.keys(tmpElwinHelpersHooks)) {
+          Hooks.off(event, tmpElwinHelpersHooks[event]);
+        }
+        delete foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers')?.hooks;
+      });
+    }
   }
 
   /**
