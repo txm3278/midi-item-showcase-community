@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Adds a dice modifier to the base weapon damage when the conditions are met.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410 based on WurstKorn version
 // Dependencies:
 //  - DAE
@@ -16,9 +16,10 @@
 //   If the activity is a weapon attack from a melee weapon having the two-handed or versatile property,
 //   adds a hook on dnd5e.preRollDamageV2 to add dice modifiers.
 // In the dnd5e.preRollDamageV2 hook (in owner's workflow):
-//   If the workflow associated to the current activity is the same as the one received in the preDamageRoll
-//   and the attackMode is two-handed, adds a dice modifier all base weapon dice rolls to
-//   reroll 1 and 2 or min 3 depending on the rules version.
+//   If the workflow associated to the current activity is the same as the one received in the preDamageRoll,
+//   the rollConfig is for the rolled activity and and the attackMode is two-handed,
+//   adds a dice modifier all base weapon dice rolls as well as those added by enchantments
+//   to reroll 1 and 2 or min 3 depending on the rules version.
 // ###################################################################################################
 
 export async function greatWeaponFighting({ speaker, actor, token, character, item, args, scope, workflow, options }) {
@@ -26,7 +27,7 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.4')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -48,20 +49,34 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
     if (
       scope.rolledItem.type !== 'weapon' ||
       !['simpleM', 'martialM'].includes(scope.rolledItem.system.type?.value) ||
-      !workflow.activity?.hasAttack ||
-      workflow.activity.attack.type?.classification !== 'weapon' ||
+      !scope.rolledActivity?.hasAttack ||
+      scope.rolledActivity?.attack.type?.classification !== 'weapon' ||
       !(scope.rolledItem.system.properties?.has('two') || scope.rolledItem.system.properties?.has('ver'))
     ) {
       // Not an attack from a melee weapon having the versatile or two handed property
       return;
     }
     const modifier = elwinHelpers.getRules(scope.macroItem) === 'modern' ? 'min3' : 'r<=2';
-
-    Hooks.once('dnd5e.preRollDamageV2', (rollConfig, dialogConfig, messageConfig) => {
-      if (rollConfig?.workflow?.id !== workflow.id) {
-        // Different activity workflow, remove hook
+    const event = 'dnd5e.preRollDamageV2';
+    elwinHelpers.registerWorkflowHook(workflow, event, (rollConfig, dialogConfig, messageConfig) => {
+      if (debug) {
+        console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
+      }
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          DEFAULT_ITEM_NAME,
+          event,
+          'Modify base weapon damage dice',
+          workflow,
+          rollConfig.workflow,
+          debug
+        )
+      ) {
+        return;
+      }
+      if (rollConfig.subject?.uuid !== scope.rolledActivity.uuid) {
         if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preRollDamageV2 called on different workflow`, {
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
             rollConfig,
             dialogConfig,
             messageConfig,
@@ -71,7 +86,7 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
       }
       if (rollConfig.attackMode !== 'twoHanded') {
         if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preRollDamageV2 attackMode was not twoHanded`, {
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event} attackMode was not twoHanded`, {
             rollConfig,
             dialogConfig,
             messageConfig,
@@ -81,13 +96,16 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
       }
 
       // Get only base weapon rolls
-      const rolls = rollConfig.rolls?.filter((r) => r.base) ?? [];
+      const rolls =
+        rollConfig.rolls?.filter(
+          (r, index) => r.base || rollConfig.workflow?.activity?.damage?.parts[index]?.enchantment
+        ) ?? [];
       for (let roll of rolls) {
         if (!roll.parts?.length) {
           continue;
         }
         for (let i = 0; i < roll.parts.length; i++) {
-          roll.parts[i] = addModifiers(roll.parts[i], modifier);
+          roll.parts[i] = addModifiers(roll.parts[i], roll.data, modifier);
         }
       }
     });
@@ -96,13 +114,14 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
   /**
    * Adds modifiers to each die found in the received formula.
    * @param {string} formula - formula in which to add a die modifiers.
+   * @param {object} data - data to replace values in the formula.
    * @returns {string} the modified formula.
    */
-  function addModifiers(formula, ...modifiers) {
-    const roll = new Roll(formula);
+  function addModifiers(formula, data, ...modifiers) {
+    const roll = new Roll(formula, data);
     for (let die of roll.dice) {
       die.modifiers.push(...modifiers);
     }
-    return roll.formula;
+    return roll.dice.length ? roll.formula : formula;
   }
 }
