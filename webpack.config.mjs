@@ -8,20 +8,21 @@ const __dirname = path.dirname(__filename);
 export default {
   devtool: 'source-map',
   entry: './scripts/module.js',
+  mode: 'production',
   optimization: {
     // change minimize to false, we are shipping a map file as well so people
     // viewing in chrome dev console will see and uncompressed version of the file for debugging
     minimize: false,
-    // minimizer: [
-    //   new TerserPlugin({
-    //     terserOptions: {
-    //       format: {
-    //         comments: false,
-    //       },
-    //     },
-    //     extractComments: false,
-    //   }),
-    // ],
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
   },
   output: {
     filename: 'main.js',
