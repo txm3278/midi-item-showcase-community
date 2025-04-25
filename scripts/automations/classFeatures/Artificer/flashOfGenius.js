@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Artificer
 // when a creature within range rolls a saving throw or ability check to allow them to add a bonus on the roll.
-// v2.0.2
+// v2.1.0
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -30,7 +30,7 @@ export async function flashOfGenius({ speaker, actor, token, character, item, ar
   const DEFAULT_ITEM_NAME = 'Flash of Genius';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;

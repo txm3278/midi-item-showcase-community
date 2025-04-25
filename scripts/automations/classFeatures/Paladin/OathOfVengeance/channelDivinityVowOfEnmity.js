@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v3.0.0
+// v3.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -15,14 +15,13 @@
 //       It will do so on the next actor update, this is due to when DAE evaluates the expression. This could probably
 //       fixed in a future DAE version.
 //       The Utter Vow activity consumption must be set to the Channel Divinity item when added to an actor.
-// 
+//
 // Description:
 // In the preAttackRoll phase of any item activity of the marker (in owner's workflow):
 //   Gives advantage to the marker if the target is marked by him.
 // In the postActiveEffects phase of this feature's activity (in owner's workflow):
 //   Updates the self active effect to delete the target active effect when deleted and vice versa.
 // ###################################################################################################
-
 
 export async function channelDivinityVowOfEnmity({
   speaker,
@@ -44,13 +43,13 @@ export async function channelDivinityVowOfEnmity({
   }
 
   /**
- * If the requirements are met, returns true, false otherwise.
- *
- * @param {string} name - The name of the item for which to check the dependencies.
- * @param {string[]} dependencies - The array of module ids which are required.
- *
- * @returns {boolean} true if the requirements are met, false otherwise.
- */
+   * If the requirements are met, returns true, false otherwise.
+   *
+   * @param {string} name - The name of the item for which to check the dependencies.
+   * @param {string[]} dependencies - The array of module ids which are required.
+   *
+   * @returns {boolean} true if the requirements are met, false otherwise.
+   */
   function requirementsSatisfied(name, dependencies) {
     let missingDep = false;
     dependencies.forEach((dep) => {
@@ -65,7 +64,11 @@ export async function channelDivinityVowOfEnmity({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
     if (!workflow.targets?.size) {
@@ -118,5 +121,4 @@ export async function channelDivinityVowOfEnmity({
     await selfEffect.addDependent(appliedEffect);
     await MidiQOL.addDependent(appliedEffect, selfEffect);
   }
-
 }

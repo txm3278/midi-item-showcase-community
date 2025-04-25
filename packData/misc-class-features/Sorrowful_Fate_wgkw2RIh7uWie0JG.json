@@ -5,7 +5,7 @@
   "img": "icons/equipment/head/mask-craved-beige.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Bard' class, its data value should resolve to '@scale.bard.bardic-inspiration'. When adding this feature to an actor, you must configure the consumption on Bardic Inspiration.</p>\n</details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Bard' class, its data value should resolve to '@scale.bard.bardic-inspiration'. When adding this feature to an actor, make sure the consumption on Bardic Inspiration is configured.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -45,7 +45,7 @@
             {
               "type": "itemUses",
               "value": "1",
-              "target": "",
+              "target": "bardic-inspiration",
               "scaling": {}
             }
           ],
@@ -108,6 +108,7 @@
         "midiProperties": {
           "identifier": "reaction",
           "otherActivityCompatible": false,
+          "ignoreFullCover": true,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -120,7 +121,8 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -138,7 +140,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       },
       "R27JMKg3zz7dzbeE": {
         "type": "damage",
@@ -223,6 +226,7 @@
         "midiProperties": {
           "identifier": "damage",
           "otherActivityCompatible": false,
+          "ignoreFullCover": true,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -235,7 +239,8 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -439,7 +444,7 @@
       "magiceffect": false,
       "noConcentrationCheck": false,
       "toggleEffect": false,
-      "ignoreTotalCover": true,
+      "ignoreTotalCover": false,
       "idr": false,
       "idi": false,
       "idv": false,
@@ -504,15 +509,15 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     }
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.9",
     "coreVersion": "12.331",
     "createdTime": 1719977584629,
-    "modifiedTime": 1741409005265,
+    "modifiedTime": 1745581519908,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!wgkw2RIh7uWie0JG"

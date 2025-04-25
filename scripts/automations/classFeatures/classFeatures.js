@@ -8,6 +8,8 @@ import { dampenElements } from './Cleric/NatureDomain/dampenElements.js';
 import { unwaveringMark } from './Fighter/Cavalier/unwaveringMark.js';
 import { wardingManeuver } from './Fighter/Cavalier/wardingManeuver.js';
 import { psionicPowerProtectiveField } from './Fighter/PsiWarrior/psionicPowerProtectiveField.js';
+import { deflectAttacks } from './Monk/deflectAttacks.js';
+import { deflectMissiles } from './Monk/deflectMissiles.js';
 import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/channelDivinityRebukeTheViolent.js';
 import { divineAllegiance } from './Paladin/OathOfTheCrown/divineAllegiance.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
@@ -24,6 +26,8 @@ export let classFeatures = {
   unwaveringMark,
   wardingManeuver,
   psionicPowerProtectiveField,
+  deflectAttacks,
+  deflectMissiles,
   channelDivinityRebukeTheViolent,
   divineAllegiance,
   channelDivinityVowOfEnmity,

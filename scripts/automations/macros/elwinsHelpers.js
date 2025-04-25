@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.4.0
+// v3.5.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -115,7 +115,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.4.0';
+  const VERSION = '3.5.0';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
@@ -186,6 +186,7 @@ export function runElwinsHelpers() {
     );
     setHook('midi-qol.dnd5eCalculateDamage', 'handleMidiDnd5eCalculateDamageId', handleMidiDnd5eCalculateDamage);
     setHook('dnd5e.canEnchant', 'handleDnd5eCanEnchant', handleDnd5eCanEnchant);
+    setHook('preCreateItem', 'handlePreCreateItem', handlePreCreateItem);
     exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
     exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
@@ -556,6 +557,73 @@ export function runElwinsHelpers() {
         }
       }
     }
+  }
+
+  /**
+   * Handles the preCreateItem hook. It allows replacing item use consumptions targeting an item identifier with a matching item id.
+   *
+   * @param {Activity} item - Item to be created.
+   * @param {Object} data - The item data.
+   * @param {object} options - The operation options.
+   * @param {string} userId - The id of the user creating the item.
+   */
+  function handlePreCreateItem(item, data, options, userId) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreCreateItem`, { item, data, options, userId });
+    }
+    if (!item.actor) {
+      // Not an owned item
+      return true;
+    }
+    for (let activity of item.system?.activities ?? []) {
+      if (!activity.consumption || !activity.consumption.targets) {
+        // No consumption configured on activity
+        continue;
+      }
+      let activityData = undefined;
+      let index = 0;
+
+      for (let target of activity.consumption.targets ?? []) {
+        if (
+          !target.target ||
+          !['itemUses', 'material'].includes(target.type) ||
+          target.target.includes('.') ||
+          item.actor.items?.get(target.target)
+        ) {
+          // Consumption not refering an item, contains a UUID or contains a valid item ID.
+          index++;
+          continue;
+        }
+        // Support DDBI legacy suffix
+        const itemIdent = target.target;
+        const itemIdentLegacy = itemIdent + '-legacy';
+        const useItem = item.actor.items?.find(
+          (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max
+        );
+        if (!useItem) {
+          // Could not find an item with the referred identifier having uses.
+          index++;
+          console.warn(
+            `${MACRO_NAME} | Adjust consumption target: Could not find an item with configured uses having identifier '${target.target}' from item ${item.id} on actor ${item.actor.uuid}`
+          );
+          continue;
+        }
+        if (!activityData) {
+          activityData = activity.toObject();
+        }
+        activityData.consumption.targets[index].target = useItem.id;
+        if (debug) {
+          console.warn(
+            `${MACRO_NAME} | handlePreCreateItem: updated item activity consumption target from '${target.target}' to ${useItem.id} for path: ${activity.uuid}.consumption.targets[${index}].target.`
+          );
+        }
+        index++;
+      }
+      if (activityData) {
+        item.updateSource({ [`system.activities.${activityData._id}`]: activityData });
+      }
+    }
+    return true;
   }
 
   /**
@@ -1117,7 +1185,7 @@ export function runElwinsHelpers() {
   function getReactionRange(activity) {
     const range = {};
     range.value = getRangeFromActivity(activity);
-    range.wallsBlock = !foundry.utils.getProperty(activity.item, 'flags.midiProperties.ignoreTotalCover');
+    range.wallsBlock = !foundry.utils.getProperty(activity, 'midiProperties.ignoreFullCover');
 
     return range?.value !== undefined || range?.value == null ? range : undefined;
   }
@@ -1569,6 +1637,7 @@ export function runElwinsHelpers() {
   function isMeleeAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
     return isMeleeAttackByClassification(
       null,
+      null,
       activityOrItem,
       sourceToken,
       targetToken,
@@ -1590,7 +1659,8 @@ export function runElwinsHelpers() {
    */
   function isMeleeWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
     return isMeleeAttackByClassification(
-      ['weapon'],
+      null,
+      'wak',
       activityOrItem,
       sourceToken,
       targetToken,
@@ -1603,6 +1673,7 @@ export function runElwinsHelpers() {
    * Returns true if the attack is melee attack. It also handle the case of weapons with the thrown property.
    *
    * @param {string[]|null} classifications - Array of supported attack classifications.
+   * @param {string} subActionType - The allowed sub action type of the activity.
    * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
@@ -1612,6 +1683,7 @@ export function runElwinsHelpers() {
    */
   function isMeleeAttackByClassification(
     classifications,
+    subActionType,
     activityOrItem,
     sourceToken,
     targetToken,
@@ -1635,6 +1707,9 @@ export function runElwinsHelpers() {
 
     let actionType = activity.getActionType(attackMode);
     if (!actionType?.startsWith('m')) {
+      return false;
+    }
+    if (subActionType !== null && !actionType?.endsWith(subActionType)) {
       return false;
     }
     if (!checkThrownWeapons) {
@@ -1667,6 +1742,7 @@ export function runElwinsHelpers() {
   function isRangedAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
     return isRangedAttackByClassification(
       null,
+      null,
       activityOrItem,
       sourceToken,
       targetToken,
@@ -1688,7 +1764,8 @@ export function runElwinsHelpers() {
    */
   function isRangedWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
     return isRangedAttackByClassification(
-      ['weapon'],
+      null,
+      'wak',
       activityOrItem,
       sourceToken,
       targetToken,
@@ -1701,6 +1778,7 @@ export function runElwinsHelpers() {
    * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
    *
    * @param {string[]|null} classifications - Array of supported attack classifications.
+   * @param {string} subActionType - The allowed sub action type of the activity.
    * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
@@ -1710,6 +1788,7 @@ export function runElwinsHelpers() {
    */
   function isRangedAttackByClassification(
     classifications,
+    subActionType,
     activityOrItem,
     sourceToken,
     targetToken,
@@ -1733,6 +1812,9 @@ export function runElwinsHelpers() {
     }
 
     let actionType = activity.getActionType(attackMode);
+    if (subActionType != null && !actionType?.endsWith(subActionType)) {
+      return false;
+    }
     if (actionType?.startsWith('r')) {
       return true;
     }
@@ -2066,13 +2148,13 @@ export function runElwinsHelpers() {
       return;
     }
     // Get applied enchantements for this item
-    const enchantements = getAppliedEnchantments(workflow.activity.uuid);
-    if (enchantements?.length) {
+    const enchantments = getAppliedEnchantments(workflow.activity.uuid);
+    if (enchantments?.length) {
       // Remove enchantment
       await deleteAppliedEnchantments(workflow.activity.uuid);
 
       // Add message about deactivation
-      const infoMsg = getSelfEnchantmentActivationMessage(enchantements[0], false);
+      const infoMsg = getSelfEnchantmentActivationMessage(enchantments[0], false);
       if (infoMsg) {
         await insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
       }
@@ -2205,7 +2287,7 @@ export function runElwinsHelpers() {
     // area will be displayed.
     foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', enchantmentEffectData._id);
     try {
-      return await ActiveEffect.create(enchantmentEffectData, {
+      return await ActiveEffect.implementation.create(enchantmentEffectData, {
         parent: itemToEnchant,
         keepOrigin: true,
         chatMessageOrigin: workflow.itemCardId,

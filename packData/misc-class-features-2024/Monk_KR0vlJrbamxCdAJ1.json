@@ -1,0 +1,19 @@
+{
+  "name": "Monk",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "KR0vlJrbamxCdAJ1",
+  "sort": 800000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.8",
+    "coreVersion": "12.331",
+    "createdTime": 1706816065204,
+    "modifiedTime": 1710821882035,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!KR0vlJrbamxCdAJ1"
+}

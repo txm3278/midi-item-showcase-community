@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an active effect, that effect will trigger a reaction by the Paladin when a creature within range
 // is damaged to allow him to use the feature to apply retribution damage to the attacker.
-// v2.1.1
+// v2.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[tpr.isDamaged]
@@ -42,7 +42,7 @@ export async function channelDivinityRebukeTheViolent({
   const DEFAULT_ITEM_NAME = 'Channel Divinity: Rebuke the Violent';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;

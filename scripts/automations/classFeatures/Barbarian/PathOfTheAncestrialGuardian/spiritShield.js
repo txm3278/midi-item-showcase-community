@@ -5,7 +5,7 @@
 // on the raging barbarian when a visible creature within range is damaged to allow him to use the feature
 // to reduce the target's damage.
 // If Vengeful Ancestors is present and the Barbarian has the appropriate level, it is triggered on the attacker.
-// v4.0.2
+// v4.1.0
 // Dependencies:
 //  - DAE [on][off]
 //  - Times Up
@@ -18,7 +18,7 @@
 //
 // Note: A Rage item (having an identifier of 'rage'), which adds a Rage effect when activated must be configured,
 //        A scale dice value must be configured on the 'Path of the Ancestral Guardian' subclass,
-//        its data value should resolve to '@scale.path-of-the-ancestral-guardian.spirit-shield'.
+//        its data value should resolve to '@scale.ancestral-guardian.spirit-shield'.
 //       If level 14, a Vengeful Ancestors item (having an identifier of 'vengeful-ancestors') must be configured.
 //       RAW target should be Creature, but use Ally to trigger reaction on allies only
 //
@@ -54,13 +54,15 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Spirit Shield';
   const MODULE_ID = 'midi-item-showcase-community';
-  // Default identifier of the Rage feature
+  // Default identifier of the Rage feature (support DDBI legacy suffix)
   const RAGE_ITEM_IDENT = 'rage';
-  // Default identifier of the Vengeful Ancestors feature
+  const RAGE_LEGACY_ITEM_IDENT = RAGE_ITEM_IDENT + '-legacy';
+  // Default identifier of the Vengeful Ancestors feature  (support DDBI legacy suffix)
   const VENGEFUL_ANCESTORS_ITEM_IDENT = 'vengeful-ancestors';
+  const VENGEFUL_ANCESTORS_LEGACY_ITEM_IDENT = VENGEFUL_ANCESTORS_ITEM_IDENT + '-legacy';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -89,7 +91,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
     // MidiQOL TargetOnUse post macro for Spirit Shield post reaction
     return await handleTargetOnUseIsDamagedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-    if (scope.rolledItem?.identifier === RAGE_ITEM_IDENT) {
+    if (scope.rolledItem?.identifier === RAGE_ITEM_IDENT || scope.rolledItem?.identifier === RAGE_LEGACY_ITEM_IDENT) {
       // MidiQOL OnUse item macro for Rage
       await handleRageOnUsePostActiveEffects(workflow, scope.macroItem, scope.rolledItem);
     } else if (scope.rolledItem?.uuid === scope.macroItem?.uuid) {
@@ -184,7 +186,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
 
     // Activate Vengeful Ancestors if present and of appropriate level
     const vengefulAncestorsItem = sourceActor.itemTypes.feat.find(
-      (i) => i.identifier === VENGEFUL_ANCESTORS_ITEM_IDENT
+      (i) => i.identifier === VENGEFUL_ANCESTORS_ITEM_IDENT || i.identifier === VENGEFUL_ANCESTORS_LEGACY_ITEM_IDENT
     );
     if (!vengefulAncestorsItem) {
       if (debug) {
@@ -292,7 +294,9 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
     // macro called on the "on" of the source item (Spirit Shield)
     // if rage already present when this item effect is activated,
     // we need to unsuspend the third party reaction effect
-    const rage = sourceActor.itemTypes.feat.find((i) => i.identifier === RAGE_ITEM_IDENT);
+    const rage = sourceActor.itemTypes.feat.find(
+      (i) => i.identifier === RAGE_ITEM_IDENT || i.identifier === RAGE_LEGACY_ITEM_IDENT
+    );
     const rageEffect = rage
       ? sourceActor.appliedEffects.find((ae) => !ae.transfer && ae.origin?.startsWith(rage.uuid))
       : undefined;

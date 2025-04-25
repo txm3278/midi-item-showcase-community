@@ -80,13 +80,13 @@ export function setConfig() {
         'Channel Divinity: Rebuke the Violent': {
           name: 'Channel Divinity: Rebuke the Violent',
           type: 'Class Feature',
-          version: '2.1.1',
+          version: '2.2.0',
           authors: ['Elwin'],
         },
         'Channel Divinity: Vow of Enmity': {
           name: 'Channel Divinity: Vow of Enmity',
           type: 'Class Feature',
-          version: '3.0.1',
+          version: '3.1.0',
           authors: ['Elwin'],
         },
         'Dagger of Venom': {
@@ -100,6 +100,12 @@ export function setConfig() {
           type: 'Class Feature',
           version: '2.0.2',
           authors: ['Elwin'],
+        },
+        'Deflect Missiles': {
+          name: 'Deflect Missiles',
+          type: 'Class Feature',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Divine Allegiance': {
           name: 'Divine Allegiance',
@@ -164,19 +170,19 @@ export function setConfig() {
         'Flash of Genius': {
           name: 'Flash of Genius',
           type: 'Class Feature',
-          version: '2.0.2',
+          version: '2.1.0',
           authors: ['Elwin'],
         },
         'Gift of the Metallic Dragon': {
           name: 'Gift of the Metallic Dragon',
           type: 'Feat',
-          version: '4.1.1',
+          version: '4.2.0',
           authors: ['Elwin'],
         },
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
-          version: '3.1.1',
+          version: '3.2.0',
           authors: ['Elwin'],
         },
         'Great Weapon Master': {
@@ -188,7 +194,7 @@ export function setConfig() {
         'Guardian Emblem': {
           name: 'Guardian Emblem',
           type: 'Item',
-          version: '4.1.1',
+          version: '4.2.0',
           authors: ['Elwin'],
         },
         'Moon-Touched Greatsword': {
@@ -242,7 +248,7 @@ export function setConfig() {
         'Psionic Power: Protective Field': {
           name: 'Psionic Power: Protective Field',
           type: 'Class Feature',
-          version: '4.0.2',
+          version: '4.1.0',
           authors: ['Elwin'],
         },
         'Purple Worm Poison': {
@@ -254,7 +260,7 @@ export function setConfig() {
         "Sentinel at Death's Door": {
           name: "Sentinel at Death's Door",
           type: 'Class Feature',
-          version: '4.0.2',
+          version: '4.1.0',
           authors: ['Elwin'],
         },
         'Serpent Venom': {
@@ -272,13 +278,13 @@ export function setConfig() {
         'Sorrowful Fate': {
           name: 'Sorrowful Fate',
           type: 'Class Feature',
-          version: '2.1.1',
+          version: '2.2.0',
           authors: ['Elwin'],
         },
         'Spirit Shield': {
           name: 'Spirit Shield',
           type: 'Class Feature',
-          version: '4.0.2',
+          version: '4.1.0',
           authors: ['Elwin'],
         },
         'Steady Aim': {
@@ -302,7 +308,7 @@ export function setConfig() {
         'Vengeful Ancestors': {
           name: 'Vengeful Ancestors',
           type: 'Class Feature',
-          version: '3.0.2',
+          version: '3.1.0',
           authors: ['Elwin'],
         },
         'Vigilant Guardian': {
@@ -314,7 +320,7 @@ export function setConfig() {
         'Warding Flare': {
           name: 'Warding Flare',
           type: 'Class Feature',
-          version: '3.0.2',
+          version: '3.1.0',
           authors: ['Elwin'],
         },
         'Warding Maneuver': {
@@ -347,6 +353,12 @@ export function setConfig() {
           name: 'Dagger of Venom',
           type: 'Item',
           version: '1.0.1',
+          authors: ['Elwin'],
+        },
+        'Deflect Attacks': {
+          name: 'Deflect Attacks',
+          type: 'Class Feature',
+          version: '1.0.0',
           authors: ['Elwin'],
         },
         'Flame Tongue': {

@@ -2,7 +2,7 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Damages the attacker that triggered Spirit Shield by the amount of damage that was prevented.
-// v3.0.2
+// v3.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll]
@@ -24,11 +24,12 @@
 export async function vengefulAncestors({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the feature
   const DEFAULT_ITEM_NAME = 'Vengeful Ancestors';
-  // Default identifier of the Rage feature
+  // Default identifier of the Rage feature (support DDBI legacy suffix)
   const RAGE_ITEM_IDENT = 'rage';
+  const RAGE_LEGACY_ITEM_IDENT = RAGE_ITEM_IDENT + '-legacy';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -49,7 +50,9 @@ export async function vengefulAncestors({ speaker, actor, token, character, item
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
     const macroData = args[0];
 
-    const rage = actor.itemTypes.feat.find((i) => i.identifier === RAGE_ITEM_IDENT);
+    const rage = actor.itemTypes.feat.find(
+      (i) => i.identifier === RAGE_ITEM_IDENT || i.identifier === RAGE_LEGACY_ITEM_IDENT
+    );
     const rageEffect = rage
       ? actor.appliedEffects?.find((ae) => !ae.transfer && ae.origin?.startsWith(rage.uuid))
       : undefined;
