@@ -370,7 +370,7 @@ export function setConfig() {
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
-          version: '1.0.1',
+          version: '1.1.0',
           authors: ['Elwin'],
         },
         'Great Weapon Fighting': {
