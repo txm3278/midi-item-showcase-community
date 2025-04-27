@@ -89,6 +89,12 @@ export function setConfig() {
           version: '3.1.0',
           authors: ['Elwin'],
         },
+        'Crown of Stars': {
+          name: 'Crown of Stars',
+          type: 'Spell',
+          version: '2.0.0',
+          authors: ['Elwin', 'Bakana', 'Xenophes'],
+        },
         'Dagger of Venom': {
           name: 'Dagger of Venom',
           type: 'Item',
