@@ -263,6 +263,12 @@ export function setConfig() {
           version: '2.0.1',
           authors: ['Elwin'],
         },
+        'Ring of Evasion': {
+          name: 'Ring of Evasion',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
         "Sentinel at Death's Door": {
           name: "Sentinel at Death's Door",
           type: 'Class Feature',
@@ -417,6 +423,12 @@ export function setConfig() {
         },
         'Purple Worm Poison': {
           name: 'Purple Worm Poison',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
+        'Ring of Evasion': {
+          name: 'Ring of Evasion',
           type: 'Item',
           version: '1.0.0',
           authors: ['Elwin'],
