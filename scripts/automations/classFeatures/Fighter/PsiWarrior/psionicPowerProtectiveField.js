@@ -4,7 +4,7 @@
 // Adds a third party reaction effect, that effect will trigger a reaction by the Fighter
 // when the fighter or a creature he can see within range is damaged to allow him to use the feature
 // to reduce the target's damage instead.
-// v4.0.2
+// v4.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
@@ -14,7 +14,7 @@
 // This item has a passive effect that adds a third party reaction effect.
 // It is also a reaction activity that gets triggered by the third party reaction effect when appropriate.
 // Note: A scale dice value must be configured on the 'Psi Warrior' subclass,
-//       its data value should resolve to '@scale.psi-warrior.psionic-power'.
+//       its data value should resolve to '@scale.psi-warrior.energy-die'.
 //       RAW the target should be Creature, but use Ally to trigger reaction on allies only
 //
 // Description:
@@ -46,7 +46,7 @@ export async function psionicPowerProtectiveField({
   const DEFAULT_ITEM_NAME = 'Psionic Power: Protective Field';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -66,7 +66,9 @@ export async function psionicPowerProtectiveField({
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
     // MidiQOL OnUse item macro for Psionic Power: Protective Field
-    return handleOnUsePreTargeting(workflow, scope.macroItem);
+    if (scope.rolledActivity.identifier === 'protective-field') {
+      return handleOnUsePreTargeting(workflow, scope.macroItem);
+    }
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isDamaged.pre') {
     // MidiQOL TargetOnUse pre macro for Psionic Power: Protective Field pre reaction in the triggering midi-qol workflow
 
@@ -77,7 +79,9 @@ export async function psionicPowerProtectiveField({
     handleIsDamagedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     // MidiQOL OnUse item macro for Psionic Power: Protective Field
-    await handleOnUsePostActiveEffects(workflow, actor);
+    if (scope.rolledActivity.identifier === 'protective-field') {
+      await handleOnUsePostActiveEffects(workflow, actor);
+    }
   }
 
   /**

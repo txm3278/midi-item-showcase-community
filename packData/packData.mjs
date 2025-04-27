@@ -14,6 +14,7 @@ let packs = [
   'misc-spell-items',
   'misc-spells',
   'misc-unearthed-arcana',
+  'misc-class-features-2024',
   'misc-feats-2024',
   'misc-items-2024',
   'misc-spells-2024',

@@ -4,7 +4,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the owner of the feat
 // when himself or a creature within range is hit to allow him to add an AC bonus that could
 // turn the hit into a miss.
-// v4.1.1
+// v4.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -38,7 +38,7 @@ export async function giftOfTheMetallicDragon({
   const DEFAULT_ITEM_NAME = 'Gift of the Metallic Dragon';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;

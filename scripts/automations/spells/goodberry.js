@@ -2,7 +2,7 @@
 // Read First!!!!
 // Creates a Goodberry item that expires and is deleted after 24h.
 // If the caster has the Disciple of Life feature, the healing power of the berries is increased.
-// v3.1.1
+// v3.2.0
 // Author: Elwin#1410, based on Crymic's Goodberry macro
 // Dependencies:
 //  - DAE
@@ -74,13 +74,15 @@ export async function goodberry({ speaker, actor, token, character, item, args, 
   const SATED_TYPE = 'food';
   // Change this flag value to allow Disciple of Life to increase the healing value of the Goodberies.
   const ALLOW_DISCIPLE_OF_LIFE_EXTRA_HEALING = true;
-  // Default identifier of Disciple of Life feat
+  // Default identifier of Disciple of Life feat (support DDBI legacy suffix)
   const DISCIPLE_OF_LIFE_ITEM_IDENT = 'disciple-of-life';
+  // Default identifier of Disciple of Life feat
+  const DISCIPLE_OF_LIFE_LEGACY_ITEM_IDENT = DISCIPLE_OF_LIFE_ITEM_IDENT + '-legacy';
 
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -105,7 +107,9 @@ export async function goodberry({ speaker, actor, token, character, item, args, 
     const expirationTime = game.time.worldTime + SPELL_DURATION;
     let batchId = getBatchId(expirationTime);
     let healingValue = 1;
-    const discipleOfLife = tokenActor.items.find((i) => i.identifier === DISCIPLE_OF_LIFE_ITEM_IDENT);
+    const discipleOfLife = tokenActor.items.find(
+      (i) => i.identifier === DISCIPLE_OF_LIFE_ITEM_IDENT || i.identifier === DISCIPLE_OF_LIFE_LEGACY_ITEM_IDENT
+    );
     if (ALLOW_DISCIPLE_OF_LIFE_EXTRA_HEALING && discipleOfLife) {
       healingValue += 2 + (workflow.castData?.castLevel ?? 1);
       const infoMsg = `<p>Your ${discipleOfLife.name} feature enhances the berries effectiveness.</p>`;

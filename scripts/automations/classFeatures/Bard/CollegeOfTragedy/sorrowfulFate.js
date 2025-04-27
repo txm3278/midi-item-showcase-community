@@ -3,7 +3,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Bard
 // when an ally or himself forces a creature to roll a saving throw. When doing so, the saving
 // throw ability is changed to Charisma and if the target fails its save it takes extra damage.
-// v2.1.1
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, macro [off]
@@ -40,7 +40,7 @@ export async function sorrowfulFate({ speaker, actor, token, character, item, ar
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;

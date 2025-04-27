@@ -197,6 +197,17 @@
       }
     },
     {
+      "name": "misc-class-features-2024",
+      "label": "MISC Class Features",
+      "path": "packs/misc-class-features-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "misc-items-2024",
       "label": "MISC Items",
       "path": "packs/misc-items-2024",
@@ -268,7 +279,7 @@
           "name": "2024",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": ["misc-feats-2024", "misc-monster-features-2024", "misc-spells-2024", "misc-items-2024"]
+          "packs": ["misc-class-features-2024", "misc-feats-2024", "misc-monster-features-2024", "misc-spells-2024", "misc-items-2024"]
         },
         {
           "name": "Internal",

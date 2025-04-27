@@ -6,7 +6,7 @@
   "img": "icons/magic/lightning/bolt-strike-blue-white.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.<br>When adding this feature to an actor, you must configure the consumption on Channel Divinity.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.<br>When adding this feature to an actor, make sure the consumption on Channel Divinity is configured.</p><p><strong>Note:</strong> RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -41,7 +41,7 @@
             {
               "type": "itemUses",
               "value": "1",
-              "target": "",
+              "target": "channel-divinity",
               "scaling": {}
             }
           ],
@@ -117,7 +117,9 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -135,7 +137,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       },
       "ezAU91Rz9YOP0ifW": {
         "type": "save",
@@ -239,7 +242,9 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -257,7 +262,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": ""
       }
     },
     "identifier": "channel-divinity-rebuke-the-violent",
@@ -424,15 +430,15 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     }
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.9",
     "coreVersion": "12.331",
     "createdTime": 1728616084944,
-    "modifiedTime": 1741407141169,
+    "modifiedTime": 1745581342359,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!I8bOe1pZIBnrbQXf"

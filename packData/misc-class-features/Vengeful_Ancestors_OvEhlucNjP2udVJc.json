@@ -6,7 +6,7 @@
   "img": "icons/creatures/magical/construct-iron-stomping-yellow.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the <em>Spirit Shield</em> feature.<br>\n  When used, it will damage the attacker that triggered the <em>Spirit Shield</em> by the amount of damage that was prevented from the target.</p><p><strong>Note:</strong> This feature needs to be triggered by Spirit Shield (found in MISC Class Features) to work properly.</p>\n</details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the <em>Spirit Shield</em> feature.<br>\n  When used, it will damage the attacker that triggered the <em>Spirit Shield</em> by the amount of damage that was prevented from the target.</p><p><strong>Note:</strong> This feature needs to be triggered by Spirit Shield (found in MISC Class Features) to work properly.</p>\n</details>",
       "chat": ""
     },
     "source": {
@@ -116,6 +116,7 @@
           "identifier": "retribution-damage",
           "otherActivityCompatible": false,
           "confirmTargets": "never",
+          "ignoreFullCover": true,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -127,7 +128,8 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -236,7 +238,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -258,10 +260,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.9",
     "coreVersion": "12.331",
     "createdTime": 1694744431298,
-    "modifiedTime": 1741409545011,
+    "modifiedTime": 1745581021554,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!OvEhlucNjP2udVJc"
