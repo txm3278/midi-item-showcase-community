@@ -336,8 +336,7 @@
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [
-            "isDamaged",
-            "isAttacked"
+            "1Reaction"
           ]
         },
         "dnd5e": {
@@ -374,8 +373,8 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.8",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1746052597107,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!92Mmc1YTBegssE4s.5e8RbHiOcFWK1D0G"
     }
