@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from ranged weapon attack and allows to throw it back
 // to the attacker using a Ki point when the appropiate conditions are met.
-// v2.0.0
+// v2.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
@@ -65,7 +65,7 @@ export async function deflectMissiles({ speaker, actor, token, character, item, 
     if (scope.rolledActivity?.identifier !== 'reaction') {
       return;
     }
-    const deflectTotal = scope.macroItem.getFlag(MODULE_ID, 'deflectMissilesDmgReduction');
+    const deflectTotal = workflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
 
     if (deflectTotal < workflow.workflowOptions.damageTotal) {
       return;

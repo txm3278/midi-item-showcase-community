@@ -502,16 +502,14 @@
         "effect": []
       }
     },
-    "midi-item-showcase-community": {
-      "deflectMissilesDmgReduction": 10
-    }
+    "midi-item-showcase-community": {}
   },
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1744777033687,
-    "modifiedTime": 1745581236612,
+    "modifiedTime": 1745931712548,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!92Mmc1YTBegssE4s"

@@ -110,7 +110,7 @@ export function setConfig() {
         'Deflect Missiles': {
           name: 'Deflect Missiles',
           type: 'Class Feature',
-          version: '2.0.0',
+          version: '2.1.0',
           authors: ['Elwin', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Divine Allegiance': {
@@ -233,10 +233,16 @@ export function setConfig() {
           version: '2.0.0',
           authors: ['Elwin', 'Moto Moto'],
         },
+        'Oathbow': {
+          name: 'Oathbow',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Christopher'],
+        },
         'Poison, Basic (vial)': {
           name: 'Poison, Basic (vial)',
           type: 'Item',
-          version: '2.0.1',
+          version: '2.0.2',
           authors: ['Elwin'],
         },
         Poisoner: {
@@ -370,7 +376,7 @@ export function setConfig() {
         'Deflect Attacks': {
           name: 'Deflect Attacks',
           type: 'Class Feature',
-          version: '1.0.0',
+          version: '1.1.0',
           authors: ['Elwin'],
         },
         'Flame Tongue': {
@@ -403,10 +409,16 @@ export function setConfig() {
           version: '1.0.0',
           authors: ['Elwin'],
         },
+        'Oathbow': {
+          name: 'Oathbow',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Christopher'],
+        },
         'Poison, Basic': {
           name: 'Poison, Basic',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Elwin'],
         },
         Poisoner: {
