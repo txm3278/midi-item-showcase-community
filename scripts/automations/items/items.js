@@ -4,6 +4,7 @@ import { daggerOfVenom } from './daggerOfVenom.js';
 import { drowHandCrossbow } from './drowHandCrossbow.js';
 import { guardianEmblem } from './guardianEmblem.js';
 import { sunBlade } from './sunBlade.js';
+import { oathbow } from './oathbow.js';
 
 export let items = {
   absorbingTattoo,
@@ -12,4 +13,5 @@ export let items = {
   drowHandCrossbow,
   guardianEmblem,
   sunBlade,
+  oathbow,
 };
