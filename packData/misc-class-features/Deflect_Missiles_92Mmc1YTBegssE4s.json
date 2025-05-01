@@ -336,8 +336,7 @@
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [
-            "isDamaged",
-            "isAttacked"
+            "1Reaction"
           ]
         },
         "dnd5e": {
@@ -374,8 +373,8 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.8",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1746052597107,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!92Mmc1YTBegssE4s.5e8RbHiOcFWK1D0G"
     }
@@ -502,16 +501,14 @@
         "effect": []
       }
     },
-    "midi-item-showcase-community": {
-      "deflectMissilesDmgReduction": 10
-    }
+    "midi-item-showcase-community": {}
   },
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1744777033687,
-    "modifiedTime": 1745581236612,
+    "modifiedTime": 1745931712548,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!92Mmc1YTBegssE4s"

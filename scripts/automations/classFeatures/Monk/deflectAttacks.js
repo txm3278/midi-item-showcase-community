@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from melle or ranged weapon attack and allows to
 // redirect the attack to another target using a Monk's Focus point when the appropiate conditions are met.
-// v1.0.0
+// v1.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
@@ -65,7 +65,8 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
     if (scope.rolledActivity?.identifier !== 'reaction') {
       return;
     }
-    const deflectTotal = scope.macroItem.getFlag(MODULE_ID, 'deflectAttacksDmgReduction');
+
+    const deflectTotal = workflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
 
     if (deflectTotal < workflow.workflowOptions.damageTotal) {
       return;

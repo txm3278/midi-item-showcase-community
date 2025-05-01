@@ -3,7 +3,7 @@
   "type": "consumable",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>",
       "chat": ""
     },
     "source": {
@@ -155,7 +155,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "useConditionText": "",
         "useConditionReason": "",
@@ -277,7 +279,9 @@
           "identifier": "coating-effect",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -351,7 +355,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     }
   },
   "effects": [
@@ -373,7 +377,7 @@
         {
           "key": "flags.midi-item-showcase-community.appliedCoating",
           "mode": 5,
-          "value": "{\n  \"maxAmmo\": 3,\n}",
+          "value": "{\n  \"maxAmmo\": 3\n}",
           "priority": 20
         }
       ],
@@ -426,7 +430,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": 1740083348510,
+        "modifiedTime": 1745930678999,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
         "duplicateSource": null
