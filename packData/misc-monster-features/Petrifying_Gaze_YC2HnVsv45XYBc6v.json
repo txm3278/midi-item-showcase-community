@@ -7,7 +7,7 @@
   "system": {
     "description": {
       "chat": "",
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Moto Moto version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Effect Macro</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that triggers at the start of each creature's turn to force the creature to avert its eyes or resist the gaze.</p></details>"
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Moto Moto version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Effect Macro</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that triggers at the start of each creature's turn to force the creature to avert its eyes or resist the gaze.</p></details>"
     },
     "source": {
       "book": "Basic Rules (2014)",
@@ -465,7 +465,7 @@
         "seconds": 1,
         "combat": null,
         "rounds": null,
-        "turns": 1,
+        "turns": null,
         "startRound": null,
         "startTurn": null
       },
@@ -523,7 +523,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.8",
         "createdTime": null,
-        "modifiedTime": 1743823830889,
+        "modifiedTime": 1746570205966,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!YC2HnVsv45XYBc6v.g9u5SvM2yIfi2VVM"
@@ -596,15 +596,11 @@
         "effect": []
       }
     },
-    "scene-packer": {
-      "hash": "c69be3c449ec6a45869c482da75a4620059a790e",
-      "sourceId": "Item.sRveCsSGDMDIGlJT"
-    },
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.8"
+      "systemVersion": "4.3.9"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -619,7 +615,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.8",
     "createdTime": 1743194324192,
-    "modifiedTime": 1743913728131,
+    "modifiedTime": 1745772563422,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!YC2HnVsv45XYBc6v"

@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.0
+// v2.1.1
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '2.1.0';
+  const VERSION = '2.1.1';
   const MACRO_NAME = 'elwin-helpers-coating';
   const MODULE_ID = 'midi-item-showcase-community';
   const WORLD_MODULE_ID = 'world';
@@ -584,6 +584,7 @@ export function runElwinsHelpersCoating() {
             targetUuids: [target.document?.uuid],
             workflowOptions: { targetConfirmation: 'none' },
             appliedCoating,
+            proceedChecks: { checkUse: false },
           },
         };
         await MidiQOL.completeActivityUse(coatingEffectActivity, config);

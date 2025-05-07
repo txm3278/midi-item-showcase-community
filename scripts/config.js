@@ -89,6 +89,12 @@ export function setConfig() {
           version: '3.1.0',
           authors: ['Elwin'],
         },
+        'Clockwork Amulet': {
+          name: 'Clockwork Amulet',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'thatlonelybugbear'],
+        },
         'Crown of Stars': {
           name: 'Crown of Stars',
           type: 'Spell',
@@ -367,6 +373,12 @@ export function setConfig() {
           version: '1.0.2',
           authors: ['Elwin'],
         },
+        'Clockwork Amulet': {
+          name: 'Clockwork Amulet',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin', 'thatlonelybugbear'],
+        },
         'Dagger of Venom': {
           name: 'Dagger of Venom',
           type: 'Item',
@@ -490,7 +502,7 @@ export function setConfig() {
         Medusa: {
           'Petrifying Gaze': {
             name: 'Petrifying Gaze',
-            version: '1.0.0',
+            version: '1.1.0',
             authors: ['Elwin', 'Moto Moto'],
           },
         },
@@ -499,7 +511,7 @@ export function setConfig() {
         Medusa: {
           'Petrifying Gaze': {
             name: 'Petrifying Gaze',
-            version: '1.0.0',
+            version: '1.1.0',
             authors: ['Elwin'],
           },
         },
