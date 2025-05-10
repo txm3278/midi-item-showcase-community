@@ -2,7 +2,7 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Applies the proper AE depending on the save result.
-// v1.0.0
+// v1.1.0
 // Dependencies:
 //  - DAE [off]
 //  - Times up
@@ -29,30 +29,14 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
   const DEFAULT_ITEM_NAME = 'Petrifying Gaze';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
-  if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    ui.notifications.error(errorMsg);
     return;
   }
-
-  /**
-   * If the requirements are met, returns true, false otherwise.
-   *
-   * @param {string} name - The name of the item for which to check the dependencies.
-   * @param {string[]} dependencies - The array of module ids which are required.
-   *
-   * @returns {boolean} true if the requirements are met, false otherwise.
-   */
-  function requirementsSatisfied(name, dependencies) {
-    let missingDep = false;
-    dependencies.forEach((dep) => {
-      if (!game.modules.get(dep)?.active) {
-        const errorMsg = `${name} | ${dep} must be installed and active.`;
-        ui.notifications.error(errorMsg);
-        console.warn(errorMsg);
-        missingDep = true;
-      }
-    });
-    return !missingDep;
+  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return;
   }
 
   if (debug) {
@@ -64,14 +48,14 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-    if (workflow.activity?.identifier === 'resist-effect') {
-      const gazeEffect = workflow.activity?.effects[0]?.effect;
+    if (scope.rolledActivity?.identifier === 'resist-effect') {
+      const gazeEffect = scope.rolledActivity?.effects[0]?.effect;
       for (let targetToken of workflow.effectTargets ?? []) {
         if (targetToken.actor?.statuses?.has('petrified')) {
           // Already petrified no need to add 'Petrifying Gaze - Effect' or petrified status
           continue;
         }
-        if (failedSavedBy5(workflow, targetToken)) {
+        if (elwinHelpers.getRules(scope.rolledItem) === 'legacy' && failedSavedBy5(workflow, targetToken)) {
           const effectData = (await ActiveEffect.implementation.fromStatusEffect('petrified')).toObject();
           effectData.origin = scope.macroItem.uuid;
           await MidiQOL.createEffects({
@@ -103,7 +87,7 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
           }
         }
       }
-    } else if (workflow.activity?.identifier === 'resist-petrification') {
+    } else if (scope.rolledActivity?.identifier === 'resist-petrification') {
       for (let targetToken of workflow.effectTargets ?? []) {
         const gazeEffectActivity = scope.macroItem.system.activities?.find((a) => a.identifier === 'resist-effect');
         if (!gazeEffectActivity) {
