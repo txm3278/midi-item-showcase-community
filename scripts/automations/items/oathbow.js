@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Allows to designate a sworn enemy and applies the bow's effect when attacking a sworn enemy.
-// v2.0.0
+// v2.0.1
 // Author: Elwin#1410 based on Christopher version
 // Dependencies:
 //  - DAE [on][off]
@@ -17,9 +17,9 @@
 // Description:
 // In the preDamageRoll (OnUse) phase of the Oathbow Attack activity (owner's workflow):
 //   If the activity is a ranged weapon attack that targets the Sworn Enemy,
-//   adds a hook on midi-qol.preDamageRoll to add the damage bonus.
-// In the midi-qol.preDamageRoll hook (in owner's workflow):
-//   If the damage bonus was not already added, adds the Sworn Enemy damage bonus.
+//   adds a hook on dnd5e.preRollDamageV2 to add the damage bonus.
+// In the dnd5e.preRollDamageV2 hook (in owner's workflow):
+//   Adds the Sworn Enemy damage bonus.
 // In the postActiveEffects (OnUse) phase of the Oathbow Designate Sworn Enemy activity (owner's workflow):
 //   Updates the attacker's AE to add a flag that designates the Sworn Enemy toknen's UUID and makes the
 //   attacker and target AEs dependent.
@@ -40,7 +40,7 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -89,42 +89,42 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
    * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
    */
   async function handleOnUsePreDamageRoll(currentWorkflow) {
+    const event = 'dnd5e.preRollDamageV2';
     elwinHelpers.registerWorkflowHook(
       currentWorkflow,
-      `midi-qol.preDamageRoll.${currentWorkflow.activity.uuid}`,
-      (eventWorkflow, eventActivity) => {
+      `${event}`,
+      (rollConfig, dialogConfig, messageConfig) => {
         if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | midi-qol.preDamageRoll`, { eventWorkflow, eventActivity });
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
         }
         // Make sure it's the same workflow
         if (
           !elwinHelpers.isMidiHookStillValid(
             DEFAULT_ITEM_NAME,
-            'midi-qol.preDamageRoll',
+            event,
             'Add Sworn Enemy damage bonus',
             currentWorkflow,
-            eventWorkflow,
+            rollConfig.workflow,
             debug
           )
         ) {
           return;
         }
-        // Add damage bonus
-        if (eventActivity.item?.system.oathbowBonus) {
-          // Bonus was already added.
+        if (rollConfig.subject?.uuid !== currentWorkflow.activity?.uuid) {
+          if (debug) {
+            console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
+              rollConfig,
+              dialogConfig,
+              messageConfig,
+            });
+          }
           return;
         }
-
-        let damageBonus = eventActivity.item?.system.damageBonus ?? '';
-        let swornEnemyBonus = '3d6';
-        if (!eventActivity?.damage?.parts.some((dd) => dd.base && dd.types.size === 1 && dd.types.has('piercing'))) {
-          swornEnemyBonus += '[piercing]';
-        }
-        damageBonus += (damageBonus.length ? ' ' : '') + swornEnemyBonus;
-        foundry.utils.setProperty(eventActivity.item, 'system.damageBonus', damageBonus);
-        // Add temporary flag to item, because this hook can be called multiple times for the same workflow.
-        foundry.utils.setProperty(eventActivity.item, 'system.oathbowBonus', true);
-      }
+        // Add damage bonus
+        const swornEnemyBonus = '3d6[piercing]';
+        rollConfig.rolls[0]?.parts?.push(swornEnemyBonus);
+      },
+      'oathbow'
     );
   }
 

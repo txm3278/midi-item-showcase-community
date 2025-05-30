@@ -15,7 +15,7 @@
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
           "value": "ItemMacro,preDamageRoll",
-          "priority": 20
+          "priority": 100
         }
       ],
       "disabled": false,
@@ -76,7 +76,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": 1742593785648,
-        "modifiedTime": 1742611448718,
+        "modifiedTime": 1747882791642,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!2FtWaINpckrvjqEr.HbxULptV9VroqWfp"
@@ -180,7 +180,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     }
   },
   "img": "icons/skills/melee/strike-sword-steel-yellow.webp",

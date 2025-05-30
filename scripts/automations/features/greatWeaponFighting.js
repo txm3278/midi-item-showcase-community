@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Adds a dice modifier to the base weapon damage when the conditions are met.
-// v1.1.0
+// v1.1.1
 // Author: Elwin#1410 based on WurstKorn version
 // Dependencies:
 //  - DAE
@@ -27,7 +27,7 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.4')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -57,58 +57,64 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
       return;
     }
     const modifier = elwinHelpers.getRules(scope.macroItem) === 'modern' ? 'min3' : 'r<=2';
+    // TODO migrate to after postDamageRollConfig? so it applies to all bonuses added in dnd5e.preRollDamageV2...
     const event = 'dnd5e.preRollDamageV2';
-    elwinHelpers.registerWorkflowHook(workflow, event, (rollConfig, dialogConfig, messageConfig) => {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
-      }
-      if (
-        !elwinHelpers.isMidiHookStillValid(
-          DEFAULT_ITEM_NAME,
-          event,
-          'Modify base weapon damage dice',
-          workflow,
-          rollConfig.workflow,
-          debug
-        )
-      ) {
-        return;
-      }
-      if (rollConfig.subject?.uuid !== scope.rolledActivity.uuid) {
+    elwinHelpers.registerWorkflowHook(
+      workflow,
+      event,
+      (rollConfig, dialogConfig, messageConfig) => {
         if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
-            rollConfig,
-            dialogConfig,
-            messageConfig,
-          });
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
         }
-        return;
-      }
-      if (rollConfig.attackMode !== 'twoHanded') {
-        if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | ${event} attackMode was not twoHanded`, {
-            rollConfig,
-            dialogConfig,
-            messageConfig,
-          });
+        if (
+          !elwinHelpers.isMidiHookStillValid(
+            DEFAULT_ITEM_NAME,
+            event,
+            'Modify base weapon damage dice',
+            workflow,
+            rollConfig.workflow,
+            debug
+          )
+        ) {
+          return;
         }
-        return;
-      }
+        if (rollConfig.subject?.uuid !== scope.rolledActivity.uuid) {
+          if (debug) {
+            console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
+              rollConfig,
+              dialogConfig,
+              messageConfig,
+            });
+          }
+          return;
+        }
+        if (rollConfig.attackMode !== 'twoHanded') {
+          if (debug) {
+            console.warn(`${DEFAULT_ITEM_NAME} | ${event} attackMode was not twoHanded`, {
+              rollConfig,
+              dialogConfig,
+              messageConfig,
+            });
+          }
+          return;
+        }
 
-      // Get only base weapon rolls
-      const rolls =
-        rollConfig.rolls?.filter(
-          (r, index) => r.base || rollConfig.workflow?.activity?.damage?.parts[index]?.enchantment
-        ) ?? [];
-      for (let roll of rolls) {
-        if (!roll.parts?.length) {
-          continue;
+        // Get only base weapon rolls
+        const rolls =
+          rollConfig.rolls?.filter(
+            (r, index) => r.base || rollConfig.workflow?.activity?.damage?.parts[index]?.enchantment
+          ) ?? [];
+        for (let roll of rolls) {
+          if (!roll.parts?.length) {
+            continue;
+          }
+          for (let i = 0; i < roll.parts.length; i++) {
+            roll.parts[i] = addModifiers(roll.parts[i], roll.data, modifier);
+          }
         }
-        for (let i = 0; i < roll.parts.length; i++) {
-          roll.parts[i] = addModifiers(roll.parts[i], roll.data, modifier);
-        }
-      }
-    });
+      },
+      'greatWeaponFighting'
+    );
   }
 
   /**

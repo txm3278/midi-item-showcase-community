@@ -1,28 +1,28 @@
 {
   "folder": null,
-  "name": "Flame Tongue Scimitar",
+  "name": "Corpse Slayer Weapon",
   "type": "weapon",
-  "img": "icons/weapons/swords/sword-hooked-engraved.webp",
+  "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Active Token Effects</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the flames.\nWhen this activity is used, it activates the flames and adds an AE with a light effect or deactivates it.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on SagaTympana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item is used as a factory to create Corpse Slayer weapons. Open this item and select its effects tab. \nOpen the weapon to be transformed into a Corpse Slayer, then drag drop the 'Corpse Slayer - Template' enchantment effect on the target weapon.\nThe enchantment adds a damage bonus and an effect, that gives disadvantage on saves against Turn Undead, those are applied only to undead creatures when equipped and attuned.</p></details>",
       "chat": ""
     },
     "source": {
       "custom": "",
       "revision": 1,
       "rules": "2014",
-      "book": "Basic Rules (2014)",
-      "page": "170",
+      "book": "Explorer's Guide to Wildemount",
+      "page": "266",
       "license": ""
     },
     "quantity": 1,
     "weight": {
-      "value": 3,
+      "value": 2,
       "units": "lb"
     },
     "price": {
-      "value": 5000,
+      "value": 0,
       "denomination": "gp"
     },
     "attunement": "required",
@@ -35,7 +35,7 @@
       "value": null,
       "long": null,
       "units": "ft",
-      "reach": 5
+      "reach": null
     },
     "uses": {
       "max": "",
@@ -59,12 +59,10 @@
         }
       },
       "base": {
-        "number": 1,
-        "denomination": 6,
+        "number": null,
+        "denomination": 0,
         "bonus": "",
-        "types": [
-          "slashing"
-        ],
+        "types": [],
         "custom": {
           "enabled": false,
           "formula": ""
@@ -86,20 +84,16 @@
       "conditions": ""
     },
     "properties": [
-      "fin",
-      "lgt",
       "mgc"
     ],
     "proficient": null,
     "unidentified": {
-      "description": "<p>Scimitar</p>"
+      "description": "Longbow"
     },
     "type": {
-      "value": "martialM",
-      "baseItem": "scimitar"
+      "value": "",
+      "baseItem": "longbow"
     },
-    "container": null,
-    "magicalBonus": null,
     "activities": {
       "dnd5eactivity000": {
         "_id": "dnd5eactivity000",
@@ -128,8 +122,13 @@
           "special": "",
           "override": false
         },
-        "effects": [],
+        "effects": [
+          {
+            "_id": "0p4TAXJ9qUfykkIL"
+          }
+        ],
         "range": {
+          "value": "150",
           "units": "ft",
           "special": "",
           "override": false
@@ -145,8 +144,8 @@
             "units": ""
           },
           "affects": {
-            "count": "",
-            "type": "",
+            "count": "1",
+            "type": "creatureOrObject",
             "choice": false,
             "special": ""
           },
@@ -166,7 +165,7 @@
           },
           "flat": false,
           "type": {
-            "value": "melee",
+            "value": "ranged",
             "classification": "weapon"
           }
         },
@@ -216,17 +215,17 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "attackMode": "oneHanded",
+        "otherActivityId": "",
+        "attackMode": "twoHanded",
         "ammunition": "",
-        "otherActivityId": "none",
         "otherActivityUuid": "",
         "name": "Attack"
       },
-      "yyDGkeFiNXr4i1hp": {
+      "xYeQf93sxKz4D2qd": {
         "type": "enchant",
-        "sort": 300000,
+        "sort": 0,
         "activation": {
-          "type": "bonus",
+          "type": "",
           "value": null,
           "override": false,
           "condition": ""
@@ -239,7 +238,7 @@
           "targets": []
         },
         "description": {
-          "chatFlavor": "Cause flames to erupt/disappear from the blade"
+          "chatFlavor": ""
         },
         "duration": {
           "units": "inst",
@@ -248,22 +247,22 @@
         },
         "effects": [
           {
-            "_id": "tuG3KOZlWvcEmxWv",
+            "_id": "mfjwhj7aa8FkjOAZ",
             "level": {
               "min": null,
               "max": null
             },
             "riders": {
               "activity": [],
-              "effect": [],
+              "effect": [
+                "0p4TAXJ9qUfykkIL"
+              ],
               "item": []
             }
           }
         ],
         "range": {
-          "override": true,
-          "units": "self",
-          "special": ""
+          "override": false
         },
         "target": {
           "template": {
@@ -273,11 +272,10 @@
           },
           "affects": {
             "choice": false,
-            "count": "",
             "type": ""
           },
           "override": false,
-          "prompt": false
+          "prompt": true
         },
         "uses": {
           "spent": 0,
@@ -288,14 +286,13 @@
           "identifier": ""
         },
         "restrictions": {
-          "allowMagical": true,
-          "categories": [
-            "martialM"
-          ],
+          "allowMagical": false,
+          "categories": [],
           "properties": [],
           "type": "weapon"
         },
-        "useConditionText": "item.equipped && item.attuned",
+        "useConditionText": "",
+        "useConditionReason": "",
         "effectConditionText": "",
         "macroData": {
           "name": "",
@@ -315,70 +312,187 @@
           "triggeredActivityRollAs": "self",
           "forceDialog": false,
           "confirmTargets": "default",
-          "automationOnly": false,
-          "identifier": "activate-deactivate-flames",
           "autoTargetType": "any",
           "autoTargetAction": "default",
+          "automationOnly": false,
           "otherActivityCompatible": true,
+          "identifier": "corpse-slayer-factory",
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false
         },
-        "name": "Activate/Deactivate Flames",
-        "useConditionReason": "The sword must be equipped and attuned",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "_id": "yyDGkeFiNXr4i1hp"
+        "name": "Corpse Slayer Factory",
+        "_id": "xYeQf93sxKz4D2qd"
       }
     },
-    "identifier": "flame-tongue-scimitar",
+    "identifier": "corpse-slayer-longbow-copy",
+    "container": null,
     "attuned": false,
-    "ammunition": {},
+    "ammunition": {
+      "type": "arrow"
+    },
+    "magicalBonus": null,
     "mastery": ""
   },
   "effects": [
     {
+      "name": "Corpse Slayer",
+      "origin": "Item.e8f1IqRLvmTyyezq",
+      "duration": {
+        "rounds": 1,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "transfer": false,
+      "disabled": false,
+      "_id": "0p4TAXJ9qUfykkIL",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.ability.save.all",
+          "mode": 0,
+          "value": "item?.identifier === \"channel-divinity-turn-undead\" || (item?.identifier === \"channel-divinity\" && workflow?.activity?.identifier === \"turn-undead\")",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "statuses": [],
+      "flags": {
+        "times-up": {
+          "isPassive": false
+        },
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneNameOnly",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStartSource"
+          ],
+          "enableCondition": "",
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
+        },
+        "midi-item-showcase-community": {
+          "corpseSlayerWeapon": true
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": null,
+        "modifiedTime": 1747361635288,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!vsJ0Taturiotqsjp.0p4TAXJ9qUfykkIL"
+    },
+    {
       "type": "enchantment",
-      "name": "Flame Tongue - Activated",
-      "img": "icons/weapons/swords/sword-hooked-engraved.webp",
+      "name": "Corpse Slayer - Template",
+      "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
       "disabled": true,
-      "_id": "tuG3KOZlWvcEmxWv",
+      "_id": "mfjwhj7aa8FkjOAZ",
       "system": {},
       "changes": [
         {
           "key": "name",
           "mode": 5,
-          "value": "{} (Ablaze)",
+          "value": "Corpse Slayer {}",
           "priority": 20
         },
         {
-          "key": "flags.midi-item-showcase-community.elwinHelpers.selfEnchant.msg.activation",
-          "mode": 5,
-          "value": "<p>The blade is ablaze.</p>",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-item-showcase-community.elwinHelpers.selfEnchant.msg.deactivation",
-          "mode": 5,
-          "value": "<p>The flames are extinguished.</p>",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-item-showcase-community.elwinHelpers.selfEnchant.effects",
-          "mode": 5,
-          "value": "Flame Tongue - Light",
-          "priority": 20
-        },
-        {
-          "key": "system.damage.base.bonus",
+          "key": "system.properties",
           "mode": 2,
-          "value": "2d6[fire]",
+          "value": "mgc",
+          "priority": 20
+        },
+        {
+          "key": "system.magicalBonus",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.items.corpseSlayerWeapon,preDamageRoll",
+          "priority": 20
+        },
+        {
+          "key": "system.attunement",
+          "mode": 5,
+          "value": "required",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.items.corpseSlayerWeapon,postActiveEffects",
+          "priority": 20
+        },
+        {
+          "key": "system.description.value",
+          "mode": 5,
+          "value": "Corpse Slayer Template Applied\n{}",
+          "priority": 20
+        },
+        {
+          "key": "system.identifier",
+          "mode": 5,
+          "value": "corpse-slayer-{}",
+          "priority": 20
+        },
+        {
+          "key": "system.rarity",
+          "mode": 5,
+          "value": "rare",
           "priority": 20
         }
       ],
@@ -438,124 +552,12 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": null,
-        "modifiedTime": 1748608715553,
+        "systemVersion": "4.3.9",
+        "createdTime": 1747267247292,
+        "modifiedTime": 1747273788551,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
-      "_key": "!items.effects!GPf1C8b0qKcNlnJ7.tuG3KOZlWvcEmxWv"
-    },
-    {
-      "name": "Flame Tongue - Light",
-      "img": "icons/weapons/swords/sword-hooked-engraved.webp",
-      "origin": "Item.GPf1C8b0qKcNlnJ7",
-      "_id": "lVdsNiGAY1zYTgO5",
-      "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "ATL.light.bright",
-          "mode": 4,
-          "value": "40",
-          "priority": 20
-        },
-        {
-          "key": "ATL.light.dim",
-          "mode": 4,
-          "value": "80",
-          "priority": 20
-        },
-        {
-          "key": "ATL.light.animation.type",
-          "mode": 5,
-          "value": "torch",
-          "priority": 20
-        },
-        {
-          "key": "ATL.light.animation.speed",
-          "mode": 5,
-          "value": "5",
-          "priority": 20
-        },
-        {
-          "key": "ATL.light.animation.intensity",
-          "mode": 5,
-          "value": "5",
-          "priority": 20
-        },
-        {
-          "key": "ATL.light.color",
-          "mode": 5,
-          "value": "#a2642a",
-          "priority": 20
-        }
-      ],
-      "disabled": false,
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "description": "",
-      "tint": "#ffffff",
-      "transfer": false,
-      "statuses": [],
-      "sort": 0,
-      "flags": {
-        "dae": {
-          "disableCondition": "",
-          "disableIncapacitated": false,
-          "stackable": "noneName",
-          "showIcon": true,
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": [],
-          "enableCondition": "items.some(i => effect.origin?.startsWith(i.uuid) && i.system.equipped && i.system.attuned)",
-          "selfTarget": false,
-          "selfTargetAlways": false,
-          "dontApply": false
-        },
-        "core": {
-          "overlay": false
-        },
-        "ActiveAuras": {
-          "isAura": false,
-          "aura": "None",
-          "nameOverride": "",
-          "radius": "",
-          "alignment": "",
-          "type": "",
-          "customCheck": "",
-          "ignoreSelf": false,
-          "height": false,
-          "hidden": false,
-          "displayTemp": false,
-          "hostile": false,
-          "onlyOnce": false,
-          "wallsBlock": "system",
-          "statuses": []
-        },
-        "dnd5e": {
-          "riders": {
-            "statuses": []
-          }
-        }
-      },
-      "_stats": {
-        "compendiumSource": "Item.7xeuYcnO3qLpobUy.ActiveEffect.SnxRN0OBcIvCkwiW",
-        "duplicateSource": null,
-        "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": 1741833330898,
-        "modifiedTime": 1742616572164,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
-      "_key": "!items.effects!GPf1C8b0qKcNlnJ7.lVdsNiGAY1zYTgO5"
+      "_key": "!items.effects!vsJ0Taturiotqsjp.mfjwhj7aa8FkjOAZ"
     }
   ],
   "sort": 100000,
@@ -566,24 +568,35 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
-    "core": {},
+    "custom-character-sheet-sections": {
+      "sectionName": ""
+    },
+    "rest-recovery": {
+      "data": {
+        "recovery": {
+          "enabled": false
+        }
+      }
+    },
     "midi-qol": {
       "fumbleThreshold": null,
-      "rollAttackPerTarget": "default",
+      "effectActivation": true,
       "removeAttackDamageButtons": "default",
       "itemCondition": "",
-      "effectCondition": "",
-      "otherCondition": "",
       "reactionCondition": "",
-      "onUseMacroName": "[preItemRoll]function.elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll,[postActiveEffects]function.elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects"
+      "otherCondition": "",
+      "effectCondition": "",
+      "rollAttackPerTarget": "default",
+      "onUseMacroName": "[preDamageRoll]function.MISC.macros.items.corpseSlayerWeapon"
     },
     "midiProperties": {
-      "confirmTargets": "default",
+      "confirmTargets": "never",
       "nodam": false,
       "fulldam": false,
       "halfdam": false,
       "autoFailFriendly": false,
       "autoSaveFriendly": false,
+      "rollOther": false,
       "critOther": false,
       "offHandWeapon": false,
       "magicdam": false,
@@ -597,6 +610,8 @@
       "idv": false,
       "ida": false
     },
+    "core": {},
+    "dae": {},
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
@@ -607,18 +622,20 @@
       "persistSourceMigration": true,
       "riders": {
         "activity": [],
-        "effect": []
+        "effect": [
+          "0p4TAXJ9qUfykkIL"
+        ]
       }
     }
   },
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
-    "createdTime": 1741820436326,
-    "modifiedTime": 1745772563422,
+    "systemVersion": "4.3.9",
+    "createdTime": 1747267107752,
+    "modifiedTime": 1747267633260,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_id": "GPf1C8b0qKcNlnJ7",
-  "_key": "!items!GPf1C8b0qKcNlnJ7"
+  "_id": "vsJ0Taturiotqsjp",
+  "_key": "!items!vsJ0Taturiotqsjp"
 }

@@ -205,7 +205,9 @@
           "identifier": "attack",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -319,7 +321,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Activate/Deactivate Flames",
         "useConditionReason": "The sword must be equipped and attuned",
@@ -348,32 +352,32 @@
       "changes": [
         {
           "key": "name",
-          "value": "{} (Ablaze)",
           "mode": 5,
+          "value": "{} (Ablaze)",
           "priority": 20
         },
         {
           "key": "flags.midi-item-showcase-community.elwinHelpers.selfEnchant.msg.activation",
-          "value": "<p>The blade is ablaze.</p>",
           "mode": 5,
+          "value": "<p>The blade is ablaze.</p>",
           "priority": 20
         },
         {
           "key": "flags.midi-item-showcase-community.elwinHelpers.selfEnchant.msg.deactivation",
-          "value": "<p>The flames are extinguished.</p>",
           "mode": 5,
+          "value": "<p>The flames are extinguished.</p>",
           "priority": 20
         },
         {
           "key": "flags.midi-item-showcase-community.elwinHelpers.selfEnchant.effects",
-          "value": "Flame Tongue - Light",
           "mode": 5,
+          "value": "Flame Tongue - Light",
           "priority": 20
         },
         {
-          "key": "system.damage.parts",
-          "value": "[[\"2d6\", \"fire\"]]",
+          "key": "system.damage.base.bonus",
           "mode": 2,
+          "value": "2d6[fire]",
           "priority": 20
         }
       ],
@@ -394,7 +398,7 @@
       "sort": 0,
       "flags": {
         "dae": {
-          "enableCondition": "item.equipped && item.attuned",
+          "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
           "showIcon": false,
@@ -435,7 +439,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": 1741953178511,
+        "modifiedTime": 1748608656011,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!KE2erwgW8JBVNWAk.tuG3KOZlWvcEmxWv"
@@ -562,25 +566,6 @@
   },
   "flags": {
     "core": {},
-    "scene-packer": {
-      "hash": "34f33f81fad746f033e55b50393ce191f07f67ab",
-      "sourceId": "Item.fbzR4jYGcnhtwQTQ"
-    },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    },
     "midi-qol": {
       "fumbleThreshold": null,
       "rollAttackPerTarget": "default",
@@ -615,7 +600,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     },
     "dnd5e": {
       "persistSourceMigration": true,
@@ -630,7 +615,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1741820293632,
-    "modifiedTime": 1742615067498,
+    "modifiedTime": 1745772563422,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "KE2erwgW8JBVNWAk",
