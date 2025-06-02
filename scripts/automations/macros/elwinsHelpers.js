@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.0
+// v3.5.1
 // Dependencies:
 //  - MidiQOL
 //
@@ -30,6 +30,7 @@
 // - elwinHelpers.isMeleeWeaponAttack
 // - elwinHelpers.isMidiHookStillValid
 // - elwinHelpers.getTokenName
+// - elwinHelpers.getTokenImage
 // - elwinHelpers.getActorSizeValue
 // - elwinHelpers.getSizeValue
 // - elwinHelpers.buttonDialog
@@ -115,7 +116,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.5.0';
+  const VERSION = '3.5.1';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
@@ -187,6 +188,7 @@ export function runElwinsHelpers() {
     setHook('midi-qol.dnd5eCalculateDamage', 'handleMidiDnd5eCalculateDamageId', handleMidiDnd5eCalculateDamage);
     setHook('dnd5e.canEnchant', 'handleDnd5eCanEnchant', handleDnd5eCanEnchant);
     setHook('preCreateItem', 'handlePreCreateItem', handlePreCreateItem);
+    setHook('preUpdateItem', 'handlePreUpdateItem', handlePreUpdateItem);
     exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
     exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
@@ -207,6 +209,7 @@ export function runElwinsHelpers() {
     exportIdentifier('elwinHelpers.isMeleeWeaponAttack', isMeleeWeaponAttack);
     exportIdentifier('elwinHelpers.isMidiHookStillValid', isMidiHookStillValid);
     exportIdentifier('elwinHelpers.getTokenName', getTokenName);
+    exportIdentifier('elwinHelpers.getTokenImage', getTokenImage);
     exportIdentifier('elwinHelpers.getActorSizeValue', getActorSizeValue);
     exportIdentifier('elwinHelpers.getSizeValue', getSizeValue);
     exportIdentifier('elwinHelpers.buttonDialog', buttonDialog);
@@ -571,8 +574,8 @@ export function runElwinsHelpers() {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePreCreateItem`, { item, data, options, userId });
     }
-    if (!item.actor) {
-      // Not an owned item
+    if (!item.actor || item.pack) {
+      // Not an owned item or in compendium
       return true;
     }
     for (let activity of item.system?.activities ?? []) {
@@ -580,50 +583,93 @@ export function runElwinsHelpers() {
         // No consumption configured on activity
         continue;
       }
-      let activityData = undefined;
-      let index = 0;
-
-      for (let target of activity.consumption.targets ?? []) {
-        if (
-          !target.target ||
-          !['itemUses', 'material'].includes(target.type) ||
-          target.target.includes('.') ||
-          item.actor.items?.get(target.target)
-        ) {
-          // Consumption not refering an item, contains a UUID or contains a valid item ID.
-          index++;
-          continue;
-        }
-        // Support DDBI legacy suffix
-        const itemIdent = target.target;
-        const itemIdentLegacy = itemIdent + '-legacy';
-        const useItem = item.actor.items?.find(
-          (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max
-        );
-        if (!useItem) {
-          // Could not find an item with the referred identifier having uses.
-          index++;
-          console.warn(
-            `${MACRO_NAME} | Adjust consumption target: Could not find an item with configured uses having identifier '${target.target}' from item ${item.id} on actor ${item.actor.uuid}`
-          );
-          continue;
-        }
-        if (!activityData) {
-          activityData = activity.toObject();
-        }
-        activityData.consumption.targets[index].target = useItem.id;
-        if (debug) {
-          console.warn(
-            `${MACRO_NAME} | handlePreCreateItem: updated item activity consumption target from '${target.target}' to ${useItem.id} for path: ${activity.uuid}.consumption.targets[${index}].target.`
-          );
-        }
-        index++;
-      }
+      const activityData = replaceActivityConsumptionTargetIdentifierById('handlePreCreateItem', item, activity, false);
       if (activityData) {
         item.updateSource({ [`system.activities.${activityData._id}`]: activityData });
       }
     }
     return true;
+  }
+
+  /**
+   * Handles the preUpdateItem hook. It allows replacing item use consumptions targeting an item identifier with a matching item id.
+   *
+   * @param {Activity} item - Item to be updated.
+   * @param {Object} changed - The item data to be changed.
+   * @param {object} options - The operation options.
+   * @param {string} userId - The id of the user creating the item.
+   */
+  function handlePreUpdateItem(item, changed, options, userId) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreUpdateItem`, { item, changed, options, userId });
+    }
+    if (!item.actor || item.pack) {
+      // Not an owned item or in compendium
+      return true;
+    }
+    for (let activityData of Object.values(changed.system?.activities ?? {})) {
+      if (!activityData.consumption || !activityData.consumption.targets) {
+        // No consumption configured on activity
+        continue;
+      }
+      replaceActivityConsumptionTargetIdentifierById('handlePreUpdateItem', item, activityData, true);
+    }
+    return true;
+  }
+
+  /**
+   * Replaces an activity consumption target, if it's an identifier, by the id of the corresponding item on the owner if found.
+   * @param {string} handlerName - Name of the calling function.
+   * @param {Item5e} item - The item to be updated or created.
+   * @param {object|Activity} activityOrData - The activity or activity data to update.
+   * @param {boolean} isData - Flag to indicate if the object received was an Activity data or an Activity class.
+   * @returns {object} The activity data if it was updated, null otherwise.
+   */
+  function replaceActivityConsumptionTargetIdentifierById(handlerName, item, activityOrData, isData) {
+    let index = 0;
+    let activityData = undefined;
+    let activityUuid = undefined;
+    for (let target of activityOrData.consumption.targets ?? []) {
+      if (
+        !target.target ||
+        !['itemUses', 'material'].includes(target.type) ||
+        target.target.includes('.') ||
+        item.actor.items?.get(target.target)
+      ) {
+        // Consumption not refering an item, contains a UUID or contains a valid item ID.
+        index++;
+        continue;
+      }
+      // Support DDBI legacy suffix
+      const itemIdent = target.target;
+      const itemIdentLegacy = itemIdent + '-legacy';
+      const useItem = item.actor.items?.find(
+        (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max
+      );
+      if (!useItem) {
+        // Could not find an item with the referred identifier having uses.
+        index++;
+        console.warn(
+          `${MACRO_NAME} | Adjust consumption target: Could not find an item with configured uses having identifier '${target.target}' from item ${item.id} on actor ${item.actor.uuid}`
+        );
+        continue;
+      }
+      if (isData) {
+        activityData = activityOrData;
+        activityUuid ??= item.system?.activities?.get(activityOrData._id)?.uuid;
+      } else if (!activityData) {
+        activityData = activityOrData.toObject();
+        activityUuid ??= activityOrData.uuid;
+      }
+      activityData.consumption.targets[index].target = useItem.id;
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${handlerName}: updated item activity consumption target from '${target.target}' to ${useItem.id} for path: ${activityUuid}.consumption.targets[${index}].target.`
+        );
+      }
+      index++;
+    }
+    return activityData;
   }
 
   /**
@@ -2335,23 +2381,32 @@ export function runElwinsHelpers() {
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
    * @param {string} event - Name of the event on which to hook the callback.
    * @param {function} callback - The function to be executed when the event is triggered.
+   * @param {string} macroId - Identifier of the macro that registers a callback.
    */
-  function registerWorkflowHook(workflow, event, callback) {
+  function registerWorkflowHook(workflow, event, callback, macroId) {
+    if (!macroId) {
+      // Use default, which may not always be the desired value,
+      // but it's the safest value to not break existing items using this function.
+      macroId = 'default';
+    }
     const elwinHelpersHooks = foundry.utils.getProperty(workflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
     const firstHook = foundry.utils.isEmpty(elwinHelpersHooks);
-    if (elwinHelpersHooks[event]) {
+    if (elwinHelpersHooks[event]?.[macroId]) {
       // A hook for this event has already been registered for this workflow, remove previous
-      Hooks.off(event, elwinHelpersHooks[event]);
+      Hooks.off(event, elwinHelpersHooks[event][macroId]);
     }
-    elwinHelpersHooks[event] = Hooks.on(event, callback);
+    elwinHelpersHooks[event] ??= {};
+    elwinHelpersHooks[event][macroId] = Hooks.on(event, callback);
     foundry.utils.setProperty(workflow, 'workflowOptions.elwinHelpers.hooks', elwinHelpersHooks);
     if (firstHook) {
       const eventUuid = workflow.activity?.uuid ?? workflow.item?.uuid;
       Hooks.once(`midi-qol.postCleanup${eventUuid ? '.' + eventUuid : ''}`, (currentWorkflow) => {
         const tmpElwinHelpersHooks =
           foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
-        for (let event of Object.keys(tmpElwinHelpersHooks)) {
-          Hooks.off(event, tmpElwinHelpersHooks[event]);
+        for (let tmpEvent of Object.keys(tmpElwinHelpersHooks)) {
+          for (let tmpMacroId of Object.keys(tmpElwinHelpersHooks[tmpEvent])) {
+            Hooks.off(tmpEvent, tmpElwinHelpersHooks[tmpEvent][tmpMacroId]);
+          }
         }
         delete foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers')?.hooks;
       });

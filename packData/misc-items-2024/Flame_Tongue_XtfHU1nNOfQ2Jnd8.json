@@ -198,7 +198,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Activate/Deactivate Flames",
         "useConditionReason": "The weapon must be equipped and attuned",
@@ -314,7 +316,9 @@
           "identifier": "flame-tongue-factory",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -364,9 +368,9 @@
           "priority": 20
         },
         {
-          "key": "system.damage.parts",
+          "key": "system.damage.base.bonus",
           "mode": 2,
-          "value": "[[\"2d6\", \"fire\"]]",
+          "value": "2d6[fire]",
           "priority": 20
         }
       ],
@@ -387,7 +391,7 @@
       "sort": 0,
       "flags": {
         "dae": {
-          "enableCondition": "equipped && attuned",
+          "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
           "showIcon": false,
@@ -428,7 +432,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": 1741917861453,
+        "modifiedTime": 1748608873087,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!XtfHU1nNOfQ2Jnd8.tuG3KOZlWvcEmxWv"
@@ -502,7 +506,7 @@
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
-          "enableCondition": "items.some(i => effect.origin?.startsWith(i.uuid) && i.system.equipped && i.system.attuned)",
+          "enableCondition": "fromUuidSync(effect.origin)?.parent?.system.equipped && fromUuidSync(effect.origin)?.parent?.system.attuned",
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false
@@ -540,7 +544,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": 1741834066284,
-        "modifiedTime": 1742616610931,
+        "modifiedTime": 1743041695724,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!XtfHU1nNOfQ2Jnd8.shjvKOclgQWwo6jh"
@@ -593,6 +597,18 @@
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
           "value": "function.elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects,postActiveEffects",
+          "priority": 20
+        },
+        {
+          "key": "system.rarity",
+          "mode": 5,
+          "value": "rare",
+          "priority": 20
+        },
+        {
+          "key": "system.price.value",
+          "mode": 2,
+          "value": "4000",
           "priority": 20
         }
       ],
@@ -648,13 +664,13 @@
         }
       },
       "_stats": {
-        "compendiumSource": "Item.XtfHU1nNOfQ2Jnd8.ActiveEffect.zDPcUdYCKJ7anwvI",
+        "compendiumSource": null,
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": 1741909722544,
-        "modifiedTime": 1742164259120,
+        "modifiedTime": 1742953626499,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!XtfHU1nNOfQ2Jnd8.zDPcUdYCKJ7anwvI"
@@ -669,25 +685,6 @@
   },
   "flags": {
     "core": {},
-    "scene-packer": {
-      "hash": "34f33f81fad746f033e55b50393ce191f07f67ab",
-      "sourceId": "Item.fbzR4jYGcnhtwQTQ"
-    },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    },
     "midi-qol": {
       "fumbleThreshold": null,
       "rollAttackPerTarget": "default",
@@ -722,7 +719,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     },
     "dnd5e": {
       "persistSourceMigration": true,

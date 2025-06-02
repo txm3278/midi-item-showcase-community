@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This feat can be toggled on or off, when the midi property \"Toggle effect\" is checked, when unchecked, a dialog to activate the feat will be prompted on attacks that meet the requirements.</p></details>",
       "chat": ""
     },
     "source": {
@@ -108,9 +108,11 @@
           "autoTargetAction": "default",
           "automationOnly": false,
           "otherActivityCompatible": false,
+          "toggleEffect": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "ignoreFullCover": false
         },
         "macroData": {
           "name": "",
@@ -128,7 +130,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       }
     },
     "identifier": "sharpshooter",
@@ -161,7 +164,7 @@
     },
     "midiProperties": {
       "confirmTargets": "default",
-      "toggleEffect": true,
+      "toggleEffect": false,
       "autoFailFriendly": false,
       "autoSaveFriendly": false,
       "critOther": false,
@@ -175,10 +178,6 @@
       "idi": false,
       "idv": false,
       "ida": false
-    },
-    "scene-packer": {
-      "hash": "57fdaf62c05d08490759dc973daccc70ea3e945d",
-      "sourceId": "Item.Sl0aZ4yax6prEOyw"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -197,20 +196,6 @@
         }
       }
     },
-    "magicitems": {
-      "enabled": false,
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    },
     "core": {
       "sourceId": "Compendium.midi-item-showcase-community.misc-feats.Item.hFU3MQBV2JOc9GFk"
     },
@@ -218,7 +203,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     },
     "dae": {
       "macro": {
@@ -260,7 +245,7 @@
     {
       "changes": [
         {
-          "key": "flags.midi-qol.sharpShooter",
+          "key": "flags.dnd5e.sharpShooter",
           "mode": 0,
           "value": "1",
           "priority": 30
@@ -279,13 +264,13 @@
         }
       ],
       "duration": {
-        "startTime": 1692764920,
+        "startTime": null,
         "seconds": null,
         "combat": null,
         "rounds": null,
         "turns": null,
-        "startRound": 3,
-        "startTurn": 0
+        "startRound": null,
+        "startTurn": null
       },
       "tint": "#ffffff",
       "transfer": true,
@@ -301,7 +286,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ddbimporter": {
           "disabled": false
@@ -309,7 +295,9 @@
         "midi-qol": {
           "forceCEOff": true
         },
-        "core": {},
+        "core": {
+          "overlay": false
+        },
         "ActiveAuras": {
           "isAura": false,
           "aura": "None",
@@ -324,23 +312,29 @@
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "wallsBlock": "system"
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "name": "Sharpshooter",
       "statuses": [],
       "_id": "q5Le1zgY3WEmhZFu",
       "description": "",
-      "origin": "Item.sD8SN0BIFqIdx1Ie",
+      "origin": "Item.55tcp3YEvgOtEZWS",
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
+        "systemVersion": "4.3.9",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1747710510636,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
       "type": "base",
@@ -354,9 +348,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.8",
     "createdTime": 1740083573487,
-    "modifiedTime": 1741408875944,
+    "modifiedTime": 1745772563422,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "ownership": {

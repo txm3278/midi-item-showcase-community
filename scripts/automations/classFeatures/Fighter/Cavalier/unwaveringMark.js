@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.1.0
+// v3.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -50,7 +50,7 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
   const MODULE_ID = 'midi-item-showcase-community';
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis.elwinHelpers?.version ?? '1.1', '3.4')) {
+  if (!foundry.utils.isNewerVersion(globalThis.elwinHelpers?.version ?? '1.1', '3.5.0')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -526,34 +526,39 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       return;
     }
     const event = 'dnd5e.preRollDamageV2';
-    elwinHelpers.registerWorkflowHook(currentWorkflow, event, (rollConfig, dialogConfig, messageConfig) => {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
-      }
-      if (
-        !elwinHelpers.isMidiHookStillValid(
-          DEFAULT_ITEM_NAME,
-          event,
-          'Add damage bonus',
-          currentWorkflow,
-          rollConfig.workflow,
-          debug
-        )
-      ) {
-        return;
-      }
-      if (rollConfig.subject?.uuid !== currentWorkflow.activity?.uuid) {
+    elwinHelpers.registerWorkflowHook(
+      currentWorkflow,
+      event,
+      (rollConfig, dialogConfig, messageConfig) => {
         if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
-            rollConfig,
-            dialogConfig,
-            messageConfig,
-          });
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
         }
-        return;
-      }
-      rollConfig.rolls[0]?.parts?.push(dmgBonus);
-    });
+        if (
+          !elwinHelpers.isMidiHookStillValid(
+            DEFAULT_ITEM_NAME,
+            event,
+            'Add damage bonus',
+            currentWorkflow,
+            rollConfig.workflow,
+            debug
+          )
+        ) {
+          return;
+        }
+        if (rollConfig.subject?.uuid !== currentWorkflow.activity?.uuid) {
+          if (debug) {
+            console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
+              rollConfig,
+              dialogConfig,
+              messageConfig,
+            });
+          }
+          return;
+        }
+        rollConfig.rolls[0]?.parts?.push(dmgBonus);
+      },
+      'unwaveringMark'
+    );
   }
 
   /**

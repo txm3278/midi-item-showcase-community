@@ -92,8 +92,14 @@ export function setConfig() {
         'Clockwork Amulet': {
           name: 'Clockwork Amulet',
           type: 'Item',
-          version: '2.0.0',
+          version: '2.0.1',
           authors: ['Elwin', 'thatlonelybugbear'],
+        },
+        'Corpse Slayer Weapon': {
+          name: 'Corpse Slayer Weapon',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin', 'SagaTympana'],
         },
         'Crown of Stars': {
           name: 'Crown of Stars',
@@ -140,7 +146,7 @@ export function setConfig() {
         'Fighting Style: Great Weapon Fighting': {
           name: 'Fighting Style: Great Weapon Fighting',
           type: 'Class Feature',
-          version: '1.1.0',
+          version: '1.1.1',
           authors: ['Elwin', 'WurstKorn'],
         },
         'Flames of Phlegethos': {
@@ -242,7 +248,7 @@ export function setConfig() {
         'Oathbow': {
           name: 'Oathbow',
           type: 'Item',
-          version: '2.0.0',
+          version: '2.0.1',
           authors: ['Elwin', 'Christopher'],
         },
         'Poison, Basic (vial)': {
@@ -275,6 +281,12 @@ export function setConfig() {
           version: '2.0.1',
           authors: ['Elwin'],
         },
+        'Recall Monster Lore': {
+          name: 'Recall Monster Lore',
+          type: 'Generic Action',
+          version: '1.0.0',
+          authors: ['Elwin','Fridan99'],
+        },
         'Ring of Evasion': {
           name: 'Ring of Evasion',
           type: 'Item',
@@ -296,7 +308,7 @@ export function setConfig() {
         Sharpshooter: {
           name: 'Sharpshooter',
           type: 'Feat',
-          version: '3.0.2',
+          version: '3.0.3',
           authors: ['Elwin'],
         },
         'Sorrowful Fate': {
@@ -326,7 +338,7 @@ export function setConfig() {
         'Unwavering Mark': {
           name: 'Unwavering Mark',
           type: 'Class Feature',
-          version: '3.1.0',
+          version: '3.1.1',
           authors: ['Elwin'],
         },
         'Vengeful Ancestors': {
@@ -376,7 +388,7 @@ export function setConfig() {
         'Clockwork Amulet': {
           name: 'Clockwork Amulet',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Elwin', 'thatlonelybugbear'],
         },
         'Dagger of Venom': {
@@ -406,7 +418,7 @@ export function setConfig() {
         'Great Weapon Fighting': {
           name: 'Great Weapon Fighting',
           type: 'Feat',
-          version: '1.1.0',
+          version: '1.1.1',
           authors: ['Elwin', 'WurstKorn'],
         },
         'Great Weapon Master': {
@@ -424,7 +436,7 @@ export function setConfig() {
         'Oathbow': {
           name: 'Oathbow',
           type: 'Item',
-          version: '2.0.0',
+          version: '2.0.1',
           authors: ['Elwin', 'Christopher'],
         },
         'Poison, Basic': {

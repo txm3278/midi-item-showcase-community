@@ -1,6 +1,6 @@
 // ##################################################################################################
 // Author: Elwin#1410
-// v2.0.0
+// v2.0.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preAttackRoll]
@@ -27,8 +27,8 @@ const DEFAULT_ITEM_NAME = 'Clockwork Amulet';
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME}: The Elwin Helpers setting must be enabled.`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -66,27 +66,32 @@ export async function clockworkAmulet({ speaker, actor, token, character, item, 
   }
 
   const event = 'dnd5e.postAttackRollConfiguration';
-  elwinHelpers.registerWorkflowHook(workflow, event, (rolls, rollConfig, dialogConfig, messageConfig) => {
-    if (debug) {
-      console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rolls, rollConfig, dialogConfig, messageConfig });
-    }
-    if (
-      !elwinHelpers.isMidiHookStillValid(DEFAULT_ITEM_NAME, event, 'Forgo d20', workflow, rollConfig.workflow, debug)
-    ) {
-      return;
-    }
-    if (rollConfig.subject?.uuid !== workflow.activity?.uuid) {
+  elwinHelpers.registerWorkflowHook(
+    workflow,
+    event,
+    (rolls, rollConfig, dialogConfig, messageConfig) => {
       if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | ${event} attack is not from rolled activity`, {
-          rolls,
-          rollConfig,
-          dialogConfig,
-          messageConfig,
-        });
+        console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rolls, rollConfig, dialogConfig, messageConfig });
       }
-      return;
-    }
-    // Force d20 result to 10
-    rolls[0]?.dice[0]?.results.push({ result: 10, active: true });
-  });
+      if (
+        !elwinHelpers.isMidiHookStillValid(DEFAULT_ITEM_NAME, event, 'Forgo d20', workflow, rollConfig.workflow, debug)
+      ) {
+        return;
+      }
+      if (rollConfig.subject?.uuid !== workflow.activity?.uuid) {
+        if (debug) {
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event} attack is not from rolled activity`, {
+            rolls,
+            rollConfig,
+            dialogConfig,
+            messageConfig,
+          });
+        }
+        return;
+      }
+      // Force d20 result to 10
+      rolls[0]?.dice[0]?.results.push({ result: 10, active: true });
+    },
+    'clockworkAmulet'
+  );
 }

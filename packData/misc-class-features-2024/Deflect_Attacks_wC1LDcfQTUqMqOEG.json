@@ -146,7 +146,7 @@
         "_id": "1LO6qrrSnypPVXkg",
         "sort": 0,
         "activation": {
-          "type": "special",
+          "type": "",
           "value": null,
           "override": false,
           "condition": ""
@@ -205,7 +205,7 @@
             {
               "custom": {
                 "enabled": true,
-                "formula": "2@scale.monk.martial-arts.die + @abilities.dex.mod"
+                "formula": "2@scale.monk.die + @abilities.dex.mod"
               },
               "number": null,
               "denomination": 0,
@@ -275,7 +275,7 @@
         "type": "save",
         "sort": 0,
         "activation": {
-          "type": "special",
+          "type": "",
           "value": null,
           "override": false,
           "condition": ""
@@ -334,7 +334,7 @@
             {
               "custom": {
                 "enabled": true,
-                "formula": "2@scale.monk.martial-arts.die + @abilities.dex.mod"
+                "formula": "2@scale.monk.die + @abilities.dex.mod"
               },
               "number": null,
               "denomination": 0,
@@ -626,7 +626,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1744777067393,
-    "modifiedTime": 1745931675013,
+    "modifiedTime": 1748573403013,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!wC1LDcfQTUqMqOEG"
