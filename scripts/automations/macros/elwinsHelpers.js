@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.1
+// v3.5.2
 // Dependencies:
 //  - MidiQOL
 //
@@ -116,7 +116,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.5.1';
+  const VERSION = '3.5.2';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
@@ -579,7 +579,7 @@ export function runElwinsHelpers() {
       return true;
     }
     for (let activity of item.system?.activities ?? []) {
-      if (!activity.consumption || !activity.consumption.targets) {
+      if (!activity?.consumption || !activity?.consumption?.targets) {
         // No consumption configured on activity
         continue;
       }
@@ -608,7 +608,7 @@ export function runElwinsHelpers() {
       return true;
     }
     for (let activityData of Object.values(changed.system?.activities ?? {})) {
-      if (!activityData.consumption || !activityData.consumption.targets) {
+      if (!activityData?.consumption || !activityData?.consumption?.targets) {
         // No consumption configured on activity
         continue;
       }
