@@ -11,8 +11,13 @@
   "authors": [
     {
       "name": "TMinz",
-      "discord": "TMinz",
+      "discord": "tminz",
       "url": "https://github.com/txm3278"
+    },
+    {
+      "name": "Elwin",
+      "discord": "elwin1410",
+      "url": "https://github.com/pgervais70"
     }
   ],
   "relationships": {
@@ -22,8 +27,8 @@
         "type": "system",
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
-          "minimum": "3.3.1",
-          "verified": "3.3.1"
+          "minimum": "4.3.3",
+          "verified": "4.3.9"
         }
       }
     ],
@@ -31,10 +36,10 @@
       {
         "id": "midi-qol",
         "type": "module",
-        "manifest": "https://gitlab.com/tposney/midi-qol/raw/v10/package/module.json",
+        "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "verified": "11.5.5",
-          "minimum": "11.5.5"
+          "verified": "12.4.53.1",
+          "minimum": "12.4.34"
         }
       }
     ]
@@ -190,6 +195,61 @@
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       }
+    },
+    {
+      "name": "misc-class-features-2024",
+      "label": "MISC Class Features",
+      "path": "packs/misc-class-features-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-items-2024",
+      "label": "MISC Items",
+      "path": "packs/misc-items-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-feats-2024",
+      "label": "MISC Feats",
+      "path": "packs/misc-feats-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-monster-features-2024",
+      "label": "MISC Monster Features",
+      "path": "packs/misc-monster-features-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "misc-spells-2024",
+      "label": "MISC Spells",
+      "path": "packs/misc-spells-2024",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "packFolders": [
@@ -197,28 +257,35 @@
       "name": "Midi Item Showcase - Community",
       "sorting": "a",
       "color": "#018e5f",
-      "packs": [
-        "misc-actors",
-        "misc-actions",
-        "misc-class-features",
-        "misc-feats",
-        "misc-monster-features",
-        "misc-race-features",
-        "misc-spells",
-        "misc-items",
-        "misc-unearthed-arcana",
-        "misc-homebrew"
-      ],
       "folders": [
+        {
+          "name": "2014",
+          "sorting": "a",
+          "color": "#018e5f",
+          "packs": [
+            "misc-actors",
+            "misc-actions",
+            "misc-class-features",
+            "misc-feats",
+            "misc-monster-features",
+            "misc-race-features",
+            "misc-spells",
+            "misc-items",
+            "misc-unearthed-arcana",
+            "misc-homebrew"
+          ]
+        },
+        {
+          "name": "2024",
+          "sorting": "a",
+          "color": "#018e5f",
+          "packs": ["misc-class-features-2024", "misc-feats-2024", "misc-monster-features-2024", "misc-spells-2024", "misc-items-2024"]
+        },
         {
           "name": "Internal",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": [
-            "misc-class-features-items",
-            "misc-spell-items",
-            "misc-items-features"
-          ]
+          "packs": ["misc-class-features-items", "misc-spell-items", "misc-items-features"]
         }
       ]
     }

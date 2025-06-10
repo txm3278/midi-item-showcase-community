@@ -1,25 +1,17 @@
-import { dungeonDelver } from './dungeonDelver.js';
 import { flamesOfPhlegethos } from './flamesOfPhlegethos.js';
 import { giftOfTheMetallicDragon } from './giftOfTheMetallicDragon.js';
+import { greatWeaponFighting } from './greatWeaponFighting.js';
 import { greatWeaponMaster } from './greatWeaponMaster.js';
-import { greatWeaponMasterAttack } from './greatWeaponMasterAttack.js';
-import { healer } from './healer.js';
+import { greatWeaponMaster2024 } from './greatWeaponMaster2024.js';
 import { poisoner } from './poisoner.js';
-import { squireOfSolamniaPreciseStrike } from './squireOfSolamniaPreciseStrike.js';
-import { inspiringLeader } from './inspiringLeader.js';
 import { sharpshooter } from './sharpshooter.js';
-import { piercer } from './piercer.js';
 
 export let features = {
-  dungeonDelver,
   flamesOfPhlegethos,
   giftOfTheMetallicDragon,
+  greatWeaponFighting,
   greatWeaponMaster,
-  greatWeaponMasterAttack,
-  healer,
+  greatWeaponMaster2024,
   poisoner,
-  squireOfSolamniaPreciseStrike,
-  inspiringLeader,
   sharpshooter,
-  piercer,
 };

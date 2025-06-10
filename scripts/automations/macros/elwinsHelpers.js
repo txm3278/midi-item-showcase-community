@@ -1,8 +1,8 @@
-// ##################################################################################################
+/** ##################################################################################################
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v2.7.1
+// v3.5.2
 // Dependencies:
 //  - MidiQOL
 //
@@ -14,21 +14,23 @@
 // Exported functions (see each function for documentation):
 // - elwinHelpers.isDebugEnabled
 // - elwinHelpers.setDebugEnabled
-// - elwinHelpers.doThirdPartyReaction
 // - elwinHelpers.getTargetDivs
 // - elwinHelpers.hasItemProperty
 // - elwinHelpers.reduceAppliedDamage
 // - elwinHelpers.calculateAppliedDamage
-// - elwinHelpers.getMidiItemChatMessage
 // - elwinHelpers.insertTextIntoMidiItemCard
 // - elwinHelpers.requirementsSatisfied
 // - elwinHelpers.selectTargetsWithinX
+// - elwinHelpers.isWeapon
+// - elwinHelpers.isMeleeWeapon
+// - elwinHelpers.isRangedWeapon
 // - elwinHelpers.isRangedAttack
 // - elwinHelpers.isRangedWeaponAttack
 // - elwinHelpers.isMeleeAttack
 // - elwinHelpers.isMeleeWeaponAttack
 // - elwinHelpers.isMidiHookStillValid
 // - elwinHelpers.getTokenName
+// - elwinHelpers.getTokenImage
 // - elwinHelpers.getActorSizeValue
 // - elwinHelpers.getSizeValue
 // - elwinHelpers.buttonDialog
@@ -37,10 +39,17 @@
 // - elwinHelpers.getMoveTowardsPosition
 // - elwinHelpers.findMovableSpaceNearDest
 // - elwinHelpers.convertCriticalToNormalHit
+// - elwinHelpers.adjustAttackRollTargetAC
 // - elwinHelpers.getDamageRollOptions
-// - elwinHelpers.getMidiOnSavePropertyName
-// - elwinHelpers.getAppliedEnchantments (dnd5e v3.2+ only)
-// - elwinHelpers.deleteAppliedEnchantments (dnd5e v3.2+ only)
+// - elwinHelpers.getAppliedEnchantments
+// - elwinHelpers.deleteAppliedEnchantments
+// - elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll
+// - elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects
+// - elwinHelpers.getAutomatedEnchantmentSelectedProfile
+// - elwinHelpers.applyEnchantmentToItem
+// - elwinHelpers.getEquippedMeleeWeapons
+// - elwinHelpers.getRules
+// - elwinHelpers.registerWorkflowHook
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -104,10 +113,13 @@
 //   - tpr.isRangedWeaponAttack: boolean to indicate if the item that triggered the reaction is a ranged weapon attack.
 //
 // ###################################################################################################
+**/
 
 export function runElwinsHelpers() {
-  const VERSION = '2.7.1';
+  const VERSION = '3.5.2';
   const MACRO_NAME = 'elwin-helpers';
+  const WORLD_MODULE_ID = 'world';
+  const MISC_MODULE_ID = 'midi-item-showcase-community';
   const active = true;
   let debug = false;
   let depReqFulfilled = false;
@@ -136,7 +148,10 @@ export function runElwinsHelpers() {
    * Token Third party reaction data.
    * @typedef {object} ReactionData
    * @property {Token5e} token - The token having the third party reaction.
-   * @property {Item5e} item - The thrird party reaction item.
+   * @property {Item5e} item - The third party reaction item.
+   * @property {Activity[]} activities - The third party reaction activities.
+   * @property {Activity[]} allowedActivities - The third party reaction activities allowed for the current trigger,
+   *                                            this is overwritten at each trigger execution.
    * @property {string} macroName - The name of the macro or function to be called for pre/post macros.
    * @property {string} targetOnUse - The target on use that triggers this reaction.
    * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
@@ -147,149 +162,79 @@ export function runElwinsHelpers() {
    */
 
   const dependencies = ['midi-qol'];
-  if (requirementsSatisfied(MACRO_NAME, dependencies)) {
+  if (
+    requirementsSatisfied(MACRO_NAME, dependencies) &&
+    foundry.utils.isNewerVersion(game.modules.get('midi-qol')?.version, '12.4.30')
+  ) {
     depReqFulfilled = true;
 
     // Set a version to facilitate dependency check
     exportIdentifier('elwinHelpers.version', VERSION);
 
-    // Set ReactionFilter only for midi version before 11.3.13
-    if (
-      !foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol').version ?? '0.0.0',
-        '11.3.12.99'
-      )
-    ) {
-      setHook(
-        'midi-qol.ReactionFilter',
-        'handleReactionFilterHookId',
-        handleThirdPartyReactionFilter
-      );
-    }
-
     setHook('midi-qol.postStart', 'handlePostStart', handlePostStart);
-    setHook(
-      'midi-qol.preValidateRoll',
-      'handlePreValidateRollId',
-      handlePreValidateRoll
-    );
-    setHook(
-      'midi-qol.preAttackRoll',
-      'handlePreAttackRollId',
-      handlePreAttackRoll
-    );
-    setHook(
-      'midi-qol.preCheckHits',
-      'handlePreCheckHitsId',
-      handlePreCheckHits
-    );
+    setHook('midi-qol.preValidateRoll', 'handlePreValidateRollId', handlePreValidateRoll);
+    setHook('midi-qol.preAttackRoll', 'handlePreAttackRollId', handlePreAttackRoll);
+    setHook('midi-qol.preCheckHits', 'handlePreCheckHitsId', handlePreCheckHits);
     setHook('midi-qol.hitsChecked', 'handleHitsCheckedId', handleHitsChecked);
+    setHook('midi-qol.preDamageRoll', 'handlePreDamageRollId', handlePreDamageRoll);
+    setHook('midi-qol.preTargetDamageApplication', 'handlePreTargetDamageApplId', handlePreTargetDamageApplication);
+    setHook('midi-qol.preCheckSaves', 'handlePreCheckSavesId', handlePreCheckSaves);
+    setHook('midi-qol.postCheckSaves', 'handlePostCheckSavesId', handlePostCheckSaves);
     setHook(
-      'midi-qol.preDamageRoll',
-      'handlePreDamageRollId',
-      handlePreDamageRoll
+      'midi-qol.dnd5ePreCalculateDamage',
+      'handleMidiDnd5ePreCalculateDamageId',
+      handleMidiDnd5ePreCalculateDamage
     );
-    setHook(
-      'midi-qol.preTargetDamageApplication',
-      'handlePreTargetDamageApplId',
-      handlePreTargetDamageApplication
-    );
-    setHook(
-      'midi-qol.preCheckSaves',
-      'handlePreCheckSavesId',
-      handlePreCheckSaves
-    );
-    setHook(
-      'midi-qol.postCheckSaves',
-      'handlePostCheckSavesId',
-      handlePostCheckSaves
-    );
-    if (
-      foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol')?.version,
-        '11.6'
-      )
-    ) {
-      // Only supported since midi 11.6+
-      setHook(
-        'midi-qol.dnd5ePreCalculateDamage',
-        'handleMidiDnd5ePreCalculateDamageId',
-        handleMidiDnd5ePreCalculateDamage
-      );
-      setHook(
-        'midi-qol.dnd5eCalculateDamage',
-        'handleMidiDnd5eCalculateDamageId',
-        handleMidiDnd5eCalculateDamage
-      );
-    }
+    setHook('midi-qol.dnd5eCalculateDamage', 'handleMidiDnd5eCalculateDamageId', handleMidiDnd5eCalculateDamage);
+    setHook('dnd5e.canEnchant', 'handleDnd5eCanEnchant', handleDnd5eCanEnchant);
+    setHook('preCreateItem', 'handlePreCreateItem', handlePreCreateItem);
+    setHook('preUpdateItem', 'handlePreUpdateItem', handlePreUpdateItem);
     exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
     exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
     // Note: keep this name to be backward compatible
-    exportIdentifier('MidiQOL_doThirdPartyReaction', doThirdPartyReaction);
-    exportIdentifier('elwinHelpers.doThirdPartyReaction', doThirdPartyReaction);
     exportIdentifier('elwinHelpers.getTargetDivs', getTargetDivs);
     exportIdentifier('elwinHelpers.hasItemProperty', hasItemProperty);
     exportIdentifier('elwinHelpers.reduceAppliedDamage', reduceAppliedDamage);
-    exportIdentifier(
-      'elwinHelpers.calculateAppliedDamage',
-      calculateAppliedDamage
-    );
-    exportIdentifier(
-      'elwinHelpers.getMidiItemChatMessage',
-      getMidiItemChatMessage
-    );
-    exportIdentifier(
-      'elwinHelpers.insertTextIntoMidiItemCard',
-      insertTextIntoMidiItemCard
-    );
-    exportIdentifier(
-      'elwinHelpers.requirementsSatisfied',
-      requirementsSatisfied
-    );
+    exportIdentifier('elwinHelpers.calculateAppliedDamage', calculateAppliedDamage);
+    exportIdentifier('elwinHelpers.insertTextIntoMidiItemCard', insertTextIntoMidiItemCard);
+    exportIdentifier('elwinHelpers.requirementsSatisfied', requirementsSatisfied);
     exportIdentifier('elwinHelpers.selectTargetsWithinX', selectTargetsWithinX);
+    exportIdentifier('elwinHelpers.isWeapon', isWeapon);
+    exportIdentifier('elwinHelpers.isMeleeWeapon', isMeleeWeapon);
+    exportIdentifier('elwinHelpers.isRangedWeapon', isRangedWeapon);
     exportIdentifier('elwinHelpers.isRangedAttack', isRangedAttack);
     exportIdentifier('elwinHelpers.isRangedWeaponAttack', isRangedWeaponAttack);
     exportIdentifier('elwinHelpers.isMeleeAttack', isMeleeAttack);
     exportIdentifier('elwinHelpers.isMeleeWeaponAttack', isMeleeWeaponAttack);
     exportIdentifier('elwinHelpers.isMidiHookStillValid', isMidiHookStillValid);
     exportIdentifier('elwinHelpers.getTokenName', getTokenName);
+    exportIdentifier('elwinHelpers.getTokenImage', getTokenImage);
     exportIdentifier('elwinHelpers.getActorSizeValue', getActorSizeValue);
     exportIdentifier('elwinHelpers.getSizeValue', getSizeValue);
     exportIdentifier('elwinHelpers.buttonDialog', buttonDialog);
     exportIdentifier('elwinHelpers.remoteButtonDialog', remoteButtonDialog);
     exportIdentifier('elwinHelpers.getAttackSegment', getAttackSegment);
-    exportIdentifier(
-      'elwinHelpers.getMoveTowardsPosition',
-      getMoveTowardsPosition
-    );
-    exportIdentifier(
-      'elwinHelpers.findMovableSpaceNearDest',
-      findMovableSpaceNearDest
-    );
-    exportIdentifier(
-      'elwinHelpers.convertCriticalToNormalHit',
-      convertCriticalToNormalHit
-    );
+    exportIdentifier('elwinHelpers.getMoveTowardsPosition', getMoveTowardsPosition);
+    exportIdentifier('elwinHelpers.findMovableSpaceNearDest', findMovableSpaceNearDest);
+    exportIdentifier('elwinHelpers.convertCriticalToNormalHit', convertCriticalToNormalHit);
+    exportIdentifier('elwinHelpers.adjustAttackRollTargetAC', adjustAttackRollTargetAC);
     exportIdentifier('elwinHelpers.getDamageRollOptions', getDamageRollOptions);
-    exportIdentifier(
-      'elwinHelpers.getMidiOnSavePropertyName',
-      getMidiOnSavePropertyName
-    );
+    exportIdentifier('elwinHelpers.getAppliedEnchantments', getAppliedEnchantments);
+    exportIdentifier('elwinHelpers.deleteAppliedEnchantments', deleteAppliedEnchantments);
     exportIdentifier(
       'elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll',
       disableManualEnchantmentPlacingOnUsePreItemRoll
     );
-    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-      exportIdentifier(
-        'elwinHelpers.getAppliedEnchantments',
-        getAppliedEnchantments
-      );
-      exportIdentifier(
-        'elwinHelpers.deleteAppliedEnchantments',
-        deleteAppliedEnchantments
-      );
-    }
+    exportIdentifier(
+      'elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects',
+      toggleSelfEnchantmentOnUsePostActiveEffects
+    );
+    exportIdentifier('elwinHelpers.getAutomatedEnchantmentSelectedProfile', getAutomatedEnchantmentSelectedProfile);
+    exportIdentifier('elwinHelpers.applyEnchantmentToItem', applyEnchantmentToItem);
+    exportIdentifier('elwinHelpers.getEquippedMeleeWeapons', getEquippedMeleeWeapons);
+    exportIdentifier('elwinHelpers.getRules', getRules);
+    exportIdentifier('elwinHelpers.registerWorkflowHook', registerWorkflowHook);
 
     // Note: classes need to be exported after they are declared...
 
@@ -341,19 +286,12 @@ export function runElwinsHelpers() {
    * @param {function} hookFunction the function to register on the hook event.
    */
   function setHook(hookName, hookNameId, hookFunction) {
-    const hookId = foundry.utils.getProperty(
-      globalThis,
-      `${MACRO_NAME}.${hookNameId}`
-    );
+    const hookId = foundry.utils.getProperty(globalThis, `${MACRO_NAME}.${hookNameId}`);
     if (hookId) {
       Hooks.off(hookName, hookId);
     }
     if (active) {
-      foundry.utils.setProperty(
-        globalThis,
-        `${MACRO_NAME}.${hookNameId}`,
-        Hooks.on(hookName, hookFunction)
-      );
+      foundry.utils.setProperty(globalThis, `${MACRO_NAME}.${hookNameId}`, Hooks.on(hookName, hookFunction));
     }
   }
 
@@ -369,59 +307,14 @@ export function runElwinsHelpers() {
       if (lastIndex < 0) {
         delete globalThis[exportedIdentifierName];
       } else {
-        delete foundry.utils.getProperty(
-          globalThis,
-          exportedIdentifierName.substring(0, lastIndex)
-        )[exportedIdentifierName.substring(lastIndex + 1)];
+        delete foundry.utils.getProperty(globalThis, exportedIdentifierName.substring(0, lastIndex))[
+          exportedIdentifierName.substring(lastIndex + 1)
+        ];
       }
     }
     if (active) {
-      foundry.utils.setProperty(
-        globalThis,
-        exportedIdentifierName,
-        exportedValue
-      );
+      foundry.utils.setProperty(globalThis, exportedIdentifierName, exportedValue);
     }
-  }
-
-  /**
-   * Filters the received reactions. If the item that triggered the manual reaction is a
-   * third party reaction source item, removes all reactions that are not the source item.
-   *
-   * @param {Array} reactions Array of reaction items and/or Magic Items 2 references.
-   * @param {object} options Reaction options (should contain the item that triggered the reaction)
-   * @param {string} triggerType Type of reaction that was triggered.
-   * @param {Array} reactionItemList list of reaction item UUIDs and/or Magic Items 2 references.
-   *
-   * @returns {boolean} true if the filtered reactions contains at least one item, false otherwise.
-   */
-  function handleThirdPartyReactionFilter(reactions, options, triggerType, _) {
-    if (debug) {
-      console.warn(`${MACRO_NAME} | handleThirdPartyReactionFilter`, {
-        reactions,
-        options,
-        triggerType,
-      });
-    }
-    // Only filter when reactionmanual was triggered and the item triggering it was a third party reaction.
-    if (
-      triggerType !== 'reactionmanual' ||
-      !options?.thirdPartyReaction?.trigger ||
-      !options?.thirdPartyReaction?.itemUuid
-    ) {
-      return true;
-    }
-    // Only keep manual reactions matching item uuid
-    const reactionToKeep = reactions.find(
-      (itemRef) =>
-        itemRef instanceof CONFIG.Item.documentClass &&
-        itemRef.uuid === options?.thirdPartyReaction?.itemUuid
-    );
-    reactions.length = 0;
-    if (reactionToKeep) {
-      reactions.push(reactionToKeep);
-    }
-    return reactions.length > 0;
   }
 
   /**
@@ -433,10 +326,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePostStart.`, workflow);
     }
     for (let token of game.canvas.tokens.placeables) {
-      const actorOnUseMacros = foundry.utils.getProperty(
-        token.actor ?? {},
-        'flags.midi-qol.onUseMacroParts'
-      );
+      const actorOnUseMacros = foundry.utils.getProperty(token.actor ?? {}, 'flags.midi-qol.onUseMacroParts');
       if (!actorOnUseMacros) {
         // Skip this actor does not have any on use macros
         continue;
@@ -476,30 +366,25 @@ export function runElwinsHelpers() {
   /**
    * Triggers isAttacked third party reactions.
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {object} options - Options passed by midi qol.
    */
-  async function handlePreCheckHits(workflow, options) {
+  async function handlePreCheckHits(workflow) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, {
-        workflow,
-        options,
-      });
+      console.warn(`${MACRO_NAME} | handlePreCheckHits.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isAttacked'], options);
+    await handleThirdPartyReactions(workflow, ['isAttacked']);
   }
 
   /**
    * Triggers isHit and isMissed third party reactions.
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
-   * @param {object} options - Options passed by midi qol.
    */
-  async function handleHitsChecked(workflow, options) {
+  async function handleHitsChecked(workflow) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handleHitsChecked.`, { workflow, options });
+      console.warn(`${MACRO_NAME} | handleHitsChecked.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isHit', 'isMissed'], options);
+    await handleThirdPartyReactions(workflow, ['isHit', 'isMissed']);
   }
 
   /**
@@ -522,31 +407,22 @@ export function runElwinsHelpers() {
    */
   async function handlePreTargetDamageApplication(target, options) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreTargetDamageApplication.`, {
-        target,
-        options,
-      });
+      console.warn(`${MACRO_NAME} | handlePreTargetDamageApplication.`, { target, options });
     }
     let appliedDamage = options?.damageItem?.appliedDamage;
     if (!appliedDamage) {
       // compute total damage applied to target
       appliedDamage = options?.damageItem?.damageDetail.reduce(
-        (total, d) =>
-          total + (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
+        (total, d) => (total += ['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
         0
       );
-      appliedDamage =
-        appliedDamage > 0
-          ? Math.floor(appliedDamage)
-          : Math.ceil(appliedDamage);
+      appliedDamage = appliedDamage > 0 ? Math.floor(appliedDamage) : Math.ceil(appliedDamage);
     }
 
     if (
       options?.damageItem &&
       appliedDamage !== 0 &&
-      (options.workflow.hitTargets.has(target) ||
-        options.workflow.hitTargetsEC.has(target) ||
-        options.workflow.saveItem.hasSave)
+      (options.workflow.hitTargets.has(target) || options.workflow.hitTargetsEC.has(target) || options.workflow.hasSave)
     ) {
       // Set our own total damage to make sure it is available, currently midi does not provide a total of the non RAW damage
       options.damageItem.elwinHelpersEffectiveDamage = appliedDamage;
@@ -577,6 +453,18 @@ export function runElwinsHelpers() {
     }
 
     await handleThirdPartyReactions(workflow, ['isPreCheckSave']);
+  }
+
+  /**
+   * Triggers isPostCheckSave third party reactions.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  async function handlePostCheckSaves(workflow) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePostCheckSaves.`, { workflow });
+    }
+
+    await handleThirdPartyReactions(workflow, ['isPostCheckSave']);
   }
 
   /**
@@ -615,19 +503,14 @@ export function runElwinsHelpers() {
       return true;
     }
     const totalDamage = damages.reduce(
-      (total, damage) =>
-        total +
-        (['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
+      (total, damage) => (total += ['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
       0
     );
     if (totalDamage <= 0) {
       // No damage to prevent, do nothing
       return true;
     }
-    const damagePrevention = Math.min(
-      options.elwinHelpers.damagePrevention,
-      totalDamage
-    );
+    const damagePrevention = Math.min(options.elwinHelpers.damagePrevention, totalDamage);
     if (damagePrevention) {
       damages.push({
         type: 'none',
@@ -640,200 +523,198 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Triggers isPostCheckSave third party reactions.
-   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   * Handles the dnd5e can enchant hook. It allows to check extra conditions not supported by dnd5e enchantment restrictions.
+   *
+   * @param {Activity} activity - The enchantment activity.
+   * @param {Item5e} item - The item being enchanted.
+   * @param {object[]} errors - The errors.
    */
-  async function handlePostCheckSaves(workflow) {
+  function handleDnd5eCanEnchant(activity, item, errors) {
     if (debug) {
-      console.warn(`${MACRO_NAME} | handlePostCheckSaves.`, { workflow });
+      console.warn(`${MACRO_NAME} | handleDnd5eCanEnchant`, { activity, item, errors });
     }
-
-    await handleThirdPartyReactions(workflow, ['isPostCheckSave']);
+    const enchantmentEffect = activity.effects?.[0]?.effect;
+    if (!enchantmentEffect) {
+      return;
+    }
+    const extraRestictions = getEchantmentEffectExtraRestrictions(enchantmentEffect);
+    if (!extraRestictions?.length) {
+      return;
+    }
+    const conditionData = MidiQOL.createConditionData({ item });
+    for (let extraRestiction of extraRestictions) {
+      const returnValue = MidiQOL.evalCondition(extraRestiction.condition, conditionData, {
+        errorReturn: false,
+        async: false,
+      });
+      if (!returnValue) {
+        errors.push(
+          new game.system.dataModels.item.EnchantmentError(extraRestiction.conditionMsg ?? extraRestiction.condition)
+        );
+        if (debug) {
+          console.warn(`${MACRO_NAME} | Extra enchantment restriction condition was not fulfilled.`, {
+            condition: extraRestiction.condition,
+            conditionData,
+            returnValue,
+          });
+        }
+      }
+    }
   }
 
   /**
-   * Validates if the conditions for a reaction item are met before sending a remote request to prompt a dialog with
-   * the reaction to the player associated to the reaction item's owner and execute it if the player selects it.
+   * Handles the preCreateItem hook. It allows replacing item use consumptions targeting an item identifier with a matching item id.
    *
-   * @example
-   *  if (args[0].tag === "TargetOnUse" && args[0].macroPass === "isAttacked") {
-   *    const targetToken = token; // or options.token
-   *
-   *    // TODO Check required conditions for the reaction to trigger
-   *
-   *    const result = await elwinHelpers.doThirdPartyReaction(
-   *      workflow.item,
-   *      targetToken,
-   *      macroItem,
-   *      "isAttacked",
-   *      {attackRoll: workflow.attackRoll}
-   *    );
-   *    if (result?.uuid === macroItem.uuid) {
-   *      // Do things that must be done in the attackers workflow
-   *    }
-   *  }
-   *
-   * The reaction item can protect against manual triggering with a preTargeting on use item by validating
-   * the workflow.options:
-   *  if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
-   *    if (
-   *      workflow.options?.thirdPartyReaction?.trigger !== "isAttacked" ||
-   *      workflow.options?.thirdPartyReaction?.itemUuid !== rolledItem.uuid
-   *    ) {
-   *      // Reaction should only be triggered by aura
-   *      const msg = `${DEFAULT_ITEM_NAME} | This reaction can only be triggered when a nearby creature of the owner is targeted by a ranged attack.`;
-   *      ui.notifications.warn(msg);
-   *      return false;
-   *    }
-   *    return true;
-   *  }
-   *
-   * @see {@link https://discord.com/channels/915186263609454632/1178366243812684006/1178366243812684006} Arrow-Catching Shield
-   *
-   *
-   * @param {Item5e} triggerItem the item that triggered the reaction, usually the item used (workflow.item).
-   * @param {Token5e} triggerToken the token which initiated the third party reaction, usually the target of an attack (options.token).
-   * @param {Item5e} reactionItem the reaction item to be prompted.
-   * @param {string} reactionTriggerName name of the TargetOnUse macroPass on which the reaction that was triggered.
-   * @param {object} options reaction options
-   * @param {boolean} options.debug  if true will also log some warnings that are considered normal conditions, false by default.
-   * @param {Token5e} options.reactionTokenUuid token UUID from which the reaction will executed,
-   *                                            if not specified MidiQOL.tokenForActor(reactionItem.actor)?.document.uuid will be used.
-   * @param {boolean} options.attackRoll current attackRoll, used to display the reaction flavor depending on the trigger, undefined by default.
-   * @param {boolean|undefined} options.showReactionAttackRoll flag to indicate if the attack roll should be shown to the reaction or not,
-   *                                                           if undefined the midi setting is used.
-   * @param {object} options.reactionOptions options that will be merged with the default ones and passed to the remote reaction.
-   *
-   * @returns {{name: string, uuid: string, ac: number}} reaction result properties.
+   * @param {Activity} item - Item to be created.
+   * @param {Object} data - The item data.
+   * @param {object} options - The operation options.
+   * @param {string} userId - The id of the user creating the item.
    */
-  async function doThirdPartyReaction(
-    triggerItem,
-    triggerToken,
-    reactionItem,
-    reactionTriggerName,
-    options = {
-      debug: false,
-      reactionTokenUuid: undefined,
-      attackRoll: undefined,
+  function handlePreCreateItem(item, data, options, userId) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreCreateItem`, { item, data, options, userId });
     }
-  ) {
-    // Copied from midi-qol because this utility function is not exposed
-    function getReactionSetting(user) {
-      if (!user) {
-        return 'none';
+    if (!item.actor || item.pack) {
+      // Not an owned item or in compendium
+      return true;
+    }
+    for (let activity of item.system?.activities ?? []) {
+      if (!activity?.consumption || !activity?.consumption?.targets) {
+        // No consumption configured on activity
+        continue;
       }
-      return user.isGM
-        ? MidiQOL.configSettings().gmDoReactions
-        : MidiQOL.configSettings().doReactions;
-    }
-
-    const noResult = { name: 'None', uuid: undefined };
-
-    const reactionActor = reactionItem?.actor;
-    if (!reactionActor?.flags) {
-      console.warn(
-        `${MACRO_NAME} | Missing reaction actor or actor flags.`,
-        reactionActor
-      );
-      return noResult;
-    }
-
-    let reactionToken = null;
-    let reactionTokenUuid = options?.reactionTokenUuid;
-    if (reactionTokenUuid) {
-      reactionToken = fromUuidSync(reactionTokenUuid);
-    } else {
-      reactionToken = MidiQOL.tokenForActor(reactionActor);
-      reactionTokenUuid = reactionToken?.document.uuid;
-    }
-    if (!reactionToken) {
-      console.warn(
-        `${MACRO_NAME} | No token for the reaction actor could be found.`,
-        {
-          reactionActor,
-          reactionTokenUuid,
-        }
-      );
-      return noResult;
-    }
-
-    if (MidiQOL.checkRule('incapacitated')) {
-      if (MidiQOL.checkIncapacitated(reactionActor)) {
-        if (options?.debug) {
-          console.warn(
-            `${MACRO_NAME} | Actor is incapacitated.`,
-            reactionActor
-          );
-        }
-        return noResult;
+      const activityData = replaceActivityConsumptionTargetIdentifierById('handlePreCreateItem', item, activity, false);
+      if (activityData) {
+        item.updateSource({ [`system.activities.${activityData._id}`]: activityData });
       }
     }
+    return true;
+  }
 
-    const usedReaction = MidiQOL.hasUsedReaction(reactionActor);
-    if (usedReaction) {
-      if (options?.debug) {
+  /**
+   * Handles the preUpdateItem hook. It allows replacing item use consumptions targeting an item identifier with a matching item id.
+   *
+   * @param {Activity} item - Item to be updated.
+   * @param {Object} changed - The item data to be changed.
+   * @param {object} options - The operation options.
+   * @param {string} userId - The id of the user creating the item.
+   */
+  function handlePreUpdateItem(item, changed, options, userId) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handlePreUpdateItem`, { item, changed, options, userId });
+    }
+    if (!item.actor || item.pack) {
+      // Not an owned item or in compendium
+      return true;
+    }
+    for (let activityData of Object.values(changed.system?.activities ?? {})) {
+      if (!activityData?.consumption || !activityData?.consumption?.targets) {
+        // No consumption configured on activity
+        continue;
+      }
+      replaceActivityConsumptionTargetIdentifierById('handlePreUpdateItem', item, activityData, true);
+    }
+    return true;
+  }
+
+  /**
+   * Replaces an activity consumption target, if it's an identifier, by the id of the corresponding item on the owner if found.
+   * @param {string} handlerName - Name of the calling function.
+   * @param {Item5e} item - The item to be updated or created.
+   * @param {object|Activity} activityOrData - The activity or activity data to update.
+   * @param {boolean} isData - Flag to indicate if the object received was an Activity data or an Activity class.
+   * @returns {object} The activity data if it was updated, null otherwise.
+   */
+  function replaceActivityConsumptionTargetIdentifierById(handlerName, item, activityOrData, isData) {
+    let index = 0;
+    let activityData = undefined;
+    let activityUuid = undefined;
+    for (let target of activityOrData.consumption.targets ?? []) {
+      if (
+        !target.target ||
+        !['itemUses', 'material'].includes(target.type) ||
+        target.target.includes('.') ||
+        item.actor.items?.get(target.target)
+      ) {
+        // Consumption not refering an item, contains a UUID or contains a valid item ID.
+        index++;
+        continue;
+      }
+      // Support DDBI legacy suffix
+      const itemIdent = target.target;
+      const itemIdentLegacy = itemIdent + '-legacy';
+      const useItem = item.actor.items?.find(
+        (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max
+      );
+      if (!useItem) {
+        // Could not find an item with the referred identifier having uses.
+        index++;
         console.warn(
-          `${MACRO_NAME} | Reaction already used for actor.`,
-          reactionActor
+          `${MACRO_NAME} | Adjust consumption target: Could not find an item with configured uses having identifier '${target.target}' from item ${item.id} on actor ${item.actor.uuid}`
+        );
+        continue;
+      }
+      if (isData) {
+        activityData = activityOrData;
+        activityUuid ??= item.system?.activities?.get(activityOrData._id)?.uuid;
+      } else if (!activityData) {
+        activityData = activityOrData.toObject();
+        activityUuid ??= activityOrData.uuid;
+      }
+      activityData.consumption.targets[index].target = useItem.id;
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${handlerName}: updated item activity consumption target from '${target.target}' to ${useItem.id} for path: ${activityUuid}.consumption.targets[${index}].target.`
         );
       }
-      return noResult;
+      index++;
     }
+    return activityData;
+  }
 
-    // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
-    let player = MidiQOL.playerForActor(reactionActor);
-    if (getReactionSetting(player) === 'none') {
-      if (options?.debug) {
-        console.warn(
-          `${MACRO_NAME} | Reaction settings set to none for player.`,
-          player
-        );
-      }
-      return noResult;
-    }
-
-    if (!player?.active) {
-      // Find first active GM player
-      player = game.users?.activeGM;
-    }
-    if (!player?.active) {
-      console.warn(
-        `${MACRO_NAME} | No active player or GM for actor.`,
-        reactionActor
-      );
-      return noResult;
-    }
-
-    // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
-    const reactionOptions = foundry.utils.mergeObject(
-      {
-        itemUuid: triggerItem.uuid,
-        thirdPartyReaction: {
-          trigger: reactionTriggerName,
-          itemUuid: reactionItem.uuid,
-        },
-        workflowOptions: { targetConfirmation: 'none' },
-      },
-      options?.reactionOptions ?? {}
+  /**
+   * Returns the extra restrictions condition and message.
+   * @param {ActiveEffect} enchantmentEffect
+   * @returns {{condition: string, conditionMSg: string}} the condition and associated condition message.
+   */
+  function getEchantmentEffectExtraRestrictions(enchantmentEffect) {
+    const partialFlag = 'elwinHelpers.extraEnchantRestrictions';
+    const conditionKeyRex = new RegExp(
+      `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).condition$`
     );
-    const data = {
-      tokenUuid: reactionTokenUuid,
-      reactionItemList: [reactionItem.uuid],
-      triggerTokenUuid: triggerToken.document.uuid,
-      reactionFlavor: getReactionFlavor({
-        user: player,
-        reactionTriggerName,
-        triggerToken,
-        triggerItem,
-        reactionToken,
-        roll: options.attackRoll,
-        showReactionAttackRoll: options.showReactionAttackRoll,
-      }),
-      triggerType: 'reactionmanual',
-      options: reactionOptions,
-    };
+    const conditionMsgKeyRex = new RegExp(
+      `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).conditionMsg$`
+    );
+    const extraRestrictions = new Map();
 
-    return MidiQOL.socket().executeAsUser('chooseReactions', player.id, data);
+    for (let change of enchantmentEffect?.changes ?? []) {
+      let match = conditionKeyRex.exec(change.key);
+      if (match?.groups?.position) {
+        const index = Number(match?.groups?.position);
+        const condition = change.value;
+        if (!extraRestrictions.get(index)) {
+          extraRestrictions.set(index, { condition });
+        } else {
+          extraRestrictions.get(index).condition = condition;
+        }
+      } else {
+        match = conditionMsgKeyRex.exec(change.key);
+        if (match?.groups?.position) {
+          const index = Number(match?.groups?.position);
+          const conditionMsg = change.value;
+          if (!extraRestrictions.get(index)) {
+            extraRestrictions.set(index, { conditionMsg });
+          } else {
+            extraRestrictions.get(index).conditionMsg = conditionMsg;
+          }
+        }
+      }
+    }
+    const sortKeys = (a, b) => a[0] - b[0];
+    return [...extraRestrictions.entries()]
+      .filter((entry) => entry[1]?.condition !== undefined)
+      .sort(sortKeys)
+      .map((entry) => entry[1]);
   }
 
   /**
@@ -851,52 +732,36 @@ export function runElwinsHelpers() {
    * @returns {string} the flavor for the reaction trigger.
    */
   function getReactionFlavor(data) {
-    const {
-      user,
-      reactionTriggerName,
-      triggerToken,
-      triggerItem,
-      reactionToken,
-      roll,
-      showReactionAttackRoll,
-    } = data;
+    const { user, reactionTriggerName, triggerToken, triggerItem, reactionToken, roll, showReactionAttackRoll } = data;
 
     let reactionFlavor = 'Unknow reaction trigger!';
     switch (reactionTriggerName) {
       case 'isPreAttacked':
       case 'preAttack':
-        reactionFlavor =
-          '{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isAttacked':
-        reactionFlavor =
-          '{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isPreDamaged':
-        reactionFlavor =
-          '{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isDamaged':
       case 'preTargetDamageApplication':
-        reactionFlavor =
-          '{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isHealed':
-        reactionFlavor =
-          '{actorName} is healed by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is healed by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isTargeted':
       case 'prePreambleComplete':
-        reactionFlavor =
-          '{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isMissed':
-        reactionFlavor =
-          '{actorName} is missed by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is missed by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isCriticalHit':
-        reactionFlavor =
-          '{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isFumble':
         reactionFlavor =
@@ -906,8 +771,7 @@ export function runElwinsHelpers() {
       case 'isAboutToSave':
       case 'isPreCheckSave':
       case 'isPostCheckSave':
-        reactionFlavor =
-          '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isSaveSuccess':
         reactionFlavor =
@@ -918,8 +782,7 @@ export function runElwinsHelpers() {
           '{actorName} failed on a save because of {itemName} and {reactionActorName} can use a reaction';
         break;
       case 'isMoved':
-        reactionFlavor =
-          '{actorName} is moved and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is moved and {reactionActorName} can use a reaction';
         break;
       case 'postTargetEffectApplication':
         reactionFlavor =
@@ -927,8 +790,7 @@ export function runElwinsHelpers() {
         break;
       case 'isHit':
       default:
-        reactionFlavor =
-          '{actorName} is hit by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = '{actorName} is hit by {itemName} and {reactionActorName} can use a reaction';
         break;
     }
     reactionFlavor = game.i18n.format(reactionFlavor, {
@@ -938,36 +800,25 @@ export function runElwinsHelpers() {
     });
 
     //{none: 'Attack Hits', d20: 'd20 roll only', all: 'Attack Roll Total', allCrit: 'Attack Roll Total + Critical'}
-    if (
-      ['isHit', 'isMissed', 'isCrit', 'isFumble', 'isAttacked'].includes(
-        reactionTriggerName
-      )
-    ) {
-      const showAttackRoll =
-        showReactionAttackRoll ??
-        MidiQOL.configSettings().showReactionAttackRoll;
+    if (['isHit', 'isMissed', 'isCrit', 'isFumble', 'isAttacked'].includes(reactionTriggerName)) {
+      const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
       const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
       switch (showAttackRoll) {
         case 'all':
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            roll?.total ?? ''
-          }</h4>`;
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''}`;
           break;
         case 'allCrit': {
           const criticalString = roll?.isCritical
             ? `<span style="color: green">(${getI18n('DND5E.Critical')})</span>`
             : '';
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            roll?.total ?? ''
-          } ${criticalString}</h4>`;
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''} ${criticalString}`;
           break;
         }
         case 'd20': {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ??
-              roll.terms[0]?.total
+            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ''
             : roll?.terms[0]?.total ?? '';
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
+          reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
         default:
@@ -975,23 +826,18 @@ export function runElwinsHelpers() {
     }
     if (['isPostCheckSave'].includes(reactionTriggerName)) {
       // Note: we use the same config as the attack to determine is the TPR owner can see of the Roll.
-      const showAttackRoll =
-        showReactionAttackRoll ??
-        MidiQOL.configSettings().showReactionAttackRoll;
+      const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
       const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
       switch (showAttackRoll) {
         case 'all':
         case 'allCrit':
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.all} ${
-            roll?.total ?? ''
-          }</h4>`;
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''}`;
           break;
         case 'd20': {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ??
-              roll.terms[0]?.total
+            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ''
             : roll?.terms[0]?.total ?? '';
-          reactionFlavor = `<h4>${reactionFlavor} - ${rollOptions.d20} ${theRoll}</h4>`;
+          reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
         default:
@@ -1009,10 +855,8 @@ export function runElwinsHelpers() {
    * @param {object} options - Options to override some defaults or change the execution behavior.
    */
   async function handleThirdPartyReactions(workflow, triggerList, options) {
-    options ??= workflow.options;
-    if (
-      !(MidiQOL.configSettings().allowUseMacro && !options.noTargetOnuseMacro)
-    ) {
+    options ??= {};
+    if (!workflow || !(MidiQOL.configSettings().allowUseMacro && !workflow.workflowOptions?.noTargetOnuseMacro)) {
       return;
     }
 
@@ -1021,13 +865,7 @@ export function runElwinsHelpers() {
       trigger = 'tpr.' + trigger;
       for (let tokenUuid of Object.keys(workflow.thirdPartyReactions ?? {})) {
         const tokenReactionsInfo = workflow.thirdPartyReactions[tokenUuid];
-        await handleThirdPartyReactionsForToken(
-          workflow,
-          trigger,
-          tokenUuid,
-          tokenReactionsInfo,
-          options
-        );
+        await handleThirdPartyReactionsForToken(workflow, trigger, tokenUuid, tokenReactionsInfo, options);
       }
     }
   }
@@ -1048,10 +886,9 @@ export function runElwinsHelpers() {
     tokenReactionsInfo,
     options = {}
   ) {
+    // TODO filter out all activities for the same item?
     let filteredReactions = tokenReactionsInfo.reactions.filter(
-      (reactionData) =>
-        trigger === reactionData.targetOnUse &&
-        reactionData.item.uuid !== workflow.itemUuid
+      (reactionData) => trigger === reactionData.targetOnUse && reactionData.item.uuid !== workflow.itemUuid
     );
     if (!filteredReactions.length) {
       return;
@@ -1059,29 +896,20 @@ export function runElwinsHelpers() {
 
     const reactionToken = fromUuidSync(reactionTokenUuid)?.object;
     if (!reactionToken) {
-      console.warn(
-        `${MACRO_NAME} | Missing reaction token.`,
-        reactionTokenUuid
-      );
+      console.warn(`${MACRO_NAME} | Missing reaction token.`, reactionTokenUuid);
       return;
     }
 
     const reactionActor = reactionToken.actor;
     if (!reactionActor?.flags) {
-      console.warn(
-        `${MACRO_NAME} | Missing reaction actor or actor flags.`,
-        reactionToken
-      );
+      console.warn(`${MACRO_NAME} | Missing reaction actor or actor flags.`, reactionToken);
       return;
     }
 
     if (MidiQOL.checkRule('incapacitated')) {
       if (MidiQOL.checkIncapacitated(reactionActor)) {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | Actor is incapacitated.`,
-            reactionActor
-          );
+          console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
         }
         return;
       }
@@ -1092,19 +920,14 @@ export function runElwinsHelpers() {
       if (!user) {
         return 'none';
       }
-      return user.isGM
-        ? MidiQOL.configSettings().gmDoReactions
-        : MidiQOL.configSettings().doReactions;
+      return user.isGM ? MidiQOL.configSettings().gmDoReactions : MidiQOL.configSettings().doReactions;
     }
 
     // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
     let player = MidiQOL.playerForActor(reactionActor);
     if (getReactionSetting(player) === 'none') {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | Reaction settings set to none for player.`,
-          player
-        );
+        console.warn(`${MACRO_NAME} | Reaction settings set to none for player.`, player);
       }
       return;
     }
@@ -1114,22 +937,12 @@ export function runElwinsHelpers() {
       player = game.users?.activeGM;
     }
     if (!player?.active) {
-      console.warn(
-        `${MACRO_NAME} | No active player or GM for actor.`,
-        reactionActor
-      );
+      console.warn(`${MACRO_NAME} | No active player or GM for actor.`, reactionActor);
       return;
     }
 
     const regTrigger = trigger.replace('tpr.', '');
-    const maxLevel = maxReactionCastLevel(reactionActor);
-    const reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
-    filteredReactions = filteredReactions.filter((reactionData) =>
-      itemReaction(reactionData.item, regTrigger, maxLevel, reactionUsed)
-    );
-    if (!filteredReactions.length) {
-      return;
-    }
+    const maxCastLevel = maxReactionCastLevel(reactionActor);
 
     let targets;
     let triggerItem = workflow.item;
@@ -1147,11 +960,7 @@ export function runElwinsHelpers() {
         targets = [...workflow.hitTargets, ...workflow.hitTargetsEC];
         break;
       case 'isMissed':
-        targets = [
-          ...workflow.targets
-            .difference(workflow.hitTargets)
-            .difference(workflow.hitTargetsEC),
-        ];
+        targets = [...workflow.targets.difference(workflow.hitTargets).difference(workflow.hitTargetsEC)];
         break;
       case 'isTargeted':
       case 'isPreAttacked':
@@ -1168,54 +977,46 @@ export function runElwinsHelpers() {
     let first = true;
     for (let target of targets) {
       // Check each call after first in case the the status changed or the reaction was used
+      let reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
       if (!first) {
-        if (
-          MidiQOL.checkRule('incapacitated') &&
-          MidiQOL.checkIncapacitated(reactionActor)
-        ) {
+        if (MidiQOL.checkRule('incapacitated') && MidiQOL.checkIncapacitated(reactionActor)) {
           if (debug) {
-            console.warn(
-              `${MACRO_NAME} | Actor is incapacitated.`,
-              reactionActor
-            );
+            console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
           }
-          return;
-        }
-
-        const reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
-        filteredReactions = filteredReactions.filter((reactionData) =>
-          itemReaction(reactionData.item, regTrigger, maxLevel, reactionUsed)
-        );
-        if (!filteredReactions.length) {
           return;
         }
       }
       if (['isPostCheckSave'].includes(regTrigger)) {
-        roll = workflow.saveRolls?.find(
-          (r) => r.data.tokenUuid === target.document.uuid
-        );
+        roll = workflow.saveRolls?.find((r) => r.data.tokenUuid === target.document.uuid);
       }
-      const allowedReactions = filteredReactions.filter((reactionData) =>
-        canTriggerReaction(
-          workflow,
-          triggerItem,
-          reactionToken,
-          tokenReactionsInfo,
-          target,
-          reactionData,
-          options
-        )
-      );
-      await callReactionsForToken(
-        workflow,
-        reactionToken,
-        player,
-        trigger,
-        target,
-        allowedReactions,
-        roll,
-        options
-      );
+      const tmpFilteredReactions = [];
+      for (let reactionData of filteredReactions) {
+        const allowedActivities = [];
+        for (let activity of reactionData.activities) {
+          if (
+            await canTriggerReactionActivity(
+              workflow,
+              triggerItem,
+              reactionToken,
+              tokenReactionsInfo,
+              target,
+              reactionData,
+              activity,
+              reactionUsed,
+              maxCastLevel,
+              options
+            )
+          ) {
+            allowedActivities.push(activity);
+          }
+        }
+        reactionData.allowedActivities = allowedActivities;
+        if (reactionData.allowedActivities.length) {
+          tmpFilteredReactions.push(reactionData);
+        }
+      }
+      filteredReactions = tmpFilteredReactions;
+      await callReactionsForToken(workflow, reactionToken, player, trigger, target, filteredReactions, roll, options);
       first = false;
     }
   }
@@ -1229,19 +1030,25 @@ export function runElwinsHelpers() {
    * @param {Token5e} reactionToken - The token of the reaction's owner.
    * @param {TokenReactionsInfo} tokenReactionsInfo - Contains the reactions info associated to the reaction token uuid.
    * @param {Token5e} target - The target of the trigger item.
-   * @param {object} reactionData - The reaction data of the possible reaction.
+   * @param {ReactionData} reactionData - The reaction data of the possible reaction.
+   * @param {Activity} activity - The activity from the reaction data to test.
+   * @param {boolean} reactionUsed - If the actor has already used a reaction.
+   * @param {number} maxCastLevel - Maximum cast level allowed for reaction spells.
    * @param {object} options - Options that can be used in the different validations.
    * @param {string} options.extraActivationCond - Extra activation condition to be evaluated.
    *
    * @returns {boolean} true if the reaction can be triggered, false otherwise.
    */
-  function canTriggerReaction(
+  async function canTriggerReactionActivity(
     workflow,
     triggerItem,
     reactionToken,
     tokenReactionsInfo,
     target,
     reactionData,
+    activity,
+    reactionUsed,
+    maxCastLevel,
     options = {}
   ) {
     const self = reactionToken.document.uuid === target.document.uuid;
@@ -1249,29 +1056,23 @@ export function runElwinsHelpers() {
     // Check self condition
     if (reactionData.ignoreSelf && self) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | canTriggerReaction- ${reactionData.item.name}: self not allowed.`
-        );
+        console.warn(`${MACRO_NAME} | canTriggerReaction- ${reactionData.item.name}: self not allowed.`);
       }
       return false;
     }
 
-    const triggerToken =
-      reactionData.triggerSource === 'attacker' ? workflow.token : target;
+    const triggerToken = reactionData.triggerSource === 'attacker' ? workflow.token : target;
 
     // Check allowed disposition condition
     let allowedDisposition;
-    const disposition = getReactionDisposition(reactionData);
+    const disposition = getReactionDisposition(activity);
     if (disposition) {
       allowedDisposition = reactionToken.document.disposition * disposition;
     }
-    if (
-      disposition &&
-      allowedDisposition !== triggerToken.document.disposition
-    ) {
+    if (disposition && allowedDisposition !== triggerToken.document.disposition) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: disposition not allowed.`,
+          `${MACRO_NAME} | canTriggerReactionActivity - ${reactionData.item.name}-${activity.name}: disposition not allowed.`,
           {
             allowedDisposition,
             triggerTokenDisp: triggerToken.document.disposition,
@@ -1282,24 +1083,13 @@ export function runElwinsHelpers() {
     }
 
     // Check range condition
-    const range = getReactionRange(reactionData);
+    const range = getReactionRange(activity);
     if (range) {
-      const tmpDist = foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol').version ?? '0.0.0',
-        '11.6.25'
-      )
-        ? MidiQOL.computeDistance(reactionToken, triggerToken, {
-            wallsBlock: range.wallsBlock,
-          })
-        : MidiQOL.computeDistance(
-            reactionToken,
-            triggerToken,
-            range.wallsBlock
-          );
+      const tmpDist = MidiQOL.computeDistance(reactionToken, triggerToken, { wallsBlock: range.wallsBlock });
       if (tmpDist < 0 || tmpDist > range.value) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: invalid distance.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: invalid distance.`,
             {
               distance: tmpDist,
               allowedDistance: range,
@@ -1314,14 +1104,10 @@ export function runElwinsHelpers() {
     // Cache canSee results in reactionsInfo
     let canSeeTriggerSource;
     if (reactionData.triggerSource === 'attacker') {
-      canSeeTriggerSource = tokenReactionsInfo.canSeeAttacker ??=
-        MidiQOL.canSee(reactionToken, workflow.token);
+      canSeeTriggerSource = tokenReactionsInfo.canSeeAttacker ??= MidiQOL.canSee(reactionToken, workflow.token);
     } else {
       if (!tokenReactionsInfo.canSeeTargets?.has(target)) {
-        (tokenReactionsInfo.canSeeTargets ??= new Map()).set(
-          target,
-          MidiQOL.canSee(reactionToken, target)
-        );
+        (tokenReactionsInfo.canSeeTargets ??= new Map()).set(target, MidiQOL.canSee(reactionToken, target));
       }
       canSeeTriggerSource = tokenReactionsInfo.canSeeTargets.get(target);
     }
@@ -1329,16 +1115,17 @@ export function runElwinsHelpers() {
     if (!self && reactionData.canSee && !canSeeTriggerSource) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: can't see trigger token.`
+          `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: can't see trigger token.`
         );
       }
       return false;
     }
 
-    const reactionCondition = foundry.utils.getProperty(
-      reactionData.item ?? {},
-      'flags.midi-qol.reactionCondition'
-    );
+    if (!(await checkActivityUsage(activity, maxCastLevel, reactionUsed))) {
+      return false;
+    }
+
+    const reactionCondition = activity.reactionCondition;
     if (!reactionCondition && !options?.extraActivationCond) {
       return true;
     }
@@ -1347,6 +1134,7 @@ export function runElwinsHelpers() {
       reaction: reactionData.targetOnUse,
       tpr: {
         item: reactionData.item?.getRollData()?.item ?? {},
+        activity,
         actor: reactionToken?.actor.getRollData() ?? {},
         actorId: reactionToken?.actor?.id,
         actorUuid: reactionToken?.actor?.uuid,
@@ -1354,35 +1142,30 @@ export function runElwinsHelpers() {
         tokenUuid: reactionToken?.document.uuid,
         canSeeTriggerSource,
         get isMeleeAttack() {
-          return isMeleeAttack(workflow.item, workflow.token, target);
+          return isMeleeAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
         get isMeleeWeaponAttack() {
-          return isMeleeWeaponAttack(workflow.item, workflow.token, target);
+          return isMeleeWeaponAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
         get isRangedAttack() {
-          return isRangedAttack(workflow.item, workflow.token, target);
+          return isRangedAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
         get isRangedWeaponAttack() {
-          return isRangedWeaponAttack(workflow.item, workflow.token, target);
+          return isRangedWeaponAttack(workflow.activity, workflow.token, target, workflow.attackMode);
         },
       },
     };
 
     // Check extra activation condition for this trigger
     if (options?.extraActivationCond) {
-      const returnValue = evalReactionActivationCondition(
-        workflow,
-        options.extraActivationCond,
-        target,
-        {
-          item: triggerItem,
-          extraData,
-        }
-      );
+      const returnValue = evalReactionActivationCondition(workflow, options.extraActivationCond, target, {
+        item: triggerItem,
+        extraData,
+      });
       if (!returnValue) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: extra activation condition not met.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: extra activation condition not met.`,
             {
               extraActivationCond: options.extraActivationCond,
             }
@@ -1396,7 +1179,7 @@ export function runElwinsHelpers() {
     if (reactionCondition) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item?.name} using condition ${reactionCondition}`,
+          `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${activity.name} using condition ${reactionCondition}`,
           { extraData }
         );
       }
@@ -1409,7 +1192,7 @@ export function runElwinsHelpers() {
       ) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}: reaction condition not met.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity.name}: reaction condition not met.`,
             reactionCondition
           );
         }
@@ -1420,17 +1203,14 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the disposition if any found for the specified reaction data.
+   * Returns the disposition if any found for the specified activity.
    *
-   * @param {object} reactionData - The reaction data for which to retrived the disposition.
+   * @param {Activity} activity - The activity for which to retrieve the disposition.
    *
    * @returns {number} the relative disposition compared to the trigger source.
    */
-  function getReactionDisposition(reactionData) {
-    const targetType = foundry.utils.getProperty(
-      reactionData.item,
-      'system.target.type'
-    );
+  function getReactionDisposition(activity) {
+    const targetType = foundry.utils.getProperty(activity, 'target.affects.type');
     if (targetType === 'ally') {
       return CONST.TOKEN_DISPOSITIONS.FRIENDLY;
     } else if (targetType === 'enemy') {
@@ -1440,62 +1220,47 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the range data if any found for the specified reaction data.
+   * Returns the range data if any found for the specified activity.
    *
-   * @param {object} reactionData - The reaction data for which to retrived the range data.
+   * @param {Activity} activity - The activity for which to retrieve the range.
    *
-   * @returns {{value: number, wallsBlock: {boolean}}} range data for the specified reaction data,
+   * @returns {{value: number, wallsBlock: {boolean}}} range data for the specified activity,
    * the data is composed of a value which is the range and wallsBlock, a boolean to indicate
    * if walls should block or not the distance computation.
    */
-  function getReactionRange(reactionData) {
+  function getReactionRange(activity) {
     const range = {};
-    range.value = getRangeFromItem(reactionData.item);
-    range.wallsBlock = !foundry.utils.getProperty(
-      reactionData.item,
-      'flags.midiProperties.ignoreTotalCover'
-    );
+    range.value = getRangeFromActivity(activity);
+    range.wallsBlock = !foundry.utils.getProperty(activity, 'midiProperties.ignoreFullCover');
 
-    return range.value ? range : undefined;
+    return range?.value !== undefined || range?.value == null ? range : undefined;
   }
 
   /**
-   * Returns the range data if any found for the specified item.
+   * Returns the range data if any found for the specified activity.
    *
    * Note: the code was inspired from the checkRange function from midi-qol utils.ts.
    *
-   * @param {Item5e} item - The item for which to retrieve the range data.
+   * @param {Activity} activity - The activity for which to retrieve the range data.
    *
-   * @returns {number} range for the specified item converted in the canvas scene grid units if possible,
+   * @returns {number} range for the specified activity converted in the canvas scene grid units if possible,
    */
-  function getRangeFromItem(item) {
-    if (!item?.system?.range?.value) {
+  function getRangeFromActivity(activity) {
+    if (activity?.range?.value === null || activity?.range?.value === undefined) {
       return undefined;
     }
-    let range = item.system.range.value;
-    if (item?.system?.range?.units) {
-      switch (item.system.range.units) {
+    let range = activity.range.value;
+    if (activity.range.units) {
+      switch (activity.range.units) {
         case 'mi': // miles - assume grid units are feet or miles - ignore furlongs/chains whatever
-          if (
-            ['feet', 'ft'].includes(
-              canvas?.scene?.grid.units?.toLocaleLowerCase()
-            )
-          ) {
+          if (['feet', 'ft'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 5280;
-          } else if (
-            ['yards', 'yd', 'yds'].includes(
-              canvas?.scene?.grid.units?.toLocaleLowerCase()
-            )
-          ) {
+          } else if (['yards', 'yd', 'yds'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 1760;
           }
           break;
         case 'km': // kilometeres - assume grid units are meters or kilometers
-          if (
-            ['meter', 'm', 'meters', 'metre', 'metres'].includes(
-              canvas?.scene?.grid.units?.toLocaleLowerCase()
-            )
-          ) {
+          if (['meter', 'm', 'meters', 'metre', 'metres'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 1000;
           }
           break;
@@ -1517,12 +1282,7 @@ export function runElwinsHelpers() {
    *
    * @returns {boolean} true if the condition evaluates to true, false otherwise.
    */
-  function evalReactionActivationCondition(
-    workflow,
-    condition,
-    target,
-    options = {}
-  ) {
+  function evalReactionActivationCondition(workflow, condition, target, options = {}) {
     if (options.errorReturn === undefined) {
       options.errorReturn = false;
     }
@@ -1551,11 +1311,7 @@ export function runElwinsHelpers() {
       item: options.item,
     });
     options.errorReturn ??= true;
-    const returnValue = MidiQOL.evalCondition(
-      condition,
-      workflow.conditionData,
-      options
-    );
+    const returnValue = MidiQOL.evalCondition(condition, workflow.conditionData, options);
     return returnValue;
   }
 
@@ -1582,17 +1338,7 @@ export function runElwinsHelpers() {
       case 'all':
         return null;
     }
-    const validStrings = [
-      '-2',
-      '-1',
-      '0',
-      '1',
-      'FRIENDLY',
-      'HOSTILE',
-      'NEUTRAL',
-      'SECRET',
-      'all',
-    ];
+    const validStrings = ['-2', '-1', '0', '1', 'FRIENDLY', 'HOSTILE', 'NEUTRAL', 'SECRET', 'all'];
     throw new Error(
       `${MACRO_NAME} | Disposition ${disposition} is invalid. Disposition must be one of "${validStrings}"`
     );
@@ -1608,7 +1354,7 @@ export function runElwinsHelpers() {
    * @param {User} user - the user associated to the reaction token, or the GM is none active.
    * @param {string} reactionTrigger - the third party reaction trigger.
    * @param {Token5e} target - the target of the third party reaction trigger.
-   * @param {ReactionData[]} reactions - list of reaction data from which the reaction token can choose to activate.
+   * @param {ReactionData[]} reactions - list of reaction data with their allowed activities from which the reaction token can choose to activate.
    * @param {Roll} roll - The D20 roll of the attack, saving throw or ability test.
    * @param {object} options - options to pass to macros.
    */
@@ -1626,20 +1372,18 @@ export function runElwinsHelpers() {
       return;
     }
     const reactionsByTriggerSources = [];
-    const reactionsByAttacker = reactions.filter(
-      (rd) => rd.triggerSource === 'attacker'
-    );
+    const reactionsByAttacker = reactions.filter((reactionData) => reactionData.triggerSource === 'attacker');
     if (reactionsByAttacker.length) {
       reactionsByTriggerSources.push(reactionsByAttacker);
     }
-    const reactionsByTarget = reactions.filter(
-      (rd) => rd.triggerSource === 'target'
-    );
+    const reactionsByTarget = reactions.filter((reactionData) => reactionData.triggerSource === 'target');
     if (reactionsByTarget.length) {
       reactionsByTriggerSources.push(reactionsByTarget);
     }
+
     for (let reactionsByTriggerSource of reactionsByTriggerSources) {
-      const reactionsToSkip = new Set();
+      const triggerSource = reactionsByTriggerSource[0]?.triggerSource;
+      const validReactionActivities = [];
       const preReactionOptions = foundry.utils.mergeObject(
         { actor: target.actor, token: target },
         options?.reactionOptions ?? {}
@@ -1649,16 +1393,15 @@ export function runElwinsHelpers() {
           // TODO allow return values to pass options to reaction?
           if (reactionData.macroName && reactionData.preMacro) {
             if (debug) {
-              console.warn(
-                `${MACRO_NAME} | calling Third Party Reaction pre macro.`,
-                {
-                  workflow,
-                  reactionData,
-                  reactionTrigger,
-                  preReactionOptions,
-                }
-              );
+              console.warn(`${MACRO_NAME} | calling Third Party Reaction pre macro.`, {
+                workflow,
+                reactionData,
+                reactionTrigger,
+                preReactionOptions,
+              });
             }
+            preReactionOptions.thirdPartyReactionActivities = reactionData.allowedActivities.map((a) => a.uuid);
+
             let [result] = await workflow.callMacros(
               workflow.item,
               reactionData.macroName,
@@ -1667,62 +1410,52 @@ export function runElwinsHelpers() {
               preReactionOptions
             );
             if (result?.skip) {
-              reactionsToSkip.add(reactionData);
+              if (result.activities?.length) {
+                const toRemove = new Set(result.activities);
+                validReactionActivities.push(...reactionData.allowedActivities.filter((a) => !toRemove.has(a)));
+              }
+            } else {
+              validReactionActivities.push(...reactionData.allowedActivities);
             }
+          } else {
+            validReactionActivities.push(...reactionData.allowedActivities);
           }
         } catch (error) {
           console.error(`${MACRO_NAME} | error in preReaction.`, error);
-          reactionsToSkip.add(reactionData);
         }
       }
-      const validReactions = reactionsByTriggerSource.filter(
-        (rd) => !reactionsToSkip.has(rd)
-      );
 
-      const noResult = { name: 'None', uuid: undefined };
-      let result = noResult;
+      let result = { name: 'None', uuid: undefined };
       try {
-        if (!validReactions.length) {
+        if (!validReactionActivities.length) {
           continue;
         }
         // Note: there is a bug in utils.js that put targetConfirmation but not at the workflowOptions level, remove when fixed (see reactionDialog)
-        const reactionUuids = validReactions.map((rd) => rd.item?.uuid);
+        const reactionActivityUuids = validReactionActivities.map((a) => a.uuid);
         const reactionOptions = foundry.utils.mergeObject(
           {
             itemUuid: options?.item?.uuid ?? workflow.itemUuid,
             thirdPartyReaction: {
               trigger: reactionTrigger,
-              itemUuids: reactionUuids,
+              activityUuids: reactionActivityUuids,
             },
             workflowOptions: { targetConfirmation: 'none' },
           },
           options?.reactionOptions ?? {}
         );
         let reactionTargetUuid;
-        foundry.utils.setProperty(
-          reactionOptions.thirdPartyReaction,
-          'triggerSource',
-          validReactions[0].triggerSource
-        );
-        if (validReactions[0].triggerSource === 'attacker') {
-          foundry.utils.setProperty(
-            reactionOptions.thirdPartyReaction,
-            'targetUuid',
-            target.document.uuid
-          );
+        foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'triggerSource', triggerSource);
+        if (triggerSource === 'attacker') {
+          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'targetUuid', target.document.uuid);
           reactionTargetUuid = workflow.tokenUuid;
         } else {
-          foundry.utils.setProperty(
-            reactionOptions.thirdPartyReaction,
-            'attackerUuid',
-            workflow.tokenUuid
-          );
+          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'attackerUuid', workflow.tokenUuid);
           reactionTargetUuid = target.document.uuid;
         }
 
         const data = {
           tokenUuid: reactionToken.document.uuid,
-          reactionItemList: reactionUuids,
+          reactionActivityList: reactionActivityUuids,
           triggerTokenUuid: reactionTargetUuid,
           reactionFlavor: getReactionFlavor({
             user,
@@ -1736,11 +1469,7 @@ export function runElwinsHelpers() {
           options: reactionOptions,
         };
 
-        result = await MidiQOL.socket().executeAsUser(
-          'chooseReactions',
-          user.id,
-          data
-        );
+        result = await MidiQOL.socket().executeAsUser('chooseReactions', user.id, data);
       } finally {
         const postReactionOptions = foundry.utils.mergeObject(
           {
@@ -1752,17 +1481,15 @@ export function runElwinsHelpers() {
         );
         for (let reactionData of reactionsByTriggerSource) {
           try {
+            // TODO only call if reaction chosen or has preMacro
             if (reactionData.macroName && reactionData.postMacro) {
               if (debug) {
-                console.warn(
-                  `${MACRO_NAME} | calling Third Party Reaction post macro.`,
-                  {
-                    workflow,
-                    reactionData,
-                    reactionTrigger,
-                    postReactionOptions,
-                  }
-                );
+                console.warn(`${MACRO_NAME} | calling Third Party Reaction post macro.`, {
+                  workflow,
+                  reactionData,
+                  reactionTrigger,
+                  postReactionOptions,
+                });
               }
               await workflow.callMacros(
                 workflow.item,
@@ -1814,16 +1541,10 @@ export function runElwinsHelpers() {
    * @returns {string} Div texts for GM and non GM player.
    */
   function getTargetDivs(targetToken, textTemplate) {
-    const gmText = textTemplate.replace(
-      '${tokenName}',
-      getTokenName(targetToken)
-    );
+    const gmText = textTemplate.replace('${tokenName}', getTokenName(targetToken));
     const targetName = MidiQOL.getTokenPlayerName(targetToken);
     const playerText = textTemplate.replace('${tokenName}', targetName);
-    if (foundry.utils.isNewerVersion(game.system.version, '3')) {
-      return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
-    }
-    return `<div class="midi-qol-target-npc-GM">${gmText}</div><div class="midi-qol-target-npc-Player">${playerText}</div>`;
+    return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
   }
 
   /**
@@ -1835,10 +1556,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the item has the property, false otherwise.
    */
   function hasItemProperty(item, propName) {
-    if (foundry.utils.isNewerVersion(game.system.version, '3')) {
-      return item.system?.properties?.has(propName);
-    }
-    return item.system?.properties?.[propName];
+    return item?.system?.properties?.has(propName);
   }
 
   /**
@@ -1851,149 +1569,25 @@ export function runElwinsHelpers() {
   function reduceAppliedDamage(damageItem, preventedDmg, sourceItem) {
     if (!(preventedDmg > 0)) {
       // Only values greater than 0 are applied.
-      console.warn(
-        `${MACRO_NAME} | Only greater than 0 damage prevention is supported.`,
-        {
-          damageItem,
-          preventedDmg,
-          sourceItem,
-        }
-      );
+      console.warn(`${MACRO_NAME} | Only greater than 0 damage prevention is supported.`, {
+        damageItem,
+        preventedDmg,
+        sourceItem,
+      });
       return;
     }
-    if (
-      foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol')?.version,
-        '11.6'
-      )
-    ) {
-      const currentDamagePrevention =
-        foundry.utils.getProperty(
-          damageItem.calcDamageOptions,
-          'elwinHelpers.damagePrevention'
-        ) ?? 0;
-      foundry.utils.setProperty(
-        damageItem.calcDamageOptions,
-        'elwinHelpers.damagePrevention',
-        currentDamagePrevention + preventedDmg
-      );
-      const actor = fromUuidSync(damageItem.actorUuid);
-      damageItem.damageDetail = actor?.calculateDamage(
-        damageItem.rawDamageDetail,
-        damageItem.calcDamageOptions
-      );
-      calculateAppliedDamage(damageItem);
-      if (sourceItem && damageItem.details) {
-        damageItem.details.push(`${sourceItem.name} - DP`);
-      }
-      return;
-    }
-
-    let effectiveDamagePrevented;
-    if (foundry.utils.hasProperty(damageItem, 'appliedDamage')) {
-      let amount = damageItem.damageDetail.reduce(
-        (amount, d) =>
-          amount +
-          (['temphp', 'midi-none'].includes(d.type) ? 0 : d.value ?? d.damage),
-        0
-      );
-      amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
-
-      // Adjust value for overflow damage, reduce the prevented damage by the amount of damage overflow
-      if (amount > damageItem.appliedDamage) {
-        preventedDmg -= amount - damageItem.appliedDamage;
-      }
-      const previousHpDmg = damageItem.appliedDamage;
-      let remainingPrevDmg = Math.min(previousHpDmg, preventedDmg);
-      damageItem.appliedDamage -= remainingPrevDmg;
-      if (remainingPrevDmg > 0 && damageItem.hpDamage > 0) {
-        const hpPrevDmg = Math.min(damageItem.hpDamage, remainingPrevDmg);
-        damageItem.hpDamage -= hpPrevDmg;
-        damageItem.newHP += hpPrevDmg;
-        remainingPrevDmg -= hpPrevDmg;
-      }
-      if (remainingPrevDmg > 0 && damageItem.tempDamage > 0) {
-        const tempHpPrevDmg = Math.min(damageItem.tempDamage, remainingPrevDmg);
-        damageItem.tempDamage -= tempHpPrevDmg;
-        damageItem.newTempHP += tempHpPrevDmg;
-        remainingPrevDmg -= tempHpPrevDmg;
-      }
-      effectiveDamagePrevented = Math.max(0, preventedDmg - remainingPrevDmg);
-    } else {
-      let { amount, temp, dp } = damageItem.damageDetail.reduce(
-        (acc, d) => {
-          if (d.type === 'temphp') {
-            acc.temp += d.value;
-          } else if (
-            d.type !== 'midi-none' &&
-            !(d.type === 'none' && d.active?.DP)
-          ) {
-            acc.amount += d.value;
-          } else if (d.type === 'none' && d.active?.DP) {
-            acc.dp += d.value;
-          }
-          return acc;
-        },
-        { amount: 0, temp: 0, dp: 0 }
-      );
-      amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
-
-      const damagePrevention = Math.min(
-        -dp + preventedDmg,
-        amount >= 0 ? amount : 0
-      );
-      if (damagePrevention) {
-        const dpDamage = damageItem.damageDetail.find(
-          (d) => d.type === 'none' && d.active?.DP
-        );
-        if (dpDamage) {
-          dpDamage.value = damagePrevention;
-        } else {
-          damageItem.damageDetail.push({
-            type: 'none',
-            value: -damagePrevention,
-            active: { DP: true, multiplier: 1 },
-            properties: new Set(),
-          });
-        }
-        amount -= damagePrevention;
-      }
-
-      const token = fromUuidSync(damageItem.tokenUuid);
-      const as = token.actor?.system;
-      if (!as || !as.attributes.hp) {
-        if (debug) {
-          console.warn(
-            `${MACRO_NAME} | Missing damaged token or hp attribute.`,
-            { damageItem }
-          );
-        }
-        return;
-      }
-
-      // Recompute damage
-      const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
-      const deltaHP = Math.clamp(
-        amount - deltaTemp,
-        -as.attributes.hp.damage,
-        damageItem.oldHP
-      );
-      damageItem.newHP = damageItem.oldHP - deltaHP;
-      damageItem.hpDamage = deltaHP;
-      damageItem.newTempHP = Math.floor(
-        Math.max(0, damageItem.oldTempHP - deltaTemp, temp)
-      );
-      damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
-      damageItem.elwinHelpersEffectiveDamage = amount;
-      // TODO should this reflect raw or not???
-      //damageItem.totalDamage = amount;
-
-      effectiveDamagePrevented = Math.min(damagePrevention + dp, 0);
-    }
+    const currentDamagePrevention =
+      foundry.utils.getProperty(damageItem.calcDamageOptions, 'elwinHelpers.damagePrevention') ?? 0;
+    foundry.utils.setProperty(
+      damageItem.calcDamageOptions,
+      'elwinHelpers.damagePrevention',
+      currentDamagePrevention + preventedDmg
+    );
+    const actor = fromUuidSync(damageItem.actorUuid);
+    damageItem.damageDetail = actor?.calculateDamage(damageItem.rawDamageDetail, damageItem.calcDamageOptions);
+    calculateAppliedDamage(damageItem);
     if (sourceItem && damageItem.details) {
-      damageItem.details.push(
-        `${sourceItem.name} - DP [-${effectiveDamagePrevented}]`
-      );
+      damageItem.details.push(`${sourceItem.name} - DP`);
     }
   }
 
@@ -2011,8 +1605,8 @@ export function runElwinsHelpers() {
     }
     let { amount, temp } = damageItem.damageDetail.reduce(
       (acc, d) => {
-        if (d.type === 'temphp') acc.temp += d.value ?? d.damage;
-        else if (d.type !== 'midi-none') acc.amount += d.value ?? d.damage;
+        if (d.type === 'temphp') acc.temp += d.value;
+        else if (d.type !== 'midi-none') acc.amount += d.value;
         return acc;
       },
       { amount: 0, temp: 0 }
@@ -2021,9 +1615,7 @@ export function runElwinsHelpers() {
     const as = actor?.system;
     if (!as || !as.attributes.hp) {
       if (debug) {
-        console.warn(`${MACRO_NAME} | Missing damaged actor or hp attribute.`, {
-          damageItem,
-        });
+        console.warn(`${MACRO_NAME} | Missing damaged actor or hp attribute.`, { damageItem });
       }
       return;
     }
@@ -2031,16 +1623,10 @@ export function runElwinsHelpers() {
     // Recompute damage
     amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
     const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
-    const deltaHP = Math.clamp(
-      amount - deltaTemp,
-      -as.attributes.hp.damage,
-      damageItem.oldHP
-    );
+    const deltaHP = Math.clamp(amount - deltaTemp, -as.attributes.hp.damage, damageItem.oldHP);
     damageItem.newHP = damageItem.oldHP - deltaHP;
     damageItem.hpDamage = deltaHP;
-    damageItem.newTempHP = Math.floor(
-      Math.max(0, damageItem.oldTempHP - deltaTemp, temp)
-    );
+    damageItem.newTempHP = Math.floor(Math.max(0, damageItem.oldTempHP - deltaTemp, temp));
     damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
     damageItem.elwinHelpersEffectiveDamage = amount;
     // TODO should this reflect raw or not???
@@ -2051,186 +1637,249 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is a ranged attack. It also supports melee weapons with the thrown property.
+   * Returns true if the item is a ramged weapon.
    *
-   * @param {Item5e} item - The item used to attack.
+   * @param {Item5e} item - The item used.
+   *
+   * @returns {boolean} true if the item is a ranged weapon, false otherwise.
+   */
+  function isWeapon(item) {
+    return item?.type === 'weapon' && ['simpleM', 'martialM', 'simpleR', 'martialR'].includes(item?.system.type?.value);
+  }
+
+  /**
+   * Returns true if the item is a melee weapon.
+   *
+   * @param {Item5e} item - The item used.
+   *
+   * @returns {boolean} true if the item is a melee weapon, false otherwise.
+   */
+  function isMeleeWeapon(item) {
+    return item?.type === 'weapon' && ['simpleM', 'martialM'].includes(item?.system.type?.value);
+  }
+
+  /**
+   * Returns true if the item is a ramged weapon.
+   *
+   * @param {Item5e} item - The item used.
+   *
+   * @returns {boolean} true if the item is a ranged weapon, false otherwise.
+   */
+  function isRangedWeapon(item) {
+    return item?.type === 'weapon' && ['simpleR', 'martialR'].includes(item?.system.type?.value);
+  }
+
+  /**
+   * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
+   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
    * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
    *
-   * @returns {boolean} true if the attack is a ranged attack.
+   * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
    */
-  function isRangedAttack(
-    item,
-    sourceToken,
-    targetToken,
-    checkThrownWeapons = true
-  ) {
-    return isRangedAttackByType(
-      ['rwak', 'rsak'],
-      item,
+  function isMeleeAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+    return isMeleeAttackByClassification(
+      null,
+      null,
+      activityOrItem,
       sourceToken,
       targetToken,
+      attackMode,
       checkThrownWeapons
     );
   }
 
   /**
-   * Returns true if the attack is a ranged weapon attack that hit. It also supports melee weapons
-   * with the thrown property.
+   * Returns true if the attack is a melee weapon attack. It also handle the case of weapons with the thrown property.
    *
-   * @param {Item5e} item - The item used to attack.
+   * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
+   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
    * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
    *
-   * @returns {boolean} true if the attack is a ranged weapon attack that hit
+   * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
    */
-  function isRangedWeaponAttack(
-    item,
-    sourceToken,
-    targetToken,
-    checkThrownWeapons = true
-  ) {
-    return isRangedAttackByType(
-      ['rwak'],
-      item,
+  function isMeleeWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+    return isMeleeAttackByClassification(
+      null,
+      'wak',
+      activityOrItem,
       sourceToken,
       targetToken,
+      attackMode,
       checkThrownWeapons
     );
   }
 
   /**
-   * Returns true if the attack is a ranged attack. It also supports melee weapons with the thrown property.
+   * Returns true if the attack is melee attack. It also handle the case of weapons with the thrown property.
    *
-   * @param {string[]} actionType - Array of supported ranged action types.
-   * @param {Item5e} item - The item used to attack.
+   * @param {string[]|null} classifications - Array of supported attack classifications.
+   * @param {string} subActionType - The allowed sub action type of the activity.
+   * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
+   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
    * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack is a ranged attack.
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
-  function isRangedAttackByType(
-    actionTypes,
-    item,
+  function isMeleeAttackByClassification(
+    classifications,
+    subActionType,
+    activityOrItem,
     sourceToken,
     targetToken,
+    attackMode = '',
     checkThrownWeapons = true
   ) {
-    if (actionTypes.includes(item?.system?.actionType)) {
-      return true;
+    let activity = activityOrItem;
+    if (activityOrItem instanceof Item) {
+      activity = activityOrItem?.system?.activities?.getByType('attack')?.[0];
     }
-    if (!checkThrownWeapons) {
+    if (!activity || !activity.item) {
       return false;
     }
-    if (item?.system?.actionType !== 'mwak' || !hasItemProperty(item, 'thr')) {
-      return false;
-    }
-
-    const distance = foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol').version ?? '0.0.0',
-      '11.6.25'
-    )
-      ? MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true })
-      : MidiQOL.computeDistance(sourceToken, targetToken, true);
-    // TODO how to support creature with reach, or creatures with reach and thrown weapon?
-    const meleeDistance = 5 + (hasItemProperty(item, 'rch') ? 5 : 0);
-    return distance > meleeDistance;
-  }
-
-  /**
-   * Returns true if the attack was a successful melee attack. It also handle the case of
-   * weapons with the thrown property on a target that is farther than melee distance.
-   *
-   * @param {Item5e} item - The item the item used to attack.
-   * @param {Token5e} sourceToken - The source token.
-   * @param {Token5e} targetToken - The target token.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack was a successful melee weapon attack, false otherwise.
-   */
-  function isMeleeAttack(
-    item,
-    sourceToken,
-    targetToken,
-    checkThrownWeapons = true
-  ) {
-    return isMeleeAttackByType(
-      ['mwak', 'msak'],
-      item,
-      sourceToken,
-      targetToken,
-      checkThrownWeapons
-    );
-  }
-
-  /**
-   * Returns true if the attack was a successful melee weapon attack. It also handle the case of
-   * weapons with the thrown property on a target that is farther than melee distance.
-   *
-   * @param {Item5e} item - The item the item used to attack.
-   * @param {Token5e} sourceToken - The source token.
-   * @param {Token5e} targetToken - The target token.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   *
-   * @returns {boolean} true if the attack was a successful melee weapon attack, false otherwise.
-   */
-  function isMeleeWeaponAttack(
-    item,
-    sourceToken,
-    targetToken,
-    checkThrownWeapons = true
-  ) {
-    return isMeleeAttackByType(
-      ['mwak'],
-      item,
-      sourceToken,
-      targetToken,
-      checkThrownWeapons
-    );
-  }
-
-  /**
-   * Returns true if the attack was a successful melee attack. It also handle the case of
-   * weapons with the thrown property on a target that is farther than melee distance.
-   *
-   * @param {string[]} actionType - Array of supported melee action types.
-   * @param {Item5e} item - The item the used for the attack.
-   * @param {Token5e} sourceToken - The source token.
-   * @param {Token5e} targetToken - The target token.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
-   * @returns {boolean} true if the attack was a successful melee weapon attack, false otherwise.
-   */
-  function isMeleeAttackByType(
-    actionTypes,
-    item,
-    sourceToken,
-    targetToken,
-    checkThrownWeapons = true
-  ) {
-    if (!actionTypes.includes(item?.system?.actionType)) {
+    if (activity?.type !== 'attack' || activity?.attack?.type?.value !== 'melee') {
       return false;
     }
 
+    if (classifications !== null && !classifications.includes(activity.attack.type.classification)) {
+      return false;
+    }
+
+    let actionType = activity.getActionType(attackMode);
+    if (!actionType?.startsWith('m')) {
+      return false;
+    }
+    if (subActionType !== null && !actionType?.endsWith(subActionType)) {
+      return false;
+    }
     if (!checkThrownWeapons) {
       return true;
     }
 
-    if (item?.system?.actionType !== 'mwak' || !hasItemProperty(item, 'thr')) {
+    // TODO what to do with attackMode === "ranged", will need to wait for Monster Manual
+    if (!hasItemProperty(activity?.item, 'thr')) {
       return true;
     }
 
-    const distance = foundry.utils.isNewerVersion(
-      game.modules.get('midi-qol').version ?? '0.0.0',
-      '11.6.25'
-    )
-      ? MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true })
-      : MidiQOL.computeDistance(sourceToken, targetToken, true);
-    // TODO how to support creature with reach, or creatures with reach and thrown weapon?
-    const meleeDistance = 5 + (hasItemProperty(item, 'rch') ? 5 : 0);
+    const distance = MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true });
+    // Note: reach on activities is set from melee weapon item range if not overriden.
+    // TODO use grid default instead of 5
+    const meleeDistance = activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
     return distance >= 0 && distance <= meleeDistance;
+  }
+
+  /**
+   * Returns true if the attack is a ranged attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
+   * @param {Token5e} sourceToken - The attacker's token.
+   * @param {Token5e} targetToken - The target's token.
+   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   *
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isRangedAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+    return isRangedAttackByClassification(
+      null,
+      null,
+      activityOrItem,
+      sourceToken,
+      targetToken,
+      attackMode,
+      checkThrownWeapons
+    );
+  }
+
+  /**
+   * Returns true if the attack is a ranged weapon attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {Activity|Item5e} activity - The activity or item used to attack.
+   * @param {Token5e} sourceToken - The attacker's token.
+   * @param {Token5e} targetToken - The target's token.
+   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   *
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isRangedWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+    return isRangedAttackByClassification(
+      null,
+      'wak',
+      activityOrItem,
+      sourceToken,
+      targetToken,
+      attackMode,
+      checkThrownWeapons
+    );
+  }
+
+  /**
+   * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
+   *
+   * @param {string[]|null} classifications - Array of supported attack classifications.
+   * @param {string} subActionType - The allowed sub action type of the activity.
+   * @param {Activity|Item5e} activityOrItem - The activity or item the used for the attack.
+   * @param {Token5e} sourceToken - The attacker's token.
+   * @param {Token5e} targetToken - The target's token.
+   * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
+   */
+  function isRangedAttackByClassification(
+    classifications,
+    subActionType,
+    activityOrItem,
+    sourceToken,
+    targetToken,
+    attackMode = '',
+    checkThrownWeapons = true
+  ) {
+    let activity = activityOrItem;
+    if (activityOrItem instanceof Item) {
+      activity = activityOrItem?.system?.activities?.getByType('attack')?.[0];
+    }
+    if (!activity || !activity.item) {
+      return false;
+    }
+
+    if (activity?.type !== 'attack' || !activity.attack?.type) {
+      return false;
+    }
+
+    if (classifications !== null && !classifications.includes(activity.attack.type.classification)) {
+      return false;
+    }
+
+    let actionType = activity.getActionType(attackMode);
+    if (subActionType != null && !actionType?.endsWith(subActionType)) {
+      return false;
+    }
+    if (actionType?.startsWith('r')) {
+      return true;
+    }
+
+    if (!checkThrownWeapons) {
+      return false;
+    }
+
+    // TODO what to do with attackMode === "ranged", will need to wait for Monster Manual
+    const attackType = activity.attack.type.value;
+    if (attackType !== 'melee' || !hasItemProperty(activity.item, 'thr')) {
+      return false;
+    }
+
+    const distance = MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true });
+    // Note: reach on activities is set from melee weapon item range if not overriden.
+    // TODO use grid default instead of 5
+    const meleeDistance = activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
+    return distance > meleeDistance;
   }
 
   /**
@@ -2249,27 +1898,17 @@ export function runElwinsHelpers() {
   function selectTargetsWithinX(
     sourceToken,
     distance,
-    options = {
-      disposition: null,
-      includeSource: false,
-      updateSelected: true,
-      isSeen: false,
-    }
+    options = { disposition: null, includeSource: false, updateSelected: true, isSeen: false }
   ) {
     options.disposition ??= null;
     options.includeSource ??= false;
     options.updateSelected ??= true;
     options.isSeen ??= false;
 
-    let aoeTargets = MidiQOL.findNearby(
-      options.disposition,
-      sourceToken,
-      distance,
-      {
-        isSeen: options.isSeen,
-        includeToken: options.includeSource,
-      }
-    );
+    let aoeTargets = MidiQOL.findNearby(options.disposition, sourceToken, distance, {
+      isSeen: options.isSeen,
+      includeToken: options.includeSource,
+    });
 
     const aoeTargetIds = aoeTargets.map((t) => t.document.id);
     if (options.updateSelected) {
@@ -2280,36 +1919,13 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the Midi item chat message for the specified workflow.
-   *
-   * @param {MidiQOL.workflow} workflow - The current MidiQOL workflow for which to get the item chat message.
-   *
-   * @returns {ChatMessage5e} - The Midi item chat message for the specified workflow.
-   */
-  function getMidiItemChatMessage(workflow) {
-    if (
-      foundry.utils.isNewerVersion(
-        game.modules.get('midi-qol').version ?? '0.0.0',
-        '11.4.1'
-      )
-    ) {
-      return MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
-    }
-    return game.messages.get(workflow.itemCardId);
-  }
-
-  /**
    * Inserts text into a Midi item chat message before the card buttons div and updates it.
    *
    * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
    * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
    * @param {string} text - The text to insert in the chat message.
    */
-  async function insertTextBeforeButtonsIntoMidiItemChatMessage(
-    position,
-    chatMessage,
-    text
-  ) {
+  async function insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text) {
     let content = foundry.utils.deepClone(chatMessage.content);
     let searchRegex = undefined;
     let replaceString = `$1\n${text}\n$2`;
@@ -2320,14 +1936,8 @@ export function runElwinsHelpers() {
       case 'beforeButtons':
       default:
         searchRegex =
-          /(<\/section>)(\s*<div class="card-buttons midi-buttons">)/m;
-        if (!foundry.utils.isNewerVersion(game.system.version, '3')) {
-          searchRegex = /(<\/div>)(\s*<div class="card-buttons">)/m;
-        }
+          /(<\/section>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
         break;
-    }
-    if (!foundry.utils.isNewerVersion(game.system.version, '3')) {
-      replaceString = `$1\n<br/>${text}\n$2`;
     }
     content = content.replace(searchRegex, replaceString);
     await chatMessage.update({ content: content });
@@ -2341,18 +1951,12 @@ export function runElwinsHelpers() {
    * @param {string} text - The text to insert in the MidiQOL item card.
    */
   async function insertTextIntoMidiItemCard(position, workflow, text) {
-    const chatMessage = getMidiItemChatMessage(workflow);
+    const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
     if (!chatMessage) {
-      console.error(`${MACRO_NAME} | Could not find workflow item card`, {
-        workflow,
-      });
+      console.error(`${MACRO_NAME} | Could not find workflow item card`, { workflow });
       return;
     }
-    await insertTextBeforeButtonsIntoMidiItemChatMessage(
-      position,
-      chatMessage,
-      text
-    );
+    await insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text);
   }
 
   /**
@@ -2368,29 +1972,18 @@ export function runElwinsHelpers() {
    *
    * @returns {boolean} true is the hook is still valid, false otherwise.
    */
-  function isMidiHookStillValid(
-    itemName,
-    hookName,
-    actionName,
-    originWorkflow,
-    currentWorkflow,
-    debug = false
-  ) {
+  function isMidiHookStillValid(itemName, hookName, actionName, originWorkflow, currentWorkflow, debug = false) {
     if (originWorkflow !== currentWorkflow) {
       if (debug) {
         // Not same workflow do nothing
-        console.warn(
-          `${itemName} | ${hookName} hook called from a different workflow.`
-        );
+        console.warn(`${itemName} | ${hookName} hook called from a different workflow.`);
       }
       return false;
     }
     if (currentWorkflow.aborted) {
       if (debug) {
         // Workflow was aborted do not trigger action
-        console.warn(
-          `${itemName} | workflow was aborted, ${actionName} is also cancelled.`
-        );
+        console.warn(`${itemName} | workflow was aborted, ${actionName} is also cancelled.`);
       }
       return false;
     }
@@ -2410,7 +2003,7 @@ export function runElwinsHelpers() {
 
     workflow.isCritical = false;
     // Set flag for other feature to not put back a critical or least consider it...
-    workflow.options.noCritical = true;
+    workflow.workflowOptions.noCritical = true;
 
     const configSettings = MidiQOL.configSettings();
     for (let tokenUuid of Object.keys(workflow.hitDisplayData)) {
@@ -2425,14 +2018,9 @@ export function runElwinsHelpers() {
       // TODO remove? seems to not be used anymore...
       hitDisplay.hitResultNumeric = workflow.useActiveDefence
         ? ''
-        : `${workflow.attackTotal}/${
-            hitDisplay.ac ? Math.abs(workflow.attackTotal - hitDisplay.ac) : '-'
-          }`;
+        : `${workflow.attackTotal}/${hitDisplay.ac ? Math.abs(workflow.attackTotal - hitDisplay.ac) : '-'}`;
 
-      if (
-        game.user?.isGM &&
-        ['hitDamage', 'all'].includes(configSettings.hideRollDetails)
-      ) {
+      if (game.user?.isGM && ['hitDamage', 'all'].includes(configSettings.hideRollDetails)) {
         hitDisplay.hitSymbol = 'fa-tick';
       } else {
         hitDisplay.hitSymbol = 'fa-check';
@@ -2440,85 +2028,73 @@ export function runElwinsHelpers() {
     }
     // Redisplay roll and hits with the new data
     if (debug) {
-      console.warn(`${MACRO_NAME} | Hit display data after updates.`, {
-        hitDisplayData: workflow.hitDisplayData,
-      });
+      console.warn(`${MACRO_NAME} | Hit display data after updates.`, { hitDisplayData: workflow.hitDisplayData });
     }
 
     await workflow.displayAttackRoll(configSettings.mergeCard);
-    await workflow.displayHits(
-      workflow.whisperAttackCard,
-      configSettings.mergeCard
-    );
+    await workflow.displayHits(workflow.whisperAttackCard, configSettings.mergeCard);
   }
 
   /**
-   * Returns the damage roll options based on the ones set on the first damage roll of the worflow.
+   * Adjust the workflow attack roll target AC, it is used by dnd5e chat message to display the attack result.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  function adjustAttackRollTargetAC(workflow) {
+    // TODO remove if midi-qol fixes this in checkHits or displayAttackRoll
+    const targets = workflow.targets;
+    if (workflow.attackRoll?.dice.length) {
+      const targetAC = targets.size === 1 ? workflow.hitDisplayData[targets.first().document.uuid].ac : null;
+      workflow.attackRoll.options.target = targetAC;
+      workflow.attackRoll.dice[0].options.target = targetAC;
+    }
+    const chatMessage = workflow.chatCard;
+    let content = chatMessage && foundry.utils.duplicate(chatMessage.content);
+    if (chatMessage) {
+      // Remove sucesss/failure from attack otherwise dnd5e will add them without removing the previous result
+      content = content.replace(/class="dice-total[^"]*"/, 'class="dice-total"');
+      chatMessage.content = content;
+    }
+  }
+
+  /**
+   * Returns the damage roll options based on the options set on the first damage roll of the worflow.
    *
    * @param {MidiQOL.Workflow} worflow - The MidiQOL workflow from which to get the first damage roll options.
    *
    * @returns {object} The damage roll options based on the ones set on the first damage roll of the worflow.
    */
   function getDamageRollOptions(workflow) {
-    const rollOptions = workflow.damageRolls[0]?.options ?? {};
-    const isCritical = !workflow.isCritical
-      ? rollOptions.critical
-      : workflow.isCritical;
+    const dmgRollOptions = workflow.damageRolls?.[0]?.options ?? {};
     const options = {
-      critical: isCritical,
-      criticalBonusDamage: rollOptions.criticalBonusDamage,
-      criticalBonusDice: rollOptions.criticalBonusDice,
-      criticalMultiplier: rollOptions.criticalMultiplier,
-      multiplyNumeric: rollOptions.multiplyNumeric,
-      powerfulCritical: rollOptions.powerfulCritical,
+      isCritical: dmgRollOptions.isCritical ?? workflow.isCritical,
+      critical: dmgRollOptions.critical ? foundry.utils.deepClone(dmgRollOptions.critical) : {},
     };
+    // Remove allow flag to let default for another roll to be used
+    if (options.critical.allow) {
+      delete options.critical.allow;
+    }
     return options;
   }
 
   /**
-   * Returns the MidiQOL property name for damage on save multiplier.
+   * Gets the applied enchantments for the specified item or activity uuid if any exist.
    *
-   * @param {string} [onSave="none"] - The name of the multiplier to apply to damage if a save is sucessfull,
-   *                          one of: none, half, full.
-   * @returns {string} This MidiQOL property name for damage on save multiplier.
-   */
-  function getMidiOnSavePropertyName(onSave) {
-    let onSavePropName = 'nodam';
-    if (onSave) {
-      switch (onSave) {
-        case 'half':
-          onSavePropName = 'halfdam';
-          break;
-        case 'full':
-          onSavePropName = 'fulldam';
-          break;
-        default:
-          onSavePropName = 'nodam';
-      }
-    }
-    return onSavePropName;
-  }
-
-  /**
-   * Gets the applied enchantments for the specified item uuid if any exist.
-   *
-   * @param {string} itemUuid - The UUID of the item for which to find associated enchantments.
+   * @param {string} entityUuid - The UUID of the item or activity for which to find associated enchantments.
    * @returns {ActiveEffect5e[]} list of applied enchantments.
    */
-  function getAppliedEnchantments(itemUuid) {
-    return CONFIG.Item.dataModels.consumable.schema.fields.enchantment.model.appliedEnchantments(
-      itemUuid
-    );
+  function getAppliedEnchantments(entityUuid) {
+    return dnd5e.registry.enchantments.applied(entityUuid);
   }
 
   /**
-   * Deletes the applied enchantments on the specified item uuid.
+   * Deletes the applied enchantments for the specified item or activity uuid.
    *
-   * @param {string} itemUuid - The UUID of the item for which to delete the associated enchantments.
+   * @param {string} entityUuid - The UUID of the item or activity for which to delete the associated enchantments.
    * @returns {ActiveEffect5e[]} the list of applied enchantments that was deleted.
    */
-  async function deleteAppliedEnchantments(itemUuid) {
-    const appliedEnchantements = getAppliedEnchantments(itemUuid);
+  async function deleteAppliedEnchantments(entityUuid) {
+    const appliedEnchantements = getAppliedEnchantments(entityUuid);
     for (let activeEffect of appliedEnchantements) {
       await activeEffect.delete();
     }
@@ -2526,26 +2102,314 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Disables manual enchantment placing (for dnd5e v3.2+).
+   * Disables manual enchantment placing and configuration dialog if enchantment already exists.
    * This prevents the drop area that allows to select or remove the item to which an enchantment is applied.
+   *
+   * **Note:** By default dialog configuration is disabled if an enchantment is already applied, unless *workflow.elwinOptions.disableConfigDialogIfEnchantExists* is false.
    *
    * @param {object} parameters - The MidiQOL function macro parameters.
    */
   function disableManualEnchantmentPlacingOnUsePreItemRoll({ workflow, args }) {
     if (debug) {
       console.warn(
-        MACRO_NAME,
-        {
-          phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0],
-        },
+        `${MACRO_NAME} | disableManualEnchantmentPlacingOnUsePreItemRoll`,
+        { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
         arguments
       );
     }
+    if (workflow.activity?.type !== 'enchant') {
+      // Skip activities that are not enchantments.
+      return;
+    }
 
-    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-      // Disables enchantment drop area
-      workflow.config.promptEnchantment = false;
-      workflow.config.enchantmentProfile = null;
+    // Disables dialog configuration
+    if (
+      (workflow.elwinOptions?.disableConfigDialogIfEnchantExists ?? true) &&
+      elwinHelpers.getAppliedEnchantments(workflow.activity?.uuid)?.length
+    ) {
+      Hooks.once('dnd5e.preUseActivity', (activity, usageConfig, dialogConfig, __) => {
+        const activityWorkflow = usageConfig.worflow;
+        if (
+          !elwinHelpers.isMidiHookStillValid(
+            activity.item?.name,
+            'dnd5e.preUseActivity',
+            activity.name,
+            workflow,
+            activityWorkflow,
+            debug
+          )
+        ) {
+          return;
+        }
+
+        // Disable dialog configuration
+        dialogConfig.configure = false;
+      });
+    }
+
+    // Disables enchantment drop area, but keep selected profile
+    Hooks.once('dnd5e.preCreateUsageMessage', (activity, messageConfig) => {
+      const activityWorkflow = messageConfig.workflow;
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          activity.item?.name,
+          'dnd5e.preCreateUsageMessage',
+          activity.name,
+          workflow,
+          activityWorkflow,
+          debug
+        )
+      ) {
+        return;
+      }
+      // Keep selected profile in workflow
+      if (activityWorkflow) {
+        foundry.utils.setProperty(
+          activityWorkflow,
+          'elwinOptions.enchantmentProfile',
+          foundry.utils.getProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`)
+        );
+      }
+      // Clear profile from message to prevent drop area.
+      foundry.utils.setProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`, null);
+    });
+  }
+
+  /**
+   * Applies or removes an enchantment to/from the item of the used enchantment activity.
+   * If no enchantments are active, apply the selected enchantment profile to itself, otherwise delete the applied enchantments.
+   *
+   * @param {object} parameters - The MidiQOL function macro parameters.
+   */
+  async function toggleSelfEnchantmentOnUsePostActiveEffects({ workflow, args }) {
+    if (debug) {
+      console.warn(
+        `${MACRO_NAME} | toggleSelfEnchantmentOnUsePostActiveEffects`,
+        { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+        arguments
+      );
+    }
+    if (workflow.activity?.type !== 'enchant') {
+      // Skip activities that are not enchantments.
+      return;
+    }
+    // Get applied enchantements for this item
+    const enchantments = getAppliedEnchantments(workflow.activity.uuid);
+    if (enchantments?.length) {
+      // Remove enchantment
+      await deleteAppliedEnchantments(workflow.activity.uuid);
+
+      // Add message about deactivation
+      const infoMsg = getSelfEnchantmentActivationMessage(enchantments[0], false);
+      if (infoMsg) {
+        await insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
+      }
+    } else {
+      const enchantmentEffectData = getAutomatedEnchantmentSelectedProfile(workflow)?.effect.toObject();
+      if (!enchantmentEffectData) {
+        console.error(`${MACRO_NAME} | Missing enchantment effect`, { workflow });
+        return;
+      }
+      // Validate against the enchantment's restraints on the origin item
+      const errors = workflow.activity.canEnchant(workflow.item);
+      if (errors?.length) {
+        errors.forEach((err) => ui.notifications.error(err.message, { console: false }));
+        return;
+      }
+
+      // Add enchantment to self
+      const enchantmentEffect = await applyEnchantmentToItem(workflow, enchantmentEffectData, workflow.item);
+      if (!enchantmentEffect) {
+        console.error(`${MACRO_NAME} | Enchantment effect could not be created.`, enchantmentEffectData);
+        return;
+      }
+      // If this activity is a dependency of an applied enchantment, also add this enchantment as a dependency.
+      const metaEchantmentEffect = workflow.activity.item?.effects?.find(
+        (ae) => ae.isAppliedEnchantment && ae.getDependents()?.some((d) => d.uuid === workflow.activity.uuid)
+      );
+      if (metaEchantmentEffect) {
+        await metaEchantmentEffect.addDependent(enchantmentEffect);
+      }
+
+      // Get effects to apply on actor
+      const effectIds = getSelfEnchantmentActorEffects(enchantmentEffect);
+      const effectsToApply = effectIds?.length
+        ? workflow.item?.effects
+            .filter(
+              (ae) =>
+                !ae.transfer && ae.type !== 'enchantment' && (effectIds.includes(ae._id) || effectIds.includes(ae.name))
+            )
+            .map((ae) => {
+              const data = ae.toObject();
+              data.origin = ae.uuid;
+              return data;
+            }) ?? []
+        : [];
+      if (effectsToApply?.length) {
+        const effectsCreated = await workflow.actor.createEmbeddedDocuments('ActiveEffect', effectsToApply);
+        await enchantmentEffect.addDependent(...effectsCreated);
+        // Add enchantment to each effect as a dependency (this allows to auto delete the enchantment if the actor effect is deleted)
+        for (let ae of effectsCreated) {
+          await ae.addDependent(enchantmentEffect);
+        }
+      }
+
+      // Add message about activation
+      const infoMsg = getSelfEnchantmentActivationMessage(enchantmentEffect, true);
+      if (infoMsg) {
+        await insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
+      }
+    }
+  }
+
+  /**
+   * Returns the self enchantment effects to apply on actor at the same time.
+   *
+   * @param {ActiveEffect} enchantmentEffect - The self enchantment AE.
+   * @returns {string[]} The list of active effects to apply on the actor.
+   */
+  function getSelfEnchantmentActorEffects(enchantmentEffect) {
+    const partialFlag = 'elwinHelpers.selfEnchant.effects';
+    const keys = [`flags.${WORLD_MODULE_ID}.${partialFlag}`, `flags.${MISC_MODULE_ID}.${partialFlag}`];
+    return (enchantmentEffect?.changes?.find((c) => keys.includes(c.key))?.value?.split(/\s*,\s*/) ?? []).map((u) =>
+      u?.trim()
+    );
+  }
+
+  /**
+   * Returns the self enchantment activation message from the enchantment AE.
+   *
+   * @param {ActiveEffect} enchantmentEffect - The self enchantment AE.
+   * @param {boolean} activation - Flag to indicate which version fo the message to get.
+   * @returns {string|undefined} The activation or deactivation message for this enchantment if any is specified.
+   */
+  function getSelfEnchantmentActivationMessage(enchantmentEffect, activation) {
+    const partialFlag = `elwinHelpers.selfEnchant.msg.${activation ? 'activation' : 'deactivation'}`;
+    const keys = [`flags.${WORLD_MODULE_ID}.${partialFlag}`, `flags.${MISC_MODULE_ID}.${partialFlag}`];
+    return enchantmentEffect?.changes?.find((c) => keys.includes(c.key))?.value;
+  }
+
+  /**
+   * Returns the selected enchantment profile for automated enchantment application.
+   * To be used when disableManualEnchantmentPlacingOnUsePreItemRoll is set on the item.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  function getAutomatedEnchantmentSelectedProfile(workflow) {
+    if (workflow.activity?.type !== 'enchant') {
+      return undefined;
+    }
+    const enchantmentProfile = workflow.elwinOptions?.enchantmentProfile;
+    return enchantmentProfile
+      ? workflow.activity?.effects.find((e) => e._id === enchantmentProfile)
+      : workflow.activity?.effects?.[0];
+  }
+
+  /**
+   * Applies programmatically an enchantment to the specified item.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   * @param {object} enchantmentEffectData - The enchantment effect data to apply.
+   * @param {Item5e} itemToEnchant- The item to enchant.
+   * @param {boolean} deleteExisting=true - Deletes any existing enchantment having workflow.activity.uuid as origin.
+   * @returns {ActiveEffect5e} The applied enchantment effect.
+   */
+  async function applyEnchantmentToItem(workflow, enchantmentEffectData, itemToEnchant, deleteExisting = true) {
+    // Removes previous enchantment if it exists
+    if (deleteExisting) {
+      await elwinHelpers.deleteAppliedEnchantments(workflow.activity.uuid);
+    }
+
+    // Set current activity has the origin
+    enchantmentEffectData.origin = workflow.activity.uuid;
+
+    // Add enchantment to item
+    const itemCard = game.messages.get(workflow.itemCardId);
+    if (!itemCard) {
+      console.error(`${MACRO_NAME} | Item chat message could not be found.`, { workflow });
+      return;
+    }
+    // We need set temporarely the profile just to allow the enchantment to be properly created with riders,
+    // it's the only way to make it work with items that are destroyed, we cannot leave it, otherwise the drop
+    // area will be displayed.
+    foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', enchantmentEffectData._id);
+    try {
+      return await ActiveEffect.implementation.create(enchantmentEffectData, {
+        parent: itemToEnchant,
+        keepOrigin: true,
+        chatMessageOrigin: workflow.itemCardId,
+      });
+    } finally {
+      foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', null);
+      // Force message ui update, because it can happen that an update of the the item card occurs during the time
+      // the enchantmentProfile is set, which renders the enchantmentEnricher (drop area), this forces it to be removed.
+      await ui.chat.updateMessage(itemCard);
+    }
+  }
+
+  /**
+   * Returns a list of equipped melee weapons for a specified actor.
+   *
+   * @param {Actor5e} sourceActor - Actor for which to list equipped melee weapons.
+   * @returns {Item5e[]} A list of equipped melee weapons.
+   */
+  function getEquippedMeleeWeapons(sourceActor) {
+    return (
+      sourceActor?.itemTypes.weapon.filter(
+        (w) =>
+          w.system.equipped &&
+          ['simpleM', 'martialM'].includes(w.system.type?.value) &&
+          w.system.activities
+            ?.getByType('attack')
+            .some((a) => a.attack.type.value === 'melee' && a.attack.type.classification === 'weapon')
+      ) ?? []
+    );
+  }
+
+  /**
+   * Returns `modern` or `legacy` depending on the specified item rules version.
+   *
+   * @param {Item5e} item - The item for which to determine the rules version.
+   * @returns {string} 'legacy' or 'modern' depending on the item's source rules.
+   */
+  function getRules(item) {
+    return ['2014', ''].includes(item.system?.source?.rules ?? '') ? 'legacy' : 'modern';
+  }
+
+  /**
+   * Registers a callback on an event for the duration of the specified workflow.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   * @param {string} event - Name of the event on which to hook the callback.
+   * @param {function} callback - The function to be executed when the event is triggered.
+   * @param {string} macroId - Identifier of the macro that registers a callback.
+   */
+  function registerWorkflowHook(workflow, event, callback, macroId) {
+    if (!macroId) {
+      // Use default, which may not always be the desired value,
+      // but it's the safest value to not break existing items using this function.
+      macroId = 'default';
+    }
+    const elwinHelpersHooks = foundry.utils.getProperty(workflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
+    const firstHook = foundry.utils.isEmpty(elwinHelpersHooks);
+    if (elwinHelpersHooks[event]?.[macroId]) {
+      // A hook for this event has already been registered for this workflow, remove previous
+      Hooks.off(event, elwinHelpersHooks[event][macroId]);
+    }
+    elwinHelpersHooks[event] ??= {};
+    elwinHelpersHooks[event][macroId] = Hooks.on(event, callback);
+    foundry.utils.setProperty(workflow, 'workflowOptions.elwinHelpers.hooks', elwinHelpersHooks);
+    if (firstHook) {
+      const eventUuid = workflow.activity?.uuid ?? workflow.item?.uuid;
+      Hooks.once(`midi-qol.postCleanup${eventUuid ? '.' + eventUuid : ''}`, (currentWorkflow) => {
+        const tmpElwinHelpersHooks =
+          foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
+        for (let tmpEvent of Object.keys(tmpElwinHelpersHooks)) {
+          for (let tmpMacroId of Object.keys(tmpElwinHelpersHooks[tmpEvent])) {
+            Hooks.off(tmpEvent, tmpElwinHelpersHooks[tmpEvent][tmpMacroId]);
+          }
+        }
+        delete foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers')?.hooks;
+      });
     }
   }
 
@@ -2575,55 +2439,30 @@ export function runElwinsHelpers() {
           continue;
         }
         const ctx = {};
-        ctx.selected =
-          defaultItem && defaultItem.id === item.id ? ' checked' : '';
-        if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-          if (item.system.attunement) {
-            ctx.attunement = item.system.attuned
-              ? {
-                  cls: 'attuned',
-                  title: game.i18n.localize('DND5E.AttunementAttuned'),
-                }
-              : {
-                  cls: 'not-attuned',
-                  title: game.i18n.localize(
-                    CONFIG.DND5E.attunementTypes[item.system.attunement]
-                  ),
-                };
-          }
-        } else {
-          ctx.attunement = {
-            [CONFIG.DND5E.attunementTypes.REQUIRED]: {
-              cls: '',
-              tooltip: game.i18n.localize('DND5E.AttunementRequired'),
-            },
-            [CONFIG.DND5E.attunementTypes.ATTUNED]: {
-              cls: 'active',
-              tooltip: game.i18n.localize('DND5E.AttunementAttuned'),
-            },
-          }[item.system.attunement];
+        ctx.selected = defaultItem && defaultItem.id === item.id ? ' checked' : '';
+        if (item.system.attunement) {
+          ctx.attunement = item.system.attuned
+            ? {
+                cls: 'attuned',
+                title: game.i18n.localize('DND5E.AttunementAttuned'),
+              }
+            : {
+                cls: 'not-attuned',
+                title: game.i18n.localize(CONFIG.DND5E.attunementTypes[item.system.attunement]),
+              };
         }
         if ('equipped' in item.system) {
           ctx.equip = {
             cls: item.system.equipped ? 'active' : '',
-            tooltip: game.i18n.localize(
-              item.system.equipped ? 'DND5E.Equipped' : 'DND5E.Unequipped'
-            ),
+            tooltip: game.i18n.localize(item.system.equipped ? 'DND5E.Equipped' : 'DND5E.Unequipped'),
           };
         }
-        ctx.quantity =
-          item.type === 'consumable' ? `[${item.system.quantity}]` : '';
-        ctx.subtitle = [
-          item.system.type?.label,
-          item.isActive ? item.labels.activation : null,
-        ].filterJoin(' &bull; ');
+        ctx.quantity = item.type === 'consumable' ? `[${item.system.quantity}]` : '';
+        ctx.subtitle = [item.system.type?.label, item.isActive ? item.labels.activation : null].filterJoin(' &bull; ');
         ctx.tags =
           item.labels.properties
             ?.filter((prop) => prop.icon)
-            .map(
-              (prop) =>
-                `<span aria-label="${prop.label}"><dnd5e-icon src="${prop.icon}"></dnd5e-icon></span>`
-            )
+            .map((prop) => `<span aria-label="${prop.label}"><dnd5e-icon src="${prop.icon}"></dnd5e-icon></span>`)
             .join(' ') ?? '';
 
         itemContent += `
@@ -2774,9 +2613,7 @@ export function runElwinsHelpers() {
                 icon: '<i class="fas fa-check"></i>',
                 label: 'Select',
                 callback: (html) => {
-                  const selectedItemId = html.find(
-                    "input[type='radio'][name='item']:checked"
-                  )[0]?.value;
+                  const selectedItemId = html.find("input[type='radio'][name='item']:checked")[0]?.value;
                   resolve(items.find((t) => t.id === selectedItemId));
                 },
               },
@@ -2821,8 +2658,7 @@ export function runElwinsHelpers() {
         if (!token?.id) {
           continue;
         }
-        const selected =
-          defaultToken && defaultToken.id === token.id ? ' checked' : '';
+        const selected = defaultToken && defaultToken.id === token.id ? ' checked' : '';
         const tokenImg = await getTokenImage(token);
         const tokenName = MidiQOL.getTokenPlayerName(token, true);
         tokenContent += `<div style="flex-grow: 1"><label class="radio-label">
@@ -2894,14 +2730,11 @@ export function runElwinsHelpers() {
         let imgs = html[0].getElementsByTagName('img');
         for (let i of imgs) {
           i.style.border = 'none';
-          i.closest('.radio-label').addEventListener(
-            'click',
-            async function () {
-              const token = getToken(i.id);
-              //@ts-expect-error .ping
-              if (token) await canvas?.ping(token.center);
-            }
-          );
+          i.closest('.radio-label').addEventListener('click', async function () {
+            const token = getToken(i.id);
+            //@ts-expect-error .ping
+            if (token) await canvas?.ping(token.center);
+          });
           i.closest('.radio-label').addEventListener('mouseover', function () {
             const token = getToken(i.id);
             if (token) {
@@ -2947,9 +2780,7 @@ export function runElwinsHelpers() {
                 icon: '<i class="fas fa-check"></i>',
                 label: 'Select', // TODO localize
                 callback: (html) => {
-                  const selectedTokenId = html.find(
-                    "input[type='radio'][name='token']:checked"
-                  )[0]?.value;
+                  const selectedTokenId = html.find("input[type='radio'][name='token']:checked")[0]?.value;
                   resolve(tokens.find((t) => t.id === selectedTokenId));
                 },
               },
@@ -3019,20 +2850,14 @@ export function runElwinsHelpers() {
     };
 
     return await Dialog.wait(
-      {
-        title: data.title,
-        content: data.content ?? '',
-        buttons,
-        render,
-        close: () => null,
-      },
+      { title: data.title, content: data.content ?? '', buttons, render, close: () => null },
       { classes: ['dnd5e', 'dialog'], height: '100%', ...data.options },
       {}
     );
   }
 
   /**
-   * Helper function to create a simple dialog with labeled buttons and associated data.
+   * Helper function to create a simple remote dialog with labeled buttons and associated data displayed to the specified user.
    *
    * @param {object} data - The dialog's data.
    * @param {{label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
@@ -3044,12 +2869,7 @@ export function runElwinsHelpers() {
    * @returns {object} the value associated to the selected button.
    */
   async function remoteButtonDialog(userId, data, direction) {
-    return globalThis.elwinHelpers.socket.executeAsUser(
-      'elwinHelpers.remoteButtonDialog',
-      userId,
-      data,
-      direction
-    );
+    return globalThis.elwinHelpers.socket.executeAsUser('elwinHelpers.remoteButtonDialog', userId, data, direction);
   }
 
   /**
@@ -3080,48 +2900,26 @@ export function runElwinsHelpers() {
     if (segments.length === 0) {
       return undefined;
     }
-    const segmentDistances = simpleMeasureDistances(segments, {
-      gridSpaces: true,
-    });
+    const segmentDistances = simpleMeasureDistances(segments, { gridSpaces: true });
     if (MidiQOL.configSettings()?.optionalRules.distanceIncludesHeight) {
-      const heightDifference = calculateTokeHeightDifference(
-        sourceToken,
-        targetToken
-      );
+      const heightDifference = calculateTokeHeightDifference(sourceToken, targetToken);
       segmentDistances.forEach(
-        (distance, index, arr) =>
-          (arr[index] = getDistanceAdjustedByVerticalDist(
-            distance,
-            heightDifference
-          ))
+        (distance, index, arr) => (arr[index] = getDistanceAdjustedByVerticalDist(distance, heightDifference))
       );
     }
     if (debug) {
-      console.warn(
-        `${MACRO_NAME} | getAttackSegment (simpleMeasureDistances)`,
-        {
-          segments,
-          segmentDistances,
-        }
-      );
+      console.warn(`${MACRO_NAME} | getAttackSegment (simpleMeasureDistances)`, {
+        segments,
+        segmentDistances,
+      });
     }
-    const idxShortestSegment = segmentDistances.indexOf(
-      Math.min(...segmentDistances)
-    );
+    const idxShortestSegment = segmentDistances.indexOf(Math.min(...segmentDistances));
     if (idxShortestSegment < 0) {
       return undefined;
     }
-    const targetRect = new PIXI.Rectangle(
-      targetToken.x,
-      targetToken.y,
-      targetToken.w,
-      targetToken.h
-    ).getBounds();
+    const targetRect = new PIXI.Rectangle(targetToken.x, targetToken.y, targetToken.w, targetToken.h).getBounds();
     const targetRay = segments[idxShortestSegment].ray;
-    const intersectSegments = targetRect.segmentIntersections(
-      targetRay.A,
-      targetRay.B
-    );
+    const intersectSegments = targetRect.segmentIntersections(targetRay.A, targetRay.B);
     if (debug) {
       console.warn(`${MACRO_NAME} | getAttackSegment (insersectSegments)`, {
         targetRect,
@@ -3146,10 +2944,7 @@ export function runElwinsHelpers() {
    */
   function getDistanceSegments(t1, t2, wallBlocking = false) {
     const actor = t1.actor;
-    const ignoreWallsFlag = foundry.utils.getProperty(
-      actor,
-      'flags.midi-qol.ignoreWalls'
-    );
+    const ignoreWallsFlag = foundry.utils.getProperty(actor, 'flags.midi-qol.ignoreWalls');
     if (ignoreWallsFlag) {
       wallBlocking = false;
     }
@@ -3179,16 +2974,12 @@ export function runElwinsHelpers() {
             );
             const r = new Ray(origin, dest);
             if (wallBlocking) {
-              const collisionCheck =
-                CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
-                  mode: 'any',
-                  type: 'move',
-                });
+              const collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
+                mode: 'any',
+                type: 'move',
+              });
               if (debug) {
-                console.warn(`${MACRO_NAME} | getDistanceSegments`, {
-                  segment: { ray: r },
-                  collisionCheck,
-                });
+                console.warn(`${MACRO_NAME} | getDistanceSegments`, { segment: { ray: r }, collisionCheck });
               }
               if (collisionCheck) {
                 continue;
@@ -3212,10 +3003,7 @@ export function runElwinsHelpers() {
    * @return {number[]} Array of distances for each segment.
    */
   function simpleMeasureDistances(segments, options = {}) {
-    if (
-      canvas?.grid?.grid.constructor.name !== 'BaseGrid' ||
-      !options.gridSpaces
-    ) {
+    if (canvas?.grid?.grid.constructor.name !== 'BaseGrid' || !options.gridSpaces) {
       const distances = canvas?.grid?.measureDistances(segments, options);
       return distances;
     }
@@ -3244,8 +3032,7 @@ export function runElwinsHelpers() {
 
       if (rule === '5105') {
         // Alternative DMG Movement
-        const nd10 =
-          Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
+        const nd10 = Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
         const spaces = nd10 * 2 + (nd - nd10) + ns;
         return spaces * d.distance;
       } else if (rule === 'EUCL') {
@@ -3272,13 +3059,9 @@ export function runElwinsHelpers() {
     const t1Elevation = t1.document.elevation ?? 0;
     const t2Elevation = t2.document.elevation ?? 0;
     const t1TopElevation =
-      t1Elevation +
-      Math.max(t1.document.height, t1.document.width) *
-        (canvas?.dimensions?.distance ?? 5);
+      t1Elevation + Math.max(t1.document.height, t1.document.width) * (canvas?.dimensions?.distance ?? 5);
     const t2TopElevation =
-      t2Elevation +
-      Math.min(t2.document.height, t2.document.width) *
-        (canvas?.dimensions?.distance ?? 5); // assume t2 is trying to make itself small
+      t2Elevation + Math.min(t2.document.height, t2.document.width) * (canvas?.dimensions?.distance ?? 5); // assume t2 is trying to make itself small
 
     let heightDifference = 0;
     if (
@@ -3289,14 +3072,10 @@ export function runElwinsHelpers() {
       heightDifference = 0;
     } else if (t1Elevation < t2Elevation) {
       // t2 above t1
-      heightDifference =
-        Math.max(0, t2Elevation - t1TopElevation) +
-        (canvas?.dimensions?.distance ?? 5);
+      heightDifference = Math.max(0, t2Elevation - t1TopElevation) + (canvas?.dimensions?.distance ?? 5);
     } else if (t1Elevation > t2Elevation) {
       // t1 above t2
-      heightDifference =
-        Math.max(0, t1Elevation - t2TopElevation) +
-        (canvas?.dimensions?.distance ?? 5);
+      heightDifference = Math.max(0, t1Elevation - t2TopElevation) + (canvas?.dimensions?.distance ?? 5);
     }
 
     return heightDifference;
@@ -3322,9 +3101,7 @@ export function runElwinsHelpers() {
         distance = distance + Math.floor(nd / 2 / dimension) * dimension;
       }
     } else {
-      distance = Math.sqrt(
-        vertDistance * vertDistance + horizDistance * horizDistance
-      );
+      distance = Math.sqrt(vertDistance * vertDistance + horizDistance * horizDistance);
     }
     return distance;
   }
@@ -3339,25 +3116,15 @@ export function runElwinsHelpers() {
    *
    * @returns {{x: number, y: number}} the position where to move the token so its border is next to the specified point.
    */
-  function getMoveTowardsPosition(
-    token,
-    point,
-    options = { snapToGrid: true }
-  ) {
+  function getMoveTowardsPosition(token, point, options = { snapToGrid: true }) {
     const moveTowardsRay = new Ray(token.center, point);
-    const tokenIntersects = token.bounds.segmentIntersections(
-      moveTowardsRay.A,
-      moveTowardsRay.B
-    );
+    const tokenIntersects = token.bounds.segmentIntersections(moveTowardsRay.A, moveTowardsRay.B);
     if (!tokenIntersects?.length) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | getMoveTowardsPosition no segmentIntersections found`,
-          {
-            tokenBounds: token.bounds,
-            moveTowardsRay,
-          }
-        );
+        console.warn(`${MACRO_NAME} | getMoveTowardsPosition no segmentIntersections found`, {
+          tokenBounds: token.bounds,
+          moveTowardsRay,
+        });
       }
       return undefined;
     }
@@ -3368,26 +3135,15 @@ export function runElwinsHelpers() {
       moveTowardsRay.B,
       moveTowardsRay.distance - centerToBounds.distance
     );
-    const tokenPos = {
-      x: rayToCenter.B.x - token.w / 2,
-      y: rayToCenter.B.y - token.h / 2,
-    };
+    const tokenPos = { x: rayToCenter.B.x - token.w / 2, y: rayToCenter.B.y - token.h / 2 };
     let tokenPosSnapped = undefined;
     if (options?.snapToGrid && canvas.grid.type !== CONST.GRID_TYPES.GRIDLESS) {
       const isTiny = token.document.width < 1 && token.document.height < 1;
       const interval = canvas.grid.isHex ? 1 : isTiny ? 2 : 1;
-      tokenPosSnapped = canvas.grid.getSnappedPosition(
-        tokenPos.x,
-        tokenPos.y,
-        interval,
-        { token }
-      );
+      tokenPosSnapped = canvas.grid.getSnappedPosition(tokenPos.x, tokenPos.y, interval, { token });
     }
     if (debug) {
-      console.warn(`${MACRO_NAME} | getMoveTowardsPosition`, {
-        tokenPos,
-        tokenPosSnapped,
-      });
+      console.warn(`${MACRO_NAME} | getMoveTowardsPosition`, { tokenPos, tokenPosSnapped });
     }
     return tokenPosSnapped ? tokenPosSnapped : tokenPos;
   }
@@ -3407,27 +3163,14 @@ export function runElwinsHelpers() {
    * @returns {{pos: {x: number, y: number}, occupied: boolean}} the token's preferred final destination with a flag to indicate if its already occupied by another token.
    */
   function findMovableSpaceNearDest(token, destPos, nearToken) {
-    const tokenInitialDestBounds = new PIXI.Rectangle(
-      destPos.x,
-      destPos.y,
-      token.w,
-      token.h
-    ).getBounds();
-    if (
-      token.checkCollision(tokenInitialDestBounds.center, {
-        type: 'move',
-        mode: 'any',
-      })
-    ) {
+    const tokenInitialDestBounds = new PIXI.Rectangle(destPos.x, destPos.y, token.w, token.h).getBounds();
+    if (token.checkCollision(tokenInitialDestBounds.center, { type: 'move', mode: 'any' })) {
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | findMovableSpaceNearDest (wall collision initial destination)`,
-          {
-            tokenCenterPos: token.center,
-            tokenDestCenterPos: tokenInitialDestBounds.center,
-            wallCollision: true,
-          }
-        );
+        console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (wall collision initial destination)`, {
+          tokenCenterPos: token.center,
+          tokenDestCenterPos: tokenInitialDestBounds.center,
+          wallCollision: true,
+        });
       }
       return undefined;
     }
@@ -3443,11 +3186,7 @@ export function runElwinsHelpers() {
       gridDistance = isTiny ? 1 : size;
     }
 
-    const posGen = nearbyPositionsGenerator(
-      destPos,
-      gridIncrement,
-      gridDistance
-    );
+    const posGen = nearbyPositionsGenerator(destPos, gridIncrement, gridDistance);
 
     let nearTokenShape = undefined;
     if (nearToken) {
@@ -3458,10 +3197,7 @@ export function runElwinsHelpers() {
           nearToken.document.height,
           CONFIG.Canvas.objectBorderThickness
         );
-        nearTokenShape = new PIXI.Polygon(points).translate(
-          nearToken.x,
-          nearToken.y
-        );
+        nearTokenShape = new PIXI.Polygon(points).translate(nearToken.x, nearToken.y);
       } else {
         nearTokenShape = nearToken.bounds;
       }
@@ -3479,10 +3215,7 @@ export function runElwinsHelpers() {
           o.t.document.height,
           -CONFIG.Canvas.objectBorderThickness
         );
-        const currentTokenShape = new PIXI.Polygon(points).translate(
-          o.t.x,
-          o.t.y
-        );
+        const currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
         return currentTokenShape.overlaps(token.testCollisitionShape);
       };
     }
@@ -3492,72 +3225,39 @@ export function runElwinsHelpers() {
 
     while (!(testIter = posGen.next()).done) {
       const testPos = testIter.value;
-      const testPosSnapped = canvas.grid.getSnappedPosition(
-        testPos.x,
-        testPos.y,
-        interval,
-        { token }
-      );
+      const testPosSnapped = canvas.grid.getSnappedPosition(testPos.x, testPos.y, interval, { token });
       let adjTargetShape;
       let adjTargetForNeighborTestShape;
 
       if (canvas.grid.isHex) {
         if (isTiny) {
           // For Tiny in hex grid we use a complete grid space to test touches near token
-          const tmpPos = canvas.grid.getSnappedPosition(
-            testPos.x,
-            testPos.y,
-            interval
-          );
+          const tmpPos = canvas.grid.getSnappedPosition(testPos.x, testPos.y, interval);
           const tmpPoints = canvas.grid.grid.getBorderPolygon(1, 1, 0);
-          adjTargetForNeighborTestShape = new PIXI.Polygon(tmpPoints).translate(
-            tmpPos.x,
-            tmpPos.y
-          );
+          adjTargetForNeighborTestShape = new PIXI.Polygon(tmpPoints).translate(tmpPos.x, tmpPos.y);
         }
-        const points = canvas.grid.grid.getBorderPolygon(
-          token.document.width,
-          token.document.height,
-          0
-        );
-        adjTargetShape = new PIXI.Polygon(points).translate(
-          testPosSnapped.x,
-          testPosSnapped.y
-        );
+        const points = canvas.grid.grid.getBorderPolygon(token.document.width, token.document.height, 0);
+        adjTargetShape = new PIXI.Polygon(points).translate(testPosSnapped.x, testPosSnapped.y);
       } else {
-        adjTargetShape = new PIXI.Rectangle(
-          testPosSnapped.x,
-          testPosSnapped.y,
-          token.w,
-          token.h
-        ).getBounds();
+        adjTargetShape = new PIXI.Rectangle(testPosSnapped.x, testPosSnapped.y, token.w, token.h).getBounds();
       }
 
-      const paddedAdjTargetShape = adjTargetShape
-        .clone()
-        .pad(-CONFIG.Canvas.objectBorderThickness);
+      const paddedAdjTargetShape = adjTargetShape.clone().pad(-CONFIG.Canvas.objectBorderThickness);
       const paddedAdjTargetBounds =
-        paddedAdjTargetShape instanceof PIXI.Rectangle
-          ? paddedAdjTargetShape
-          : paddedAdjTargetShape.getBounds();
+        paddedAdjTargetShape instanceof PIXI.Rectangle ? paddedAdjTargetShape : paddedAdjTargetShape.getBounds();
 
       let touchesNearToken = true;
       let insideNearToken = false;
       if (nearToken) {
         adjTargetForNeighborTestShape ??= adjTargetShape;
-        touchesNearToken = nearTokenShape.overlaps(
-          adjTargetForNeighborTestShape
-        );
+        touchesNearToken = nearTokenShape.overlaps(adjTargetForNeighborTestShape);
         insideNearToken = nearTokenShape.overlaps(paddedAdjTargetShape);
       }
       if (debug) {
         console.warn(`${MACRO_NAME} | findMovableSpaceNearDest iter`, {
           testPos,
           testPosSnapped,
-          testGrid: canvas.grid.grid.getGridPositionFromPixels(
-            testPosSnapped.x,
-            testPosSnapped.y
-          ),
+          testGrid: canvas.grid.grid.getGridPositionFromPixels(testPosSnapped.x, testPosSnapped.y),
           touchesNearToken,
           insideNearToken,
           nearTokenShape,
@@ -3577,35 +3277,27 @@ export function runElwinsHelpers() {
       });
       if (wallCollision) {
         if (debug) {
-          console.warn(
-            `${MACRO_NAME} | findMovableSpaceNearDest (wall collision)`,
-            {
-              testPos,
-              testPosCenter,
-              origin: token.center,
-              wallCollision,
-            }
-          );
+          console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (wall collision)`, {
+            testPos,
+            testPosCenter,
+            origin: token.center,
+            wallCollision,
+          });
         }
         continue;
       }
       // Set shape on current token to be used by grid collision test
       token.testCollisitionShape = paddedAdjTargetShape;
-      const overlappingTokens = quadtree.getObjects(paddedAdjTargetBounds, {
-        collisionTest,
-      });
+      const overlappingTokens = quadtree.getObjects(paddedAdjTargetBounds, { collisionTest });
       if (debug) {
-        console.warn(
-          `${MACRO_NAME} | findMovableSpaceNearDest (token collision)`,
-          {
-            testPos,
-            testPosSnapped,
-            testPosCenter,
-            origin: token.center,
-            tokenCollision: !!overlappingTokens.size,
-            overlappingTokens,
-          }
-        );
+        console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (token collision)`, {
+          testPos,
+          testPosSnapped,
+          testPosCenter,
+          origin: token.center,
+          tokenCollision: !!overlappingTokens.size,
+          overlappingTokens,
+        });
       }
       if (overlappingTokens.size) {
         // Location occupied by other token keep it in case no other not blocked by wall found
@@ -3639,15 +3331,8 @@ export function runElwinsHelpers() {
    *
    * @returns the generator function of positions around the specific startingPoint.
    */
-  function* nearbyPositionsGenerator(
-    startingPoint,
-    gridIncrement,
-    gridDistance
-  ) {
-    const gridLoc = canvas.grid.grid.getGridPositionFromPixels(
-      startingPoint.x,
-      startingPoint.y
-    );
+  function* nearbyPositionsGenerator(startingPoint, gridIncrement, gridDistance) {
+    const gridLoc = canvas.grid.grid.getGridPositionFromPixels(startingPoint.x, startingPoint.y);
     // Adjust starting location for partial grid distance increment on square grids only
     if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
       const dim = canvas.dimensions.size;
@@ -3724,20 +3409,12 @@ export function runElwinsHelpers() {
    * @param {Token5e} reactionToken - The token for which to register third party reactions.
    * @param {OnUseMacros} onUseMacros - On use macros of the token matching the current trigger from which to extract the reaction data.
    */
-  async function registerThirdPartyReactions(
-    workflow,
-    reactionToken,
-    onUseMacros
-  ) {
+  async function registerThirdPartyReactions(workflow, reactionToken, onUseMacros) {
     if (!onUseMacros?.length) {
       return;
     }
     if (debug) {
-      console.warn(`${MACRO_NAME} | registerThirdPartyReactions.`, {
-        workflow,
-        reactionToken,
-        onUseMacros,
-      });
+      console.warn(`${MACRO_NAME} | registerThirdPartyReactions.`, { workflow, reactionToken, onUseMacros });
     }
     for (let onUseMacro of onUseMacros) {
       const optionParts = onUseMacro.option.split(/\s*\|\s*/);
@@ -3767,13 +3444,7 @@ export function runElwinsHelpers() {
           }
         }
       }
-      await registerThirdPartyReaction(
-        workflow,
-        reactionToken,
-        onUseMacro.macroName,
-        targetOnUse,
-        options
-      );
+      await registerThirdPartyReaction(workflow, reactionToken, onUseMacro.macroName, targetOnUse, options);
     }
   }
 
@@ -3787,13 +3458,7 @@ export function runElwinsHelpers() {
    * @param {string} targetOnUse - The targetOnUse trigger
    * @param {TprOptions} options - Options for the reaction registration.
    */
-  async function registerThirdPartyReaction(
-    workflow,
-    reactionToken,
-    macroName,
-    targetOnUse,
-    options = {}
-  ) {
+  async function registerThirdPartyReaction(workflow, reactionToken, macroName, targetOnUse, options = {}) {
     if (debug) {
       console.warn(`${MACRO_NAME} | registerThirdPartyReaction.`, {
         workflow,
@@ -3804,45 +3469,92 @@ export function runElwinsHelpers() {
       });
     }
     if (!reactionToken?.actor) {
-      console.warn(
-        `${MACRO_NAME} | No actor for reaction token.`,
-        reactionToken
-      );
+      console.warn(`${MACRO_NAME} | No actor for reaction token.`, reactionToken);
       return;
     }
-    let reactionItem = await getItemFromMacroName(
+    let { item: reactionItem, activity: reactionActivity } = await getItemOrActivityFromMacroName(
       macroName,
-      workflow.item,
-      workflow.actor
+      reactionToken.actor
     );
-    if (options.itemUuid) {
+    if (options.activityUuid) {
+      reactionActivity = await fromUuid(options.activityUuid);
+      reactionItem = reactionActivity?.item;
+    } else if (options.itemUuid) {
       reactionItem = await fromUuid(options.itemUuid);
+      reactionActivity = undefined;
     }
 
+    // Note: cast activities and linked spell items are not supported for TPRs
+    if (reactionItem?.system.linkedActivity) {
+      console.warn(`${MACRO_NAME} | Spells linked to cast activities are not supported, skipping registration.`, {
+        workflow,
+        reactionToken,
+        macroName,
+        targetOnUse,
+        options,
+        reactionItem,
+        reactionActivity,
+      });
+      return false;
+    }
+
+    if (reactionActivity) {
+      if (!reactionActivity?.item || reactionActivity?.activation?.type !== 'reaction') {
+        console.warn(
+          `${MACRO_NAME} | Macro activity is not a reaction or does not have an item, skipping registration.`,
+          {
+            workflow,
+            reactionToken,
+            macroName,
+            targetOnUse,
+            options,
+            reactionActivity,
+          }
+        );
+        return;
+      }
+      if (reactionActivity.type === 'cast') {
+        console.warn(
+          `${MACRO_NAME} | Macro activity is a cast activity which are not supported, skipping registration.`,
+          {
+            workflow,
+            reactionToken,
+            macroName,
+            targetOnUse,
+            options,
+            reactionActivity,
+          }
+        );
+        return false;
+      }
+    }
     if (
-      !reactionItem ||
-      !reactionItem?.system?.activation?.type?.includes('reaction')
+      !reactionActivity &&
+      !reactionItem?.system?.activities?.some(
+        (activity) => activity.activation?.type === 'reaction' && activity.type !== 'cast'
+      )
     ) {
-      console.warn(
-        `${MACRO_NAME} | No reaction item found, skipping registration.`,
-        {
-          workflow,
-          reactionToken,
-          macroName,
-          targetOnUse,
-          options,
-        }
-      );
+      console.warn(`${MACRO_NAME} | No supported reaction items found, skipping registration.`, {
+        workflow,
+        reactionToken,
+        macroName,
+        targetOnUse,
+        options,
+        reactionItem,
+      });
       return;
     }
 
     workflow.thirdPartyReactions ??= {};
-    const tokenReactionsInfo = (workflow.thirdPartyReactions[
-      reactionToken.document.uuid
-    ] ??= { reactions: [] });
+    const tokenReactionsInfo = (workflow.thirdPartyReactions[reactionToken.document.uuid] ??= { reactions: [] });
     tokenReactionsInfo.reactions.push({
       token: reactionToken,
       item: reactionItem,
+      activities: reactionActivity
+        ? [reactionActivity]
+        : reactionItem.system.activities.filter(
+            (activity) => activity.activation?.type === 'reaction' && activity.type !== 'cast'
+          ),
       macroName,
       targetOnUse,
       triggerSource: options.triggerSource ?? 'target',
@@ -3859,26 +3571,36 @@ export function runElwinsHelpers() {
    * Note: this uses the same logic has MidiQOL in Workflow.callMacro.
    *
    * @param {string} macroName - Name of the macro which should be associated to an item.
-   * @param {Item5e} item - The current used item.
    * @param {Actor5e} actor - The current workflow actor.
    *
-   * @returns {Item5e} the item associated to the specifed macroName.
+   * @returns {{{Item5e} item, {Activity} activity} the item or activity associated to the specifed macroName.
    */
-  async function getItemFromMacroName(macroName, item, actor) {
+  async function getItemOrActivityFromMacroName(macroName, actor) {
     let MQItemMacroLabel = getI18n('midi-qol.ItemMacroText');
     if (MQItemMacroLabel === 'midi-qol.ItemMacroText') {
       MQItemMacroLabel = 'ItemMacro';
     }
+    let MQActivityMacroLabel = getI18n('midi-qol.ActivityMacroText');
+    if (MQActivityMacroLabel === 'midi-qol.ActivityMacroText') {
+      MQActivityMacroLabel = 'ActivityMacro';
+    }
 
     let [name, uuid] = macroName?.trim().split('|') ?? [undefined, undefined];
     let macroItem = undefined;
+    let macroActivity = undefined;
+
     if (uuid?.length > 0) {
-      macroItem = fromUuidSync(uuid);
-      if (
-        macroItem instanceof ActiveEffect &&
-        macroItem.parent instanceof Item
-      ) {
-        macroItem = macroItem.parent;
+      let macroEntity = fromUuidSync(uuid);
+      if (macroEntity) {
+        if (macroEntity instanceof ActiveEffect && macroEntity.parent instanceof Item) {
+          macroItem = macroEntity.parent;
+        } else if (macroEntity instanceof Item) {
+          macroItem = macroEntity;
+        } else if (macroEntity.item) {
+          // it points to an activity
+          macroItem = macroEntity.item;
+          macroActivity = macroEntity;
+        }
       }
     }
     if (!name) {
@@ -3886,30 +3608,81 @@ export function runElwinsHelpers() {
     }
     if (name.startsWith('function.')) {
       // Do nothing, use the macroItem UUID contained in the macroName
-    } else if (
-      name.startsWith(MQItemMacroLabel) ||
-      name.startsWith('ItemMacro')
-    ) {
-      if (name === MQItemMacroLabel || name === 'ItemMacro') {
-        if (!item) {
-          return undefined;
-        }
-        macroItem = item;
+    } else if (name.startsWith(MQItemMacroLabel) || name.startsWith('ItemMacro')) {
+      if (name === 'ItemMacro' || name === MQItemMacroLabel) {
+        // Do nothing, use the macroItem UUID contained in the macroName
       } else {
         const parts = name.split('.');
         const itemNameOrUuid = parts.slice(1).join('.');
-        macroItem = await fromUuid(itemNameOrUuid);
+        macroItem = await fromUuid(itemNameOrUuid); // item or activity
+        if (macroItem?.item) {
+          macroActivity = macroItem;
+          macroItem = macroItem.item;
+        }
         // ItemMacro.name
         if (!macroItem) {
           macroItem = actor.items.find(
             (i) =>
               i.name === itemNameOrUuid &&
-              (foundry.utils.getProperty(i.flags, 'dae.macro') ??
-                foundry.utils.getProperty(i.flags, 'itemacro.macro'))
+              (foundry.utils.getProperty(i.flags, 'dae.macro') ?? foundry.utils.getProperty(i.flags, 'itemacro.macro'))
           );
         }
-        if (!macroItem) {
-          return undefined;
+        if (!macroItem && uuid) {
+          let itemId;
+          if (uuid.includes('Activity.')) {
+            itemId = uuid.split('.').slice(-3)[0];
+          } else {
+            itemId = uuid.split('.').slice(-1)[0];
+          }
+          const itemData = actor.effects.find((effect) => effect.flags.dae?.itemData?._id === itemId)?.flags.dae
+            .itemData;
+          if (itemData) {
+            macroItem = itemData;
+          }
+        }
+      }
+    } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith('ActivityMacro')) {
+      // ActivityMacro
+      // ActivityMacro.uuid
+      // ActivityMacro.identifier
+      // ActivityMacro.ActivityName
+      if (name === MQActivityMacroLabel || name === 'ActivityMacro') {
+        // Do nothing
+      } else {
+        const parts = name.split('.');
+        const activitySpec = parts.slice(1).join('.');
+        let itemToUse = macroItem;
+        const activityOrItem = activitySpec ? await fromUuid(activitySpec) : macroActivity;
+        if (activityOrItem instanceof Item) {
+          itemToUse = activityOrItem;
+        } else {
+          itemToUse = activityOrItem?.item ?? macroItem;
+        }
+        // ActivityMacro.name or ActivityMacro.uuid where not found by fromUuid
+        if (activityOrItem) {
+          macroActivity = activityOrItem;
+        }
+        const itemId = parts.at(-1);
+        if (!macroActivity) {
+          macroActivity = itemToUse?.system.activities?.find(
+            (activity) => activity.identifier === itemId && activity.macro?.command
+          );
+        }
+        if (!macroActivity) {
+          macroActivity = itemToUse?.system.activities?.find(
+            (activity) => activity._id === itemId && activity.macro?.command
+          );
+        }
+        if (!macroActivity) {
+          macroActivity = itemToUse?.system.activities?.find(
+            (activity) => activity.name === itemId && activity.macro?.command
+          );
+        }
+        if (!macroActivity && activityOrItem instanceof Item) {
+          const activity = itemToUse?.system.activities?.contents[0];
+          macroActivity ??= activity?.macro.command ? activity : undefined;
+        } else if (!macroActivity) {
+          macroActivity ??= activityOrItem?.macro.command ? activityOrItem : undefined;
         }
       }
     } else {
@@ -3923,11 +3696,63 @@ export function runElwinsHelpers() {
         if (itemOrMacro instanceof Item) {
           macroItem = itemOrMacro;
         } else if (itemOrMacro instanceof Macro) {
-          return undefined;
+          // Do nothing, use
         }
       }
     }
-    return macroItem;
+    return { item: macroActivity ? macroActivity.item : macroItem, activity: macroActivity };
+  }
+
+  async function checkActivityUsage(activity, maxCastLevel, usedReaction) {
+    if (!activity) {
+      return false;
+    }
+    const item = activity.item;
+
+    if ((activity.activation?.value ?? 1) > 0 && usedReaction) {
+      if (debug) {
+        console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: reaction used and cost not zero.`);
+      }
+      return false; // TODO can't specify 0 cost reactions in dnd5e 4.x - have to find another way
+    }
+
+    if (!item.system.attuned && item.system.attunement === 'required') {
+      if (debug) {
+        console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: item not attuned.`);
+      }
+      return false;
+    }
+
+    // Note: third party reactions on cast activities are not supported, they are filtered on registration
+    let isValid = false;
+    if (item.type === 'spell') {
+      if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
+        isValid = true;
+      } else if (['atwill', 'innate'].includes(item.system.preparation.mode)) {
+        isValid = true;
+      } else if (item.system.level === 0) {
+        isValid = true;
+      } else if (item.system.preparation?.prepared !== true && item.system.preparation?.mode === 'prepared') {
+        if (debug) {
+          console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: spell not prepared.`);
+        }
+        return false;
+      } else if (item.system.level <= maxCastLevel) {
+        isValid = true;
+      }
+    } else {
+      const config = activity._prepareUsageConfig({ create: false });
+      const canUse = await activity._prepareUsageUpdates(config, { returnErrors: true });
+      if (canUse instanceof Array) {
+        // insufficent uses available
+        if (debug) {
+          console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: insufficent uses available.`);
+        }
+        return false;
+      }
+      isValid = true;
+    }
+    return isValid;
   }
 
   //----------------------------------
@@ -3995,17 +3820,11 @@ export function runElwinsHelpers() {
    */
   async function getTokenImage(token) {
     let img = token.document?.texture.src ?? token.actor?.img;
-    if (
-      MidiQOL.configSettings().usePlayerPortrait &&
-      token.actor?.type === 'character'
-    ) {
+    if (MidiQOL.configSettings().usePlayerPortrait && token.actor?.type === 'character') {
       img = token.actor?.img ?? token.document?.texture.src;
     }
     if (VideoHelper.hasVideoExtension(img ?? '')) {
-      img = await game.video.createThumbnail(img ?? '', {
-        width: 100,
-        height: 100,
-      });
+      img = await game.video.createThumbnail(img ?? '', { width: 100, height: 100 });
     }
     return img;
   }
@@ -4035,314 +3854,6 @@ export function runElwinsHelpers() {
       }
     }
     return pactLevel;
-  }
-
-  function itemReaction(item, triggerType, maxLevel, onlyZeroCost) {
-    if (MidiQOL.itemReaction && MidiQOL.enableNotifications) {
-      try {
-        MidiQOL.enableNotifications(false);
-        return MidiQOL.itemReaction(item, triggerType, maxLevel, onlyZeroCost);
-      } finally {
-        MidiQOL.enableNotifications(true);
-      }
-    }
-
-    if (!item.system.activation?.type?.includes('reaction')) {
-      return false;
-    }
-    if (item.system.activation?.cost > 0 && onlyZeroCost) {
-      return false;
-    }
-    if (item.type === 'spell') {
-      if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
-        return true;
-      }
-      if (item.system.preparation?.mode === 'atwill') {
-        return true;
-      }
-      if (item.system.level === 0) {
-        return true;
-      }
-      if (
-        item.system.preparation?.prepared !== true &&
-        item.system.preparation?.mode === 'prepared'
-      ) {
-        return false;
-      }
-      if (item.system.preparation?.mode !== 'innate') {
-        return item.system.level <= maxLevel;
-      }
-    }
-    if (foundry.utils.isNewerVersion(game.system.version, '3.2')) {
-      if (!item.system.attuned && item.system.attunement === 'required') {
-        return false;
-      }
-    } else {
-      if (item.system.attunement === CONFIG.DND5E.attunementTypes.REQUIRED) {
-        return false;
-      }
-    }
-
-    if (
-      !checkUsage(item, {
-        consumeUsage: item.hasLimitedUses,
-        consumeResource: item.hasResource,
-        slotLevel: false,
-      })
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  //----------------------------------
-  // Adapted from dnd5e because Item5e._getUsageUpdates displays ui notifications.
-
-  /**
-   * Verify that the consumed resources used by an Item are available.
-   * If required resources are not available return false.
-   * *Note:* based on dnd5e Item5e._getUsageUpdates
-   *
-   * @param {Item5e} item - The item for which to validation usage.
-   * @param {ItemUseConfiguration} config - Configuration data for an item usage.
-   * @returns {boolean} Returns false if an item cannot be used.
-   */
-  function checkUsage(item, config) {
-    // Consume own limited uses or recharge
-    if (config.consumeUsage) {
-      const canConsume = canConsumeUses(item);
-      if (canConsume === false) {
-        return false;
-      }
-    }
-
-    // Consume Limited Resource
-    if (config.consumeResource) {
-      const canConsume = canConsumeResource(item, config);
-      if (canConsume === false) {
-        return false;
-      }
-    }
-
-    // Consume Spell Slots
-    if (config.consumeSpellSlot) {
-      const spellData = item.actor?.system.spells ?? {};
-      const level = spellData[config.slotLevel];
-      const spells = Number(level?.value ?? 0);
-      if (spells === 0) {
-        const isLeveled = /spell\d+/.test(config.slotLevel || '');
-        const labelKey = isLeveled
-          ? `DND5E.SpellLevel${this.system.level}`
-          : `DND5E.SpellProg${config.slotLevel?.capitalize()}`;
-        const label = game.i18n.localize(labelKey);
-        if (debug) {
-          console.warn(
-            `${MACRO_NAME} | ${game.i18n.format('DND5E.SpellCastNoSlots', {
-              name: item.name,
-              level: label,
-            })}`
-          );
-        }
-        return false;
-      }
-    }
-
-    // Determine whether the item can be used by testing for available concentration.
-    if (config.beginConcentrating) {
-      const { effects } = item.actor.concentration;
-
-      // Case 1: Replacing.
-      if (config.endConcentration) {
-        const replacedEffect = effects.find(
-          (i) => i.id === config.endConcentration
-        );
-        if (!replacedEffect) {
-          if (debug) {
-            console.warn(
-              `${MACRO_NAME} | ${game.i18n.localize(
-                'DND5E.ConcentratingMissingItem'
-              )}`
-            );
-          }
-          return false;
-        }
-      }
-
-      // Case 2: Starting concentration, but at limit.
-      else if (
-        effects.size >= item.actor.system.attributes.concentration.limit
-      ) {
-        if (debug) {
-          console.warn(
-            `${MACRO_NAME} | ${game.i18n.localize(
-              'DND5E.ConcentratingLimited'
-            )}`
-          );
-        }
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Validates if consuming an item's uses or recharge is possible.
-   * *Note:* based on Item5e._handleConsumeUses
-   *
-   * @param {Item5e} item The item for which to validate uses consumption.
-   * @returns {boolean}   Return false to block further progress, or return true to continue.
-   */
-  function canConsumeUses(item) {
-    const recharge = item.system.recharge || {};
-    const uses = item.system.uses || {};
-    const quantity = item.system.quantity ?? 1;
-    let used = false;
-
-    // Consume recharge.
-    if (recharge.value) {
-      if (recharge.charged) {
-        used = true;
-      }
-    }
-
-    // Consume uses (or quantity).
-    else if (uses.max && uses.per && uses.value > 0) {
-      const remaining = Math.max(uses.value - 1, 0);
-
-      if (remaining > 0 || (!remaining && !uses.autoDestroy)) {
-        used = true;
-      } else if (quantity >= 2) {
-        used = true;
-      } else if (quantity === 1) {
-        used = true;
-      }
-    }
-
-    // If the item was not used, return a warning
-    if (!used) {
-      if (debug) {
-        console.warn(
-          `${MACRO_NAME} | ${game.i18n.format('DND5E.ItemNoUses', {
-            name: item.name,
-          })}`
-        );
-      }
-    }
-    return used;
-  }
-
-  /**
-   * Verifies if consuming an external resource is possible.
-   * *Note:* based on Item5e._handleConsumeResource
-   *
-   * @param {Item5e} item - Item for which to validate resource consumption.
-   * @param {ItemUseConfiguration} usageConfig - Configuration data for an item usage being prepared.
-   * @returns {boolean} Return false to block further progress, or return true to continue.
-   */
-  function canConsumeResource(item, usageConfig) {
-    const consume = item.system.consume || {};
-    if (!consume.type) {
-      return true;
-    }
-
-    // No consumed target
-    const typeLabel = CONFIG.DND5E.abilityConsumptionTypes[consume.type];
-    if (!consume.target) {
-      if (debug) {
-        console.warn(
-          `${MACRO_NAME} | ${game.i18n.format(
-            'DND5E.ConsumeWarningNoResource',
-            { name: item.name, type: typeLabel }
-          )}`
-        );
-      }
-      return false;
-    }
-
-    const as = item.actor.system;
-    // Identify the consumed resource and its current quantity
-    let resource = null;
-    let amount = usageConfig.resourceAmount
-      ? usageConfig.resourceAmount
-      : consume.amount || 0;
-    if (as.spells && amount in as.spells) {
-      amount = consume.amount || 0;
-    }
-    let quantity = 0;
-    switch (consume.type) {
-      case 'attribute': {
-        const amt = usageConfig.resourceAmount;
-        const target =
-          as.spells && amt in as.spells
-            ? `spells.${amt}.value`
-            : consume.target;
-        resource = foundry.utils.getProperty(as, target);
-        quantity = resource || 0;
-        break;
-      }
-      case 'ammo':
-      case 'material':
-        resource = item.actor.items.get(consume.target);
-        quantity = resource ? resource.system.quantity : 0;
-        break;
-      case 'hitDice': {
-        const denom = !['smallest', 'largest'].includes(consume.target)
-          ? consume.target
-          : false;
-        resource = Object.values(item.actor.classes).filter(
-          (cls) => !denom || cls.system.hitDice === denom
-        );
-        quantity = resource.reduce(
-          (count, cls) => count + cls.system.levels - cls.system.hitDiceUsed,
-          0
-        );
-        break;
-      }
-      case 'charges': {
-        resource = item.actor.items.get(consume.target);
-        if (!resource) {
-          break;
-        }
-        const uses = resource.system.uses;
-        if (uses.per && uses.max) {
-          quantity = uses.value;
-        } else if (resource.system.recharge?.value) {
-          quantity = resource.system.recharge.charged ? 1 : 0;
-          amount = 1;
-        }
-        break;
-      }
-    }
-
-    // Verify that a consumed resource is available
-    if (resource === undefined) {
-      if (debug) {
-        console.warn(
-          `${MACRO_NAME} | ${game.i18n.format('DND5E.ConsumeWarningNoSource', {
-            name: item.name,
-            type: typeLabel,
-          })}`
-        );
-      }
-      return false;
-    }
-
-    // Verify that the required quantity is available
-    let remaining = quantity - amount;
-    if (remaining < 0) {
-      if (debug) {
-        console.warn(
-          `${MACRO_NAME} | ${game.i18n.format(
-            'DND5E.ConsumeWarningNoQuantity',
-            { name: item.name, type: typeLabel }
-          )}`
-        );
-      }
-      return false;
-    }
-    return true;
   }
 
   ////////////////// Remote functions ///////////////////////////////

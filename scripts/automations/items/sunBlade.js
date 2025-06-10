@@ -2,105 +2,44 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v1.2.0
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
-//  - DAE, item macro [on],[off]
-//  - MidiQOL "on use" item macro, [preTargeting][postActiveEffects]
+//  - DAE
+//  - MidiQOL "on use" item macro, [postActiveEffects]
 //  - Active Token Effects
-//  - Tidy 5e Sheets (optional)
-//
-// How to configure:
-// The item details must be:
-//   - Equipement Type: Weapon
-//   - Weapon Type: Martial Melee
-//   - Base Weapon: Longsword
-//   - Attunement: Attunement Required
-//   - Proficiency: Automatic
-//   - Weapon Properties: Magical
-//   - Magical Bonus: 2
-//   - Activation cost: (empty))
-//   - Target: None
-//   - Range: 5 feet
-//   - Action Type: Melee Weapon Attack
-//   - Damage Formula:
-//     - 1d8[radiant] + @mod | Radiant
-//   - Versatile Damage:
-//     - 1d10[radiant] + @mod
-//   - Other Formula: 1d8[radiant]
-// The Feature Midi-QOL must be:
-//   - On Use Macros:
-//       ItemMacro | Called before targeting is resolved
-//   - Activation Conditions
-//     - Other Damage:
-//       ["undead"].includes("@raceOrType")
-//   - This item macro code must be added to the DIME code of this item.
-// One effect must also be added:
-//   - Sun Blade:
-//      - Transfer Effect to Actor on item equip (checked)
-//      - Effects:
-//          - macro.itemMacro | Custom |
+//  - Elwin Helpers world script
+//  - Cauldron of Plentiful Resources (optional, support for VAE buttons)
+//  - Visual Active Effects (optional, for button on Sun Blade - Light AE)
 //
 // Usage:
-// When equipped and attuned, a feat is added that allows to activate/deactivate the blade.
-// When this feat is used, it allows to activate the blade, when activated an AE with the light effect
-// is added as also another feat to adjust the blade's light radius. If using Tidy 5e Sheets, you
-// can specify a custom section for the created feats. Edit the passive Sun Blade effect, and add
-// a section name in the value of the 'macro.itemMacro' change. If the value contains a space,
-// put the value in double quotes, e.g.: "My custom section"
-//
-//
+// When equipped and attuned, the activate/deactivate blade activity can be used.
+// When this activity is used, it allows to activate the blade, when activated an AE with the light effect
+// is added, also an attack activity and another to adjust the blade's light radius are enabled.
+// To deactivate the blade, the same activate/deactivate blade activity can be used.
 //
 // Description:
-// In the "on" DAE macro call (of the Sun Blade transfer effect):
-//   Creates and adds a feat to the owner of the sword to activate/deactivate the blade.
-// In the "off" DAE macro call (of the Sun Blade transfer effect):
-//   Deletes the feat to activate/deactivate that was created.
-//   Deletes the Blade activation effect if present.
-// In the "on" DAE macro call (of the Sun Blade activation effect):
-//   Changes the blade to make it usable for attack.
-//   Creates and adds a feat to the owner of the sword to adjust the blade's light radius.
-// In the "off" DAE macro call (of the Sun Blade activation effect):
-//   Reverts the changes done to the Sun Blade to make it usable for attack.
-// In the preTargeting (item OnUse) phase of the Sun Blade item (in owner's workflow):
-//   Validates that item blade is activate, otherwise the item workflow execution is aborted and
-//   a notification is displayed to the user.
-// In the postActiveEffects (item OnUse) phase (of the activate/deactivate feat):
+// In the postActiveEffects (OnUse) phase of the activate/deactivate activity (in owner's workflow):
 //   If the blade is not activated:
-//     Creates an activation effect on the current actor that updates the light config of the token.
-//     Updates the Sun Blade transfer effect to delete the created effect when disabled.
+//     Creates and applies an enchantment activation effect on the item, also creates an active effect on
+//     the current actor to update the light config of the token.
+//     Updates the enchantment active effect and the light active effect to make them dependent on each other.
 //   If the blade is activated:
-//     Deletes the activate effect.
-//     Updates the Sun Blade transfer effect to remove the delete flag that was added at creation.
-// In the postActiveEffects (item OnUse) phase (of the adjust feat):
-//   If the alt key was pressed:
-//     Enlarge the light bright and dim radius by 5 feet each up to maximum.
-//   If the ctrl key was pressed:
-//     Reduce the light bright and dim radius by 5 feet each down to minimum.
+//     Deletes the applied enchantment active effect from the item.
+// In the postActiveEffects (OnUse) phase of the adjust light radius activity (in owner's workflow):
 //   Prompt the owner to choose between enlarge or reduce, depending on the choice,
-//     Apply 5 feet increase or decrease to the light bright and dim radius up to min/max.
+//     Apply 5 feet increase or decrease to the light bright and dim radius up to min/max on the light
+//     active effect.
 // ###################################################################################################
 
-export async function sunBlade({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
+export async function sunBlade({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the item
   const DEFAULT_ITEM_NAME = 'Sun Blade';
   const MODULE_ID = 'midi-item-showcase-community';
-  const ACTIVATE_ACTION_ORIGIN_FLAG = 'sunblade-activate-action-origin';
-  const ADJUST_LIGHT_RADIUS_ACTION_ORIGIN_FLAG =
-    'sunblade-adjust-light-radius-action-origin';
   const ACTIVATED = 'sunblade-activated';
   const LIGHT_RADIUS = 'sunblade-light-radius';
-  const SOURCE_NAME = 'sunblade-source-name';
+  const ACTIVATE_BLADE_IDENT = 'activate-deactivate-blade';
+  const ADJUST_LIGHT_RADIUS_IDENT = 'adjust-light-radius';
   const INITIAL_LIGHT_RADIUS = 15;
   const MIN_LIGHT_RADIUS = 10;
   const MAX_LIGHT_RADIUS = 30;
@@ -110,30 +49,14 @@ export async function sunBlade({
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  const dependencies = ['dae', 'midi-qol', 'ATL'];
-  if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3')) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    ui.notifications.error(errorMsg);
     return;
   }
-
-  /**
-   * If the requirements are met, returns true, false otherwise.
-   *
-   * @param {string} name - The name of the item for which to check the dependencies.
-   * @param {string[]} dependencies - The array of module ids which are required.
-   *
-   * @returns {boolean} true if the requirements are met, false otherwise.
-   */
-  function requirementsSatisfied(name, dependencies) {
-    let missingDep = false;
-    dependencies.forEach((dep) => {
-      if (!game.modules.get(dep)?.active) {
-        const errorMsg = `${name} | ${dep} must be installed and active.`;
-        ui.notifications.error(errorMsg);
-        console.warn(errorMsg);
-        missingDep = true;
-      }
-    });
-    return !missingDep;
+  const dependencies = ['dae', 'midi-qol', 'ATL'];
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return;
   }
 
   if (debug) {
@@ -144,171 +67,157 @@ export async function sunBlade({
     );
   }
 
-  if (args[0] === 'on') {
-    if (
-      foundry.utils.getProperty(
-        scope.lastArgValue.efData,
-        `flags.${MODULE_ID}.${ACTIVATED}`
-      )
-    ) {
-      await activateBlade(item, args[1]);
-      await adjustProficiency(item);
-    } else {
-      // Transfer AE
-      await createActivationAction(item, args[1]);
-    }
-  } else if (args[0] === 'off') {
-    if (
-      foundry.utils.getProperty(
-        scope.lastArgValue.efData,
-        `flags.${MODULE_ID}.${ACTIVATED}`
-      )
-    ) {
-      await deactivateBlade(item);
-    } else {
-      // Transfer AE, delete activation item and activation AE if present
-      await actor.itemTypes.feat
-        .find(
-          (i) => i.getFlag(MODULE_ID, ACTIVATE_ACTION_ORIGIN_FLAG) === item.uuid
-        )
-        ?.delete();
-      await actor.effects
-        .find(
-          (ae) => ae.origin === item.uuid && ae.getFlag(MODULE_ID, ACTIVATED)
-        )
-        ?.delete();
-    }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    if (!scope.rolledItem.getFlag(MODULE_ID, ACTIVATED)) {
-      ui.notifications.warn(
-        'The blade must be activated to be able to make an attack with it.'
-      );
-      return false;
-    }
-    // Adjust proficiency to account for allowed multiple base items proficiency
-    await adjustProficiency(scope.rolledItem);
-  } else if (
-    args[0].tag === 'OnUse' &&
-    args[0].macroPass === 'postActiveEffects'
-  ) {
-    const activateOrigin = scope.rolledItem.getFlag(
-      MODULE_ID,
-      ACTIVATE_ACTION_ORIGIN_FLAG
-    );
-    if (activateOrigin) {
-      if (activateOrigin !== scope.macroItem.uuid) {
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | Wrong sourceItemUuid is different from the origin of activate feat item.`,
-          scope.macroItem.uuid,
-          activateOrigin
-        );
-        return;
-      }
-      await handleActivatePostActiveEffects(scope.macroItem, scope.rolledItem);
-      return;
-    }
-    const adjustLightOrigin = scope.rolledItem.getFlag(
-      MODULE_ID,
-      ADJUST_LIGHT_RADIUS_ACTION_ORIGIN_FLAG
-    );
-    if (adjustLightOrigin) {
-      if (adjustLightOrigin !== scope.macroItem.uuid) {
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | Wrong sourceItemUuid is different from the origin of adjust light radius feat item.`,
-          scope.macroItem.uuid,
-          adjustLightOrigin
-        );
-        return;
-      }
+  if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+    if (workflow.activity?.identifier === ACTIVATE_BLADE_IDENT) {
+      await handleActivatePostActiveEffects(workflow, scope.macroItem);
+    } else if (workflow.activity?.identifier === ADJUST_LIGHT_RADIUS_IDENT) {
       await handleAdjustLightRadiusPostActiveEffects(workflow, scope.macroItem);
-      return;
     }
   }
 
   /**
-   * Handles the postActiveEffects of the Sun Blade - Activate/Deactivate feat.
+   * Handles the postActiveEffects of the Sun Blade - Activate/Deactivate Blade activity.
    * If the Sun Blade is not activated:
-   *   Activates the blade by creating a Blade Activation effect that applies the blade's light radius effect.
+   *   Creates and applies an enchantment activation effect on the item, also creates an active effect on
+   *   the current actor to update the light config of the token.
+   *   Updates the enchantment active effect and the light active effect to make them dependent on each other.
    * If the blade is activated:
-   *   Deletes the Blade Activation effect.
+   *   Deletes the applied enchantment active effect.
    *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
    * @param {Item5e} sourceItem - The Sun Blade item.
-   * @param {Item5e} usedItem - The activate/deactivate blade item.
    */
-  async function handleActivatePostActiveEffects(sourceItem, usedItem) {
-    // Get item with activate item origin flag
-    const activated = sourceItem.getFlag(MODULE_ID, ACTIVATED);
+  async function handleActivatePostActiveEffects(currentWorkflow, sourceItem) {
+    // Get applied enchantements for this item
+    const enchantements = elwinHelpers.getAppliedEnchantments(currentWorkflow.activity.uuid);
+    if (enchantements?.length) {
+      // Remove enchantment
+      await elwinHelpers.deleteAppliedEnchantments(currentWorkflow.activity.uuid);
 
-    if (activated) {
-      // Delete the effect, which will deactivate blade and remove adjust action
-      sourceItem.actor?.effects
-        .find(
-          (ae) =>
-            ae.origin === sourceItem.uuid && ae.getFlag(MODULE_ID, ACTIVATED)
-        )
-        ?.delete();
+      // Add message about blade deactivation
+      await elwinHelpers.insertTextIntoMidiItemCard(
+        'beforeButtons',
+        currentWorkflow,
+        '<p>The blade was deactivated.</p>'
+      );
     } else {
-      // Add active effect for blade activation
-      await createBladeActivationEffect(
-        sourceItem,
-        usedItem?.getFlag('tidy5e-sheet', 'section')
+      // Add enchantment active effect for blade activation
+      const enchantmentEffectData = elwinHelpers
+        .getAutomatedEnchantmentSelectedProfile(currentWorkflow)
+        ?.effect.toObject();
+      if (!enchantmentEffectData) {
+        console.error(`${sourceItem.name} | Missing enchantment effect`, { sourceItem, currentWorkflow });
+        return;
+      }
+      foundry.utils.setProperty(enchantmentEffectData, `flags.${MODULE_ID}.${ACTIVATED}`, 1);
+      adjustProficiency(sourceItem, enchantmentEffectData);
+
+      // Add enchantment to self
+      const enchantmentEffect = await elwinHelpers.applyEnchantmentToItem(workflow, enchantmentEffectData, sourceItem);
+      if (!enchantmentEffect) {
+        console.error(`${DEFAULT_ITEM_NAME} | Enchantment effect could not be created.`, enchantmentEffectData);
+        return;
+      }
+
+      // Add light effect
+      const lightEffectData = sourceItem.effects.find((ae) => !ae.transfer && ae.type !== 'enchantment')?.toObject();
+      if (!lightEffectData) {
+        if (debug) {
+          console.warn(`${DEFAULT_ITEM_NAME} | Missing light effect`, sourceItem);
+        }
+      }
+      lightEffectData.duration = null;
+      lightEffectData.origin = sourceItem.uuid;
+      // Add support for CPR VAE button
+      if (game.modules.get('chris-premades')?.active && game.modules.get('visual-active-effects')?.active) {
+        if (!foundry.utils.getProperty(sourceItem, 'flags.chris-premades.info.identifier')) {
+          await sourceItem.setFlag('chris-premades', 'info.identifier', sourceItem.identifier);
+        }
+        const adjustLightActivity = sourceItem.system.activities?.find(
+          (a) => a.identifier === ADJUST_LIGHT_RADIUS_IDENT
+        );
+        if (
+          adjustLightActivity &&
+          !chrisPremades.utils.activityUtils.getActivityByIdentifier(sourceItem, ADJUST_LIGHT_RADIUS_IDENT)
+        ) {
+          await chrisPremades.utils.activityUtils.setIdentifier(adjustLightActivity, ADJUST_LIGHT_RADIUS_IDENT);
+        }
+        foundry.utils.setProperty(lightEffectData, 'flags.chris-premades', {
+          effect: {
+            noAnimation: false,
+          },
+          vae: {
+            buttons: [
+              {
+                type: 'use',
+                name: `${sourceItem.name}: Adjust Light Radius`,
+                identifier: sourceItem.identifier,
+                activityIdentifier: ADJUST_LIGHT_RADIUS_IDENT,
+              },
+            ],
+          },
+        });
+      }
+      const [lightEffect] = await sourceItem.actor.createEmbeddedDocuments('ActiveEffect', [lightEffectData]);
+      // Make them dependent upon each other
+      if (lightEffect && enchantmentEffect) {
+        await enchantmentEffect.addDependent(lightEffect);
+        await lightEffect.addDependent(enchantmentEffect);
+      }
+
+      // Add message about blade activation
+      await elwinHelpers.insertTextIntoMidiItemCard(
+        'beforeButtons',
+        currentWorkflow,
+        '<p>The blade was activated.</p>'
       );
     }
   }
 
   /**
-   * Handles the postActiveEffects of the Sun Blade - Adjust light radius feat.
-   * Prompts the owner to choose between enlarge or reduce. If the alt key is pressed,
-   * enlarge is automatically chosen, and if ctrl key is pressed, reduce is automatically chosen.
-   * Then applies the change to the light radius on the Blade Activation effect.
+   * Handles the postActiveEffects of the Sun Blade - Adjust Light Radius activity.
+   * Prompts the owner to choose between enlarge or reduce.
+   * Then applies the change to the light radius on the activation effect.
    * The radius can only be enlarged/reduced up to a maximum/minimum.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
    * @param {Item5e} sourceItem - The Sun Blade item.
    */
-  async function handleAdjustLightRadiusPostActiveEffects(
-    currentWorkflow,
-    sourceItem
-  ) {
-    const activationEffect = sourceItem.actor?.effects.find(
-      (ae) => ae.origin === sourceItem.uuid && ae.getFlag(MODULE_ID, ACTIVATED)
+  async function handleAdjustLightRadiusPostActiveEffects(currentWorkflow, sourceItem) {
+    const lightEffect = sourceItem.actor?.effects.find(
+      (ae) => ae.type !== 'enchantment' && ae.origin?.startsWith(sourceItem.uuid)
     );
-    if (!activationEffect) {
+    if (!lightEffect) {
       return;
     }
-    const currentLightRadius =
-      activationEffect.getFlag(MODULE_ID, LIGHT_RADIUS) ?? INITIAL_LIGHT_RADIUS;
-    const choices = [];
-    const buttons = {};
+    const currentLightRadius = Number(
+      lightEffect.changes.find((c) => c.key === 'ATL.light.bright')?.value ?? INITIAL_LIGHT_RADIUS
+    );
+    const buttons = [];
     if (currentLightRadius < MAX_LIGHT_RADIUS) {
-      choices.push(ENLARGE_CHOICE);
-      buttons.enlarge = { label: 'Enlarge' };
+      buttons.push({ action: ENLARGE_CHOICE, label: 'Enlarge', default: true });
     }
     if (currentLightRadius > MIN_LIGHT_RADIUS) {
-      choices.push(REDUCE_CHOICE);
-      buttons.reduce = { label: 'Reduce' };
+      buttons.push({ action: REDUCE_CHOICE, label: 'Reduce', default: !buttons.length });
     }
     let choice;
     // Shortcut to bypass dialog
-    if (currentWorkflow.event?.altKey) {
-      choice = ENLARGE_CHOICE;
-    } else if (currentWorkflow.event?.ctrlKey) {
-      choice = REDUCE_CHOICE;
-    }
+    // TODO does not work for now with multiple activities and activity choice dialog
+    // if (currentWorkflow.event?.shiftKey) {
+    //   choice = ENLARGE_CHOICE;
+    // } else if (currentWorkflow.event?.ctrlKey) {
+    //   choice = REDUCE_CHOICE;
+    // }
     if (!choice) {
       // Ask which option to apply
-      const sourceName =
-        sourceItem.getFlag(MODULE_ID, SOURCE_NAME) ?? DEFAULT_ITEM_NAME;
-      choice = await Dialog.wait(
-        {
-          title: `${sourceName} - Enlarge/Reduce Light Radius`,
-          content: `<p>Choose to enlarge or reduce the blade's light radius.</p>`,
-          default: ENLARGE_CHOICE,
-          buttons,
-          close: () => null,
-        },
-        { classes: ['dialog', 'dnd5e'] }
-      );
+      const sourceName = sourceItem._source?.name ?? DEFAULT_ITEM_NAME;
+      choice = await foundry.applications.api.DialogV2.wait({
+        window: { title: `${sourceName} - Enlarge/Reduce Light Radius` },
+        content: `<p>Choose to enlarge or reduce the blade's light radius.</p>`,
+        rejectClose: false,
+        modal: true,
+        buttons,
+      });
     }
     if (!choice) {
       return;
@@ -319,328 +228,28 @@ export async function sunBlade({
     } else {
       adjustment = -5;
     }
-    const newLightRadius =
-      game.release.generation >= 12
-        ? Math.clamp(
-            currentLightRadius + adjustment,
-            MIN_LIGHT_RADIUS,
-            MAX_LIGHT_RADIUS
-          )
-        : Math.clamped(
-            currentLightRadius + adjustment,
-            MIN_LIGHT_RADIUS,
-            MAX_LIGHT_RADIUS
-          );
+    const newLightRadius = Math.clamp(currentLightRadius + adjustment, MIN_LIGHT_RADIUS, MAX_LIGHT_RADIUS);
 
-    const newChanges = foundry.utils.deepClone(activationEffect.changes ?? []);
+    const newChanges = foundry.utils.deepClone(lightEffect.changes ?? []);
     for (let change of newChanges) {
       if (['ATL.light.dim', 'ATL.light.bright'].includes(change.key)) {
-        const newValue =
-          change.key === 'ATL.light.dim' ? newLightRadius * 2 : newLightRadius;
+        const newValue = change.key === 'ATL.light.dim' ? newLightRadius * 2 : newLightRadius;
         change.value = '' + newValue;
       }
     }
-    const updates = { changes: newChanges };
-    foundry.utils.setProperty(
-      updates,
-      `flags.${MODULE_ID}.${LIGHT_RADIUS}`,
-      newLightRadius
-    );
-    await activationEffect.update(updates);
+    await lightEffect.update({ changes: newChanges });
 
     let text;
     if (newLightRadius === MIN_LIGHT_RADIUS) {
-      text = `The minimum bright and dim light radius was reached (${MIN_LIGHT_RADIUS}/${
-        MIN_LIGHT_RADIUS * 2
-      }).`;
+      text = `The minimum bright and dim light radius was reached (${MIN_LIGHT_RADIUS}/${MIN_LIGHT_RADIUS * 2}).`;
     } else if (newLightRadius === MAX_LIGHT_RADIUS) {
-      text = `The maximum bright and dim light radius was reached (${MAX_LIGHT_RADIUS}/${
-        MAX_LIGHT_RADIUS * 2
-      }).`;
+      text = `The maximum bright and dim light radius was reached (${MAX_LIGHT_RADIUS}/${MAX_LIGHT_RADIUS * 2}).`;
     } else {
       text = `The bright and dim light radius was ${
         choice === ENLARGE_CHOICE ? 'increased' : 'decreased'
       } (${newLightRadius}/${newLightRadius * 2}).`;
     }
-    await insertTextBeforeButtonsIntoMidiItemChatMessage(
-      MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid),
-      text
-    );
-  }
-
-  /**
-   * Creates the blade activation/deactivation feat item.
-   *
-   * @param {Item5e} sourceItem - The Sun Blade item.
-   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
-   */
-  async function createActivationAction(sourceItem, tidy5eSection) {
-    const itemName = `${sourceItem.name}: Activate/Deactivate blade`;
-    const activateActionItemData = {
-      type: 'feat',
-      name: itemName,
-      img: sourceItem.img,
-      system: {
-        description: {
-          value: 'Activate or deactivate the blade.',
-        },
-        activation: {
-          type: 'bonus',
-          cost: 1,
-        },
-        target: { type: 'self' },
-      },
-      flags: {
-        'midi-qol': {
-          onUseMacroName: `[postActiveEffects]ItemMacro.${sourceItem.uuid}`,
-        },
-        [MODULE_ID]: {
-          [ACTIVATE_ACTION_ORIGIN_FLAG]: sourceItem.uuid,
-        },
-      },
-    };
-    // Support for Tidy 5e Sheets custom sections
-    if (game.modules.get('tidy5e-sheet')?.active && tidy5eSection) {
-      foundry.utils.setProperty(
-        activateActionItemData,
-        'flags.tidy5e-sheet.section',
-        tidy5eSection
-      );
-    }
-    // Add item that allows activating the blade
-    await sourceItem.actor?.createEmbeddedDocuments('Item', [
-      activateActionItemData,
-    ]);
-  }
-
-  /**
-   * Returns the effect data for the blade's activation.
-   *
-   * @param {Item5e} sourceItem - The Sun Blade item.
-   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
-   *
-   * @returns {object} the active effect data for the blade's activation.
-   */
-  async function createBladeActivationEffect(sourceItem, tidy5eSection) {
-    const imgPropName = game.release.generation >= 12 ? 'img' : 'icon';
-    const itemMacroValue = tidy5eSection ? `"${tidy5eSection}"` : '';
-    const bladeActivationEffectData = {
-      changes: [
-        {
-          key: 'macro.itemMacro',
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: itemMacroValue,
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.bright',
-          mode: CONST.ACTIVE_EFFECT_MODES.UPGRADE,
-          value: '' + INITIAL_LIGHT_RADIUS,
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.dim',
-          mode: CONST.ACTIVE_EFFECT_MODES.UPGRADE,
-          value: '' + 2 * INITIAL_LIGHT_RADIUS,
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.animation.type',
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: 'sunburst',
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.animation.speed',
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: 1,
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.animation.intensity',
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: 1,
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.color',
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: '#a2642a',
-          priority: '20',
-        },
-        {
-          key: 'ATL.light.alpha',
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: 0.7,
-          priority: '20',
-        },
-      ],
-      [imgPropName]: sourceItem.img,
-      name: `${sourceItem.name} - Activated`,
-      origin: sourceItem.uuid,
-      transfer: false,
-      flags: {
-        [MODULE_ID]: {
-          [ACTIVATED]: true,
-          [LIGHT_RADIUS]: INITIAL_LIGHT_RADIUS,
-        },
-        dae: { showIcon: true },
-        // Add support for CPR VAE button
-        'chris-premades': {
-          effect: {
-            noAnimation: false,
-          },
-          vae: {
-            button: `${sourceItem.name}: Adjust light radius`,
-          },
-        },
-      },
-    };
-
-    await sourceItem.actor?.createEmbeddedDocuments('ActiveEffect', [
-      bladeActivationEffectData,
-    ]);
-  }
-
-  /**
-   * Activates the blade. It applies changes to the item to make it usable for attack.
-   * It also create and add a feat to adjust the blade's light radius.
-   *
-   * @param {Item5e} sourceItem - The Sun Blade item.
-   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
-   */
-  async function activateBlade(sourceItem, tidy5eSection) {
-    // Activate blade
-    const sourceName = sourceItem.name;
-    const updates = {
-      name: `${sourceItem.name} (active)`,
-      system: {
-        activation: {
-          type: 'action',
-          cost: 1,
-        },
-        target: {
-          value: 1,
-          type: 'creature',
-        },
-        actionType: 'mwak',
-        properties: ['fin', 'mgc', 'ver'],
-      },
-      flags: {
-        [MODULE_ID]: { [ACTIVATED]: true, [SOURCE_NAME]: sourceName },
-      },
-    };
-    await sourceItem.update(updates);
-    await createAdjustLightRadiusAction(sourceItem, tidy5eSection);
-  }
-
-  /**
-   * Creates the adjust the blade's light radius feat item.
-   * This feat is made dependent on the Blade Activation effect to be auto
-   * removed when the effect is deleted.
-   *
-   * @param {Item5e} sourceItem - The Sun Blade item.
-   * @param {string} tidy5eSection - Tidy5e section name to use for the created items.
-   */
-  async function createAdjustLightRadiusAction(sourceItem, tidy5eSection) {
-    const sourceName =
-      sourceItem.getFlag(MODULE_ID, SOURCE_NAME) ?? DEFAULT_ITEM_NAME;
-    const itemName = `${sourceName}: Adjust light radius`;
-    const adjustLightRadiusActionItemData = {
-      type: 'feat',
-      name: itemName,
-      img: sourceItem.img,
-      system: {
-        description: {
-          value: "Enlarge/Reduce the blade's light radius.",
-        },
-        activation: {
-          type: 'action',
-          cost: 1,
-        },
-        target: { type: 'self' },
-      },
-      flags: {
-        'midi-qol': {
-          onUseMacroName: `[postActiveEffects]ItemMacro.${sourceItem.uuid}`,
-        },
-        [MODULE_ID]: {
-          [ADJUST_LIGHT_RADIUS_ACTION_ORIGIN_FLAG]: sourceItem.uuid,
-        },
-      },
-    };
-    // Support for Tidy 5e Sheets custom sections
-    if (game.modules.get('tidy5e-sheet')?.active && tidy5eSection) {
-      foundry.utils.setProperty(
-        adjustLightRadiusActionItemData,
-        'flags.tidy5e-sheet.section',
-        tidy5eSection
-      );
-    }
-
-    // Add item that allows adjusting the blade's light radius
-    const [adjustLightRadiusActionItem] =
-      await sourceItem.actor?.createEmbeddedDocuments('Item', [
-        adjustLightRadiusActionItemData,
-      ]);
-    if (adjustLightRadiusActionItem) {
-      // Add as a dependent to cleanup when AE is deleted
-      await sourceItem.actor.effects
-        .find(
-          (ae) =>
-            ae.origin === sourceItem.uuid && ae.getFlag(MODULE_ID, ACTIVATED)
-        )
-        ?.addDependent(adjustLightRadiusActionItem);
-    }
-  }
-
-  /**
-   * Deactivates the blade. It reverts the changes that were applied to make the item usable for attack.
-   *
-   * @param {Item5e} sourceItem - The Sun Blade item.
-   */
-  async function deactivateBlade(sourceItem) {
-    if (!sourceItem) {
-      // The item was deleted, no need to update it.
-      return;
-    }
-    const updates = {
-      name: sourceItem.getFlag(MODULE_ID, SOURCE_NAME) ?? DEFAULT_ITEM_NAME,
-      system: {
-        activation: {
-          type: null,
-          cost: null,
-        },
-        target: {
-          value: null,
-          type: null,
-        },
-        actionType: null,
-        properties: ['mgc'],
-      },
-      flags: {
-        [MODULE_ID]: { [ACTIVATED]: false },
-      },
-    };
-    await sourceItem.update(updates);
-  }
-
-  /**
-   * Inserts text into a Midi item chat message before the card buttons div and updates it.
-   *
-   * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
-   * @param {string} text - The text to insert in the chat message.
-   */
-  async function insertTextBeforeButtonsIntoMidiItemChatMessage(
-    chatMessage,
-    text
-  ) {
-    let content = foundry.utils.deepClone(chatMessage.content);
-    const searchRegex =
-      /(<\/section>)(\s*<div class="card-buttons midi-buttons">)/m;
-    const replaceString = `$1\n${text}\n$2`;
-    content = content.replace(searchRegex, replaceString);
-    await chatMessage.update({ content });
+    await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', currentWorkflow, text);
   }
 
   /**
@@ -649,22 +258,29 @@ export async function sunBlade({
    * supports proficency with long sword and short sword.
    *
    * @param {Item5e} sourceItem - The Sun Blade item.
+   * @param {object} enchantmentEffectData - The enchantment effect data to be applied.
    */
-  async function adjustProficiency(sourceItem) {
+  async function adjustProficiency(sourceItem, enchantmentEffectData) {
+    let proficencyValue;
     if (sourceItem.system.proficient === null) {
       if (!sourceItem.system.prof.multiplier && isProficient(sourceItem)) {
         // Force proficiency
-        await sourceItem.update({ 'system.proficient': 1 });
+        proficencyValue = 1;
       }
-    } else if (
-      sourceItem.system.proficient === 1 &&
-      !isProficient(sourceItem)
-    ) {
+    } else if (sourceItem.system.proficient === 1 && !isProficient(sourceItem)) {
       // Force not proficiency
-      await sourceItem.update({ 'system.proficient': 0 });
+      proficencyValue = 0;
     } else if (sourceItem.system.proficient === 0 && isProficient(sourceItem)) {
       // Force proficiency
-      await sourceItem.update({ 'system.proficient': 1 });
+      proficencyValue = 1;
+    }
+    if (proficencyValue) {
+      enchantmentEffectData.changes.push({
+        key: 'system.proficient',
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: proficencyValue,
+        priority: 20,
+      });
     }
   }
 
@@ -673,7 +289,7 @@ export async function sunBlade({
    * An actor can be proficient if he has proficiency in long sword or short sword
    * .
    * @param {Item5e} sourceItem - The Sun Blade item.
-   * @returns {boolean} Returns true if the item's parent is proficient with the Sun Blade, false otherwise.
+   * @returns {boolean} True if the item's parent is proficient with the Sun Blade, false otherwise.
    */
   function isProficient(sourceItem) {
     const actor = sourceItem.actor;
@@ -688,9 +304,7 @@ export async function sunBlade({
     const itemProf = config[weaponType.value];
     const actorProfs = actor.system.traits?.weaponProf?.value ?? new Set();
     const isProficient =
-      actorProfs.has(itemProf) ||
-      actorProfs.has(weaponType.baseItem) ||
-      actorProfs.has('shortsword');
+      actorProfs.has(itemProf) || actorProfs.has(weaponType.baseItem) || actorProfs.has('shortsword');
     return isProficient;
   }
 }

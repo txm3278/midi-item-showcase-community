@@ -63,7 +63,10 @@ export default [
         GlobalLightSource: 'writable',
         ClockwiseSweepPolygon: 'writable',
         Portal: 'writable',
-        AudioHelper: 'writable'
+        AudioHelper: 'writable',
+        dnd5e: 'writable',
+        abouttime: 'writable',
+        FormDataExtended: 'writable'
       },
     },
     rules: {

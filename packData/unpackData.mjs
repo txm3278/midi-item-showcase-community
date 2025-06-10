@@ -14,11 +14,25 @@ let itemPacks = [
   'misc-spell-items',
   'misc-spells',
   'misc-unearthed-arcana',
+  'misc-feats-2024',
+  'misc-items-2024',
+  'misc-spells-2024',
 ];
 let actorPacks = ['misc-actors'];
 
-itemPacks.forEach((pack) => fs.rmSync(`./packData/${pack}`, { recursive: true }));
-actorPacks.forEach((pack) => fs.rmSync(`./packData/${pack}`, { recursive: true }));
+itemPacks.forEach((pack) => {
+  const path = `./packData/${pack}`;
+  if (fs.existsSync(path)) {
+    fs.rmSync(path, { recursive: true });
+  }
+});
+
+actorPacks.forEach((pack) => {
+  const path = `./packData/${pack}`;
+  if (fs.existsSync(path)) {
+    fs.rmSync(path, { recursive: true });
+  }
+});
 
 for (let i of itemPacks) {
   await extractPack('packs/' + i, 'packData/' + i, {

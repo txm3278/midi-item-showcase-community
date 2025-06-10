@@ -1,18 +1,22 @@
 {
+  "folder": null,
   "name": "Crown of Stars",
   "type": "spell",
+  "_id": "1A7im3YcJMO0OtRU",
+  "img": "icons/magic/control/control-influence-crown-yellow.webp",
   "system": {
     "source": {
       "custom": "",
       "book": "XGE",
       "page": "152",
-      "license": ""
+      "license": "",
+      "revision": 1,
+      "rules": "2014"
     },
     "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;scrollbar-width:thin;scrollbar-color:var(--color-scrollbar) var(--color-scrollbar-track);margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;white-space:normal;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by Bakana</span></h2><p>Animation by Xenophes</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Bakana and Xenophes version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Sequencer (to support star motes animations)</li>\n   <li>JB2A (free or patreon) (to support star motes animations)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This spell needs to be used to activate. It creates animations of star motes around the caster (if Sequencer is avaialble) \nand allows to make a special attack with a star mote which removes one mote each time. When no star mote remains the spell is ended.</p></details>",
       "chat": ""
     },
-    "actionType": "util",
     "level": 7,
     "school": "evo",
     "properties": [
@@ -27,80 +31,403 @@
       "supply": 0
     },
     "target": {
-      "value": "0",
-      "units": "",
-      "type": "self",
-      "prompt": true,
-      "width": null
+      "affects": {
+        "type": "",
+        "count": "0",
+        "choice": false,
+        "special": ""
+      },
+      "template": {
+        "units": "",
+        "contiguous": false,
+        "type": ""
+      }
     },
     "range": {
-      "value": 0,
+      "value": "0",
       "units": "self",
-      "long": null
+      "special": ""
     },
     "activation": {
       "type": "action",
-      "cost": 1,
-      "condition": ""
+      "condition": "",
+      "value": 1
     },
     "duration": {
       "value": "1",
       "units": "hour"
     },
-    "damage": {
-      "parts": [],
-      "versatile": ""
-    },
-    "scaling": {
-      "mode": "none",
-      "formula": ""
-    },
-    "save": {
-      "ability": "",
-      "dc": null,
-      "scaling": "spell"
-    },
     "ability": "",
     "uses": {
-      "value": null,
       "max": "",
-      "per": null,
-      "recovery": "",
-      "prompt": true
+      "spent": 0,
+      "recovery": []
     },
-    "chatFlavor": "",
-    "critical": {
-      "threshold": null,
-      "damage": ""
-    },
-    "formula": "",
     "preparation": {
       "mode": "prepared",
       "prepared": false
     },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null,
-      "scale": false
+    "activities": {
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "utility",
+        "activation": {
+          "type": "action",
+          "value": null,
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "Zt1cSbtbDN2tiFbr"
+          }
+        ],
+        "range": {
+          "override": false
+        },
+        "target": {
+          "prompt": true,
+          "template": {
+            "contiguous": false,
+            "units": "ft"
+          },
+          "affects": {
+            "choice": false
+          },
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "",
+          "name": "",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": -100000,
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": false,
+          "identifier": "cast",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "name": "Cast"
+      },
+      "eiTmaDgjRtpT3aUT": {
+        "type": "attack",
+        "_id": "eiTmaDgjRtpT3aUT",
+        "sort": 0,
+        "activation": {
+          "type": "bonus",
+          "value": null,
+          "override": true,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": false,
+          "targets": []
+        },
+        "description": {
+          "chatFlavor": "Attack with a Star Mote"
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": true
+        },
+        "effects": [],
+        "range": {
+          "override": true,
+          "units": "ft",
+          "special": "",
+          "value": "120"
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": "creatureOrObject",
+            "count": "1",
+            "special": ""
+          },
+          "override": true,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "attack": {
+          "critical": {
+            "threshold": null
+          },
+          "flat": false,
+          "type": {
+            "value": "ranged",
+            "classification": ""
+          },
+          "ability": "",
+          "bonus": ""
+        },
+        "damage": {
+          "critical": {
+            "bonus": ""
+          },
+          "includeBase": true,
+          "parts": [
+            {
+              "custom": {
+                "enabled": false,
+                "formula": ""
+              },
+              "number": 4,
+              "denomination": 12,
+              "bonus": "",
+              "types": [
+                "radiant"
+              ],
+              "scaling": {
+                "mode": "",
+                "number": 1
+              }
+            }
+          ]
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "identifier": "star-mote-attack",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "attackMode": "",
+        "ammunition": "",
+        "otherActivityUuid": "",
+        "name": "Star Mote Attack"
+      }
     },
-    "cover": null,
-    "crewed": false,
-    "attack": {
-      "bonus": "",
-      "flat": false
-    },
-    "summons": null,
-    "enchantment": null
+    "identifier": ""
   },
-  "img": "icons/magic/control/control-influence-crown-yellow.webp",
+  "effects": [
+    {
+      "name": "Crown of Stars",
+      "origin": "Actor.nAFfu59Cgt3Dllwa.Item.oLR9rLuerrXcY6tU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Zt1cSbtbDN2tiFbr",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-item-showcase-community.crownOfStarsMotes",
+          "mode": 5,
+          "value": "[]",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.dim",
+          "mode": 4,
+          "value": "60",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.alpha",
+          "mode": 0,
+          "value": "0.4",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.color",
+          "mode": 0,
+          "value": "#ffd79e",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.luminosity",
+          "mode": 0,
+          "value": "0.5",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.bright",
+          "mode": 4,
+          "value": "30",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "itemsToDelete": [],
+          "enableCondition": "",
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "tint": "#ffffff",
+      "img": "icons/magic/control/control-influence-crown-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": null,
+        "modifiedTime": 1745698088675,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "_key": "!items.effects!1A7im3YcJMO0OtRU.Zt1cSbtbDN2tiFbr"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
   "flags": {
-    "plutonium": {
-      "page": "spells.html",
-      "source": "XGE",
-      "hash": "crown%20of%20stars_xge",
-      "propDroppable": "spell"
-    },
     "core": {},
     "dae": {
       "macro": {
@@ -108,8 +435,8 @@
         "img": "icons/magic/control/control-influence-crown-yellow.webp",
         "type": "script",
         "scope": "global",
-        "command": "",
-        "author": "B2BBHntfpytXE8DP",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.spells.crownOfStars(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
         },
@@ -119,7 +446,7 @@
         "flags": {},
         "_stats": {
           "systemId": "dnd5e",
-          "systemVersion": "3.3.1",
+          "systemVersion": "4.3.9",
           "coreVersion": "12.331",
           "createdTime": null,
           "modifiedTime": null,
@@ -141,7 +468,10 @@
       "rollAttackPerTarget": "default",
       "removeAttackDamageButtons": "default",
       "itemCondition": "",
-      "effectCondition": ""
+      "effectCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "onUseMacroName": "[preItemRoll]ItemMacro,[postActiveEffects]ItemMacro"
     },
     "midiProperties": {
       "confirmTargets": "default",
@@ -160,118 +490,39 @@
       "ida": false
     },
     "exportSource": {
-      "world": "misfit-hobos",
+      "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "3.1.2"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.9"
+    },
+    "dnd5e": {
+      "persistSourceMigration": true,
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
     }
   },
-  "effects": [
-    {
-      "name": "Crown of Stars",
-      "origin": "Actor.nAFfu59Cgt3Dllwa.Item.oLR9rLuerrXcY6tU",
-      "duration": {
-        "startTime": null,
-        "seconds": 3600,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "Zt1cSbtbDN2tiFbr",
-      "changes": [
-        {
-          "key": "macro.createItem",
-          "mode": 0,
-          "value": "Compendium.midi-item-showcase-community.misc-spell-items.Item.vaOPRbZncmWHkH2T",
-          "priority": 30
-        },
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "function.MISC.macros.spells.crownOfStars @item.level",
-          "priority": 20
-        }
-      ],
-      "description": "",
-      "transfer": false,
-      "statuses": [],
-      "flags": {
-        "dae": {
-          "disableIncapacitated": false,
-          "selfTarget": false,
-          "selfTargetAlways": false,
-          "dontApply": false,
-          "stackable": "noneName",
-          "showIcon": false,
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": [],
-          "itemsToDelete": [
-            "Actor.nAFfu59Cgt3Dllwa.Item.AFfO5GwF8TU4D72p",
-            "Actor.nAFfu59Cgt3Dllwa.Item.teHJ3EJQRuAnAfyg",
-            "Actor.nAFfu59Cgt3Dllwa.Item.UuI1wlUdwkZrLhJ4",
-            "Actor.nAFfu59Cgt3Dllwa.Item.S5IQDIcaFRRO1HH0"
-          ],
-          "enableCondition": "",
-          "disableCondition": ""
-        },
-        "ActiveAuras": {
-          "isAura": false,
-          "aura": "None",
-          "nameOverride": "",
-          "radius": "",
-          "alignment": "",
-          "type": "",
-          "customCheck": "",
-          "ignoreSelf": false,
-          "height": false,
-          "hidden": false,
-          "displayTemp": false,
-          "hostile": false,
-          "onlyOnce": false,
-          "wallsBlock": "system"
-        },
-        "core": {
-          "overlay": false
-        }
-      },
-      "tint": "#ffffff",
-      "img": "icons/magic/control/control-influence-crown-yellow.webp",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.331",
-        "systemId": "dnd5e",
-        "systemVersion": "3.3.1",
-        "createdTime": null,
-        "modifiedTime": 1725389631239,
-        "lastModifiedBy": "B2BBHntfpytXE8DP"
-      },
-      "_key": "!items.effects!1A7im3YcJMO0OtRU.Zt1cSbtbDN2tiFbr"
-    }
-  ],
-  "folder": null,
   "_stats": {
-    "compendiumSource": null,
-    "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "3.3.1",
-    "createdTime": 1725380641976,
-    "modifiedTime": 1732050343507,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
+    "systemVersion": "4.3.9",
+    "createdTime": 1745620797531,
+    "modifiedTime": 1745728251170,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "ownership": {
-    "default": 0,
-    "B2BBHntfpytXE8DP": 3
-  },
-  "_id": "1A7im3YcJMO0OtRU",
-  "sort": 100000,
   "_key": "!items!1A7im3YcJMO0OtRU"
 }

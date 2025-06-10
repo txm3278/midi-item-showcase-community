@@ -1,83 +1,50 @@
 {
   "name": "Clockwork Amulet",
   "type": "equipment",
+  "_id": "NQCnGWjuzCIItQny",
+  "img": "icons/equipment/neck/amulet-triangle-blue.webp",
   "system": {
     "description": {
-      "value": "<h2><span style=\"font-family:Signika, sans-serif\">Made by thatlonelybugbear</span></h2>",
-      "chat": "",
-      "unidentified": "Wondrous item"
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on thatlonelybugbear version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. The next attack roll will have a value 10 instead of rolling the d20.</p></details>",
+      "chat": ""
     },
     "source": {
-      "custom": "Xanathar's Guide to Everything pg 137"
+      "custom": "",
+      "revision": 1,
+      "rules": "2014",
+      "book": "Xanathar's Guide to Everything",
+      "page": "137",
+      "license": ""
     },
     "quantity": 1,
-    "weight": 0,
-    "price": {
+    "weight": {
       "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 40,
       "denomination": "gp"
     },
-    "attunement": 0,
+    "attunement": "",
     "equipped": false,
     "rarity": "common",
     "identified": true,
-    "activation": {
-      "type": "",
-      "cost": null,
-      "condition": ""
-    },
-    "duration": {
-      "value": "",
-      "units": ""
-    },
     "cover": null,
     "crewed": false,
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": "",
-      "prompt": true
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": ""
-    },
     "uses": {
-      "value": 0,
-      "max": "",
-      "per": null,
-      "recovery": "",
-      "prompt": true
-    },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null,
-      "scale": false
-    },
-    "ability": "",
-    "actionType": "",
-    "attackBonus": "",
-    "chatFlavor": "",
-    "critical": {
-      "threshold": null,
-      "damage": ""
-    },
-    "damage": {
-      "parts": [],
-      "versatile": ""
-    },
-    "formula": "",
-    "save": {
-      "ability": "",
-      "dc": null,
-      "scaling": "spell"
+      "max": "1",
+      "spent": 0,
+      "recovery": [
+        {
+          "period": "dawn",
+          "type": "recoverAll"
+        }
+      ]
     },
     "armor": {
       "value": null,
-      "type": "trinket",
-      "dex": null
+      "dex": null,
+      "magicalBonus": null
     },
     "hp": {
       "value": null,
@@ -85,49 +52,229 @@
       "dt": null,
       "conditions": ""
     },
-    "baseItem": "",
     "speed": {
       "value": null,
       "conditions": ""
     },
     "strength": 0,
-    "stealth": false,
-    "proficient": 1
+    "proficient": 1,
+    "unidentified": {
+      "description": "Wondrous item"
+    },
+    "type": {
+      "value": "wondrous",
+      "baseItem": ""
+    },
+    "activities": {
+      "Ot0zqQvFY367XUvx": {
+        "type": "utility",
+        "_id": "Ot0zqQvFY367XUvx",
+        "sort": 0,
+        "activation": {
+          "type": "",
+          "value": null,
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ]
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "maj0z8F9gCg0CMCL"
+          }
+        ],
+        "range": {
+          "override": false,
+          "units": "self",
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": ""
+          },
+          "override": false,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "name": "",
+          "formula": ""
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": false,
+          "identifier": "use",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "name": "Use"
+      }
+    },
+    "identifier": "clockwork-amulet",
+    "container": null,
+    "attuned": false,
+    "properties": [
+      "mgc"
+    ]
+  },
+  "effects": [
+    {
+      "name": "Clockwork Amulet",
+      "img": "icons/equipment/neck/amulet-triangle-blue.webp",
+      "origin": "Item.pJjlqS6fy9yWfRzS",
+      "transfer": false,
+      "_id": "maj0z8F9gCg0CMCL",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.items.clockworkAmulet,preAttackRoll",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "dontApply": false,
+          "stackable": "noneNameOnly",
+          "showIcon": true,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "1Attack"
+          ]
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": null,
+        "modifiedTime": 1746572950699,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "_key": "!items.effects!NQCnGWjuzCIItQny.maj0z8F9gCg0CMCL"
+    }
+  ],
+  "folder": null,
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
-    "ddbimporter": {
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "isHomebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": 2,
-        "tags": [
-          "Combat"
-        ],
-        "sources": [
-          {
-            "sourceId": 27,
-            "pageNumber": 137,
-            "sourceType": 1
-          }
-        ]
-      },
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 27042,
-      "originalName": "Clockwork Amulet",
-      "version": "3.4.69"
-    },
-    "scene-packer": {
-      "sourceId": "Item.8GdCZ0zveADaJ2gX",
-      "hash": "c663b3e9154a189f4442b3b49e0efc5747f6a7ff"
-    },
     "midi-qol": {
       "onUseMacroName": "",
       "effectActivation": false,
@@ -135,7 +282,8 @@
       "reactionCondition": "",
       "otherCondition": "",
       "effectCondition": "",
-      "rollAttackPerTarget": "default"
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default"
     },
     "core": {},
     "custom-character-sheet-sections": {
@@ -150,56 +298,7 @@
       "LBFormulaOverrideFlag": false,
       "ReplacementItemFlag": ""
     },
-    "itemacro": {
-      "macro": {
-        "name": "Clockwork Amulet",
-        "img": "icons/equipment/neck/amulet-triangle-blue.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "if (args[0].macroPass === 'preAttackRoll') \n    workflow.workflowOptions.attackRollDSN = false;   //optional to make sure no Attack Roll dice gets rolled\nif (args[0].macroPass === 'preCheckHits') {\n    const formulaData = workflow.item.getAttackToHit().parts.join('+');\n    const {api} = game.modules.get('babonus');\n    const getBabosAttackToHit = api.getType(workflow.actor,'attack').map(bab=>bab.bonuses.bonus).join('+');\n    let newRoll;\n    if (!!getBabosAttackToHit) newRoll = await new Roll(`10 + ${formulaData} + ${getBabosAttackToHit}`,actor.getRollData()).evaluate();\n    else newRoll = await new Roll(`10 + ${formulaData}`,actor.getRollData()).evaluate();\n    workflow.setAttackRoll(newRoll);\n    MidiQOL.displayDSNForRoll(newRoll);\n}",
-        "author": "YccsjBFS1pfzrMb3",
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "ownership": {
-          "default": 0
-        },
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
-    "dae": {
-      "macro": {
-        "name": "Clockwork Amulet",
-        "img": "icons/equipment/neck/amulet-triangle-blue.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "",
-        "author": "B2BBHntfpytXE8DP",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "midiProperties": {
       "confirmTargets": "default",
       "autoFailFriendly": false,
@@ -218,128 +317,25 @@
       "ida": false
     },
     "exportSource": {
-      "world": "golden-vault",
+      "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.9"
     },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
     }
   },
-  "effects": [
-    {
-      "name": "Clockwork Amulet",
-      "origin": "Item.8GdCZ0zveADaJ2gX",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "transfer": false,
-      "disabled": false,
-      "_id": "SFcGCaKfDKLzIaT7",
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "function.MISC.macros.items.clockworkAmulet, preAttackRoll",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "function.MISC.macros.items.clockworkAmulet, preCheckHits",
-          "priority": 20
-        }
-      ],
-      "description": "",
-      "statuses": [],
-      "flags": {
-        "times-up": {
-          "isPassive": true
-        },
-        "dae": {
-          "selfTarget": false,
-          "selfTargetAlways": true,
-          "dontApply": false,
-          "stackable": "noneName",
-          "showIcon": false,
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": [
-            "1Action"
-          ],
-          "disableIncapacitated": false
-        },
-        "ActiveAuras": {
-          "isAura": false,
-          "aura": "None",
-          "nameOverride": "",
-          "radius": "",
-          "alignment": "",
-          "type": "",
-          "customCheck": "",
-          "ignoreSelf": false,
-          "height": false,
-          "hidden": false,
-          "displayTemp": false,
-          "hostile": false,
-          "onlyOnce": false,
-          "wallsBlock": "system"
-        }
-      },
-      "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null
-      },
-      "img": "icons/equipment/neck/amulet-triangle-blue.webp",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NQCnGWjuzCIItQny.SFcGCaKfDKLzIaT7"
-    }
-  ],
-  "img": "icons/equipment/neck/amulet-triangle-blue.webp",
-  "folder": null,
   "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
     "coreVersion": "12.331",
-    "createdTime": 1693338787345,
-    "modifiedTime": 1728333094567,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.9",
+    "createdTime": 1746572555974,
+    "modifiedTime": 1746586090136,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "ownership": {
-    "default": 0,
-    "B2BBHntfpytXE8DP": 3
-  },
-  "_id": "NQCnGWjuzCIItQny",
-  "sort": 2000000,
   "_key": "!items!NQCnGWjuzCIItQny"
 }

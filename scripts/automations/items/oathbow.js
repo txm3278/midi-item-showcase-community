@@ -1,355 +1,205 @@
-export async function oathbow({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-  async function addToRoll(roll, addonFormula) {
-    let addonFormulaRoll = await new Roll('0 + ' + addonFormula).evaluate({
-      async: true,
-    });
-    game.dice3d?.showForRoll(addonFormulaRoll);
-    for (let i = 1; i < addonFormulaRoll.terms.length; i++) {
-      roll.terms.push(addonFormulaRoll.terms[i]);
-    }
-    roll._total += addonFormulaRoll.total;
-    roll._formula = roll._formula + ' + ' + addonFormula;
-    return roll;
-  }
-  const swornEnemy = {
-    name: 'Sworn Enemy',
-    type: 'feat',
-    flags: {
-      'midi-qol': {
-        onUseMacroName: '[postActiveEffects]ItemMacro',
-        rollAttackPerTarget: 'default',
-        itemCondition: '',
-        effectCondition: '',
-      },
-      dae: {
-        macro: {
-          name: 'Sworn Enemy',
-          img: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
-          type: 'script',
-          scope: 'global',
-          command:
-            'const target = workflow.targets.first()\nconst uuid = target.actor.uuid;\nconst effectSource = actor.appliedEffects.find(e=>e.name == \'Sworn Enemy - Attacker\');\nconst effectTarget = target.actor.appliedEffects.find(e=>e.name == "Sworn Enemy - Target")\n\nconsole.log("effectSource:", effectSource);\nconsole.log("effectSource.uuid:", effectSource.uuid);\nconsole.log("effectTarget:", effectTarget);\nconsole.log("effectTarget.uuid", effectTarget.uuid)\n\nawait MidiQOL.socket().executeAsGM(\'addDependent\', {concentrationEffectUuid: effectSource.uuid, dependentUuid: effectTarget.uuid});\nawait MidiQOL.socket().executeAsGM(\'addDependent\', {concentrationEffectUuid: effectTarget.uuid, dependentUuid: effectSource.uuid});',
-          author: 'jM4h8qpyxwTpfNli',
-          ownership: {
-            default: 3,
-          },
-          _id: null,
-          folder: null,
-          sort: 0,
-          flags: {},
-          _stats: {
-            systemId: 'dnd5e',
-            systemVersion: '3.3.1',
-            coreVersion: '12.330',
-            createdTime: null,
-            modifiedTime: null,
-            lastModifiedBy: null,
-            compendiumSource: null,
-            duplicateSource: null,
-          },
-        },
-        DAECreated: true,
-      },
-      'scene-packer': {
-        hash: '3eb63519c2833021a79b75f21ec2c725156e96a7',
-        sourceId: 'Item.rk239YpC0iWlhxjA',
-      },
-      walledtemplates: {
-        wallsBlock: 'globalDefault',
-        wallRestriction: 'globalDefault',
-      },
-      core: {},
-      exportSource: {
-        world: 'Rime-of-the-Frost-Maiden',
-        system: 'dnd5e',
-        coreVersion: '11.315',
-        systemVersion: '3.2.1',
-      },
-      magicitems: {
-        enabled: false,
-        default: '',
-        equipped: false,
-        attuned: false,
-        charges: '0',
-        chargeType: 'c1',
-        destroy: false,
-        destroyFlavorText:
-          'reaches 0 charges: it crumbles into ashes and is destroyed.',
-        rechargeable: false,
-        recharge: '0',
-        rechargeType: 't1',
-        rechargeUnit: 'r1',
-        sorting: 'l',
-      },
-      midiProperties: {
-        confirmTargets: 'default',
-        autoFailFriendly: false,
-        autoSaveFriendly: false,
-        critOther: false,
-        offHandWeapon: false,
-        magicdam: false,
-        magiceffect: false,
-        noConcentrationCheck: false,
-        toggleEffect: false,
-        ignoreTotalCover: false,
-        idr: false,
-        idi: false,
-        idv: false,
-        ida: false,
-      },
-    },
-    img: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
-    system: {
-      description: {
-        value:
-          '<p>When you denote an enemy as a "Sworn Enemy," the target of your Oathbow attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.</p><p>When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.</p><p>While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.</p>',
-        chat: '',
-      },
-      duration: {
-        value: '7',
-        units: 'day',
-      },
-      target: {
-        value: '1',
-        width: null,
-        units: '',
-        type: 'enemy',
-        prompt: true,
-      },
-      source: {},
-      activation: {
-        type: 'none',
-        cost: null,
-        condition: '',
-      },
-      cover: null,
-      crewed: false,
-      range: {
-        value: null,
-        long: null,
-        units: '',
-      },
-      uses: {
-        value: null,
-        max: '',
-        per: null,
-        recovery: '',
-        prompt: true,
-      },
-      consume: {
-        type: '',
-        target: null,
-        amount: null,
-        scale: false,
-      },
-      ability: null,
-      actionType: null,
-      attack: {
-        bonus: '',
-        flat: false,
-      },
-      chatFlavor: '',
-      critical: {
-        threshold: null,
-        damage: '',
-      },
-      damage: {
-        parts: [],
-        versatile: '',
-      },
-      enchantment: null,
-      formula: '',
-      save: {
-        ability: '',
-        dc: null,
-        scaling: 'spell',
-      },
-      summons: null,
-      type: {
-        value: '',
-        subtype: '',
-      },
-      prerequisites: {
-        level: null,
-      },
-      properties: [],
-      requirements: '',
-      recharge: {
-        value: null,
-        charged: false,
-      },
-    },
-    effects: [
-      {
-        name: 'Sworn Enemy - Attacker',
-        changes: [
-          {
-            key: 'flags.midi-qol.disadvantage.attack.all',
-            mode: 0,
-            value: 'workflow.item.name !== "Oathbow"',
-            priority: 20,
-          },
-        ],
-        transfer: false,
-        _id: 'q71qwG76PUYJIVVg',
-        disabled: false,
-        duration: {
-          startTime: null,
-          seconds: 604800,
-          combat: null,
-          rounds: null,
-          turns: null,
-          startRound: null,
-          startTurn: null,
-        },
-        flags: {
-          dae: {
-            disableIncapacitated: false,
-            selfTarget: true,
-            selfTargetAlways: false,
-            dontApply: false,
-            stackable: 'noneName',
-            showIcon: true,
-            durationExpression: '',
-            macroRepeat: 'none',
-            specialDuration: [],
-            enableCondition: '',
-            disableCondition: '',
-          },
-          ActiveAuras: {
-            isAura: false,
-            aura: 'None',
-            nameOverride: '',
-            radius: '',
-            alignment: '',
-            type: '',
-            customCheck: '',
-            ignoreSelf: false,
-            height: false,
-            hidden: false,
-            displayTemp: false,
-            hostile: false,
-            onlyOnce: false,
-            wallsBlock: 'system',
-          },
-          effectmacro: {},
-        },
-        description:
-          '<p>When you denote an enemy as a "Sworn Enemy," the target of your Oathbow attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.</p><p>When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.</p><p>While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.</p>',
-        origin: null,
-        statuses: [],
-        tint: '#ffffff',
-        icon: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
-      },
-      {
-        origin: 'Actor.XlGHj4yq4EcmlMMq.Item.f2rRBfwVMPmycAgD',
-        duration: {
-          rounds: 1,
-          startTime: null,
-          seconds: 604800,
-          combat: null,
-          turns: null,
-          startRound: null,
-          startTurn: null,
-        },
-        disabled: false,
-        name: 'Sworn Enemy - Target',
-        _id: 'Knbw6MDKs8vRF3Ig',
-        changes: [],
-        description:
-          '<p>When you denote an enemy as a "Sworn Enemy," the target of your Oathbow attack becomes your sworn enemy until it dies or until dawn seven days later. You can have only one such sworn enemy at a time. When your sworn enemy dies, you can choose a new one after the next dawn.</p><p>When you make a ranged attack roll with this weapon against your sworn enemy, you have advantage on the roll. In addition, your target gains no benefit from cover, other than total cover, and you suffer no disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 piercing damage.</p><p>While your sworn enemy lives, you have disadvantage on attack rolls with all other weapons.</p>',
-        tint: '#ffffff',
-        transfer: false,
-        statuses: [],
-        flags: {
-          dae: {
-            enableCondition: '',
-            disableCondition: '',
-            disableIncapacitated: false,
-            selfTarget: false,
-            selfTargetAlways: false,
-            dontApply: false,
-            stackable: 'noneName',
-            showIcon: false,
-            durationExpression: '',
-            macroRepeat: 'none',
-            specialDuration: ['zeroHP'],
-          },
-          ActiveAuras: {
-            isAura: false,
-            aura: 'None',
-            nameOverride: '',
-            radius: '',
-            alignment: '',
-            type: '',
-            customCheck: '',
-            ignoreSelf: false,
-            height: false,
-            hidden: false,
-            displayTemp: false,
-            hostile: false,
-            onlyOnce: false,
-            wallsBlock: 'system',
-          },
-        },
-        icon: 'icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp',
-      },
-    ],
-    folder: null,
-    _stats: {
-      coreVersion: '11.315',
-      systemId: 'dnd5e',
-      systemVersion: '3.2.1',
-      createdTime: 1723123040587,
-      modifiedTime: 1723124919099,
-      lastModifiedBy: 'jM4h8qpyxwTpfNli',
-    },
-  };
+// ##################################################################################################
+// Read First!!!!
+// Allows to designate a sworn enemy and applies the bow's effect when attacking a sworn enemy.
+// v2.0.1
+// Author: Elwin#1410 based on Christopher version
+// Dependencies:
+//  - DAE [on][off]
+//  - Times up
+//  - MidiQOL "on use" item macro, [preDamageRoll],[postActiveEffects]
+//  - Elwin Helpers world script
+//
+// Usage:
+//  When equipped and attuned, an activity can be used to designate a sworn enemy. When this activity is used,
+//  it allows to designate a sworn enemy, this applies one AE on the attacker and one on the target to be able to apply the effects.
+//  When a sworn enemy is attacked with this bow, it applies its effects.
+//
+// Description:
+// In the preDamageRoll (OnUse) phase of the Oathbow Attack activity (owner's workflow):
+//   If the activity is a ranged weapon attack that targets the Sworn Enemy,
+//   adds a hook on dnd5e.preRollDamageV2 to add the damage bonus.
+// In the dnd5e.preRollDamageV2 hook (in owner's workflow):
+//   Adds the Sworn Enemy damage bonus.
+// In the postActiveEffects (OnUse) phase of the Oathbow Designate Sworn Enemy activity (owner's workflow):
+//   Updates the attacker's AE to add a flag that designates the Sworn Enemy toknen's UUID and makes the
+//   attacker and target AEs dependent.
+// When the Oathbow AE is activated [on]:
+//   Disables the automation only flag of the Designate Sworn Enemy activity.
+// When the Oathbow AE is deactivated [off]:
+//   Enables the automation only flag of the Designate Sworn Enemy activity
+//   and deletes any Sworn Enemy - Attacker AE.
+// When the Oathbow - Sworn Enemy - Attacker AE expires [off]:
+//   If the target referenced in the effect has 0 HP, sets the spent uses of the
+//   Designate Sworn Enemy activity to its max uses (this will force to wait until next dawn to use it again).
+// ###################################################################################################
 
-  if (args[0] === 'on') {
-    await actor.createEmbeddedDocuments('Item', [swornEnemy]);
+export async function oathbow({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the item
+  const DEFAULT_ITEM_NAME = 'Oathbow';
+  const MODULE_ID = 'midi-item-showcase-community';
+  // Set to false to remove debug logging
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
+
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    ui.notifications.error(errorMsg);
     return;
-  } else if (args[0] === 'off') {
-    await actor.itemTypes.feat.find((i) => i.name === 'Sworn Enemy')?.delete();
+  }
+  const dependencies = ['dae', 'midi-qol'];
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
 
-  // COMPUTE COVER CALCS << needs work
-  if (workflow.macroPass === 'preCheckHits') {
-    if (!workflow.targets.size) return;
-    const effectExists = workflow.targets
-      .first()
-      ?.actor?.appliedEffects?.find((ef) => ef.name === 'Sworn Enemy - Target');
-    if (!effectExists) return;
-
-    let validTypes = ['rwak'];
-    if (!validTypes.includes(workflow.item.system.actionType)) return;
-    if (
-      game.settings.get('midi-qol', 'ConfigSettings').optionalRules
-        .coverCalculation === 'none'
-    )
-      return;
-
-    let coverBonus = MidiQOL.computeCoverBonus(
-      workflow.token,
-      workflow.targets.first(),
-      workflow.item
+  if (debug) {
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
     );
-    if (coverBonus > 5) {
-      ui.notifications.warn('Target is under total cover');
+  }
+
+  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
+    if (
+      scope.rolledActivity?.identifier === 'attack' &&
+      workflow.hitTargets?.size === 1 &&
+      actor.getFlag(MODULE_ID, 'oathbowSwornEnemy') === workflow.hitTargets?.first()?.document.uuid &&
+      scope.rolledActivity?.getActionType(workflow.attackMode) === 'rwak'
+    ) {
+      await handleOnUsePreDamageRoll(workflow);
+    }
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+    if (workflow.activity?.identifier === 'designate-sworn-enemy') {
+      return await handleOnUsePostActiveEffectsSwornEnemy(workflow, actor, scope.macroItem);
+    }
+  } else if (args[0] === 'on') {
+    if (scope.lastArgValue?.efData.transfer) {
+      await handleOnEffectTransfer(scope.macroItem);
+    }
+  } else if (args[0] === 'off') {
+    if (scope.lastArgValue?.efData.transfer) {
+      await handleOffEffectTransfer(scope.macroItem);
+    } else {
+      await handleOffEffectAttacker(scope.macroActivity, scope.lastArgValue?.efData);
+    }
+  }
+
+  /**
+   * Handles the pre damage roll of the Attack activity.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
+   */
+  async function handleOnUsePreDamageRoll(currentWorkflow) {
+    const event = 'dnd5e.preRollDamageV2';
+    elwinHelpers.registerWorkflowHook(
+      currentWorkflow,
+      `${event}`,
+      (rollConfig, dialogConfig, messageConfig) => {
+        if (debug) {
+          console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
+        }
+        // Make sure it's the same workflow
+        if (
+          !elwinHelpers.isMidiHookStillValid(
+            DEFAULT_ITEM_NAME,
+            event,
+            'Add Sworn Enemy damage bonus',
+            currentWorkflow,
+            rollConfig.workflow,
+            debug
+          )
+        ) {
+          return;
+        }
+        if (rollConfig.subject?.uuid !== currentWorkflow.activity?.uuid) {
+          if (debug) {
+            console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
+              rollConfig,
+              dialogConfig,
+              messageConfig,
+            });
+          }
+          return;
+        }
+        // Add damage bonus
+        const swornEnemyBonus = '3d6[piercing]';
+        rollConfig.rolls[0]?.parts?.push(swornEnemyBonus);
+      },
+      'oathbow'
+    );
+  }
+
+  /**
+   * Handles the post active effects of Designate Sworn Enemy activity.
+   * Updates the attacker AE to add the target's uuid and adds dependencies between attacker and target AEs.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
+   * @param {Actor5e} sourceActor - The actor using the activity.
+   * @param {Item5e} sourceItem - The Oathbow item.
+   */
+  async function handleOnUsePostActiveEffectsSwornEnemy(currentWorkflow, sourceActor, sourceItem) {
+    const target = currentWorkflow.targets.first();
+
+    const effectSource = sourceActor.effects?.find((ae) => !ae.transfer && ae.origin?.startsWith(sourceItem.uuid));
+    if (!effectSource) {
+      console.error(`${sourceItem} | Missing Sworn Enemy - Attacker AE.`);
       return;
     }
-    let updatedRoll = await addToRoll(workflow.attackRoll, coverBonus);
-    workflow.setAttackRoll(updatedRoll);
+    const changes = foundry.utils.deepClone(effectSource.changes);
+    changes.push({
+      key: `flags.${MODULE_ID}.oathbowSwornEnemy`,
+      value: target.document.uuid,
+      mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+      priority: 20,
+    });
+    await effectSource.update({ changes });
+
+    const effectTarget = target.actor?.effects?.find((ae) => !ae.transfer && ae.origin?.startsWith(sourceItem.uuid));
+    if (!effectTarget) {
+      console.error(`${sourceItem} | Missing Sworn Enemy - Target AE.`);
+      return;
+    }
+
+    await MidiQOL.addDependent(effectSource, effectTarget);
+    await MidiQOL.addDependent(effectTarget, effectSource);
+  }
+
+  /**
+   * Disables automation only of the Designate Sworn Enemy activity.
+   *
+   * @param {Item5e} sourceItem - The Oathbow.
+   */
+  async function handleOnEffectTransfer(sourceItem) {
+    await sourceItem?.system.activities
+      ?.find((a) => a.identifier === 'designate-sworn-enemy')
+      ?.update({ 'midiProperties.automationOnly': false });
+  }
+
+  /**
+   * Enables automation only of the Designate Sworn Enemy activity.
+   *
+   * @param {Item5e} sourceItem - The Oathbow.
+   */
+  async function handleOffEffectTransfer(sourceItem) {
+    await sourceItem?.system.activities
+      ?.find((a) => a.identifier === 'designate-sworn-enemy')
+      ?.update({ 'midiProperties.automationOnly': true });
+    await sourceItem?.actor.effects?.find((ae) => !ae.transfer && ae.origin?.startsWith(sourceItem.uuid))?.delete();
+  }
+
+  /**
+   * Verifies if the actor associated to the sworn enemy token UUID has 0 HP, if its the
+   * case, the spent uses of the Designate Sworn Enemy is set to the max uses.
+   * This prevents the activity to be used before the next Dawn.
+   *
+   * @param {Activity} sourceActivity - The AE origin's activity.
+   * @param {object} effectData - The AE data.
+   */
+  async function handleOffEffectAttacker(sourceActivity, effectData) {
+    const targetDoc = await fromUuid(
+      effectData?.changes.find((ch) => ch.key === `flags.${MODULE_ID}.oathbowSwornEnemy`)?.value
+    );
+    if ((targetDoc?.actor?.system.attributes?.hp?.value ?? 0) <= 0) {
+      await sourceActivity?.update({ 'uses.spent': sourceActivity?.uses.max });
+    }
   }
 }

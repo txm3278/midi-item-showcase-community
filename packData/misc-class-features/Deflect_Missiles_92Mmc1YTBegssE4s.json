@@ -1,8 +1,391 @@
 {
+  "folder": "mvjSpU0QwubNqNmW",
   "name": "Deflect Missiles",
   "type": "feat",
+  "_id": "92Mmc1YTBegssE4s",
   "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
-  "effects": [],
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto and thatlonelybugbear version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a reaction activity that gets triggered when appropriate. When the damage received is reduced to 0, it allows to catch or throw back (by spending a use of Ki) the missile to the attacker. When adding this feature to an actor, make sure the consumption on Ki is configured.</p></details>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "",
+      "revision": 1,
+      "rules": "2014",
+      "book": "PHB",
+      "page": "78",
+      "license": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "uses": {
+      "max": "",
+      "spent": 0,
+      "recovery": []
+    },
+    "type": {
+      "value": "class",
+      "subtype": ""
+    },
+    "requirements": "Monk 3",
+    "properties": [],
+    "activities": {
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "utility",
+        "activation": {
+          "type": "reaction",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "5e8RbHiOcFWK1D0G"
+          }
+        ],
+        "range": {
+          "value": "",
+          "units": "self",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": ""
+          },
+          "affects": {
+            "count": "",
+            "type": "self",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": true,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "1d10 + @abilities.dex.mod + @classes.monk.levels",
+          "name": "Damage Reduction",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": 0,
+        "useConditionText": "reaction == 'isDamaged' && activity?.hasAttack && (activity?.getActionType(workflow.attackMode) === \"rwak\" || (activity?.getActionType(workflow.attackMode) === \"mwak\" && item?.properties?.has(\"thr\") && !checkDistance(tokenUuid, targetTokenUuid, activity?.range?.reach ?? item?.range?.reach ?? 5)))",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": true,
+          "otherActivityCompatible": false,
+          "identifier": "reaction",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "name": "Reaction"
+      },
+      "PgEw3bDm4sFVzHuy": {
+        "type": "attack",
+        "name": "Throw Back Attack",
+        "sort": 0,
+        "activation": {
+          "type": "",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "ki",
+              "scaling": {}
+            }
+          ],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": "Throw back missile"
+        },
+        "duration": {
+          "units": "inst",
+          "special": "",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "value": "",
+          "units": "any",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "prompt": true,
+          "affects": {
+            "count": "1",
+            "type": "creature",
+            "choice": false,
+            "special": ""
+          },
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "attack": {
+          "ability": "dex",
+          "bonus": "",
+          "critical": {
+            "threshold": null
+          },
+          "flat": false,
+          "type": {
+            "value": "ranged",
+            "classification": "weapon"
+          }
+        },
+        "damage": {
+          "includeBase": false,
+          "parts": [
+            {
+              "custom": {
+                "enabled": true,
+                "formula": "@scale.monk.die + @abilities.dex.mod"
+              },
+              "number": null,
+              "denomination": 0,
+              "bonus": "",
+              "types": [],
+              "scaling": {
+                "number": 1
+              }
+            }
+          ],
+          "critical": {
+            "bonus": ""
+          }
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "automationOnly": true,
+          "identifier": "throw-back-attack",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "otherActivityCompatible": true,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "attackMode": "",
+        "ammunition": "",
+        "otherActivityId": "none",
+        "otherActivityUuid": "",
+        "_id": "PgEw3bDm4sFVzHuy"
+      }
+    },
+    "identifier": "deflect-missiles",
+    "advancement": [],
+    "enchant": {},
+    "prerequisites": {
+      "level": 3,
+      "repeatable": false
+    }
+  },
+  "effects": [
+    {
+      "name": "Deflect Missiles - Damage Reduction",
+      "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
+      "origin": "Actor.8uHSuxQokfqz8dvc.Item.S7hJ1jQV26jZp5vD",
+      "transfer": false,
+      "_id": "5e8RbHiOcFWK1D0G",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.traits.dm.midi.all",
+          "mode": 2,
+          "value": "-@item.flags.midi-item-showcase-community.deflectMissilesDmgReduction",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": 1,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "multi",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "1Reaction"
+          ]
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          },
+          "dependents": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.8",
+        "createdTime": null,
+        "modifiedTime": 1746052597107,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "_key": "!items.effects!92Mmc1YTBegssE4s.5e8RbHiOcFWK1D0G"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
   "flags": {
     "custom-character-sheet-sections": {
       "sectionName": ""
@@ -16,12 +399,14 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preItemRoll]function.MISC.macros.classFeatures.deflectMissiles,[preambleComplete]function.MISC.macros.classFeatures.deflectMissiles",
+      "onUseMacroName": "[preItemRoll]ItemMacro,[preActiveEffects]ItemMacro,[postActiveEffects]ItemMacro",
       "rollAttackPerTarget": "default",
       "itemCondition": "",
-      "reactionCondition": "reaction == 'isDamaged' && (item.actionType == 'rwak' || (item.actionType == 'mwak' && item.properties.has('thr')))",
+      "reactionCondition": "",
       "otherCondition": "",
-      "effectCondition": ""
+      "effectCondition": "",
+      "removeAttackDamageButtons": "default",
+      "fumbleThreshold": null
     },
     "midiProperties": {
       "nodam": false,
@@ -59,11 +444,6 @@
         "volume": 100
       }
     },
-    "cf": {
-      "id": "temp_05r3ho3vsbxq",
-      "path": "Items various",
-      "color": "#bb7777"
-    },
     "LocknKey": {
       "IDKeysFlag": "",
       "RemoveKeyonUseFlag": false,
@@ -80,8 +460,8 @@
         "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "",
-        "author": "B2BBHntfpytXE8DP",
+        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.deflectMissiles(params);\n",
+        "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
         },
@@ -90,9 +470,9 @@
         "sort": 0,
         "flags": {},
         "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
+          "systemId": "dnd5e",
+          "systemVersion": "4.3.8",
+          "coreVersion": "12.331",
           "createdTime": null,
           "modifiedTime": null,
           "lastModifiedBy": null,
@@ -102,126 +482,34 @@
       }
     },
     "exportSource": {
-      "world": "fr-myths-and-shadows",
+      "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.327",
-      "systemVersion": "3.2.1"
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.9"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
-      "wallRestriction": "globalDefault"
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true
     },
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    }
-  },
-  "system": {
-    "description": {
-      "value": "<h2 style=\"box-sizing:border-box;user-select:text;margin:0px 0px 0.5rem;padding:0px;font-weight:normal;font-size:1.5em;border-bottom:1px solid var(--color-underline-header);color:rgb(25, 24, 19);font-family:Signika, sans-serif;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;letter-spacing:normal;orphans:2;text-align:start;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;-webkit-text-stroke-width:0px;text-decoration-thickness:initial;text-decoration-style:initial;text-decoration-color:initial\"><span style=\"font-family:Signika, sans-serif\">Made by thatlonelybugbear</span></h2><p><strong>Note: </strong>Link to the proper Ki Points Item on the actor you add this Item on</p>",
-      "chat": ""
+    "dnd5e": {
+      "persistSourceMigration": true,
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
     },
-    "source": {
-      "custom": "PHB pg. 78"
-    },
-    "activation": {
-      "type": "reaction",
-      "cost": 1,
-      "condition": ""
-    },
-    "duration": {
-      "value": "",
-      "units": ""
-    },
-    "cover": null,
-    "crewed": false,
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": "self",
-      "prompt": true
-    },
-    "range": {
-      "value": 20,
-      "long": 60,
-      "units": "ft"
-    },
-    "uses": {
-      "value": null,
-      "max": "",
-      "per": null,
-      "recovery": "",
-      "prompt": true
-    },
-    "consume": {
-      "type": "charges",
-      "target": "",
-      "amount": 0,
-      "scale": false
-    },
-    "ability": "dex",
-    "actionType": "",
-    "chatFlavor": "",
-    "critical": {
-      "threshold": null,
-      "damage": ""
-    },
-    "damage": {
-      "parts": [],
-      "versatile": ""
-    },
-    "formula": "",
-    "save": {
-      "ability": "",
-      "dc": null,
-      "scaling": "spell"
-    },
-    "type": {
-      "value": "class",
-      "subtype": "ki"
-    },
-    "requirements": "Monk 3",
-    "recharge": {
-      "value": null,
-      "charged": false
-    },
-    "properties": [
-      "concentration"
-    ],
-    "attack": {
-      "bonus": "",
-      "flat": false
-    },
-    "summons": null
+    "midi-item-showcase-community": {}
   },
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "3.1.2",
-    "createdTime": 1719069693680,
-    "modifiedTime": 1724964941753,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null
+    "systemVersion": "4.3.9",
+    "createdTime": 1744777033687,
+    "modifiedTime": 1748573367427,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "folder": "mvjSpU0QwubNqNmW",
-  "ownership": {
-    "default": 0,
-    "B2BBHntfpytXE8DP": 3
-  },
-  "_id": "92Mmc1YTBegssE4s",
-  "sort": 0,
   "_key": "!items!92Mmc1YTBegssE4s"
 }
