@@ -7,12 +7,12 @@ A collection of Midi Automations from the Posney's Foundry Automation Discord
 ## Automations added with permission from
 
 - Elwin
+- Moto Moto
 - thatlonelybugbear
-- SagaTympana
+- WurstKorn
 - Bakana
 - Xenophes
-- Moto Moto
-- WurstKorn
+- SagaTympana
 - Christopher
 - Fridan99
 
