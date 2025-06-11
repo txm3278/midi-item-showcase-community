@@ -11,6 +11,7 @@ import { monsters } from './automations/monsters/monsters.js';
 import { raceFeatures } from './automations/raceFeatures/raceFeatures.js';
 import { spellItems } from './automations/spellItems/spellItems.js';
 import { spells } from './automations/spells/spells.js';
+import { thirdParty } from './automations/thirdParty/thirdParty.js';
 import { UA } from './automations/unearthedArcana/unearthedArcana.js';
 
 export let scripts = {
@@ -30,5 +31,6 @@ export let macros = {
   raceFeatures,
   spellItems,
   spells,
+  thirdParty,
   UA,
 };
