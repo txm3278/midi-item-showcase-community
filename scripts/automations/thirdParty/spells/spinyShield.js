@@ -99,7 +99,7 @@ export async function spinyShield({ speaker, actor, token, character, macroItem,
       
       if (playerOwners.length > 0) {
         midiOptions.checkGMStatus = true;
-        midiOptions.asUser = (playerOwners.length > 0) ? playerOwners[0] : gmOwners[0];
+        midiOptions.asUser = playerOwners[0];
       }
     }
     
