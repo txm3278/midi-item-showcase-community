@@ -250,6 +250,17 @@
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       }
+    },
+    {
+      "name": "misc-third-party",
+      "label": "MISC Third Party",
+      "path": "packs/misc-third-party",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "packFolders": [
@@ -272,20 +283,31 @@
             "misc-spells",
             "misc-items",
             "misc-unearthed-arcana",
-            "misc-homebrew"
+            "misc-homebrew",
+            "misc-third-party"
           ]
         },
         {
           "name": "2024",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": ["misc-class-features-2024", "misc-feats-2024", "misc-monster-features-2024", "misc-spells-2024", "misc-items-2024"]
+          "packs": [
+            "misc-class-features-2024",
+            "misc-feats-2024",
+            "misc-monster-features-2024",
+            "misc-spells-2024",
+            "misc-items-2024"
+          ]
         },
         {
           "name": "Internal",
           "sorting": "a",
           "color": "#018e5f",
-          "packs": ["misc-class-features-items", "misc-spell-items", "misc-items-features"]
+          "packs": [
+            "misc-class-features-items",
+            "misc-spell-items",
+            "misc-items-features"
+          ]
         }
       ]
     }

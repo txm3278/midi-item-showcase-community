@@ -30,7 +30,6 @@
 
 // Default name of the item
 const DEFAULT_ITEM_NAME = 'Spiny Shield';
-const WORLD_ID = 'world';
 
 /**
  * Validates if the required dependencies are met.
@@ -38,7 +37,12 @@ const WORLD_ID = 'world';
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
+  if (
+    !foundry.utils.isNewerVersion(
+      globalThis?.elwinHelpers?.version ?? '1.1',
+      '3.5.0'
+    )
+  ) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return false;
@@ -50,90 +54,143 @@ function checkDependencies() {
   return true;
 }
 
-export async function spinyShield({ speaker, actor, token, character, macroItem, args, scope, workflow, options }) {
+export async function spinyShield({
+  speaker,
+  actor,
+  token,
+  character,
+  macroItem,
+  args,
+  scope,
+  workflow,
+  options,
+}) {
   if (!checkDependencies()) {
     return;
   }
-  
-  //isSave should never come up but just incase, DAE expiry was being wierd with this effect so this is my solution.
-  const removeTags = [
-    'isTargeted',
-    'isSave',
-    'isHit',
-    'isMissed'
-  ]
-  
-  if (args[0].tag === 'TargetOnUse' && removeTags.includes(args[0].macroPass)) {
-  	const effect = actor.appliedEffects.find(ef => ef.flags['midi-item-showcase-community']?.tb?.identifier === 'spiny-shield-cover');
 
-    if(effect) {
-      if (!actor.isOwner) await MidiQOL.socket().executeAsGM('removeEffects', { actorUuid: token.actor.uuid, effects: [effect.id], options: {} });
-      else await actor.deleteEmbeddedDocuments("ActiveEffect", [effect.id]);
+  //isSave should never come up but just incase, DAE expiry was being wierd with this effect so this is my solution.
+  const removeTags = ['isTargeted', 'isSave', 'isHit', 'isMissed'];
+
+  if (args[0].tag === 'TargetOnUse' && removeTags.includes(args[0].macroPass)) {
+    const effect = actor.appliedEffects.find(
+      (ef) =>
+        ef.flags['midi-item-showcase-community']?.tb?.identifier ===
+        'spiny-shield-cover'
+    );
+
+    if (effect) {
+      if (!actor.isOwner)
+        await MidiQOL.socket().executeAsGM('removeEffects', {
+          actorUuid: token.actor.uuid,
+          effects: [effect.id],
+          options: {},
+        });
+      else await actor.deleteEmbeddedDocuments('ActiveEffect', [effect.id]);
     }
-    
+
     if (args[0].macroPass === 'isTargeted') {
-      await handleSpinyShieldCover(workflow.token, workflow.activity ?? workflow.item, false);
+      await handleSpinyShieldCover(
+        workflow.token,
+        workflow.activity ?? workflow.item,
+        false
+      );
     }
-  }
-  else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isDamaged') {
-    if(!elwinHelpers.isMeleeAttack(workflow.activity ?? workflow.item, workflow.token, token)) {
+  } else if (
+    args[0].tag === 'TargetOnUse' &&
+    args[0].macroPass === 'isDamaged'
+  ) {
+    if (
+      !elwinHelpers.isMeleeAttack(
+        workflow.activity ?? workflow.item,
+        workflow.token,
+        token
+      )
+    ) {
       return;
     }
 
-    const activity = macroItem.system.activities.find(activity => activity.identifier === 'reflect-damage');
-    
+    const activity = macroItem.system.activities.find(
+      (activity) => activity.identifier === 'reflect-damage'
+    );
+
     const midiOptions = {
       targetUuids: [workflow.token.document.uuid],
       configureDialog: false,
       ignoreUserTargets: true,
       workflowOptions: {
         autoRollDamage: true,
-        autoFastDamage: true
-      }
+        autoFastDamage: true,
+      },
     };
-    
+
     // cpr scraped - call as the owner.
     if (!activity.actor?.testUserPermission(game.user, 'OWNER')) {
-      let permissions = foundry.utils.getProperty(activity.actor ?? {}, 'ownership') ?? {};
-      let playerOwners = Object.entries(permissions).filter(([id, level]) => !game.users.get(id)?.isGM && game.users.get(id)?.active && level === 3).map(([id]) => id);
-      
+      let permissions =
+        foundry.utils.getProperty(activity.actor ?? {}, 'ownership') ?? {};
+      let playerOwners = Object.entries(permissions)
+        .filter(
+          ([id, level]) =>
+            !game.users.get(id)?.isGM &&
+            game.users.get(id)?.active &&
+            level === 3
+        )
+        .map(([id]) => id);
+
       if (playerOwners.length > 0) {
         midiOptions.checkGMStatus = true;
         midiOptions.asUser = playerOwners[0];
       }
     }
-    
+
     const config = {
       consumeUsage: false,
       consumeSpellSlot: false,
       consume: {
-        resources: false
+        resources: false,
       },
-      midiOptions
-    }
-    
-    const effect = actor.appliedEffects.find(ef => ef.name === 'Spiny Shield' || ef.name === macroItem.name);
-    
-    const spellLevel = Object.entries(actor.system.spells)?.find(i => i[1].level == effect?.flags['midi-qol']?.castData?.castLevel)?.[0];
-    
+      midiOptions,
+    };
+
+    const effect = actor.appliedEffects.find(
+      (ef) => ef.name === 'Spiny Shield' || ef.name === macroItem.name
+    );
+
+    const spellLevel = Object.entries(actor.system.spells)?.find(
+      (i) => i[1].level == effect?.flags['midi-qol']?.castData?.castLevel
+    )?.[0];
+
     if (spellLevel) {
       config.spell = { slot: spellLevel };
     }
-    
-    const spinyShieldDR = await MidiQOL.completeActivityUse(activity, config, { configure: false });
-    
-    elwinHelpers.reduceAppliedDamage(workflow.damageItem, spinyShieldDR.damageItem.rawDamageDetail[0].value, macroItem);
-  }
-  else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postPreambleComplete' && workflow.activity?.type === 'utility' && workflow.activity?.activation?.type === 'reaction') {
-    const sourceToken = MidiQOL.getTokenForActor(await fromUuid(workflow.workflowOptions.sourceActorUuid));
-    const triggerActivity = await fromUuid(workflow.workflowOptions.sourceItemUuid);
-    
+
+    const spinyShieldDR = await MidiQOL.completeActivityUse(activity, config, {
+      configure: false,
+    });
+
+    elwinHelpers.reduceAppliedDamage(
+      workflow.damageItem,
+      spinyShieldDR.damageItem.rawDamageDetail[0].value,
+      macroItem
+    );
+  } else if (
+    args[0].tag === 'OnUse' &&
+    args[0].macroPass === 'postPreambleComplete' &&
+    workflow.activity?.type === 'utility' &&
+    workflow.activity?.activation?.type === 'reaction'
+  ) {
+    const sourceToken = MidiQOL.getTokenForActor(
+      await fromUuid(workflow.workflowOptions.sourceActorUuid)
+    );
+    const triggerActivity = await fromUuid(
+      workflow.workflowOptions.sourceItemUuid
+    );
+
     await handleSpinyShieldCover(sourceToken, triggerActivity, true);
-    
+
     const eventUuid = workflow.activity?.uuid ?? workflow.item?.uuid;
   }
-  
-  
+
   /**
    * Handles the spiny shield cover effect on an actor, based on if it was a ranged attack, faking the cover checks if needed.
    *
@@ -141,70 +198,125 @@ export async function spinyShield({ speaker, actor, token, character, macroItem,
    * @param {Item5e|Activity} triggerActivity - The item/activity that set up the attack.
    * @param {bool} fakeCover - If this is true we are being called during the reaction workflow so we check if midi-qol has applied cover and do it that way..
    */
-  async function handleSpinyShieldCover(sourceToken, triggerActivity, fakeCover) {
-    if (!elwinHelpers.isRangedAttack(triggerActivity, sourceToken, token)) return;
-        
+  async function handleSpinyShieldCover(
+    sourceToken,
+    triggerActivity,
+    fakeCover
+  ) {
+    if (!elwinHelpers.isRangedAttack(triggerActivity, sourceToken, token))
+      return;
+
     let acBonus = foundry.utils.getProperty(actor, 'flags.midi-qol.acBonus');
-    
+
     console.log(acBonus);
-    
-    // if this is a reaction, we are too late to mess with acBonus so we just fake it till we make it for this effect!    
+
+    // if this is a reaction, we are too late to mess with acBonus so we just fake it till we make it for this effect!
     if (fakeCover) {
       if (acBonus >= 2) return;
       // we already have half cover the spell is ineffective (the +2 is treated as half cover).
       // if this spell actually means for the purposes of sharpshooter and not just get half cover if you dont have it I guess this needs to be changed!
-      
+
       //this is heresy but its copied from midiqol and adapted so we dont get issues.
-      const noCoverFlag = foundry.utils.getProperty(sourceToken.actor, `flags.midi-qol.ignoreCover`);
-      
+      const noCoverFlag = foundry.utils.getProperty(
+        sourceToken.actor,
+        `flags.midi-qol.ignoreCover`
+      );
+
       let ignoreCover = false;
       if (noCoverFlag) {
-        const conditionData = MidiQOL.createConditionData({ workflow, target: token, actor: sourceToken.actor });
-        ignoreCover ||= MidiQOL.evalAllConditions(sourceToken.actor, `flags.midi-qol.ignoreCover`, conditionData);
+        const conditionData = MidiQOL.createConditionData({
+          workflow,
+          target: token,
+          actor: sourceToken.actor,
+        });
+        ignoreCover ||= MidiQOL.evalAllConditions(
+          sourceToken.actor,
+          `flags.midi-qol.ignoreCover`,
+          conditionData
+        );
       }
-      
-      if (workflow.activity?.actionType === "rsak" && foundry.utils.getProperty(token.actor, "flags.dnd5e.spellSniper")) {
-        const conditionData = MidiQOL.createConditionData({ workflow, target: token, actor: sourceToken.actor });
-        ignoreCover ||= MidiQOL.evalAllConditions(sourceToken.actor, `flags.dnd5e.spellSniper`, conditionData);
+
+      if (
+        workflow.activity?.actionType === 'rsak' &&
+        foundry.utils.getProperty(token.actor, 'flags.dnd5e.spellSniper')
+      ) {
+        const conditionData = MidiQOL.createConditionData({
+          workflow,
+          target: token,
+          actor: sourceToken.actor,
+        });
+        ignoreCover ||= MidiQOL.evalAllConditions(
+          sourceToken.actor,
+          `flags.dnd5e.spellSniper`,
+          conditionData
+        );
       }
-      
-      const sharpShooterFlag = foundry.utils.getProperty(sourceToken.actor, `flags.midi-qol.sharpShooter`) || foundry.utils.getProperty(sourceToken.actor, `flags.dnd5e.sharpShooter`);
-      if (workflow.activity?.actionType === "rwak" && sharpShooterFlag) {
-        const conditionData = MidiQOL.createConditionData({ workflow, target: token, actor: sourceToken.actor });
-        ignoreCover ||= MidiQOL.evalAllConditions(sourceToken.actor, `flags.midi-qol.sharpShooter`, conditionData);
-        ignoreCover ||= MidiQOL.evalAllConditions(sourceToken.actor, `flags.dnd5e.sharpShooter`, conditionData);
+
+      const sharpShooterFlag =
+        foundry.utils.getProperty(
+          sourceToken.actor,
+          `flags.midi-qol.sharpShooter`
+        ) ||
+        foundry.utils.getProperty(
+          sourceToken.actor,
+          `flags.dnd5e.sharpShooter`
+        );
+      if (workflow.activity?.actionType === 'rwak' && sharpShooterFlag) {
+        const conditionData = MidiQOL.createConditionData({
+          workflow,
+          target: token,
+          actor: sourceToken.actor,
+        });
+        ignoreCover ||= MidiQOL.evalAllConditions(
+          sourceToken.actor,
+          `flags.midi-qol.sharpShooter`,
+          conditionData
+        );
+        ignoreCover ||= MidiQOL.evalAllConditions(
+          sourceToken.actor,
+          `flags.dnd5e.sharpShooter`,
+          conditionData
+        );
       }
-      
+
       if (!acBonus) acBonus = 0;
-      
+
       if (ignoreCover) return;
-    }    
-  
+    }
+
     // note: it is so infinitesimally impossible that the calculated acBonus will be 1 but JUST INCASE we do this with fakeCover, specialduration incase it lingers.
     const effectData = {
       img: macroItem.img,
       changes: [
         {
-          key: fakeCover ? 'system.attributes.ac.bonus' : 'flags.midi-qol.acBonus',
-          mode: fakeCover ? CONST.ACTIVE_EFFECT_MODES.ADD : CONST.ACTIVE_EFFECT_MODES.UPGRADE,
-          value: fakeCover ? (2 - acBonus) : 2,
+          key: fakeCover
+            ? 'system.attributes.ac.bonus'
+            : 'flags.midi-qol.acBonus',
+          mode: fakeCover
+            ? CONST.ACTIVE_EFFECT_MODES.ADD
+            : CONST.ACTIVE_EFFECT_MODES.UPGRADE,
+          value: fakeCover ? 2 - acBonus : 2,
           priority: 20,
         },
       ],
       flags: {
-        dae: { 
+        dae: {
           stackable: 'noneName',
-          specialDuration: [ 'turnStartSource' ]
+          specialDuration: ['turnStartSource'],
         },
-        'midi-item-showcase-community': { 
-          tb: { identifier: 'spiny-shield-cover' }
+        'midi-item-showcase-community': {
+          tb: { identifier: 'spiny-shield-cover' },
         },
       },
       name: 'Spiny Shield Cover',
       origin: actor.uuid,
     };
-      
-    if (!actor.isOwner) await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actor.uuid, effects: [effectData] });
-    else await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+
+    if (!actor.isOwner)
+      await MidiQOL.socket().executeAsGM('createEffects', {
+        actorUuid: actor.uuid,
+        effects: [effectData],
+      });
+    else await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
   }
 }
