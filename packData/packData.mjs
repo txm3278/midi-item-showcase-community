@@ -19,6 +19,7 @@ let packs = [
   'misc-items-2024',
   'misc-spells-2024',
   'misc-monster-features-2024',
+  'misc-third-party',
 ];
 let actorPacks = ['misc-actors'];
 
