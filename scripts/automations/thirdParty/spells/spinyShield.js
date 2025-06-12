@@ -139,8 +139,7 @@ export async function spinyShield({
 
       if (playerOwners.length > 0) {
         midiOptions.checkGMStatus = true;
-        midiOptions.asUser =
-          playerOwners.length > 0 ? playerOwners[0] : gmOwners[0];
+        midiOptions.asUser = playerOwners[0];
       }
     }
 
@@ -208,8 +207,6 @@ export async function spinyShield({
       return;
 
     let acBonus = foundry.utils.getProperty(actor, 'flags.midi-qol.acBonus');
-
-    console.log(acBonus);
 
     // if this is a reaction, we are too late to mess with acBonus so we just fake it till we make it for this effect!
     if (fakeCover) {
