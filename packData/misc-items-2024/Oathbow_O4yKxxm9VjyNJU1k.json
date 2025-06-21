@@ -608,7 +608,7 @@
   },
   "flags": {
     "midi-qol": {
-      "onUseMacroName": "[preDamageRoll]ItemMacro,[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[preDamageRollConfig]ItemMacro,[postActiveEffects]ItemMacro",
       "fumbleThreshold": null,
       "effectActivation": false,
       "rollAttackPerTarget": "default",
@@ -682,7 +682,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1745977401739,
-    "modifiedTime": 1745979679589,
+    "modifiedTime": 1750475821329,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "O4yKxxm9VjyNJU1k",

@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.2
+// v3.5.3
 // Dependencies:
 //  - MidiQOL
 //
@@ -50,6 +50,8 @@
 // - elwinHelpers.getEquippedMeleeWeapons
 // - elwinHelpers.getRules
 // - elwinHelpers.registerWorkflowHook
+// - elwinHelpers.damageConfig.updateBasic
+// - elwinHelpers.damageConfig.updateCustom
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -116,11 +118,12 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.5.2';
+  const VERSION = '3.5.3';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
   const active = true;
+  const WORKFLOWS = new Map();
   let debug = false;
   let depReqFulfilled = false;
 
@@ -189,6 +192,12 @@ export function runElwinsHelpers() {
     setHook('dnd5e.canEnchant', 'handleDnd5eCanEnchant', handleDnd5eCanEnchant);
     setHook('preCreateItem', 'handlePreCreateItem', handlePreCreateItem);
     setHook('preUpdateItem', 'handlePreUpdateItem', handlePreUpdateItem);
+    setHook(
+      'deleteChatMessage',
+      'handleDeleteChatMessageForRegisteredWorkflowHooks',
+      handleDeleteChatMessageForRegisteredWorkflowHooks
+    );
+    setHook('midi-qol.postCleanup', 'cleanupRegisteredWorkflowHooks', cleanupRegisteredWorkflowHooks);
     exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
     exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
 
@@ -232,9 +241,12 @@ export function runElwinsHelpers() {
     );
     exportIdentifier('elwinHelpers.getAutomatedEnchantmentSelectedProfile', getAutomatedEnchantmentSelectedProfile);
     exportIdentifier('elwinHelpers.applyEnchantmentToItem', applyEnchantmentToItem);
+    exportIdentifier('elwinHelpers.applyEnchantmentToItemFromOtherActivity', applyEnchantmentToItemFromOtherActivity);
     exportIdentifier('elwinHelpers.getEquippedMeleeWeapons', getEquippedMeleeWeapons);
     exportIdentifier('elwinHelpers.getRules', getRules);
     exportIdentifier('elwinHelpers.registerWorkflowHook', registerWorkflowHook);
+    exportIdentifier('elwinHelpers.damageConfig.updateBasic', updateDamageConfigBasic);
+    exportIdentifier('elwinHelpers.damageConfig.updateCustom', updateDamageConfigCustom);
 
     // Note: classes need to be exported after they are declared...
 
@@ -2347,6 +2359,40 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Applies programmatically an enchantment to the specified item from an enchant activity different
+   * than the one from the workflow.<br>
+   * <b>Note:</b> This does not work with activities that belongs an item that destroys itself on empty.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   * @param {Activity} activity - The enchant activity to which the enchantment belongs.
+   * @param {object} enchantmentEffectData - The enchantment effect data to apply.
+   * @param {Item5e} itemToEnchant- The item to enchant.
+   * @param {boolean} deleteExisting=true - Deletes any existing enchantment having workflow.activity.uuid as origin.
+   * @returns {ActiveEffect5e} The applied enchantment effect.
+   */
+  async function applyEnchantmentToItemFromOtherActivity(
+    workflow,
+    activity,
+    enchantmentEffectData,
+    itemToEnchant,
+    deleteExisting = true
+  ) {
+    // Removes previous enchantment if it exists
+    if (deleteExisting) {
+      await elwinHelpers.deleteAppliedEnchantments(activity.uuid);
+    }
+
+    // Set current activity has the origin
+    enchantmentEffectData.origin = activity.uuid;
+
+    return await ActiveEffect.implementation.create(enchantmentEffectData, {
+      parent: itemToEnchant,
+      keepOrigin: true,
+      dnd5e: { enchantmentProfile: enchantmentEffectData._id, activityId: activity.id },
+    });
+  }
+
+  /**
    * Returns a list of equipped melee weapons for a specified actor.
    *
    * @param {Actor5e} sourceActor - Actor for which to list equipped melee weapons.
@@ -2376,6 +2422,35 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Cleanup hook callbacks that were registered on a workflow when its associated chat message is deleted.
+   *
+   * @param {object} message - The delete message.
+   * @param {object} options - The delete options.
+   * @param {User} user - The user deleting the message.
+   */
+  function handleDeleteChatMessageForRegisteredWorkflowHooks(message, options, user) {
+    const workflow = WORKFLOWS.get(message.uuid);
+    if (workflow) {
+      cleanupRegisteredWorkflowHooks(workflow);
+    }
+  }
+
+  /**
+   * Cleanup hook callbacks that were registered on a workflow.
+   *
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
+   */
+  function cleanupRegisteredWorkflowHooks(workflow) {
+    const elwinHelpersHooks = foundry.utils.getProperty(workflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
+    for (let tmpEvent of Object.keys(elwinHelpersHooks)) {
+      for (let tmpMacroId of Object.keys(elwinHelpersHooks[tmpEvent])) {
+        Hooks.off(tmpEvent, elwinHelpersHooks[tmpEvent][tmpMacroId]);
+      }
+    }
+    delete foundry.utils.getProperty(workflow, 'workflowOptions.elwinHelpers')?.hooks;
+  }
+
+  /**
    * Registers a callback on an event for the duration of the specified workflow.
    *
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
@@ -2390,7 +2465,6 @@ export function runElwinsHelpers() {
       macroId = 'default';
     }
     const elwinHelpersHooks = foundry.utils.getProperty(workflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
-    const firstHook = foundry.utils.isEmpty(elwinHelpersHooks);
     if (elwinHelpersHooks[event]?.[macroId]) {
       // A hook for this event has already been registered for this workflow, remove previous
       Hooks.off(event, elwinHelpersHooks[event][macroId]);
@@ -2398,19 +2472,158 @@ export function runElwinsHelpers() {
     elwinHelpersHooks[event] ??= {};
     elwinHelpersHooks[event][macroId] = Hooks.on(event, callback);
     foundry.utils.setProperty(workflow, 'workflowOptions.elwinHelpers.hooks', elwinHelpersHooks);
-    if (firstHook) {
-      const eventUuid = workflow.activity?.uuid ?? workflow.item?.uuid;
-      Hooks.once(`midi-qol.postCleanup${eventUuid ? '.' + eventUuid : ''}`, (currentWorkflow) => {
-        const tmpElwinHelpersHooks =
-          foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers.hooks') ?? {};
-        for (let tmpEvent of Object.keys(tmpElwinHelpersHooks)) {
-          for (let tmpMacroId of Object.keys(tmpElwinHelpersHooks[tmpEvent])) {
-            Hooks.off(tmpEvent, tmpElwinHelpersHooks[tmpEvent][tmpMacroId]);
-          }
+
+    // Keep a reference to cleanup in case the chat message is deleted before the workflow is completed (used by delete message hook)
+    WORKFLOWS.set(workflow.id, workflow);
+  }
+
+  /**
+   * Updates the damage roll configuration by adding a damage bonus and or replacing the damage type of the rolls.
+   *
+   * @param {object} scope - The midi-qol macro calling scope.
+   * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+   * @param {object} [options] - The options to use for the updates.
+   * @param {string} [options.damageBonus] - Damage bonus to be added (none added if undefined).
+   * @param {string} [options.newDamageType] - The new damage type to set (does nothing if undefined).
+   * @param {string} [options.baseOnly] - Flag to indicate if only base damage rolls should be updated (all if undefined or false).
+   * @param {string} [options.flavor] - Text to be added under the modified roll to inform of the changes that were made.
+   * @param {boolean} [options.debug] - Flag to indicate if debug information should be logged (if undefined uses the current debug value).
+   */
+  function updateDamageConfigBasic(scope, workflow, options = {}) {
+    updateDamageConfigCustom(scope, workflow, options, (rollConfig, _, __) => {
+      if (options.damageBonus) {
+        rollConfig.rolls[0]?.parts?.push(options.damageBonus);
+      }
+      if (options.newDamageType) {
+        replaceRollConfigDamage(rollConfig, options.newDamageType, options.baseOnly);
+      }
+    });
+  }
+
+  /**
+   * Updates the damage roll configuration by executing the specified callback function.
+   *
+   * @param {object} scope - The midi-qol macro calling scope.
+   * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+   * @param {object} [options] - The options to use for the updates.
+   * @param {string} [options.flavor] - Text to be added under the modified roll to inform of the changes that were made.
+   * @param {boolean} [options.debug] - Flag to indicate if debug information should be logged (if undefined uses the current debug value).
+   * @param {function(object, object, object):void} changeFunction - A callback to run in the 'dnd5e.preRollDamageV2' hook
+   *                                                                 to apply changes to the damage roll config.
+   */
+  function updateDamageConfigCustom(scope, workflow, options = {}, changeFunction) {
+    let { flavor, debug: effectiveDebug } = options;
+    const itemName = scope.macroItem?.name ?? scope.macroActivity?.item.name;
+    flavor ??= itemName;
+    effectiveDebug ??= debug;
+
+    Hooks.once('dnd5e.preRollDamageV2', (rollConfig, dialogConfig, messageConfig) => {
+      if (effectiveDebug) {
+        console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamageV2`, {
+          rollConfig,
+          dialogConfig,
+          messageConfig,
+        });
+      }
+      // Make sure it's the same workflow
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          MACRO_NAME,
+          'dnd5e.preRollDamageV2',
+          `${itemName ?? MACRO_NAME} - Damage Config`,
+          workflow,
+          rollConfig.workflow,
+          effectiveDebug
+        )
+      ) {
+        return;
+      }
+      if (rollConfig.subject?.uuid !== workflow.activity?.uuid) {
+        if (effectiveDebug) {
+          console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamageV2 damage is not from rolledActivity`, {
+            rollConfig,
+            dialogConfig,
+            messageConfig,
+          });
         }
-        delete foundry.utils.getProperty(currentWorkflow, 'workflowOptions.elwinHelpers')?.hooks;
-      });
+        return;
+      }
+      // Call change function
+      if (changeFunction) {
+        changeFunction(rollConfig, dialogConfig, messageConfig);
+      }
+    });
+    Hooks.once('renderDamageRollConfigurationDialog', (dialog, element) => {
+      if (effectiveDebug) {
+        console.warn(`${itemName ?? MACRO_NAME} | renderDamageRollConfigurationDialog`, { dialog, element });
+      }
+
+      // Make sure it's the same workflow
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          MACRO_NAME,
+          'renderDamageRollConfigurationDialog',
+          `${itemName ?? MACRO_NAME} - Damage Bonus Flavor`,
+          workflow,
+          dialog.config?.workflow,
+          effectiveDebug
+        )
+      ) {
+        return;
+      }
+      if (dialog.config?.subject?.uuid !== workflow.activity?.uuid) {
+        if (effectiveDebug) {
+          console.warn(
+            `${itemName ?? MACRO_NAME} | renderDamageRollConfigurationDialog damage is not from rolledActivity`,
+            { dialog, element }
+          );
+        }
+        return;
+      }
+
+      const situationalDiv = dialog.element.querySelector('li > div.formula-line ~ div.form-group');
+      const newDiv = dialog.element.ownerDocument.createElement('div');
+      newDiv.innerHTML = `<span class='label'>${flavor}</span>`;
+      situationalDiv.parentNode.insertBefore(newDiv, situationalDiv);
+    });
+  }
+
+  /**
+   * Replaces the current damage roll config damage types with the value of newDamageType.
+   *
+   * @param {object} rollConfig - The current damage roll config.
+   * @param {string} newDamageType - The new damage type to set.
+   * @param {boolean} [baseOnly=false] - Flag to indicate if only base damage type should be converted.
+   */
+  function replaceRollConfigDamage(rollConfig, newDamageType, baseOnly = false) {
+    // Change damage type of all rolls (or just base?)
+    for (let roll of rollConfig.rolls ?? []) {
+      if (baseOnly && !roll.base) {
+        continue;
+      }
+      roll.options ??= {};
+      roll.options.type = newDamageType;
+      roll.options.types = [newDamageType];
+      for (let i = 0; i < roll.parts.length; i++) {
+        roll.parts[i] = getUpdatedPart(roll.parts[i]);
+      }
     }
+  }
+
+  /**
+   * Replaces damage types contained in the specified part with newDamageType.
+   *
+   * @param {string} part - Damage part to be updated.
+   * @param {string} newDamageType - The new damage type to set.
+   * @returns {string} new damage part with damage types updated.
+   */
+  function getUpdatedPart(part, newDamageType) {
+    if (!part) {
+      return part;
+    }
+    let newPart = part;
+    newPart = newPart.replace(/(\[)([^\]]+)(\])/g, `$1${newDamageType}$3`);
+    return newPart;
   }
 
   /**
@@ -2420,7 +2633,7 @@ export function runElwinsHelpers() {
    * const items = _token.actor.itemTypes.weapon;
    * const selectedItem = await ItemSelectionDialog.createDialog("Select a Weapon", items, items?.[0]);
    */
-  class ItemSelectionDialog extends Dialog {
+  class ItemSelectionDialog extends foundry.applications.api.DialogV2 {
     /**
      * Returns the html content for the dialog generated using the specified values.
      *
@@ -2466,7 +2679,7 @@ export function runElwinsHelpers() {
             .join(' ') ?? '';
 
         itemContent += `
-      <input id="radio-${item.id}" type="radio" name="item" value="${item.id}"${ctx.selected}>
+      <input id="radio-${item.id}" type="radio" name="itemChoice" value="${item.id}"${ctx.selected}>
         <label class="item" for="radio-${item.id}">
           <div class="item-name">
             <img class="item-image" src="${item.img}" alt="${item.name}">
@@ -2516,6 +2729,7 @@ export function runElwinsHelpers() {
             }
       
             .selectItem .item .item-name {
+              min-width: 350px;
               flex: 1;
               display: flex;
               gap: 0.5rem;
@@ -2578,13 +2792,11 @@ export function runElwinsHelpers() {
             }
           </style>
           
-          <form>
-            <div class="selectItem">
-              <dl>
-                ${itemContent}
-              </dl>
-            </div>
-          </form>
+          <div class="selectItem">
+            <dl>
+              ${itemContent}
+            </dl>
+          </div>
       `;
       return content;
     }
@@ -2593,8 +2805,8 @@ export function runElwinsHelpers() {
      * A helper constructor function which displays the item selection dialog.
      *
      * @param {string} title - The title to display.
-     * @param {Token5e[]} items - List of items from which to select an item.
-     * @param {Token5e} defaultItem - If specified, item to be selected by default,
+     * @param {Item5e[]} items - List of items from which to select an item.
+     * @param {Item5e} defaultItem - If specified, item to be selected by default,
      *                                if null or not part of items, the first one is used.
      *
      * @returns {Promise<Item5e|null>}  Resolves with the selected item, if any.
@@ -2603,27 +2815,23 @@ export function runElwinsHelpers() {
       if (!(items?.length > 0)) {
         return null;
       }
-      return new Promise((resolve, reject) => {
-        const dialog = new this(
+      return ItemSelectionDialog.wait({
+        window: { title },
+        content: this.getContent(items, defaultItem),
+        modal: true,
+        rejectClose: false,
+        buttons: [
           {
-            title,
-            content: this.getContent(items, defaultItem),
-            buttons: {
-              ok: {
-                icon: '<i class="fas fa-check"></i>',
-                label: 'Select',
-                callback: (html) => {
-                  const selectedItemId = html.find("input[type='radio'][name='item']:checked")[0]?.value;
-                  resolve(items.find((t) => t.id === selectedItemId));
-                },
-              },
+            action: 'select',
+            label: 'Select',
+            icon: 'fas fa-check',
+            default: true,
+            callback: (_, button, __) => {
+              const selectedItemId = button.form.elements.itemChoice.value;
+              return items.find((i) => i.id === selectedItemId);
             },
-            default: 'ok',
-            close: () => resolve(null),
           },
-          { classes: ['dnd5e', 'dialog'] }
-        );
-        dialog.render(true);
+        ],
       });
     }
   }
@@ -2640,7 +2848,7 @@ export function runElwinsHelpers() {
    * const targets = game.canvas.tokens.placeables;
    * const selectedTarget = await TokenSelectionDialog.createDialog("Select Target", targets, targets?.[0]);
    */
-  class TokenSelectionDialog extends Dialog {
+  class TokenSelectionDialog extends foundry.applications.api.DialogV2 {
     /**
      * Returns the html content for the dialog generated using the specified values.
      *
@@ -2709,25 +2917,21 @@ export function runElwinsHelpers() {
             }
           </style>
           
-          <form>
-            <div class="selectToken">
-              <div class="form-group" id="tokens">
-              <dl>
-                  ${tokenContent}
-              </dl>
-              </div>
+          <div class="selectToken">
+            <div class="form-group" id="tokens">
+            <dl>
+                ${tokenContent}
+            </dl>
             </div>
-          </form>
+          </div>
       `;
       return content;
     }
 
     /** @inheritdoc */
-    activateListeners(html) {
-      super.activateListeners(html);
-
+    _onRender(_, __) {
       if (canvas) {
-        let imgs = html[0].getElementsByTagName('img');
+        let imgs = this.element.getElementsByTagName('img');
         for (let i of imgs) {
           i.style.border = 'none';
           i.closest('.radio-label').addEventListener('click', async function () {
@@ -2770,27 +2974,23 @@ export function runElwinsHelpers() {
         return null;
       }
       const content = await this.getContent(tokens, defaultToken);
-      return new Promise((resolve, reject) => {
-        const dialog = new this(
+      return TokenSelectionDialog.wait({
+        window: { title },
+        content,
+        modal: true,
+        rejectClose: false,
+        buttons: [
           {
-            title,
-            content,
-            buttons: {
-              ok: {
-                icon: '<i class="fas fa-check"></i>',
-                label: 'Select', // TODO localize
-                callback: (html) => {
-                  const selectedTokenId = html.find("input[type='radio'][name='token']:checked")[0]?.value;
-                  resolve(tokens.find((t) => t.id === selectedTokenId));
-                },
-              },
+            action: 'ok',
+            label: 'Select',
+            icon: 'fas fa-check',
+            default: true,
+            callback: (_, button, __) => {
+              const selectedTokenId = button.form.elements.token.value;
+              return tokens.find((t) => t.id === selectedTokenId);
             },
-            default: 'ok',
-            close: () => resolve(null),
           },
-          { classes: ['dnd5e', 'dialog'] }
-        );
-        dialog.render(true);
+        ],
       });
     }
   }
@@ -2826,7 +3026,7 @@ export function runElwinsHelpers() {
    * Helper function to create a simple dialog with labeled buttons and associated data.
    *
    * @param {object} data - The dialog's data.
-   * @param {{label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
+   * @param {{action: string, label: string, value: object}[]} [data.buttons] - Buttons to be displayed in the dialog.
    * @param {string} [data.title] - Dialog's title.
    * @param {string} [data.content] - Dialog's html content.
    * @param {object} [data.options] - Dialog's options.
@@ -2835,25 +3035,27 @@ export function runElwinsHelpers() {
    * @returns {object} the value associated to the selected button.
    */
   async function buttonDialog(data, direction) {
-    const buttons = {};
+    const buttons = [];
 
     data.buttons.forEach((button) => {
-      buttons[button.label] = {
+      buttons.push({
+        action: button.action ?? button.label,
         label: button.label,
         callback: () => button.value,
-      };
+      });
     });
 
-    const render = (html) => {
-      const app = html.closest('.app');
-      app.find('.dialog-buttons').css({ 'flex-direction': direction });
-    };
-
-    return await Dialog.wait(
-      { title: data.title, content: data.content ?? '', buttons, render, close: () => null },
-      { classes: ['dnd5e', 'dialog'], height: '100%', ...data.options },
-      {}
-    );
+    return await foundry.applications.api.DialogV2.wait({
+      window: { title: data.title ?? '', position: { height: '100%' } },
+      content: data.content ?? '',
+      rejectClose: false,
+      buttons,
+      render: (_, dialog) => {
+        const footer = dialog.querySelector('footer');
+        footer.style['flex-direction'] = direction;
+      },
+      options: data.options ?? {},
+    });
   }
 
   /**

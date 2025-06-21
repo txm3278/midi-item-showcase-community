@@ -71,6 +71,12 @@ export function setConfig() {
           version: '2.0.0',
           authors: ['Elwin'],
         },
+        'Arms of the Astral Self': {
+          name: 'Arms of the Astral Self',
+          type: 'Class Feature',
+          version: '2.0.0',
+          authors: ['Elwin', 'Spoob'],
+        },
         'Arrow-Catching Shield': {
           name: 'Arrow-Catching Shield',
           type: 'Item',
@@ -98,7 +104,7 @@ export function setConfig() {
         'Corpse Slayer Weapon': {
           name: 'Corpse Slayer Weapon',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.1.0',
           authors: ['Elwin', 'SagaTympana'],
         },
         'Crown of Stars': {
@@ -146,7 +152,7 @@ export function setConfig() {
         'Fighting Style: Great Weapon Fighting': {
           name: 'Fighting Style: Great Weapon Fighting',
           type: 'Class Feature',
-          version: '1.1.1',
+          version: '1.2.0',
           authors: ['Elwin', 'WurstKorn'],
         },
         'Flames of Phlegethos': {
@@ -248,7 +254,7 @@ export function setConfig() {
         'Oathbow': {
           name: 'Oathbow',
           type: 'Item',
-          version: '2.0.1',
+          version: '2.1.0',
           authors: ['Elwin', 'Christopher'],
         },
         'Poison, Basic (vial)': {
@@ -338,7 +344,7 @@ export function setConfig() {
         'Unwavering Mark': {
           name: 'Unwavering Mark',
           type: 'Class Feature',
-          version: '3.1.1',
+          version: '3.2.0',
           authors: ['Elwin'],
         },
         'Vengeful Ancestors': {
@@ -356,7 +362,7 @@ export function setConfig() {
         'Warding Flare': {
           name: 'Warding Flare',
           type: 'Class Feature',
-          version: '3.1.0',
+          version: '3.2.0',
           authors: ['Elwin'],
         },
         'Warding Maneuver': {
@@ -418,13 +424,19 @@ export function setConfig() {
         'Great Weapon Fighting': {
           name: 'Great Weapon Fighting',
           type: 'Feat',
-          version: '1.1.1',
+          version: '1.2.0',
           authors: ['Elwin', 'WurstKorn'],
         },
         'Great Weapon Master': {
           name: 'Great Weapon Master',
           type: 'Feat',
           version: '1.0.1',
+          authors: ['Elwin'],
+        },
+        'Improved Warding Flare': {
+          name: 'Improved Warding Flare',
+          type: 'Class Feature',
+          version: '1.0.0',
           authors: ['Elwin'],
         },
         "Lolth's Sting": {
@@ -436,7 +448,7 @@ export function setConfig() {
         'Oathbow': {
           name: 'Oathbow',
           type: 'Item',
-          version: '2.0.1',
+          version: '2.1.0',
           authors: ['Elwin', 'Christopher'],
         },
         'Poison, Basic': {
@@ -487,6 +499,12 @@ export function setConfig() {
           version: '1.1.0',
           authors: ['Elwin'],
         },
+        'Warding Flare': {
+          name: 'Warding Flare',
+          type: 'Class Feature',
+          version: '3.2.0',
+          authors: ['Elwin'],
+        },
         'Wyvern Poison': {
           name: 'Wyvern Poison',
           type: 'Item',
@@ -516,6 +534,13 @@ export function setConfig() {
             name: 'Petrifying Gaze',
             version: '1.1.0',
             authors: ['Elwin', 'Moto Moto'],
+          },
+        },  
+        Rakshasa: {
+          'Limited Magic Immunity': {
+            name: 'Limited Magic Immunity',
+            version: '1.0.0',
+            authors: ['thatlonelybugbear', 'Elwin'],
           },
         },
       },

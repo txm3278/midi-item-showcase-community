@@ -48,8 +48,8 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,preDamageRoll",
-          "priority": 100
+          "value": "ItemMacro,preDamageRollConfig",
+          "priority": 150
         }
       ],
       "transfer": true,
@@ -117,7 +117,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": 1747882770177,
+        "modifiedTime": 1750000499765,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
@@ -212,9 +212,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.9",
     "createdTime": 1742524272970,
-    "modifiedTime": 1745772563422,
+    "modifiedTime": 1750000307795,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!I7adOmu8cw7m9uIQ"

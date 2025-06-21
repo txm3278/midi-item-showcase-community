@@ -14,8 +14,8 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,preDamageRoll",
-          "priority": 100
+          "value": "ItemMacro,preDamageRollConfig",
+          "priority": 150
         }
       ],
       "disabled": false,
@@ -76,7 +76,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": 1742593785648,
-        "modifiedTime": 1747882791642,
+        "modifiedTime": 1750000510499,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!2FtWaINpckrvjqEr.HbxULptV9VroqWfp"
@@ -95,7 +95,7 @@
     },
     "identifier": "great-weapon-fighting",
     "source": {
-      "book": "PHB 2024",
+      "book": "SRD 5.2",
       "page": "",
       "license": "",
       "custom": "",
@@ -195,9 +195,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.9",
     "createdTime": 1742593746598,
-    "modifiedTime": 1742611701483,
+    "modifiedTime": 1750286916275,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!2FtWaINpckrvjqEr"

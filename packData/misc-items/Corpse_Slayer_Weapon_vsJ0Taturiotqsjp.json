@@ -462,7 +462,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "function.MISC.macros.items.corpseSlayerWeapon,preDamageRoll",
+          "value": "function.MISC.macros.items.corpseSlayerWeapon,preDamageRollConfig",
           "priority": 20
         },
         {
@@ -493,6 +493,12 @@
           "key": "system.rarity",
           "mode": 5,
           "value": "rare",
+          "priority": 20
+        },
+        {
+          "key": "system.price.value",
+          "mode": 2,
+          "value": "4000",
           "priority": 20
         }
       ],
@@ -554,7 +560,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1747267247292,
-        "modifiedTime": 1747273788551,
+        "modifiedTime": 1750002230934,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!vsJ0Taturiotqsjp.mfjwhj7aa8FkjOAZ"
@@ -587,7 +593,7 @@
       "otherCondition": "",
       "effectCondition": "",
       "rollAttackPerTarget": "default",
-      "onUseMacroName": "[preDamageRoll]function.MISC.macros.items.corpseSlayerWeapon"
+      "onUseMacroName": "[preTargeting]function.MISC.macros.items.corpseSlayerWeapon"
     },
     "midiProperties": {
       "confirmTargets": "never",
@@ -633,7 +639,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1747267107752,
-    "modifiedTime": 1747267633260,
+    "modifiedTime": 1750477181650,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "vsJ0Taturiotqsjp",

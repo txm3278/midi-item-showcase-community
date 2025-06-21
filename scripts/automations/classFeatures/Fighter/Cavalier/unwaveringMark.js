@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.1.1
+// v3.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -19,12 +19,9 @@
 // Description:
 // In the preTargeting phase of the Unwavering Mark Bonus Attack activity (in owner's workflow):
 //   Verifies if a marked target triggered a special attack. If not, the activity use is aborted.
-// In the preDamageRoll phase of the Unwavering Mark special weapon attack activity (in owner's workflow):
+// In the preDamageRollConfig phase of the Unwavering Mark special weapon attack activity (in owner's workflow):
 //   if the attack was triggered by the Unwavering Mark Bonus Attack activity,
-//   adds a hook on dnd5e.preRollDamageV2 to add damage bonus.
-// In the dnd5e.preRollDamageV2 hook (in owner's workflow):
-//   If the workflow associated to the current activity is the same as the one for the special attack,
-//   adds a damage bonus to the roll config.
+//   calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
 // In the postActiveEffects phase of an item from the owner of an Unwavering Mark item (in owner's workflow):
 //   It adds an active effect that gives disadvantage on attacks made by the marked target
 //   that does not target the marker if he is within 5ft.
@@ -94,10 +91,10 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       // When the marked target makes an attack
       handlePreAttackRollByMarkedTarget(workflow, scope.macroItem);
     }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
     if (workflow?.workflowOptions?.unwaveringMarkSpecialWeaponAttack) {
       // When the special weapon attack rolls damage
-      handlePreDamageRollForSpecialWeaponAttack(workflow, scope.macroItem);
+      handlePreDamageRollConfigForSpecialWeaponAttack(workflow, scope.macroItem);
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     const macroData = args[0];
@@ -512,53 +509,24 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
   }
 
   /**
-   * Registers a hook on dnd5e.preRollDamageV2 to add a damage bonus for the special attack damage.
+   * Calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamageV2 that adds damage bonus for the special attack.
    *
    * @param {MidiQOL.Workflow} currentWorkflow midi-qol workflow.
    * @param {Item5e} sourceItem The Unwavering Mark item.
    */
-  function handlePreDamageRollForSpecialWeaponAttack(currentWorkflow) {
-    const dmgBonus = Math.floor((currentWorkflow.actor?.getRollData().classes?.fighter?.levels ?? 1) / 2);
+  function handlePreDamageRollConfigForSpecialWeaponAttack(currentWorkflow, sourceItem) {
+    const damageBonus = Math.floor((currentWorkflow.actor?.getRollData().classes?.fighter?.levels ?? 1) / 2);
     if (!currentWorkflow.activity) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Missing activity.`, currentWorkflow);
       }
       return;
     }
-    const event = 'dnd5e.preRollDamageV2';
-    elwinHelpers.registerWorkflowHook(
-      currentWorkflow,
-      event,
-      (rollConfig, dialogConfig, messageConfig) => {
-        if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
-        }
-        if (
-          !elwinHelpers.isMidiHookStillValid(
-            DEFAULT_ITEM_NAME,
-            event,
-            'Add damage bonus',
-            currentWorkflow,
-            rollConfig.workflow,
-            debug
-          )
-        ) {
-          return;
-        }
-        if (rollConfig.subject?.uuid !== currentWorkflow.activity?.uuid) {
-          if (debug) {
-            console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
-              rollConfig,
-              dialogConfig,
-              messageConfig,
-            });
-          }
-          return;
-        }
-        rollConfig.rolls[0]?.parts?.push(dmgBonus);
-      },
-      'unwaveringMark'
-    );
+    elwinHelpers.damageConfig.updateBasic(scope, workflow, {
+      damageBonus,
+      flavor: `${sourceItem.name} - Special Attack Extra Damage`,
+      debug,
+    });
   }
 
   /**

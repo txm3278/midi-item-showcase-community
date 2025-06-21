@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // When an attack hits an undead, adds a damage bonus and applies an effect that forces disadvantage on saves against Turn Undead.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410 based on SagaTympana version
 // Dependencies:
 //  - DAE
@@ -13,10 +13,9 @@
 //   that forces disadvantage on saves against Turn Undead.
 //
 // Description:
-// In the preDamageRoll (item OnUse) phase of the Corspe Slayer attack activity (in owner's workflow):
-//   If there is only one hit target and it's an undead, adds a hook on dnd5e.preRollDamageV2 to add the damage bonus.
-// In the dnd5e.preRollDamageV2 hook (in owner's workflow):
-//   Adds the Undead extra damage bonus.
+// In the preDamageRollConfig (item OnUse) phase of the Corspe Slayer attack activity (in owner's workflow):
+//   If there is only one hit target and it's an undead, calls elwinHelpers.damageConfig.updateBasic
+//   to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
 // In the postActiveEffects (item OnUse) phase of the Corspe Slayer attack activity (in owner's workflow):
 //   If there is only one hit target and it's an undead, finds the Corpse Slayer Weapon effect and applies it to the target.
 // ###################################################################################################
@@ -57,8 +56,8 @@ export async function corpseSlayerWeapon({ speaker, actor, token, character, ite
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
-    handleOnUsePreDamageRoll(scope, workflow, debug);
+  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+    handleOnUsePreDamageRollConfig(scope, workflow, debug);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     await handleOnUsePostActiveEffects(scope, workflow, debug);
   }
@@ -97,52 +96,22 @@ function validateActivityAndTarget(scope, workflow, debug) {
 
 /**
  * Handles the pre damage roll of the Attack activity.
- * Adds the extra damage to the target if the activity and target are valid.
+ * If there is only one hit target and it's an undead, calls elwinHelpers.damageConfig.updateBasic
+ * to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
+ *
  * @param {object} scope - The midi call macro scope.
  * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
  * @param {boolean} debug - Flag to indicate debug mode.
  */
-function handleOnUsePreDamageRoll(scope, workflow, debug) {
+function handleOnUsePreDamageRollConfig(scope, workflow, debug) {
   if (!validateActivityAndTarget(scope, workflow, debug)) {
     return;
   }
-  const event = 'dnd5e.preRollDamageV2';
-  elwinHelpers.registerWorkflowHook(
-    workflow,
-    event,
-    (rollConfig, dialogConfig, messageConfig) => {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
-      }
-      // Make sure it's the same workflow
-      if (
-        !elwinHelpers.isMidiHookStillValid(
-          DEFAULT_ITEM_NAME,
-          event,
-          'Add undead damage bonus',
-          workflow,
-          rollConfig.workflow,
-          debug
-        )
-      ) {
-        return;
-      }
-      if (rollConfig.subject?.uuid !== workflow.activity?.uuid) {
-        if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
-            rollConfig,
-            dialogConfig,
-            messageConfig,
-          });
-        }
-        return;
-      }
-      // Add damage bonus
-      const corpseSlayerWeaponBonus = '1d8';
-      rollConfig.rolls[0]?.parts?.push(corpseSlayerWeaponBonus);
-    },
-    'corpseSlayerWeapon'
-  );
+  elwinHelpers.damageConfig.updateBasic(scope, workflow, {
+    damageBonus: '1d8',
+    flavor: `${scope.macroItem.name} - Undead Extra Damage`,
+    debug,
+  });
 }
 
 /**
