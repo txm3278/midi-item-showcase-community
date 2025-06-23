@@ -341,6 +341,12 @@ export function setConfig() {
           version: '2.2.0',
           authors: ['Elwin'],
         },
+        "Tasha's Mind Whip": {
+          name: "Tasha's Mind Whip",
+          type: 'Spell',
+          version: '2.0.0',
+          authors: ['Elwin', 'Moto Moto'],
+        },
         'Unwavering Mark': {
           name: 'Unwavering Mark',
           type: 'Class Feature',
