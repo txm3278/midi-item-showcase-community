@@ -404,7 +404,7 @@
             {
               "custom": {
                 "enabled": true,
-                "formula": "@scale.monk.die + @mod"
+                "formula": "@scale.monk.die.die + @mod"
               },
               "number": null,
               "denomination": 0,
@@ -582,7 +582,7 @@
     },
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Spoob version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the selected targets around must succeed on a Dex save\n or take damage from the summoned spectral hands, a new activity is added to the Unarmed Strike to allow\n using the spectral arms to make an attack and an effect is added to use Wis modifier instead of Str modifier\n on Str ability checks and saves.</p></details>",
-      "chat": "<div class=\"ddb\">\nAs a bonus action, you can spend 1 ki point to summon the arms of your astral self. When you do so, each creature of your choice that you can see within 10 ft. of you must succeed on a DEX saving throw (DC:[[8 + @abilities.wis.mod + @prof]]) or take [[/roll @scale.way-of-the-astral-self.arms-of-the-astral-self]] force damage.\nFor 10 minutes:\n- You can use your WIS modifier in place of your STR modifier when making STR checks/saving throws.\n- You can use the spectral arms to make unarmed strikes.\n- When you make an unarmed strike with the arms on your turn, your reach for it is 5 ft. greater than normal.\n- The unarmed strikes you make with the arms can use your WIS modifier in place of your STR or DEX modifier for the attack and damage rolls, and their damage type is force.\n</div>"
+      "chat": ""
     },
     "identifier": "arms-of-astral-self",
     "source": {

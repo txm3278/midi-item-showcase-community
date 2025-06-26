@@ -206,7 +206,7 @@
     },
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a special feature that can only be triggered by the Warding Flare feature.\n When used, it will add temporary hit points to the target of the attack that triggered the Warding Flare.</p></details>",
-      "chat": "<div class=\"ddb\">\nWhenever you use Warding Flare, you can give the target of the triggering attack [[/roll 2d6+ @abilities.wis.mod]] Temporary HP.\n</div>"
+      "chat": ""
     },
     "identifier": "improved-warding-flare",
     "source": {

@@ -306,7 +306,7 @@
     },
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
-      "chat": "<div class=\"ddb\">\nAs a Bonus Action, you give yourself Advantage on your next attack roll on the current turn, provided that you haven’t moved during this turn. After you use it, your Speed is 0 until the end of the current turn.\n</div>"
+      "chat": ""
     },
     "identifier": "steady-aim",
     "source": {

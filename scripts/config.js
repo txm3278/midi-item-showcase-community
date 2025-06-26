@@ -514,7 +514,7 @@ export function setConfig() {
         'Warding Flare': {
           name: 'Warding Flare',
           type: 'Class Feature',
-          version: '3.2.0',
+          version: '1.0.0',
           authors: ['Elwin'],
         },
         'Wyvern Poison': {
