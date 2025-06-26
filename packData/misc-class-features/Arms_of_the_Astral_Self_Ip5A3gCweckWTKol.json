@@ -256,7 +256,7 @@
             {
               "custom": {
                 "enabled": true,
-                "formula": "2@scale.monk.die"
+                "formula": "2@scale.monk.die.die"
               },
               "number": null,
               "denomination": null,
@@ -665,7 +665,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1748806893365,
-    "modifiedTime": 1749436418735,
+    "modifiedTime": 1750715303220,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!Ip5A3gCweckWTKol"

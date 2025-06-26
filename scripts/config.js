@@ -128,7 +128,7 @@ export function setConfig() {
         'Deflect Missiles': {
           name: 'Deflect Missiles',
           type: 'Class Feature',
-          version: '2.1.0',
+          version: '2.1.1',
           authors: ['Elwin', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Divine Allegiance': {
@@ -332,7 +332,7 @@ export function setConfig() {
         'Steady Aim': {
           name: 'Steady Aim',
           type: 'Class Feature',
-          version: '3.0.1',
+          version: '3.1.0',
           authors: ['Elwin'],
         },
         'Sun Blade': {
@@ -412,7 +412,7 @@ export function setConfig() {
         'Deflect Attacks': {
           name: 'Deflect Attacks',
           type: 'Class Feature',
-          version: '1.1.0',
+          version: '1.1.1',
           authors: ['Elwin'],
         },
         'Flame Tongue': {
@@ -496,6 +496,12 @@ export function setConfig() {
         'Sharpshooter': {
           name: 'Sharpshooter',
           type: 'Feat',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
+        'Steady Aim': {
+          name: 'Steady Aim',
+          type: 'Class Feature',
           version: '1.0.0',
           authors: ['Elwin'],
         },

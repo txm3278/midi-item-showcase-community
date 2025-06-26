@@ -205,7 +205,7 @@
             {
               "custom": {
                 "enabled": true,
-                "formula": "2@scale.monk.die + @abilities.dex.mod"
+                "formula": "2@scale.monk.die.die + @abilities.dex.mod"
               },
               "number": null,
               "denomination": 0,
@@ -334,7 +334,7 @@
             {
               "custom": {
                 "enabled": true,
-                "formula": "2@scale.monk.die + @abilities.dex.mod"
+                "formula": "2@scale.monk.die.die + @abilities.dex.mod"
               },
               "number": null,
               "denomination": 0,
@@ -626,7 +626,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1744777067393,
-    "modifiedTime": 1748573403013,
+    "modifiedTime": 1750715396493,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!wC1LDcfQTUqMqOEG"

@@ -1,0 +1,19 @@
+{
+  "name": "Rogue",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "gbmEtNmHThA4YSGD",
+  "sort": 1000000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.9",
+    "coreVersion": "12.331",
+    "createdTime": 1706038588621,
+    "modifiedTime": 1710821882035,
+    "lastModifiedBy": "B2BBHntfpytXE8DP"
+  },
+  "_key": "!folders!gbmEtNmHThA4YSGD"
+}

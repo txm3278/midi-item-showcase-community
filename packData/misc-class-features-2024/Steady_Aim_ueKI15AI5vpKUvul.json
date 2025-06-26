@@ -1,0 +1,393 @@
+{
+  "_id": "ueKI15AI5vpKUvul",
+  "name": "Steady Aim",
+  "type": "feat",
+  "effects": [
+    {
+      "_id": "dFuXWUTcxIUOAis0",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "turns": 1,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.ueKI15AI5vpKUvul",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "dae": {
+          "stackable": "noneName",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "1Attack"
+          ],
+          "transfer": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "dontApply": false,
+          "showIcon": false,
+          "enableCondition": "",
+          "disableCondition": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "nameOverride": "",
+          "customCheck": "",
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Steady Aim - Advantage",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "compendiumSource": "Item.qqGMN7k0gGRUhkB0.ActiveEffect.ttliu8T5zozrLsKw",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": 1750707571040,
+        "modifiedTime": 1750707571040,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ueKI15AI5vpKUvul.dFuXWUTcxIUOAis0"
+    },
+    {
+      "_id": "feYjzIvChKm4NfVz",
+      "changes": [
+        {
+          "key": "system.attributes.movement.all",
+          "mode": 0,
+          "value": "0",
+          "priority": 20
+        },
+        {
+          "key": "macro.itemMacro.GM",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.steadyAim",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "turns": 1,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.ueKI15AI5vpKUvul",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "dae": {
+          "stackable": "noneName",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "dontApply": false,
+          "showIcon": false,
+          "enableCondition": "",
+          "disableCondition": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "nameOverride": "",
+          "customCheck": "",
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Steady Aim - Movement",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "compendiumSource": "Item.qqGMN7k0gGRUhkB0.ActiveEffect.ljsYEY13ngAg6G8h",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": 1750707573486,
+        "modifiedTime": 1750708629490,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ueKI15AI5vpKUvul.feYjzIvChKm4NfVz"
+    }
+  ],
+  "system": {
+    "activities": {
+      "fPFO0iuKYP4ikG7p": {
+        "type": "utility",
+        "activation": {
+          "type": "bonus",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "concentration": false,
+          "value": "",
+          "units": "inst",
+          "special": "",
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "dFuXWUTcxIUOAis0"
+          },
+          {
+            "_id": "feYjzIvChKm4NfVz"
+          }
+        ],
+        "range": {
+          "units": "self",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": ""
+          },
+          "affects": {
+            "count": "",
+            "type": "",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": false,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "",
+          "name": "",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": 0,
+        "useConditionText": "",
+        "effectConditionText": "",
+        "name": "Aim",
+        "midiProperties": {
+          "identifier": "aim",
+          "otherActivityCompatible": false,
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
+        },
+        "useConditionReason": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "_id": "fPFO0iuKYP4ikG7p"
+      }
+    },
+    "uses": {
+      "spent": 0,
+      "recovery": [],
+      "max": ""
+    },
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
+      "chat": "<div class=\"ddb\">\nAs a Bonus Action, you give yourself Advantage on your next attack roll on the current turn, provided that you haven’t moved during this turn. After you use it, your Speed is 0 until the end of the current turn.\n</div>"
+    },
+    "identifier": "steady-aim",
+    "source": {
+      "book": "SRD 5.2",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2024",
+      "revision": 1
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "level": 3,
+      "repeatable": false
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "advancementOrigin": "9mldjqRysvUwpAa5",
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true
+    },
+    "midi-qol": {
+      "rollAttackPerTarget": "default",
+      "removeAttackDamageButtons": "default",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": "",
+      "onUseMacroName": "[preItemRoll]function.MISC.macros.classFeatures.steadyAim"
+    },
+    "midiProperties": {
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.9"
+    }
+  },
+  "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
+  "folder": "gbmEtNmHThA4YSGD",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.9",
+    "createdTime": 1750707526735,
+    "modifiedTime": 1750707712577,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+  },
+  "_key": "!items!ueKI15AI5vpKUvul"
+}
