@@ -323,6 +323,12 @@ export function setConfig() {
           version: '2.2.0',
           authors: ['Elwin'],
         },
+        'Spiny Shield': {
+          name: 'Spiny Shield',
+          type: 'Spell',
+          version: '1.0.0',
+          authors: ['tb'],
+        },
         'Spirit Shield': {
           name: 'Spirit Shield',
           type: 'Class Feature',
@@ -547,7 +553,7 @@ export function setConfig() {
             version: '1.1.0',
             authors: ['Elwin', 'Moto Moto'],
           },
-        },  
+        },
         Rakshasa: {
           'Limited Magic Immunity': {
             name: 'Limited Magic Immunity',
