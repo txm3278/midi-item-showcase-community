@@ -1,8 +1,7 @@
 {
-  "folder": "vLsm6z71hOz8So3V",
+  "folder": "zj9zsmkrkFw80DsS",
   "name": "Warding Flare",
   "type": "feat",
-  "_id": "PcVOYeZbxJJrVC5N",
   "img": "icons/magic/light/explosion-star-glow-yellow.webp",
   "system": {
     "description": {
@@ -11,7 +10,11 @@
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2024",
+      "book": "PHB 2024",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -104,7 +107,7 @@
           "visible": false
         },
         "sort": 0,
-        "useConditionText": "reaction === \"tpr.isPreAttacked\" && (targetUuid === tpr?.tokenUuid ||((tpr?.actor?.classes?.cleric?.levels ?? 0) >= 6) && fromUuidSync(targetUuid)?.disposition === fromUuidSync(tpr?.tokenUuid)?.disposition)",
+        "useConditionText": "reaction === \"tpr.isPreAttacked\" && fromUuidSync(targetUuid)?.disposition === fromUuidSync(tpr?.tokenUuid)?.disposition",
         "effectConditionText": "",
         "name": "Reaction",
         "midiProperties": {
@@ -149,7 +152,7 @@
     "identifier": "warding-flare",
     "enchant": {},
     "prerequisites": {
-      "level": 1,
+      "level": 3,
       "repeatable": false
     },
     "advancement": []
@@ -157,7 +160,7 @@
   "effects": [
     {
       "name": "Warding Flare",
-      "origin": "Item.RGXO60NM96p3tsN3",
+      "origin": "Item.WhlMAGdp2U3rlva2",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -174,6 +177,12 @@
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
           "value": "ItemMacro,tpr.isPreAttacked|triggerSource=attacker;canSee=true;post=true",
+          "priority": 20
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
           "priority": 20
         }
       ],
@@ -221,20 +230,20 @@
       },
       "tint": "#ffffff",
       "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": null,
-        "modifiedTime": 1750286840609,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null
+        "modifiedTime": 1750286862990,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "img": "icons/magic/light/explosion-star-glow-yellow.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!PcVOYeZbxJJrVC5N.jPLrgv9929fkXzIz"
+      "_key": "!items.effects!WhlMAGdp2U3rlva2.jPLrgv9929fkXzIz"
     }
   ],
   "sort": 100000,
@@ -331,12 +340,13 @@
     }
   },
   "_stats": {
+    "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
-    "coreVersion": "12.331",
-    "createdTime": 1714926134142,
-    "modifiedTime": 1748806893682,
+    "createdTime": 1749995150946,
+    "modifiedTime": 1750286916275,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_key": "!items!PcVOYeZbxJJrVC5N"
+  "_id": "WhlMAGdp2U3rlva2",
+  "_key": "!items!WhlMAGdp2U3rlva2"
 }

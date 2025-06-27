@@ -1,21 +1,61 @@
 {
-  "_id": "2FtWaINpckrvjqEr",
-  "name": "Great Weapon Fighting",
+  "name": "Limited Magic Immunity",
   "type": "feat",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by thatlonelybugbear and Elwin</h2>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that gives advantage to saves against magic and spells of 6th level and lower don't effect the owner.</p></details>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "",
+      "revision": 1,
+      "rules": "2014",
+      "book": "Basic Rules",
+      "page": "341",
+      "license": ""
+    },
+    "cover": null,
+    "crewed": false,
+    "uses": {
+      "max": "",
+      "spent": 0,
+      "recovery": []
+    },
+    "type": {
+      "value": "monster",
+      "subtype": ""
+    },
+    "requirements": "",
+    "activities": {},
+    "identifier": "limited-magic-immunity",
+    "advancement": [],
+    "enchant": {},
+    "prerequisites": {
+      "level": null,
+      "repeatable": false
+    },
+    "properties": []
+  },
   "effects": [
     {
-      "name": "Great Weapon Fighting",
-      "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
-      "origin": "Item.2FtWaINpckrvjqEr",
-      "_id": "HbxULptV9VroqWfp",
+      "name": "Limited Magic Immunity",
+      "img": "icons/magic/symbols/runes-triangle-magenta.webp",
+      "origin": "Item.NNfG9R25gegONlS1",
+      "_id": "v3vv4QS3B0B2Y7Vx",
       "type": "base",
       "system": {},
       "changes": [
         {
+          "key": "flags.midi-qol.magicResistance.all",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        },
+        {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,preDamageRollConfig",
-          "priority": 150
+          "value": "function.MISC.macros.monsters.rakshasa.limitedMagicImmunity,isTargeted",
+          "priority": 20
         }
       ],
       "disabled": false,
@@ -74,51 +114,14 @@
         "duplicateSource": null,
         "coreVersion": "12.331",
         "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": 1742593785648,
-        "modifiedTime": 1750000510499,
+        "systemVersion": "4.3.9",
+        "createdTime": 1749000423263,
+        "modifiedTime": 1749262928931,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
-      "_key": "!items.effects!2FtWaINpckrvjqEr.HbxULptV9VroqWfp"
+      "_key": "!items.effects!NNfG9R25gegONlS1.v3vv4QS3B0B2Y7Vx"
     }
   ],
-  "system": {
-    "activities": {},
-    "uses": {
-      "spent": 0,
-      "recovery": [],
-      "max": ""
-    },
-    "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on WurstKorn version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat. It adds a modifier to base damage dice when the requirements are met.</p></details>",
-      "chat": ""
-    },
-    "identifier": "great-weapon-fighting",
-    "source": {
-      "book": "SRD 5.2",
-      "page": "",
-      "license": "",
-      "custom": "",
-      "rules": "2024",
-      "revision": 1
-    },
-    "advancement": [],
-    "cover": null,
-    "crewed": false,
-    "enchant": {},
-    "prerequisites": {
-      "level": null,
-      "repeatable": false
-    },
-    "properties": [
-      "trait"
-    ],
-    "requirements": "Fighting Style Feature",
-    "type": {
-      "value": "feat",
-      "subtype": "fightingStyle"
-    }
-  },
   "flags": {
     "dnd5e": {
       "riders": {
@@ -131,33 +134,6 @@
       "snapCenter": true,
       "snapCorner": true,
       "snapSideMidpoint": true
-    },
-    "dae": {
-      "macro": {
-        "name": "Great Weapon Fighting",
-        "img": "icons/weapons/axes/axe-battle-skull-black.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.greatWeaponFighting(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "coreVersion": "12.331",
-          "systemId": "dnd5e",
-          "systemVersion": "4.3.6",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
-        }
-      }
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",
@@ -183,8 +159,9 @@
       "systemVersion": "4.3.9"
     }
   },
-  "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
-  "folder": null,
+  "img": "icons/magic/symbols/runes-triangle-magenta.webp",
+  "_id": "NNfG9R25gegONlS1",
+  "folder": "4BfqP4BxUXN0gBzB",
   "sort": 100000,
   "ownership": {
     "default": 0,
@@ -196,9 +173,9 @@
     "coreVersion": "12.331",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
-    "createdTime": 1742593746598,
-    "modifiedTime": 1750286916275,
+    "createdTime": 1748996847225,
+    "modifiedTime": 1749003044103,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "_key": "!items!2FtWaINpckrvjqEr"
+  "_key": "!items!NNfG9R25gegONlS1"
 }

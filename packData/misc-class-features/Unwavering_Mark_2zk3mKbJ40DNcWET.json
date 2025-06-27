@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that marks a target when a melee attack is successful.<br>\n  It can also be activated to use the special attack if one was triggered by a marked target.<br>\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that marks a target when a melee attack is successful.<br>\n  It can also be activated to use the special attack if one was triggered by a marked target.<br>\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>",
       "chat": ""
     },
     "source": {
@@ -120,7 +120,9 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -138,7 +140,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       }
     },
     "identifier": "unwavering-mark",
@@ -193,20 +196,6 @@
       "idv": false,
       "ida": false
     },
-    "magicitems": {
-      "enabled": false,
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    },
     "core": {},
     "dae": {
       "macro": {
@@ -251,7 +240,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     },
     "dnd5e": {
       "riders": {
@@ -296,7 +285,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,preDamageRoll",
+          "value": "ItemMacro,preDamageRollConfig",
           "priority": 20
         }
       ],
@@ -333,7 +322,13 @@
           "onlyOnce": false,
           "nameOverride": "",
           "customCheck": "",
-          "wallsBlock": "system"
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "name": "Unwavering Mark",
@@ -341,10 +336,10 @@
       "statuses": [],
       "_stats": {
         "coreVersion": "12.331",
-        "systemId": null,
-        "systemVersion": null,
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
         "createdTime": null,
-        "modifiedTime": 1734623735010,
+        "modifiedTime": 1749995026337,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
         "duplicateSource": null
@@ -367,7 +362,7 @@
     "systemVersion": "4.3.6",
     "coreVersion": "12.331",
     "createdTime": 1672329111608,
-    "modifiedTime": 1741409323819,
+    "modifiedTime": 1748806893682,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "folder": "ZniCDCqUBftmEiPR",

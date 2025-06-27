@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Allows to designate a sworn enemy and applies the bow's effect when attacking a sworn enemy.
-// v2.0.1
+// v2.1.0
 // Author: Elwin#1410 based on Christopher version
 // Dependencies:
 //  - DAE [on][off]
@@ -15,11 +15,9 @@
 //  When a sworn enemy is attacked with this bow, it applies its effects.
 //
 // Description:
-// In the preDamageRoll (OnUse) phase of the Oathbow Attack activity (owner's workflow):
+// In the preDamageRollConfig (OnUse) phase of the Oathbow Attack activity (owner's workflow):
 //   If the activity is a ranged weapon attack that targets the Sworn Enemy,
-//   adds a hook on dnd5e.preRollDamageV2 to add the damage bonus.
-// In the dnd5e.preRollDamageV2 hook (in owner's workflow):
-//   Adds the Sworn Enemy damage bonus.
+//   calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
 // In the postActiveEffects (OnUse) phase of the Oathbow Designate Sworn Enemy activity (owner's workflow):
 //   Updates the attacker's AE to add a flag that designates the Sworn Enemy toknen's UUID and makes the
 //   attacker and target AEs dependent.
@@ -40,7 +38,7 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.2')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -58,15 +56,8 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRoll') {
-    if (
-      scope.rolledActivity?.identifier === 'attack' &&
-      workflow.hitTargets?.size === 1 &&
-      actor.getFlag(MODULE_ID, 'oathbowSwornEnemy') === workflow.hitTargets?.first()?.document.uuid &&
-      scope.rolledActivity?.getActionType(workflow.attackMode) === 'rwak'
-    ) {
-      await handleOnUsePreDamageRoll(workflow);
-    }
+  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+    await handleOnUsePreDamageRollConfig(scope, workflow);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     if (workflow.activity?.identifier === 'designate-sworn-enemy') {
       return await handleOnUsePostActiveEffectsSwornEnemy(workflow, actor, scope.macroItem);
@@ -84,48 +75,27 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
   }
 
   /**
-   * Handles the pre damage roll of the Attack activity.
+   * Handles the preDamageRollConfig phase of the Attack activity.
+   * If the current activity is an attack with an action type of 'rwak', there is only one hit target
+   * and its the marked sworn enemy, calls elwinHelpers.damageConfig.updateBasic to add a
+   * hook on dnd5e.preRollDamageV2 that adds damage bonus.
    *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current MidiQOL workflow.
+   * @param {object} scope - The midi-qol macro call scope object.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
    */
-  async function handleOnUsePreDamageRoll(currentWorkflow) {
-    const event = 'dnd5e.preRollDamageV2';
-    elwinHelpers.registerWorkflowHook(
-      currentWorkflow,
-      `${event}`,
-      (rollConfig, dialogConfig, messageConfig) => {
-        if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | ${event}`, { rollConfig, dialogConfig, messageConfig });
-        }
-        // Make sure it's the same workflow
-        if (
-          !elwinHelpers.isMidiHookStillValid(
-            DEFAULT_ITEM_NAME,
-            event,
-            'Add Sworn Enemy damage bonus',
-            currentWorkflow,
-            rollConfig.workflow,
-            debug
-          )
-        ) {
-          return;
-        }
-        if (rollConfig.subject?.uuid !== currentWorkflow.activity?.uuid) {
-          if (debug) {
-            console.warn(`${DEFAULT_ITEM_NAME} | ${event} damage is not from scope.rolledActivity`, {
-              rollConfig,
-              dialogConfig,
-              messageConfig,
-            });
-          }
-          return;
-        }
-        // Add damage bonus
-        const swornEnemyBonus = '3d6[piercing]';
-        rollConfig.rolls[0]?.parts?.push(swornEnemyBonus);
-      },
-      'oathbow'
-    );
+  async function handleOnUsePreDamageRollConfig(scope, workflow) {
+    if (
+      workflow.activity?.identifier === 'attack' &&
+      workflow.hitTargets?.size === 1 &&
+      actor.getFlag(MODULE_ID, 'oathbowSwornEnemy') === workflow.hitTargets?.first()?.document.uuid &&
+      workflow.activity?.getActionType(workflow.attackMode) === 'rwak'
+    ) {
+      elwinHelpers.damageConfig.updateBasic(scope, workflow, {
+        damageBonus: '3d6[piercing]',
+        flavor: `${scope.macroItem.name} - Sworn Enemy Extra Damage`,
+        debug,
+      });
+    }
   }
 
   /**

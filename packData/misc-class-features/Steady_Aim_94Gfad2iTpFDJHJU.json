@@ -6,7 +6,7 @@
   "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the effects are applied.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "source": {
@@ -117,7 +117,9 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -135,7 +137,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       }
     },
     "identifier": "steady-aim",
@@ -380,20 +383,6 @@
       "idv": false,
       "ida": false
     },
-    "magicitems": {
-      "enabled": false,
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    },
     "core": {},
     "rest-recovery": {
       "data": {
@@ -438,7 +427,7 @@
       "world": "test2",
       "system": "dnd5e",
       "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "systemVersion": "4.3.9"
     },
     "dnd5e": {
       "riders": {
@@ -456,7 +445,7 @@
     "systemVersion": "4.3.6",
     "coreVersion": "12.331",
     "createdTime": 1663621622129,
-    "modifiedTime": 1741409235929,
+    "modifiedTime": 1748806893682,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!94Gfad2iTpFDJHJU"
