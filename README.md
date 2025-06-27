@@ -15,6 +15,7 @@ A collection of Midi Automations from the Posney's Foundry Automation Discord
 - SagaTympana
 - Christopher
 - Fridan99
+- tb
 
 ## Elwin Helpers
 
