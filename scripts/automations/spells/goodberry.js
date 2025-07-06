@@ -2,7 +2,7 @@
 // Read First!!!!
 // Creates a Goodberry item that expires and is deleted after 24h.
 // If the caster has the Disciple of Life feature, the healing power of the berries is increased.
-// v3.2.0
+// v3.2.1
 // Author: Elwin#1410, based on Crymic's Goodberry macro
 // Dependencies:
 //  - DAE
@@ -111,7 +111,7 @@ export async function goodberry({ speaker, actor, token, character, item, args, 
       (i) => i.identifier === DISCIPLE_OF_LIFE_ITEM_IDENT || i.identifier === DISCIPLE_OF_LIFE_LEGACY_ITEM_IDENT
     );
     if (ALLOW_DISCIPLE_OF_LIFE_EXTRA_HEALING && discipleOfLife) {
-      healingValue += 2 + (workflow.castData?.castLevel ?? 1);
+      healingValue += 2 + workflow.castData?.castLevel ?? 1;
       const infoMsg = `<p>Your ${discipleOfLife.name} feature enhances the berries effectiveness.</p>`;
       await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
     }
@@ -380,8 +380,8 @@ ${isRealNumber.toString()}
    */
   async function handleGoodBerryPreItemRoll(gbWorkflow) {
     // Note: we auto roll and fast forward because the healing is a fixed value.
-    foundry.utils.setProperty(gbWorkflow, 'workflowOptions.autoRollDamage', 'always');
-    foundry.utils.setProperty(gbWorkflow, 'workflowOptions.fastForwardDamage', true);
+    foundry.utils.setProperty(gbWorkflow.workflowOptions, 'autoRollDamage', 'always');
+    foundry.utils.setProperty(gbWorkflow.workflowOptions, 'fastForwardDamage', true);
 
     if (gbWorkflow.targets.first()?.id !== gbWorkflow.token.id) {
       if (

@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v2.1.1
+// v2.1.2
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -78,7 +78,7 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
       return false;
     }
 
-    foundry.utils.setProperty(currentWorkflow, 'workflowOptions.fastForwardDamage', true);
+    foundry.utils.setProperty(currentWorkflow.workflowOptions, 'fastForwardDamage', true);
     return true;
   }
 

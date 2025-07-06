@@ -4,7 +4,7 @@
 // Adds a third party reaction effect, that effect will trigger a reaction by the Fighter
 // when the fighter or a creature he can see within range is damaged to allow him to use the feature
 // to reduce the target's damage instead.
-// v4.1.0
+// v4.1.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preTargeting],[postActiveEffects],[tpr.isDamaged]
@@ -104,7 +104,7 @@ export async function psionicPowerProtectiveField({
       return false;
     }
 
-    foundry.utils.setProperty(currentWorkflow, 'workflowOptions.fastForwardDamage', true);
+    foundry.utils.setProperty(currentWorkflow.workflowOptions, 'fastForwardDamage', true);
     return true;
   }
 

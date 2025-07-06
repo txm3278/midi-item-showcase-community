@@ -5,7 +5,7 @@
 // on the raging barbarian when a visible creature within range is damaged to allow him to use the feature
 // to reduce the target's damage.
 // If Vengeful Ancestors is present and the Barbarian has the appropriate level, it is triggered on the attacker.
-// v4.1.0
+// v4.1.1
 // Dependencies:
 //  - DAE [on][off]
 //  - Times Up
@@ -127,7 +127,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
       return false;
     }
 
-    foundry.utils.setProperty(currentWorkflow, 'workflowOptions.fastForwardDamage', true);
+    foundry.utils.setProperty(currentWorkflow.workflowOptions, 'fastForwardDamage', true);
     return true;
   }
 
