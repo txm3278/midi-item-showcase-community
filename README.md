@@ -21,7 +21,7 @@ A collection of Midi Automations from the Posney's Foundry Automation Discord
 
 A collection of utility functions to facilitate automations.
 
-### List of functions
+### List of Functions
 
 - elwinHelpers.isDebugEnabled - Returns the current value of the debug flag.
 - elwinHelpers.setDebugEnabled - Sets the current value of the debug flag.
@@ -55,12 +55,20 @@ A collection of utility functions to facilitate automations.
 - elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects - Applies or removes an enchantment to/from the item of the used enchantment activity.
 - elwinHelpers.getAutomatedEnchantmentSelectedProfile - Returns the selected enchantment profile for automated enchantment application.
 - elwinHelpers.applyEnchantmentToItem - Applies programmatically an enchantment to the specified item.
+- elwinHelpers.applyEnchantmentToItemFromOtherActivity - Applies programmatically an enchantment to the specified item from an enchant activity different than the one from the workflow
 - elwinHelpers.getEquippedMeleeWeapons - Returns a list of equipped melee weapons for a specified actor.
 - elwinHelpers.getRules - Returns `modern` or `legacy` depending on the specified item rules version.
+- elwinHelpers.registerWorkflowHook - Registers a callback on an event for the duration of the specified workflow. 
+- elwinHelpers.damageConfig.updateBasic - Updates the damage roll configuration by adding a damage bonus and or replacing the damage type of the rolls.
+- elwinHelpers.damageConfig.updateCustom - Updates the damage roll configuration by executing the specified callback function.
 - elwinHelpers.ItemSelectionDialog - Utility dialog to select an item from a list of items.
 - elwinHelpers.TokenSelectionDialog - Utility dialog to select a token from a list of tokens.
 
-### Enchantment extra restrictions
+### Item/Activity Consumption Extended Support
+
+You can specify an item identifier in the consumption target of an item or activity when editing or creating an item from the side bar or an item contained in a Compendium.
+
+### Enchantment Extra Restrictions
 
 If you want to have add more restrictions on which item can be enchanted than the ones offered by dnd5e on the enchantment activity, you can use special flags on your Enchantement Active Effect.
 
@@ -105,9 +113,16 @@ The value is composed of three parts, the first two are similar to those used by
   - triggerSource: target or attacker, determines to whom the canSee option, the item’s range and target applies. [default target]
   - canSee: true or false, if the trigger source must be seen or not by the owner. [default false]
   - pre: true or false, indicates if a pre reaction macro should be called, its targetOnUse value will be the reaction trigger phase with a `.pre` suffix,
-       e.g.: `tpr.isHit.pre`. This macro is called in the triggering workflow.  [default false]
+       e.g.: `tpr.isHit.pre`. This macro is called in the triggering workflow (not supported when reactionNone is true).  [default false]
   - post: true or false, indicates if a post reaction macro should be called, its targetOnUse value will be the reaction trigger phase with a `.post` suffix,
-       e.g.: `tpr.isHit.post`. This macro is called in the triggering workflow. [default false]
+       e.g.: `tpr.isHit.post`. This macro is called in the triggering workflow (not supported when reactionNone is true). [default false]
+  - reactionNone: true or false, indicates that no reaction activity is associated and that only a macro should be called,
+       its targetOnUse value will be the reaction trigger phase,
+       e.g.: `tpr.isHit`. This macro is called in the triggering workflow. [default false]
+  - range: the maximum range between the owner and the triggering source allowed to trigger the reaction, only used if reactionNone is true.
+  - wallsBlock: true of false, indicates if wallsBlock, only used if reactionNone is true.
+  - disposition: relative disposition of the triggering source compared to the owner, only used if reactionNone is true.
+  - condition: condition to evaluate to trigger the reaction, only used if reactionNone is true.
 
 Example: `ItemMacro,tpr.isDamaged|ignoreSelf=true;canSee=true;pre=true;post=true`
 
@@ -117,9 +132,11 @@ Example: `ItemMacro,tpr.isDamaged|ignoreSelf=true;canSee=true;pre=true;post=true
 **TPR post macro**: It is always called after the prompt and execution of the selected reaction even it it was cancelled or a reaction was aborted.
     It should be used to cleanup and apply affects on the attacker's workflow if the proper reaction was chosen and was successful.
 
-The pre and post macros are called in the item use workflow, it means that any changes to the MidiQOL workflow are live. The macro parameters are the same as any macro call with an `args[0].tag` value of `'TargetOnUse'`.
+**TPR (reactionNone) macro**: It should be used to apply affects on the attacker's workflow.
 
-The TPR pre, reaction and TPR post are all executed in the same phase of the attacker's workflow. For example if `tpr.isAttacked`, they are executed after attack roll but before its evaluation for hit or miss.
+The pre, post and reactionNone macros are called in the item use workflow, it means that any changes to the MidiQOL workflow are live. The macro parameters are the same as any macro call with an `args[0].tag` value of `'TargetOnUse'`.
+
+The TPR pre, reaction and TPR post or TPR reactionNone are all executed in the same phase of the attacker's workflow. For example if `tpr.isAttacked`, they are executed after attack roll but before its evaluation for hit or miss.
 
 When the tpr reaction is called, the following attributes in options are available:
 
