@@ -155,6 +155,12 @@ export function setConfig() {
           version: '1.2.0',
           authors: ['Elwin', 'WurstKorn'],
         },
+        'Flames Arrows': {
+          name: 'Flames Arrows',
+          type: 'Spell',
+          version: '2.0.0',
+          authors: ['Elwin', 'Lin Dong'],
+        },
         'Flames of Phlegethos': {
           name: 'Flames of Phlegethos',
           type: 'Feat',
@@ -206,7 +212,7 @@ export function setConfig() {
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
-          version: '3.2.0',
+          version: '3.2.1',
           authors: ['Elwin'],
         },
         'Great Weapon Master': {
@@ -278,7 +284,7 @@ export function setConfig() {
         'Psionic Power: Protective Field': {
           name: 'Psionic Power: Protective Field',
           type: 'Class Feature',
-          version: '4.1.0',
+          version: '4.1.1',
           authors: ['Elwin'],
         },
         'Purple Worm Poison': {
@@ -317,6 +323,12 @@ export function setConfig() {
           version: '3.0.3',
           authors: ['Elwin'],
         },
+        'Shield of Missile Attraction': {
+          name: 'Shield of Missile Attraction',
+          type: 'Item',
+          version: '2.0.0',
+          authors: ['Elwin', 'Ris'],
+        },
         'Sorrowful Fate': {
           name: 'Sorrowful Fate',
           type: 'Class Feature',
@@ -332,7 +344,7 @@ export function setConfig() {
         'Spirit Shield': {
           name: 'Spirit Shield',
           type: 'Class Feature',
-          version: '4.1.0',
+          version: '4.1.1',
           authors: ['Elwin'],
         },
         'Steady Aim': {
@@ -380,7 +392,7 @@ export function setConfig() {
         'Warding Maneuver': {
           name: 'Warding Maneuver',
           type: 'Class Feature',
-          version: '2.1.1',
+          version: '2.1.2',
           authors: ['Elwin'],
         },
         'Wyvern Poison': {
@@ -430,7 +442,7 @@ export function setConfig() {
         Goodberry: {
           name: 'Goodberry',
           type: 'Spell',
-          version: '1.1.0',
+          version: '1.1.1',
           authors: ['Elwin'],
         },
         'Great Weapon Fighting': {
@@ -504,6 +516,12 @@ export function setConfig() {
           type: 'Feat',
           version: '1.0.0',
           authors: ['Elwin'],
+        },
+        'Shield of Missile Attraction': {
+          name: 'Shield of Missile Attraction',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin', 'Ris'],
         },
         'Steady Aim': {
           name: 'Steady Aim',

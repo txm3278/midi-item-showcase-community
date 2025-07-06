@@ -1,0 +1,312 @@
+{
+  "folder": null,
+  "name": "Shield of Missile Attraction",
+  "type": "equipment",
+  "img": "icons/equipment/shield/kite-decorative-steel-claws.webp",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Ris version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect (when equipped and attuned) to handle damage resistance and to handle the third party reaction when it's not the shield's owner that is targeted.</p></details>",
+      "chat": ""
+    },
+    "source": {
+      "book": "SRD 5.2",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "revision": 1,
+      "rules": "2024"
+    },
+    "identified": true,
+    "unidentified": {
+      "description": "",
+      "name": "Unidentified Shield"
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": {
+      "value": 6,
+      "units": "lb"
+    },
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "rarity": "rare",
+    "attunement": "required",
+    "equipped": false,
+    "cover": null,
+    "crewed": false,
+    "uses": {
+      "max": "",
+      "spent": 0,
+      "recovery": []
+    },
+    "armor": {
+      "value": 2,
+      "dex": null,
+      "magicalBonus": null
+    },
+    "hp": {
+      "value": null,
+      "max": null,
+      "dt": null,
+      "conditions": ""
+    },
+    "type": {
+      "value": "shield",
+      "baseItem": "shield"
+    },
+    "properties": [
+      "mgc"
+    ],
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "proficient": null,
+    "activities": {},
+    "identifier": "shield-of-missile-attraction",
+    "attuned": false
+  },
+  "effects": [
+    {
+      "name": "Shield of Missile Attraction",
+      "origin": "Item.dDQYBOP8N7n3fDvh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "OtCRp2ff3vM88UxP",
+      "changes": [
+        {
+          "key": "system.traits.dr.midi.rwak",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "macro.execute",
+          "mode": 0,
+          "value": "function.MISC.macros.items.shieldOfMissileAttraction",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": null,
+        "modifiedTime": 1751743274839,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "img": "icons/equipment/shield/kite-decorative-steel-claws.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!dDQYBOP8N7n3fDvh.OtCRp2ff3vM88UxP"
+    },
+    {
+      "name": "Shield of Missile Attraction - Curse",
+      "img": "icons/equipment/shield/kite-decorative-steel-claws.webp",
+      "origin": "Item.dDQYBOP8N7n3fDvh",
+      "_id": "lAxTT23EodMCCr9t",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.items.shieldOfMissileAttraction,tpr.isTargeted|reactionNone=true;ignoreSelf=true;post=true;range=10;condition=tpr.isRangedWeaponAttack",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-item-showcase-community.shieldOfMissileAttractionCurse",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [
+        "cursed"
+      ],
+      "sort": 0,
+      "flags": {
+        "dae": {
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "stackable": "noneNameOnly",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "enableCondition": "",
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "_stats": {
+        "compendiumSource": "Item.bt86HN84GlH93N4J.ActiveEffect.Zh6Q5E7IvZ3818r6",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "dnd5e",
+        "systemVersion": "4.3.9",
+        "createdTime": 1751748462102,
+        "modifiedTime": 1751748462102,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "_key": "!items.effects!dDQYBOP8N7n3fDvh.lAxTT23EodMCCr9t"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "9QqTZMFq1dhCIYAR": 3,
+    "gL73FCal7TSakaVy": 3,
+    "4cS9ZPYEz6G3J8Kp": 3
+  },
+  "flags": {
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "effectCondition": "",
+      "reactionCondition": "",
+      "otherCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "critOther": false,
+      "offHandWeapon": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false,
+      "idr": false,
+      "idi": false,
+      "idv": false,
+      "ida": false
+    },
+    "core": {},
+    "dae": {},
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.331",
+      "systemVersion": "4.3.9"
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    }
+  },
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "dnd5e",
+    "systemVersion": "4.3.9",
+    "createdTime": 1751740846508,
+    "modifiedTime": 1751741042148,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+  },
+  "_id": "dDQYBOP8N7n3fDvh",
+  "_key": "!items!dDQYBOP8N7n3fDvh"
+}

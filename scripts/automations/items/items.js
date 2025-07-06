@@ -6,6 +6,7 @@ import { corpseSlayerWeapon } from './corpseSlayerWeapon.js';
 import { drowHandCrossbow } from './drowHandCrossbow.js';
 import { guardianEmblem } from './guardianEmblem.js';
 import { oathbow } from './oathbow.js';
+import { shieldOfMissileAttraction } from './shieldOfMissileAttraction.js';
 import { sunBlade } from './sunBlade.js';
 
 export let items = {
@@ -17,5 +18,6 @@ export let items = {
   drowHandCrossbow,
   guardianEmblem,
   oathbow,
+  shieldOfMissileAttraction,
   sunBlade,
 };
