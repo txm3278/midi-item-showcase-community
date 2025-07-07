@@ -275,12 +275,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1741216090933,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "img": "icons/consumables/potions/potion-flask-corked-orange.webp",
       "type": "base",
@@ -354,12 +355,6 @@
     "link-item-resource-5e": {
       "resource-link": ""
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
-    },
     "dnd5e": {
       "persistSourceMigration": true,
       "migratedUses": 1,
@@ -370,12 +365,21 @@
     }
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1741213078975,
     "modifiedTime": 1741552664503,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.6"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!RMt0jjw4z93655Qy"
 }

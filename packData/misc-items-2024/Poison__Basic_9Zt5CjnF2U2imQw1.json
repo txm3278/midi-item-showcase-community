@@ -297,9 +297,7 @@
     "attuned": false
   },
   "flags": {
-    "core": {
-      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "consumable": {
@@ -350,12 +348,6 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
     }
   },
   "effects": [
@@ -426,14 +418,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1745930678999,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
       "type": "base",
@@ -516,12 +509,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": 1736190429922,
         "modifiedTime": 1740083227577,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!9Zt5CjnF2U2imQw1.5vZP4aLdeD5HdDw4"
     }
@@ -537,10 +531,19 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1696175338841,
     "modifiedTime": 1741495923916,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "duplicateSource": null
   },
   "_id": "9Zt5CjnF2U2imQw1",
   "sort": 100000,

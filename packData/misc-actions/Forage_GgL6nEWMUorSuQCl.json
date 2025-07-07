@@ -153,12 +153,6 @@
       }
     },
     "core": {},
-    "exportSource": {
-      "world": "d-d-waterdeep-dragon-heist",
-      "system": "dnd5e",
-      "coreVersion": "11.315",
-      "systemVersion": "2.4.1"
-    },
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -177,12 +171,19 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "3.0.4",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1696633614995,
     "modifiedTime": 1713819458102,
     "lastModifiedBy": "B2BBHntfpytXE8DP",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": {
+      "worldId": "d-d-waterdeep-dragon-heist",
+      "uuid": null,
+      "coreVersion": "11.315",
+      "systemId": "dnd5e",
+      "systemVersion": "2.4.1"
+    }
   },
   "ownership": {
     "default": 0,

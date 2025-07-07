@@ -522,9 +522,7 @@
     "ammunition": {}
   },
   "flags": {
-    "core": {
-      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.heQxYJeb3zgddXZs"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -594,12 +592,6 @@
         "activity": [],
         "effect": []
       }
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
     }
   },
   "effects": [
@@ -712,12 +704,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1740892097508,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!l7PhWk2m5Bv2JFmp.SnxRN0OBcIvCkwiW"
     },
@@ -832,12 +825,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1742247355116,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!l7PhWk2m5Bv2JFmp.6CqUePYaCOnGRxYa"
     }
@@ -851,12 +845,21 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1740541404224,
     "modifiedTime": 1742247383879,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-items.Item.heQxYJeb3zgddXZs",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.6"
+    },
+    "duplicateSource": null
   },
   "sort": 100000,
   "_id": "l7PhWk2m5Bv2JFmp",

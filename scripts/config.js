@@ -588,6 +588,13 @@ export function setConfig() {
             authors: ['Elwin'],
           },
         },
+        'Goblin Boss': {
+          'Redirect Attack': {
+            name: 'Redirect Attack',
+            version: '1.0.0',
+            authors: ['TMinz'],
+          },
+        },
       },
     },
   });

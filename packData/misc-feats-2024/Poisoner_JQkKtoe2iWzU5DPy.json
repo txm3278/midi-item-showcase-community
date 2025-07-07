@@ -181,9 +181,7 @@
         "type": "feat"
       }
     },
-    "core": {
-      "sourceId": "Compendium.midi-item-showcase-community.misc-feats.Item.B4e50qNe0QAnGWLL"
-    },
+    "core": {},
     "magicitems": {
       "enabled": false,
       "equipped": false,
@@ -260,12 +258,6 @@
       "AoETargetTypeIncludeSelf": true,
       "autoTarget": "default",
       "removeAttackDamageButtons": "default"
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -364,12 +356,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1740449833884,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "img": "icons/skills/melee/strike-scythe-fire-green.webp",
       "type": "base",
@@ -380,12 +373,21 @@
   ],
   "folder": null,
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.3",
     "createdTime": 1740449197634,
     "modifiedTime": 1740663852360,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "compendiumSource": "Compendium.midi-item-showcase-community.misc-feats.Item.B4e50qNe0QAnGWLL",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.6"
+    },
+    "duplicateSource": null
   },
   "sort": 100000,
   "ownership": {

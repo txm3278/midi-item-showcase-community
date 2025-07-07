@@ -303,9 +303,7 @@
     "attuned": false
   },
   "flags": {
-    "core": {
-      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "consumable": {
@@ -356,12 +354,6 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
     }
   },
   "effects": [
@@ -434,12 +426,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.1.2",
         "createdTime": 1736663871038,
         "modifiedTime": 1736694292435,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!Q9tYrkH0JCs8QujG.H1QXhqp1wao7I7cQ"
     }
@@ -455,10 +448,19 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.3",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1696175338841,
     "modifiedTime": 1740844354197,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.6"
+    },
+    "duplicateSource": null
   },
   "sort": 100000,
   "_id": "Q9tYrkH0JCs8QujG",

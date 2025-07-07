@@ -72,12 +72,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1750288050657,
         "modifiedTime": 1750288069933,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!2Yh2JuUOQE5TFqQK.Izp3BmbC6SZiMvPb"
     }
@@ -297,12 +298,6 @@
           "duplicateSource": null
         }
       }
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
     }
   },
   "img": "icons/magic/light/beam-red-orange.webp",
@@ -315,12 +310,21 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1750286915752,
     "modifiedTime": 1750288033805,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!2Yh2JuUOQE5TFqQK"
 }

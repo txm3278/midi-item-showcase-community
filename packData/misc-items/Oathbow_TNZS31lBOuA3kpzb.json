@@ -435,12 +435,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1745794303865,
         "modifiedTime": 1745877025095,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!TNZS31lBOuA3kpzb.eFfWdbcygq1LDcXe"
     },
@@ -512,12 +513,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1745794569467,
         "modifiedTime": 1745794714220,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!TNZS31lBOuA3kpzb.Bf5EJfd0ghcirCkX"
     },
@@ -590,12 +592,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1745977702421,
         "modifiedTime": 1745977718335,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!TNZS31lBOuA3kpzb.3Dux3zNFGizvVdyo"
     }
@@ -664,12 +667,6 @@
       "ida": false,
       "concentration": false
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
-    },
     "dnd5e": {
       "persistSourceMigration": true,
       "riders": {
@@ -679,12 +676,21 @@
     }
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1745788090626,
     "modifiedTime": 1750475801912,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!TNZS31lBOuA3kpzb"
 }

@@ -214,12 +214,6 @@
       "otherCondition": "",
       "effectCondition": "",
       "onUseMacroName": "[preItemRoll]function.elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll,[preItemRoll]function.MISC.macros.spells.flameArrows,[postActiveEffects]function.MISC.macros.spells.flameArrows"
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
     }
   },
   "effects": [
@@ -308,12 +302,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1750771471084,
         "modifiedTime": 1751459107379,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!ftgNWL4i9MmYBTn5.G6AtmlLXrlQxVCZl"
     },
@@ -386,12 +381,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1750814777787,
         "modifiedTime": 1751458843228,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!ftgNWL4i9MmYBTn5.AfaPwVMwpqEv98MH"
     }
@@ -405,12 +401,21 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1750768817525,
     "modifiedTime": 1751631346013,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "ftgNWL4i9MmYBTn5",
   "sort": 100000,

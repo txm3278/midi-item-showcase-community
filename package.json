@@ -1,6 +1,6 @@
 {
   "name": "midi-item-showcase-community",
-  "version": "1.4.0-beta1",
+  "version": "1.5.0",
   "description": "A collection of Midi Automations from the Posney's Foundry Automation Discord",
   "main": "./scripts/module.js",
   "type": "module",
@@ -28,7 +28,7 @@
     "webpack-cli": "^6.0.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.30.0",
-    "eslint": "^9.30.0"
+    "@eslint/js": "^9.30.1",
+    "eslint": "^9.30.1"
   }
 }

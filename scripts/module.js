@@ -1,7 +1,6 @@
 import { moduleName } from './constants.js';
 import { registerSettings } from './settings.js';
 import { setConfig } from './config.js';
-import { setupActors } from './actors.js';
 import { macros, scripts } from './macros.js';
 
 Hooks.once('init', async function () {
@@ -10,15 +9,10 @@ Hooks.once('init', async function () {
 });
 
 Hooks.once('ready', async function () {
-  if (game.user.isGM) {
-    if (game.settings.get(moduleName, 'Update Actors')) await setupActors();
-  }
   if (game.settings.get(moduleName, 'Elwin Helpers')) {
-    await scripts.runElwinsHelpers();
-    await scripts.runElwinsHelpersCoating();
+    scripts.runElwinsHelpers();
+    scripts.runElwinsHelpersCoating();
   }
-  // TODO(bakanabaka) : make a setting to enable
-  scripts.setupBakanaMacros();
 });
 
 globalThis['MISC'] = {

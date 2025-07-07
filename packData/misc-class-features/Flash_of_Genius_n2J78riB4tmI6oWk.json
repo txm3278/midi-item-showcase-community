@@ -210,17 +210,9 @@
     "link-item-resource-5e": {
       "resource-link": "secondary"
     },
-    "core": {
-      "sourceId": "Compendium.midi-item-showcase-community.misc-class-features.Item.B6epLSnrE62E0T13"
-    },
+    "core": {},
     "custom-character-sheet-sections": {
       "sectionName": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -338,14 +330,15 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/light/explosion-star-blue.webp",
       "type": "base",
@@ -410,14 +403,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/light/explosion-star-blue.webp",
       "type": "base",
@@ -430,10 +424,19 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1680737539131,
     "modifiedTime": 1745543261708,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "compendiumSource": "Compendium.midi-item-showcase-community.misc-class-features.Item.B6epLSnrE62E0T13",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "duplicateSource": null
   },
   "folder": "XdRbjr9vWzc7ijqS",
   "_id": "n2J78riB4tmI6oWk",

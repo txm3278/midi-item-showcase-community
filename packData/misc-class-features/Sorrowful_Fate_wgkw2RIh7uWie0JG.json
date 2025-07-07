@@ -324,14 +324,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/equipment/head/mask-craved-beige.webp",
       "type": "base",
@@ -408,12 +409,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.1.1",
         "createdTime": 1732393700880,
         "modifiedTime": 1732393823992,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!wgkw2RIh7uWie0JG.5qx6CPCZ6RbhLBDO"
     }
@@ -504,21 +506,24 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
     }
   },
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1719977584629,
     "modifiedTime": 1745581519908,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!wgkw2RIh7uWie0JG"
 }

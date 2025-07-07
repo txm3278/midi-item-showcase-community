@@ -180,9 +180,7 @@
       "idv": false,
       "ida": false
     },
-    "core": {
-      "sourceId": "Item.0k3rcvGBw7FY02A1"
-    },
+    "core": {},
     "dae": {
       "macro": {
         "name": "Psionic Power: Protective Field",
@@ -221,12 +219,6 @@
           "enabled": false
         }
       }
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
     },
     "dnd5e": {
       "riders": {
@@ -299,14 +291,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
       "type": "base",
@@ -327,10 +320,19 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1705895542886,
     "modifiedTime": 1745603167565,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "compendiumSource": "Item.0k3rcvGBw7FY02A1",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "duplicateSource": null
   },
   "_key": "!items!lCNyLymCe7Ncd3Qm"
 }

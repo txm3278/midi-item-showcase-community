@@ -487,12 +487,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.8",
         "createdTime": null,
         "modifiedTime": 1746052622931,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!wC1LDcfQTUqMqOEG.5e8RbHiOcFWK1D0G"
     }
@@ -599,12 +600,6 @@
         }
       }
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
-    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -622,12 +617,21 @@
     "midi-item-showcase-community": {}
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1744777067393,
     "modifiedTime": 1750715396493,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!wC1LDcfQTUqMqOEG"
 }

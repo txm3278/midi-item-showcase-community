@@ -435,12 +435,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": null,
         "modifiedTime": 1748608656011,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!KE2erwgW8JBVNWAk.tuG3KOZlWvcEmxWv"
     },
@@ -547,12 +548,13 @@
       "_stats": {
         "compendiumSource": "Item.7xeuYcnO3qLpobUy.ActiveEffect.SnxRN0OBcIvCkwiW",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": 1741833246383,
         "modifiedTime": 1742616537475,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!KE2erwgW8JBVNWAk.Dhcf3VE4hicjpnF1"
     }
@@ -596,12 +598,6 @@
       "idv": false,
       "ida": false
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
-    },
     "dnd5e": {
       "persistSourceMigration": true,
       "riders": {
@@ -611,12 +607,21 @@
     }
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1741820293632,
     "modifiedTime": 1745772563422,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "KE2erwgW8JBVNWAk",
   "_key": "!items!KE2erwgW8JBVNWAk"

@@ -317,12 +317,6 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
-    },
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -429,12 +423,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": null,
-        "lastModifiedBy": null
+        "lastModifiedBy": null,
+        "exportSource": null
       },
       "img": "icons/weapons/axes/axe-battle-skull-black.webp",
       "type": "base",
@@ -453,12 +448,21 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.6",
     "createdTime": 1740083543904,
     "modifiedTime": 1741408307644,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.6"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "rNGTibeChZkWTSJ1",
   "_key": "!items!rNGTibeChZkWTSJ1"

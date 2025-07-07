@@ -234,12 +234,6 @@
         }
       }
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
-    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -261,10 +255,19 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1694744431298,
     "modifiedTime": 1745581021554,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+    "exportSource": {
+      "worldId": "test2",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd5e",
+      "systemVersion": "4.3.9"
+    },
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!OvEhlucNjP2udVJc"
 }
