@@ -1,3 +1,7 @@
 {
-
+  "midi-item-showcase-community": {
+    "ElwinHelpersRequired": "The Elwin Helpers setting must be enabled.",
+    "ElwinHelpersName": "Use Elwin Helpers",
+    "ElwinHelpersHint": "Enabling this will enable automations that rely on Elwin's Helper Script"
+  }
 }

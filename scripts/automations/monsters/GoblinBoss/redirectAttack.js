@@ -18,7 +18,7 @@ export async function redirectAttack({
       '3.3.0'
     )
   ) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
     ui.notifications.error(errorMsg);
     return;
   }

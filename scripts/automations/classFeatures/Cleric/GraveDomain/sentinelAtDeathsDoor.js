@@ -30,7 +30,7 @@ export async function sentinelAtDeathsDoor({ speaker, actor, token, character, i
 
   const dependencies = ['dae', 'midi-qol'];
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
     ui.notifications.error(errorMsg);
     return;
   }

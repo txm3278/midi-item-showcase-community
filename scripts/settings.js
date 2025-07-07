@@ -3,8 +3,8 @@ import { scripts } from './macros.js';
 
 export function registerSettings() {
   game.settings.register(moduleName, 'Elwin Helpers', {
-    name: 'Use Elwin Helpers',
-    hint: "Enabling this will enable automations that rely on Elwin's Helper Script",
+    name: game.i18n.localize('midi-item-showcase-community.ElwinHelpersName'),
+    hint: game.i18n.localize('midi-item-showcase-community.ElwinHelpersHint'),
     scope: 'world',
     config: true,
     type: Boolean,
