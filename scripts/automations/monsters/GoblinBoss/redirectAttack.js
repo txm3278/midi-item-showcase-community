@@ -39,7 +39,7 @@ export async function redirectAttack({
     return handleOnUsePreTargeting(workflow, scope.macroItem, actor);
   } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isAttacked.pre') {
     DAE.unsetFlag(scope.macroItem.actor, 'redirectAttackAlly');
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === '.post') {
+  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isAttacked.post') {
     await handleTargetOnUseIsAttackedPost(workflow, token, scope.macroItem, options?.thirdPartyReactionResult);
   }
 

@@ -1,0 +1,255 @@
+{
+  "name": "Wild Shape",
+  "type": "feat",
+  "effects": [],
+  "system": {
+    "activities": {
+      "KuQ1DPye2Hbkrfdo": {
+        "type": "transform",
+        "_id": "KuQ1DPye2Hbkrfdo",
+        "sort": 0,
+        "activation": {
+          "type": "bonus",
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": []
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "units": "self",
+          "override": false,
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": ""
+          },
+          "override": false,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "profiles": [
+          {
+            "cr": "max(1/4, @subclasses.moon.levels / 3)",
+            "name": "Wildshape",
+            "_id": "miUu9dwLDzrxfr54",
+            "sizes": [],
+            "types": [
+              "beast"
+            ],
+            "movement": [
+              "fly"
+            ],
+            "level": {
+              "min": 2,
+              "max": 3
+            }
+          },
+          {
+            "cr": "max(1/2, @subclasses.moon.levels / 3)",
+            "name": "Wildshape",
+            "_id": "aS5UedYMAC3K0S0t",
+            "sizes": [],
+            "types": [
+              "beast"
+            ],
+            "movement": [
+              "fly"
+            ],
+            "level": {
+              "min": 4,
+              "max": 7
+            }
+          },
+          {
+            "cr": "max(1, @subclasses.moon.levels / 3)",
+            "name": "Wildshape",
+            "_id": "njQ5GcV6Mani6NQr",
+            "sizes": [],
+            "types": [
+              "beast"
+            ],
+            "movement": [],
+            "level": {
+              "min": 8,
+              "max": null
+            }
+          }
+        ],
+        "settings": null,
+        "transform": {
+          "customize": false,
+          "identifier": "druid",
+          "preset": "wildshape"
+        },
+        "name": "Wildshape"
+      }
+    },
+    "uses": {
+      "spent": null,
+      "max": "@scale.druid.wild-shape-uses",
+      "recovery": [
+        {
+          "period": "lr",
+          "type": "recoverAll"
+        }
+      ]
+    },
+    "description": {
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by TMinz</h2><p><strong>Usage:</strong></p><p>This will open the compendium browser and allow the player to choose any eligible npc. They must click the transform button in chat</p></details>",
+      "chat": ""
+    },
+    "identifier": "wild-shape",
+    "source": {
+      "book": "PHB 2024",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2024",
+      "revision": 1
+    },
+    "advancement": [],
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "level": 2,
+      "repeatable": false
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "flags": {
+    "ddbimporter": {
+      "id": 10292217,
+      "type": "class",
+      "entityTypeId": 12168134,
+      "is2014": false,
+      "is2024": true,
+      "originalName": "Wild Shape",
+      "dndbeyond": {
+        "requiredLevel": 2,
+        "displayOrder": 5,
+        "featureType": 1,
+        "class": "Druid",
+        "classId": 2190878,
+        "entityType": "class-feature",
+        "levelScale": {
+          "id": 1605319,
+          "level": 2,
+          "description": "Wild Shape uses",
+          "dice": null,
+          "fixedValue": 2
+        },
+        "levelScales": [
+          {
+            "id": 1605319,
+            "level": 2,
+            "description": "Wild Shape uses",
+            "dice": {
+              "diceCount": null,
+              "diceValue": null,
+              "diceMultiplier": null,
+              "fixedValue": null,
+              "diceString": null
+            },
+            "fixedValue": 2
+          },
+          {
+            "id": 1605320,
+            "level": 6,
+            "description": "Wild Shape uses",
+            "dice": {
+              "diceCount": null,
+              "diceValue": null,
+              "diceMultiplier": null,
+              "fixedValue": null,
+              "diceString": null
+            },
+            "fixedValue": 3
+          },
+          {
+            "id": 1605321,
+            "level": 17,
+            "description": "Wild Shape uses",
+            "dice": {
+              "diceCount": null,
+              "diceValue": null,
+              "diceMultiplier": null,
+              "fixedValue": null,
+              "diceString": null
+            },
+            "fixedValue": 4
+          }
+        ],
+        "limitedUse": [
+          {
+            "level": null,
+            "uses": 1
+          }
+        ]
+      },
+      "class": "Druid",
+      "classId": 2190878,
+      "importId": "XFEilEVLeNqXZEpu"
+    },
+    "dnd5e": {
+      "advancementOrigin": "u3ERI7MbqDEuCxHi",
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "scene-packer": {
+      "hash": "ccfcbd15e0677f98da1acef9e3fc1e8fdeee1d06",
+      "sourceId": "Item.q9wXisY5aqY8IkBM"
+    }
+  },
+  "img": "icons/creatures/mammals/elk-moose-marked-green.webp",
+  "folder": "gB0JFCUqm3F3c07w",
+  "sort": 100000,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1752271617037,
+    "modifiedTime": 1752271617055,
+    "lastModifiedBy": "0IRD6hJ6pXW2tz12"
+  },
+  "_id": "aG3t6ZKixgztKPiZ",
+  "ownership": {
+    "default": 0,
+    "0IRD6hJ6pXW2tz12": 3
+  },
+  "_key": "!items!aG3t6ZKixgztKPiZ"
+}

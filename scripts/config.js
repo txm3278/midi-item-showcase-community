@@ -541,6 +541,12 @@ export function setConfig() {
           version: '1.0.0',
           authors: ['Elwin'],
         },
+        'Wild Shape': {
+          name: 'Wild Shape',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
         'Wyvern Poison': {
           name: 'Wyvern Poison',
           type: 'Item',
