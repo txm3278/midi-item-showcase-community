@@ -379,6 +379,12 @@
           "mode": 2,
           "value": "2d6[fire]",
           "priority": 20
+        },
+        {
+          "key": "system.damage.versatile.bonus",
+          "mode": 2,
+          "value": "2d6[fire]",
+          "priority": 20
         }
       ],
       "duration": {
@@ -435,11 +441,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": 1748608656011,
+        "modifiedTime": 1752710633482,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!KE2erwgW8JBVNWAk.tuG3KOZlWvcEmxWv"
@@ -599,11 +605,10 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
+      "coreVersion": "12.343",
       "systemVersion": "4.3.9"
     },
     "dnd5e": {
-      "persistSourceMigration": true,
       "riders": {
         "activity": [],
         "effect": []
@@ -613,9 +618,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.9",
     "createdTime": 1741820293632,
-    "modifiedTime": 1745772563422,
+    "modifiedTime": 1752415849532,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "KE2erwgW8JBVNWAk",
