@@ -176,7 +176,7 @@ export function setConfig() {
         'Flame Tongue Longsword': {
           name: 'Flame Tongue Longsword',
           type: 'Item',
-          version: '2.0.0',
+          version: '2.0.1',
           authors: ['Elwin'],
         },
         'Flame Tongue Rapier': {
@@ -436,7 +436,7 @@ export function setConfig() {
         'Flame Tongue': {
           name: 'Flame Tongue',
           type: 'Item',
-          version: '1.0.0',
+          version: '1.0.1',
           authors: ['Elwin'],
         },
         Goodberry: {
@@ -454,7 +454,7 @@ export function setConfig() {
         'Great Weapon Master': {
           name: 'Great Weapon Master',
           type: 'Feat',
-          version: '1.0.1',
+          version: '1.1.0',
           authors: ['Elwin'],
         },
         'Improved Warding Flare': {

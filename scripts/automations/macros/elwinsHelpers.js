@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.4
+// v3.5.5
 // Dependencies:
 //  - MidiQOL
 //
@@ -130,13 +130,14 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.5.4';
+  const VERSION = '3.5.5';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
   const active = true;
   const WORKFLOWS = new Map();
-  let debug = false;
+  // Note: Needs to be var otherwise its value is not available in the isDebugEnabled function.
+  var debug = false;
   let depReqFulfilled = false;
 
   const TPR_OPTIONS = [
@@ -202,6 +203,10 @@ export function runElwinsHelpers() {
     requirementsSatisfied(MACRO_NAME, dependencies) &&
     foundry.utils.isNewerVersion(game.modules.get('midi-qol')?.version, '12.4.30')
   ) {
+    if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, 'Elwin Helpers')) {
+      return;
+    }
+
     depReqFulfilled = true;
 
     // Set a version to facilitate dependency check
@@ -1594,7 +1599,7 @@ export function runElwinsHelpers() {
                 workflow.item,
                 reactionData.macroName,
                 'TargetOnUse',
-                reactionTrigger + !reactionData.reactionNone ? '.post' : '',
+                reactionTrigger + (!reactionData.reactionNone ? '.post' : ''),
                 postReactionOptions
               );
             }
@@ -2721,6 +2726,10 @@ export function runElwinsHelpers() {
         return;
       }
       const updatedIndexes = changeFunction(rollConfig, dialogConfig, messageConfig);
+      if (dialogConfig.configure === false) {
+        // Nothing else to do, no dialog shown
+        return;
+      }
       if (options?.id) {
         // Add indicator that the change was applied.
         foundry.utils.setProperty(workflow.workflowOptions, `elwinHelpers.damageConfig.${options.id}`, true);
