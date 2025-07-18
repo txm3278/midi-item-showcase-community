@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat. It adds a damage bonus when the requirements are met, it also prompts a dialog to confirm to do a bonus attack or not when the conditions are met.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat. It adds a damage bonus when the requirements are met, it also prompts a dialog to confirm to do a bonus attack or not when the conditions are met.</p></details>",
       "chat": ""
     },
     "source": {
@@ -149,8 +149,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "coreVersion": "12.343",
+      "systemVersion": "4.3.9"
     },
     "rest-recovery": {
       "data": {
@@ -211,7 +211,7 @@
         {
           "key": "flags.midi-qol.optional.GWM.activation",
           "mode": 0,
-          "value": "actor.isCombatTurn && \nitem.itemType === \"weapon\" && \n[\"simpleM\", \"martialM\", \"simpleR\", \"martialR\"].includes(item.type?.value) && \nitem.properties?.has(\"hvy\") && \nactivity.type === \"attack\" && \nactivity.activation?.type === \"action\" && \nactivity.attack?.type?.classification === \"weapon\"",
+          "value": "(!fromUuidSync(actorUuid)?.inCombat || actor.isCombatTurn) && \nitem.itemType === \"weapon\" && \n[\"simpleM\", \"martialM\", \"simpleR\", \"martialR\"].includes(item.type?.value) && \nitem.properties?.has(\"hvy\") && \nactivity.type === \"attack\" && \nactivity.activation?.type === \"action\" && \nactivity.attack?.type?.classification === \"weapon\" &&\n!workflow?.damageRolls?.length",
           "priority": 20
         },
         {
@@ -282,11 +282,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": 1740415472058,
+        "modifiedTime": 1752710334970,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "img": "icons/weapons/axes/axe-battle-skull-black.webp",
@@ -311,7 +311,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.3",
     "createdTime": 1733279500522,
-    "modifiedTime": 1740844499840,
+    "modifiedTime": 1750286916275,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!ugjpZDElvU1Kaamt"

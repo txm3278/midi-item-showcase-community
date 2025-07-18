@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.1
+// v2.1.2
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '2.1.1';
+  const VERSION = '2.1.2';
   const MACRO_NAME = 'elwin-helpers-coating';
   const MODULE_ID = 'midi-item-showcase-community';
   const WORLD_MODULE_ID = 'world';
@@ -133,6 +133,10 @@ export function runElwinsHelpersCoating() {
 
   const dependencies = ['midi-qol'];
   if (hasValidElwinHelpersVersion() && globalThis.elwinHelpers?.requirementsSatisfied(MACRO_NAME, dependencies)) {
+    if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, 'Elwin Helpers')) {
+      return;
+    }
+
     // Set a version to facilitate dependency check
     exportIdentifier('elwinHelpers.coating.version', VERSION);
 
