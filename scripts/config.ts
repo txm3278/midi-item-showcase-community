@@ -1,4 +1,4 @@
-import { moduleName } from './constants.js';
+import { moduleName } from './constants.ts';
 
 export function setConfig() {
   foundry.utils.setProperty(CONFIG, moduleName, {

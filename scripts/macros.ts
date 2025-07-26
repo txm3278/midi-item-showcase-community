@@ -13,12 +13,12 @@ import { spells } from './automations/spells/spells.js';
 import { thirdParty } from './automations/thirdParty/thirdParty.js';
 import { UA } from './automations/unearthedArcana/unearthedArcana.js';
 
-export let scripts = {
+export const scripts = {
   runElwinsHelpers,
   runElwinsHelpersCoating,
 };
 
-export let macros = {
+export const macros = {
   actions,
   classFeatures,
   features,

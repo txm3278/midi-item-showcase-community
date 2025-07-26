@@ -44,7 +44,7 @@
       }
     ]
   },
-  "esmodules": ["dist/main.js"],
+  "esmodules": ["dist/midi-item-showcase-community.mjs"],
   "languages": [
     {
       "lang": "en",

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "outDir": ".typescript-build",
+
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["fvtt-types", "sequencer", "dnd5e-types/dnd5e/dnd5e.d.mts"],
+    "strict": true,
+
+    "verbatimModuleSyntax": true,
+
+    "forceConsistentCasingInFileNames": true,
+
+    "resolveJsonModule": true,
+
+    "noUncheckedIndexedAccess": true,
+
+    "noUncheckedSideEffectImports": true,
+
+    "useUnknownInCatchVariables": true,
+
+    "noPropertyAccessFromIndexSignature": true,
+
+    "noImplicitOverride": true,
+
+    "allowJs": true,
+
+    "skipLibCheck": false,
+
+    "incremental": true
+
+    // This option not enabled by default because it can be very annoying.
+    // Consider enabling this option if you want to catch bugs arising from stuff like `{ optionalProperty: undefined }`.
+    // This can occur in Foundry from cases like in a configuration object where it'll override the default value.
+    // However opting-in to allowing `{ optionalProperty: undefined }` means you must write `{ optionalProperty?: T | undefined }` instead of `{ optionalProperty?: T }` for the type.
+    // This can be a nuisance because many libraries don't properly add `| undefined` and even fvtt-types is not completely correct here.
+    // "exactOptionalPropertyTypes": true,
+  }
+}
