@@ -18,7 +18,13 @@
             "allowed": false
           },
           "spellSlot": true,
-          "targets": []
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ]
         },
         "description": {
           "chatFlavor": ""
@@ -116,6 +122,11 @@
         {
           "period": "lr",
           "type": "recoverAll"
+        },
+        {
+          "period": "sr",
+          "type": "formula",
+          "formula": "1"
         }
       ]
     },
@@ -228,7 +239,7 @@
       }
     },
     "scene-packer": {
-      "hash": "ccfcbd15e0677f98da1acef9e3fc1e8fdeee1d06",
+      "hash": "7d7ca5eba9e8fec9242996363e2714f342837859",
       "sourceId": "Item.q9wXisY5aqY8IkBM"
     }
   },
@@ -242,14 +253,14 @@
     "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "5.0.4",
-    "createdTime": 1752271617037,
-    "modifiedTime": 1752271617055,
+    "createdTime": 1753673150232,
+    "modifiedTime": 1753673150251,
     "lastModifiedBy": "0IRD6hJ6pXW2tz12"
   },
-  "_id": "aG3t6ZKixgztKPiZ",
+  "_id": "2onW4S5V69Zqmvz6",
   "ownership": {
     "default": 0,
     "0IRD6hJ6pXW2tz12": 3
   },
-  "_key": "!items!aG3t6ZKixgztKPiZ"
+  "_key": "!items!2onW4S5V69Zqmvz6"
 }
