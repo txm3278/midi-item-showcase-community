@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - run: npm ci
       - name: Build Compendiums
         run: npm run buildCompendiums
