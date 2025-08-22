@@ -76,6 +76,17 @@
       }
     },
     {
+      "name": "misc-actors-2024",
+      "label": "MISC Actors",
+      "path": "packs/misc-actors-2024",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "misc-class-features",
       "label": "MISC Class Features",
       "path": "packs/misc-class-features",
@@ -223,6 +234,7 @@
           "sorting": "a",
           "color": "#018e5f",
           "packs": [
+            "misc-actors-2024",
             "misc-class-features-2024",
             "misc-feats-2024",
             "misc-monster-features-2024",

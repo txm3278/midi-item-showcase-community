@@ -415,6 +415,12 @@ export function setConfig() {
           version: '1.0.2',
           authors: ['Elwin'],
         },
+        'Circle Form': {
+          name: 'Circle Form',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
         'Clockwork Amulet': {
           name: 'Clockwork Amulet',
           type: 'Item',

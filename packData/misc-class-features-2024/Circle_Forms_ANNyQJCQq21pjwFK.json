@@ -1,12 +1,12 @@
 {
-  "name": "Wild Shape",
+  "name": "Circle Forms",
   "type": "feat",
   "effects": [],
   "system": {
     "activities": {
-      "KuQ1DPye2Hbkrfdo": {
+      "x0u5zywwMlyoFILd": {
         "type": "transform",
-        "_id": "KuQ1DPye2Hbkrfdo",
+        "_id": "x0u5zywwMlyoFILd",
         "sort": 0,
         "activation": {
           "type": "bonus",
@@ -62,8 +62,8 @@
         "profiles": [
           {
             "cr": "max(1/4, @subclasses.moon.levels / 3)",
-            "name": "Wildshape",
-            "_id": "miUu9dwLDzrxfr54",
+            "name": "Circle Form",
+            "_id": "9hzgnvMJIfxHNUl4",
             "sizes": [],
             "types": [
               "beast"
@@ -78,8 +78,8 @@
           },
           {
             "cr": "max(1/2, @subclasses.moon.levels / 3)",
-            "name": "Wildshape",
-            "_id": "aS5UedYMAC3K0S0t",
+            "name": "Circle Form",
+            "_id": "yRlLzQtfnhp3bXwZ",
             "sizes": [],
             "types": [
               "beast"
@@ -94,8 +94,8 @@
           },
           {
             "cr": "max(1, @subclasses.moon.levels / 3)",
-            "name": "Wildshape",
-            "_id": "njQ5GcV6Mani6NQr",
+            "name": "Circle Form",
+            "_id": "TVFw7IKEJ8PWILQY",
             "sizes": [],
             "types": [
               "beast"
@@ -107,19 +107,46 @@
             }
           }
         ],
-        "settings": null,
+        "settings": {
+          "effects": [
+            "origin",
+            "otherOrigin",
+            "background",
+            "class",
+            "feat",
+            "spell"
+          ],
+          "keep": [
+            "mental",
+            "languages",
+            "class",
+            "feats",
+            "bio",
+            "type",
+            "hp"
+          ],
+          "merge": [
+            "saves",
+            "skills"
+          ],
+          "minimumAC": "(13 + @abilities.wis.mod) * sign(@subclasses.moon.levels)",
+          "spellLists": [],
+          "tempFormula": "max(@classes.druid.levels, @subclasses.moon.levels * 3)",
+          "preset": "wildshape",
+          "other": [],
+          "transformTokens": true
+        },
         "transform": {
-          "customize": false,
+          "customize": true,
           "identifier": "druid",
           "preset": "wildshape"
         },
-        "name": "Wildshape",
+        "name": "Circle Form",
         "img": ""
       }
     },
     "uses": {
-      "spent": null,
-      "max": "@scale.druid.wild-shape-uses",
+      "spent": 0,
       "recovery": [
         {
           "period": "lr",
@@ -130,13 +157,14 @@
           "type": "formula",
           "formula": "1"
         }
-      ]
+      ],
+      "max": "@scale.druid.wild-shape-uses"
     },
     "description": {
       "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by TMinz</h2><p><strong>Usage:</strong></p><p>This will open the compendium browser and allow the player to choose any eligible npc. They must click the transform button in chat</p></details>",
       "chat": ""
     },
-    "identifier": "wild-shape",
+    "identifier": "circle-forms",
     "source": {
       "book": "PHB 2024",
       "page": "",
@@ -149,7 +177,7 @@
     "crewed": false,
     "enchant": {},
     "prerequisites": {
-      "level": 2,
+      "level": 3,
       "repeatable": false
     },
     "properties": [],
@@ -161,67 +189,21 @@
   },
   "flags": {
     "ddbimporter": {
-      "id": 10292217,
+      "id": 10292545,
       "type": "class",
       "entityTypeId": 12168134,
       "is2014": false,
       "is2024": true,
-      "originalName": "Wild Shape",
+      "originalName": "Circle Forms",
       "dndbeyond": {
-        "requiredLevel": 2,
-        "displayOrder": 5,
+        "requiredLevel": 3,
+        "displayOrder": 100,
         "featureType": 1,
         "class": "Druid",
-        "classId": 2190878,
+        "classId": 2190917,
         "entityType": "class-feature",
-        "levelScale": {
-          "id": 1605319,
-          "level": 2,
-          "description": "Wild Shape uses",
-          "dice": null,
-          "fixedValue": 2
-        },
-        "levelScales": [
-          {
-            "id": 1605319,
-            "level": 2,
-            "description": "Wild Shape uses",
-            "dice": {
-              "diceCount": null,
-              "diceValue": null,
-              "diceMultiplier": null,
-              "fixedValue": null,
-              "diceString": null
-            },
-            "fixedValue": 2
-          },
-          {
-            "id": 1605320,
-            "level": 6,
-            "description": "Wild Shape uses",
-            "dice": {
-              "diceCount": null,
-              "diceValue": null,
-              "diceMultiplier": null,
-              "fixedValue": null,
-              "diceString": null
-            },
-            "fixedValue": 3
-          },
-          {
-            "id": 1605321,
-            "level": 17,
-            "description": "Wild Shape uses",
-            "dice": {
-              "diceCount": null,
-              "diceValue": null,
-              "diceMultiplier": null,
-              "fixedValue": null,
-              "diceString": null
-            },
-            "fixedValue": 4
-          }
-        ],
+        "levelScale": null,
+        "levelScales": [],
         "limitedUse": [
           {
             "level": null,
@@ -231,22 +213,32 @@
       },
       "class": "Druid",
       "classId": 2190878,
-      "importId": "XFEilEVLeNqXZEpu"
+      "subClass": "Circle of the Moon",
+      "subClassId": 2190917,
+      "effectsApplied": true,
+      "importId": "Rg6jM9SuYrNTeV3Q"
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "forceCEOff": true
+    },
+    "midiProperties": {
+      "confirmTargets": "default"
     },
     "dnd5e": {
-      "advancementOrigin": "u3ERI7MbqDEuCxHi",
       "riders": {
         "activity": [],
         "effect": []
-      }
+      },
+      "advancementOrigin": "u3ERI7MbqDEuCxHi"
     },
     "scene-packer": {
-      "hash": "7d7ca5eba9e8fec9242996363e2714f342837859",
-      "sourceId": "Item.q9wXisY5aqY8IkBM"
+      "hash": "f3cbdde669d86ffab2921e96a45a3b4ce9e02f01",
+      "sourceId": "Item.XihddrdLYTpniXJt"
     }
   },
-  "img": "icons/creatures/mammals/elk-moose-marked-green.webp",
-  "folder": "gB0JFCUqm3F3c07w",
+  "img": "icons/commodities/claws/claw-bear-brown.webp",
+  "folder": "ozXJtCmKLwJUBigP",
   "sort": 100000,
   "_stats": {
     "compendiumSource": null,
@@ -255,14 +247,14 @@
     "coreVersion": "13.347",
     "systemId": "dnd5e",
     "systemVersion": "5.1.0",
-    "createdTime": 1753673150232,
-    "modifiedTime": 1755204255549,
+    "createdTime": 1754866649653,
+    "modifiedTime": 1755204535293,
     "lastModifiedBy": "0IRD6hJ6pXW2tz12"
   },
-  "_id": "2onW4S5V69Zqmvz6",
+  "_id": "ANNyQJCQq21pjwFK",
   "ownership": {
     "default": 0,
     "0IRD6hJ6pXW2tz12": 3
   },
-  "_key": "!items!2onW4S5V69Zqmvz6"
+  "_key": "!items!ANNyQJCQq21pjwFK"
 }
