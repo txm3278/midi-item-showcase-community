@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.0.3
+// v3.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -13,7 +13,7 @@
 //  - Elwin Helpers world script
 //
 // Usage:
-// This is a passive feat and an active feat. This is a feat that can be toggled on or off, when the midi property "Toggle effect" is checked
+// This is a passive feat and an active feat. This is a feat that can be toggled on or off, when the Toggle activity's midi property "Toggle effect" is checked
 // and the Toggle activity is used, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements.
 // If the attack is a melee attack from a heavy weapon for which the attacker is proficient and toggled on or the prompt to activate was accepted,
 // an effect to give -5 penalty to hit and a +10 bonus to damage is granted for this attack. The passive part will add a charge when
@@ -25,7 +25,7 @@
 // In the preItemRoll (OnUse) phase (on Greater Weapon Master Bonus Attack activity):
 //   Prompts the user to select an equipped melee weapon with which to make the bonus attack.
 // In the preItemRoll (OnUse) phase (on any owner's item/activity):
-//   If the midi toggle effect property is checked:
+//   If the Toggle activity's midi "Toggle Effect" property is checked:
 //     If the activity used is not this feat's Toggle activity and the state was set to prompt: set the state to toggled off.
 //   Else:
 //     Set state to prompt to activate on attack.
@@ -33,7 +33,7 @@
 //     If the activity used is this feat's Toggle activity: block this activity's workflow and prompts a warning.
 // In the preAttackRoll (OnUse) phase (on any owner's item):
 //   Validates that the item used has the heavy property, that the attack is a melee weapon attack and the actor is proficient with it.
-//   If the feat "Toggle effect" is unchecked a dialog is prompted to activate the feat on this attack.
+//   If the feat's Toggle activity "Toggle Effect" is unchecked a dialog is prompted to activate the feat on this attack.
 //   If the feat is toggled on or the activation has been accepted, it adds an AE to give -5 penaly to melee weapon attack and
 //   +10 bonus to damage from a melee weapon attack.
 //   This AE only last for one attack.
@@ -96,9 +96,16 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     } else if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
       await handleOnUsePostActiveEffectsOtherItems(workflow, scope.macroItem, scope.rolledItem);
     }
+  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+    if (workflow.item?.getFlag('midi-qol', 'syntheticItem')) {
+      // Note: patch to fix problem with getAssociatedItem which does not prepare data when creating a synthetic item
+      workflow.activity?.item?.prepareData();
+      workflow.activity?.item?.prepareFinalAttributes();
+    }
   } else if (args[0] === 'on') {
     // Clear item state when first applied
     await getBonusAttackActivity(item)?.update({ 'uses.spent': 1 });
+    await actor.setFlag(MODULE_ID, 'greatWeaponMaster.bonus', false);
   } else if (args[0] === 'each') {
     // Reset the Heavy Weapon Master Attack bonus action to 0 charge
     const attackActivity = getBonusAttackActivity(item);
@@ -147,8 +154,8 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
   }
 
   /**
-   * Adjust the behavior of Great Weapon Master feat depending on the value of the midi toggle effect property.
-   * If the midi toggle effect property is checked:
+   * Adjust the behavior of Great Weapon Master feat depending on the value of the Toggle activity's midi "Toggle Effect" property.
+   * If the midi "Toggle Effect" property is checked:
    *   If the activity used is not this feat's Toggle activity and the state was set to prompt: set the state to toggle off.
    * Else:
    *   Set prompt to activate on attack.
@@ -162,7 +169,8 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    * @returns true if the activity workflow can continue, false otherwise.
    */
   async function handleOnUsePreItemRollOthers(currentWorkflow, sourceItem, sourceActor) {
-    const toggleEffect = foundry.utils.getProperty(sourceItem, 'flags.midiProperties.toggleEffect');
+    const toggleActivity = getToggleActivity(sourceItem);
+    const toggleEffect = toggleActivity?.midiProperties.toggleEffect ?? false;
     if (toggleEffect) {
       const gwmState = sourceItem.getFlag(MODULE_ID, 'greatWeaponMasterState') ?? OFF_STATE;
       if (currentWorkflow.itemUuid !== sourceItem.uuid) {
@@ -177,7 +185,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       if (isToggleActivity(currentWorkflow, sourceItem)) {
         const msg = `${sourceItem.name} | The ${
           currentWorkflow.activity.name ?? 'Toggle'
-        } activity can only be triggered when the item Midi property 'Toggle effect' is checked.`;
+        } activity can only be triggered when the activity's Midi property 'Toggle Effect' is checked.`;
         ui.notifications.warn(msg);
         return false;
       }
@@ -252,7 +260,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       }
       return;
     }
-    const bonusAttackWorkflow = await doBonusAttack(sourceItem, weaponItem);
+    const bonusAttackWorkflow = await doBonusAttack(currentWorkflow, sourceItem, weaponItem);
     if (bonusAttackWorkflow?.aborted) {
       ui.notifications.warn(`${sourceItem.name} | The bonus attack was aborted, reallocate spent resource if needed.`);
       const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag('dnd5e', 'use.consumed');
@@ -328,9 +336,15 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     await currentWorkflow.actor.setFlag(MODULE_ID, 'greatWeaponMaster', { bonus: true, weaponChoiceId: usedItem.id });
 
     // Add chat message saying a bonus attack can be made
-    const message = `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack [[/item ${
-      sourceItem.uuid
-    } activity=${getBonusAttackActivity(sourceItem).name}]].</p>`;
+    const message = await TextEditor.enrichHTML(
+      `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack [[/item ${sourceItem.id} activity=${
+        getBonusAttackActivity(sourceItem).id
+      }]].</p>`,
+      {
+        relativeTo: sourceItem.actor,
+        rollData: sourceItem.getRollData(),
+      }
+    );
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
@@ -362,6 +376,17 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    */
   function isBonusAttackActivity(currentWorkflow, sourceItem) {
     return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === 'bonus-attack';
+  }
+
+  /**
+   * Returns the toggle activity of the Great Weapon Master item.
+   *
+   * @param {Item5e} sourceItem - The Great Weapon Master item.
+   *
+   * @returns {Activity} The toggle activity, undefined if not found.
+   */
+  function getToggleActivity(sourceItem) {
+    return sourceItem.system.activities?.find((a) => a.identifier === 'toggle');
   }
 
   /**
@@ -461,7 +486,19 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
   async function doBonusAttack(currentWorkflow, sourceItem, weaponItem) {
     // Change activation type to special so it is not considered as an Attack Action
     const weaponItemData = weaponItem.toObject();
-    delete weaponItemData._id;
+    weaponItemData._id = foundry.utils.randomID();
+    weaponItemData.name += ` (${getBonusAttackActivity(sourceItem).name})`;
+    // Flag item as synthetic
+    foundry.utils.setProperty(weaponItemData, 'flags.midi-qol.syntheticItem', true);
+    // TODO remove when fixed... Need to add onOnUseMAcro to prepare the item and activity because ChatMessage.getAssociatedItem does not do it...
+    let onUseMacroName = foundry.utils.getProperty(weaponItemData, 'flags.midi-qol.onUseMacroName') ?? '';
+    const preDamageRollConfigMacro = `[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
+    foundry.utils.setProperty(
+      weaponItemData,
+      'flags.midi-qol.onUseMacroName',
+      onUseMacroName?.length ? ',' + preDamageRollConfigMacro : preDamageRollConfigMacro
+    );
+
     for (let activityId of Object.keys(weaponItemData.system.activities ?? {})) {
       const activity = weaponItemData.system.activities[activityId];
       if (activity?.type !== 'attack') {
@@ -491,6 +528,10 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
         },
       },
     };
-    return await MidiQOL.completeItemUseV2(weaponCopy, config, {}, message);
+    if (game.release.generation > 12) {
+      return await MidiQOL.completeItemUse(weaponCopy, config, {}, message);
+    } else {
+      return await MidiQOL.completeItemUseV2(weaponCopy, config, {}, message);
+    }
   }
 }

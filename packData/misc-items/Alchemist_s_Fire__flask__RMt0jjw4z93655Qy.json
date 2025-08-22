@@ -183,7 +183,9 @@
           "identifier": "attack",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -333,31 +335,16 @@
       "ida": false
     },
     "core": {},
-    "magicitems": {
-      "enabled": false,
-      "default": "",
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
-    },
-    "scene-packer": {
-      "hash": "cd360dc30b3ada34eed470f919e9740e8769a111",
-      "sourceId": "Item.KfGRZo5JL0jeiwVW"
-    },
     "link-item-resource-5e": {
       "resource-link": ""
     },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "dnd5e": {
-      "persistSourceMigration": true,
-      "migratedUses": 1,
       "riders": {
         "activity": [],
         "effect": []
@@ -367,19 +354,10 @@
   "_stats": {
     "coreVersion": "13.346",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.4.4",
     "createdTime": 1741213078975,
-    "modifiedTime": 1741552664503,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.6"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "modifiedTime": 1752415848680,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!RMt0jjw4z93655Qy"
 }

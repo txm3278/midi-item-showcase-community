@@ -214,6 +214,12 @@
     "custom-character-sheet-sections": {
       "sectionName": ""
     },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -423,20 +429,11 @@
   "img": "icons/magic/light/explosion-star-blue.webp",
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "coreVersion": "13.346",
+    "systemVersion": "4.4.4",
+    "coreVersion": "12.343",
     "createdTime": 1680737539131,
-    "modifiedTime": 1745543261708,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "compendiumSource": "Compendium.midi-item-showcase-community.misc-class-features.Item.B6epLSnrE62E0T13",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "duplicateSource": null
+    "modifiedTime": 1752421596192,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "folder": "XdRbjr9vWzc7ijqS",
   "_id": "n2J78riB4tmI6oWk",

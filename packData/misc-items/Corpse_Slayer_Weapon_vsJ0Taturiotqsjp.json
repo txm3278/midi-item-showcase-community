@@ -262,7 +262,8 @@
           }
         ],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "template": {
@@ -620,8 +621,13 @@
     },
     "core": {},
     "dae": {},
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "dnd5e": {
-      "persistSourceMigration": true,
       "riders": {
         "activity": [],
         "effect": [
@@ -633,19 +639,10 @@
   "_stats": {
     "coreVersion": "13.346",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
+    "systemVersion": "4.4.4",
     "createdTime": 1747267107752,
-    "modifiedTime": 1750477181650,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "modifiedTime": 1752415848887,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "vsJ0Taturiotqsjp",
   "_key": "!items!vsJ0Taturiotqsjp"

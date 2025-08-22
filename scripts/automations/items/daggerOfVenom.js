@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Allows to cover the blade with poison and applies the poison effect on a hit.
-// v2.0.1
+// v2.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -9,35 +9,24 @@
 //  - Elwin Helpers world script
 //
 // Usage:
-// ON hit applies the Drow Poison effect, including extra unconscious status when save failed by 5 or more.
+// On hit applies a poison effect when the blade is coated with poison.
 //
 // Description:
 // In the postActiveEffects (OnUse) phase of the Dagger of Venom Coat Blade with Poison activity:
-//   Adds the Poison - Application enchantment to the dagger.
+//   Adds the Poison Coat enchantment to the dagger.
 // In the postActiveEffects (OnUse) phase of the Dagger of Venom Attack activity:
-//   On a hit, deletes the Poison - Application enchantment from the dagger.
+//   On a hit, deletes the Poison Coat enchantment from the dagger.
 // ###################################################################################################
 
-
-export async function daggerOfVenom({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the item
+export async function daggerOfVenom({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the item
   const DEFAULT_ITEM_NAME = 'Dagger of Venom';
   const MODULE_ID = 'midi-item-showcase-community';
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.5')) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -47,7 +36,11 @@ export async function daggerOfVenom({
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments
+    );
   }
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
@@ -55,13 +48,13 @@ export async function daggerOfVenom({
   }
 
   /**
- * Handles the configuration of the poison effect on the item and the application of the poison effect when the dagger hits.
- *
- * @param {MidiQOL.Workflow} currentWorkflow - The MidiQOL current workflow.
- * @param {Item5e} sourceItem - The Dagger of Venom item.
- */
+   * Handles the configuration of the poison effect on the item and the application of the poison effect when the dagger hits.
+   *
+   * @param {MidiQOL.Workflow} currentWorkflow - The MidiQOL current workflow.
+   * @param {Item5e} sourceItem - The Dagger of Venom item.
+   */
   async function handleOnUsePostActiveEffects(currentWorkflow, sourceItem) {
-    if (currentWorkflow.activity?.identifier === 'cover-blade-with-poison') {
+    if (currentWorkflow.activity?.identifier === 'coat-blade-with-poison') {
       const enchantmentEffectData = elwinHelpers
         .getAutomatedEnchantmentSelectedProfile(currentWorkflow)
         ?.effect.toObject();
@@ -90,11 +83,10 @@ export async function daggerOfVenom({
         return;
       }
       const activateBlackPoisonActivity = sourceItem.system.activities.find(
-        (a) => a.identifier === 'cover-blade-with-poison'
+        (a) => a.identifier === 'coat-blade-with-poison'
       );
       // Remove applied enchantment for this item
       await elwinHelpers.deleteAppliedEnchantments(activateBlackPoisonActivity?.uuid);
     }
   }
-
 }

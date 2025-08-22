@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.2
+// v2.1.3
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '2.1.2';
+  const VERSION = '2.1.3';
   const MACRO_NAME = 'elwin-helpers-coating';
   const MODULE_ID = 'midi-item-showcase-community';
   const WORLD_MODULE_ID = 'world';
@@ -162,8 +162,8 @@ export function runElwinsHelpersCoating() {
    * @returns {boolean} true if elwin helpers' version is valid for this world script.
    */
   function hasValidElwinHelpersVersion() {
-    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.2')) {
-      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.2.0`;
+    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.5')) {
+      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.6`;
       ui.notifications.error(errorMsg);
       return false;
     }
@@ -533,20 +533,24 @@ export function runElwinsHelpersCoating() {
       // Skip, only an attack or the coating effect activity are supported
       return;
     }
-    if (!workflow.hitTargets?.size || workflow.aborted) {
+    const coatedItem = rolledItem;
+    const coatedAmmoUsed = workflow.ammunition?.uuid === coatedItem.uuid;
+    const onlyDecreaseUses = !workflow.hitTargets?.size && coatedAmmoUsed;
+
+    // Note: In case coated ammo was used, we still need decrease the uses even on a miss.
+    if ((!workflow.hitTargets?.size && !coatedAmmoUsed) || workflow.aborted) {
       if (debug) {
         console.warn(`${MACRO_NAME} | No target hit or workflow was aborted.`, workflow);
       }
       return;
     }
 
-    const coatedItem = rolledItem;
     const appliedCoating = coatedItem.getFlag(MODULE_ID, 'appliedCoating');
     if (!appliedCoating) {
       console.error(`${MACRO_NAME} | Missing appliedCoating flag on coated weapon or ammo.`);
       return;
     }
-    if (workflow.item?.uuid !== coatedItem.uuid && workflow.ammo?.uuid !== coatedItem.uuid) {
+    if (workflow.item?.uuid !== coatedItem.uuid && workflow.ammunition?.uuid !== coatedItem.uuid) {
       if (debug) {
         console.warn(
           `${MACRO_NAME} | Skip, called from a workflow on another item attack activity than the coated one.`
@@ -556,7 +560,9 @@ export function runElwinsHelpersCoating() {
     }
 
     const target = workflow.hitTargets.first();
-    handleCoatingEffectActivityConditionalStatuses(workflow, coatedItem, target, appliedCoating);
+    if (!onlyDecreaseUses) {
+      handleCoatingEffectActivityConditionalStatuses(workflow, coatedItem, target, appliedCoating);
+    }
 
     // Call complete activity use with coating effect activity on first hit target
     try {
@@ -564,6 +570,7 @@ export function runElwinsHelpersCoating() {
       // And the current activity is not the coating effect or has not already handled the coating effect activity as an other activity.
       const coatingEffectActivity = coatedItem.system.activities.find((a) => a.identifier === COATING_EFFECT_IDENT);
       if (
+        !onlyDecreaseUses &&
         coatingEffectActivity &&
         workflow.activity?.uuid !== coatingEffectActivity.uuid &&
         workflow.otherActivity?.uuid !== coatingEffectActivity.uuid &&
@@ -594,6 +601,11 @@ export function runElwinsHelpersCoating() {
         await MidiQOL.completeActivityUse(coatingEffectActivity, config);
       }
     } finally {
+      // Note: we need to remove the applied coating AE as a dependency from its origin,
+      // otherwise the effect will also be removed when the enchantment is removed
+      if (!onlyDecreaseUses) {
+        await removeAppliedEffectFromOriginDependency(workflow, coatedItem, target);
+      }
       // When the coated item has uses, update uses
       if (appliedCoating.uses) {
         const newUses = appliedCoating.uses - 1;
@@ -623,28 +635,14 @@ export function runElwinsHelpersCoating() {
     }
 
     // Should only be called by coating effect activity
-    const mainActivity = workflow.activity?.identifier === COATING_EFFECT_IDENT ? workflow.activity : null;
-    const otherActivity = workflow.otherActivity?.identifier === COATING_EFFECT_IDENT ? workflow.otherActivity : null;
-    if (!mainActivity && !otherActivity) {
-      if (debug) {
-        console.warn(`${MACRO_NAME} | Only a coating effect activity or otherActivity are supported.`, {
-          activity: workflow.activity,
-          otherActivity: workflow.otherActivity,
-        });
-      }
-      return;
-    }
-    const activity = {
-      applicableEffects: mainActivity ? mainActivity.applicableEffects : otherActivity.applicableEffects,
-      effectTargets: mainActivity ? workflow.effectTargets : workflow.otherEffectTargets,
-    };
-
-    if (!activity.effectTargets?.has(target)) {
+    const activityData = getCoatingEffectActivityAndEffectTargets(workflow);
+    if (!activityData?.effectTargets?.has(target)) {
       // No applicable effects were applied to this target skip conditionals
       return;
     }
     const coatedEffectAe = target.actor?.effects?.find(
-      (ae) => ae.origin?.startsWith(coatedItem.uuid) && activity.applicableEffects?.some((ae2) => ae2.name === ae.name)
+      (ae) =>
+        ae.origin?.startsWith(coatedItem.uuid) && activityData.applicableEffects?.some((ae2) => ae2.name === ae.name)
     );
     if (!coatedEffectAe) {
       // No effects applied to this target skip conditionals
@@ -801,6 +799,33 @@ export function runElwinsHelpersCoating() {
   }
 
   /**
+   * Returns the coating effect activity's appliable effects and effecTargets,
+   * these come either from the main activity or other activity depending on which has the coating effect identifier.
+   *
+   * @param {MidiQOL.Workflow} workflow - The MidiQOL current workflow.
+   * @returns {{applicableEffects: ActiveEffect[], effectTargets: Set<Token5e>}} the coating effect activity's appliable effects and effecTargets.
+   */
+  function getCoatingEffectActivityAndEffectTargets(workflow) {
+    // Should only be called by coating effect activity
+    const mainActivity = workflow.activity?.identifier === COATING_EFFECT_IDENT ? workflow.activity : null;
+    const otherActivity = workflow.otherActivity?.identifier === COATING_EFFECT_IDENT ? workflow.otherActivity : null;
+    if (!mainActivity && !otherActivity) {
+      if (debug) {
+        console.warn(`${MACRO_NAME} | Only a coating effect activity or otherActivity are supported.`, {
+          activity: workflow.activity,
+          otherActivity: workflow.otherActivity,
+        });
+      }
+      return null;
+    }
+    const activityData = {
+      applicableEffects: mainActivity ? mainActivity.applicableEffects : otherActivity.applicableEffects,
+      effectTargets: mainActivity ? workflow.effectTargets : workflow.otherEffectTargets,
+    };
+    return activityData;
+  }
+
+  /**
    * Creates status effects on the specified actor uuid.
    *
    * @param {string} origin - The origin of the status effect.
@@ -819,5 +844,31 @@ export function runElwinsHelpersCoating() {
       effects.push(effectData);
     }
     return await MidiQOL.createEffects({ actorUuid, effects, options: { keepId: true } });
+  }
+
+  /**
+   * Removes the applied active effect from their origin dependencies (this is added automatically by DAE).
+   *
+   * @param {MidiQOL.Workflow} workflow - The MidiQOL current workflow.
+   * @param {Item5e} coatedItem - The coated item.
+   * @param {Token5e} target - The target on which the active effect could have been applied.
+   */
+  async function removeAppliedEffectFromOriginDependency(workflow, coatedItem, target) {
+    const activityData = getCoatingEffectActivityAndEffectTargets(workflow);
+    if (!activityData?.effectTargets?.has(target)) {
+      // No applicable effects were applied to this target
+      return;
+    }
+    const coatedEffectAe = target.actor?.effects?.find(
+      (ae) =>
+        ae.origin?.startsWith(coatedItem.uuid) && activityData.applicableEffects?.some((ae2) => ae2.name === ae.name)
+    );
+    if (!coatedEffectAe) {
+      // No effects applied to this target
+      return;
+    }
+    for (let originActiveEffect of activityData.applicableEffects) {
+      await originActiveEffect.removeDependent(coatedEffectAe);
+    }
   }
 }

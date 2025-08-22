@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.5
+// v3.5.6
 // Dependencies:
 //  - MidiQOL
 //
@@ -130,7 +130,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.5.5';
+  const VERSION = '3.5.6';
   const MACRO_NAME = 'elwin-helpers';
   const WORLD_MODULE_ID = 'world';
   const MISC_MODULE_ID = 'midi-item-showcase-community';
@@ -528,6 +528,10 @@ export function runElwinsHelpers() {
    */
   function handleMidiDnd5ePreCalculateDamage(actor, damages, options) {
     // Remove any custom damage prevention
+    // TODO remove check and property when bug fixed in midi
+    if (options.elwinHelpers?.preDamagePreventionCalled) {
+      return true;
+    }
     while (
       damages.find((di, idx) => {
         if (di.type === 'none' && di.active?.DP) {
@@ -537,6 +541,8 @@ export function runElwinsHelpers() {
         return false;
       })
     );
+    foundry.utils.setProperty(options, 'elwinHelpers.preDamagePreventionCalled', true);
+    return true;
   }
 
   /**
@@ -551,6 +557,10 @@ export function runElwinsHelpers() {
     if (!(options.elwinHelpers?.damagePrevention > 0)) {
       // No damage prevention or not valid
       return true;
+    }
+    // Note: remove when bug in midi is fixed
+    if (!options.elwinHelpers?.preDamagePreventionCalled) {
+      handleMidiDnd5ePreCalculateDamage(actor, damages, options);
     }
     const totalDamage = damages.reduce(
       (total, damage) => (total += ['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
@@ -1989,7 +1999,7 @@ export function runElwinsHelpers() {
   /**
    * Selects all the tokens that are within X distance of the source token for the current game user.
    *
-   * @param {Token} sourceToken - The reference token from which to compute the distance.
+   * @param {Token5e} sourceToken - The reference token from which to compute the distance.
    * @param {number} distance - The distance from the reference token.
    * @param {object} options - Optional parameters.
    * @param {number} [options.disposition=null] - The disposition of tokens: same(1), opposite(-1), neutral(0), ignore(null).
@@ -2016,8 +2026,12 @@ export function runElwinsHelpers() {
 
     const aoeTargetIds = aoeTargets.map((t) => t.document.id);
     if (options.updateSelected) {
-      game.user?.updateTokenTargets(aoeTargetIds);
-      game.user?.broadcastActivity({ targets: aoeTargetIds });
+      if (game.release.generation > 12) {
+        canvas.tokens?.setTargets(aoeTargetIds);
+      } else {
+        game.user?.updateTokenTargets(aoeTargetIds);
+        game.user?.broadcastActivity({ targets: aoeTargetIds });
+      }
     }
     return aoeTargets;
   }
@@ -2831,6 +2845,11 @@ export function runElwinsHelpers() {
    * const selectedItem = await ItemSelectionDialog.createDialog("Select a Weapon", items, items?.[0]);
    */
   class ItemSelectionDialog extends foundry.applications.api.DialogV2 {
+    /** @inheritDoc */
+    static DEFAULT_OPTIONS = {
+      classes: ['dialog', 'dnd5e2', 'elwin-dialog'],
+    };
+
     /**
      * Returns the html content for the dialog generated using the specified values.
      *
@@ -2853,12 +2872,12 @@ export function runElwinsHelpers() {
         if (item.system.attunement) {
           ctx.attunement = item.system.attuned
             ? {
-                cls: 'attuned',
-                title: game.i18n.localize('DND5E.AttunementAttuned'),
+                cls: 'active',
+                tooltip: game.i18n.localize('DND5E.AttunementAttuned'),
               }
             : {
-                cls: 'not-attuned',
-                title: game.i18n.localize(CONFIG.DND5E.attunementTypes[item.system.attunement]),
+                cls: '',
+                tooltip: game.i18n.localize(CONFIG.DND5E.attunementTypes[item.system.attunement]),
               };
         }
         if ('equipped' in item.system) {
@@ -2876,10 +2895,12 @@ export function runElwinsHelpers() {
             .join(' ') ?? '';
 
         itemContent += `
-      <input id="radio-${item.id}" type="radio" name="itemChoice" value="${item.id}"${ctx.selected}>
-        <label class="item" for="radio-${item.id}">
+      <li class="item">
+      <div class="item-row">
+        <input id="radio-${item.id}" type="radio" name="itemChoice" value="${item.id}"${ctx.selected}/>
+        <label for="radio-${item.id}">
           <div class="item-name">
-            <img class="item-image" src="${item.img}" alt="${item.name}">
+            <img class="item-image gold-icon" src="${item.img}" alt="${item.name}">
             <div class="name name-stacked">
               <span class="title">${item.name}${ctx.quantity}</span>
               <span class="subtitle">${ctx.subtitle}</span>
@@ -2888,113 +2909,80 @@ export function runElwinsHelpers() {
               ${ctx.tags}
             </div>
           </div>
-          <div class="item-controls">
+          <div class="item-detail item-controls" style="padding-right: 0px;">
       `;
         if (ctx.attunement) {
           itemContent += `
-            <a class="item-control ${ctx.attunement.cls}" data-tooltip="${ctx.attunement.tooltip}">
-              <i class="fas fa-sun"></i>
+            <a class="item-control ${ctx.attunement.cls}" data-tooltip="${ctx.attunement.tooltip}" aria-label="${ctx.attunement.tooltip}" aria-disabled="false">
+              <i class="fa-solid fa-sun"></i>
             </a>
         `;
         }
         if (ctx.equip) {
           itemContent += `
-            <a class="item-control ${ctx.equip.cls}" data-tooltip="${ctx.equip.tooltip}">
-              <i class="fas fa-shield-halved"></i>
+            <a class="item-control ${ctx.equip.cls}" data-tooltip="${ctx.equip.tooltip}" aria-label="${ctx.equip.tooltip}" aria-disabled="false">
+              <i class="fa-solid fa-shield-halved"></i>
             </a>
         `;
         }
         itemContent += `
           </div>
         </label>
-      </input>
+      </div>
+      </li>
       `;
       }
       const content = `
-          <style>
-            .selectItem .item {
-              display: flex;
-              flex-direction: row;
-              align-items: stretch;
-              margin: 4px;
-            }
+    <style>
+      .scrollable-list-container {
+        max-height: 300px; /* Set a maximum height */
+        overflow-y: auto;  /* Add vertical scrollbar when content overflows */
+        ${foundry.utils.isNewerVersion(game.release.version, '13') ? 'position: relative;' : ''}
+      }
 
-            .selectItem input {
-              opacity: 0;
-              position: absolute;
-              z-index: -1;
-            }
-      
-            .selectItem .item .item-name {
-              min-width: 350px;
-              flex: 1;
-              display: flex;
-              gap: 0.5rem;
-              align-items: center;
-              line-height: 1;
-              position: relative;
-            }            
-      
-            .selectItem .item .item-image {
-              border: 2px solid var(--dnd5e-color-gold, ##9f9275);
-              box-shadow: 0 0 4px var(--dnd5e-shadow-45, rgb(0 0 0 / 45%));
-              border-radius: 0;
-              background-color: var(--dnd5e-color-light-gray, #3d3d3d);
-              width: 32px;
-              height: 32px;
-              flex: 0 0 32px;
-              cursor: pointer;
-              object-fit: cover;
-            }
+      .scrollable-list-container ol {
+        list-style: none; /* Remove default bullet points */
+      }
 
-            .selectItem .name-stacked {
-              display: flex;
-              flex-direction: column;
-            }
-                 
-            .selectItem .item .item-name .title {
-              transition: text-shadow 250ms ease;
-              font-size: var(--font-size-13);
-            }
+      /* Override dnd5e dialog css */
+      .dnd5e2.elwin-dialog .window-header .window-title {
+        visibility: visible; 
+      }
 
-            .selectItem .name-stacked .subtitle {
-              font-family: var(--dnd5e-font-roboto, Roboto, sans-serif);
-              font-size: var(--font-size-10, 0.625rem);
-              color: var(--color-text-dark-5);
-            }
-            
-            .selectItem .item .item-controls {
-              display: flex;
-              width: 40px;
-              align-items: stretch;
-              justify-content: center;
-              gap: 0.375rem;
-              color: var(--color-text-light-6);
-              padding: 0 1.5rem 0 0.25rem;
-              position: relative;
-            }
+      /* Override dnd5e dialog css */
+      .dnd5e2.elwin-dialog .window-content {
+        overflow-y: inherit;
+      }
 
-            .selectItem .item .item-controls .item-control {
-              display: flex;
-              align-items: center;
-            }
+      .dnd5e2 .items-section .item-row input {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+      }
 
-            .selectItem .item .item-controls .item-control.active {
-              color: var(--dnd5e-color-black, #4b4a44);
-            }
+      .dnd5e2 .items-section .item-row label {
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        align-items: stretch;
+      }
 
-            /* CHECKED STYLES */
-            .selectItem [type=radio]:checked + label {
-              outline: 3px solid #f00;
-            }
-          </style>
-          
-          <div class="selectItem">
-            <dl>
-              ${itemContent}
-            </dl>
-          </div>
+      .dnd5e2 .items-section [type=radio]:checked + label {
+        outline: 3px solid #f00;
+      }
+    </style>
+
+    <div class="scrollable-list-container">
+      <ol class="items-section unlist" style="margin: 4px;">
+        ${itemContent}
+      </ol>
+    </div>
       `;
+      if (foundry.utils.isNewerVersion(game.release.version, '13')) {
+        const divContent = document.createElement('div');
+        divContent.innerHTML = content;
+        return divContent;
+      }
       return content;
     }
 
@@ -3015,7 +3003,7 @@ export function runElwinsHelpers() {
       return ItemSelectionDialog.wait({
         window: { title },
         content: this.getContent(items, defaultItem),
-        modal: true,
+        modal: foundry.utils.isNewerVersion(game.release.version, '13'),
         rejectClose: false,
         buttons: [
           {
@@ -3066,62 +3054,83 @@ export function runElwinsHelpers() {
         const selected = defaultToken && defaultToken.id === token.id ? ' checked' : '';
         const tokenImg = await getTokenImage(token);
         const tokenName = MidiQOL.getTokenPlayerName(token, true);
-        tokenContent += `<div style="flex-grow: 1"><label class="radio-label">
-        <input type="radio" name="token" value="${token.id}"${selected}>
-        <img id="${token.document.uuid}" src="${tokenImg}" style="border:0px; width: 50px; height:50px;">
+        tokenContent += `<li><div class="token-row">
+        <input id="radio-${token.id}" type="radio" name="token" value="${token.id}"${selected} />
+        <label class="radio-label" for="radio-${token.id}">
+          <img id="${token.document.uuid}" src="${tokenImg}" style="border:0px; width: 50px; height:50px;">
         ${tokenName}
-      </label></div>`;
+      </label></div></li>`;
       }
 
       let content = `
-          <style>
-            .selectToken .form-group {
-              display: flex;
-              flex-wrap: wrap;
-              width: 100%;
-              align-items: flex-start;
-            }
-      
-            .selectToken .radio-label {
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              margin: 4px;
-              text-align: center;
-              justify-items: center;
-              flex: 1 0 25%;
-              line-height: normal;
-            }
-      
-            .selectToken .radio-label input {
-              opacity: 0;
-              position: absolute;
-              z-index: -1;
-            }
-      
-            .selectToken img {
-              border: 0px;
-              width: 50px;
-              height: 50px;
-              flex: 0 0 50px;
-              margin-right: 3px;
-              cursor: pointer;
-            }
-      
-            /* CHECKED STYLES */
-            .selectToken [type=radio]:checked + img {
-              outline: 3px solid #f00;
-            }
-          </style>
-          
-          <div class="selectToken">
-            <div class="form-group" id="tokens">
-            <dl>
-                ${tokenContent}
-            </dl>
-            </div>
-          </div>
-      `;
+    <style>
+      .scrollable-list-container {
+        max-height: 300px; /* Set a maximum height */
+        overflow-y: auto;  /* Add vertical scrollbar when content overflows */
+        ${foundry.utils.isNewerVersion(game.release.version, '13') ? 'position: relative;' : ''}
+      }
+
+      .selectToken .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        align-items: flex-start;
+      }
+
+      .selectToken .unlist {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .selectToken .token-row {
+        flex-grow: 1; 
+      }
+
+      .selectToken .token-row .radio-label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 4px;
+        text-align: center;
+        justify-items: center;
+        flex: 1 0 25%;
+        line-height: normal;
+      }
+
+      .selectToken .token-row input {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+      }
+
+      .selectToken .token-row img {
+        border: 0px;
+        width: 50px;
+        height: 50px;
+        flex: 0 0 50px;
+        margin-right: 3px;
+        cursor: pointer;
+      }
+
+      .selectToken .token-row [type=radio]:checked + label img {
+        outline: 3px solid #f00;
+      }
+    </style>
+    
+    <div class="selectToken">
+      <div class="form-group scrollable-list-container" id="tokens">
+      <ol class="unlist">
+          ${tokenContent}
+      </ol>
+      </div>
+    </div>
+`;
+      if (foundry.utils.isNewerVersion(game.release.version, '13')) {
+        const divContent = document.createElement('div');
+        divContent.innerHTML = content;
+        return divContent;
+      }
       return content;
     }
 
@@ -3174,7 +3183,6 @@ export function runElwinsHelpers() {
       return TokenSelectionDialog.wait({
         window: { title },
         content,
-        modal: true,
         rejectClose: false,
         buttons: [
           {
@@ -3371,7 +3379,7 @@ export function runElwinsHelpers() {
               Math.round(t2.document.y + canvas.dimensions.size * y1)
               //          )
             );
-            const r = new Ray(origin, dest);
+            const r = new (foundry.canvas.geometry?.Ray ?? Ray)(origin, dest);
             if (wallBlocking) {
               const collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
                 mode: 'any',
@@ -3516,7 +3524,7 @@ export function runElwinsHelpers() {
    * @returns {{x: number, y: number}} the position where to move the token so its border is next to the specified point.
    */
   function getMoveTowardsPosition(token, point, options = { snapToGrid: true }) {
-    const moveTowardsRay = new Ray(token.center, point);
+    const moveTowardsRay = new (foundry.canvas.geometry?.Ray ?? Ray)(token.center, point);
     const tokenIntersects = token.bounds.segmentIntersections(moveTowardsRay.A, moveTowardsRay.B);
     if (!tokenIntersects?.length) {
       if (debug) {
@@ -3527,9 +3535,9 @@ export function runElwinsHelpers() {
       }
       return undefined;
     }
-    const centerToBounds = new Ray(moveTowardsRay.A, tokenIntersects[0]);
+    const centerToBounds = new (foundry.canvas.geometry?.Ray ?? Ray)(moveTowardsRay.A, tokenIntersects[0]);
 
-    const rayToCenter = Ray.towardsPoint(
+    const rayToCenter = (foundry.canvas.geometry?.Ray ?? Ray).towardsPoint(
       moveTowardsRay.A,
       moveTowardsRay.B,
       moveTowardsRay.distance - centerToBounds.distance
@@ -4192,7 +4200,7 @@ export function runElwinsHelpers() {
     if (!entity) {
       return '<unknown>';
     }
-    if (!(entity instanceof Token)) {
+    if (!(entity instanceof (foundry.canvas.placeables?.Token ?? Token))) {
       return '<unknown>';
     }
     if (MidiQOL.configSettings().useTokenNames) {
@@ -4206,7 +4214,7 @@ export function runElwinsHelpers() {
     if (!tokenRef) {
       return undefined;
     }
-    if (tokenRef instanceof Token) {
+    if (tokenRef instanceof (foundry.canvas.placeables?.Token ?? Token)) {
       return tokenRef;
     }
     if (tokenRef instanceof TokenDocument) {

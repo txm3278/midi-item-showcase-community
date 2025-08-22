@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Arms of the Astral Self
 // Summons spectral hands and adds a new attack to the Unarmed Strike weapon to use these arms instead.
-// v2.0.0
+// v2.1.0
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
@@ -87,12 +87,10 @@ function handleOnUsePreAoETargetConfirmation(token) {
     return;
   }
   if (game.release.generation > 12) {
-    // TODO make sure this really works NOTE from Michael: Should work now
-    game.user.broadcastActivity({ targets: targetIds });
-    // @ts-expect-error types isn't v13 yet but this is how core does it
-    game.user._onUpdateTokenTargets(targetIds);
+    canvas.tokens?.setTargets(targetIds);
   } else {
-    game.user.updateTokenTargets(targetIds);
+    game.user?.updateTokenTargets(targetIds);
+    game.user?.broadcastActivity({ targets: targetIds });
   }
 }
 
@@ -183,11 +181,12 @@ function handleOnUsePreItemRoll(token, workflow) {
   // Update spectral arms reach flag if it's the actor's turn
   if (token?.combatant?.id === game.combat?.combatant?.id) {
     if (workflow.item?.system.range?.reach) {
-      // This is needed to be taken into account when a clone is done by activity.use
+      // This is needed to be taken into account by the item and activity preparedData
+      workflow.item.actor._embeddedPreparation = true;
       workflow.item.updateSource({ 'system.range.reach': workflow.item.system.range.reach + 5 });
-      // This is needed for the first check, because the item has already been cloned and
-      // the activity prepared with the original item reach
-      workflow.activity.range.reach += 5;
+      delete workflow.item.actor._embeddedPreparation;
+      workflow.item.prepareFinalAttributes();
+      workflow.activity = workflow.item.system.activities.get(workflow.activity.id);
     }
   }
 }

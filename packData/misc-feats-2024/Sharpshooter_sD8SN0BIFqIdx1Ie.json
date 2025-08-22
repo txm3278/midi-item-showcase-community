@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This is a passive feat. It allows to shoot into melee without disadvantage, to ignore cover and to treat long as normal.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto and Michael version.\n <p><strong>Usage:</strong></p>\n<p>This is a passive feat. It allows to shoot into melee without disadvantage, to ignore cover and to treat long as normal.</p></details>",
       "chat": ""
     },
     "source": {
@@ -105,10 +105,6 @@
       "idv": false,
       "ida": false
     },
-    "scene-packer": {
-      "hash": "57fdaf62c05d08490759dc973daccc70ea3e945d",
-      "sourceId": "Item.Sl0aZ4yax6prEOyw"
-    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -126,21 +122,15 @@
         }
       }
     },
-    "magicitems": {
-      "enabled": false,
-      "equipped": false,
-      "attuned": false,
-      "charges": "0",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": false,
-      "recharge": "0",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l"
+    "core": {
+      "sourceId": "Compendium.midi-item-showcase-community.misc-feats.Item.hFU3MQBV2JOc9GFk"
     },
-    "core": {},
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "dae": {},
     "dnd5e": {
       "riders": {
@@ -170,13 +160,13 @@
         }
       ],
       "duration": {
-        "startTime": 1692764920,
+        "startTime": null,
         "seconds": null,
         "combat": null,
         "rounds": null,
         "turns": null,
-        "startRound": 3,
-        "startTurn": 0
+        "startRound": null,
+        "startTurn": null
       },
       "tint": "#ffffff",
       "transfer": true,
@@ -257,17 +247,8 @@
     "systemVersion": "4.3.3",
     "coreVersion": "13.346",
     "createdTime": 1706483810724,
-    "modifiedTime": 1740663860345,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "compendiumSource": "Compendium.midi-item-showcase-community.misc-feats.Item.hFU3MQBV2JOc9GFk",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.6"
-    },
-    "duplicateSource": null
+    "modifiedTime": 1750286916275,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "ownership": {
     "default": 0,

@@ -3,7 +3,7 @@
   "type": "consumable",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Ammo Tracker</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item must be used to activate its effect. It applies an enchantment that applies a poison coating on the selected weapon or ammunition.</p></details>",
       "chat": ""
     },
     "source": {
@@ -168,7 +168,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Poison - Effect",
         "useConditionReason": "",
@@ -177,7 +179,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": ""
       },
       "mseUIqSqhBwetzLL": {
         "type": "enchant",
@@ -287,7 +290,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Apply Poison",
         "useConditionReason": "",
@@ -346,14 +351,21 @@
     "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
+        "activity": [
+          "V6w0sUSVMyQ0WQqT"
+        ],
         "effect": []
-      },
-      "migratedUses": 1
+      }
     },
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     }
   },
   "effects": [
@@ -448,19 +460,10 @@
   "_stats": {
     "coreVersion": "13.346",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.3",
+    "systemVersion": "4.4.4",
     "createdTime": 1740082863670,
-    "modifiedTime": 1740438503904,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "compendiumSource": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.6"
-    },
-    "duplicateSource": null
+    "modifiedTime": 1752415850805,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "sort": 100000,
   "_id": "DAfvRRukLqf9qQWT",

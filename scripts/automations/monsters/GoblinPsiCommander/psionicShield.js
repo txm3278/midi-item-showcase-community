@@ -4,7 +4,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the owner of the feat
 // when himself or a creature within range is hit to allow him to add an AC bonus that could
 // turn the hit into a miss.
-// v2.1.1
+// v2.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -103,7 +103,9 @@ export async function psionicShield({ speaker, actor, token, character, item, ar
       return;
     }
 
-    // Recompute checkHits to take into account the AC bonus
+    // Reset hitTargets and recompute checkHits to take into account the AC bonus
+    // TODO Remove when fixed in midi-qol
+    currentWorkflow.hitTargets = new Set();
     await currentWorkflow.checkHits({
       noProvokeReaction: true,
       noOnUseMacro: true,

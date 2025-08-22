@@ -6,7 +6,7 @@
   "img": "icons/magic/death/skull-energy-light-purple.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Sequencer (to support animation between Lich and target)</li>\n   <li>JB2A (free or patreon) (to support animation between Lich and target)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the effects are applied.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Sequencer (to support animation between Lich and target)</li>\n   <li>JB2A (free or patreon) (to support animation between Lich and target)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "source": {
@@ -117,7 +117,9 @@
           "automationOnly": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -135,7 +137,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       },
       "DPUf3LHt8jEZJayP": {
         "type": "save",
@@ -245,7 +248,9 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Share Damage",
         "useConditionReason": "",
@@ -254,7 +259,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": ""
       }
     },
     "identifier": "negative-energy-tether",
@@ -489,6 +495,12 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
+    },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     }
   },
   "_stats": {
@@ -496,17 +508,8 @@
     "systemVersion": "4.3.6",
     "coreVersion": "13.346",
     "createdTime": 1722613573479,
-    "modifiedTime": 1741408476399,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.6"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "modifiedTime": 1748806893682,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!WhldjXAfNM2rNt4M"
 }

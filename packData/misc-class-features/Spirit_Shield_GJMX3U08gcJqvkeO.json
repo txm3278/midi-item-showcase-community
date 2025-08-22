@@ -253,6 +253,12 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "dnd5e": {
       "riders": {
         "activity": [],
@@ -469,17 +475,8 @@
     "systemVersion": "4.3.9",
     "coreVersion": "13.346",
     "createdTime": 1663621622102,
-    "modifiedTime": 1745583066185,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "modifiedTime": 1748806893682,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "sort": 100000,
   "_id": "GJMX3U08gcJqvkeO",

@@ -599,6 +599,12 @@
         "effect": []
       }
     },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -612,17 +618,8 @@
     "systemId": "dnd5e",
     "systemVersion": "4.3.8",
     "createdTime": 1743194324192,
-    "modifiedTime": 1745772563422,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "modifiedTime": 1748806893682,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!YC2HnVsv45XYBc6v"
 }

@@ -316,7 +316,7 @@
           "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": false,
-          "identifier": "activate-deactivate-flames",
+          "identifier": "engulf-in-flames",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "otherActivityCompatible": true,
@@ -326,7 +326,7 @@
           "toggleEffect": false,
           "ignoreFullCover": false
         },
-        "name": "Activate/Deactivate Flames",
+        "name": "Engulf in Flames",
         "useConditionReason": "The sword must be equipped and attuned",
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -345,8 +345,8 @@
   "effects": [
     {
       "type": "enchantment",
-      "name": "Flame Tongue - Activated",
-      "img": "icons/weapons/swords/sword-guard-red-jewel.webp",
+      "name": "Ablaze",
+      "img": "icons/skills/melee/strike-sword-slashing-red.webp",
       "disabled": true,
       "_id": "tuG3KOZlWvcEmxWv",
       "system": {},
@@ -436,13 +436,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.346",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": null,
-        "modifiedTime": 1748608748612,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
+        "modifiedTime": 1755744193703,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!Ibog1FSa29CjE2XI.tuG3KOZlWvcEmxWv"
     },
@@ -515,7 +514,7 @@
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
-          "enableCondition": "items.some(i => effect.origin?.startsWith(i.uuid) && i.system.equipped && i.system.attuned)",
+          "enableCondition": "fromUuidSync(effect.origin)?.parent?.system.equipped && fromUuidSync(effect.origin)?.parent?.system.attuned",
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false
@@ -599,8 +598,13 @@
       "idv": false,
       "ida": false
     },
+    "exportSource": {
+      "world": "test2",
+      "system": "dnd5e",
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
+    },
     "dnd5e": {
-      "persistSourceMigration": true,
       "riders": {
         "activity": [],
         "effect": []
@@ -608,21 +612,12 @@
     }
   },
   "_stats": {
-    "coreVersion": "13.346",
+    "coreVersion": "12.343",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.4.4",
     "createdTime": 1741820630159,
-    "modifiedTime": 1745772563422,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "modifiedTime": 1755744138828,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "Ibog1FSa29CjE2XI",
   "_key": "!items!Ibog1FSa29CjE2XI"
