@@ -6,7 +6,7 @@
   "img": "icons/creatures/eyes/humanoid-single-yellow.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>TODO</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When used, rolls an Intelligence Check using the appropriate skill depending on the selected creature and outputs the result.</p></details>",
       "chat": ""
     },
     "source": {
@@ -185,8 +185,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "tidy5e-sheet": {
       "favorite": true
@@ -202,7 +202,6 @@
     },
     "dae": {},
     "dnd5e": {
-      "persistSourceMigration": true,
       "riders": {
         "activity": [],
         "effect": []
@@ -219,9 +218,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
+    "systemVersion": "4.4.4",
     "createdTime": 1747968752820,
-    "modifiedTime": 1748296826501,
+    "modifiedTime": 1752415850866,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!xPSevKypyDQowXx2"

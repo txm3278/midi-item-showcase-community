@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to add a damage bonus when the conditions are met as well as the ability
 // to make a bonus melee weapon attack when the actor scores a critical hit or brings a target to 0 HP with a melee weapon.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -57,7 +57,7 @@ export async function greatWeaponMaster2024({
     if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
       await handleOnUsePostActiveEffectsOtherItems(workflow, scope.macroItem, scope.rolledItem);
     }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+  } else if (args[0].tag === 'OnUse' && ['preAttackRollConfig', 'preDamageRollConfig'].includes(args[0].macroPass)) {
     if (workflow.item?.getFlag('midi-qol', 'syntheticItem')) {
       // Note: patch to fix problem with getAssociatedItem which does not prepare data when creating a synthetic item
       workflow.activity?.item?.prepareData();
@@ -138,11 +138,13 @@ export async function greatWeaponMaster2024({
     foundry.utils.setProperty(weaponItemData, 'flags.midi-qol.syntheticItem', true);
     // TODO remove when fixed... Need to add onOnUseMAcro to prepare the item and activity because ChatMessage.getAssociatedItem does not do it...
     let onUseMacroName = foundry.utils.getProperty(weaponItemData, 'flags.midi-qol.onUseMacroName') ?? '';
-    const preDamageRollConfigMacro = `[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
+    const preRollConfigMacro = `${
+      game.release.generation > 12 ? '[preAttackRollConfig]ItemMacro.' + sourceItem.uuid + ',' : ''
+    }[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
     foundry.utils.setProperty(
       weaponItemData,
       'flags.midi-qol.onUseMacroName',
-      onUseMacroName?.length ? ',' + preDamageRollConfigMacro : preDamageRollConfigMacro
+      onUseMacroName?.length ? ',' + preRollConfigMacro : preRollConfigMacro
     );
     const activity = weaponItemData.system.activities[activityId];
     if (!activity) {
@@ -163,7 +165,11 @@ export async function greatWeaponMaster2024({
         activityId: activityId,
       },
     };
-    return await MidiQOL.completeItemUseV2(weaponCopy, config, {}, {});
+    if (game.release.generation > 12) {
+      return await MidiQOL.completeItemUse(weaponCopy, config, {}, {});
+    } else {
+      return await MidiQOL.completeItemUseV2(weaponCopy, config, {}, {});
+    }
   }
 
   /**

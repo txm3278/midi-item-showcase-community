@@ -96,8 +96,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "dnd5e": {
       "riders": {
@@ -196,7 +196,8 @@
         },
         "effects": [],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "prompt": false,
@@ -276,7 +277,7 @@
     "systemVersion": "4.3.6",
     "coreVersion": "12.331",
     "createdTime": 1663621625017,
-    "modifiedTime": 1744777034009,
+    "modifiedTime": 1748806893682,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "HT3iNvnapuKIkVHy",

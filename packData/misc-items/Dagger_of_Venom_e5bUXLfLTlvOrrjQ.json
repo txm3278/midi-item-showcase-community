@@ -3,7 +3,7 @@
   "name": "Dagger of Venom",
   "type": "weapon",
   "_id": "e5bUXLfLTlvOrrjQ",
-  "img": "icons/weapons/daggers/dagger-poisoned.webp",
+  "img": "icons/weapons/daggers/dagger-double-skull-pink.webp",
   "system": {
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Bakana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. It also has an activity to cover the blade with poison.</p></details>",
@@ -11,8 +11,8 @@
     },
     "source": {
       "custom": "",
-      "book": "Basic Rules (2014)",
-      "page": "161",
+      "book": "SRD 5.1",
+      "page": "",
       "license": "",
       "revision": 1,
       "rules": "2014"
@@ -23,7 +23,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 2500,
       "denomination": "gp"
     },
     "attunement": "",
@@ -463,7 +463,7 @@
           "autoTargetAction": "default",
           "automationOnly": false,
           "otherActivityCompatible": true,
-          "identifier": "cover-blade-with-poison",
+          "identifier": "coat-blade-with-poison",
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
@@ -476,7 +476,7 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "name": "Cover Blade with Poison",
+        "name": "Coat Blade with Poison",
         "useConditionReason": ""
       }
     },
@@ -487,7 +487,7 @@
   "effects": [
     {
       "name": "Dagger of Venom",
-      "img": "icons/weapons/daggers/dagger-poisoned.webp",
+      "img": "icons/skills/melee/blade-tip-acid-poison-green.webp",
       "origin": "Item.6W6LGpJqzsXykGbO",
       "transfer": false,
       "_id": "W3exe9GzisjGw4UL",
@@ -553,19 +553,19 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": 1741109452067,
-        "modifiedTime": 1741109485657,
+        "modifiedTime": 1755604187973,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!e5bUXLfLTlvOrrjQ.W3exe9GzisjGw4UL"
     },
     {
       "type": "enchantment",
-      "name": "Poison - Application",
-      "img": "icons/weapons/daggers/dagger-poisoned.webp",
+      "name": "Poison Coat",
+      "img": "icons/skills/toxins/symbol-poison-drop-skull-green.webp",
       "disabled": true,
       "_id": "WOcmWplHQT4iWEe3",
       "system": {},
@@ -586,6 +586,12 @@
           "key": "system.activities.JtKstra1sl6pVptH.midiProperties.automationOnly",
           "mode": 5,
           "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "img",
+          "mode": 5,
+          "value": "icons/skills/melee/blade-tip-acid-poison-green.webp",
           "priority": 20
         }
       ],
@@ -643,11 +649,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": 1741125736914,
-        "modifiedTime": 1741407348068,
+        "modifiedTime": 1755603843492,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!e5bUXLfLTlvOrrjQ.WOcmWplHQT4iWEe3"
@@ -726,8 +732,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "rest-recovery": {
       "data": {
@@ -736,43 +742,7 @@
         }
       }
     },
-    "magicitems": {
-      "enabled": true,
-      "default": "",
-      "equipped": true,
-      "attuned": false,
-      "charges": "1",
-      "chargeType": "c1",
-      "destroy": false,
-      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-      "rechargeable": true,
-      "recharge": "1",
-      "rechargeType": "t1",
-      "rechargeUnit": "r1",
-      "sorting": "l",
-      "destroyCheck": "d1",
-      "destroyType": "dt1",
-      "spells": {},
-      "feats": {
-        "0": {
-          "consumption": "1",
-          "uuid": "Compendium.midi-item-showcase-community.misc-items-features.Item.8kHMXkvr75nO9w7a",
-          "id": "8kHMXkvr75nO9w7a",
-          "img": "icons/consumables/drinks/pitcher-dripping-white.webp",
-          "name": "Black Poison",
-          "pack": "midi-item-showcase-community.misc-items-features",
-          "effect": "e1",
-          "featAction": "1 Action",
-          "uses": 1
-        }
-      },
-      "tables": {},
-      "uses": 0,
-      "destroyDC": 0
-    },
     "dnd5e": {
-      "persistSourceMigration": true,
-      "migratedUses": 1,
       "riders": {
         "activity": [],
         "effect": []
@@ -780,11 +750,11 @@
     }
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.4.4",
     "createdTime": 1741109003679,
-    "modifiedTime": 1742747575121,
+    "modifiedTime": 1755603495953,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!e5bUXLfLTlvOrrjQ"

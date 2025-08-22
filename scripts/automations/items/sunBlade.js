@@ -2,7 +2,7 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.2.0
+// v2.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -126,6 +126,7 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
           console.warn(`${DEFAULT_ITEM_NAME} | Missing light effect`, sourceItem);
         }
       }
+      delete lightEffectData._id;
       lightEffectData.duration = null;
       lightEffectData.origin = sourceItem.uuid;
       // Add support for CPR VAE button

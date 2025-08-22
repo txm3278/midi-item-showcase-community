@@ -6,9 +6,12 @@
       "chat": ""
     },
     "source": {
-      "custom": "Tasha's Cauldron of Everything pg 115",
+      "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "TCoE",
+      "page": "115",
+      "license": ""
     },
     "activation": {
       "type": "action",
@@ -87,7 +90,8 @@
           }
         ],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "prompt": true,
@@ -201,10 +205,7 @@
       "riders": {
         "activity": [],
         "effect": []
-      },
-      "migratedProperties": [
-        "vocal"
-      ]
+      }
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -231,8 +232,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     }
   },
   "effects": [
@@ -344,9 +345,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
+    "systemVersion": "4.4.4",
     "createdTime": 1750522152760,
-    "modifiedTime": 1750623156388,
+    "modifiedTime": 1752415851210,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "XtmgFO7YQv249UYp",

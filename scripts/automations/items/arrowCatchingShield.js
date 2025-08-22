@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v4.0.2
+// v4.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[isAttacked],[tpr.isTargeted]
@@ -117,8 +117,12 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
     currentWorkflow.targets.delete(targetToken);
     currentWorkflow.targets.add(sourceToken);
     const targetIds = currentWorkflow.targets.map((t) => t.id);
-    game.user?.updateTokenTargets(targetIds);
-    game.user?.broadcastActivity({ targets: targetIds });
+    if (game.release.generation > 12) {
+      canvas.tokens?.setTargets(targetIds);
+    } else {
+      game.user?.updateTokenTargets(targetIds);
+      game.user?.broadcastActivity({ targets: targetIds });
+    }
 
     // Add info about target switch
     const targetDivs = elwinHelpers.getTargetDivs(targetToken, 'The target <strong>${tokenName}</strong>');

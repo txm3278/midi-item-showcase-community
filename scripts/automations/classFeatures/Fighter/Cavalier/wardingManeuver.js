@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v2.1.2
+// v2.2.0
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -104,7 +104,9 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
       return;
     }
 
-    // Recompute checkHits to take into account the AC bonus
+    // Reset hitTargets and recompute checkHits to take into account the AC bonus
+    // TODO Remove when fixed in midi-qol
+    currentWorkflow.hitTargets = new Set();
     await currentWorkflow.checkHits({
       noProvokeReaction: true,
       noOnUseMacro: true,

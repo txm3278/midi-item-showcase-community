@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Mark of Sentinel Human
 // when a creature within range is hit to allow him to switch places with the target.
-// v4.0.2
+// v4.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -137,7 +137,7 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
     const previousHitData = currentWorkflow.hitDisplayData[targetToken.document.uuid] ?? {};
 
     // Display new target
-    await currentWorkflow.displayTargets(currentWorkflow.whisperAttackCard);
+    await currentWorkflow.displayHitTargets(currentWorkflow.whisperAttackCard);
 
     // Set hitDisplay that was cleared by displayTargets
     if (currentWorkflow.hitDisplayData[sourceToken.document.uuid]) {
@@ -174,15 +174,19 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
     await currentWorkflow.displayHits(currentWorkflow.whisperAttackCard, configSettings.mergeCard);
 
     // Swap places
-    const targetPos = { x: targetToken.document.x, y: targetToken.document.y };
-    const sourcePos = { x: sourceToken.document.x, y: sourceToken.document.y };
+    const targetPos = targetToken.center;
+    const sourcePos = sourceToken.center;
     await MidiQOL.moveToken(sourceToken, targetPos, false);
     await MidiQOL.moveToken(targetToken, sourcePos, false);
 
     // Update current target selection
     const targetIds = currentWorkflow.targets.map((t) => t.id);
-    game.user?.updateTokenTargets(targetIds);
-    game.user?.broadcastActivity({ targets: targetIds });
+    if (game.release.generation > 12) {
+      canvas.tokens?.setTargets(targetIds);
+    } else {
+      game.user?.updateTokenTargets(targetIds);
+      game.user?.broadcastActivity({ targets: targetIds });
+    }
 
     // Add info about target switch
     const targetDivs = elwinHelpers.getTargetDivs(targetToken, 'The hit target <strong>${tokenName}</strong>');

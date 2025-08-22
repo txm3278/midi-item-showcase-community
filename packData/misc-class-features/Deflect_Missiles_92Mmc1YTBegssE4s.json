@@ -484,8 +484,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -495,7 +495,6 @@
       "snapSideMidpoint": true
     },
     "dnd5e": {
-      "persistSourceMigration": true,
       "riders": {
         "activity": [],
         "effect": []
@@ -506,9 +505,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
+    "systemVersion": "4.4.4",
     "createdTime": 1744777033687,
-    "modifiedTime": 1750715330593,
+    "modifiedTime": 1752415849194,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!92Mmc1YTBegssE4s"

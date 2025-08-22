@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.2.0
+// v3.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -273,14 +273,6 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       currentWorkflow.token,
       `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack on your turn against \${tokenName}.</p>`
     );
-    /* TODO use this to add link to target??
-    <div class="midi-qol-flex-container">
-      <div class="midi-qol-target-npc-GM midi-qol-target-name" id="3H6VdifyRZYmmq6e"> 
-        <a class="content-link midi-qol" data-uuid="Scene.0iYH9MED4yPi9t9u.Token.3H6VdifyRZYmmq6e.Actor.fftX3BsTT5NdxOLc">Scared Zombie (2)</a>
-      </div>
-      <div class="midi-qol-target-npc-Player midi-qol-target-name" id="3H6VdifyRZYmmq6e" style=""> Unknown Npc</div>
-    </div>
-  */
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
         user: player?.id,
@@ -493,7 +485,13 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       },
     };
 
-    const result = await MidiQOL.completeItemUseV2(weaponCopy, config);
+    let result;
+    if (game.release.generation > 12) {
+      result = await MidiQOL.completeItemUse(weaponCopy, config);
+    } else {
+      result = await MidiQOL.completeItemUseV2(weaponCopy, config);
+    }
+
     if (!result || result.aborted) {
       // Special attack was cancelled
       console.warn(`${DEFAULT_ITEM_NAME} | Special attack was cancelled, reallocate spent resource if needed.`);

@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from melle or ranged weapon attack and allows to
 // redirect the attack to another target using a Monk's Focus point when the appropiate conditions are met.
-// v1.1.0
+// v1.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
@@ -117,8 +117,8 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
       }
     }
 
-    const nbUses = actor.items.get(redirectAttackActivity.consumption?.targets[0]?.target)?.system.uses?.value ?? 0;
-    const maxUses = actor.items.get(redirectAttackActivity.consumption?.targets[0]?.target)?.system.uses?.max ?? 0;
+    const { value: nbUses, max: maxUses } = actor.items.get(redirectAttackActivity.consumption?.targets[0]?.target)
+      ?.system.uses ?? { value: 0, max: 0 };
 
     if (nbUses <= 0) {
       // No uses available cannot redirect attack
