@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within range is hit by a critical to allow him to convert it to a normal hit.
-// v4.0.2
+// v4.1.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -29,7 +29,7 @@ export async function sentinelAtDeathsDoor({ speaker, actor, token, character, i
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   const dependencies = ['dae', 'midi-qol'];
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;

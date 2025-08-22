@@ -155,8 +155,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     }
   },
   "img": "icons/magic/symbols/runes-triangle-magenta.webp",

@@ -10,8 +10,8 @@
       "custom": "",
       "rules": "2024",
       "revision": 1,
-      "book": "Dungeon Master’s Guide (2024)",
-      "page": "312",
+      "book": "SRD 5.2",
+      "page": "",
       "license": ""
     },
     "quantity": 1,
@@ -20,7 +20,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 4000,
       "denomination": "gp"
     },
     "attunement": "required",
@@ -179,7 +179,9 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Adjust Light Radius",
         "isOverTimeFlag": false,
@@ -188,7 +190,8 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "useConditionReason": ""
+        "useConditionReason": "",
+        "otherActivityId": "none"
       },
       "wS5VKZ6Fe6UahYUf": {
         "type": "attack",
@@ -217,7 +220,8 @@
         },
         "effects": [],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "template": {
@@ -284,7 +288,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "attackMode": "oneHanded",
         "ammunition": "",
@@ -339,7 +345,8 @@
           }
         ],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "template": {
@@ -396,7 +403,9 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Activate/Deactivate Blade",
         "isOverTimeFlag": false,
@@ -434,7 +443,8 @@
         },
         "effects": [],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "template": {
@@ -506,7 +516,9 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "name": "Damage vs Undead",
         "isOverTimeFlag": false,
@@ -598,14 +610,14 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     }
   },
   "effects": [
     {
       "name": "Sunlight",
-      "img": "icons/weapons/swords/sword-gold-holy.webp",
+      "img": "icons/commodities/treasure/sceptre-jeweled-gold.webp",
       "origin": "Item.7xeuYcnO3qLpobUy",
       "_id": "SnxRN0OBcIvCkwiW",
       "type": "base",
@@ -678,7 +690,7 @@
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
-          "enableCondition": "items.some(i => effect.origin?.startsWith(i.uuid) && i.system.equipped && i.system.attuned)",
+          "enableCondition": "fromUuidSync(actorUuid)?.items.some(i => effect.origin?.startsWith(i.uuid) && i.system.equipped && i.system.attuned)",
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false
@@ -712,11 +724,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": 1740892097508,
+        "modifiedTime": 1755602255488,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!l7PhWk2m5Bv2JFmp.SnxRN0OBcIvCkwiW"
@@ -724,7 +736,7 @@
     {
       "type": "enchantment",
       "name": "Blade of Radiance - Activated",
-      "img": "icons/weapons/swords/sword-gold-holy.webp",
+      "img": "icons/commodities/treasure/sceptre-jeweled-gold.webp",
       "disabled": false,
       "_id": "6CqUePYaCOnGRxYa",
       "system": {},
@@ -832,17 +844,17 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
-        "modifiedTime": 1742247355116,
+        "modifiedTime": 1755602247041,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!l7PhWk2m5Bv2JFmp.6CqUePYaCOnGRxYa"
     }
   ],
-  "img": "icons/weapons/swords/sword-gold-holy.webp",
+  "img": "icons/commodities/treasure/sceptre-jeweled-gold.webp",
   "folder": null,
   "ownership": {
     "default": 0,
@@ -851,11 +863,11 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.4.4",
     "createdTime": 1740541404224,
-    "modifiedTime": 1742247383879,
+    "modifiedTime": 1755602338203,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "sort": 100000,

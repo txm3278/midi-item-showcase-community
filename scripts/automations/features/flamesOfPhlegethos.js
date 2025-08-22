@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v3.1.1
+// v3.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -41,7 +41,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
   // Normally should be one, but for test purpose can be set to an higher value
   const rerollNumber = 1;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.5')) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
     ui.notifications.error(errorMsg);
     return;
@@ -242,7 +242,8 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
         {
           action: 'ok',
           label: 'Ok',
-          callback: (_, button, __) => new FormDataExtended(button.form).object,
+          callback: (_, button, __) =>
+            new (foundry.applications.ux?.FormDataExtended ?? FormDataExtended)(button.form).object,
         },
         {
           action: 'cancel',

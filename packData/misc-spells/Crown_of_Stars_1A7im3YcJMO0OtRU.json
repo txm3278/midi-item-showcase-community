@@ -3,7 +3,7 @@
   "name": "Crown of Stars",
   "type": "spell",
   "_id": "1A7im3YcJMO0OtRU",
-  "img": "icons/magic/control/control-influence-crown-yellow.webp",
+  "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
   "system": {
     "source": {
       "custom": "",
@@ -98,7 +98,8 @@
           }
         ],
         "range": {
-          "override": false
+          "override": false,
+          "units": "self"
         },
         "target": {
           "prompt": true,
@@ -275,7 +276,7 @@
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "automationOnly": true,
           "otherActivityCompatible": true,
           "identifier": "star-mote-attack",
           "displayActivityName": false,
@@ -403,18 +404,18 @@
         }
       },
       "tint": "#ffffff",
-      "img": "icons/magic/control/control-influence-crown-yellow.webp",
+      "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
       "type": "base",
       "system": {},
       "sort": 0,
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": null,
-        "modifiedTime": 1745698088675,
+        "modifiedTime": 1755602687871,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!1A7im3YcJMO0OtRU.Zt1cSbtbDN2tiFbr"
@@ -492,11 +493,10 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "dnd5e": {
-      "persistSourceMigration": true,
       "riders": {
         "activity": [],
         "effect": []
@@ -517,11 +517,11 @@
     }
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
+    "systemVersion": "4.4.4",
     "createdTime": 1745620797531,
-    "modifiedTime": 1745728251170,
+    "modifiedTime": 1755602578736,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!1A7im3YcJMO0OtRU"

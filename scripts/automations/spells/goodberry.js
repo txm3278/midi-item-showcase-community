@@ -2,7 +2,7 @@
 // Read First!!!!
 // Creates a Goodberry item that expires and is deleted after 24h.
 // If the caster has the Disciple of Life feature, the healing power of the berries is increased.
-// v3.2.1
+// v3.3.0
 // Author: Elwin#1410, based on Crymic's Goodberry macro
 // Dependencies:
 //  - DAE
@@ -153,8 +153,9 @@ export async function goodberry({ speaker, actor, token, character, item, args, 
               types: ['healing'],
             },
             midiProperties: {
-              confirmTargets: 'never',
               identifier: 'heal',
+              confirmTargets: 'default',
+              otherActivityCompatible: false,
             },
             name: 'Heal',
           },
@@ -409,7 +410,7 @@ ${isRealNumber.toString()}
 
         // Register hook to keep handle usage consumption, we need to keep the usage info in the useItem hook
         Hooks.once('dnd5e.activityConsumption', (activity, usageConfig, _, updates) => {
-          const activityWorkflow = usageConfig.Workflow;
+          const activityWorkflow = usageConfig.workflow;
           if (
             !elwinHelpers.isMidiHookStillValid(
               activity.item?.name,
@@ -424,7 +425,7 @@ ${isRealNumber.toString()}
           }
           // Keep usage updates in current workflow with current item, because the item will possibly
           // be updated before the postActiveEffects phase is called.
-          gbWorkflow.goodberryItem = { origItem: activity.item?.toObject(), updates };
+          gbWorkflow.workflowOptions.goodberryItem = { origItem: activity.item?.toObject(), updates };
         });
       }
     }
@@ -455,8 +456,8 @@ ${isRealNumber.toString()}
 
     // Handle consumption by target different than owner of item
     const [actorUpdates, message] = getActorConsumableUpdates(
-      gbWorkflow.goodberryItem?.origItem ?? {},
-      gbWorkflow.goodberryItem?.updates?.item?.find((data) => data._id === gbWorkflow.item.id) ?? {},
+      gbWorkflow.workflowOptions.goodberryItem?.origItem ?? {},
+      gbWorkflow.workflowOptions.goodberryItem?.updates?.item?.find((data) => data._id === gbWorkflow.item.id) ?? {},
       targetToken.actor
     );
 

@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Limited Magic Immunity
 // Gives advantage to saves against magic and spells of 6th level and lower don't effect the owner.
-// v1.0.0
+// v1.1.0
 // Author: thatlonelybugbear and Elwin
 // Dependencies:
 //  - DAE
@@ -13,26 +13,26 @@
 //
 // Description:
 // In the isTargeted (TargetOnUse) of the activity (in attacker's workflow):
-//   Validates that if the item is a spell and the cast level is lower than 7 and that 
-//   the activity is not an heal one and that it's not a self target spell, then 
+//   Validates that if the item is a spell and the cast level is lower than 7 and that
+//   the activity is not an heal one and that it's not a self target spell, then
 //   cancels the workflow if there is only the owner has the target, or remove the owner
 //   from the targets. After it outputs a message with a random taunt.
 // ###################################################################################################
 
 // Default name of the feature
-const DEFAULT_ITEM_NAME = "Limited Magic Immunity";
+const DEFAULT_ITEM_NAME = 'Limited Magic Immunity';
 
 const randomTaunt = {
-  general: "Was that supposed to tickle? Maybe you should stick to card tricks!",
-  arrogant: "Did you really think that would work on me? You need stronger magic to faze someone like me.",
-  mocking: "Aww, did your little spell fizzle out? Maybe you need a bigger wand!",
+  general: 'Was that supposed to tickle? Maybe you should stick to card tricks!',
+  arrogant: 'Did you really think that would work on me? You need stronger magic to faze someone like me.',
+  mocking: 'Aww, did your little spell fizzle out? Maybe you need a bigger wand!',
   sarcastic: "Impressive! Did you learn that one from a children's book of spells?",
   playful: "Nice try, but you'll have to do better than that to get my attention!",
   dismissive: "Is that the best you've got? Maybe magic isn't your thing.",
-  humorous: "I think your spell just took a nap. You might want to wake it up next time!",
+  humorous: 'I think your spell just took a nap. You might want to wake it up next time!',
   encouraging: "Don't worry, practice makes perfect! You'll get the hang of it eventually.",
-  stoic: "Your magic is weak, just like your resolve.",
-  bugbear: "Is that the best you can do, or did thatlonelybugbear teach you?",
+  stoic: 'Your magic is weak, just like your resolve.',
+  bugbear: 'Is that the best you can do, or did thatlonelybugbear teach you?',
   confused: "Did something happen? I didn't feel a thing.",
 };
 
@@ -42,7 +42,7 @@ const randomTaunt = {
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  const dependencies = ["dae", "midi-qol"];
+  const dependencies = ['dae', 'midi-qol'];
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -84,23 +84,27 @@ export async function limitedMagicImmunity({ speaker, actor, token, character, i
     );
   }
 
-  if (!(args[0].tag === "TargetOnUse" && args[0].macroPass === "isTargeted")) {
+  if (!(args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isTargeted')) {
     return;
   }
 
   if (
-    scope.rolledItem.type == "spell" &&
+    scope.rolledItem.type == 'spell' &&
     (workflow.castData?.castLevel ?? 0) < 7 &&
-    scope.rolledActivity.target?.affects?.type !== "self" &&
-    scope.rolledActivity.actionType !== "heal"
+    scope.rolledActivity.target?.affects?.type !== 'self' &&
+    scope.rolledActivity.actionType !== 'heal'
   ) {
     const targetedToken = token;
     if (workflow.targets.size === 1) {
       workflow.aborted = true;
     } else {
-      game.user.updateTokenTargets(
-        game.user.targets.filter((token) => token !== targetedToken).map((token) => token.id)
-      );
+      const targetIds = game.user?.targets.filter((t) => t !== targetedToken).map((t) => t.id);
+      if (game.release.generation > 12) {
+        canvas.tokens?.setTargets(targetIds);
+      } else {
+        game.user?.updateTokenTargets(targetIds);
+        game.user?.broadcastActivity({ targets: targetIds });
+      }
     }
     ui.notifications.info(`${MidiQOL.getTokenPlayerName(targetedToken)} deflects your spell!`);
     await ChatMessage.implementation.create({

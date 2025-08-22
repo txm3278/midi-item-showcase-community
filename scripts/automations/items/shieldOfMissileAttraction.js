@@ -2,7 +2,7 @@
 // Read First!!!!
 // Adds damage resistance when the owner is attacked by a ranged weapon attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v2.0.0
+// v2.1.0
 // Author: Elwin#1410 based on Ris version
 // Dependencies:
 //  - DAE [on]
@@ -82,8 +82,12 @@ export async function shieldOfMissileAttraction({
       workflow.targets.delete(token);
       workflow.targets.add(sourceToken);
       const targetIds = workflow.targets.map((t) => t.id);
-      game.user?.updateTokenTargets(targetIds);
-      game.user?.broadcastActivity({ targets: targetIds });
+      if (game.release.generation > 12) {
+        canvas.tokens?.setTargets(targetIds);
+      } else {
+        game.user?.updateTokenTargets(targetIds);
+        game.user?.broadcastActivity({ targets: targetIds });
+      }
 
       // Add info about target switch
       const targetDivs = elwinHelpers.getTargetDivs(token, 'The target <strong>${tokenName}</strong>');

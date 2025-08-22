@@ -390,15 +390,14 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "dnd5e": {
       "riders": {
         "activity": [],
         "effect": []
-      },
-      "migratedUses": 1
+      }
     },
     "tidy5e-sheet": {
       "section": "",
@@ -407,10 +406,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
+    "systemVersion": "4.4.4",
     "coreVersion": "12.331",
     "createdTime": 1706615384809,
-    "modifiedTime": 1745543443073,
+    "modifiedTime": 1752415849751,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!Swc1K3banqeKXzH1"

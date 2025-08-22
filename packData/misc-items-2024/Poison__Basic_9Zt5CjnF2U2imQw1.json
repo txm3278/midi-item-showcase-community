@@ -342,10 +342,11 @@
     "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
+        "activity": [
+          "HeW6gvm3zEBo8Uol"
+        ],
         "effect": []
-      },
-      "migratedUses": 1
+      }
     },
     "tidy5e-sheet": {
       "section": "",
@@ -354,8 +355,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.9"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     }
   },
   "effects": [
@@ -536,10 +537,10 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.4.4",
     "coreVersion": "12.331",
     "createdTime": 1696175338841,
-    "modifiedTime": 1741495923916,
+    "modifiedTime": 1752415850578,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "9Zt5CjnF2U2imQw1",

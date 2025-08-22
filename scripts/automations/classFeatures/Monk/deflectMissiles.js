@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from ranged weapon attack and allows to throw it back
 // to the attacker using a Ki point when the appropiate conditions are met.
-// v2.1.0
+// v2.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
@@ -127,7 +127,11 @@ export async function deflectMissiles({ speaker, actor, token, character, item, 
         },
       };
 
-      await MidiQOL.completeItemUseV2(throwBackItem, config);
+      if (game.release.generation > 12) {
+        await MidiQOL.completeItemUse(throwBackItem, config);
+      } else {
+        await MidiQOL.completeItemUseV2(throwBackItem, config);
+      }
     }
   }
 
@@ -320,16 +324,17 @@ export async function deflectMissiles({ speaker, actor, token, character, item, 
         {
           action: 'ok',
           label: 'Ok',
-          callback: (_, button, __) => new FormDataExtended(button.form).object,
+          callback: (_, button, __) =>
+            new (foundry.applications.ux?.FormDataExtended ?? FormDataExtended)(button.form).object,
         },
         {
           action: 'cancel',
           label: 'Cancel',
         },
       ],
-      render: (_, element) => {
-        const canCatchEl = element.querySelector('[name=canCatch]');
-        const throwBackEl = element.querySelector('[name=throwBack]');
+      render: (_, dialog) => {
+        const canCatchEl = (dialog.element ?? dialog).querySelector('[name=canCatch]');
+        const throwBackEl = (dialog.element ?? dialog).querySelector('[name=throwBack]');
         if (throwBackEl) {
           throwBackEl.disabled = !canCatchEl.checked;
         }

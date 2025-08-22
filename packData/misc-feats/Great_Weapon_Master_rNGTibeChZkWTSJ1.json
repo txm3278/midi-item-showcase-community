@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a feat that can be toggled on or off, when the midi property \"Toggle effect\" is checked and the Toggle activity is used, when unchecked, a dialog to activate the feature will be prompted on attacks that meet the requirements. One item use will be added when the requirements are met and remove it at the end of the owner's turn. Having an item use allows to use the Bonus Attack Activity.</p></details>\n",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a feat that can be toggled on or off, when the midi property \"Toggle effect\" is checked and the Toggle activity is used, when unchecked, a dialog to activate the feat will be prompted on attacks that meet the requirements. One item use will be added when the requirements are met and remove it at the end of the owner's turn. Having an item use allows to use the Bonus Attack Activity.</p></details>",
       "chat": ""
     },
     "source": {
@@ -106,9 +106,11 @@
           "autoTargetAction": "default",
           "automationOnly": false,
           "otherActivityCompatible": false,
+          "toggleEffect": true,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "ignoreFullCover": false
         },
         "macroData": {
           "name": "",
@@ -126,7 +128,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       },
       "gCJEoaY3nm0E9jbK": {
         "type": "utility",
@@ -208,7 +211,9 @@
           "otherActivityCompatible": false,
           "displayActivityName": false,
           "rollMode": "default",
-          "chooseEffects": false
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false
         },
         "macroData": {
           "name": "",
@@ -226,7 +231,8 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "otherActivityId": "none"
       }
     },
     "identifier": "great-weapon-master",
@@ -276,7 +282,7 @@
       "magiceffect": false,
       "concentration": false,
       "noConcentrationCheck": false,
-      "toggleEffect": true,
+      "toggleEffect": false,
       "ignoreTotalCover": false,
       "idr": false,
       "idi": false,
@@ -320,8 +326,8 @@
     "exportSource": {
       "world": "test2",
       "system": "dnd5e",
-      "coreVersion": "12.331",
-      "systemVersion": "4.3.6"
+      "coreVersion": "12.343",
+      "systemVersion": "4.4.4"
     },
     "rest-recovery": {
       "data": {
@@ -455,9 +461,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
+    "systemVersion": "4.3.8",
     "createdTime": 1740083543904,
-    "modifiedTime": 1741408307644,
+    "modifiedTime": 1748806893682,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "rNGTibeChZkWTSJ1",
