@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v3.1.0
+// v3.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [on], [off] item macro
@@ -17,8 +17,8 @@
 //
 // Description:
 // In the preItemRoll phase:
-//   This macro checks if the token as already moved during its turn using "Drag Ruler" or
-//   "Elevation Ruler" if active.
+//   This macro checks if the token as already moved during its turn using foundry v13 movement history,
+//   "Drag Ruler" or "Elevation Ruler" if active.
 //   If the token has moved, it prevents the item to be used.
 // In the "on" DAE macro call:
 //   If "Monk's TokenBar" is active, preserve current token movement status in a flag and change
@@ -79,12 +79,15 @@ export async function steadyAim({ speaker, actor, token, character, item, args, 
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
     // Midi-QOL OnUse Item Macro call
-    if (game.modules.get('drag-ruler')?.active && dragRuler.getMovedDistanceFromToken(token) > 0) {
-      // only allowed if user has not moved yet, can only be validated with drag-ruler and in combat
-      ui.notifications.error(`Trying to activate ${scope.rolledItem.name} when token has already moved.`);
-      return false;
+    let moved = false;
+    if (game.release.generation > 12 && token.document.movement?.history?.distance > 0) {
+      moved = true;
+    } else if (game.modules.get('drag-ruler')?.active && dragRuler.getMovedDistanceFromToken(token) > 0) {
+      moved = true;
+    } else if (game.modules.get('elevationruler')?.active && token.lastMoveDistance > 0) {
+      moved = true;
     }
-    if (game.modules.get('elevationruler')?.active && token.lastMoveDistance > 0) {
+    if (moved) {
       // only allowed if user has not moved yet, can only be validated with drag-ruler and in combat
       ui.notifications.error(`Trying to activate ${scope.rolledItem.name} when token has already moved.`);
       return false;
@@ -105,6 +108,9 @@ export async function steadyAim({ speaker, actor, token, character, item, args, 
     if (game.modules.get('monks-tokenbar')?.active) {
       const defaultMovement = game.settings.get('monks-tokenbar', 'movement');
       const steadyAimData = DAE.getFlag(scope.lastArgValue.actorUuid, 'steady-aim');
+      if (!steadyAimData) {
+        return;
+      }
       if (steadyAimData.previousDefaultMovement !== defaultMovement) {
         steadyAimData.previousMovement = defaultMovement;
       }

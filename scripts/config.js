@@ -92,7 +92,7 @@ export function setConfig() {
         'Channel Divinity: Vow of Enmity': {
           name: 'Channel Divinity: Vow of Enmity',
           type: 'Class Feature',
-          version: '3.1.1',
+          version: '3.2.0',
           authors: ['Elwin'],
         },
         'Clockwork Amulet': {
@@ -128,7 +128,7 @@ export function setConfig() {
         'Deflect Missiles': {
           name: 'Deflect Missiles',
           type: 'Class Feature',
-          version: '2.2.0',
+          version: '2.3.0',
           authors: ['Elwin', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Divine Allegiance': {
@@ -218,7 +218,7 @@ export function setConfig() {
         'Great Weapon Master': {
           name: 'Great Weapon Master',
           type: 'Feat',
-          version: '3.1.0',
+          version: '3.1.1',
           authors: ['Elwin'],
         },
         'Guardian Emblem': {
@@ -260,7 +260,7 @@ export function setConfig() {
         'Oathbow': {
           name: 'Oathbow',
           type: 'Item',
-          version: '2.2.0',
+          version: '2.2.1',
           authors: ['Elwin', 'Christopher'],
         },
         'Poison, Basic (vial)': {
@@ -350,7 +350,7 @@ export function setConfig() {
         'Steady Aim': {
           name: 'Steady Aim',
           type: 'Class Feature',
-          version: '3.1.1',
+          version: '3.2.0',
           authors: ['Elwin'],
         },
         'Sun Blade': {
@@ -421,6 +421,12 @@ export function setConfig() {
           version: '1.0.2',
           authors: ['Elwin', 'thatlonelybugbear'],
         },
+        'Channel Divinity: Vow of Enmity': {
+          name: 'Channel Divinity: Vow of Enmity',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
         'Dagger of Venom': {
           name: 'Dagger of Venom',
           type: 'Item',
@@ -430,7 +436,7 @@ export function setConfig() {
         'Deflect Attacks': {
           name: 'Deflect Attacks',
           type: 'Class Feature',
-          version: '1.1.2',
+          version: '1.2.0',
           authors: ['Elwin'],
         },
         'Flame Tongue': {
@@ -454,7 +460,7 @@ export function setConfig() {
         'Great Weapon Master': {
           name: 'Great Weapon Master',
           type: 'Feat',
-          version: '1.2.0',
+          version: '1.2.1',
           authors: ['Elwin'],
         },
         'Improved Warding Flare': {
@@ -472,7 +478,7 @@ export function setConfig() {
         'Oathbow': {
           name: 'Oathbow',
           type: 'Item',
-          version: '2.2.0',
+          version: '2.2.1',
           authors: ['Elwin', 'Christopher'],
         },
         'Poison, Basic': {
@@ -526,7 +532,7 @@ export function setConfig() {
         'Steady Aim': {
           name: 'Steady Aim',
           type: 'Class Feature',
-          version: '1.0.1',
+          version: '1.1.0',
           authors: ['Elwin'],
         },
         'Sun Blade': {
