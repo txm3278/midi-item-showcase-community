@@ -4,13 +4,16 @@
   "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. It marks the target and gives advantage to any attack made to this target. When adding this feature to an actor, make sure the consumption on Channel Divinity is configured.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>You need to use this feature just before making an Attack Action. It marks the target and gives advantage to any attack made to this target. \n  If the marked target reaches 0 HP, you can use the Transfer Vow to select a new target. \n  When adding this feature to an actor, make sure the consumption on Channel Divinity is configured.</p></details>",
       "chat": ""
     },
     "source": {
       "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2024",
+      "book": "SRD 5.2",
+      "page": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -30,9 +33,9 @@
         "_id": "dnd5eactivity000",
         "type": "utility",
         "activation": {
-          "type": "bonus",
+          "type": "special",
           "value": 1,
-          "condition": "",
+          "condition": "when you take the Attack action",
           "override": false
         },
         "consumption": {
@@ -69,7 +72,7 @@
           }
         ],
         "range": {
-          "value": "10",
+          "value": "30",
           "units": "ft",
           "special": "",
           "override": false
@@ -105,8 +108,8 @@
           "visible": false
         },
         "sort": 0,
-        "useConditionText": "",
-        "effectConditionText": "",
+        "useConditionText": "canSee",
+        "effectConditionText": "target.attributes.hp.value > 0",
         "name": "Utter Vow",
         "midiProperties": {
           "identifier": "utter-vow",
@@ -127,7 +130,7 @@
           "chooseEffects": false,
           "toggleEffect": false
         },
-        "useConditionReason": "",
+        "useConditionReason": "You must see the target",
         "macroData": {
           "name": "",
           "command": ""
@@ -145,6 +148,116 @@
           "postRemoveConditionText": ""
         },
         "otherActivityId": "none"
+      },
+      "DAcAsRLAB94Zz8Jl": {
+        "type": "utility",
+        "activation": {
+          "type": "",
+          "value": 1,
+          "condition": "when marked creature drops to 0 HP",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": "Transfer your Vow to another creature"
+        },
+        "duration": {
+          "concentration": false,
+          "value": "1",
+          "units": "minute",
+          "special": "",
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "mXb3v0Eqny4tMqiI"
+          }
+        ],
+        "range": {
+          "value": "30",
+          "units": "ft",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": ""
+          },
+          "affects": {
+            "count": "1",
+            "type": "creature",
+            "choice": false,
+            "special": ""
+          },
+          "prompt": false,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "max": "",
+          "recovery": []
+        },
+        "roll": {
+          "formula": "",
+          "name": "",
+          "prompt": false,
+          "visible": false
+        },
+        "sort": 0,
+        "useConditionText": "canSee",
+        "effectConditionText": "target.attributes.hp.value > 0",
+        "name": "Transfer Vow",
+        "midiProperties": {
+          "identifier": "transfer-vow",
+          "otherActivityCompatible": false,
+          "ignoreFullCover": true,
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "always",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false
+        },
+        "useConditionReason": "You must see the target",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "_id": "DAcAsRLAB94Zz8Jl"
       }
     },
     "identifier": "channel-divinity-vow-of-enmity",
@@ -176,6 +289,12 @@
           "mode": 0,
           "value": "ItemMacro,preAttackRoll",
           "priority": 20
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": 20
         }
       ],
       "description": "",
@@ -191,75 +310,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
-        },
-        "ActiveAuras": {
-          "isAura": false,
-          "aura": "None",
-          "nameOverride": "",
-          "radius": "",
-          "alignment": "",
-          "type": "",
-          "customCheck": "",
-          "ignoreSelf": false,
-          "height": false,
-          "hidden": false,
-          "displayTemp": false,
-          "hostile": false,
-          "onlyOnce": false,
-          "wallsBlock": "system"
-        }
-      },
-      "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": 1756256141384,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!r9n16t3NsofIteRD.peIeFYuPKmsoXwVo"
-    },
-    {
-      "name": "Marked by Vow of Enmity",
-      "origin": null,
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "mXb3v0Eqny4tMqiI",
-      "changes": [],
-      "description": "",
-      "transfer": false,
-      "statuses": [],
-      "flags": {
-        "dae": {
-          "disableIncapacitated": false,
-          "selfTarget": false,
-          "selfTargetAlways": false,
-          "dontApply": false,
-          "stackable": "noneName",
-          "showIcon": false,
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": [
-            "zeroHP"
-          ],
-          "enableCondition": "!statuses?.unconscious",
+          "specialDuration": [],
+          "enableCondition": "",
           "disableCondition": ""
         },
         "ActiveAuras": {
@@ -276,7 +328,13 @@
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "wallsBlock": "system"
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         },
         "core": {
           "overlay": false
@@ -284,21 +342,104 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": 1756256149397,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
         "duplicateSource": null,
-        "exportSource": null
+        "coreVersion": "12.343",
+        "systemId": "dnd5e",
+        "systemVersion": "4.4.4",
+        "createdTime": null,
+        "modifiedTime": 1756598018550,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!r9n16t3NsofIteRD.mXb3v0Eqny4tMqiI"
+      "_key": "!items.effects!mxNPmw1wDa6gcZMo.peIeFYuPKmsoXwVo"
+    },
+    {
+      "name": "Marked by Vow of Enmity",
+      "origin": null,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mXb3v0Eqny4tMqiI",
+      "changes": [
+        {
+          "key": "macro.itemMacro.GM",
+          "mode": 0,
+          "value": "",
+          "priority": 20
+        }
+      ],
+      "description": "",
+      "transfer": false,
+      "statuses": [],
+      "flags": {
+        "dae": {
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "zeroHP"
+          ],
+          "enableCondition": "",
+          "disableCondition": ""
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "tint": "#ffffff",
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.343",
+        "systemId": "dnd5e",
+        "systemVersion": "4.4.4",
+        "createdTime": null,
+        "modifiedTime": 1756255815850,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+      },
+      "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!mxNPmw1wDa6gcZMo.mXb3v0Eqny4tMqiI"
     }
   ],
   "ownership": {
@@ -350,7 +491,9 @@
       "idv": false,
       "ida": false
     },
-    "core": {},
+    "core": {
+      "sourceId": "Item.TuFvea9WzwTrFy1R"
+    },
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -408,15 +551,15 @@
     }
   },
   "_stats": {
+    "coreVersion": "12.343",
     "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "coreVersion": "13.346",
-    "createdTime": 1671481612781,
-    "modifiedTime": 1756760404403,
+    "systemVersion": "4.4.4",
+    "createdTime": 1756077032912,
+    "modifiedTime": 1756597406083,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
-  "folder": "KAZwfuQe2tARhyGL",
+  "folder": "AwFypG5pXwnZPePj",
   "sort": 100000,
-  "_id": "r9n16t3NsofIteRD",
-  "_key": "!items!r9n16t3NsofIteRD"
+  "_id": "mxNPmw1wDa6gcZMo",
+  "_key": "!items!mxNPmw1wDa6gcZMo"
 }

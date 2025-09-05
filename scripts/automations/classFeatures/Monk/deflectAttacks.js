@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from melle or ranged weapon attack and allows to
 // redirect the attack to another target using a Monk's Focus point when the appropiate conditions are met.
-// v1.2.0
+// v1.3.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
@@ -54,12 +54,16 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
 
   if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
     if (scope.rolledActivity?.identifier === 'reaction') {
-      await scope.macroItem.unsetFlag(MODULE_ID, 'deflectAttacksDmgReduction');
+      await scope.rolledItem.setFlag(MODULE_ID, 'deflectAttacksDmgReduction', 0);
+      // Note: when in full auto mode the value of the setFlag is not seen by the initial attack workflow, so we also need to set it.
+      foundry.utils.setProperty(scope.rolledItem, `flags.${MODULE_ID}.deflectAttacksDmgReduction`, 0);
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preActiveEffects') {
     if (scope.rolledActivity?.identifier === 'reaction') {
       const deflectTotal = workflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
-      await scope.macroItem.setFlag(MODULE_ID, 'deflectAttacksDmgReduction', deflectTotal);
+      await scope.rolledItem.setFlag(MODULE_ID, 'deflectAttacksDmgReduction', deflectTotal);
+      // Note: when in full auto mode the value of the setFlag is not seen by the initial attack workflow, so we also need to set it.
+      foundry.utils.setProperty(scope.rolledItem, `flags.${MODULE_ID}.deflectAttacksDmgReduction`, deflectTotal);
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     if (scope.rolledActivity?.identifier !== 'reaction') {
@@ -84,7 +88,7 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
     let actionType = attackActivity?.getActionType(attackMode);
     if (!actionType) {
       console.warn(
-        `${scope.macroItem.name} | Could not determine attack activity's action type, defaulting to 'mwak'.`
+        `${scope.rolledItem.name} | Could not determine attack activity's action type, defaulting to 'mwak'.`
       );
       actionType = 'mwak';
     }
@@ -102,17 +106,19 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
     }
 
     if (rangedAttack) {
-      redirectAttackActivity = scope.macroItem.system.activities?.find(
+      redirectAttackActivity = scope.rolledItem.system.activities?.find(
         (a) => a.identifier === 'redirect-ranged-attack'
       );
       if (!redirectAttackActivity) {
-        console.error(`${DEFAULT_ITEM_NAME} | Missing redirect ranged attack activity.`, { item: scope.macroItem });
+        console.error(`${DEFAULT_ITEM_NAME} | Missing redirect ranged attack activity.`, { item: scope.rolledItem });
         return;
       }
     } else {
-      redirectAttackActivity = scope.macroItem.system.activities?.find((a) => a.identifier === 'redirect-melee-attack');
+      redirectAttackActivity = scope.rolledItem.system.activities?.find(
+        (a) => a.identifier === 'redirect-melee-attack'
+      );
       if (!redirectAttackActivity) {
-        console.error(`${DEFAULT_ITEM_NAME} | Missing redirect melee attack activity.`, { item: scope.macroItem });
+        console.error(`${DEFAULT_ITEM_NAME} | Missing redirect melee attack activity.`, { item: scope.rolledItem });
         return;
       }
     }
@@ -124,13 +130,13 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
       // No uses available cannot redirect attack
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No uses available, cannot redirect attack.`, {
-          item: scope.macroItem,
+          item: scope.rolledItem,
           redirectAttackActivity,
         });
       }
       return;
     }
-    const redirect = await showDialog(scope.macroItem, nbUses, maxUses);
+    const redirect = await showDialog(scope.rolledItem, nbUses, maxUses);
     if (!redirect) {
       return;
     }

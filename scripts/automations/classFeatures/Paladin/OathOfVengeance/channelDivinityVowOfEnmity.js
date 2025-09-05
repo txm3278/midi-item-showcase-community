@@ -1,10 +1,10 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v3.1.0
+// v3.2.0
 // Author: Elwin#1410
 // Dependencies:
-//  - DAE
+//  - DAE [off]
 //  - Times Up
 //  - MidiQOL "on use" item/actor macro,[preAttackRoll][postActiveEffects]
 //
@@ -91,13 +91,13 @@ export async function channelDivinityVowOfEnmity({
     workflow.attackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
     workflow.advReminderAttackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+    // Handles Utter Vow or Transfer Vow activities
     if (!workflow.effectTargets?.size) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No effect applied to target.`);
       }
       return;
     }
-    // TODO should we allow targeting an unconscious creature or having 0 HP?
 
     const tokenTarget = workflow.effectTargets.first();
     const appliedEffect = tokenTarget.actor.appliedEffects.find(
@@ -109,6 +109,17 @@ export async function channelDivinityVowOfEnmity({
       }
       return;
     }
+    const rules = elwinHelpers.getRules(scope.macroItem);
+    if (rules === 'modern') {
+      // Make sure transfer vow is not visible
+      let transferVow;
+      if (workflow.activity?.identifier === 'transfer-vow') {
+        transferVow = workflow.activity;
+      } else {
+        transferVow = workflow.item.system.activities?.find((a) => a.identifier === 'transfer-vow');
+      }
+      await transferVow?.update({ 'midiProperties.automationOnly': true });
+    }
 
     // Find AE on self to add dependency
     const selfEffect = actor.appliedEffects.find((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid));
@@ -119,6 +130,49 @@ export async function channelDivinityVowOfEnmity({
       return;
     }
     await selfEffect.addDependent(appliedEffect);
-    await MidiQOL.addDependent(appliedEffect, selfEffect);
+    if (rules !== 'modern') {
+      // Note: in modern, effect does not end if target reaches 0 HP, only after 1 min or re used
+      await MidiQOL.addDependent(appliedEffect, selfEffect);
+    }
+  } else if (args[0] === 'off') {
+    const transferVow = (scope.macroItem ?? scope.macroActivity?.item)?.system.activities?.find(
+      (a) => a.identifier === 'transfer-vow'
+    );
+    if (!transferVow) {
+      console.warn(`${scope.macroItem.name} | Missing transfer vow activity`, scope.macroItem);
+      return;
+    }
+    if ((scope.macroItem?.actor?.uuid ?? scope.macroActivity?.item?.actor?.uuid) === actor?.uuid) {
+      // Expiry on owner
+      // Make sure the Transfer Vow activity is not visible
+      if (!foundry.utils.getProperty(transferVow, 'midiProperties.automationOnly')) {
+        await transferVow.update({ 'midiProperties.automationOnly': true });
+      }
+      return;
+    }
+    // Expiry on Target
+    if (foundry.utils.getProperty(scope.lastArgValue, 'expiry-reason') !== 'midi-qol:zeroHP') {
+      // Not expired due to zero HP
+      return;
+    }
+
+    // Allow using transfer vow
+    await transferVow.update({ 'midiProperties.automationOnly': false });
+
+    // Add chat message saying it is possible to transfer vow
+    const sourceActor = scope.macroItem.actor;
+    const message = await TextEditor.enrichHTML(
+      `<p><strong>${scope.macroItem.name}</strong> - You can use [[/item ${scope.macroItem.id} activity=${transferVow.id}]].</p>`,
+      {
+        relativeTo: sourceActor,
+        rollData: scope.macroItem.getRollData(),
+      }
+    );
+    await ChatMessage.create({
+      type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+      content: message,
+      speaker: ChatMessage.getSpeaker({ actor: sourceActor, token: MidiQOL.getTokenForActor(sourceActor) }),
+      whisper: ChatMessage.getWhisperRecipients('GM').map((u) => u.id),
+    });
   }
 }

@@ -350,19 +350,19 @@
         {
           "key": "flags.midi-qol.disadvantage.attack.all",
           "mode": 5,
-          "value": "workflow.item?.uuid !== \"@itemUuid\"",
+          "value": "workflow?.item?.uuid !== \"@itemUuid\"",
           "priority": 20
         },
         {
           "key": "flags.midi-qol.advantage.attack.rwak",
           "mode": 0,
-          "value": "workflow.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
+          "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
           "priority": 20
         },
         {
           "key": "flags.dnd5e.sharpShooter",
           "mode": 0,
-          "value": "workflow.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
+          "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
           "priority": 20
         },
         {
@@ -433,7 +433,7 @@
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": null,
-        "modifiedTime": 1755704027574,
+        "modifiedTime": 1756760330939,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.eFfWdbcygq1LDcXe"
