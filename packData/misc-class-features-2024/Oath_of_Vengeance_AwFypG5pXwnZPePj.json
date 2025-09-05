@@ -1,0 +1,19 @@
+{
+  "name": "Oath of Vengeance",
+  "sorting": "a",
+  "folder": "lbeuhiDFIw2Fx2d0",
+  "type": "Item",
+  "_id": "AwFypG5pXwnZPePj",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd5e",
+    "systemVersion": "4.4.4",
+    "coreVersion": "12.343",
+    "createdTime": 1756608173385,
+    "modifiedTime": 1756608173385,
+    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+  },
+  "_key": "!folders!AwFypG5pXwnZPePj"
+}
