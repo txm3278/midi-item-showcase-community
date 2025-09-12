@@ -64,6 +64,7 @@
             "cr": "max(1/4, @subclasses.moon.levels / 3)",
             "name": "Wildshape",
             "_id": "miUu9dwLDzrxfr54",
+            "uuid": "",
             "sizes": [],
             "types": [
               "beast"
@@ -80,6 +81,7 @@
             "cr": "max(1/2, @subclasses.moon.levels / 3)",
             "name": "Wildshape",
             "_id": "aS5UedYMAC3K0S0t",
+            "uuid": "",
             "sizes": [],
             "types": [
               "beast"
@@ -96,6 +98,7 @@
             "cr": "max(1, @subclasses.moon.levels / 3)",
             "name": "Wildshape",
             "_id": "njQ5GcV6Mani6NQr",
+            "uuid": "",
             "sizes": [],
             "types": [
               "beast"
@@ -252,11 +255,11 @@
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null,
-    "coreVersion": "13.347",
+    "coreVersion": "13.348",
     "systemId": "dnd5e",
-    "systemVersion": "5.1.0",
+    "systemVersion": "5.1.4",
     "createdTime": 1753673150232,
-    "modifiedTime": 1755204255549,
+    "modifiedTime": 1757107511212,
     "lastModifiedBy": "0IRD6hJ6pXW2tz12"
   },
   "_id": "2onW4S5V69Zqmvz6",

@@ -22,7 +22,7 @@
             {
               "type": "itemUses",
               "value": "1",
-              "target": ""
+              "target": "Wild Shape"
             }
           ]
         },
@@ -64,6 +64,7 @@
             "cr": "max(1/4, @subclasses.moon.levels / 3)",
             "name": "Circle Form",
             "_id": "9hzgnvMJIfxHNUl4",
+            "uuid": "",
             "sizes": [],
             "types": [
               "beast"
@@ -80,6 +81,7 @@
             "cr": "max(1/2, @subclasses.moon.levels / 3)",
             "name": "Circle Form",
             "_id": "yRlLzQtfnhp3bXwZ",
+            "uuid": "",
             "sizes": [],
             "types": [
               "beast"
@@ -96,6 +98,7 @@
             "cr": "max(1, @subclasses.moon.levels / 3)",
             "name": "Circle Form",
             "_id": "TVFw7IKEJ8PWILQY",
+            "uuid": "",
             "sizes": [],
             "types": [
               "beast"
@@ -107,37 +110,9 @@
             }
           }
         ],
-        "settings": {
-          "effects": [
-            "origin",
-            "otherOrigin",
-            "background",
-            "class",
-            "feat",
-            "spell"
-          ],
-          "keep": [
-            "mental",
-            "languages",
-            "class",
-            "feats",
-            "bio",
-            "type",
-            "hp"
-          ],
-          "merge": [
-            "saves",
-            "skills"
-          ],
-          "minimumAC": "(13 + @abilities.wis.mod) * sign(@subclasses.moon.levels)",
-          "spellLists": [],
-          "tempFormula": "max(@classes.druid.levels, @subclasses.moon.levels * 3)",
-          "preset": "wildshape",
-          "other": [],
-          "transformTokens": true
-        },
+        "settings": null,
         "transform": {
-          "customize": true,
+          "customize": false,
           "identifier": "druid",
           "preset": "wildshape"
         },
@@ -244,11 +219,11 @@
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null,
-    "coreVersion": "13.347",
+    "coreVersion": "13.348",
     "systemId": "dnd5e",
-    "systemVersion": "5.1.0",
+    "systemVersion": "5.1.4",
     "createdTime": 1754866649653,
-    "modifiedTime": 1755204535293,
+    "modifiedTime": 1757107560650,
     "lastModifiedBy": "0IRD6hJ6pXW2tz12"
   },
   "_id": "ANNyQJCQq21pjwFK",
