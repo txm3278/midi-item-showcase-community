@@ -110,7 +110,7 @@ export function setConfig() {
         'Crown of Stars': {
           name: 'Crown of Stars',
           type: 'Spell',
-          version: '2.0.1',
+          version: '2.0.2',
           authors: ['Elwin', 'Bakana', 'Xenophes'],
         },
         'Dagger of Venom': {

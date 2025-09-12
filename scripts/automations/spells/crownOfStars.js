@@ -3,7 +3,7 @@
 // Creates animations of star motes around the caster (if Sequencer is avaialble) and allows to make a
 // special attack with a star mote which removes one mote each time. When no star mote remains the spell
 // is ended.
-// v2.0.0
+// v2.0.2
 // Author: Elwin#1410, based on Bakana and Xenophes
 // Dependencies:
 //  - DAE [off]
@@ -215,7 +215,7 @@ export async function crownOfStars({ speaker, actor, token, character, item, arg
     }
 
     function rotateSprites(sequence) {
-      sequence = sequence.effect().file(file).copySprite(token, { cacheLocation: true });
+      sequence = sequence.effect().file(file);
 
       if (effect) {
         sequence = sequence.tieToDocuments(effect);
