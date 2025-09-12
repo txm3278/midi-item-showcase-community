@@ -433,7 +433,7 @@
     "dae": {
       "macro": {
         "name": "Crown of Stars",
-        "img": "icons/magic/control/control-influence-crown-yellow.webp",
+        "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
         "type": "script",
         "scope": "global",
         "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.spells.crownOfStars(params);\n",
@@ -521,7 +521,7 @@
     "systemId": "dnd5e",
     "systemVersion": "4.4.4",
     "createdTime": 1745620797531,
-    "modifiedTime": 1755602578736,
+    "modifiedTime": 1757540603948,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!1A7im3YcJMO0OtRU"

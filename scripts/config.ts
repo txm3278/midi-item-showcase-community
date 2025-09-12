@@ -110,7 +110,7 @@ export function setConfig() {
         'Crown of Stars': {
           name: 'Crown of Stars',
           type: 'Spell',
-          version: '2.0.1',
+          version: '2.0.2',
           authors: ['Elwin', 'Bakana', 'Xenophes'],
         },
         'Dagger of Venom': {
@@ -155,8 +155,8 @@ export function setConfig() {
           version: '1.2.1',
           authors: ['Elwin', 'WurstKorn'],
         },
-        'Flames Arrows': {
-          name: 'Flames Arrows',
+        'Flame Arrows': {
+          name: 'Flame Arrows',
           type: 'Spell',
           version: '2.0.1',
           authors: ['Elwin', 'Lin Dong'],
@@ -202,6 +202,12 @@ export function setConfig() {
           type: 'Class Feature',
           version: '2.1.1',
           authors: ['Elwin'],
+        },
+        'Forage': {
+          name: 'Forage',
+          type: 'Generic Action',
+          version: '1.2.0',
+          authors: ['Fridan99', 'Christopher'],
         },
         'Gift of the Metallic Dragon': {
           name: 'Gift of the Metallic Dragon',
@@ -251,8 +257,8 @@ export function setConfig() {
           version: '2.0.1',
           authors: ['Elwin', 'Moto Moto'],
         },
-        'Moon-Touched Shortword': {
-          name: 'Moon-Touched Shortword',
+        'Moon-Touched Shortsword': {
+          name: 'Moon-Touched Shortsword',
           type: 'Item',
           version: '2.0.1',
           authors: ['Elwin', 'Moto Moto'],
@@ -475,8 +481,8 @@ export function setConfig() {
           version: '1.0.1',
           authors: ['Elwin'],
         },
-        "Lolth's Sting": {
-          name: "Lolth's Sting",
+        'Lolth’s Sting': {
+          name: 'Lolth’s Sting',
           type: 'Item',
           version: '1.0.1',
           authors: ['Elwin'],
