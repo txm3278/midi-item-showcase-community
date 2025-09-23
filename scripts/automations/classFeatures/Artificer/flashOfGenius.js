@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Artificer
 // when a creature within range rolls a saving throw or ability check to allow them to add a bonus on the roll.
-// v2.1.0
+// v2.2.0
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -116,9 +116,10 @@ export async function flashOfGenius({ speaker, actor, token, character, item, ar
     }
 
     const saveDisplayDatum = currentWorkflow.saveDisplayData.find((sdd) => sdd.target === target);
-    if (!saveDisplayDatum || !saveDisplayDatum?.rollDetail || currentWorkflow.saveDC === undefined) {
+    let saveRoll = currentWorkflow.tokenSaves[target.document?.uuid ?? 'none'];
+    if (!saveDisplayDatum || !saveRoll || currentWorkflow.saveDC === undefined) {
       console.warn(
-        `${DEFAULT_ITEM_NAME} | No saveDisplayData found for the target, missing rollDetail or missing saveDC.`,
+        `${DEFAULT_ITEM_NAME} | No saveDisplayData found for the target, missing saveRoll or missing saveDC.`,
         {
           currentWorkflow,
           target,
@@ -129,15 +130,15 @@ export async function flashOfGenius({ speaker, actor, token, character, item, ar
 
     const abilityMod = sourceActor.getRollData().abilities?.int?.mod ?? 0;
     const bonusRoll = await new Roll(`${abilityMod}`).evaluate();
-    saveDisplayDatum.rollDetail = MidiQOL.addRollTo(saveDisplayDatum.rollDetail, bonusRoll);
+    saveRoll = MidiQOL.addRollTo(saveRoll, bonusRoll);
 
-    saveDisplayDatum.rollTotal += abilityMod;
-    saveDisplayDatum.rollHTML = await MidiQOL.midiRenderRoll(saveDisplayDatum.rollDetail);
+    currentWorkflow.tokenSaves[target.document.uuid] = saveRoll;
+    saveDisplayDatum.rollTotal = String(saveRoll.total);
+    saveDisplayDatum.rollHTML = await MidiQOL.midiRenderRoll(saveRoll);
 
-    // TODO support fumble on saves???
-    if (currentWorkflow.failedSaves?.has(target)) {
+    if (currentWorkflow.failedSaves?.has(target) && !currentWorkflow.fumbleSaves?.has(target)) {
       // validate if the added bonus makes the save successful
-      if (saveDisplayDatum.rollTotal < currentWorkflow.saveDC) {
+      if (saveRoll.total < currentWorkflow.saveDC) {
         // Nothing to do, it still fails
         return;
       }
@@ -145,9 +146,11 @@ export async function flashOfGenius({ speaker, actor, token, character, item, ar
       currentWorkflow.failedSaves.delete(target);
       currentWorkflow.saves?.add(target);
 
-      saveDisplayDatum.saveString = game.i18n.localize('midi-qol.save-success');
-      saveDisplayDatum.saveSymbol = 'fa-check';
-      saveDisplayDatum.saveClass = 'success';
+      saveDisplayDatum.saveSymbol =
+        saveDisplayDatum.saveSymbol !== ''
+          ? (target.actor?.hasPlayerOwner ? '' : 'midi-qol-npc-save-symbol') + ' midi-qol-save-symbol fa-check'
+          : '';
+      saveDisplayDatum.saveClass = saveDisplayDatum.saveClass !== '' ? 'success' : '';
     }
   }
 }

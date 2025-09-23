@@ -200,7 +200,7 @@ export function setConfig() {
         'Flash of Genius': {
           name: 'Flash of Genius',
           type: 'Class Feature',
-          version: '2.1.1',
+          version: '2.2.0',
           authors: ['Elwin'],
         },
         'Forage': {

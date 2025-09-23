@@ -243,12 +243,14 @@
         "sort": 0,
         "flags": {},
         "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
+          "systemId": "dnd5e",
+          "systemVersion": "4.4.4",
+          "coreVersion": "12.343",
           "createdTime": null,
           "modifiedTime": null,
-          "lastModifiedBy": null
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null
         }
       }
     },
@@ -266,7 +268,7 @@
   },
   "effects": [
     {
-      "origin": "Actor.K0R7AifO3SCgArcI.Item.NpkYaKppfTD2eW1f",
+      "origin": "Item.boU3p9rVecaXjnIv",
       "duration": {
         "rounds": null,
         "startTime": null,
@@ -340,8 +342,8 @@
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1757817122210,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
@@ -401,10 +403,16 @@
           "displayTemp": false,
           "hostile": false,
           "onlyOnce": false,
-          "wallsBlock": "system"
+          "wallsBlock": "system",
+          "statuses": []
         },
         "core": {
           "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
@@ -413,8 +421,8 @@
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1757818988993,
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
@@ -432,7 +440,7 @@
     "systemVersion": "4.4.4",
     "coreVersion": "12.343",
     "createdTime": 1680737539131,
-    "modifiedTime": 1752421596192,
+    "modifiedTime": 1757819185599,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "folder": "XdRbjr9vWzc7ijqS",
