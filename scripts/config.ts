@@ -1,4 +1,4 @@
-import { moduleName } from './constants.js';
+import { moduleName } from './constants.ts';
 
 export function setConfig() {
   foundry.utils.setProperty(CONFIG, moduleName, {
@@ -421,6 +421,12 @@ export function setConfig() {
           version: '1.1.1',
           authors: ['Elwin'],
         },
+        'Circle Form': {
+          name: 'Circle Form',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
         'Clockwork Amulet': {
           name: 'Clockwork Amulet',
           type: 'Item',
@@ -553,6 +559,12 @@ export function setConfig() {
           version: '1.0.1',
           authors: ['Elwin'],
         },
+        'Wild Shape': {
+          name: 'Wild Shape',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['TMinz'],
+        },
         'Wyvern Poison': {
           name: 'Wyvern Poison',
           type: 'Item',
@@ -598,6 +610,13 @@ export function setConfig() {
             name: 'Petrifying Gaze',
             version: '1.1.1',
             authors: ['Elwin'],
+          },
+        },
+        'Goblin Boss': {
+          'Redirect Attack': {
+            name: 'Redirect Attack',
+            version: '1.0.0',
+            authors: ['TMinz'],
           },
         },
       },

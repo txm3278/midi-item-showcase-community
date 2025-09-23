@@ -297,9 +297,7 @@
     "attuned": false
   },
   "flags": {
-    "core": {
-      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "consumable": {
@@ -427,14 +425,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1745930678999,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
       "type": "base",
@@ -517,12 +516,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": 1736190429922,
         "modifiedTime": 1740083227577,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!9Zt5CjnF2U2imQw1.5vZP4aLdeD5HdDw4"
     }

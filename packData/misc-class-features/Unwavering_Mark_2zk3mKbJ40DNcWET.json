@@ -334,14 +334,15 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": null,
         "modifiedTime": 1749995026337,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
       "type": "base",

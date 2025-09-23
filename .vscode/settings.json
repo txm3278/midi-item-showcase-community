@@ -1,3 +1,7 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "i18n-ally.localesPaths": [
+    "languages"
+  ],
+  "i18n-ally.keystyle": "nested"
 }

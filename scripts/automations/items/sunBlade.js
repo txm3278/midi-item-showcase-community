@@ -50,7 +50,7 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
     ui.notifications.error(errorMsg);
     return;
   }

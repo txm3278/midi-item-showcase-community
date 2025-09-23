@@ -308,9 +308,7 @@
     "attuned": false
   },
   "flags": {
-    "core": {
-      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.ixQeDBGkFwPiGEDn"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "consumable": {
@@ -440,12 +438,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.1.2",
         "createdTime": 1736663871038,
         "modifiedTime": 1736694292435,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!Q9tYrkH0JCs8QujG.H1QXhqp1wao7I7cQ"
     }

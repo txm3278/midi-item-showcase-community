@@ -78,12 +78,13 @@
       "_stats": {
         "compendiumSource": "Item.qqGMN7k0gGRUhkB0.ActiveEffect.ttliu8T5zozrLsKw",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1750707571040,
         "modifiedTime": 1750707571040,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
@@ -170,12 +171,13 @@
       "_stats": {
         "compendiumSource": "Item.qqGMN7k0gGRUhkB0.ActiveEffect.ljsYEY13ngAg6G8h",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.9",
         "createdTime": 1750707573486,
         "modifiedTime": 1750708629490,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
@@ -382,7 +384,7 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.3.9",
     "createdTime": 1750707526735,

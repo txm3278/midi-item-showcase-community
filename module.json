@@ -4,7 +4,7 @@
   "description": "A collection of Midi Automations from the Posney's Foundry Automation Discord",
   "version": "#{VERSION}#",
   "compatibility": {
-    "minimum": "12",
+    "minimum": "13",
     "verified": "13",
     "maximum": "13"
   },
@@ -27,7 +27,7 @@
         "type": "system",
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
-          "minimum": "4.4.4",
+          "minimum": "5.1.2",
           "verified": "5.1.4"
         }
       }
@@ -38,18 +38,23 @@
         "type": "module",
         "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "verified": "13.0.20",
-          "minimum": "12.4.63"
+          "minimum": "13.0.14",
+          "verified": "13.0.20"
         }
       }
     ]
   },
-  "esmodules": ["dist/main.js"],
+  "esmodules": ["dist/midi-item-showcase-community.mjs"],
   "languages": [
     {
       "lang": "en",
       "name": "English",
       "path": "languages/en.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italiano",
+      "path": "languages/it.json"
     }
   ],
   "packs": [
@@ -58,28 +63,6 @@
       "label": "MISC Items",
       "path": "packs/misc-items",
       "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "misc-items-features",
-      "label": "MISC Items Features",
-      "path": "packs/misc-items-features",
-      "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "misc-actors",
-      "label": "MISC Actors",
-      "path": "packs/misc-actors",
-      "type": "Actor",
       "system": "dnd5e",
       "ownership": {
         "PLAYER": "OBSERVER",
@@ -98,10 +81,10 @@
       }
     },
     {
-      "name": "misc-class-features",
-      "label": "MISC Class Features",
-      "path": "packs/misc-class-features",
-      "type": "Item",
+      "name": "misc-actors-2024",
+      "label": "MISC Actors",
+      "path": "packs/misc-actors-2024",
+      "type": "Actor",
       "system": "dnd5e",
       "ownership": {
         "PLAYER": "OBSERVER",
@@ -109,9 +92,9 @@
       }
     },
     {
-      "name": "misc-class-features-items",
-      "label": "MISC Class Features Items",
-      "path": "packs/misc-class-features-items",
+      "name": "misc-class-features",
+      "label": "MISC Class Features",
+      "path": "packs/misc-class-features",
       "type": "Item",
       "system": "dnd5e",
       "ownership": {
@@ -142,42 +125,9 @@
       }
     },
     {
-      "name": "misc-spell-items",
-      "label": "MISC Spell Items",
-      "path": "packs/misc-spell-items",
-      "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "misc-unearthed-arcana",
-      "label": "MISC Unearthed Arcana",
-      "path": "packs/misc-unearthed-arcana",
-      "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
       "name": "misc-spells",
       "label": "MISC Spells",
       "path": "packs/misc-spells",
-      "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "misc-homebrew",
-      "label": "MISC Homebrew",
-      "path": "packs/misc-homebrew",
       "type": "Item",
       "system": "dnd5e",
       "ownership": {
@@ -274,7 +224,6 @@
           "sorting": "a",
           "color": "#018e5f",
           "packs": [
-            "misc-actors",
             "misc-actions",
             "misc-class-features",
             "misc-feats",
@@ -282,8 +231,6 @@
             "misc-race-features",
             "misc-spells",
             "misc-items",
-            "misc-unearthed-arcana",
-            "misc-homebrew",
             "misc-third-party"
           ]
         },
@@ -292,21 +239,12 @@
           "sorting": "a",
           "color": "#018e5f",
           "packs": [
+            "misc-actors-2024",
             "misc-class-features-2024",
             "misc-feats-2024",
             "misc-monster-features-2024",
             "misc-spells-2024",
             "misc-items-2024"
-          ]
-        },
-        {
-          "name": "Internal",
-          "sorting": "a",
-          "color": "#018e5f",
-          "packs": [
-            "misc-class-features-items",
-            "misc-spell-items",
-            "misc-items-features"
           ]
         }
       ]

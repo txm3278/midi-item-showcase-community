@@ -212,14 +212,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.343",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": 1756256141384,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
@@ -283,14 +284,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.343",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": 1756256149397,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
@@ -348,9 +350,7 @@
       "idv": false,
       "ida": false
     },
-    "core": {
-      "sourceId": "Item.TuFvea9WzwTrFy1R"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -409,8 +409,8 @@
   },
   "_stats": {
     "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.343",
+    "systemVersion": "4.3.9",
+    "coreVersion": "13.346",
     "createdTime": 1671481612781,
     "modifiedTime": 1756760404403,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"

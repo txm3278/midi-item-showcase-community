@@ -548,12 +548,13 @@
       "_stats": {
         "compendiumSource": "Item.7xeuYcnO3qLpobUy.ActiveEffect.SnxRN0OBcIvCkwiW",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.6",
         "createdTime": 1741833362512,
         "modifiedTime": 1742616586414,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!Ibog1FSa29CjE2XI.1c4elg5A8MNxn5tJ"
     }

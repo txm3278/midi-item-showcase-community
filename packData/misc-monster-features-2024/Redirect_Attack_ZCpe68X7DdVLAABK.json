@@ -1,0 +1,296 @@
+{
+  "name": "Redirect Attack",
+  "type": "feat",
+  "system": {
+    "activities": {
+      "utilityRreaction": {
+        "type": "utility",
+        "_id": "utilityRreaction",
+        "sort": 0,
+        "activation": {
+          "type": "reaction",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "value": "",
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "units": "ft",
+          "override": false,
+          "value": "0",
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "5",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "affects": {
+            "count": "1",
+            "type": "",
+            "choice": true,
+            "special": ""
+          },
+          "prompt": false,
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "name": "",
+          "formula": ""
+        },
+        "useConditionText": "reaction === \"tpr.isAttacked\"",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "Reaction",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "forceDialog": false,
+          "confirmTargets": "default",
+          "automationOnly": false,
+          "identifier": "",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "otherActivityCompatible": false,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffects": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "name": "Reaction",
+        "img": "",
+        "appliedEffects": []
+      }
+    },
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "description": {
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by TMinz</h2><h3>Requires:</h3><ul><li>Elwin Helpers (Enable in Settings)</li></ul><p><strong>Usage:</strong></p><p>This item has a passive effect that adds a third party reaction effect.</p></details>",
+      "chat": ""
+    },
+    "identifier": "redirect-attack",
+    "source": {
+      "revision": 1,
+      "rules": "2024"
+    },
+    "advancement": [],
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "repeatable": false,
+      "level": null
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "monster",
+      "subtype": ""
+    }
+  },
+  "effects": [
+    {
+      "name": "Redirect Attack",
+      "img": "icons/equipment/shield/targe-copper-eye.webp",
+      "origin": "Scene.f3tuZP2gy7ZYUOYI.Token.hrN6aIfV4cCTQSiA.Actor.yDW5TuZAenTtFD7E.Item.xw4Sph7stGhOT1L9",
+      "_id": "ClUmptTXzTzVKIWy",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,tpr.isAttacked|canSee=true;post=true;pre=true",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 0,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.346",
+        "systemId": "dnd5e",
+        "systemVersion": "5.0.4",
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!ZCpe68X7DdVLAABK.ClUmptTXzTzVKIWy"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "levelBonus": false,
+      "spellSave": false,
+      "dndbeyond": {},
+      "defaultAdditionalActivities": {
+        "enabled": true,
+        "data": {}
+      }
+    },
+    "monsterMunch": {
+      "titleHTML": "<em>Redirect Attack.</em>",
+      "fullName": "Redirect Attack.",
+      "actionCopy": false,
+      "type": "reaction",
+      "description": "<p><strong><em></em></strong> <em>Trigger:</em> A creature the goblin can see makes an attack roll against it. <em>Response:</em> The goblin chooses a Small or Medium ally within 5 feet of itself. The goblin and that ally swap places, and the ally becomes the target of the attack instead.</p>",
+      "actionData": {
+        "damage": {
+          "base": null,
+          "onSave": null
+        },
+        "damageParts": [],
+        "baseAbility": null,
+        "toHit": 0,
+        "proficient": false,
+        "extraAttackBonus": 0
+      }
+    },
+    "midiProperties": {
+      "saveDamage": "halfdam"
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[preTargeting]ItemMacro"
+    },
+    "dae": {
+      "macro": {
+        "name": "Redirect Attack",
+        "img": "icons/equipment/shield/targe-copper-eye.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "const params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.monsters.goblinBoss.redirectAttack(params);",
+        "author": "KJmttYhOUfOn05Yv",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "13.346",
+          "systemId": "dnd5e",
+          "systemVersion": "5.0.4",
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null,
+          "exportSource": null
+        }
+      }
+    }
+  },
+  "img": "icons/equipment/shield/targe-copper-eye.webp",
+  "folder": "EoUufOjHayBnKJk9",
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "dnd5e",
+    "systemVersion": "5.0.4",
+    "createdTime": 1751863684727,
+    "modifiedTime": 1751863971571,
+    "lastModifiedBy": "KJmttYhOUfOn05Yv"
+  },
+  "_id": "ZCpe68X7DdVLAABK",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KJmttYhOUfOn05Yv": 3
+  },
+  "_key": "!items!ZCpe68X7DdVLAABK"
+}

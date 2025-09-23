@@ -534,9 +534,7 @@
     "ammunition": {}
   },
   "flags": {
-    "core": {
-      "sourceId": "Compendium.ddb-shared-compendia.ddb-items.Item.heQxYJeb3zgddXZs"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "recovery": {

@@ -210,9 +210,7 @@
     "link-item-resource-5e": {
       "resource-link": "secondary"
     },
-    "core": {
-      "sourceId": "Compendium.midi-item-showcase-community.misc-class-features.Item.B6epLSnrE62E0T13"
-    },
+    "core": {},
     "custom-character-sheet-sections": {
       "sectionName": ""
     },
@@ -340,14 +338,15 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "12.343",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": 1757817122210,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/light/explosion-star-blue.webp",
       "type": "base",
@@ -418,14 +417,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.4.4",
+        "coreVersion": "13.346",
+        "systemId": null,
+        "systemVersion": null,
         "createdTime": null,
         "modifiedTime": 1757818988993,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/light/explosion-star-blue.webp",
       "type": "base",

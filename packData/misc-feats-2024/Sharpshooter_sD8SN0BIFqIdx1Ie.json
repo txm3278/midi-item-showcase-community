@@ -223,14 +223,15 @@
       "description": "",
       "origin": "Item.sD8SN0BIFqIdx1Ie",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.3",
         "createdTime": null,
         "modifiedTime": 1740098930268,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
       "type": "base",
@@ -244,7 +245,7 @@
   "_stats": {
     "systemId": "dnd5e",
     "systemVersion": "4.3.3",
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "createdTime": 1706483810724,
     "modifiedTime": 1750286916275,
     "lastModifiedBy": "9QqTZMFq1dhCIYAR"

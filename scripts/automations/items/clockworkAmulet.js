@@ -28,7 +28,7 @@ const DEFAULT_ITEM_NAME = 'Clockwork Amulet';
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
     ui.notifications.error(errorMsg);
     return false;
   }

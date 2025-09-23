@@ -369,12 +369,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": "dnd5e",
         "systemVersion": "4.3.8",
         "createdTime": null,
         "modifiedTime": 1746052597107,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
+        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
+        "exportSource": null
       },
       "_key": "!items.effects!92Mmc1YTBegssE4s.5e8RbHiOcFWK1D0G"
     }
@@ -503,7 +504,7 @@
     "midi-item-showcase-community": {}
   },
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "13.346",
     "systemId": "dnd5e",
     "systemVersion": "4.4.4",
     "createdTime": 1744777033687,

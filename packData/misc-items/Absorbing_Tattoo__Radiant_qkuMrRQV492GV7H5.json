@@ -248,14 +248,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/light/explosion-star-small-orange.webp",
       "type": "base",
@@ -326,14 +327,15 @@
       },
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.346",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": 1736948606837,
         "lastModifiedBy": "9QqTZMFq1dhCIYAR",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/magic/light/explosion-star-small-orange.webp",
       "type": "base",
@@ -350,9 +352,7 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
-    "core": {
-      "sourceId": "Item.QJrtYhPmevNEzkCS"
-    },
+    "core": {},
     "dnd5e": {
       "riders": {
         "activity": [],

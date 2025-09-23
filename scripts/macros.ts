@@ -1,6 +1,5 @@
 import { runElwinsHelpers } from './automations/macros/elwinsHelpers.js';
 import { runElwinsHelpersCoating } from './automations/macros/elwinsHelpersCoating.js';
-import { setupBakanaMacros } from './automations/macros/bakanaHelpers.js';
 import { actions } from './automations/actions/actions.js';
 import { classFeatures } from './automations/classFeatures/classFeatures.js';
 import { features } from './automations/features/features.js';
@@ -14,13 +13,12 @@ import { spells } from './automations/spells/spells.js';
 import { thirdParty } from './automations/thirdParty/thirdParty.js';
 import { UA } from './automations/unearthedArcana/unearthedArcana.js';
 
-export let scripts = {
+export const scripts = {
   runElwinsHelpers,
   runElwinsHelpersCoating,
-  setupBakanaMacros,
 };
 
-export let macros = {
+export const macros = {
   actions,
   classFeatures,
   features,
