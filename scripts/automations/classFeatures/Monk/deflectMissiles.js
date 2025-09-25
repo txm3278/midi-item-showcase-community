@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from ranged weapon attack and allows to throw it back
 // to the attacker using a Ki point when the appropiate conditions are met.
-// v2.3.0
+// v2.3.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
