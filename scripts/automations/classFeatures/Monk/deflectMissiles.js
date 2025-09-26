@@ -3,7 +3,7 @@
 // Read First!!!!
 // Reaction that reduces the damage received from ranged weapon attack and allows to throw it back
 // to the attacker using a Ki point when the appropiate conditions are met.
-// v2.3.0
+// v2.3.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [preItemRoll],[preActiveEffects],[postActiveEffects]
@@ -56,14 +56,14 @@ export async function deflectMissiles({ speaker, actor, token, character, item, 
     if (scope.rolledActivity?.identifier === 'reaction') {
       await scope.rolledItem.setFlag(MODULE_ID, 'deflectMissilesDmgReduction', 0);
       // Note: when in full auto mode the value of the setFlag is not seen by the initial attack workflow, so we also need to set it.
-      foundry.utils.setProperty(scope.rolledItem, `flags.${MODULE_ID}.deflectAttacksDmgReduction`, 0);
+      foundry.utils.setProperty(scope.rolledItem, `flags.${MODULE_ID}.deflectMissilesDmgReduction`, 0);
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preActiveEffects') {
     if (scope.rolledActivity?.identifier === 'reaction') {
       const deflectTotal = workflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
       await scope.rolledItem.setFlag(MODULE_ID, 'deflectMissilesDmgReduction', deflectTotal);
       // Note: when in full auto mode the value of the setFlag is not seen by the initial attack workflow, so we also need to set it.
-      foundry.utils.setProperty(scope.rolledItem, `flags.${MODULE_ID}.deflectAttacksDmgReduction`, deflectTotal);
+      foundry.utils.setProperty(scope.rolledItem, `flags.${MODULE_ID}.deflectMissilesDmgReduction`, deflectTotal);
     }
   } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
     if (scope.rolledActivity?.identifier !== 'reaction') {
