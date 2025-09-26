@@ -128,7 +128,7 @@ export function setConfig() {
         'Deflect Missiles': {
           name: 'Deflect Missiles',
           type: 'Class Feature',
-          version: '2.3.0',
+          version: '2.3.1',
           authors: ['Elwin', 'Moto Moto', 'thatlonelybugbear'],
         },
         'Divine Allegiance': {
