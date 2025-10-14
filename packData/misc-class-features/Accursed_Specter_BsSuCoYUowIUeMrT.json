@@ -1,0 +1,322 @@
+{
+    "name": "Accursed Specter",
+    "type": "feat",
+    "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
+    "system": {
+        "activities": {
+            "tzjKKs6fiygX3zVW": {
+                "type": "summon",
+                "_id": "tzjKKs6fiygX3zVW",
+                "sort": 0,
+                "activation": {
+                    "type": "special",
+                    "override": false,
+                    "condition": ""
+                },
+                "consumption": {
+                    "scaling": {
+                        "allowed": false
+                    },
+                    "spellSlot": true,
+                    "targets": [
+                        {
+                            "type": "itemUses",
+                            "value": "1",
+                            "target": "",
+                            "scaling": {}
+                        }
+                    ]
+                },
+                "description": {
+                    "chatFlavor": ""
+                },
+                "duration": {
+                    "units": "day",
+                    "concentration": false,
+                    "override": false,
+                    "special": "",
+                    "value": "1"
+                },
+                "effects": [],
+                "range": {
+                    "units": "self",
+                    "override": false,
+                    "special": ""
+                },
+                "target": {
+                    "template": {
+                        "contiguous": false,
+                        "units": "ft",
+                        "type": ""
+                    },
+                    "affects": {
+                        "choice": false,
+                        "type": "self",
+                        "special": ""
+                    },
+                    "override": false,
+                    "prompt": false
+                },
+                "uses": {
+                    "spent": 0,
+                    "recovery": [],
+                    "max": ""
+                },
+                "bonuses": {
+                    "ac": "",
+                    "hd": "",
+                    "hp": "",
+                    "attackDamage": "",
+                    "saveDamage": "",
+                    "healing": ""
+                },
+                "creatureSizes": [],
+                "creatureTypes": [],
+                "match": {
+                    "attacks": false,
+                    "proficiency": false,
+                    "saves": false,
+                    "ability": ""
+                },
+                "profiles": [
+                    {
+                        "count": "",
+                        "name": "Accursed Specter",
+                        "_id": "VyYAdeqlvQtgiPFO",
+                        "uuid": "Compendium.dnd5e.monsters.Actor.PuPo4H4Dcxigf0fY",
+                        "level": {
+                            "min": 6,
+                            "max": null
+                        },
+                        "types": []
+                    }
+                ],
+                "summon": {
+                    "prompt": true,
+                    "mode": "",
+                    "identifier": "warlock"
+                },
+                "useConditionText": "",
+                "useConditionReason": "",
+                "effectConditionText": "",
+                "macroData": {
+                    "name": "",
+                    "command": ""
+                },
+                "ignoreTraits": {
+                    "idi": false,
+                    "idr": false,
+                    "idv": false,
+                    "ida": false,
+                    "idm": false
+                },
+                "midiProperties": {
+                    "ignoreTraits": [],
+                    "triggeredActivityId": "none",
+                    "triggeredActivityConditionText": "",
+                    "triggeredActivityTargets": "targets",
+                    "triggeredActivityRollAs": "self",
+                    "autoConsume": false,
+                    "forceConsumeDialog": "default",
+                    "forceRollDialog": "default",
+                    "forceDamageDialog": "default",
+                    "confirmTargets": "default",
+                    "autoTargetType": "any",
+                    "autoTargetAction": "default",
+                    "automationOnly": false,
+                    "otherActivityCompatible": true,
+                    "otherActivityAsParentType": true,
+                    "identifier": "accursed-specter",
+                    "displayActivityName": false,
+                    "rollMode": "default",
+                    "chooseEffects": false,
+                    "toggleEffect": false,
+                    "ignoreFullCover": false,
+                    "removeChatButtons": "default",
+                    "magicEffect": false,
+                    "magicDamage": false,
+                    "noConcentrationCheck": false,
+                    "autoCEEffects": "default"
+                },
+                "isOverTimeFlag": false,
+                "overTimeProperties": {
+                    "saveRemoves": true,
+                    "preRemoveConditionText": "",
+                    "postRemoveConditionText": ""
+                },
+                "friendlySummon": true,
+                "name": ""
+            }
+        },
+        "uses": {
+            "spent": 0,
+            "recovery": [
+                {
+                    "period": "lr",
+                    "type": "recoverAll"
+                }
+            ],
+            "max": "1"
+        },
+        "advancement": [],
+        "description": {
+            "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Bacon</h2><h3>Optional Requirements:</h3><ul><li>Dynamic Active Effects - automatic summon expiry</li><li>Cauldron of Plentiful Resources - allows zero setup for summon</li></ul><p><strong>Usage:</strong></p><p>This item has a passive effect that triggers a prompt once per long rest when a humanoid is defeated.</p><p>When adding this feature to an actor, make sure they have the warlock class with identifier <code>warlock</code>.</p><p><strong>IMPORTANT:</strong> If CPR is not installed, you must replace the actor in the summon profile on the summon activity with a copy to which the user has ownership. You must also enable the following settings required for the system summon to function:</p><ul><li>Permissions - Token Create</li><li>DND5E - Allow Summoning</li></ul></details>",
+            "chat": ""
+        },
+        "identifier": "accursed-specter",
+        "source": {
+            "revision": 1,
+            "rules": "2014",
+            "book": "",
+            "page": "",
+            "custom": "",
+            "license": ""
+        },
+        "crewed": false,
+        "enchant": {},
+        "prerequisites": {
+            "items": [],
+            "repeatable": false,
+            "level": 6
+        },
+        "properties": [],
+        "requirements": "",
+        "type": {
+            "value": "class",
+            "subtype": ""
+        }
+    },
+    "effects": [
+        {
+            "name": "Accursed Specter",
+            "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
+            "origin": "Actor.taT12mxpu5KIohJk.Item.1Dzsr7YZVnhm054B",
+            "_id": "zKzUIIMi3ETZwsTB",
+            "type": "base",
+            "system": {},
+            "changes": [
+                {
+                    "key": "flags.midi-qol.onUseMacroName",
+                    "mode": 0,
+                    "value": "ItemMacro,postActiveEffects",
+                    "priority": 20
+                }
+            ],
+            "disabled": false,
+            "duration": {
+                "startTime": 1755562566,
+                "combat": null,
+                "seconds": null,
+                "rounds": null,
+                "turns": null,
+                "startRound": null,
+                "startTurn": null
+            },
+            "description": "",
+            "tint": "#ffffff",
+            "transfer": true,
+            "statuses": [],
+            "sort": 0,
+            "flags": {
+                "dnd5e": {
+                    "riders": {
+                        "statuses": []
+                    }
+                },
+                "dae": {
+                    "disableCondition": "",
+                    "stackable": "noneName",
+                    "showIcon": false,
+                    "disableIncapacitated": false,
+                    "durationExpression": "",
+                    "macroRepeat": "none",
+                    "specialDuration": []
+                },
+                "core": {
+                    "overlay": false
+                },
+                "ActiveAuras": {
+                    "isAura": false,
+                    "aura": "All",
+                    "nameOverride": "",
+                    "radius": "",
+                    "alignment": "",
+                    "type": "",
+                    "customCheck": "",
+                    "ignoreSelf": false,
+                    "height": false,
+                    "hidden": false,
+                    "displayTemp": false,
+                    "hostile": false,
+                    "onlyOnce": false,
+                    "wallsBlock": "system",
+                    "statuses": []
+                }
+            },
+            "_stats": {
+                "compendiumSource": null,
+                "duplicateSource": null,
+                "exportSource": null,
+                "coreVersion": "13.348",
+                "systemId": "dnd5e",
+                "systemVersion": "5.1.9",
+                "lastModifiedBy": null
+            }
+        }
+    ],
+    "folder": "g3bo3AcvioQd286t",
+    "flags": {
+        "dnd5e": {
+            "riders": {
+                "activity": []
+            }
+        },
+        "midi-qol": {
+            "onUseMacroName": "[preItemRoll]ItemMacro,[postNoAction]ItemMacro"
+        },
+        "dae": {
+            "macro": {
+                "name": "Accursed Specter",
+                "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
+                "type": "script",
+                "scope": "global",
+                "command": "const params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.accursedSpecter(params);",
+                "author": "jIuFNw4qiV2kIyXK",
+                "ownership": {
+                    "default": 3
+                },
+                "_id": null,
+                "folder": null,
+                "sort": 0,
+                "flags": {},
+                "_stats": {
+                    "coreVersion": "13.348",
+                    "systemId": "dnd5e",
+                    "systemVersion": "5.1.9",
+                    "lastModifiedBy": null,
+                    "compendiumSource": null,
+                    "duplicateSource": null,
+                    "exportSource": null
+                }
+            }
+        }
+    },
+    "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.348",
+        "systemId": "dnd5e",
+        "systemVersion": "5.1.9",
+        "createdTime": 1760401623027,
+        "modifiedTime": 1760402278931,
+        "lastModifiedBy": "jIuFNw4qiV2kIyXK"
+    },
+    "ownership": {
+        "default": 0,
+        "jIuFNw4qiV2kIyXK": 3
+    },
+    "_id": "BsSuCoYUowIUeMrT",
+    "sort": 100000,
+    "_key": "!items!BsSuCoYUowIUeMrT"
+}
