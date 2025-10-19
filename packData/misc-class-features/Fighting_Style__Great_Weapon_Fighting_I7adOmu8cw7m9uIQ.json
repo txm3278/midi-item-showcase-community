@@ -110,17 +110,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": null,
-        "modifiedTime": 1750000499765,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
       "type": "base",
       "system": {},
@@ -128,13 +117,6 @@
       "_key": "!items.effects!I7adOmu8cw7m9uIQ.HfS4s63NmLcWZLzu"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "core": {},
     "dae": {
@@ -209,23 +191,6 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     }
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "createdTime": 1742524272970,
-    "modifiedTime": 1750000307795,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
   },
   "_key": "!items!I7adOmu8cw7m9uIQ"
 }

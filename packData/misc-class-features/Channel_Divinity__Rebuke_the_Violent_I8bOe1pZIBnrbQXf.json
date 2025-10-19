@@ -331,17 +331,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/magic/lightning/bolt-strike-blue-white.webp",
       "type": "base",
       "system": {},
@@ -349,13 +338,6 @@
       "_key": "!items.effects!I8bOe1pZIBnrbQXf.VP3g3FcaoaUhLA46"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -433,14 +415,6 @@
       "coreVersion": "12.343",
       "systemVersion": "4.4.4"
     }
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "coreVersion": "13.346",
-    "createdTime": 1728616084944,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!I8bOe1pZIBnrbQXf"
 }

@@ -88,17 +88,6 @@
       "system": {},
       "origin": null,
       "sort": 0,
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1749354700650,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!Ip5A3gCweckWTKol.PvMAiVVWMn4w620M"
     },
     {
@@ -166,17 +155,6 @@
           "wallsBlock": "system",
           "statuses": []
         }
-      },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1749263144147,
-        "modifiedTime": 1749486988654,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
       },
       "_key": "!items.effects!Ip5A3gCweckWTKol.OrFsgBzqm000L5qA"
     }
@@ -655,20 +633,5 @@
   },
   "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
   "folder": "KN5vyHKy8cajL3t8",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "createdTime": 1748806893365,
-    "modifiedTime": 1750904862882,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "_key": "!items!Ip5A3gCweckWTKol"
 }

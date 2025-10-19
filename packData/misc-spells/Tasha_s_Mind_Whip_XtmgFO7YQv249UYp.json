@@ -321,37 +321,11 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1750528575589,
-        "modifiedTime": 1750612588911,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!XtmgFO7YQv249UYp.lY2cxrpwRO25JQmO"
     }
   ],
   "img": "icons/magic/lightning/bolt-strike-pink.webp",
   "folder": null,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1750522152760,
-    "modifiedTime": 1752415851210,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "_id": "XtmgFO7YQv249UYp",
-  "sort": 100000,
   "_key": "!items!XtmgFO7YQv249UYp"
 }

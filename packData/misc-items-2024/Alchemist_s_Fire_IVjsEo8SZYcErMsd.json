@@ -273,27 +273,9 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": 1741214659371,
-        "modifiedTime": 1741550098522,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!IVjsEo8SZYcErMsd.BWIptf5hbhDC2ijj"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "custom-character-sheet-sections": {
       "sectionName": ""
@@ -345,14 +327,6 @@
         "effect": []
       }
     }
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1741214435406,
-    "modifiedTime": 1752415848625,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "IVjsEo8SZYcErMsd",
   "_key": "!items!IVjsEo8SZYcErMsd"

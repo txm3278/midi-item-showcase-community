@@ -4,7 +4,6 @@
   "img": "icons/consumables/plants/leaf-veins-glowing-green.webp",
   "effects": [],
   "folder": null,
-  "sort": 100000,
   "flags": {
     "core": {},
     "walledtemplates": {
@@ -265,20 +264,6 @@
       }
     },
     "identifier": "goodberry"
-  },
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
-    "coreVersion": "13.346",
-    "createdTime": 1663621625017,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "HT3iNvnapuKIkVHy",
   "_key": "!items!HT3iNvnapuKIkVHy"

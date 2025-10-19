@@ -365,12 +365,6 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
   },
   "effects": [
@@ -434,17 +428,6 @@
           "onlyOnce": false,
           "wallsBlock": "system"
         }
-      },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.1.2",
-        "createdTime": 1736663185892,
-        "modifiedTime": 1736663242448,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
       },
       "_key": "!items.effects!XT8t5QIXgFRzzMfE.flmuyOHEgBDkMwtI"
     },
@@ -520,37 +503,11 @@
           }
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": 1736663369930,
-        "modifiedTime": 1740892729537,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!XT8t5QIXgFRzzMfE.MrESIQ1i7yNgiwvQ"
     }
   ],
   "img": "icons/consumables/potions/potion-tube-corked-orange.webp",
   "folder": "82KvnvMjqGlKNrww",
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.331",
-    "createdTime": 1696175338841,
-    "modifiedTime": 1752415850760,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "XT8t5QIXgFRzzMfE",
   "_key": "!items!XT8t5QIXgFRzzMfE"
 }

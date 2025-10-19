@@ -1,0 +1,324 @@
+{
+  "name": "Accursed Specter",
+  "type": "feat",
+  "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
+  "system": {
+    "activities": {
+      "tzjKKs6fiygX3zVW": {
+        "type": "summon",
+        "_id": "tzjKKs6fiygX3zVW",
+        "sort": 0,
+        "activation": {
+          "type": "special",
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "",
+              "scaling": {}
+            }
+          ]
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "day",
+          "concentration": false,
+          "override": false,
+          "special": "",
+          "value": "1"
+        },
+        "effects": [],
+        "range": {
+          "units": "self",
+          "override": false,
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": "self",
+            "special": ""
+          },
+          "override": false,
+          "prompt": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "bonuses": {
+          "ac": "",
+          "hd": "",
+          "hp": "",
+          "attackDamage": "",
+          "saveDamage": "",
+          "healing": ""
+        },
+        "creatureSizes": [],
+        "creatureTypes": [],
+        "match": {
+          "attacks": false,
+          "proficiency": false,
+          "saves": false,
+          "ability": ""
+        },
+        "profiles": [
+          {
+            "count": "",
+            "name": "Accursed Specter",
+            "_id": "VyYAdeqlvQtgiPFO",
+            "uuid": "Compendium.dnd5e.monsters.Actor.PuPo4H4Dcxigf0fY",
+            "level": {
+              "min": 6,
+              "max": null
+            },
+            "types": []
+          }
+        ],
+        "summon": {
+          "prompt": true,
+          "mode": "",
+          "identifier": "warlock"
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": true,
+          "otherActivityAsParentType": true,
+          "identifier": "accursed-specter",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "friendlySummon": true,
+        "name": ""
+      }
+    },
+    "uses": {
+      "spent": 0,
+      "recovery": [
+        {
+          "period": "lr",
+          "type": "recoverAll"
+        }
+      ],
+      "max": "1"
+    },
+    "advancement": [],
+    "description": {
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Bacon</h2></details>",
+      "chat": ""
+    },
+    "identifier": "accursed-specter",
+    "source": {
+      "revision": 1,
+      "rules": "2014",
+      "book": "",
+      "page": "",
+      "custom": "",
+      "license": ""
+    },
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "items": [],
+      "repeatable": false,
+      "level": 6
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "effects": [
+    {
+      "name": "Accursed Specter",
+      "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
+      "origin": "Actor.taT12mxpu5KIohJk.Item.1Dzsr7YZVnhm054B",
+      "_id": "zKzUIIMi3ETZwsTB",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,postActiveEffects",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 1755562566,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "All",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "_key": "!items.effects!bgrxhPa2ZlmhFkwl.zKzUIIMi3ETZwsTB"
+    }
+  ],
+  "folder": "g3bo3AcvioQd286t",
+  "flags": {
+    "dnd5e": {
+      "riders": {
+        "activity": []
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[preItemRoll]ItemMacro,[postNoAction]ItemMacro"
+    },
+    "dae": {
+      "macro": {
+        "name": "Accursed Specter",
+        "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "const classID = \"warlock\";\nconst bonusAbility = \"cha\";\n\nconst daeID = \"dae\"\nconst daeExpiry = \"longRest\";\n\nconst cprID = \"chris-premades\";\nconst cprRange = 30;\nconst cprAnimation = \"smoke\";\n\n// trigger after slaying a humanoid - actor OnUse\nif (args[0].macroPass === \"postActiveEffects\") {\n  const uses = macroItem.system.uses;\n  if (uses.value <= 0) return;\n  if (!actor.classes[classID]) return;\n  \n  const slayed = workflow.hitTargets.some(t => \n    t.actor.system.attributes.hp.value <= 0 &&\n    MidiQOL.humanoid.includes(MidiQOL.typeOrRace(t)));\n\n  if (!slayed) return;\n  const choice = await foundry.applications.api.Dialog.confirm({\n    window: { title: `${actor.name} - ${macroItem.name}` },\n    content: `<div style=\"text-align:center\">${game.i18n.localize(\"DND5E.SUMMON.Title\")} ${macroItem.name}?</div>\n    <div style=\"text-align:center\">${game.i18n.localize(\"DND5E.ConsumeCharges\")} <b>${uses.value} / ${uses.max}</b></div>`\n  });\n  if (choice) MidiQOL.completeItemUse(macroItem, {}, {configure: false});\n}\n\nif (macroActivity.identifier !== \"accursed-specter\") return;\nconst attackBonusEffect = getEffect(Math.max(0, actor.system.abilities[bonusAbility].mod));\nconst tempHP = Math.floor(0.5 * actor.classes[classID]?.system.levels ?? 0);\n\n// setup - item OnUse\nif (args[0].macroPass === \"preItemRoll\") {\n  if (!requirementsMet()) return false;\n  \n  if (game.modules.has(cprID)) {\n    if (game.user.can(\"TOKEN_CREATE\")) {\n      const preHook = Hooks.on(\"dnd5e.preSummon\", (activity) => {\n        if (activity.id !== macroActivity.id) return;      \n        Hooks.off(\"dnd5e.preSummon\", preHook);\n        return false;\n      });\n    }\n  } else {\n    const postHook = Hooks.on(\"dnd5e.postSummon\", (activity, _, summons) => {\n      if (activity.id !== macroActivity.id) return;\n      Hooks.off(\"dnd5e.postSummon\", postHook);\n\n      for (const summon of summons) {\n        summon.actor.update({\"system.attributes.hp.temp\": tempHP});\n        if (token.inCombat)\n          summon.actor.rollInitiative({createCombatants: true});\n        if (attackBonusEffect)\n          summon.actor.createEmbeddedDocuments(\"ActiveEffect\", [attackBonusEffect]);\n      }\n    });\n  }\n  \n  if (game.modules.has(daeID)) {\n    // don't hook if summoner effect is already present\n    if (actor.effects.some(e => e.origin === macroItem.uuid &&\n     (e.name.includes(game.i18n.localize(\"DND5E.SUMMON.Title\")) || // midi summon\n     !!e.flags[cprID]?.summons?.ids[macroItem.name]))) // cpr summon\n        return;\n    \n    const effectHook = Hooks.on(\"preCreateActiveEffect\", effect => {\n      if (effect.parent.id !== actor.id || effect.origin !== macroItem.uuid) return;\n      Hooks.off(\"preCreateActiveEffect\", effectHook);\n      \n      const specials = effect.getFlag(daeID, \"specialDuration\") ?? [];\n      specials.push(daeExpiry);\n      effect.updateSource({\n        duration: ActiveEffect.prototype.schema.fields.duration.getInitialValue(),\n        \"flags.dae.specialDuration\": specials\n      });\n    });\n  }\n}\n\n// CPR summoning - item OnUse\nif(args[0].macroPass === \"postNoAction\" && game.modules.has(cprID)) {\n    const uuid = macroActivity.profiles?.[0]?.uuid;\n    const summon = await fromUuid(uuid);\n    if (!summon) {\n      ui.notifications.warn(`[${macroItem.name}]: ${game.i18n.format(\"DND5E.SUMMON.Warning.NoProfile\",{profileId: \"\", item: macroItem.name})}`);\n      return;\n    }\n    \n    const updates = [{ actor: {\n      system: { attributes: { hp: { temp: tempHP }}},\n      effects: attackBonusEffect ? [attackBonusEffect] : []\n    }}];\n    chrisPremades.Summons.spawn(summon, updates, macroItem, token, {\n      range: cprRange,\n      animation: cprAnimation\n    });\n}\n\nfunction getEffect(abilityMod) {\n  if (abilityMod <= 0) return;\n  \n  const baseEffect = {\n    name: `${macroItem.name} - ${game.i18n.localize(\"DND5E.BonusAttack\")}`,\n    img: macroItem.img,\n    origin: macroItem.uuid\n  };\n  \n  if (game.modules.has(daeID)) {\n    baseEffect.changes = [{\n      key: 'system.bonuses.All-Attacks',\n      mode: CONST.ACTIVE_EFFECT_MODES.ADD,\n      priority: 20,\n      value: abilityMod\n    }];\n  } else {\n    baseEffect.changes = [\"msak\", \"mwak\", \"rsak\", \"rwak\"].map(a => a = {\n      key: `system.bonuses.${a}.attack`,\n      mode: CONST.ACTIVE_EFFECT_MODES.ADD,\n      priority: 20,\n      value: `+${abilityMod}`\n    });\n  }\n  return baseEffect;\n}\n\nfunction requirementsMet() {\n  let met = true;\n  if (!actor.classes[classID]) {\n    const req = macroItem.system.prerequisites.level;\n    const msg = req ? \n      game.i18n.format(\"DND5E.Prerequisites.Warning.InvalidLevel\", {level: req}) :\n      game.i18n.localize(\"DND5E.MaxClassLevelMinimumWarn\");\n    ui.notifications.warn(`[${macroItem.name}]: ${classID} - ${msg}`);\n    met = false;\n  } \n  if(game.modules.has(cprID)) return met;\n  \n  // these are only needed for the system summon - CPR is socketed\n  if (!game.user.hasPermission(\"TOKEN_CREATE\")) {\n    ui.notifications.warn(`[${macroItem.name}]: ${game.i18n.localize(\"DND5E.ContextMenuActionEnable\")} ${game.i18n.localize(\"PERMISSION.Permission\")} - ${game.i18n.localize(\"PERMISSION.TokenCreate\")} (<i>${game.i18n.localize(\"PERMISSION.TokenCreateHint\")}</i>)`);\n    met = false;\n  }\n  if (!game.settings.get(\"dnd5e\", \"allowSummoning\")) {\n    ui.notifications.warn(`[${macroItem.name}]: ${game.i18n.localize(\"DND5E.ContextMenuActionEnable\")} ${game.i18n.localize(\"SETTINGS.TabSystem\")} - ${game.i18n.localize(\"SETTINGS.DND5E.PERMISSIONS.AllowSummoning.Name\")}`);\n    met = false;\n  }\n  return met;\n}",
+        "author": "jIuFNw4qiV2kIyXK",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "13.348",
+          "systemId": "dnd5e",
+          "systemVersion": "5.1.9",
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null,
+          "exportSource": null
+        }
+      }
+    },
+    "scene-packer": {
+      "hash": "4954b814603521b86db8f8a2af4af9ad05e27e98",
+      "sourceId": "Item.FLE5zyUNear2MzPE"
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    },
+    "LocknKey": {
+      "IDKeysFlag": "",
+      "RemoveKeyonUseFlag": false,
+      "LPFormulaFlag": "",
+      "LPFormulaOverrideFlag": false,
+      "LBFormulaFlag": "",
+      "LBFormulaOverrideFlag": false,
+      "ReplacementItemFlag": ""
+    }
+  },
+  "_id": "bgrxhPa2ZlmhFkwl",
+  "_key": "!items!bgrxhPa2ZlmhFkwl"
+}

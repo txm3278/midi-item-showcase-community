@@ -253,28 +253,10 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1746572950699,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!NQCnGWjuzCIItQny.maj0z8F9gCg0CMCL"
     }
   ],
   "folder": null,
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "midi-qol": {
       "onUseMacroName": "",
@@ -329,14 +311,6 @@
         "effect": []
       }
     }
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "createdTime": 1746572555974,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!NQCnGWjuzCIItQny"
 }

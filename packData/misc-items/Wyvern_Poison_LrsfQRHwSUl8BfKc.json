@@ -433,37 +433,11 @@
           "wallsBlock": "system"
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
-      },
       "_key": "!items.effects!LrsfQRHwSUl8BfKc.yj9SrbJIXsFjqav7"
     }
   ],
   "img": "icons/consumables/potions/bottle-corked-red.webp",
   "folder": "Oei0yPNUHn1Tp0aL",
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1740082874454,
-    "modifiedTime": 1752415851625,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "LrsfQRHwSUl8BfKc",
   "_key": "!items!LrsfQRHwSUl8BfKc"
 }

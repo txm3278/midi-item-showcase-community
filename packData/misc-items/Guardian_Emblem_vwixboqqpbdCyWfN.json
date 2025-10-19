@@ -365,12 +365,6 @@
         }
       }
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
@@ -441,17 +435,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "type": "base",
       "system": {},
@@ -516,17 +499,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
       "type": "base",
       "system": {},
@@ -593,37 +565,11 @@
           "wallsBlock": "system"
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.1.2",
-        "createdTime": 1736773566169,
-        "modifiedTime": 1736774909827,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!vwixboqqpbdCyWfN.VwTVxKQgZTHwgLsW"
     }
   ],
   "img": "icons/commodities/treasure/trinket-totem-bone-green.webp",
   "_id": "vwixboqqpbdCyWfN",
   "folder": null,
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.331",
-    "createdTime": 1706098165283,
-    "modifiedTime": 1752415849918,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "_key": "!items!vwixboqqpbdCyWfN"
 }

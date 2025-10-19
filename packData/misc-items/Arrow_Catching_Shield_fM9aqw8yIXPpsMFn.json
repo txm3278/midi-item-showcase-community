@@ -324,17 +324,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
       "type": "base",
       "system": {},
@@ -344,21 +333,6 @@
   ],
   "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
   "folder": null,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
-    "coreVersion": "13.346",
-    "createdTime": 1696175312442,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "fM9aqw8yIXPpsMFn",
   "_key": "!items!fM9aqw8yIXPpsMFn"
 }

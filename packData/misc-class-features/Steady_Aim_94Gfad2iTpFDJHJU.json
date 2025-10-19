@@ -6,7 +6,7 @@
   "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Elwin</h2><h3>Requires:</h3><ul><li>Times-up</li></ul><h3>Optionals:</h3><ul><li>Drag Ruler (to compute movement since start of round)</li><li>Elevation Ruler (to compute movement since start of round)</li><li>Monk's TokenBar (to block movement)</li></ul><p><strong>Usage:</strong></p><p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "source": {
@@ -222,17 +222,6 @@
       "name": "Steady Aim - Advantage",
       "description": "",
       "statuses": [],
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": null,
-        "modifiedTime": 1741552422660,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
       "system": {},
@@ -315,17 +304,6 @@
       "name": "Steady Aim - Movement",
       "description": "",
       "statuses": [],
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.6",
-        "createdTime": null,
-        "modifiedTime": 1741552428407,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
       "system": {},
@@ -333,13 +311,6 @@
       "_key": "!items.effects!94Gfad2iTpFDJHJU.ljsYEY13ngAg6G8h"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "infusions": {
       "infused": false
@@ -423,7 +394,13 @@
       "wallRestriction": "globalDefault",
       "snapCenter": true,
       "snapCorner": true,
-      "snapSideMidpoint": true
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
     },
     "dnd5e": {
       "riders": {
@@ -434,24 +411,16 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    }
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
-    "coreVersion": "13.346",
-    "createdTime": 1663621622129,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
     },
-    "compendiumSource": null,
-    "duplicateSource": null
+    "LocknKey": {
+      "IDKeysFlag": "",
+      "RemoveKeyonUseFlag": false,
+      "LPFormulaFlag": "",
+      "LPFormulaOverrideFlag": false,
+      "LBFormulaFlag": "",
+      "LBFormulaOverrideFlag": false,
+      "ReplacementItemFlag": ""
+    }
   },
   "_key": "!items!94Gfad2iTpFDJHJU"
 }

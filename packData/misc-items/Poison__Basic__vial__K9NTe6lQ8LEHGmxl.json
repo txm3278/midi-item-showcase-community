@@ -432,17 +432,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1745930649839,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
       "type": "base",
       "system": {},
@@ -515,37 +504,11 @@
           "wallsBlock": "system"
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
-      },
       "_key": "!items.effects!K9NTe6lQ8LEHGmxl.5vZP4aLdeD5HdDw4"
     }
   ],
   "img": "icons/consumables/potions/potion-tube-corked-bubbling-green.webp",
   "folder": "Oei0yPNUHn1Tp0aL",
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1740082844477,
-    "modifiedTime": 1752415850646,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "K9NTe6lQ8LEHGmxl",
   "_key": "!items!K9NTe6lQ8LEHGmxl"
 }

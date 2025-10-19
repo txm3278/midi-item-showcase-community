@@ -198,17 +198,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/commodities/gems/pearl-brown-red.webp",
       "type": "base",
       "system": {},
@@ -217,13 +206,6 @@
     }
   ],
   "folder": "SCwd4ncvs4HT4t0E",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -308,14 +290,6 @@
       "coreVersion": "12.343",
       "systemVersion": "4.4.4"
     }
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.6",
-    "coreVersion": "13.346",
-    "createdTime": 1725680495248,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!r2FFI62erOWzKGjv"
 }

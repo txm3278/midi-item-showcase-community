@@ -159,13 +159,6 @@
     "advancement": []
   },
   "effects": [],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "rest-recovery": {
       "data": {
@@ -257,14 +250,6 @@
       "section": "",
       "actionSection": ""
     }
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "coreVersion": "13.346",
-    "createdTime": 1694744431298,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!OvEhlucNjP2udVJc"
 }

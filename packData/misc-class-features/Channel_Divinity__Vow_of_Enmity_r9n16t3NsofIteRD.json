@@ -211,17 +211,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": 1756256141384,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
@@ -283,17 +272,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": 1756256149397,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
@@ -301,12 +279,6 @@
       "_key": "!items.effects!r9n16t3NsofIteRD.mXb3v0Eqny4tMqiI"
     }
   ],
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "midi-qol": {
       "effectActivation": false,
@@ -407,16 +379,7 @@
       "systemVersion": "4.4.4"
     }
   },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "coreVersion": "13.346",
-    "createdTime": 1671481612781,
-    "modifiedTime": 1756760404403,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "folder": "KAZwfuQe2tARhyGL",
-  "sort": 100000,
   "_id": "r9n16t3NsofIteRD",
   "_key": "!items!r9n16t3NsofIteRD"
 }

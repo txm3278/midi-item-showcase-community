@@ -427,12 +427,6 @@ export function setConfig() {
           version: '1.1.1',
           authors: ['Elwin'],
         },
-        'Circle Form': {
-          name: 'Circle Form',
-          type: 'Class Feature',
-          version: '1.0.0',
-          authors: ['TMinz'],
-        },
         'Clockwork Amulet': {
           name: 'Clockwork Amulet',
           type: 'Item',
@@ -564,12 +558,6 @@ export function setConfig() {
           type: 'Class Feature',
           version: '1.0.1',
           authors: ['Elwin'],
-        },
-        'Wild Shape': {
-          name: 'Wild Shape',
-          type: 'Class Feature',
-          version: '1.0.0',
-          authors: ['TMinz'],
         },
         'Wyvern Poison': {
           name: 'Wyvern Poison',

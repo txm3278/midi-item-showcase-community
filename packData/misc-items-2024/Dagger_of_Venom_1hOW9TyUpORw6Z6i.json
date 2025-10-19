@@ -549,16 +549,6 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": 1755604207860,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!1hOW9TyUpORw6Z6i.W3exe9GzisjGw4UL"
     },
     {
@@ -645,26 +635,9 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": 1755603869901,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!1hOW9TyUpORw6Z6i.WOcmWplHQT4iWEe3"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "plutonium": {
       "page": "items.html",
@@ -728,12 +701,6 @@
       }
     },
     "core": {},
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -747,14 +714,6 @@
         "effect": []
       }
     }
-  },
-  "_stats": {
-    "coreVersion": "12.343",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1741179143698,
-    "modifiedTime": 1755603908365,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "1hOW9TyUpORw6Z6i",
   "_key": "!items!1hOW9TyUpORw6Z6i"

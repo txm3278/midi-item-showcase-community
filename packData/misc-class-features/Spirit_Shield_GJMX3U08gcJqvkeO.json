@@ -71,17 +71,6 @@
       "name": "Spirit Shield",
       "description": "",
       "statuses": [],
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "type": "base",
       "system": {},
@@ -143,17 +132,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
       "type": "base",
       "system": {},
@@ -464,21 +442,6 @@
     },
     "advancement": []
   },
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "coreVersion": "13.346",
-    "createdTime": 1663621622102,
-    "modifiedTime": 1748806893682,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "GJMX3U08gcJqvkeO",
   "_key": "!items!GJMX3U08gcJqvkeO"
 }

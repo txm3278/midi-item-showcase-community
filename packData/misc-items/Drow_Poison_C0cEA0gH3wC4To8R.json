@@ -417,17 +417,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
-      },
       "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
       "type": "base",
       "system": {},
@@ -492,17 +481,6 @@
           "onlyOnce": false,
           "wallsBlock": "system"
         }
-      },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
       },
       "_key": "!items.effects!C0cEA0gH3wC4To8R.NlqjFwb7JZ4DVjdJ"
     },
@@ -572,37 +550,11 @@
           "wallsBlock": "system"
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
-      },
       "_key": "!items.effects!C0cEA0gH3wC4To8R.mH70veUSYFpOQ36C"
     }
   ],
   "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
   "folder": "Oei0yPNUHn1Tp0aL",
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1740082830590,
-    "modifiedTime": 1752415849293,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "C0cEA0gH3wC4To8R",
   "_key": "!items!C0cEA0gH3wC4To8R"
 }
