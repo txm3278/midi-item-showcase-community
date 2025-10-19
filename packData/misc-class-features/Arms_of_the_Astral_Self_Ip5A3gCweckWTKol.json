@@ -623,12 +623,6 @@
       "snapCenter": true,
       "snapCorner": true,
       "snapSideMidpoint": true
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
   },
   "img": "icons/magic/unholy/strike-hand-glow-pink.webp",

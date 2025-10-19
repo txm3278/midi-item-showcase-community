@@ -210,12 +210,6 @@
       "otherCondition": "",
       "effectCondition": "",
       "onUseMacroName": "[preItemRoll]function.elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll,[preItemRoll]function.MISC.macros.spells.flameArrows,[postActiveEffects]function.MISC.macros.spells.flameArrows"
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
   },
   "effects": [

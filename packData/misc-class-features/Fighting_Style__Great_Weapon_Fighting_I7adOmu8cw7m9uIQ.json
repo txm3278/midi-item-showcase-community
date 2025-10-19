@@ -172,12 +172,6 @@
       "rollAttackPerTarget": "default",
       "removeAttackDamageButtons": "default"
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
