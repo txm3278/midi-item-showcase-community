@@ -65,6 +65,12 @@ export function setConfig() {
           version: '2.0.2',
           authors: ['Elwin'],
         },
+        'Accursed Specter': {
+          name: 'Accursed Specter',
+          type: 'Class Feature',
+          version: '5.1.9',
+          authors: ['Bacon']
+        },
         "Alchemist's Fire (flask)": {
           name: "Alchemist's Fire (flask)",
           type: 'Item',

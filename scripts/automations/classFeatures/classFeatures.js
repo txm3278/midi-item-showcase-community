@@ -16,6 +16,7 @@ import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/chan
 import { divineAllegiance } from './Paladin/OathOfTheCrown/divineAllegiance.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
 import { steadyAim } from './Rogue/steadyAim.js';
+import { accursedSpecter } from './Warlock/Hexblade/accursedSpecter.js';
 
 export let classFeatures = {
   flashOfGenius,
@@ -36,4 +37,5 @@ export let classFeatures = {
   divineAllegiance,
   channelDivinityVowOfEnmity,
   steadyAim,
+  accursedSpecter
 };
