@@ -20,17 +20,17 @@
   },
   "homepage": "https://github.com/txm3278/midi-item-showcase-community#readme",
   "dependencies": {
-    "@eslint/compat": "^1.3.1",
-    "@foundryvtt/foundryvtt-cli": "^1.1.0"
+    "@eslint/compat": "^1.4.0",
+    "@foundryvtt/foundryvtt-cli": "^3.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.31.0",
-    "dnd5e-types": "github:adriangaro/dnd5e-types#5.0.x",
-    "eslint": "^9.31.0",
+    "@eslint/js": "^9.38.0",
+    "dnd5e": "github:adriangaro/dnd5e-types#5.0.x",
+    "eslint": "^9.38.0",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
-    "sequencer": "github:fantasycalendar/FoundryVTT-Sequencer#pull/414",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.37.0",
-    "vite": "^7.0.5"
+    "sequencer": "github:fantasycalendar/FoundryVTT-Sequencer#master",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.1",
+    "vite": "^7.1.10"
   }
 }
