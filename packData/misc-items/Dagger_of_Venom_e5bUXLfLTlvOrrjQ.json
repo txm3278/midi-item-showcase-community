@@ -667,11 +667,6 @@
     "4cS9ZPYEz6G3J8Kp": 3
   },
   "flags": {
-    "plutonium": {
-      "page": "items.html",
-      "source": "DMG",
-      "hash": "dagger%20of%20venom_dmg"
-    },
     "midi-qol": {
       "fumbleThreshold": null,
       "rollAttackPerTarget": "default",

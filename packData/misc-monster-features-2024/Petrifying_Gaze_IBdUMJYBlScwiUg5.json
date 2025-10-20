@@ -9,8 +9,8 @@
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. It forces all creatures in a cone to resist the gaze.</p></details>"
     },
     "source": {
-      "book": "Monster Manual (2024)",
-      "page": "205",
+      "book": "SRD 5.2",
+      "page": "",
       "custom": "",
       "license": "",
       "revision": 1,

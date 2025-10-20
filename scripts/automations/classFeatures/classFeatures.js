@@ -12,10 +12,13 @@ import { psionicPowerProtectiveField } from './Fighter/PsiWarrior/psionicPowerPr
 import { deflectAttacks } from './Monk/deflectAttacks.js';
 import { deflectMissiles } from './Monk/deflectMissiles.js';
 import { armsOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/armsOfTheAstralSelf.js';
+import { awakenedAstralSelf } from './Monk/WayOfTheAstralSelf/awakenedAstralSelf.js';
+import { bodyOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/bodyOfTheAstralSelf.js';
 import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/channelDivinityRebukeTheViolent.js';
 import { divineAllegiance } from './Paladin/OathOfTheCrown/divineAllegiance.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
 import { steadyAim } from './Rogue/steadyAim.js';
+import { tombOfLevistus } from './Warlock/tombOfLevistus.js';
 
 export let classFeatures = {
   flashOfGenius,
@@ -32,8 +35,11 @@ export let classFeatures = {
   deflectAttacks,
   deflectMissiles,
   armsOfTheAstralSelf,
+  awakenedAstralSelf,
+  bodyOfTheAstralSelf,
   channelDivinityRebukeTheViolent,
   divineAllegiance,
   channelDivinityVowOfEnmity,
   steadyAim,
+  tombOfLevistus
 };

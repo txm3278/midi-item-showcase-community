@@ -1,0 +1,330 @@
+{
+  "_id": "SewID0iEU2RuLdgM",
+  "name": "Visage of the Astral Self",
+  "type": "feat",
+  "effects": [
+    {
+      "name": "Visage of the Astral Self",
+      "statuses": [],
+      "changes": [
+        {
+          "key": "system.attributes.senses.devilsSight",
+          "mode": 4,
+          "value": "120",
+          "priority": 20
+        },
+        {
+          "key": "ATL.sight.visionMode",
+          "mode": 0,
+          "value": "devilsSight",
+          "priority": 20
+        },
+        {
+          "key": "ATL.sight.range",
+          "mode": 4,
+          "value": "120",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.advantage.skill.ins",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.advantage.skill.itm",
+          "mode": 0,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "flags.dae.visageOfTheAstralSelf",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "ATL.detectionModes.devilsSight.range",
+          "mode": 4,
+          "value": "120",
+          "priority": 20
+        },
+        {
+          "key": "ATL.detectionModes.devilsSight.enabled",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        }
+      ],
+      "duration": {
+        "seconds": null,
+        "startTime": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null,
+        "combat": null
+      },
+      "tint": "#ffffff",
+      "transfer": false,
+      "disabled": false,
+      "flags": {
+        "dae": {
+          "transfer": false,
+          "stackable": "noneNameOnly",
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "enableCondition": "!statuses.incapacitated && !statuses.dead",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "dontApply": false,
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ddbimporter": {
+          "disabled": false
+        },
+        "midi-qol": {
+          "forceCEOff": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "description": "",
+      "_id": "XyzlPyIKXmCWdGJA",
+      "img": "icons/creatures/magical/spirit-undead-masked-blue.webp",
+      "type": "base",
+      "system": {},
+      "origin": null,
+      "sort": 0,
+      "_key": "!items.effects!SewID0iEU2RuLdgM.XyzlPyIKXmCWdGJA"
+    }
+  ],
+  "system": {
+    "activities": {
+      "utilityVisaclass": {
+        "type": "utility",
+        "_id": "utilityVisaclass",
+        "sort": 0,
+        "activation": {
+          "type": "bonus",
+          "condition": "",
+          "value": null,
+          "override": false
+        },
+        "consumption": {
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "ki",
+              "scaling": {}
+            }
+          ],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "value": "10",
+          "units": "minute",
+          "special": "",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "XyzlPyIKXmCWdGJA"
+          }
+        ],
+        "range": {
+          "units": "self",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "prompt": true,
+          "affects": {
+            "count": "1",
+            "type": "self",
+            "choice": true,
+            "special": ""
+          },
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "name": "",
+          "formula": ""
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "confirmTargets": "never",
+          "automationOnly": false,
+          "identifier": "summon",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "otherActivityCompatible": false,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "name": "Summon",
+        "otherActivityAsParentType": true
+      }
+    },
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated it adds an effect to enhance vison and give advantage to Insight and Intimidation checks.</p></details>",
+      "chat": "<div class=\"ddb\">\nAs a bonus action, or as part of the bonus action you take to activate Arms of the Astral Self, you can spend 1 ki point to summon the visage of your astral self for 10 minutes.\nWhile the spectral visage is present, you gain the following benefits.\n- <strong>Astral Sight.</strong> You can see normally in darkness, both magical and nonmagical, to a distance of 120 ft.\n- <strong>Wisdom of the Spirit.</strong> You have advantage on WIS (&amp;Reference[ins]{Insight}) and CHA (&amp;Reference[itm]{Intimidation}) checks.\n- <strong>Word of the Spirit.</strong> When you speak, you can direct your words to a creature of your choice that you can see within 60 ft. of you, making it so only that creature can hear you. Alternatively, you can amplify your voice so that all creatures within 600 ft. can hear you.\n</div>"
+    },
+    "identifier": "visage-of-the-astral-self",
+    "source": {
+      "book": "TCoE",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "advancement": [],
+    "cover": null,
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "level": 6,
+      "repeatable": false,
+      "items": []
+    },
+    "properties": [],
+    "requirements": "Way of the Astral Self 6",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "flags": {
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "forceCEOff": true,
+      "rollAttackPerTarget": "default",
+      "itemCondition": "",
+      "reactionCondition": "",
+      "otherCondition": "",
+      "effectCondition": ""
+    },
+    "midiProperties": {
+      "confirmTargets": "default",
+      "autoFailFriendly": false,
+      "autoSaveFriendly": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "noConcentrationCheck": false,
+      "toggleEffect": false,
+      "ignoreTotalCover": false
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      },
+      "advancementOrigin": "xwrXPrIVobelvTJb"
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true
+    }
+  },
+  "img": "icons/creatures/magical/spirit-undead-masked-blue.webp",
+  "folder": "KN5vyHKy8cajL3t8",
+  "_key": "!items!SewID0iEU2RuLdgM"
+}

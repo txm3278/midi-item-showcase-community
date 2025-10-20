@@ -10,8 +10,8 @@
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Moto Moto version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Effect Macro</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that triggers at the start of each creature's turn to force the creature to avert its eyes or resist the gaze.</p></details>"
     },
     "source": {
-      "book": "Basic Rules (2014)",
-      "page": "144",
+      "book": "SRD 5.1",
+      "page": "",
       "custom": "",
       "license": "",
       "revision": 1,

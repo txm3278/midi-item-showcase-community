@@ -74,13 +74,25 @@ export function setConfig() {
         'Arms of the Astral Self': {
           name: 'Arms of the Astral Self',
           type: 'Class Feature',
-          version: '2.1.0',
+          version: '2.2.0',
           authors: ['Elwin', 'Spoob'],
         },
         'Arrow-Catching Shield': {
           name: 'Arrow-Catching Shield',
           type: 'Item',
           version: '4.1.0',
+          authors: ['Elwin'],
+        },
+        'Awakened Astral Self': {
+          name: 'Awakened Astral Self',
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
+        'Body of the Astral Self': {
+          name: 'Body of the Astral Self',
+          type: 'Class Feature',
+          version: '1.0.0',
           authors: ['Elwin'],
         },
         'Channel Divinity: Rebuke the Violent': {
@@ -147,6 +159,12 @@ export function setConfig() {
           name: 'Drow Poison',
           type: 'Item',
           version: '2.0.3',
+          authors: ['Elwin'],
+        },
+        'Eversmoking Bottle': {
+          name: 'Eversmoking Bottle',
+          type: 'Item',
+          version: '1.0.0',
           authors: ['Elwin'],
         },
         'Fighting Style: Great Weapon Fighting': {
@@ -371,6 +389,13 @@ export function setConfig() {
           version: '2.0.1',
           authors: ['Elwin', 'Moto Moto'],
         },
+        'Tomb of Levistus': {
+          name: 'Tomb of Levistus',
+          aliases: ['Eldritch Invocations: Tomb of Levistus'],
+          type: 'Class Feature',
+          version: '1.0.0',
+          authors: ['Elwin', 'pospa4'],
+        },
         'Unwavering Mark': {
           name: 'Unwavering Mark',
           type: 'Class Feature',
@@ -387,6 +412,12 @@ export function setConfig() {
           name: 'Vigilant Guardian',
           type: 'Race Feature',
           version: '4.1.0',
+          authors: ['Elwin'],
+        },
+        'Visage of the Astral Self': {
+          name: 'Visage of the Astral Self',
+          type: 'Class Feature',
+          version: '1.0.0',
           authors: ['Elwin'],
         },
         'Warding Flare': {
@@ -451,6 +482,12 @@ export function setConfig() {
           version: '1.2.0',
           authors: ['Elwin'],
         },
+        'Eversmoking Bottle': {
+          name: 'Eversmoking Bottle',
+          type: 'Item',
+          version: '1.0.0',
+          authors: ['Elwin'],
+        },
         'Flame Tongue': {
           name: 'Flame Tongue',
           type: 'Item',
@@ -483,6 +520,7 @@ export function setConfig() {
         },
         'Lolth’s Sting': {
           name: 'Lolth’s Sting',
+          aliases: ["Lolth's Sting"],
           type: 'Item',
           version: '1.0.1',
           authors: ['Elwin'],

@@ -18,10 +18,16 @@
           "mode": 2,
           "value": "- @abilities.str.mod + max(@abilities.str.mod, @abilities.wis.mod)",
           "priority": 20
+        },
+        {
+          "key": "flags.dae.armsOfTheAstralSelf",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
         }
       ],
       "duration": {
-        "seconds": 600,
+        "seconds": null,
         "startTime": null,
         "rounds": null,
         "turns": null,
@@ -88,17 +94,6 @@
       "system": {},
       "origin": null,
       "sort": 0,
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1749354700650,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!Ip5A3gCweckWTKol.PvMAiVVWMn4w620M"
     },
     {
@@ -118,7 +113,7 @@
       ],
       "duration": {
         "startTime": null,
-        "seconds": 600,
+        "seconds": null,
         "combat": null,
         "rounds": null,
         "turns": null,
@@ -167,17 +162,6 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1749263144147,
-        "modifiedTime": 1749486988654,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!Ip5A3gCweckWTKol.OrFsgBzqm000L5qA"
     }
   ],
@@ -213,10 +197,11 @@
           "chatFlavor": ""
         },
         "duration": {
-          "units": "inst",
+          "units": "minute",
           "special": "",
           "concentration": false,
-          "override": false
+          "override": false,
+          "value": "10"
         },
         "effects": [
           {
@@ -297,7 +282,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -305,7 +291,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": false,
           "identifier": "summon",
@@ -316,7 +301,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -324,7 +319,9 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true,
+        "friendlySave": "default"
       },
       "attackArmsOclNe1": {
         "name": "Attack with Spectral Arms",
@@ -431,7 +428,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -439,7 +437,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": true,
           "identifier": "attack-with-spectral-arms",
@@ -450,7 +447,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -461,14 +468,17 @@
         "otherActivityId": "none",
         "attackMode": "",
         "ammunition": "",
-        "otherActivityUuid": ""
+        "otherActivityUuid": "",
+        "otherActivityAsParentType": true,
+        "attackRollPerTarget": "default",
+        "fumbleThreshold": 1
       },
       "8OxOEhH88zMHN3Q5": {
         "type": "enchant",
         "_id": "8OxOEhH88zMHN3Q5",
         "sort": 0,
         "activation": {
-          "type": "action",
+          "type": "",
           "value": null,
           "override": false,
           "condition": ""
@@ -484,9 +494,10 @@
           "chatFlavor": ""
         },
         "duration": {
-          "units": "inst",
+          "units": "minute",
           "concentration": false,
-          "override": false
+          "override": false,
+          "value": "10"
         },
         "effects": [
           {
@@ -528,7 +539,8 @@
           "max": ""
         },
         "enchant": {
-          "identifier": ""
+          "identifier": "",
+          "self": false
         },
         "restrictions": {
           "allowMagical": false,
@@ -547,7 +559,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -555,7 +568,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -566,7 +578,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -586,7 +608,7 @@
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Spoob version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated the selected targets around must succeed on a Dex save\n or take damage from the summoned spectral hands, a new activity is added to the Unarmed Strike to allow\n using the spectral arms to make an attack and an effect is added to use Wis modifier instead of Str modifier\n on Str ability checks and saves.</p></details>",
       "chat": ""
     },
-    "identifier": "arms-of-astral-self",
+    "identifier": "arms-of-the-astral-self",
     "source": {
       "book": "TCoE",
       "page": "",
@@ -601,7 +623,8 @@
     "enchant": {},
     "prerequisites": {
       "level": 3,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     },
     "properties": [],
     "requirements": "Way of the Astral Self 3",
@@ -645,30 +668,9 @@
       "snapCenter": true,
       "snapCorner": true,
       "snapSideMidpoint": true
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
   },
   "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
   "folder": "KN5vyHKy8cajL3t8",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "createdTime": 1748806893365,
-    "modifiedTime": 1750904862882,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "_key": "!items!Ip5A3gCweckWTKol"
 }

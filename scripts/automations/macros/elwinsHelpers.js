@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.6
+// v3.5.7
 // Dependencies:
 //  - MidiQOL
 //
@@ -53,6 +53,11 @@
 // - elwinHelpers.registerWorkflowHook
 // - elwinHelpers.damageConfig.updateBasic
 // - elwinHelpers.damageConfig.updateCustom
+// - elwinHelpers.attachToToken
+// - elwinHelpers.detachFromToken
+// - elwinHelpers.attachToTemplate
+// - elwinHelpers.detachFromTemplate
+// - elwinHelpers.attachAmbientLightToTemplate
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -130,10 +135,10 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = '3.5.6';
-  const MACRO_NAME = 'elwin-helpers';
-  const WORLD_MODULE_ID = 'world';
-  const MISC_MODULE_ID = 'midi-item-showcase-community';
+  const VERSION = "3.5.7";
+  const MACRO_NAME = "elwin-helpers";
+  const WORLD_MODULE_ID = "world";
+  const MISC_MODULE_ID = "midi-item-showcase-community";
   const active = true;
   const WORKFLOWS = new Map();
   // Note: Needs to be var otherwise its value is not available in the isDebugEnabled function.
@@ -141,16 +146,16 @@ export function runElwinsHelpers() {
   let depReqFulfilled = false;
 
   const TPR_OPTIONS = [
-    'triggerSource',
-    'ignoreSelf',
-    'canSee',
-    'pre',
-    'post',
-    'reactionNone',
-    'range',
-    'wallsBlock',
-    'disposition',
-    'condition',
+    "triggerSource",
+    "ignoreSelf",
+    "canSee",
+    "pre",
+    "post",
+    "reactionNone",
+    "range",
+    "wallsBlock",
+    "disposition",
+    "condition",
   ];
 
   /**
@@ -198,93 +203,100 @@ export function runElwinsHelpers() {
    * @property {string} condition - Condition to evaluate to trigger the reaction, only used if reactionNone is true.
    */
 
-  const dependencies = ['midi-qol'];
+  const dependencies = ["midi-qol"];
   if (
     requirementsSatisfied(MACRO_NAME, dependencies) &&
-    foundry.utils.isNewerVersion(game.modules.get('midi-qol')?.version, '12.4.30')
+    foundry.utils.isNewerVersion(game.modules.get("midi-qol")?.version, "12.4.30")
   ) {
-    if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, 'Elwin Helpers')) {
+    if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, "Elwin Helpers")) {
       return;
     }
 
     depReqFulfilled = true;
 
     // Set a version to facilitate dependency check
-    exportIdentifier('elwinHelpers.version', VERSION);
+    exportIdentifier("elwinHelpers.version", VERSION);
 
-    setHook('midi-qol.postStart', 'handlePostStart', handlePostStart);
-    setHook('midi-qol.preValidateRoll', 'handlePreValidateRollId', handlePreValidateRoll);
-    setHook('midi-qol.preAttackRoll', 'handlePreAttackRollId', handlePreAttackRoll);
-    setHook('midi-qol.preCheckHits', 'handlePreCheckHitsId', handlePreCheckHits);
-    setHook('midi-qol.hitsChecked', 'handleHitsCheckedId', handleHitsChecked);
-    setHook('midi-qol.preDamageRoll', 'handlePreDamageRollId', handlePreDamageRoll);
-    setHook('midi-qol.preTargetDamageApplication', 'handlePreTargetDamageApplId', handlePreTargetDamageApplication);
-    setHook('midi-qol.preCheckSaves', 'handlePreCheckSavesId', handlePreCheckSaves);
-    setHook('midi-qol.postCheckSaves', 'handlePostCheckSavesId', handlePostCheckSaves);
+    setHook("midi-qol.postStart", "handlePostStart", handlePostStart);
+    setHook("midi-qol.preValidateRoll", "handlePreValidateRollId", handlePreValidateRoll);
+    setHook("midi-qol.preAttackRoll", "handlePreAttackRollId", handlePreAttackRoll);
+    setHook("midi-qol.preCheckHits", "handlePreCheckHitsId", handlePreCheckHits);
+    setHook("midi-qol.hitsChecked", "handleHitsCheckedId", handleHitsChecked);
+    setHook("midi-qol.preDamageRoll", "handlePreDamageRollId", handlePreDamageRoll);
+    setHook("midi-qol.preTargetDamageApplication", "handlePreTargetDamageApplId", handlePreTargetDamageApplication);
+    setHook("midi-qol.preCheckSaves", "handlePreCheckSavesId", handlePreCheckSaves);
+    setHook("midi-qol.postCheckSaves", "handlePostCheckSavesId", handlePostCheckSaves);
     setHook(
-      'midi-qol.dnd5ePreCalculateDamage',
-      'handleMidiDnd5ePreCalculateDamageId',
+      "midi-qol.dnd5ePreCalculateDamage",
+      "handleMidiDnd5ePreCalculateDamageId",
       handleMidiDnd5ePreCalculateDamage
     );
-    setHook('midi-qol.dnd5eCalculateDamage', 'handleMidiDnd5eCalculateDamageId', handleMidiDnd5eCalculateDamage);
-    setHook('dnd5e.canEnchant', 'handleDnd5eCanEnchant', handleDnd5eCanEnchant);
-    setHook('preCreateItem', 'handlePreCreateItem', handlePreCreateItem);
-    setHook('preUpdateItem', 'handlePreUpdateItem', handlePreUpdateItem);
+    setHook("midi-qol.dnd5eCalculateDamage", "handleMidiDnd5eCalculateDamageId", handleMidiDnd5eCalculateDamage);
+    setHook("dnd5e.canEnchant", "handleDnd5eCanEnchant", handleDnd5eCanEnchant);
+    setHook("preCreateItem", "handlePreCreateItem", handlePreCreateItem);
+    setHook("preUpdateItem", "handlePreUpdateItem", handlePreUpdateItem);
     setHook(
-      'deleteChatMessage',
-      'handleDeleteChatMessageForRegisteredWorkflowHooks',
+      "deleteChatMessage",
+      "handleDeleteChatMessageForRegisteredWorkflowHooks",
       handleDeleteChatMessageForRegisteredWorkflowHooks
     );
-    setHook('midi-qol.postCleanup', 'cleanupRegisteredWorkflowHooks', cleanupRegisteredWorkflowHooks);
-    exportIdentifier('elwinHelpers.isDebugEnabled', isDebugEnabled);
-    exportIdentifier('elwinHelpers.setDebugEnabled', setDebugEnabled);
+    setHook("midi-qol.postCleanup", "cleanupRegisteredWorkflowHooks", cleanupRegisteredWorkflowHooks);
+    setHook("moveToken", "handleMoveToken", handleMoveToken);
+    setHook("updateMeasuredTemplate", "handleUpdateMeasuredTemplate", handleUpdateMeasuredTemplate);
+    exportIdentifier("elwinHelpers.isDebugEnabled", isDebugEnabled);
+    exportIdentifier("elwinHelpers.setDebugEnabled", setDebugEnabled);
 
     // Note: keep this name to be backward compatible
-    exportIdentifier('elwinHelpers.getTargetDivs', getTargetDivs);
-    exportIdentifier('elwinHelpers.hasItemProperty', hasItemProperty);
-    exportIdentifier('elwinHelpers.reduceAppliedDamage', reduceAppliedDamage);
-    exportIdentifier('elwinHelpers.calculateAppliedDamage', calculateAppliedDamage);
-    exportIdentifier('elwinHelpers.insertTextIntoMidiItemCard', insertTextIntoMidiItemCard);
-    exportIdentifier('elwinHelpers.requirementsSatisfied', requirementsSatisfied);
-    exportIdentifier('elwinHelpers.selectTargetsWithinX', selectTargetsWithinX);
-    exportIdentifier('elwinHelpers.isWeapon', isWeapon);
-    exportIdentifier('elwinHelpers.isMeleeWeapon', isMeleeWeapon);
-    exportIdentifier('elwinHelpers.isRangedWeapon', isRangedWeapon);
-    exportIdentifier('elwinHelpers.isRangedAttack', isRangedAttack);
-    exportIdentifier('elwinHelpers.isRangedWeaponAttack', isRangedWeaponAttack);
-    exportIdentifier('elwinHelpers.isMeleeAttack', isMeleeAttack);
-    exportIdentifier('elwinHelpers.isMeleeWeaponAttack', isMeleeWeaponAttack);
-    exportIdentifier('elwinHelpers.isMidiHookStillValid', isMidiHookStillValid);
-    exportIdentifier('elwinHelpers.getTokenName', getTokenName);
-    exportIdentifier('elwinHelpers.getTokenImage', getTokenImage);
-    exportIdentifier('elwinHelpers.getActorSizeValue', getActorSizeValue);
-    exportIdentifier('elwinHelpers.getSizeValue', getSizeValue);
-    exportIdentifier('elwinHelpers.buttonDialog', buttonDialog);
-    exportIdentifier('elwinHelpers.remoteButtonDialog', remoteButtonDialog);
-    exportIdentifier('elwinHelpers.getAttackSegment', getAttackSegment);
-    exportIdentifier('elwinHelpers.getMoveTowardsPosition', getMoveTowardsPosition);
-    exportIdentifier('elwinHelpers.findMovableSpaceNearDest', findMovableSpaceNearDest);
-    exportIdentifier('elwinHelpers.convertCriticalToNormalHit', convertCriticalToNormalHit);
-    exportIdentifier('elwinHelpers.adjustAttackRollTargetAC', adjustAttackRollTargetAC);
-    exportIdentifier('elwinHelpers.getDamageRollOptions', getDamageRollOptions);
-    exportIdentifier('elwinHelpers.getAppliedEnchantments', getAppliedEnchantments);
-    exportIdentifier('elwinHelpers.deleteAppliedEnchantments', deleteAppliedEnchantments);
+    exportIdentifier("elwinHelpers.getTargetDivs", getTargetDivs);
+    exportIdentifier("elwinHelpers.hasItemProperty", hasItemProperty);
+    exportIdentifier("elwinHelpers.reduceAppliedDamage", reduceAppliedDamage);
+    exportIdentifier("elwinHelpers.calculateAppliedDamage", calculateAppliedDamage);
+    exportIdentifier("elwinHelpers.insertTextIntoMidiItemCard", insertTextIntoMidiItemCard);
+    exportIdentifier("elwinHelpers.requirementsSatisfied", requirementsSatisfied);
+    exportIdentifier("elwinHelpers.selectTargetsWithinX", selectTargetsWithinX);
+    exportIdentifier("elwinHelpers.isWeapon", isWeapon);
+    exportIdentifier("elwinHelpers.isMeleeWeapon", isMeleeWeapon);
+    exportIdentifier("elwinHelpers.isRangedWeapon", isRangedWeapon);
+    exportIdentifier("elwinHelpers.isRangedAttack", isRangedAttack);
+    exportIdentifier("elwinHelpers.isRangedWeaponAttack", isRangedWeaponAttack);
+    exportIdentifier("elwinHelpers.isMeleeAttack", isMeleeAttack);
+    exportIdentifier("elwinHelpers.isMeleeWeaponAttack", isMeleeWeaponAttack);
+    exportIdentifier("elwinHelpers.isMidiHookStillValid", isMidiHookStillValid);
+    exportIdentifier("elwinHelpers.getTokenName", getTokenName);
+    exportIdentifier("elwinHelpers.getTokenImage", getTokenImage);
+    exportIdentifier("elwinHelpers.getActorSizeValue", getActorSizeValue);
+    exportIdentifier("elwinHelpers.getSizeValue", getSizeValue);
+    exportIdentifier("elwinHelpers.buttonDialog", buttonDialog);
+    exportIdentifier("elwinHelpers.remoteButtonDialog", remoteButtonDialog);
+    exportIdentifier("elwinHelpers.getAttackSegment", getAttackSegment);
+    exportIdentifier("elwinHelpers.getMoveTowardsPosition", getMoveTowardsPosition);
+    exportIdentifier("elwinHelpers.findMovableSpaceNearDest", findMovableSpaceNearDest);
+    exportIdentifier("elwinHelpers.convertCriticalToNormalHit", convertCriticalToNormalHit);
+    exportIdentifier("elwinHelpers.adjustAttackRollTargetAC", adjustAttackRollTargetAC);
+    exportIdentifier("elwinHelpers.getDamageRollOptions", getDamageRollOptions);
+    exportIdentifier("elwinHelpers.getAppliedEnchantments", getAppliedEnchantments);
+    exportIdentifier("elwinHelpers.deleteAppliedEnchantments", deleteAppliedEnchantments);
     exportIdentifier(
-      'elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll',
+      "elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll",
       disableManualEnchantmentPlacingOnUsePreItemRoll
     );
     exportIdentifier(
-      'elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects',
+      "elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects",
       toggleSelfEnchantmentOnUsePostActiveEffects
     );
-    exportIdentifier('elwinHelpers.getAutomatedEnchantmentSelectedProfile', getAutomatedEnchantmentSelectedProfile);
-    exportIdentifier('elwinHelpers.applyEnchantmentToItem', applyEnchantmentToItem);
-    exportIdentifier('elwinHelpers.applyEnchantmentToItemFromOtherActivity', applyEnchantmentToItemFromOtherActivity);
-    exportIdentifier('elwinHelpers.getEquippedMeleeWeapons', getEquippedMeleeWeapons);
-    exportIdentifier('elwinHelpers.getRules', getRules);
-    exportIdentifier('elwinHelpers.registerWorkflowHook', registerWorkflowHook);
-    exportIdentifier('elwinHelpers.damageConfig.updateBasic', updateDamageConfigBasic);
-    exportIdentifier('elwinHelpers.damageConfig.updateCustom', updateDamageConfigCustom);
+    exportIdentifier("elwinHelpers.getAutomatedEnchantmentSelectedProfile", getAutomatedEnchantmentSelectedProfile);
+    exportIdentifier("elwinHelpers.applyEnchantmentToItem", applyEnchantmentToItem);
+    exportIdentifier("elwinHelpers.applyEnchantmentToItemFromOtherActivity", applyEnchantmentToItemFromOtherActivity);
+    exportIdentifier("elwinHelpers.getEquippedMeleeWeapons", getEquippedMeleeWeapons);
+    exportIdentifier("elwinHelpers.getRules", getRules);
+    exportIdentifier("elwinHelpers.registerWorkflowHook", registerWorkflowHook);
+    exportIdentifier("elwinHelpers.damageConfig.updateBasic", updateDamageConfigBasic);
+    exportIdentifier("elwinHelpers.damageConfig.updateCustom", updateDamageConfigCustom);
+    exportIdentifier("elwinHelpers.attachToToken", attachToToken);
+    exportIdentifier("elwinHelpers.detachFromToken", detachFromToken);
+    exportIdentifier("elwinHelpers.attachToTemplate", attachToTemplate);
+    exportIdentifier("elwinHelpers.detachFromTemplate", detachFromTemplate);
+    exportIdentifier("elwinHelpers.attachAmbientLightToTemplate", attachAmbientLightToTemplate);
 
     // Note: classes need to be exported after they are declared...
 
@@ -353,7 +365,7 @@ export function runElwinsHelpers() {
    */
   function exportIdentifier(exportedIdentifierName, exportedValue) {
     if (foundry.utils.getProperty(globalThis, exportedIdentifierName)) {
-      const lastIndex = exportedIdentifierName.lastIndexOf('.');
+      const lastIndex = exportedIdentifierName.lastIndexOf(".");
       if (lastIndex < 0) {
         delete globalThis[exportedIdentifierName];
       } else {
@@ -376,7 +388,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePostStart.`, workflow);
     }
     for (let token of game.canvas.tokens.placeables) {
-      const actorOnUseMacros = foundry.utils.getProperty(token.actor ?? {}, 'flags.midi-qol.onUseMacroParts');
+      const actorOnUseMacros = foundry.utils.getProperty(token.actor ?? {}, "flags.midi-qol.onUseMacroParts");
       if (!actorOnUseMacros) {
         // Skip this actor does not have any on use macros
         continue;
@@ -384,7 +396,7 @@ export function runElwinsHelpers() {
       await registerThirdPartyReactions(
         workflow,
         token,
-        actorOnUseMacros.items.filter((m) => m.option.startsWith('tpr.'))
+        actorOnUseMacros.items.filter((m) => m.option.startsWith("tpr."))
       );
     }
   }
@@ -398,7 +410,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePreValidateRoll.`, workflow);
     }
 
-    await handleThirdPartyReactions(workflow, ['isTargeted']);
+    await handleThirdPartyReactions(workflow, ["isTargeted"]);
   }
 
   /**
@@ -410,7 +422,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePreAttackRoll.`, workflow);
     }
 
-    await handleThirdPartyReactions(workflow, ['isPreAttacked']);
+    await handleThirdPartyReactions(workflow, ["isPreAttacked"]);
   }
 
   /**
@@ -422,7 +434,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePreCheckHits.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isAttacked']);
+    await handleThirdPartyReactions(workflow, ["isAttacked"]);
   }
 
   /**
@@ -434,7 +446,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handleHitsChecked.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isHit', 'isMissed']);
+    await handleThirdPartyReactions(workflow, ["isHit", "isMissed"]);
   }
 
   /**
@@ -446,7 +458,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePreDamageRoll.`, workflow);
     }
 
-    await handleThirdPartyReactions(workflow, ['isPreDamaged']);
+    await handleThirdPartyReactions(workflow, ["isPreDamaged"]);
   }
 
   /**
@@ -463,7 +475,7 @@ export function runElwinsHelpers() {
     if (!appliedDamage) {
       // compute total damage applied to target
       appliedDamage = options?.damageItem?.damageDetail.reduce(
-        (total, d) => (total += ['temphp', 'midi-none'].includes(d.type) ? 0 : d.value),
+        (total, d) => (total += ["temphp", "midi-none"].includes(d.type) ? 0 : d.value),
         0
       );
       appliedDamage = appliedDamage > 0 ? Math.floor(appliedDamage) : Math.ceil(appliedDamage);
@@ -476,15 +488,15 @@ export function runElwinsHelpers() {
     ) {
       // Set our own total damage to make sure it is available, currently midi does not provide a total of the non RAW damage
       options.damageItem.elwinHelpersEffectiveDamage = appliedDamage;
-      const conditionAttr = 'workflow.damageItem?.elwinHelpersEffectiveDamage';
+      const conditionAttr = "workflow.damageItem?.elwinHelpersEffectiveDamage";
       if (appliedDamage > 0) {
-        await handleThirdPartyReactions(options.workflow, ['isDamaged'], {
+        await handleThirdPartyReactions(options.workflow, ["isDamaged"], {
           item: options?.item,
           target,
           extraActivationCond: `${conditionAttr} > 0`,
         });
       } else {
-        await handleThirdPartyReactions(options.workflow, ['isHealed'], {
+        await handleThirdPartyReactions(options.workflow, ["isHealed"], {
           item: options?.item,
           target,
           extraActivationCond: `${conditionAttr} < 0`,
@@ -502,7 +514,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePreCheckSaves.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isPreCheckSave']);
+    await handleThirdPartyReactions(workflow, ["isPreCheckSave"]);
   }
 
   /**
@@ -514,7 +526,7 @@ export function runElwinsHelpers() {
       console.warn(`${MACRO_NAME} | handlePostCheckSaves.`, { workflow });
     }
 
-    await handleThirdPartyReactions(workflow, ['isPostCheckSave']);
+    await handleThirdPartyReactions(workflow, ["isPostCheckSave"]);
   }
 
   /**
@@ -534,14 +546,14 @@ export function runElwinsHelpers() {
     }
     while (
       damages.find((di, idx) => {
-        if (di.type === 'none' && di.active?.DP) {
+        if (di.type === "none" && di.active?.DP) {
           damages.splice(idx, 1);
           return true;
         }
         return false;
       })
     );
-    foundry.utils.setProperty(options, 'elwinHelpers.preDamagePreventionCalled', true);
+    foundry.utils.setProperty(options, "elwinHelpers.preDamagePreventionCalled", true);
     return true;
   }
 
@@ -563,7 +575,7 @@ export function runElwinsHelpers() {
       handleMidiDnd5ePreCalculateDamage(actor, damages, options);
     }
     const totalDamage = damages.reduce(
-      (total, damage) => (total += ['temphp', 'midi-none'].includes(damage.type) ? 0 : damage.value),
+      (total, damage) => (total += ["temphp", "midi-none"].includes(damage.type) ? 0 : damage.value),
       0
     );
     if (totalDamage <= 0) {
@@ -573,7 +585,7 @@ export function runElwinsHelpers() {
     const damagePrevention = Math.min(options.elwinHelpers.damagePrevention, totalDamage);
     if (damagePrevention) {
       damages.push({
-        type: 'none',
+        type: "none",
         value: -damagePrevention,
         active: { DP: true, multiplier: 1 },
         properties: new Set(),
@@ -643,7 +655,7 @@ export function runElwinsHelpers() {
         // No consumption configured on activity
         continue;
       }
-      const activityData = replaceActivityConsumptionTargetIdentifierById('handlePreCreateItem', item, activity, false);
+      const activityData = replaceActivityConsumptionTargetIdentifierById("handlePreCreateItem", item, activity, false);
       if (activityData) {
         item.updateSource({ [`system.activities.${activityData._id}`]: activityData });
       }
@@ -672,9 +684,161 @@ export function runElwinsHelpers() {
         // No consumption configured on activity
         continue;
       }
-      replaceActivityConsumptionTargetIdentifierById('handlePreUpdateItem', item, activityData, true);
+      replaceActivityConsumptionTargetIdentifierById("handlePreUpdateItem", item, activityData, true);
     }
     return true;
+  }
+
+  /**
+   * Handles the updateToken hook. Updates position of attached entities when the token is moved.
+   *
+   * @param {TokenDocument} tokenDocument - The existing Token Document which was moved.
+   * @param {object} movement - The movement data.
+   * @param {Partial<DatabaseUpdateOperation>} options - Additional options which modified the move token.
+   * @param {User} user -The User who triggered the move.
+   */
+  async function handleMoveToken(tokenDocument, movement, options, user) {
+    if (!game.user.isActiveGM) {
+      return;
+    }
+    if (!tokenDocument.actor) {
+      return;
+    }
+    if (tokenDocument.actor.type === "group") {
+      return;
+    }
+    if (tokenDocument.parent.id != canvas.scene.id) {
+      return;
+    }
+    const previousCoords = foundry.utils.duplicate(movement.origin);
+    const coords = foundry.utils.duplicate(movement.destination);
+    if (!previousCoords) {
+      return;
+    }
+    if (debug) {
+      console.warn(`${MACRO_NAME} | updateToken`, { tokenDocument, movement, options, user });
+    }
+
+    const delta = {
+      x: coords.x - previousCoords.x,
+      y: coords.y - previousCoords.y,
+      elevation: coords.elevation - previousCoords.elevation,
+    };
+
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = tokenDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = tokenDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    }
+    if (!attachedEntityUuids.length) {
+      return;
+    }
+    let removedEntityUuids = [];
+    await Promise.all(
+      attachedEntityUuids.map(async (entityUuid) => {
+        let entity = await fromUuid(entityUuid);
+        if (!entity) {
+          removedEntityUuids.push(entityUuid);
+        } else {
+          await entity.update({
+            x: entity.x + delta.x,
+            y: entity.y + delta.y,
+            elevation: entity.elevation + delta.elevation,
+          });
+        }
+      })
+    );
+    if (removedEntityUuids.length) {
+      await tokenDocument.setFlag(
+        moduleId,
+        "attached.attachedEntityUuids",
+        attachedEntityUuids.filter((i) => !removedEntityUuids.includes(i))
+      );
+    }
+  }
+
+  /**
+   * Handles the updateMeasuredTemplate hook. Updates position of attached entities when the template is moved.
+   *
+   * @param {MeasuredTemplateDocument} templateDocument - The existing Template Document which was updated.
+   * @param {object} changed - The changes applied.
+   * @param {Partial<DatabaseUpdateOperation>} options - Additional options which modified the template.
+   * @param {string} userId -The User ID who triggered the update.
+   */
+  async function handleUpdateMeasuredTemplate(templateDocument, changed, options, userId) {
+    if (!game.user.isActiveGM) {
+      return;
+    }
+    if (
+      !(
+        Object.hasOwn(changed, "x") ||
+        Object.hasOwn(changed, "y") ||
+        Object.hasOwn(changed, "elevation") ||
+        Object.hasOwn(changed, "rotation") ||
+        Object.hasOwn(changed, "distance")
+      )
+    ) {
+      return;
+    }
+    if (templateDocument.t !== "circle") {
+      // For now we only support attachment to circle templates
+      return;
+    }
+    if (debug) {
+      console.warn(`${MACRO_NAME} | updateMeasuredTemplate`, { templateDocument, changed, options, userId });
+    }
+
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    let synchedEntityUuids = templateDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+      synchedEntityUuids = templateDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    }
+    if (!attachedEntityUuids.length) {
+      return;
+    }
+    let removedEntityUuids = [];
+    await Promise.all(
+      attachedEntityUuids.map(async (entityUuid) => {
+        let entity = await fromUuid(entityUuid);
+        if (!entity) {
+          removedEntityUuids.push(entityUuid);
+        } else {
+          const updates = {
+            x: templateDocument.x,
+            y: templateDocument.y,
+            elevation: templateDocument.elevation,
+            rotation: templateDocument.rotation,
+          };
+          if (synchedEntityUuids.includes(entityUuid)) {
+            if (entity instanceof AmbientLightDocument) {
+              if (entity.config.dim > 0) {
+                foundry.utils.setProperty(updates, "config.dim", templateDocument.distance);
+                if (entity.config.bright > 0) {
+                  foundry.utils.setProperty(
+                    updates,
+                    "config.bright",
+                    (entity.config.bright / entity.config.dim) * templateDocument.distance
+                  );
+                }
+              } else if (entity.config.bright > 0) {
+                foundry.utils.setProperty(updates, "config.bright", templateDocument.distance);
+              }
+            }
+          }
+          await entity.update(updates);
+        }
+      })
+    );
+    if (removedEntityUuids.length) {
+      await templateDocument.setFlag(moduleId, "attached", {
+        attachedEntityUuids: attachedEntityUuids.filter((i) => !removedEntityUuids.includes(i)),
+        synchedEntityUuids: synchedEntityUuids.filter((i) => !removedEntityUuids.includes(i)),
+      });
+    }
   }
 
   /**
@@ -692,8 +856,8 @@ export function runElwinsHelpers() {
     for (let target of activityOrData.consumption.targets ?? []) {
       if (
         !target.target ||
-        !['itemUses', 'material'].includes(target.type) ||
-        target.target.includes('.') ||
+        !["itemUses", "material"].includes(target.type) ||
+        target.target.includes(".") ||
         item.actor.items?.get(target.target)
       ) {
         // Consumption not refering an item, contains a UUID or contains a valid item ID.
@@ -702,7 +866,7 @@ export function runElwinsHelpers() {
       }
       // Support DDBI legacy suffix
       const itemIdent = target.target;
-      const itemIdentLegacy = itemIdent + '-legacy';
+      const itemIdentLegacy = itemIdent + "-legacy";
       const useItem = item.actor.items?.find(
         (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max
       );
@@ -738,7 +902,7 @@ export function runElwinsHelpers() {
    * @returns {{condition: string, conditionMSg: string}} the condition and associated condition message.
    */
   function getEchantmentEffectExtraRestrictions(enchantmentEffect) {
-    const partialFlag = 'elwinHelpers.extraEnchantRestrictions';
+    const partialFlag = "elwinHelpers.extraEnchantRestrictions";
     const conditionKeyRex = new RegExp(
       `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).condition$`
     );
@@ -794,109 +958,109 @@ export function runElwinsHelpers() {
   function getReactionFlavor(data) {
     const { user, reactionTriggerName, triggerToken, triggerItem, reactionToken, roll, showReactionAttackRoll } = data;
 
-    let reactionFlavor = 'Unknow reaction trigger!';
+    let reactionFlavor = "Unknow reaction trigger!";
     switch (reactionTriggerName) {
-      case 'isPreAttacked':
-      case 'preAttack':
-        reactionFlavor = '{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction';
+      case "isPreAttacked":
+      case "preAttack":
+        reactionFlavor = "{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isAttacked':
-        reactionFlavor = '{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction';
+      case "isAttacked":
+        reactionFlavor = "{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isPreDamaged':
-        reactionFlavor = '{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction';
+      case "isPreDamaged":
+        reactionFlavor = "{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isDamaged':
-      case 'preTargetDamageApplication':
-        reactionFlavor = '{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction';
+      case "isDamaged":
+      case "preTargetDamageApplication":
+        reactionFlavor = "{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isHealed':
-        reactionFlavor = '{actorName} is healed by {itemName} and {reactionActorName} can use a reaction';
+      case "isHealed":
+        reactionFlavor = "{actorName} is healed by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isTargeted':
-      case 'prePreambleComplete':
-        reactionFlavor = '{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction';
+      case "isTargeted":
+      case "prePreambleComplete":
+        reactionFlavor = "{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isMissed':
-        reactionFlavor = '{actorName} is missed by {itemName} and {reactionActorName} can use a reaction';
+      case "isMissed":
+        reactionFlavor = "{actorName} is missed by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isCriticalHit':
-        reactionFlavor = '{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction';
+      case "isCriticalHit":
+        reactionFlavor = "{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isFumble':
+      case "isFumble":
         reactionFlavor =
-          '{actorName} is attacked by {itemName} which fumbled and {reactionActorName} can use a reaction';
+          "{actorName} is attacked by {itemName} which fumbled and {reactionActorName} can use a reaction";
         break;
-      case 'preTargetSave':
-      case 'isAboutToSave':
-      case 'isPreCheckSave':
-      case 'isPostCheckSave':
-        reactionFlavor = '{actorName} must save because of {itemName} and {reactionActorName} can use a reaction';
+      case "preTargetSave":
+      case "isAboutToSave":
+      case "isPreCheckSave":
+      case "isPostCheckSave":
+        reactionFlavor = "{actorName} must save because of {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isSaveSuccess':
+      case "isSaveSuccess":
         reactionFlavor =
-          '{actorName} succeeded on a save because of {itemName} and {reactionActorName} can use a reaction';
+          "{actorName} succeeded on a save because of {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isSaveFailure':
+      case "isSaveFailure":
         reactionFlavor =
-          '{actorName} failed on a save because of {itemName} and {reactionActorName} can use a reaction';
+          "{actorName} failed on a save because of {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isMoved':
-        reactionFlavor = '{actorName} is moved and {reactionActorName} can use a reaction';
+      case "isMoved":
+        reactionFlavor = "{actorName} is moved and {reactionActorName} can use a reaction";
         break;
-      case 'postTargetEffectApplication':
+      case "postTargetEffectApplication":
         reactionFlavor =
-          '{actorName} has been applied effects because of {itemName} and {reactionActorName} can use a reaction';
+          "{actorName} has been applied effects because of {itemName} and {reactionActorName} can use a reaction";
         break;
-      case 'isHit':
+      case "isHit":
       default:
-        reactionFlavor = '{actorName} is hit by {itemName} and {reactionActorName} can use a reaction';
+        reactionFlavor = "{actorName} is hit by {itemName} and {reactionActorName} can use a reaction";
         break;
     }
     reactionFlavor = game.i18n.format(reactionFlavor, {
-      itemName: triggerItem?.name ?? 'unknown',
+      itemName: triggerItem?.name ?? "unknown",
       actorName: getTokenPlayerName(user, triggerToken, user?.isGM),
-      reactionActorName: reactionToken?.name ?? 'unknown',
+      reactionActorName: reactionToken?.name ?? "unknown",
     });
 
     //{none: 'Attack Hits', d20: 'd20 roll only', all: 'Attack Roll Total', allCrit: 'Attack Roll Total + Critical'}
-    if (['isHit', 'isMissed', 'isCrit', 'isFumble', 'isAttacked'].includes(reactionTriggerName)) {
+    if (["isHit", "isMissed", "isCrit", "isFumble", "isAttacked"].includes(reactionTriggerName)) {
       const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
-      const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
+      const rollOptions = getI18nOptions("ShowReactionAttackRollOptions");
       switch (showAttackRoll) {
-        case 'all':
-          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''}`;
+        case "all":
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ""}`;
           break;
-        case 'allCrit': {
+        case "allCrit": {
           const criticalString = roll?.isCritical
-            ? `<span style="color: green">(${getI18n('DND5E.Critical')})</span>`
-            : '';
-          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''} ${criticalString}`;
+            ? `<span style="color: green">(${getI18n("DND5E.Critical")})</span>`
+            : "";
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ""} ${criticalString}`;
           break;
         }
-        case 'd20': {
+        case "d20": {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ''
-            : roll?.terms[0]?.total ?? '';
+            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ""
+            : roll?.terms[0]?.total ?? "";
           reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
         default:
       }
     }
-    if (['isPostCheckSave'].includes(reactionTriggerName)) {
+    if (["isPostCheckSave"].includes(reactionTriggerName)) {
       // Note: we use the same config as the attack to determine is the TPR owner can see of the Roll.
       const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
-      const rollOptions = getI18nOptions('ShowReactionAttackRollOptions');
+      const rollOptions = getI18nOptions("ShowReactionAttackRollOptions");
       switch (showAttackRoll) {
-        case 'all':
-        case 'allCrit':
-          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ''}`;
+        case "all":
+        case "allCrit":
+          reactionFlavor = `${reactionFlavor} - ${rollOptions.all} ${roll?.total ?? ""}`;
           break;
-        case 'd20': {
+        case "d20": {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ''
-            : roll?.terms[0]?.total ?? '';
+            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ""
+            : roll?.terms[0]?.total ?? "";
           reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
@@ -922,7 +1086,7 @@ export function runElwinsHelpers() {
 
     for (let trigger of triggerList) {
       // Add Third Party Reactions trigger prefix
-      trigger = 'tpr.' + trigger;
+      trigger = "tpr." + trigger;
       for (let tokenUuid of Object.keys(workflow.thirdPartyReactions ?? {})) {
         const tokenReactionsInfo = workflow.thirdPartyReactions[tokenUuid];
         await handleThirdPartyReactionsForToken(workflow, trigger, tokenUuid, tokenReactionsInfo, options);
@@ -969,7 +1133,7 @@ export function runElwinsHelpers() {
     const atLeastOneReactionNone = filteredReactions.some((reactionData) => reactionData.reactionNone);
 
     // Check and terminate early for this actor, but only if there aren't any reactionNone
-    if (!atLeastOneReactionNone && MidiQOL.checkRule('incapacitated') && MidiQOL.checkIncapacitated(reactionActor)) {
+    if (!atLeastOneReactionNone && MidiQOL.checkRule("incapacitated") && MidiQOL.checkIncapacitated(reactionActor)) {
       if (debug) {
         console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
       }
@@ -979,7 +1143,7 @@ export function runElwinsHelpers() {
     // Copied from midi-qol because this utility function is not exposed
     function getReactionSetting(user) {
       if (!user) {
-        return 'none';
+        return "none";
       }
       return user.isGM ? MidiQOL.configSettings().gmDoReactions : MidiQOL.configSettings().doReactions;
     }
@@ -987,7 +1151,7 @@ export function runElwinsHelpers() {
     // Check and terminate early for this actor, but only if there aren't any reactionNone
     // If the target is associated to a GM user roll item in this client, otherwise send the item roll to user's client
     let player = MidiQOL.playerForActor(reactionActor);
-    if (!atLeastOneReactionNone && getReactionSetting(player) === 'none') {
+    if (!atLeastOneReactionNone && getReactionSetting(player) === "none") {
       if (debug) {
         console.warn(`${MACRO_NAME} | Reaction settings set to none for player.`, player);
       }
@@ -1003,7 +1167,7 @@ export function runElwinsHelpers() {
       return;
     }
 
-    const regTrigger = trigger.replace('tpr.', '');
+    const regTrigger = trigger.replace("tpr.", "");
     const maxCastLevel = maxReactionCastLevel(reactionActor);
 
     let targets;
@@ -1011,22 +1175,22 @@ export function runElwinsHelpers() {
     let roll = workflow.attackRoll;
 
     switch (regTrigger) {
-      case 'isHealed':
-      case 'isDamaged':
+      case "isHealed":
+      case "isDamaged":
         targets = options.target ? [options.target] : [];
         break;
-      case 'isHit':
-      case 'isPreDamaged':
-      case 'isPreCheckSave':
-      case 'isPostCheckSave':
+      case "isHit":
+      case "isPreDamaged":
+      case "isPreCheckSave":
+      case "isPostCheckSave":
         targets = [...workflow.hitTargets, ...workflow.hitTargetsEC];
         break;
-      case 'isMissed':
+      case "isMissed":
         targets = [...workflow.targets.difference(workflow.hitTargets).difference(workflow.hitTargetsEC)];
         break;
-      case 'isTargeted':
-      case 'isPreAttacked':
-      case 'isAttacked':
+      case "isTargeted":
+      case "isPreAttacked":
+      case "isAttacked":
       default:
         targets = [...workflow.targets];
         break;
@@ -1042,14 +1206,14 @@ export function runElwinsHelpers() {
       // Check each call after first in case the status changed or the reaction was used
       let reactionUsed = MidiQOL.hasUsedReaction(reactionActor);
       if (!first && !atLeastOneReactionNone) {
-        if (MidiQOL.checkRule('incapacitated') && MidiQOL.checkIncapacitated(reactionActor)) {
+        if (MidiQOL.checkRule("incapacitated") && MidiQOL.checkIncapacitated(reactionActor)) {
           if (debug) {
             console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
           }
           return;
         }
       }
-      if (['isPostCheckSave'].includes(regTrigger)) {
+      if (["isPostCheckSave"].includes(regTrigger)) {
         roll = workflow.saveRolls?.find((r) => r.data.tokenUuid === target.document.uuid);
       }
       const tmpFilteredReactions = [];
@@ -1059,13 +1223,13 @@ export function runElwinsHelpers() {
         // Check conditions that were skipped due to having at least one reactionNone
         // This will allow to only skip activities
         if (atLeastOneReactionNone) {
-          if (MidiQOL.checkRule('incapacitated') && MidiQOL.checkIncapacitated(reactionActor)) {
+          if (MidiQOL.checkRule("incapacitated") && MidiQOL.checkIncapacitated(reactionActor)) {
             if (debug) {
               console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
             }
             skipReactionActivities = true;
           }
-          if (getReactionSetting(player) === 'none') {
+          if (getReactionSetting(player) === "none") {
             if (debug) {
               console.warn(`${MACRO_NAME} | Reaction settings set to none for player.`, player);
             }
@@ -1156,7 +1320,7 @@ export function runElwinsHelpers() {
       return false;
     }
 
-    const triggerToken = reactionData.triggerSource === 'attacker' ? workflow.token : target;
+    const triggerToken = reactionData.triggerSource === "attacker" ? workflow.token : target;
 
     // Check allowed disposition condition
     let allowedDisposition;
@@ -1168,7 +1332,7 @@ export function runElwinsHelpers() {
       if (debug) {
         console.warn(
           `${MACRO_NAME} | canTriggerReactionActivity - ${reactionData.item.name}-${
-            activity?.name ?? ''
+            activity?.name ?? ""
           }: disposition not allowed.`,
           {
             allowedDisposition,
@@ -1186,7 +1350,7 @@ export function runElwinsHelpers() {
       if (tmpDist < 0 || tmpDist > range.value) {
         if (debug) {
           console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity?.name ?? ''}: invalid distance.`,
+            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${activity?.name ?? ""}: invalid distance.`,
             {
               distance: tmpDist,
               allowedDistance: range,
@@ -1200,7 +1364,7 @@ export function runElwinsHelpers() {
     // Check visibility condition
     // Cache canSee results in reactionsInfo
     let canSeeTriggerSource;
-    if (reactionData.triggerSource === 'attacker') {
+    if (reactionData.triggerSource === "attacker") {
       canSeeTriggerSource = tokenReactionsInfo.canSeeAttacker ??= MidiQOL.canSee(reactionToken, workflow.token);
     } else {
       if (!tokenReactionsInfo.canSeeTargets?.has(target)) {
@@ -1213,7 +1377,7 @@ export function runElwinsHelpers() {
       if (debug) {
         console.warn(
           `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${
-            activity?.name ?? ''
+            activity?.name ?? ""
           }: can't see trigger token.`
         );
       }
@@ -1265,7 +1429,7 @@ export function runElwinsHelpers() {
         if (debug) {
           console.warn(
             `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${
-              activity?.name ?? ''
+              activity?.name ?? ""
             }: extra activation condition not met.`,
             {
               extraActivationCond: options.extraActivationCond,
@@ -1281,7 +1445,7 @@ export function runElwinsHelpers() {
       if (debug) {
         console.warn(
           `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${
-            activity?.name ?? ''
+            activity?.name ?? ""
           } using condition ${reactionCondition}`,
           { extraData }
         );
@@ -1296,7 +1460,7 @@ export function runElwinsHelpers() {
         if (debug) {
           console.warn(
             `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${
-              activity?.name ?? ''
+              activity?.name ?? ""
             }: reaction condition not met.`,
             reactionCondition
           );
@@ -1319,10 +1483,10 @@ export function runElwinsHelpers() {
     if (reactionData.reactionNone) {
       return reactionData.disposition;
     }
-    const targetType = foundry.utils.getProperty(activity, 'target.affects.type');
-    if (targetType === 'ally') {
+    const targetType = foundry.utils.getProperty(activity, "target.affects.type");
+    if (targetType === "ally") {
       return CONST.TOKEN_DISPOSITIONS.FRIENDLY;
-    } else if (targetType === 'enemy') {
+    } else if (targetType === "enemy") {
       return CONST.TOKEN_DISPOSITIONS.HOSTILE;
     }
     return undefined;
@@ -1345,7 +1509,7 @@ export function runElwinsHelpers() {
       range.wallsBlock = reactionData.wallsBlock;
     } else {
       range.value = getRangeFromActivity(activity);
-      range.wallsBlock = !foundry.utils.getProperty(activity, 'midiProperties.ignoreFullCover');
+      range.wallsBlock = !foundry.utils.getProperty(activity, "midiProperties.ignoreFullCover");
     }
     return range?.value !== undefined || range?.value == null ? range : undefined;
   }
@@ -1366,15 +1530,15 @@ export function runElwinsHelpers() {
     let range = activity.range.value;
     if (activity.range.units) {
       switch (activity.range.units) {
-        case 'mi': // miles - assume grid units are feet or miles - ignore furlongs/chains whatever
-          if (['feet', 'ft'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
+        case "mi": // miles - assume grid units are feet or miles - ignore furlongs/chains whatever
+          if (["feet", "ft"].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 5280;
-          } else if (['yards', 'yd', 'yds'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
+          } else if (["yards", "yd", "yds"].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 1760;
           }
           break;
-        case 'km': // kilometeres - assume grid units are meters or kilometers
-          if (['meter', 'm', 'meters', 'metre', 'metres'].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
+        case "km": // kilometeres - assume grid units are meters or kilometers
+          if (["meter", "m", "meters", "metre", "metres"].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
             range *= 1000;
           }
           break;
@@ -1414,7 +1578,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the condition evaluates to true, false otherwise.
    */
   function evalActivationCondition(workflow, condition, target, options = {}) {
-    if (condition === undefined || condition === '') {
+    if (condition === undefined || condition === "") {
       return true;
     }
     MidiQOL.createConditionData({
@@ -1441,18 +1605,18 @@ export function runElwinsHelpers() {
       return Number(disposition);
     }
     switch (disposition.toLocaleLowerCase()) {
-      case 'SECRET'.toLocaleLowerCase():
+      case "SECRET".toLocaleLowerCase():
         return CONST.TOKEN_DISPOSITIONS.SECRET;
-      case 'HOSTILE'.toLocaleLowerCase():
+      case "HOSTILE".toLocaleLowerCase():
         return CONST.TOKEN_DISPOSITIONS.HOSTILE;
-      case 'NEUTRAL'.toLocaleLowerCase():
+      case "NEUTRAL".toLocaleLowerCase():
         return CONST.TOKEN_DISPOSITIONS.NEUTRAL;
-      case 'FRIENDLY'.toLocaleLowerCase():
+      case "FRIENDLY".toLocaleLowerCase():
         return CONST.TOKEN_DISPOSITIONS.FRIENDLY;
-      case 'all':
+      case "all":
         return null;
     }
-    const validStrings = ['-2', '-1', '0', '1', 'FRIENDLY', 'HOSTILE', 'NEUTRAL', 'SECRET', 'all'];
+    const validStrings = ["-2", "-1", "0", "1", "FRIENDLY", "HOSTILE", "NEUTRAL", "SECRET", "all"];
     throw new Error(
       `${MACRO_NAME} | Disposition ${disposition} is invalid. Disposition must be one of "${validStrings}"`
     );
@@ -1486,11 +1650,11 @@ export function runElwinsHelpers() {
       return;
     }
     const reactionsByTriggerSources = [];
-    const reactionsByAttacker = reactions.filter((reactionData) => reactionData.triggerSource === 'attacker');
+    const reactionsByAttacker = reactions.filter((reactionData) => reactionData.triggerSource === "attacker");
     if (reactionsByAttacker.length) {
       reactionsByTriggerSources.push(reactionsByAttacker);
     }
-    const reactionsByTarget = reactions.filter((reactionData) => reactionData.triggerSource === 'target');
+    const reactionsByTarget = reactions.filter((reactionData) => reactionData.triggerSource === "target");
     if (reactionsByTarget.length) {
       reactionsByTriggerSources.push(reactionsByTarget);
     }
@@ -1519,8 +1683,8 @@ export function runElwinsHelpers() {
             let [result] = await workflow.callMacros(
               workflow.item,
               reactionData.macroName,
-              'TargetOnUse',
-              reactionTrigger + '.pre',
+              "TargetOnUse",
+              reactionTrigger + ".pre",
               preReactionOptions
             );
             if (result?.skip) {
@@ -1539,7 +1703,7 @@ export function runElwinsHelpers() {
         }
       }
 
-      let result = { name: 'None', uuid: undefined };
+      let result = { name: "None", uuid: undefined };
       try {
         if (!validReactionActivities.length) {
           continue;
@@ -1553,17 +1717,17 @@ export function runElwinsHelpers() {
               trigger: reactionTrigger,
               activityUuids: reactionActivityUuids,
             },
-            workflowOptions: { targetConfirmation: 'none' },
+            workflowOptions: { targetConfirmation: "none" },
           },
           options?.reactionOptions ?? {}
         );
         let reactionTargetUuid;
-        foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'triggerSource', triggerSource);
-        if (triggerSource === 'attacker') {
-          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'targetUuid', target.document.uuid);
+        foundry.utils.setProperty(reactionOptions.thirdPartyReaction, "triggerSource", triggerSource);
+        if (triggerSource === "attacker") {
+          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, "targetUuid", target.document.uuid);
           reactionTargetUuid = workflow.tokenUuid;
         } else {
-          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, 'attackerUuid', workflow.tokenUuid);
+          foundry.utils.setProperty(reactionOptions.thirdPartyReaction, "attackerUuid", workflow.tokenUuid);
           reactionTargetUuid = target.document.uuid;
         }
 
@@ -1573,17 +1737,17 @@ export function runElwinsHelpers() {
           triggerTokenUuid: reactionTargetUuid,
           reactionFlavor: getReactionFlavor({
             user,
-            reactionTriggerName: reactionTrigger.replace('tpr.', ''),
+            reactionTriggerName: reactionTrigger.replace("tpr.", ""),
             triggerToken: target,
             triggerItem: workflow.item,
             reactionToken,
             roll,
           }),
-          triggerType: 'reaction',
+          triggerType: "reaction",
           options: reactionOptions,
         };
 
-        result = await MidiQOL.socket().executeAsUser('chooseReactions', user.id, data);
+        result = await MidiQOL.socket().executeAsUser("chooseReactions", user.id, data);
       } finally {
         const postReactionOptions = foundry.utils.mergeObject(
           {
@@ -1608,8 +1772,8 @@ export function runElwinsHelpers() {
               await workflow.callMacros(
                 workflow.item,
                 reactionData.macroName,
-                'TargetOnUse',
-                reactionTrigger + (!reactionData.reactionNone ? '.post' : ''),
+                "TargetOnUse",
+                reactionTrigger + (!reactionData.reactionNone ? ".post" : ""),
                 postReactionOptions
               );
             }
@@ -1639,8 +1803,8 @@ export function runElwinsHelpers() {
     if (checkGM && user?.isGM) {
       return name;
     }
-    if (game.modules.get('anonymous')?.active) {
-      const api = game.modules.get('anonymous')?.api;
+    if (game.modules.get("anonymous")?.active) {
+      const api = game.modules.get("anonymous")?.api;
       return api.playersSeeName(token.actor) ? name : api.getName(token.actor);
     }
     return name;
@@ -1655,9 +1819,9 @@ export function runElwinsHelpers() {
    * @returns {string} Div texts for GM and non GM player.
    */
   function getTargetDivs(targetToken, textTemplate) {
-    const gmText = textTemplate.replace('${tokenName}', getTokenName(targetToken));
+    const gmText = textTemplate.replace("${tokenName}", getTokenName(targetToken));
     const targetName = MidiQOL.getTokenPlayerName(targetToken);
-    const playerText = textTemplate.replace('${tokenName}', targetName);
+    const playerText = textTemplate.replace("${tokenName}", targetName);
     return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
   }
 
@@ -1691,10 +1855,10 @@ export function runElwinsHelpers() {
       return;
     }
     const currentDamagePrevention =
-      foundry.utils.getProperty(damageItem.calcDamageOptions, 'elwinHelpers.damagePrevention') ?? 0;
+      foundry.utils.getProperty(damageItem.calcDamageOptions, "elwinHelpers.damagePrevention") ?? 0;
     foundry.utils.setProperty(
       damageItem.calcDamageOptions,
-      'elwinHelpers.damagePrevention',
+      "elwinHelpers.damagePrevention",
       currentDamagePrevention + preventedDmg
     );
     const actor = fromUuidSync(damageItem.actorUuid);
@@ -1719,8 +1883,8 @@ export function runElwinsHelpers() {
     }
     let { amount, temp } = damageItem.damageDetail.reduce(
       (acc, d) => {
-        if (d.type === 'temphp') acc.temp += d.value;
-        else if (d.type !== 'midi-none') acc.amount += d.value;
+        if (d.type === "temphp") acc.temp += d.value;
+        else if (d.type !== "midi-none") acc.amount += d.value;
         return acc;
       },
       { amount: 0, temp: 0 }
@@ -1745,7 +1909,7 @@ export function runElwinsHelpers() {
     damageItem.elwinHelpersEffectiveDamage = amount;
     // TODO should this reflect raw or not???
     //damageItem.totalDamage = amount;
-    if (foundry.utils.hasProperty(damageItem, 'appliedDamage')) {
+    if (foundry.utils.hasProperty(damageItem, "appliedDamage")) {
       damageItem.appliedDamage = deltaHP;
     }
   }
@@ -1758,7 +1922,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the item is a ranged weapon, false otherwise.
    */
   function isWeapon(item) {
-    return item?.type === 'weapon' && ['simpleM', 'martialM', 'simpleR', 'martialR'].includes(item?.system.type?.value);
+    return item?.type === "weapon" && ["simpleM", "martialM", "simpleR", "martialR"].includes(item?.system.type?.value);
   }
 
   /**
@@ -1769,7 +1933,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the item is a melee weapon, false otherwise.
    */
   function isMeleeWeapon(item) {
-    return item?.type === 'weapon' && ['simpleM', 'martialM'].includes(item?.system.type?.value);
+    return item?.type === "weapon" && ["simpleM", "martialM"].includes(item?.system.type?.value);
   }
 
   /**
@@ -1780,7 +1944,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} true if the item is a ranged weapon, false otherwise.
    */
   function isRangedWeapon(item) {
-    return item?.type === 'weapon' && ['simpleR', 'martialR'].includes(item?.system.type?.value);
+    return item?.type === "weapon" && ["simpleR", "martialR"].includes(item?.system.type?.value);
   }
 
   /**
@@ -1794,7 +1958,7 @@ export function runElwinsHelpers() {
    *
    * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
    */
-  function isMeleeAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+  function isMeleeAttack(activityOrItem, sourceToken, targetToken, attackMode = "", checkThrownWeapons = true) {
     return isMeleeAttackByClassification(
       null,
       null,
@@ -1817,10 +1981,10 @@ export function runElwinsHelpers() {
    *
    * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
    */
-  function isMeleeWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+  function isMeleeWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = "", checkThrownWeapons = true) {
     return isMeleeAttackByClassification(
       null,
-      'wak',
+      "wak",
       activityOrItem,
       sourceToken,
       targetToken,
@@ -1847,17 +2011,17 @@ export function runElwinsHelpers() {
     activityOrItem,
     sourceToken,
     targetToken,
-    attackMode = '',
+    attackMode = "",
     checkThrownWeapons = true
   ) {
     let activity = activityOrItem;
     if (activityOrItem instanceof Item) {
-      activity = activityOrItem?.system?.activities?.getByType('attack')?.[0];
+      activity = activityOrItem?.system?.activities?.getByType("attack")?.[0];
     }
     if (!activity || !activity.item) {
       return false;
     }
-    if (activity?.type !== 'attack' || activity?.attack?.type?.value !== 'melee') {
+    if (activity?.type !== "attack" || activity?.attack?.type?.value !== "melee") {
       return false;
     }
 
@@ -1866,7 +2030,7 @@ export function runElwinsHelpers() {
     }
 
     let actionType = activity.getActionType(attackMode);
-    if (!actionType?.startsWith('m')) {
+    if (!actionType?.startsWith("m")) {
       return false;
     }
     if (subActionType !== null && !actionType?.endsWith(subActionType)) {
@@ -1877,7 +2041,7 @@ export function runElwinsHelpers() {
     }
 
     // TODO what to do with attackMode === "ranged", will need to wait for Monster Manual
-    if (!hasItemProperty(activity?.item, 'thr')) {
+    if (!hasItemProperty(activity?.item, "thr")) {
       return true;
     }
 
@@ -1899,7 +2063,7 @@ export function runElwinsHelpers() {
    *
    * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
-  function isRangedAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+  function isRangedAttack(activityOrItem, sourceToken, targetToken, attackMode = "", checkThrownWeapons = true) {
     return isRangedAttackByClassification(
       null,
       null,
@@ -1922,10 +2086,10 @@ export function runElwinsHelpers() {
    *
    * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
-  function isRangedWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = '', checkThrownWeapons = true) {
+  function isRangedWeaponAttack(activityOrItem, sourceToken, targetToken, attackMode = "", checkThrownWeapons = true) {
     return isRangedAttackByClassification(
       null,
-      'wak',
+      "wak",
       activityOrItem,
       sourceToken,
       targetToken,
@@ -1952,18 +2116,18 @@ export function runElwinsHelpers() {
     activityOrItem,
     sourceToken,
     targetToken,
-    attackMode = '',
+    attackMode = "",
     checkThrownWeapons = true
   ) {
     let activity = activityOrItem;
     if (activityOrItem instanceof Item) {
-      activity = activityOrItem?.system?.activities?.getByType('attack')?.[0];
+      activity = activityOrItem?.system?.activities?.getByType("attack")?.[0];
     }
     if (!activity || !activity.item) {
       return false;
     }
 
-    if (activity?.type !== 'attack' || !activity.attack?.type) {
+    if (activity?.type !== "attack" || !activity.attack?.type) {
       return false;
     }
 
@@ -1975,7 +2139,7 @@ export function runElwinsHelpers() {
     if (subActionType != null && !actionType?.endsWith(subActionType)) {
       return false;
     }
-    if (actionType?.startsWith('r')) {
+    if (actionType?.startsWith("r")) {
       return true;
     }
 
@@ -1985,7 +2149,7 @@ export function runElwinsHelpers() {
 
     // TODO what to do with attackMode === "ranged", will need to wait for Monster Manual
     const attackType = activity.attack.type.value;
-    if (attackType !== 'melee' || !hasItemProperty(activity.item, 'thr')) {
+    if (attackType !== "melee" || !hasItemProperty(activity.item, "thr")) {
       return false;
     }
 
@@ -2048,10 +2212,10 @@ export function runElwinsHelpers() {
     let searchRegex = undefined;
     let replaceString = `$1\n${text}\n$2`;
     switch (position) {
-      case 'beforeHitsDisplay':
+      case "beforeHitsDisplay":
         searchRegex = /(<\/div>)(\s*<div class="midi-qol-hits-display">)/m;
         break;
-      case 'beforeButtons':
+      case "beforeButtons":
       default:
         searchRegex =
           /(<\/section>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
@@ -2135,13 +2299,13 @@ export function runElwinsHelpers() {
       const hitDisplay = workflow.hitDisplayData[tokenUuid];
       // TODO remove? seems to not be used anymore...
       hitDisplay.hitResultNumeric = workflow.useActiveDefence
-        ? ''
-        : `${workflow.attackTotal}/${hitDisplay.ac ? Math.abs(workflow.attackTotal - hitDisplay.ac) : '-'}`;
+        ? ""
+        : `${workflow.attackTotal}/${hitDisplay.ac ? Math.abs(workflow.attackTotal - hitDisplay.ac) : "-"}`;
 
-      if (game.user?.isGM && ['hitDamage', 'all'].includes(configSettings.hideRollDetails)) {
-        hitDisplay.hitSymbol = 'fa-tick';
+      if (game.user?.isGM && ["hitDamage", "all"].includes(configSettings.hideRollDetails)) {
+        hitDisplay.hitSymbol = "fa-tick";
       } else {
-        hitDisplay.hitSymbol = 'fa-check';
+        hitDisplay.hitSymbol = "fa-check";
       }
     }
     // Redisplay roll and hits with the new data
@@ -2218,7 +2382,7 @@ export function runElwinsHelpers() {
     const appliedEnchantments = getAppliedEnchantments(entityUuid);
     for (let activeEffect of appliedEnchantments) {
       if (!activeEffect.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)) {
-        await globalThis.elwinHelpers.socket.executeAsGM('elwinHelpers.remoteDeleteEnchantment', activeEffect.uuid);
+        await globalThis.elwinHelpers.socket.executeAsGM("elwinHelpers.remoteDeleteEnchantment", activeEffect.uuid);
       } else {
         await activeEffect.delete();
       }
@@ -2242,7 +2406,7 @@ export function runElwinsHelpers() {
         arguments
       );
     }
-    if (workflow.activity?.type !== 'enchant') {
+    if (workflow.activity?.type !== "enchant") {
       // Skip activities that are not enchantments.
       return;
     }
@@ -2252,12 +2416,12 @@ export function runElwinsHelpers() {
       (workflow.elwinOptions?.disableConfigDialogIfEnchantExists ?? true) &&
       elwinHelpers.getAppliedEnchantments(workflow.activity?.uuid)?.length
     ) {
-      Hooks.once('dnd5e.preUseActivity', (activity, usageConfig, dialogConfig, __) => {
+      Hooks.once("dnd5e.preUseActivity", (activity, usageConfig, dialogConfig, __) => {
         const activityWorkflow = usageConfig.worflow;
         if (
           !elwinHelpers.isMidiHookStillValid(
             activity.item?.name,
-            'dnd5e.preUseActivity',
+            "dnd5e.preUseActivity",
             activity.name,
             workflow,
             activityWorkflow,
@@ -2273,12 +2437,12 @@ export function runElwinsHelpers() {
     }
 
     // Disables enchantment drop area, but keep selected profile
-    Hooks.once('dnd5e.preCreateUsageMessage', (activity, messageConfig) => {
+    Hooks.once("dnd5e.preCreateUsageMessage", (activity, messageConfig) => {
       const activityWorkflow = messageConfig.workflow;
       if (
         !elwinHelpers.isMidiHookStillValid(
           activity.item?.name,
-          'dnd5e.preCreateUsageMessage',
+          "dnd5e.preCreateUsageMessage",
           activity.name,
           workflow,
           activityWorkflow,
@@ -2291,7 +2455,7 @@ export function runElwinsHelpers() {
       if (activityWorkflow) {
         foundry.utils.setProperty(
           activityWorkflow,
-          'elwinOptions.enchantmentProfile',
+          "elwinOptions.enchantmentProfile",
           foundry.utils.getProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`)
         );
       }
@@ -2314,7 +2478,7 @@ export function runElwinsHelpers() {
         arguments
       );
     }
-    if (workflow.activity?.type !== 'enchant') {
+    if (workflow.activity?.type !== "enchant") {
       // Skip activities that are not enchantments.
       return;
     }
@@ -2327,7 +2491,7 @@ export function runElwinsHelpers() {
       // Add message about deactivation
       const infoMsg = getSelfEnchantmentActivationMessage(enchantments[0], false);
       if (infoMsg) {
-        await insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
+        await insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
       }
     } else {
       const enchantmentEffectData = getAutomatedEnchantmentSelectedProfile(workflow)?.effect.toObject();
@@ -2362,7 +2526,7 @@ export function runElwinsHelpers() {
         ? workflow.item?.effects
             .filter(
               (ae) =>
-                !ae.transfer && ae.type !== 'enchantment' && (effectIds.includes(ae._id) || effectIds.includes(ae.name))
+                !ae.transfer && ae.type !== "enchantment" && (effectIds.includes(ae._id) || effectIds.includes(ae.name))
             )
             .map((ae) => {
               const data = ae.toObject();
@@ -2371,7 +2535,7 @@ export function runElwinsHelpers() {
             }) ?? []
         : [];
       if (effectsToApply?.length) {
-        const effectsCreated = await workflow.actor.createEmbeddedDocuments('ActiveEffect', effectsToApply);
+        const effectsCreated = await workflow.actor.createEmbeddedDocuments("ActiveEffect", effectsToApply);
         await enchantmentEffect.addDependent(...effectsCreated);
         // Add enchantment to each effect as a dependency (this allows to auto delete the enchantment if the actor effect is deleted)
         for (let ae of effectsCreated) {
@@ -2382,7 +2546,7 @@ export function runElwinsHelpers() {
       // Add message about activation
       const infoMsg = getSelfEnchantmentActivationMessage(enchantmentEffect, true);
       if (infoMsg) {
-        await insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
+        await insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
       }
     }
   }
@@ -2394,7 +2558,7 @@ export function runElwinsHelpers() {
    * @returns {string[]} The list of active effects to apply on the actor.
    */
   function getSelfEnchantmentActorEffects(enchantmentEffect) {
-    const partialFlag = 'elwinHelpers.selfEnchant.effects';
+    const partialFlag = "elwinHelpers.selfEnchant.effects";
     const keys = [`flags.${WORLD_MODULE_ID}.${partialFlag}`, `flags.${MISC_MODULE_ID}.${partialFlag}`];
     return (enchantmentEffect?.changes?.find((c) => keys.includes(c.key))?.value?.split(/\s*,\s*/) ?? []).map((u) =>
       u?.trim()
@@ -2409,7 +2573,7 @@ export function runElwinsHelpers() {
    * @returns {string|undefined} The activation or deactivation message for this enchantment if any is specified.
    */
   function getSelfEnchantmentActivationMessage(enchantmentEffect, activation) {
-    const partialFlag = `elwinHelpers.selfEnchant.msg.${activation ? 'activation' : 'deactivation'}`;
+    const partialFlag = `elwinHelpers.selfEnchant.msg.${activation ? "activation" : "deactivation"}`;
     const keys = [`flags.${WORLD_MODULE_ID}.${partialFlag}`, `flags.${MISC_MODULE_ID}.${partialFlag}`];
     return enchantmentEffect?.changes?.find((c) => keys.includes(c.key))?.value;
   }
@@ -2421,7 +2585,7 @@ export function runElwinsHelpers() {
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
    */
   function getAutomatedEnchantmentSelectedProfile(workflow) {
-    if (workflow.activity?.type !== 'enchant') {
+    if (workflow.activity?.type !== "enchant") {
       return undefined;
     }
     const enchantmentProfile = workflow.elwinOptions?.enchantmentProfile;
@@ -2462,7 +2626,7 @@ export function runElwinsHelpers() {
       effectOptions.parentUuid = effectOptions.parent.uuid;
       delete effectOptions.parent;
       const effectUuid = await globalThis.elwinHelpers.socket.executeAsGM(
-        'elwinHelpers.remoteCreateEnchantment',
+        "elwinHelpers.remoteCreateEnchantment",
         enchantmentEffectData,
         effectOptions
       );
@@ -2488,13 +2652,13 @@ export function runElwinsHelpers() {
     // it's the only way to make it work with items that are destroyed, we cannot leave it, otherwise the drop
     // area will be displayed.
     if (itemCard) {
-      foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', enchantmentEffectData._id);
+      foundry.utils.setProperty(itemCard, "flags.dnd5e.use.enchantmentProfile", enchantmentEffectData._id);
     }
     try {
       return await ActiveEffect.implementation.create(enchantmentEffectData, options);
     } finally {
       if (itemCard) {
-        foundry.utils.setProperty(itemCard, 'flags.dnd5e.use.enchantmentProfile', null);
+        foundry.utils.setProperty(itemCard, "flags.dnd5e.use.enchantmentProfile", null);
         // Force message ui update, because it can happen that an update of the the item card occurs during the time
         // the enchantmentProfile is set, which renders the enchantmentEnricher (drop area), this forces it to be removed.
         await ui.chat.updateMessage(itemCard);
@@ -2542,7 +2706,7 @@ export function runElwinsHelpers() {
       effectOptions.parentUuid = effectOptions.parent.uuid;
       delete effectOptions.parent;
       const effectUuid = await globalThis.elwinHelpers.socket.executeAsGM(
-        'elwinHelpers.remoteCreateEnchantment',
+        "elwinHelpers.remoteCreateEnchantment",
         enchantmentEffectData,
         effectOptions
       );
@@ -2563,10 +2727,10 @@ export function runElwinsHelpers() {
       sourceActor?.itemTypes.weapon.filter(
         (w) =>
           w.system.equipped &&
-          ['simpleM', 'martialM'].includes(w.system.type?.value) &&
+          ["simpleM", "martialM"].includes(w.system.type?.value) &&
           w.system.activities
-            ?.getByType('attack')
-            .some((a) => a.attack.type.value === 'melee' && a.attack.type.classification === 'weapon')
+            ?.getByType("attack")
+            .some((a) => a.attack.type.value === "melee" && a.attack.type.classification === "weapon")
       ) ?? []
     );
   }
@@ -2578,7 +2742,7 @@ export function runElwinsHelpers() {
    * @returns {string} 'legacy' or 'modern' depending on the item's source rules.
    */
   function getRules(item) {
-    return ['2014', ''].includes(item.system?.source?.rules ?? '') ? 'legacy' : 'modern';
+    return ["2014", ""].includes(item.system?.source?.rules ?? "") ? "legacy" : "modern";
   }
 
   /**
@@ -2601,13 +2765,13 @@ export function runElwinsHelpers() {
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
    */
   function cleanupRegisteredWorkflowHooks(workflow) {
-    const elwinHelpersHooks = foundry.utils.getProperty(workflow.workflowOptions, 'elwinHelpers.hooks') ?? {};
+    const elwinHelpersHooks = foundry.utils.getProperty(workflow.workflowOptions, "elwinHelpers.hooks") ?? {};
     for (let tmpEvent of Object.keys(elwinHelpersHooks)) {
       for (let tmpMacroId of Object.keys(elwinHelpersHooks[tmpEvent])) {
         Hooks.off(tmpEvent, elwinHelpersHooks[tmpEvent][tmpMacroId]);
       }
     }
-    delete foundry.utils.getProperty(workflow.workflowOptions, 'elwinHelpers')?.hooks;
+    delete foundry.utils.getProperty(workflow.workflowOptions, "elwinHelpers")?.hooks;
   }
 
   /**
@@ -2622,16 +2786,16 @@ export function runElwinsHelpers() {
     if (!macroId) {
       // Use default, which may not always be the desired value,
       // but it's the safest value to not break existing items using this function.
-      macroId = 'default';
+      macroId = "default";
     }
-    const elwinHelpersHooks = foundry.utils.getProperty(workflow.workflowOptions, 'elwinHelpers.hooks') ?? {};
+    const elwinHelpersHooks = foundry.utils.getProperty(workflow.workflowOptions, "elwinHelpers.hooks") ?? {};
     if (elwinHelpersHooks[event]?.[macroId]) {
       // A hook for this event has already been registered for this workflow, remove previous
       Hooks.off(event, elwinHelpersHooks[event][macroId]);
     }
     elwinHelpersHooks[event] ??= {};
     elwinHelpersHooks[event][macroId] = Hooks.on(event, callback);
-    foundry.utils.setProperty(workflow.workflowOptions, 'elwinHelpers.hooks', elwinHelpersHooks);
+    foundry.utils.setProperty(workflow.workflowOptions, "elwinHelpers.hooks", elwinHelpersHooks);
 
     // Keep a reference to cleanup in case the chat message is deleted before the workflow is completed (used by delete message hook)
     WORKFLOWS.set(workflow.id, workflow);
@@ -2697,7 +2861,7 @@ export function runElwinsHelpers() {
     flavor ??= itemName;
     effectiveDebug ??= debug;
 
-    Hooks.once('dnd5e.preRollDamageV2', (rollConfig, dialogConfig, messageConfig) => {
+    Hooks.once("dnd5e.preRollDamageV2", (rollConfig, dialogConfig, messageConfig) => {
       if (effectiveDebug) {
         console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamageV2`, {
           rollConfig,
@@ -2716,7 +2880,7 @@ export function runElwinsHelpers() {
       if (
         !elwinHelpers.isMidiHookStillValid(
           MACRO_NAME,
-          'dnd5e.preRollDamageV2',
+          "dnd5e.preRollDamageV2",
           `${itemName ?? MACRO_NAME} - Damage Config`,
           workflow,
           rollConfig.workflow,
@@ -2750,7 +2914,7 @@ export function runElwinsHelpers() {
       }
 
       // Register hook to add flavor text for the change.
-      Hooks.once('renderDamageRollConfigurationDialog', (dialog, element) => {
+      Hooks.once("renderDamageRollConfigurationDialog", (dialog, element) => {
         if (effectiveDebug) {
           console.warn(`${itemName ?? MACRO_NAME} | renderDamageRollConfigurationDialog`, { dialog, element });
         }
@@ -2763,7 +2927,7 @@ export function runElwinsHelpers() {
         if (
           !elwinHelpers.isMidiHookStillValid(
             MACRO_NAME,
-            'renderDamageRollConfigurationDialog',
+            "renderDamageRollConfigurationDialog",
             `${itemName ?? MACRO_NAME} - Damage Bonus Flavor`,
             workflow,
             dialog.config?.workflow,
@@ -2785,14 +2949,14 @@ export function runElwinsHelpers() {
           const formulaLine = dialog.element.querySelector(
             `div.rolls > ul.formulas > li:nth-of-type(${index + 1}) > div.formula-line`
           );
-          const newDiv = dialog.element.ownerDocument.createElement('div');
+          const newDiv = dialog.element.ownerDocument.createElement("div");
           newDiv.innerHTML = `<span class='label'>${flavor}</span>`;
           formulaLine.after(newDiv);
           if (rollConfig.rolls[index].situational === false) {
             const situationalField = dialog.element.querySelector(
               `div.rolls > ul.formulas > li:nth-of-type(${index + 1}) > div.formula-line ~ div.form-group`
             );
-            situationalField?.classList?.add('hidden');
+            situationalField?.classList?.add("hidden");
           }
         }
       });
@@ -2822,6 +2986,142 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Marks the specified UUIDs as attached to the specified token. When the token moves, the attached
+   * entities, will be updated accordingly (x, y, elevation, rotation).
+   *
+   * @param {Token5e} token - Token on which to attach entities.
+   * @param {string[]} entityUuids - Array of UUIDs of the entities to be attached to the token.
+   */
+  async function attachToToken(token, entityUuids) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | attachToToken`, { token, entityUuids });
+    }
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = token.document.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = token.document.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    }
+    await token.document.setFlag(moduleId, "attached.attachedEntityUuids", attachedEntityUuids.concat(...entityUuids));
+  }
+
+  /**
+   * Removes the specified UUIDs from the entities attached to the specified token.
+   *
+   * @param {Token5e} token - Token from which to detach entities.
+   * @param {string[]} entityUuids - Array of UUIDs of the entities to be detached from the token.
+   */
+  async function detachFromToken(token, entityUuids) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | detachFromToken`, { token, entityUuids });
+    }
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = token.document.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = token.document.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    }
+    await token.document.setFlag(
+      moduleId,
+      "attached.attachedEntityUuids",
+      attachedEntityUuids.filter((u) => !entityUuids.includes(u))
+    );
+  }
+
+  /**
+   * Marks the specified UUIDs as attached to the specified template document.
+   * When the template document is updated, the attached entities, will be updated accordingly (x, y, elevation, rotation).
+   * <br>Note: Currently only attachments to circle templates are supported.
+   *
+   * @param {MeasuredTemplateDocument} templateDocument - Template document on which to attach entities.
+   * @param {string[]} entityUuids - Array of UUIDs of the entities to be attached to the template document.
+   * @param {object} options - Attach options
+   * @param {boolean} [options.sync] - Flag to indicate that when the size of the template changes,
+   *    it must also be reflected on the attached entities in addition of the position attributes.
+   *    Note: currently only synching AmbientLight is supported.
+   */
+  async function attachToTemplate(templateDocument, entityUuids, options) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | attachToTemplate`, { templateDocument, entityUuids });
+    }
+    if (templateDocument?.t !== "circle") {
+      // For now only support circle
+      console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
+      return;
+    }
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    let synchedEntityUuids = templateDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+      synchedEntityUuids = templateDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    }
+    await templateDocument.setFlag(moduleId, "attached", {
+      attachedEntityUuids: attachedEntityUuids.concat(...entityUuids),
+      synchedEntityUuids: options.sync ? synchedEntityUuids.concat(...entityUuids) : synchedEntityUuids,
+    });
+  }
+
+  /**
+   * Removes the specified UUIDs from the entities attached to the specified template document.
+   *
+   * @param {MeasuredTemplateDocument} templateDocument - Template document from which to detach entities.
+   * @param {string[]} entityUuids - Array of UUIDs of the entities to be detached from the template document.
+   * @param {*} templateDocument
+   * @param {*} entityUuids
+   */
+  async function detachFromTemplate(templateDocument, entityUuids) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | detachFromTemplate`, { templateDocument, entityUuids });
+    }
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    let synchedEntityUuids = templateDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+      synchedEntityUuids = templateDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    }
+    await templateDocument.setFlag(moduleId, "attached", {
+      attachedEntityUuids: attachedEntityUuids.filter((u) => !entityUuids.includes(u)),
+      synchedEntityUuids: synchedEntityUuids.filter((u) => !entityUuids.includes(u)),
+    });
+  }
+
+  /**
+   * Creates and attaches an ambient light source to the specified template document.
+   * <br>Note: ambient light sources can only be attached to circle templates and they are attached with the sync option true.
+   *
+   * @param {MeasuredTemplateDocument} templateDocument - Template document on which to attach an ambient light source.
+   * @param {object} ambientLightData - Ambient light source data.
+   * @returns {AmbientLight} The created and attached ambient light source.
+   */
+  async function attachAmbientLightToTemplate(templateDocument, ambientLightData) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | attachAmbientLightToTemplate`, { templateDocument, ambientLightData });
+    }
+    if (templateDocument?.t !== "circle") {
+      // For now only support circle
+      console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
+      return undefined;
+    }
+    if (game.user.isGM) {
+      const [lightSource] = await canvas.scene.createEmbeddedDocuments("AmbientLight", [ambientLightData]);
+      await attachToTemplate(templateDocument, [lightSource.uuid], { sync: true });
+      await templateDocument.addDependent(lightSource);
+      return lightSource;
+    } else {
+      const lightSourceUuid = await globalThis.elwinHelpers.socket.executeAsGM(
+        "elwinHelpers.remoteAttachAmbientLightToTemplate",
+        templateDocument.uuid,
+        ambientLightData
+      );
+      return fromUuidSync(lightSourceUuid);
+    }
+  }
+
+  /**
    * Replaces damage types contained in the specified part with newDamageType.
    *
    * @param {string} part - Damage part to be updated.
@@ -2847,7 +3147,7 @@ export function runElwinsHelpers() {
   class ItemSelectionDialog extends foundry.applications.api.DialogV2 {
     /** @inheritDoc */
     static DEFAULT_OPTIONS = {
-      classes: ['dialog', 'dnd5e2', 'elwin-dialog'],
+      classes: ["dialog", "dnd5e2", "elwin-dialog", "themed"],
     };
 
     /**
@@ -2862,37 +3162,37 @@ export function runElwinsHelpers() {
       if (!defaultItem || !items.find((t) => t.id === defaultItem?.id)) {
         defaultItem = items[0];
       }
-      let itemContent = '';
+      let itemContent = "";
       for (let item of items) {
         if (!item?.id) {
           continue;
         }
         const ctx = {};
-        ctx.selected = defaultItem && defaultItem.id === item.id ? ' checked' : '';
+        ctx.selected = defaultItem && defaultItem.id === item.id ? " checked" : "";
         if (item.system.attunement) {
           ctx.attunement = item.system.attuned
             ? {
-                cls: 'active',
-                tooltip: game.i18n.localize('DND5E.AttunementAttuned'),
+                cls: "active",
+                tooltip: game.i18n.localize("DND5E.AttunementAttuned"),
               }
             : {
-                cls: '',
+                cls: "",
                 tooltip: game.i18n.localize(CONFIG.DND5E.attunementTypes[item.system.attunement]),
               };
         }
-        if ('equipped' in item.system) {
+        if ("equipped" in item.system) {
           ctx.equip = {
-            cls: item.system.equipped ? 'active' : '',
-            tooltip: game.i18n.localize(item.system.equipped ? 'DND5E.Equipped' : 'DND5E.Unequipped'),
+            cls: item.system.equipped ? "active" : "",
+            tooltip: game.i18n.localize(item.system.equipped ? "DND5E.Equipped" : "DND5E.Unequipped"),
           };
         }
-        ctx.quantity = item.type === 'consumable' ? `[${item.system.quantity}]` : '';
-        ctx.subtitle = [item.system.type?.label, item.isActive ? item.labels.activation : null].filterJoin(' &bull; ');
+        ctx.quantity = item.type === "consumable" ? `[${item.system.quantity}]` : "";
+        ctx.subtitle = [item.system.type?.label, item.isActive ? item.labels.activation : null].filterJoin(" &bull; ");
         ctx.tags =
           item.labels.properties
             ?.filter((prop) => prop.icon)
             .map((prop) => `<span aria-label="${prop.label}"><dnd5e-icon src="${prop.icon}"></dnd5e-icon></span>`)
-            .join(' ') ?? '';
+            .join(" ") ?? "";
 
         itemContent += `
       <li class="item">
@@ -2937,7 +3237,7 @@ export function runElwinsHelpers() {
       .scrollable-list-container {
         max-height: 300px; /* Set a maximum height */
         overflow-y: auto;  /* Add vertical scrollbar when content overflows */
-        ${foundry.utils.isNewerVersion(game.release.version, '13') ? 'position: relative;' : ''}
+        ${foundry.utils.isNewerVersion(game.release.version, "13") ? "position: relative;" : ""}
       }
 
       .scrollable-list-container ol {
@@ -2978,8 +3278,8 @@ export function runElwinsHelpers() {
       </ol>
     </div>
       `;
-      if (foundry.utils.isNewerVersion(game.release.version, '13')) {
-        const divContent = document.createElement('div');
+      if (foundry.utils.isNewerVersion(game.release.version, "13")) {
+        const divContent = document.createElement("div");
         divContent.innerHTML = content;
         return divContent;
       }
@@ -3002,14 +3302,15 @@ export function runElwinsHelpers() {
       }
       return ItemSelectionDialog.wait({
         window: { title },
+        classes: [`theme-${game.settings.get("core", "uiConfig")?.colorScheme?.aplications ?? "dark"}`],
         content: this.getContent(items, defaultItem),
-        modal: foundry.utils.isNewerVersion(game.release.version, '13'),
+        modal: foundry.utils.isNewerVersion(game.release.version, "13"),
         rejectClose: false,
         buttons: [
           {
-            action: 'select',
-            label: 'Select',
-            icon: 'fas fa-check',
+            action: "select",
+            label: "Select",
+            icon: "fas fa-check",
             default: true,
             callback: (_, button, __) => {
               const selectedItemId = button.form.elements.itemChoice.value;
@@ -3023,7 +3324,7 @@ export function runElwinsHelpers() {
 
   // Export class
   if (depReqFulfilled) {
-    exportIdentifier('elwinHelpers.ItemSelectionDialog', ItemSelectionDialog);
+    exportIdentifier("elwinHelpers.ItemSelectionDialog", ItemSelectionDialog);
   }
 
   /**
@@ -3043,7 +3344,7 @@ export function runElwinsHelpers() {
      * @returns {string} the html content to display in the dialog.
      */
     static async getContent(tokens, defaultToken) {
-      let tokenContent = '';
+      let tokenContent = "";
       if (!defaultToken || !tokens.find((t) => t.id === defaultToken?.id)) {
         defaultToken = tokens[0];
       }
@@ -3051,7 +3352,7 @@ export function runElwinsHelpers() {
         if (!token?.id) {
           continue;
         }
-        const selected = defaultToken && defaultToken.id === token.id ? ' checked' : '';
+        const selected = defaultToken && defaultToken.id === token.id ? " checked" : "";
         const tokenImg = await getTokenImage(token);
         const tokenName = MidiQOL.getTokenPlayerName(token, true);
         tokenContent += `<li><div class="token-row">
@@ -3067,7 +3368,7 @@ export function runElwinsHelpers() {
       .scrollable-list-container {
         max-height: 300px; /* Set a maximum height */
         overflow-y: auto;  /* Add vertical scrollbar when content overflows */
-        ${foundry.utils.isNewerVersion(game.release.version, '13') ? 'position: relative;' : ''}
+        ${foundry.utils.isNewerVersion(game.release.version, "13") ? "position: relative;" : ""}
       }
 
       .selectToken .form-group {
@@ -3126,8 +3427,8 @@ export function runElwinsHelpers() {
       </div>
     </div>
 `;
-      if (foundry.utils.isNewerVersion(game.release.version, '13')) {
-        const divContent = document.createElement('div');
+      if (foundry.utils.isNewerVersion(game.release.version, "13")) {
+        const divContent = document.createElement("div");
         divContent.innerHTML = content;
         return divContent;
       }
@@ -3137,15 +3438,15 @@ export function runElwinsHelpers() {
     /** @inheritdoc */
     _onRender(_, __) {
       if (canvas) {
-        let imgs = this.element.getElementsByTagName('img');
+        let imgs = this.element.getElementsByTagName("img");
         for (let i of imgs) {
-          i.style.border = 'none';
-          i.closest('.radio-label').addEventListener('click', async function () {
+          i.style.border = "none";
+          i.closest(".radio-label").addEventListener("click", async function () {
             const token = getToken(i.id);
             //@ts-expect-error .ping
             if (token) await canvas?.ping(token.center);
           });
-          i.closest('.radio-label').addEventListener('mouseover', function () {
+          i.closest(".radio-label").addEventListener("mouseover", function () {
             const token = getToken(i.id);
             if (token) {
               //@ts-expect-error .ping
@@ -3153,7 +3454,7 @@ export function runElwinsHelpers() {
               token.refresh();
             }
           });
-          i.closest('.radio-label').addEventListener('mouseout', function () {
+          i.closest(".radio-label").addEventListener("mouseout", function () {
             const token = getToken(i.id);
             if (token) {
               //@ts-expect-error .ping
@@ -3186,9 +3487,9 @@ export function runElwinsHelpers() {
         rejectClose: false,
         buttons: [
           {
-            action: 'ok',
-            label: 'Select',
-            icon: 'fas fa-check',
+            action: "ok",
+            label: "Select",
+            icon: "fas fa-check",
             default: true,
             callback: (_, button, __) => {
               const selectedTokenId = button.form.elements.token.value;
@@ -3202,7 +3503,7 @@ export function runElwinsHelpers() {
 
   // Export class
   if (depReqFulfilled) {
-    exportIdentifier('elwinHelpers.TokenSelectionDialog', TokenSelectionDialog);
+    exportIdentifier("elwinHelpers.TokenSelectionDialog", TokenSelectionDialog);
   }
 
   /**
@@ -3213,7 +3514,7 @@ export function runElwinsHelpers() {
    * @returns {number} the numeric value of the specified actor's size value.
    */
   function getActorSizeValue(actor) {
-    return getSizeValue(actor?.system?.traits?.size ?? 'med');
+    return getSizeValue(actor?.system?.traits?.size ?? "med");
   }
 
   /**
@@ -3224,7 +3525,7 @@ export function runElwinsHelpers() {
    * @returns {number} the numeric value of the specified size.
    */
   function getSizeValue(size) {
-    return Object.keys(CONFIG.DND5E.actorSizes).indexOf(size ?? 'med');
+    return Object.keys(CONFIG.DND5E.actorSizes).indexOf(size ?? "med");
   }
 
   /**
@@ -3251,13 +3552,13 @@ export function runElwinsHelpers() {
     });
 
     return await foundry.applications.api.DialogV2.wait({
-      window: { title: data.title ?? '', position: { height: '100%' } },
-      content: data.content ?? '',
+      window: { title: data.title ?? "", position: { height: "100%" } },
+      content: data.content ?? "",
       rejectClose: false,
       buttons,
       render: (_, dialog) => {
-        const footer = dialog.querySelector('footer');
-        footer.style['flex-direction'] = direction;
+        const footer = dialog.element.querySelector("footer");
+        footer.style["flex-direction"] = direction;
       },
       options: data.options ?? {},
     });
@@ -3276,7 +3577,7 @@ export function runElwinsHelpers() {
    * @returns {object} the value associated to the selected button.
    */
   async function remoteButtonDialog(userId, data, direction) {
-    return globalThis.elwinHelpers.socket.executeAsUser('elwinHelpers.remoteButtonDialog', userId, data, direction);
+    return globalThis.elwinHelpers.socket.executeAsUser("elwinHelpers.remoteButtonDialog", userId, data, direction);
   }
 
   /**
@@ -3325,19 +3626,19 @@ export function runElwinsHelpers() {
       return undefined;
     }
     const targetRect = new PIXI.Rectangle(targetToken.x, targetToken.y, targetToken.w, targetToken.h).getBounds();
-    const targetRay = segments[idxShortestSegment].ray;
-    const intersectSegments = targetRect.segmentIntersections(targetRay.A, targetRay.B);
+    const targetSegment = segments[idxShortestSegment];
+    const intersectSegments = targetRect.segmentIntersections(targetSegment[0], targetSegment[1]);
     if (debug) {
       console.warn(`${MACRO_NAME} | getAttackSegment (insersectSegments)`, {
         targetRect,
-        targetRay,
+        targetSegment,
         intersectSegments,
       });
     }
     if (!intersectSegments?.length) {
       return undefined;
     }
-    return { point: intersectSegments[0], ray: targetRay };
+    return { point: intersectSegments[0], segment: targetSegment };
   }
 
   /**
@@ -3347,11 +3648,11 @@ export function runElwinsHelpers() {
    * @param {Token5e} t2 - The second token.
    * @param {boolean} wallBlocking - Whether to consider walls as blocking.
    *
-   * @return {{ray: Ray}[]} an array of segments representing the distance between the two tokens.
+   * @return {{x: number, y: number}[][]} an array of segments representing the distance between the two tokens.
    */
   function getDistanceSegments(t1, t2, wallBlocking = false) {
     const actor = t1.actor;
-    const ignoreWallsFlag = foundry.utils.getProperty(actor, 'flags.midi-qol.ignoreWalls');
+    const ignoreWallsFlag = foundry.utils.getProperty(actor, "flags.midi-qol.ignoreWalls");
     if (ignoreWallsFlag) {
       wallBlocking = false;
     }
@@ -3379,20 +3680,20 @@ export function runElwinsHelpers() {
               Math.round(t2.document.y + canvas.dimensions.size * y1)
               //          )
             );
-            const r = new (foundry.canvas.geometry?.Ray ?? Ray)(origin, dest);
+            const segment = [origin, dest];
             if (wallBlocking) {
               const collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, {
-                mode: 'any',
-                type: 'move',
+                mode: "any",
+                type: "move",
               });
               if (debug) {
-                console.warn(`${MACRO_NAME} | getDistanceSegments`, { segment: { ray: r }, collisionCheck });
+                console.warn(`${MACRO_NAME} | getDistanceSegments`, { segment, collisionCheck });
               }
               if (collisionCheck) {
                 continue;
               }
             }
-            segments.push({ ray: r });
+            segments.push(segment);
           }
         }
       }
@@ -3404,53 +3705,15 @@ export function runElwinsHelpers() {
    * Based on midi-qol measureDistances function.
    * Measure distances for given segments with optional grid spaces.
    *
-   * @param {{{ray: Ray}}[]} segments - Array of segments to measure distances for.
+   * @param {{x: number, y: number}[][]} segments - Array of segments to measure distances for.
    * @param {object} options - Optional object with grid spaces configuration.
    *
    * @return {number[]} Array of distances for each segment.
    */
   function simpleMeasureDistances(segments, options = {}) {
-    if (canvas?.grid?.grid.constructor.name !== 'BaseGrid' || !options.gridSpaces) {
-      const distances = canvas?.grid?.measureDistances(segments, options);
-      return distances;
-    }
-
-    const rule = canvas?.grid.diagonalRule;
-    if (!options.gridSpaces || !['555', '5105', 'EUCL'].includes(rule)) {
-      return canvas?.grid?.measureDistances(segments, options);
-    }
-    // Track the total number of diagonals
-    let nDiagonal = 0;
-    const d = canvas?.dimensions;
-
-    const grid = canvas?.scene?.grid;
-    if (!d || !d.size) return 0;
-
-    // Iterate over measured segments
     return segments.map((s) => {
-      const r = s.ray;
-      // Determine the total distance traveled
-      const nx = Math.ceil(Math.max(0, Math.abs(r.dx / d.size)));
-      const ny = Math.ceil(Math.max(0, Math.abs(r.dy / d.size)));
-      // Determine the number of straight and diagonal moves
-      const nd = Math.min(nx, ny);
-      const ns = Math.abs(ny - nx);
-      nDiagonal += nd;
-
-      if (rule === '5105') {
-        // Alternative DMG Movement
-        const nd10 = Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
-        const spaces = nd10 * 2 + (nd - nd10) + ns;
-        return spaces * d.distance;
-      } else if (rule === 'EUCL') {
-        // Euclidean Measurement
-        const nx = Math.max(0, Math.abs(r.dx / d.size));
-        const ny = Math.max(0, Math.abs(r.dy / d.size));
-        return Math.ceil(Math.hypot(nx, ny) * grid?.distance);
-      } else {
-        // Standard PHB Movement
-        return Math.max(nx, ny) * grid.distance;
-      }
+      const result = canvas?.grid?.measurePath(s);
+      return !options.gridSpaces ? result.euclidean : result.distance;
     });
   }
 
@@ -3499,12 +3762,12 @@ export function runElwinsHelpers() {
   function getDistanceAdjustedByVerticalDist(horizDistance, vertDistance) {
     const rule = canvas.grid.diagonalRule;
     let distance = horizDistance;
-    if (['555', '5105'].includes(rule)) {
+    if (["555", "5105"].includes(rule)) {
       let nd = Math.min(horizDistance, vertDistance);
       let ns = Math.abs(horizDistance - vertDistance);
       distance = nd + ns;
       let dimension = canvas?.dimensions?.distance ?? 5;
-      if (rule === '5105') {
+      if (rule === "5105") {
         distance = distance + Math.floor(nd / 2 / dimension) * dimension;
       }
     } else {
@@ -3546,8 +3809,12 @@ export function runElwinsHelpers() {
     let tokenPosSnapped = undefined;
     if (options?.snapToGrid && canvas.grid.type !== CONST.GRID_TYPES.GRIDLESS) {
       const isTiny = token.document.width < 1 && token.document.height < 1;
-      const interval = canvas.grid.isHex ? 1 : isTiny ? 2 : 1;
-      tokenPosSnapped = canvas.grid.getSnappedPosition(tokenPos.x, tokenPos.y, interval, { token });
+      const mode = canvas.grid.isHexagonal
+        ? CONST.GRID_SNAPPING_MODES.CORNER
+        : isTiny
+        ? CONST.GRID_SNAPPING_MODES.EDGE_MIDPOINT
+        : CONST.GRID_SNAPPING_MODES.CORNER;
+      tokenPosSnapped = canvas.grid.getSnappedPoint(tokenPos, { mode }, { token });
     }
     if (debug) {
       console.warn(`${MACRO_NAME} | getMoveTowardsPosition`, { tokenPos, tokenPosSnapped });
@@ -3571,7 +3838,7 @@ export function runElwinsHelpers() {
    */
   function findMovableSpaceNearDest(token, destPos, nearToken) {
     const tokenInitialDestBounds = new PIXI.Rectangle(destPos.x, destPos.y, token.w, token.h).getBounds();
-    if (token.checkCollision(tokenInitialDestBounds.center, { type: 'move', mode: 'any' })) {
+    if (token.checkCollision(tokenInitialDestBounds.center, { type: "move", mode: "any" })) {
       if (debug) {
         console.warn(`${MACRO_NAME} | findMovableSpaceNearDest (wall collision initial destination)`, {
           tokenCenterPos: token.center,
@@ -3584,12 +3851,16 @@ export function runElwinsHelpers() {
 
     const size = Math.max(token.document.width, token.document.height);
     const isTiny = size < 1;
-    let interval = 0;
+    let mode = 0;
     let gridIncrement = 1;
     let gridDistance = size;
     if (canvas.grid.type !== CONST.GRID_TYPES.GRIDLESS) {
-      interval = canvas.grid.isHex ? 1 : isTiny ? 2 : 1;
-      gridIncrement = canvas.grid.isHex || !isTiny ? 1 : size;
+      mode = canvas.grid.isHexagonal
+        ? CONST.GRID_SNAPPING_MODES.CORNER
+        : isTiny
+        ? CONST.GRID_SNAPPING_MODES.EDGE_MIDPOINT
+        : CONST.GRID_SNAPPING_MODES.CORNER;
+      gridIncrement = canvas.grid.isHexagonal || !isTiny ? 1 : size;
       gridDistance = isTiny ? 1 : size;
     }
 
@@ -3597,9 +3868,9 @@ export function runElwinsHelpers() {
 
     let nearTokenShape = undefined;
     if (nearToken) {
-      if (canvas.grid.isHex) {
+      if (canvas.grid.isHexagonal) {
         // Use padded poly otherwise overlaps does not work for certain adjacent grid spaces.
-        const points = canvas.grid.grid.getBorderPolygon(
+        const points = canvas.grid.getBorderPolygon(
           nearToken.document.width,
           nearToken.document.height,
           CONFIG.Canvas.objectBorderThickness
@@ -3612,12 +3883,12 @@ export function runElwinsHelpers() {
 
     const quadtree = canvas.tokens.quadtree;
     let collisionTest = (o, r) => o.t.id !== token.id && o.r.intersects(r);
-    if (canvas.grid.isHex) {
+    if (canvas.grid.isHexagonal) {
       collisionTest = (o, _) => {
         if (o.t.id === token.id) {
           return false;
         }
-        const points = canvas.grid.grid.getBorderPolygon(
+        const points = canvas.grid.getBorderPolygon(
           o.t.document.width,
           o.t.document.height,
           -CONFIG.Canvas.objectBorderThickness
@@ -3632,18 +3903,18 @@ export function runElwinsHelpers() {
 
     while (!(testIter = posGen.next()).done) {
       const testPos = testIter.value;
-      const testPosSnapped = canvas.grid.getSnappedPosition(testPos.x, testPos.y, interval, { token });
+      const testPosSnapped = canvas.grid.getSnappedPoint(testPos, { mode }, { token });
       let adjTargetShape;
       let adjTargetForNeighborTestShape;
 
-      if (canvas.grid.isHex) {
+      if (canvas.grid.isHexagonal) {
         if (isTiny) {
           // For Tiny in hex grid we use a complete grid space to test touches near token
-          const tmpPos = canvas.grid.getSnappedPosition(testPos.x, testPos.y, interval);
-          const tmpPoints = canvas.grid.grid.getBorderPolygon(1, 1, 0);
+          const tmpPos = canvas.grid.getSnappedPoint({ testPos }, { mode });
+          const tmpPoints = canvas.grid.getBorderPolygon(1, 1, 0);
           adjTargetForNeighborTestShape = new PIXI.Polygon(tmpPoints).translate(tmpPos.x, tmpPos.y);
         }
-        const points = canvas.grid.grid.getBorderPolygon(token.document.width, token.document.height, 0);
+        const points = canvas.grid.getBorderPolygon(token.document.width, token.document.height, 0);
         adjTargetShape = new PIXI.Polygon(points).translate(testPosSnapped.x, testPosSnapped.y);
       } else {
         adjTargetShape = new PIXI.Rectangle(testPosSnapped.x, testPosSnapped.y, token.w, token.h).getBounds();
@@ -3664,7 +3935,7 @@ export function runElwinsHelpers() {
         console.warn(`${MACRO_NAME} | findMovableSpaceNearDest iter`, {
           testPos,
           testPosSnapped,
-          testGrid: canvas.grid.grid.getGridPositionFromPixels(testPosSnapped.x, testPosSnapped.y),
+          testGrid: canvas.grid.getOffset(testPosSnapped),
           touchesNearToken,
           insideNearToken,
           nearTokenShape,
@@ -3679,8 +3950,8 @@ export function runElwinsHelpers() {
       // Test if token can move from destPost to this new position
       const wallCollision = token.checkCollision(testPosCenter, {
         origin: tokenInitialDestBounds.center,
-        type: 'move',
-        mode: 'any',
+        type: "move",
+        mode: "any",
       });
       if (wallCollision) {
         if (debug) {
@@ -3739,12 +4010,12 @@ export function runElwinsHelpers() {
    * @returns the generator function of positions around the specific startingPoint.
    */
   function* nearbyPositionsGenerator(startingPoint, gridIncrement, gridDistance) {
-    const gridLoc = canvas.grid.grid.getGridPositionFromPixels(startingPoint.x, startingPoint.y);
+    const gridLoc = canvas.grid.getOffset(startingPoint);
     // Adjust starting location for partial grid distance increment on square grids only
     if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
       const dim = canvas.dimensions.size;
-      gridLoc[0] += (startingPoint.y % dim) / dim;
-      gridLoc[1] += (startingPoint.x % dim) / dim;
+      gridLoc.i += (startingPoint.y % dim) / dim;
+      gridLoc.j += (startingPoint.x % dim) / dim;
     }
     // partial grid distance is not supported for types of Grid other than Square
     if (gridIncrement < 1 && canvas.grid.type !== CONST.GRID_TYPES.SQUARE) {
@@ -3753,9 +4024,10 @@ export function runElwinsHelpers() {
     const positions = new Set();
 
     const seen = (position) => {
-      const key = position.join('.');
-      if (positions.has(key)) return true;
-
+      const key = position.i + "." + position.j;
+      if (positions.has(key)) {
+        return true;
+      }
       positions.add(key);
       return false;
     };
@@ -3772,8 +4044,9 @@ export function runElwinsHelpers() {
       queue = next.filter((loc) => !seen(loc));
 
       for (const loc of queue) {
-        const [x, y] = canvas.grid.grid.getPixelsFromGridPosition(...loc);
-        yield { x, y, ring };
+        const pos = canvas.grid.getTopLeftPoint(loc);
+        pos.ring = ring;
+        yield pos;
       }
 
       ring += gridIncrement;
@@ -3785,27 +4058,26 @@ export function runElwinsHelpers() {
   /**
    * Returns an array of grid locations corresponding to the specified location neighbors.
    *
-   * @param {number[]} loc - Array containing a grid location's a row and column.
+   * @param {{i: number, j: number}} loc - Grid location's a row and column.
    * @param {number} gridIncrement - The grid increment, should be 1 for small or larger creatures and 0.5 for tiny ones.
    *
-   * @returns {number[][]} array containing the grid locations' row and column of the specified loc neighbors.
+   * @returns {{i: number, j: number}[]} array containing the grid locations' row and column of the specified loc neighbors.
    */
   function getNeighbors(loc, gridIncrement) {
-    const [row, col] = loc;
     if (gridIncrement < 1 && canvas.grid.type === CONST.GRID_TYPES.SQUARE) {
       let offsets = [
-        [-gridIncrement, -gridIncrement],
-        [-gridIncrement, 0],
-        [-gridIncrement, gridIncrement],
-        [0, -gridIncrement],
-        [0, gridIncrement],
-        [gridIncrement, -gridIncrement],
-        [gridIncrement, 0],
-        [gridIncrement, gridIncrement],
+        { i: -gridIncrement, j: -gridIncrement },
+        { i: -gridIncrement, j: 0 },
+        { i: -gridIncrement, j: gridIncrement },
+        { i: 0, j: -gridIncrement },
+        { i: 0, j: gridIncrement },
+        { i: gridIncrement, j: -gridIncrement },
+        { i: gridIncrement, j: 0 },
+        { i: gridIncrement, j: gridIncrement },
       ];
-      return offsets.map((o) => [row + o[0], col + o[1]]);
+      return offsets.map((o) => ({ i: loc.i + o.i, j: loc.j + o.j }));
     } else {
-      return canvas.grid.grid.getNeighbors(row, col);
+      return canvas.grid.getAdjacentOffsets(loc);
     }
   }
 
@@ -3838,16 +4110,16 @@ export function runElwinsHelpers() {
               continue;
             }
             switch (name) {
-              case 'canSee':
-              case 'ignoreSelf':
-              case 'pre':
-              case 'post':
-              case 'reactionNone':
-              case 'wallsBlock':
+              case "canSee":
+              case "ignoreSelf":
+              case "pre":
+              case "post":
+              case "reactionNone":
+              case "wallsBlock":
                 options[name] = /true/.test(value.trim());
                 break;
-              case 'range':
-              case 'disposition':
+              case "range":
+              case "disposition":
                 options[name] = Number(value.trim());
                 break;
               default:
@@ -3912,7 +4184,7 @@ export function runElwinsHelpers() {
     }
 
     if (reactionActivity) {
-      if (!reactionActivity?.item || reactionActivity?.activation?.type !== 'reaction') {
+      if (!reactionActivity?.item || reactionActivity?.activation?.type !== "reaction") {
         console.warn(
           `${MACRO_NAME} | Macro activity is not a reaction or does not have an item, skipping registration.`,
           {
@@ -3926,7 +4198,7 @@ export function runElwinsHelpers() {
         );
         return;
       }
-      if (reactionActivity.type === 'cast') {
+      if (reactionActivity.type === "cast") {
         console.warn(
           `${MACRO_NAME} | Macro activity is a cast activity which are not supported, skipping registration.`,
           {
@@ -3945,7 +4217,7 @@ export function runElwinsHelpers() {
       !options.reactionNone &&
       !reactionActivity &&
       !reactionItem?.system?.activities?.some(
-        (activity) => activity.activation?.type === 'reaction' && activity.type !== 'cast'
+        (activity) => activity.activation?.type === "reaction" && activity.type !== "cast"
       )
     ) {
       console.warn(`${MACRO_NAME} | No supported reaction items found, skipping registration.`, {
@@ -3969,11 +4241,11 @@ export function runElwinsHelpers() {
         : reactionActivity
         ? [reactionActivity]
         : reactionItem.system.activities.filter(
-            (activity) => activity.activation?.type === 'reaction' && activity.type !== 'cast'
+            (activity) => activity.activation?.type === "reaction" && activity.type !== "cast"
           ),
       macroName,
       targetOnUse,
-      triggerSource: options.triggerSource ?? 'target',
+      triggerSource: options.triggerSource ?? "target",
       canSee: options.canSee ?? false,
       ignoreSelf: options.ignoreSelf ?? false,
       preMacro: (options.pre && !options.reactionNone) ?? false,
@@ -4000,16 +4272,16 @@ export function runElwinsHelpers() {
    * @returns {{{Item5e} item, {Activity} activity} the item or activity associated to the specifed macroName.
    */
   async function getItemOrActivityFromMacroName(macroName, actor) {
-    let MQItemMacroLabel = getI18n('midi-qol.ItemMacroText');
-    if (MQItemMacroLabel === 'midi-qol.ItemMacroText') {
-      MQItemMacroLabel = 'ItemMacro';
+    let MQItemMacroLabel = getI18n("midi-qol.ItemMacroText");
+    if (MQItemMacroLabel === "midi-qol.ItemMacroText") {
+      MQItemMacroLabel = "ItemMacro";
     }
-    let MQActivityMacroLabel = getI18n('midi-qol.ActivityMacroText');
-    if (MQActivityMacroLabel === 'midi-qol.ActivityMacroText') {
-      MQActivityMacroLabel = 'ActivityMacro';
+    let MQActivityMacroLabel = getI18n("midi-qol.ActivityMacroText");
+    if (MQActivityMacroLabel === "midi-qol.ActivityMacroText") {
+      MQActivityMacroLabel = "ActivityMacro";
     }
 
-    let [name, uuid] = macroName?.trim().split('|') ?? [undefined, undefined];
+    let [name, uuid] = macroName?.trim().split("|") ?? [undefined, undefined];
     let macroItem = undefined;
     let macroActivity = undefined;
 
@@ -4030,14 +4302,14 @@ export function runElwinsHelpers() {
     if (!name) {
       return undefined;
     }
-    if (name.startsWith('function.')) {
+    if (name.startsWith("function.")) {
       // Do nothing, use the macroItem UUID contained in the macroName
-    } else if (name.startsWith(MQItemMacroLabel) || name.startsWith('ItemMacro')) {
-      if (name === 'ItemMacro' || name === MQItemMacroLabel) {
+    } else if (name.startsWith(MQItemMacroLabel) || name.startsWith("ItemMacro")) {
+      if (name === "ItemMacro" || name === MQItemMacroLabel) {
         // Do nothing, use the macroItem UUID contained in the macroName
       } else {
-        const parts = name.split('.');
-        const itemNameOrUuid = parts.slice(1).join('.');
+        const parts = name.split(".");
+        const itemNameOrUuid = parts.slice(1).join(".");
         macroItem = await fromUuid(itemNameOrUuid); // item or activity
         if (macroItem?.item) {
           macroActivity = macroItem;
@@ -4048,15 +4320,15 @@ export function runElwinsHelpers() {
           macroItem = actor.items.find(
             (i) =>
               i.name === itemNameOrUuid &&
-              (foundry.utils.getProperty(i.flags, 'dae.macro') ?? foundry.utils.getProperty(i.flags, 'itemacro.macro'))
+              (foundry.utils.getProperty(i.flags, "dae.macro") ?? foundry.utils.getProperty(i.flags, "itemacro.macro"))
           );
         }
         if (!macroItem && uuid) {
           let itemId;
-          if (uuid.includes('Activity.')) {
-            itemId = uuid.split('.').slice(-3)[0];
+          if (uuid.includes("Activity.")) {
+            itemId = uuid.split(".").slice(-3)[0];
           } else {
-            itemId = uuid.split('.').slice(-1)[0];
+            itemId = uuid.split(".").slice(-1)[0];
           }
           const itemData = actor.effects.find((effect) => effect.flags.dae?.itemData?._id === itemId)?.flags.dae
             .itemData;
@@ -4065,16 +4337,16 @@ export function runElwinsHelpers() {
           }
         }
       }
-    } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith('ActivityMacro')) {
+    } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith("ActivityMacro")) {
       // ActivityMacro
       // ActivityMacro.uuid
       // ActivityMacro.identifier
       // ActivityMacro.ActivityName
-      if (name === MQActivityMacroLabel || name === 'ActivityMacro') {
+      if (name === MQActivityMacroLabel || name === "ActivityMacro") {
         // Do nothing
       } else {
-        const parts = name.split('.');
-        const activitySpec = parts.slice(1).join('.');
+        const parts = name.split(".");
+        const activitySpec = parts.slice(1).join(".");
         let itemToUse = macroItem;
         const activityOrItem = activitySpec ? await fromUuid(activitySpec) : macroActivity;
         if (activityOrItem instanceof Item) {
@@ -4111,8 +4383,8 @@ export function runElwinsHelpers() {
       }
     } else {
       // get a world/compendium macro.
-      if (name.startsWith('Macro.')) {
-        name = name.replace('Macro.', '');
+      if (name.startsWith("Macro.")) {
+        name = name.replace("Macro.", "");
       }
       const macro = game.macros?.getName(name);
       if (!macro) {
@@ -4140,7 +4412,7 @@ export function runElwinsHelpers() {
       return false; // TODO can't specify 0 cost reactions in dnd5e 4.x - have to find another way
     }
 
-    if (!item.system.attuned && item.system.attunement === 'required') {
+    if (!item.system.attuned && item.system.attunement === "required") {
       if (debug) {
         console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: item not attuned.`);
       }
@@ -4149,14 +4421,14 @@ export function runElwinsHelpers() {
 
     // Note: third party reactions on cast activities are not supported, they are filtered on registration
     let isValid = false;
-    if (item.type === 'spell') {
+    if (item.type === "spell") {
       if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
         isValid = true;
-      } else if (['atwill', 'innate'].includes(item.system.preparation.mode)) {
+      } else if (["atwill", "innate"].includes(item.system.preparation.mode)) {
         isValid = true;
       } else if (item.system.level === 0) {
         isValid = true;
-      } else if (item.system.preparation?.prepared !== true && item.system.preparation?.mode === 'prepared') {
+      } else if (item.system.preparation?.prepared !== true && item.system.preparation?.mode === "prepared") {
         if (debug) {
           console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: spell not prepared.`);
         }
@@ -4186,8 +4458,8 @@ export function runElwinsHelpers() {
   }
 
   function getI18nOptions(key) {
-    const translations = game.i18n.translations['midi-qol'] ?? {};
-    const fallback = game.i18n._fallback['midi-qol'] ?? {};
+    const translations = game.i18n.translations["midi-qol"] ?? {};
+    const fallback = game.i18n._fallback["midi-qol"] ?? {};
     return translations[key] ?? fallback[key] ?? {};
   }
 
@@ -4198,15 +4470,15 @@ export function runElwinsHelpers() {
    */
   function getTokenName(entity) {
     if (!entity) {
-      return '<unknown>';
+      return "<unknown>";
     }
     if (!(entity instanceof (foundry.canvas.placeables?.Token ?? Token))) {
-      return '<unknown>';
+      return "<unknown>";
     }
     if (MidiQOL.configSettings().useTokenNames) {
-      return entity.name ?? entity.actor?.name ?? '<unknown>';
+      return entity.name ?? entity.actor?.name ?? "<unknown>";
     } else {
-      return entity.actor?.name ?? entity.name ?? '<unknown>';
+      return entity.actor?.name ?? entity.name ?? "<unknown>";
     }
   }
 
@@ -4220,7 +4492,7 @@ export function runElwinsHelpers() {
     if (tokenRef instanceof TokenDocument) {
       return tokenRef.object;
     }
-    if (typeof tokenRef === 'string') {
+    if (typeof tokenRef === "string") {
       const entity = MidiQOL.MQfromUuid(tokenRef);
       //@ts-expect-error return cast
       if (entity instanceof TokenDocument) {
@@ -4244,11 +4516,11 @@ export function runElwinsHelpers() {
    */
   async function getTokenImage(token) {
     let img = token.document?.texture.src ?? token.actor?.img;
-    if (MidiQOL.configSettings().usePlayerPortrait && token.actor?.type === 'character') {
+    if (MidiQOL.configSettings().usePlayerPortrait && token.actor?.type === "character") {
       img = token.actor?.img ?? token.document?.texture.src;
     }
-    if (VideoHelper.hasVideoExtension(img ?? '')) {
-      img = await game.video.createThumbnail(img ?? '', { width: 100, height: 100 });
+    if (VideoHelper.hasVideoExtension(img ?? "")) {
+      img = await game.video.createThumbnail(img ?? "", { width: 100, height: 100 });
     }
     return img;
   }
@@ -4284,14 +4556,16 @@ export function runElwinsHelpers() {
 
   function registerRemoteFunctions() {
     const socket = socketlib.registerSystem(game.system.id);
-    socket.register('elwinHelpers.remoteButtonDialog', _remoteButtonDialog);
-    socket.register('elwinHelpers.remoteCreateEnchantment', _remoteCreateEnchantment);
-    socket.register('elwinHelpers.remoteDeleteEnchantment', _remoteDeleteEnchantment);
+    socket.functions?.clear();
+    socket.register("elwinHelpers.remoteButtonDialog", _remoteButtonDialog);
+    socket.register("elwinHelpers.remoteCreateEnchantment", _remoteCreateEnchantment);
+    socket.register("elwinHelpers.remoteDeleteEnchantment", _remoteDeleteEnchantment);
+    socket.register("elwinHelpers.remoteAttachAmbientLightToTemplate", _remoteAttachAmbientLightToTemplate);
 
-    exportIdentifier('elwinHelpers.socket', socket);
+    exportIdentifier("elwinHelpers.socket", socket);
   }
 
-  async function _remoteButtonDialog({ data, direction }) {
+  async function _remoteButtonDialog(data, direction) {
     return await buttonDialog(data, direction);
   }
 
@@ -4307,7 +4581,7 @@ export function runElwinsHelpers() {
 
   async function _remoteDeleteEnchantment(enchantmentEffectUuid, options) {
     const effect = fromUuidSync(enchantmentEffectUuid);
-    if (!effect || !(effect instanceof ActiveEffect) || effect.type !== 'enchantment') {
+    if (!effect || !(effect instanceof ActiveEffect) || effect.type !== "enchantment") {
       if (debug) {
         console.warn(`${MACRO_NAME} | Invalid enchantment effect UUID or not an enchantment effect.`, {
           enchantmentEffectUuid,
@@ -4316,5 +4590,10 @@ export function runElwinsHelpers() {
       return undefined;
     }
     await effect.delete(options);
+  }
+
+  async function _remoteAttachAmbientLightToTemplate(templateUuid, ambientLightData) {
+    const templateDocument = fromUuidSync(templateUuid);
+    return (await attachAmbientLightToTemplate(templateDocument, ambientLightData))?.uuid;
   }
 }
