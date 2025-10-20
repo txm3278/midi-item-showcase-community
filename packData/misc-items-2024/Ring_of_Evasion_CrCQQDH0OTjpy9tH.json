@@ -158,28 +158,10 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
-      },
       "_key": "!items.effects!CrCQQDH0OTjpy9tH.30vmoE2Z5s0k3uCH"
     }
   ],
   "folder": null,
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "dnd5e": {
       "riders": {
@@ -203,21 +185,7 @@
       "noConcentrationCheck": false,
       "toggleEffect": false,
       "ignoreTotalCover": false
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "createdTime": 1745786226970,
-    "modifiedTime": 1750286916275,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "CrCQQDH0OTjpy9tH",
   "_key": "!items!CrCQQDH0OTjpy9tH"

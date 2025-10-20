@@ -168,28 +168,6 @@
       "favorite": true
     }
   },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.0.4",
-    "coreVersion": "13.346",
-    "createdTime": 1696633614995,
-    "modifiedTime": 1713819458102,
-    "lastModifiedBy": "B2BBHntfpytXE8DP",
-    "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": {
-      "worldId": "d-d-waterdeep-dragon-heist",
-      "uuid": null,
-      "coreVersion": "11.315",
-      "systemId": "dnd5e",
-      "systemVersion": "2.4.1"
-    }
-  },
-  "ownership": {
-    "default": 0,
-    "B2BBHntfpytXE8DP": 3
-  },
   "_id": "GgL6nEWMUorSuQCl",
-  "sort": 200000,
   "_key": "!items!GgL6nEWMUorSuQCl"
 }

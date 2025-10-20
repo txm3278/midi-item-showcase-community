@@ -437,16 +437,6 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1745794303865,
-        "modifiedTime": 1756760298350,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!TNZS31lBOuA3kpzb.eFfWdbcygq1LDcXe"
     },
     {
@@ -516,16 +506,6 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1745794569467,
-        "modifiedTime": 1754915124994,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!TNZS31lBOuA3kpzb.Bf5EJfd0ghcirCkX"
     },
     {
@@ -594,26 +574,9 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1745977702421,
-        "modifiedTime": 1755657282015,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!TNZS31lBOuA3kpzb.3Dux3zNFGizvVdyo"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "midi-qol": {
       "onUseMacroName": "[preDamageRollConfig]function.MISC.macros.items.oathbow,[postActiveEffects]function.MISC.macros.items.oathbow",
@@ -645,26 +608,12 @@
       "ida": false,
       "concentration": false
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
         "effect": []
       }
     }
-  },
-  "_stats": {
-    "coreVersion": "12.343",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1745788090626,
-    "modifiedTime": 1755657618786,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!TNZS31lBOuA3kpzb"
 }

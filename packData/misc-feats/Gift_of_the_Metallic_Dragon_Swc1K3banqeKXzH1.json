@@ -217,17 +217,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
       "type": "base",
       "system": {},
@@ -294,17 +283,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/creatures/reptiles/dragon-winged-blue.webp",
       "type": "base",
       "system": {},
@@ -312,13 +290,6 @@
       "_key": "!items.effects!Swc1K3banqeKXzH1.IcGaEbrOONUEKiQG"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -389,12 +360,6 @@
         }
       }
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
@@ -405,14 +370,6 @@
       "section": "",
       "actionSection": ""
     }
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.331",
-    "createdTime": 1706615384809,
-    "modifiedTime": 1752415849751,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_key": "!items!Swc1K3banqeKXzH1"
 }

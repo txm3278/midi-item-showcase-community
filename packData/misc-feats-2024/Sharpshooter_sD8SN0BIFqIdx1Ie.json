@@ -122,15 +122,7 @@
         }
       }
     },
-    "core": {
-      "sourceId": "Compendium.midi-item-showcase-community.misc-feats.Item.hFU3MQBV2JOc9GFk"
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
+    "core": {},
     "dae": {},
     "dnd5e": {
       "riders": {
@@ -222,17 +214,6 @@
       "_id": "q5Le1zgY3WEmhZFu",
       "description": "",
       "origin": "Item.sD8SN0BIFqIdx1Ie",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": 1740098930268,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
       "type": "base",
       "system": {},
@@ -242,21 +223,6 @@
   ],
   "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
   "folder": null,
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.3",
-    "coreVersion": "13.346",
-    "createdTime": 1706483810724,
-    "modifiedTime": 1750286916275,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "_id": "sD8SN0BIFqIdx1Ie",
-  "sort": 100000,
   "_key": "!items!sD8SN0BIFqIdx1Ie"
 }

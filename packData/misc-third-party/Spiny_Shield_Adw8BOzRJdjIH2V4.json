@@ -448,37 +448,10 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.4.3",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "exportSource": null
-      },
       "_key": "!items.effects!Adw8BOzRJdjIH2V4.Op2EekdEJIajz8CF"
     }
   ],
-  "_stats": {
-    "compendiumSource": null,
-    "duplicateSource": null,
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.3",
-    "createdTime": 1749693349536,
-    "modifiedTime": 1749693349555,
-    "lastModifiedBy": "bKLzYrihb8hCZEBa",
-    "exportSource": null
-  },
   "folder": "QkYgy6oIAwWcoskV",
   "_id": "Adw8BOzRJdjIH2V4",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "bKLzYrihb8hCZEBa": 3
-  },
   "_key": "!items!Adw8BOzRJdjIH2V4"
 }

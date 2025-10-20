@@ -233,8 +233,6 @@ export function runElwinsHelpers() {
     );
     setHook("midi-qol.dnd5eCalculateDamage", "handleMidiDnd5eCalculateDamageId", handleMidiDnd5eCalculateDamage);
     setHook("dnd5e.canEnchant", "handleDnd5eCanEnchant", handleDnd5eCanEnchant);
-    setHook("preCreateItem", "handlePreCreateItem", handlePreCreateItem);
-    setHook("preUpdateItem", "handlePreUpdateItem", handlePreUpdateItem);
     setHook(
       "deleteChatMessage",
       "handleDeleteChatMessageForRegisteredWorkflowHooks",
@@ -632,61 +630,6 @@ export function runElwinsHelpers() {
         }
       }
     }
-  }
-
-  /**
-   * Handles the preCreateItem hook. It allows replacing item use consumptions targeting an item identifier with a matching item id.
-   *
-   * @param {Activity} item - Item to be created.
-   * @param {Object} data - The item data.
-   * @param {object} options - The operation options.
-   * @param {string} userId - The id of the user creating the item.
-   */
-  function handlePreCreateItem(item, data, options, userId) {
-    if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreCreateItem`, { item, data, options, userId });
-    }
-    if (!item.actor || item.pack) {
-      // Not an owned item or in compendium
-      return true;
-    }
-    for (let activity of item.system?.activities ?? []) {
-      if (!activity?.consumption || !activity?.consumption?.targets) {
-        // No consumption configured on activity
-        continue;
-      }
-      const activityData = replaceActivityConsumptionTargetIdentifierById("handlePreCreateItem", item, activity, false);
-      if (activityData) {
-        item.updateSource({ [`system.activities.${activityData._id}`]: activityData });
-      }
-    }
-    return true;
-  }
-
-  /**
-   * Handles the preUpdateItem hook. It allows replacing item use consumptions targeting an item identifier with a matching item id.
-   *
-   * @param {Activity} item - Item to be updated.
-   * @param {Object} changed - The item data to be changed.
-   * @param {object} options - The operation options.
-   * @param {string} userId - The id of the user creating the item.
-   */
-  function handlePreUpdateItem(item, changed, options, userId) {
-    if (debug) {
-      console.warn(`${MACRO_NAME} | handlePreUpdateItem`, { item, changed, options, userId });
-    }
-    if (!item.actor || item.pack) {
-      // Not an owned item or in compendium
-      return true;
-    }
-    for (let activityData of Object.values(changed.system?.activities ?? {})) {
-      if (!activityData?.consumption || !activityData?.consumption?.targets) {
-        // No consumption configured on activity
-        continue;
-      }
-      replaceActivityConsumptionTargetIdentifierById("handlePreUpdateItem", item, activityData, true);
-    }
-    return true;
   }
 
   /**

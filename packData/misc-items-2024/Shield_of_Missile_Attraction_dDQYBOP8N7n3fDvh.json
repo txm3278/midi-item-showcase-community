@@ -141,17 +141,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1751743274839,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "img": "icons/equipment/shield/kite-decorative-steel-claws.webp",
       "type": "base",
       "system": {},
@@ -236,27 +225,9 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": "Item.bt86HN84GlH93N4J.ActiveEffect.Zh6Q5E7IvZ3818r6",
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1751748462102,
-        "modifiedTime": 1751748462102,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!dDQYBOP8N7n3fDvh.lAxTT23EodMCCr9t"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "midi-qol": {
       "removeAttackDamageButtons": "default",
@@ -288,35 +259,12 @@
     },
     "core": {},
     "dae": {},
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
         "effect": []
       }
     }
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.3.9",
-    "createdTime": 1751740846508,
-    "modifiedTime": 1751741042148,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-    "exportSource": {
-      "worldId": "test2",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd5e",
-      "systemVersion": "4.3.9"
-    },
-    "compendiumSource": null,
-    "duplicateSource": null
   },
   "_id": "dDQYBOP8N7n3fDvh",
   "_key": "!items!dDQYBOP8N7n3fDvh"

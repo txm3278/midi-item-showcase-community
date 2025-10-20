@@ -214,12 +214,6 @@
     "custom-character-sheet-sections": {
       "sectionName": ""
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -337,17 +331,6 @@
       "name": "Flash of Genius - Bonus",
       "description": "",
       "statuses": [],
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": 1757817122210,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/magic/light/explosion-star-blue.webp",
       "type": "base",
       "system": {},
@@ -416,17 +399,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": 1757818988993,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/magic/light/explosion-star-blue.webp",
       "type": "base",
       "system": {},
@@ -435,22 +407,7 @@
     }
   ],
   "img": "icons/magic/light/explosion-star-blue.webp",
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.343",
-    "createdTime": 1680737539131,
-    "modifiedTime": 1757819185599,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "folder": "XdRbjr9vWzc7ijqS",
   "_id": "n2J78riB4tmI6oWk",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "_key": "!items!n2J78riB4tmI6oWk"
 }

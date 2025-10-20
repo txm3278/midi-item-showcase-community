@@ -350,12 +350,6 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
   },
   "effects": [
@@ -425,17 +419,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": null,
-        "modifiedTime": 1740448849785,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
       "type": "base",
       "system": {},
@@ -506,17 +489,6 @@
             "statuses": []
           }
         }
-      },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": 1736380703319,
-        "modifiedTime": 1740448749076,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
       },
       "_key": "!items.effects!83BKjPo3v4TxlDN5.NlqjFwb7JZ4DVjdJ"
     },
@@ -592,37 +564,11 @@
           }
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.3",
-        "createdTime": 1736380913151,
-        "modifiedTime": 1740541625181,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "_key": "!items.effects!83BKjPo3v4TxlDN5.mH70veUSYFpOQ36C"
     }
   ],
   "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
   "folder": "82KvnvMjqGlKNrww",
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.331",
-    "createdTime": 1696175338841,
-    "modifiedTime": 1752415850022,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
-  "sort": 100000,
   "_id": "83BKjPo3v4TxlDN5",
   "_key": "!items!83BKjPo3v4TxlDN5"
 }

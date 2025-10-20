@@ -426,16 +426,6 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1756760330939,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.eFfWdbcygq1LDcXe"
     },
     {
@@ -505,16 +495,6 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1754915920899,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.Bf5EJfd0ghcirCkX"
     },
     {
@@ -582,16 +562,6 @@
           "wallsBlock": "system",
           "statuses": []
         }
-      },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": 1745979494610,
-        "modifiedTime": 1755657331475,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
       },
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.ZEOnfGlqjubR8yjI"
     },
@@ -733,26 +703,9 @@
           "statuses": []
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.4.4",
-        "createdTime": 1754916335670,
-        "modifiedTime": 1755692322693,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.w5C2XoXw58Z5Xh7c"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "midi-qol": {
       "onUseMacroName": "",
@@ -784,12 +737,6 @@
       "ida": false,
       "concentration": false
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
@@ -798,14 +745,6 @@
         ]
       }
     }
-  },
-  "_stats": {
-    "coreVersion": "12.343",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1745977401739,
-    "modifiedTime": 1755657628022,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "O4yKxxm9VjyNJU1k",
   "_key": "!items!O4yKxxm9VjyNJU1k"

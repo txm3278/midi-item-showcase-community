@@ -5,18 +5,7 @@
   "type": "Item",
   "_id": "82KvnvMjqGlKNrww",
   "description": "",
-  "sort": 0,
   "color": null,
   "flags": {},
-  "_stats": {
-    "compendiumSource": null,
-    "duplicateSource": null,
-    "coreVersion": "12.331",
-    "systemId": "dnd5e",
-    "systemVersion": "4.1.2",
-    "createdTime": 1737309341128,
-    "modifiedTime": 1737309341128,
-    "lastModifiedBy": "4cS9ZPYEz6G3J8Kp"
-  },
   "_key": "!folders!82KvnvMjqGlKNrww"
 }

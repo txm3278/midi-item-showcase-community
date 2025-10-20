@@ -194,15 +194,6 @@
           "overlay": false
         }
       },
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "5.0.4",
-        "lastModifiedBy": null
-      },
       "_key": "!items.effects!ZCpe68X7DdVLAABK.ClUmptTXzTzVKIWy"
     }
   ],
@@ -275,22 +266,6 @@
   },
   "img": "icons/equipment/shield/targe-copper-eye.webp",
   "folder": "EoUufOjHayBnKJk9",
-  "_stats": {
-    "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null,
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "5.0.4",
-    "createdTime": 1751863684727,
-    "modifiedTime": 1751863971571,
-    "lastModifiedBy": "KJmttYhOUfOn05Yv"
-  },
   "_id": "ZCpe68X7DdVLAABK",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "KJmttYhOUfOn05Yv": 3
-  },
   "_key": "!items!ZCpe68X7DdVLAABK"
 }

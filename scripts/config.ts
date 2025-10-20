@@ -65,6 +65,12 @@ export function setConfig() {
           version: '2.0.2',
           authors: ['Elwin'],
         },
+        'Accursed Specter': {
+          name: 'Accursed Specter',
+          type: 'Class Feature',
+          version: '5.1.9',
+          authors: ['Bacon']
+        },
         "Alchemist's Fire (flask)": {
           name: "Alchemist's Fire (flask)",
           type: 'Item',
@@ -452,12 +458,6 @@ export function setConfig() {
           version: '1.1.1',
           authors: ['Elwin'],
         },
-        'Circle Form': {
-          name: 'Circle Form',
-          type: 'Class Feature',
-          version: '1.0.0',
-          authors: ['TMinz'],
-        },
         'Clockwork Amulet': {
           name: 'Clockwork Amulet',
           type: 'Item',
@@ -596,12 +596,6 @@ export function setConfig() {
           type: 'Class Feature',
           version: '1.0.1',
           authors: ['Elwin'],
-        },
-        'Wild Shape': {
-          name: 'Wild Shape',
-          type: 'Class Feature',
-          version: '1.0.0',
-          authors: ['TMinz'],
         },
         'Wyvern Poison': {
           name: 'Wyvern Poison',

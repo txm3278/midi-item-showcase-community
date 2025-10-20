@@ -232,12 +232,6 @@
         }
       }
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
@@ -308,17 +302,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.346",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
       "img": "icons/magic/control/encase-creature-monster-hold.webp",
       "type": "base",
       "system": {},
@@ -328,20 +311,5 @@
   ],
   "img": "icons/magic/control/encase-creature-monster-hold.webp",
   "folder": "Wlznzo7daJM68Pec",
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "coreVersion": "12.331",
-    "createdTime": 1706323891871,
-    "modifiedTime": 1752415851016,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "_key": "!items!loQSsUlPv7qxGGFy"
 }

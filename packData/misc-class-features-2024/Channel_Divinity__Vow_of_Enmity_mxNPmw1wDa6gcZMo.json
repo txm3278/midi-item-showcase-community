@@ -341,16 +341,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.4.4",
-        "createdTime": null,
-        "modifiedTime": 1756598018550,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
@@ -425,16 +415,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "12.343",
-        "systemId": "dnd5e",
-        "systemVersion": "4.4.4",
-        "createdTime": null,
-        "modifiedTime": 1756255815850,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-      },
       "img": "icons/skills/targeting/crosshair-arrowhead-blue.webp",
       "type": "base",
       "system": {},
@@ -442,12 +422,6 @@
       "_key": "!items.effects!mxNPmw1wDa6gcZMo.mXb3v0Eqny4tMqiI"
     }
   ],
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "midi-qol": {
       "effectActivation": false,
@@ -491,9 +465,7 @@
       "idv": false,
       "ida": false
     },
-    "core": {
-      "sourceId": "Item.TuFvea9WzwTrFy1R"
-    },
+    "core": {},
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -542,24 +514,9 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
     }
   },
-  "_stats": {
-    "coreVersion": "12.343",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1756077032912,
-    "modifiedTime": 1756597406083,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
-  },
   "folder": "AwFypG5pXwnZPePj",
-  "sort": 100000,
   "_id": "mxNPmw1wDa6gcZMo",
   "_key": "!items!mxNPmw1wDa6gcZMo"
 }

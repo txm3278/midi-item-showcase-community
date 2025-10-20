@@ -229,17 +229,6 @@
         }
       },
       "tint": "#ffffff",
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.346",
-        "systemId": "dnd5e",
-        "systemVersion": "4.3.9",
-        "createdTime": null,
-        "modifiedTime": 1750286862990,
-        "lastModifiedBy": "9QqTZMFq1dhCIYAR",
-        "exportSource": null
-      },
       "img": "icons/magic/light/explosion-star-glow-yellow.webp",
       "type": "base",
       "system": {},
@@ -247,13 +236,6 @@
       "_key": "!items.effects!WhlMAGdp2U3rlva2.jPLrgv9929fkXzIz"
     }
   ],
-  "sort": 100000,
-  "ownership": {
-    "default": 0,
-    "9QqTZMFq1dhCIYAR": 3,
-    "gL73FCal7TSakaVy": 3,
-    "4cS9ZPYEz6G3J8Kp": 3
-  },
   "flags": {
     "walledtemplates": {
       "wallsBlock": "globalDefault",
@@ -322,12 +304,6 @@
         }
       }
     },
-    "exportSource": {
-      "world": "test2",
-      "system": "dnd5e",
-      "coreVersion": "12.343",
-      "systemVersion": "4.4.4"
-    },
     "dnd5e": {
       "riders": {
         "activity": [],
@@ -338,14 +314,6 @@
       "section": "",
       "actionSection": ""
     }
-  },
-  "_stats": {
-    "coreVersion": "13.346",
-    "systemId": "dnd5e",
-    "systemVersion": "4.4.4",
-    "createdTime": 1749995150946,
-    "modifiedTime": 1752415851473,
-    "lastModifiedBy": "9QqTZMFq1dhCIYAR"
   },
   "_id": "WhlMAGdp2U3rlva2",
   "_key": "!items!WhlMAGdp2U3rlva2"

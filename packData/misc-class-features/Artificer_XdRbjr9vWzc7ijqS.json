@@ -4,16 +4,7 @@
   "folder": null,
   "type": "Item",
   "_id": "XdRbjr9vWzc7ijqS",
-  "sort": 600000,
   "color": null,
   "flags": {},
-  "_stats": {
-    "systemId": "dnd5e",
-    "systemVersion": "3.0.4",
-    "coreVersion": "11.315",
-    "createdTime": 1706032467413,
-    "modifiedTime": 1710821882035,
-    "lastModifiedBy": "B2BBHntfpytXE8DP"
-  },
   "_key": "!folders!XdRbjr9vWzc7ijqS"
 }
