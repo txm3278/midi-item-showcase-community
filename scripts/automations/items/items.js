@@ -5,6 +5,7 @@ import { clockworkAmulet } from './clockworkAmulet.js';
 import { corpseSlayerWeapon } from './corpseSlayerWeapon.js';
 import { drowHandCrossbow } from './drowHandCrossbow.js';
 import { guardianEmblem } from './guardianEmblem.js';
+import { eversmokingBottle } from './eversmokingBottle.js';
 import { oathbow } from './oathbow.js';
 import { shieldOfMissileAttraction } from './shieldOfMissileAttraction.js';
 import { sunBlade } from './sunBlade.js';
@@ -16,6 +17,7 @@ export let items = {
   corpseSlayerWeapon,
   daggerOfVenom,
   drowHandCrossbow,
+  eversmokingBottle,
   guardianEmblem,
   oathbow,
   shieldOfMissileAttraction,

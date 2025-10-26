@@ -247,8 +247,8 @@ export async function poisoner({ speaker, actor, token, character, item, args, s
         },
         source:
           rules === 'legacy'
-            ? { book: "Tasha's Cauldron of Everything", page: '80', revision: 1, rules: '2014' }
-            : { book: "Player's Handbook (2024)", page: '206', revision: 1, rules: '2024' },
+            ? { book: "TCoE", page: '80', revision: 1, rules: '2014' }
+            : { book: "PHB 2024", page: '206', revision: 1, rules: '2024' },
         quantity: 1,
         price: { value: 100, denomination: 'gp' },
         identified: true,

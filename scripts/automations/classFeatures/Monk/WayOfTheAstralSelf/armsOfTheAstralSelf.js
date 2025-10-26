@@ -1,11 +1,13 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Arms of the Astral Self
 // Summons spectral hands and adds a new attack to the Unarmed Strike weapon to use these arms instead.
-// v2.1.0
+// v2.2.0
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
+//  - Times Up
 //  - MidiQOL "OnUseMacro" ItemMacro[preItemRoll],[preAoETargetConfirmation],[postActiveEffects]
+//  - Elwin Helpers world script
 //
 // Usage:
 // This item needs to be used to activate. When activated the selected targets around must succeed on a Dex save or
@@ -24,7 +26,8 @@
 // ###################################################################################################
 
 // Default name of the feature
-const DEFAULT_ITEM_NAME = 'Arms of the Astral Self';
+const DEFAULT_ITEM_NAME = "Arms of the Astral Self";
+const VISAGE_OF_ASTRAL_SELF_IDENT = "visage-of-the-astral-self";
 
 /**
  * Validates if the required dependencies are met.
@@ -32,12 +35,12 @@ const DEFAULT_ITEM_NAME = 'Arms of the Astral Self';
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.2')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.2")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "times-up", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -58,16 +61,16 @@ export async function armsOfTheAstralSelf({ speaker, actor, token, character, it
     );
   }
 
-  if (args[0].tag === 'OnUse') {
+  if (args[0].tag === "OnUse") {
     // Remove target that cannot be seen and only keep enemies by default
-    if (scope.rolledActivity?.identifier === 'summon') {
-      if (args[0].macroPass === 'preAoETargetConfirmation') {
+    if (scope.rolledActivity?.identifier === "summon") {
+      if (args[0].macroPass === "preAoETargetConfirmation") {
         handleOnUsePreAoETargetConfirmation(token);
-      } else if (args[0].macroPass === 'postActiveEffects') {
-        await handleOnUsePostActiveEffects(actor, workflow, scope);
+      } else if (args[0].macroPass === "postActiveEffects") {
+        await handleOnUsePostActiveEffects(actor, workflow, scope, debug);
       }
-    } else if (scope.rolledActivity?.identifier === 'attack-with-spectral-arms')
-      if (args[0].macroPass === 'preItemRoll') {
+    } else if (scope.rolledActivity?.identifier === "attack-with-spectral-arms")
+      if (args[0].macroPass === "preItemRoll") {
         handleOnUsePreItemRoll(token, workflow);
       }
   }
@@ -101,22 +104,23 @@ function handleOnUsePreAoETargetConfirmation(token) {
  * @param {Actor5e} actor - The owner of the Arms of the Astral Self item.
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
  * @param {object} scope - The midi-qol macro call scope object.
+ * @param {boolean} debug - Flag to indicate debug mode.
  */
-async function handleOnUsePostActiveEffects(actor, workflow, scope) {
+async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
   const selfEffect = actor.effects.find((a) => a.origin === scope.rolledActivity.uuid);
   if (!selfEffect) {
     console.error(`${DEFAULT_ITEM_NAME} | Missing Arms Of the Astral Self effect`, { workflow });
     return;
   }
 
-  const unarmedStrike = actor.itemTypes.weapon.find((a) => a.identifier === 'unarmed-strike');
+  const unarmedStrike = actor.itemTypes.weapon.find((a) => a.identifier === "unarmed-strike");
   if (!unarmedStrike) {
     console.error(`${DEFAULT_ITEM_NAME} | Missing Unarmed Strike item`, { workflow });
     return;
   }
 
   const applyArmsActivity = scope.rolledItem.system.activities.find(
-    (a) => a.identifier === 'apply-arms-to-unarmed-strike'
+    (a) => a.identifier === "apply-arms-to-unarmed-strike"
   );
   if (!applyArmsActivity) {
     console.error(`${DEFAULT_ITEM_NAME} | Missing Apply Arms to Unarmed Strike activity`, { workflow });
@@ -147,27 +151,122 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
   await wait(5);
   await enchantmentEffect.addDependent(selfEffect);
 
-  let attAbility = 'str';
+  let attAbility = "str";
   if (actor.system.abilities.dex.mod >= Math.max(actor.system.abilities.str.mod, actor.system.abilities.wis.mod)) {
-    attAbility = 'dex';
+    attAbility = "dex";
   } else if (
     actor.system.abilities.wis.mod >= Math.max(actor.system.abilities.str.mod, actor.system.abilities.dex.mod)
   ) {
-    attAbility = 'wis';
+    attAbility = "wis";
   } else if (
     actor.system.abilities.str.mod >= Math.max(actor.system.abilities.dex.mod, actor.system.abilities.wis.mod)
   ) {
-    attAbility = 'str';
+    attAbility = "str";
   }
   await unarmedStrike.system.activities
-    ?.find((a) => a.identifier === 'attack-with-spectral-arms')
+    ?.find((a) => a.identifier === "attack-with-spectral-arms")
     ?.update({
-      'attack.ability': attAbility,
-      'midiProperties.automationOnly': false,
-      'damage.includeBase': false,
+      "attack.ability": attAbility,
+      "midiProperties.automationOnly": false,
+      "damage.includeBase": false,
     });
 
-  ui.notifications.notify('Attack with Spectral Arms added to Unarmed Strike.');
+  ui.notifications.notify("Attack with Spectral Arms added to Unarmed Strike.");
+
+  // When summoned through Awakened Self, skip optional Summon of Visage of the Astral Self
+  if (workflow.workflowOptions?.awakenedAstralSelf) {
+    return;
+  }
+
+  // Ask to Summon Visage if present and of appropriate level
+  const visageOfAstralSelfItem = actor.itemTypes.feat.find((i) => i.identifier === VISAGE_OF_ASTRAL_SELF_IDENT);
+  if (!visageOfAstralSelfItem) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Monk does not have the ${VISAGE_OF_ASTRAL_SELF_IDENT} feature.`);
+    }
+    return;
+  }
+  if ((actor.getRollData().classes?.monk?.levels ?? 0) >= (visageOfAstralSelfItem.system.prerequisites?.level ?? 99)) {
+    const visageOfAstralSelfActivity = visageOfAstralSelfItem.system.activities?.find((a) => a.identifier === "summon");
+    if (!visageOfAstralSelfActivity) {
+      console.warn(
+        `${DEFAULT_ITEM_NAME} | Could not find valid the summon activity for ${visageOfAstralSelfItem.name}.`
+      );
+      return;
+    }
+    const { value: nbUses, max: maxUses } = actor.items.get(visageOfAstralSelfActivity.consumption?.targets[0]?.target)
+      ?.system.uses ?? { value: 0, max: 0 };
+
+    if (nbUses <= 0) {
+      // No uses available cannot summon visage
+      if (debug) {
+        console.warn(`${DEFAULT_ITEM_NAME} | No uses available, cannot summon visage.`, {
+          item: scope.rolledItem,
+          visageOfAstralSelfActivity,
+        });
+      }
+      return;
+    }
+    const summonVisage = await showDialog(visageOfAstralSelfActivity, nbUses, maxUses);
+    if (!summonVisage) {
+      return;
+    }
+
+    let player = MidiQOL.playerForActor(actor);
+    if (!player?.active) {
+      // Find first active GM player
+      player = game.users?.activeGM;
+    }
+    if (!player?.active) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No active player or GM for actor.`, actor);
+      return;
+    }
+
+    // Create a modified synthetic modified feature to change the summon activity action type
+    const visageOfAstralSelfItemData = visageOfAstralSelfItem.toObject();
+    visageOfAstralSelfItemData._id = foundry.utils.randomID();
+    foundry.utils.setProperty(
+      visageOfAstralSelfItemData,
+      `system.activities.${visageOfAstralSelfActivity.id}.activation.type`,
+      ""
+    );
+    foundry.utils.setProperty(visageOfAstralSelfItemData, "flags.midi-qol.syntheticItem", true);
+
+    const config = {
+      midiOptions: {
+        activityId: visageOfAstralSelfActivity.id,
+        targetUuids: [workflow.tokenUuid],
+        workflowOptions: { targetConfirmation: "none", autoConsumeResource: "both" },
+      },
+    };
+
+    const data = {
+      itemData: visageOfAstralSelfItemData,
+      actorUuid: actor.uuid,
+      config,
+      dialog: {
+        configure: false,
+      },
+    };
+
+    // Register hook to call retribution damage after roll is complete
+    Hooks.once(`midi-qol.RollComplete.${workflow.itemUuid}`, async (workflow2) => {
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          DEFAULT_ITEM_NAME,
+          "midi-qol.RollComplete",
+          visageOfAstralSelfItem.name,
+          workflow,
+          workflow2,
+          debug
+        )
+      ) {
+        return;
+      }
+      const actionName = game.release.generation > 12 ? "completeItemUse" : "completeItemUseV2";
+      await MidiQOL.socket().executeAsUser(actionName, player.id, data);
+    });
+  }
 }
 
 /**
@@ -183,7 +282,7 @@ function handleOnUsePreItemRoll(token, workflow) {
     if (workflow.item?.system.range?.reach) {
       // This is needed to be taken into account by the item and activity preparedData
       workflow.item.actor._embeddedPreparation = true;
-      workflow.item.updateSource({ 'system.range.reach': workflow.item.system.range.reach + 5 });
+      workflow.item.updateSource({ "system.range.reach": workflow.item.system.range.reach + 5 });
       delete workflow.item.actor._embeddedPreparation;
       workflow.item.prepareFinalAttributes();
       workflow.activity = workflow.item.system.activities.get(workflow.activity.id);
@@ -198,4 +297,20 @@ function handleOnUsePreItemRoll(token, workflow) {
  */
 async function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Presents a dialog to choose if the Visage of the Astral Self should be summoned at the same time as the Arms.
+ * @param {Activity} activity - The Summon Visage of Astral Self activity.
+ * @param {number} nbUses - number of remaining uses.
+ * @param {number} maxUses - maximum number of uses.
+ * @returns {boolean} true if the Visage should also be summoned.
+ */
+async function showDialog(activity, nbUses, maxUses) {
+  return foundry.applications.api.DialogV2.confirm({
+    window: { title: `${activity.item.name}` },
+    content: `Use ${activity.item.name}: ${activity.name} (${nbUses}/${maxUses})?`,
+    modal: true,
+    rejectClose: false,
+  });
 }
