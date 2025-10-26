@@ -262,7 +262,7 @@
     },
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated it adds an effect to enhance vison and give advantage to Insight and Intimidation checks.</p></details>",
-      "chat": "<div class=\"ddb\">\nAs a bonus action, or as part of the bonus action you take to activate Arms of the Astral Self, you can spend 1 ki point to summon the visage of your astral self for 10 minutes.\nWhile the spectral visage is present, you gain the following benefits.\n- <strong>Astral Sight.</strong> You can see normally in darkness, both magical and nonmagical, to a distance of 120 ft.\n- <strong>Wisdom of the Spirit.</strong> You have advantage on WIS (&amp;Reference[ins]{Insight}) and CHA (&amp;Reference[itm]{Intimidation}) checks.\n- <strong>Word of the Spirit.</strong> When you speak, you can direct your words to a creature of your choice that you can see within 60 ft. of you, making it so only that creature can hear you. Alternatively, you can amplify your voice so that all creatures within 600 ft. can hear you.\n</div>"
+      "chat": ""
     },
     "identifier": "visage-of-the-astral-self",
     "source": {

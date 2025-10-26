@@ -469,25 +469,17 @@ export function runElwinsHelpers() {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePreTargetDamageApplication.`, { target, options });
     }
-    let appliedDamage = options?.damageItem?.appliedDamage;
-    if (!appliedDamage) {
-      // compute total damage applied to target
-      appliedDamage = options?.damageItem?.damageDetail.reduce(
-        (total, d) => (total += ["temphp", "midi-none"].includes(d.type) ? 0 : d.value),
-        0
-      );
-      appliedDamage = appliedDamage > 0 ? Math.floor(appliedDamage) : Math.ceil(appliedDamage);
-    }
+    let healingAdjustedTotalDamage = options?.damageItem?.healingAdjustedTotalDamage ?? 0;
 
     if (
       options?.damageItem &&
-      appliedDamage !== 0 &&
+      healingAdjustedTotalDamage !== 0 &&
       (options.workflow.hitTargets.has(target) || options.workflow.hitTargetsEC.has(target) || options.workflow.hasSave)
     ) {
-      // Set our own total damage to make sure it is available, currently midi does not provide a total of the non RAW damage
-      options.damageItem.elwinHelpersEffectiveDamage = appliedDamage;
-      const conditionAttr = "workflow.damageItem?.elwinHelpersEffectiveDamage";
-      if (appliedDamage > 0) {
+      // Set our own total damage for backward compatibility
+      options.damageItem.elwinHelpersEffectiveDamage = healingAdjustedTotalDamage;
+      const conditionAttr = "workflow.damageItem?.healingAdjustedTotalDamage";
+      if (healingAdjustedTotalDamage > 0) {
         await handleThirdPartyReactions(options.workflow, ["isDamaged"], {
           item: options?.item,
           target,
@@ -572,15 +564,14 @@ export function runElwinsHelpers() {
     if (!options.elwinHelpers?.preDamagePreventionCalled) {
       handleMidiDnd5ePreCalculateDamage(actor, damages, options);
     }
-    const totalDamage = damages.reduce(
-      (total, damage) => (total += ["temphp", "midi-none"].includes(damage.type) ? 0 : damage.value),
-      0
-    );
-    if (totalDamage <= 0) {
+    // compute total damage applied to target
+    let { healingAdjustedTotalDamage } = getEffectiveDamage(damages);
+
+    if (healingAdjustedTotalDamage <= 0) {
       // No damage to prevent, do nothing
       return true;
     }
-    const damagePrevention = Math.min(options.elwinHelpers.damagePrevention, totalDamage);
+    const damagePrevention = Math.min(options.elwinHelpers.damagePrevention, healingAdjustedTotalDamage);
     if (damagePrevention) {
       damages.push({
         type: "none",
@@ -1818,20 +1809,14 @@ export function runElwinsHelpers() {
    * @param {object} damageItem - The MidiQOL damageItem to be updated.
    */
   function calculateAppliedDamage(damageItem) {
-    if (!damageItem) {
+    if (!damageItem?.damageDetail) {
       if (debug) {
         console.warn(`${MACRO_NAME} | Missing damaged item.`, { damageItem });
       }
       return;
     }
-    let { amount, temp } = damageItem.damageDetail.reduce(
-      (acc, d) => {
-        if (d.type === "temphp") acc.temp += d.value;
-        else if (d.type !== "midi-none") acc.amount += d.value;
-        return acc;
-      },
-      { amount: 0, temp: 0 }
-    );
+    let { damage: totalDamage, temp, healingAdjustedTotalDamage } = getEffectiveDamage(damageItem?.damageDetail);
+
     const actor = fromUuidSync(damageItem.actorUuid);
     const as = actor?.system;
     if (!as || !as.attributes.hp) {
@@ -1840,21 +1825,47 @@ export function runElwinsHelpers() {
       }
       return;
     }
+    let effectiveTemp = as.attributes.hp.temp ?? 0;
+    const deltaTemp = healingAdjustedTotalDamage > 0 ? Math.min(effectiveTemp, healingAdjustedTotalDamage) : 0;
+    const deltaHP = Math.clamp(
+      healingAdjustedTotalDamage - deltaTemp,
+      -as.attributes.hp.damage,
+      as.attributes.hp.value
+    );
+    const oldTempHP = as.attributes.hp.temp ?? 0;
+    const newTempHP = Math.floor(Math.max(0, effectiveTemp - deltaTemp, temp));
 
-    // Recompute damage
-    amount = amount > 0 ? Math.floor(amount) : Math.ceil(amount);
-    const deltaTemp = amount > 0 ? Math.min(damageItem.oldTempHP, amount) : 0;
-    const deltaHP = Math.clamp(amount - deltaTemp, -as.attributes.hp.damage, damageItem.oldHP);
-    damageItem.newHP = damageItem.oldHP - deltaHP;
+    damageItem.oldHP = as.attributes.hp.value;
+    damageItem.newHP = as.attributes.hp.value - deltaHP;
+    damageItem.oldTempHP = oldTempHP;
+    damageItem.newTempHP = newTempHP;
     damageItem.hpDamage = deltaHP;
-    damageItem.newTempHP = Math.floor(Math.max(0, damageItem.oldTempHP - deltaTemp, temp));
-    damageItem.tempDamage = damageItem.oldTempHP - damageItem.newTempHP;
-    damageItem.elwinHelpersEffectiveDamage = amount;
-    // TODO should this reflect raw or not???
-    //damageItem.totalDamage = amount;
-    if (foundry.utils.hasProperty(damageItem, "appliedDamage")) {
-      damageItem.appliedDamage = deltaHP;
+    damageItem.tempDamage = oldTempHP - newTempHP;
+    damageItem.totalDamage = totalDamage;
+    damageItem.healingAdjustedTotalDamage = healingAdjustedTotalDamage;
+    damageItem.elwinHelpersEffectiveDamage = healingAdjustedTotalDamage;
+  }
+
+  function getEffectiveDamage(damages) {
+    if (!damages) {
+      return { damage: undefined, temp: undefined, healing: undefined, healingAdjustedTotalDamage: undefined };
     }
+    let { damage, temp, healing } = damages.reduce(
+      (acc, d) => {
+        if (d.type === "temphp") acc.temp += d.value;
+        else if (d.type === "healing") acc.healing += d.value;
+        else if (d.type !== "midi-none") acc.damage += d.value;
+        return acc;
+      },
+      { damage: 0, temp: 0, healing: 0 }
+    );
+
+    // Adjust damage
+    if (damage < 0) damage = 0;
+    let healingAdjustedTotalDamage = damage + healing;
+    healingAdjustedTotalDamage =
+      healingAdjustedTotalDamage < 0 ? Math.ceil(healingAdjustedTotalDamage) : Math.floor(healingAdjustedTotalDamage);
+    return { damage, temp, healing, healingAdjustedTotalDamage };
   }
 
   /**

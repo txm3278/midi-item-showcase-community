@@ -220,7 +220,7 @@
     },
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated, it adds a bonus to AC and summons at no cost Arms, Visage and Body of the Astral Self.</p></details>",
-      "chat": "<div class=\"ddb\">\nAs a bonus action, you can spend 5 ki points to summon the arms, visage, and body of your astral self and awaken it for 10 minutes. While your astral self is awakened, you gain the following benefits:\n- <strong>Armor of the Spirit.</strong> You gain a +2 bonus to Armor Class.\n- <strong>Astral Barrage.</strong> Whenever you use the Extra Attack feature to attack twice, you can instead attack three times if all the attacks are made with your astral arms.\n</div>"
+      "chat": ""
     },
     "identifier": "awakened-astral-self",
     "source": {

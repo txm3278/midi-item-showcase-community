@@ -336,7 +336,7 @@
     },
     "description": {
       "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated it enables a reaction to be prompted when the Monk takes damage of the appropiate type.</p></details>",
-      "chat": "<div class=\"ddb\">\nWhen you have both your astral arms and visage summoned, you can cause the body of your astral self to appear (no action required) granting the following benefits:\n- <strong>Deflect Energy.</strong> When you take acid, cold, fire, force, lightning, or thunder damage, you can use your reaction to deflect it. When you do so, the damage you take is reduced by [[/roll 1d10 + @abilities.wis.mod]] (minimum reduction of 1).\n- <strong>Empowered Arms.</strong> Once on each of your turns when you hit a target with the Arms of the Astral Self, you can deal extra [[/roll @scale.way-of-the-astral-self.body-of-the-astral-self]] damage to the target.\n</div>"
+      "chat": ""
     },
     "identifier": "body-of-the-astral-self",
     "source": {
