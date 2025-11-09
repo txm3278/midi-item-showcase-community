@@ -2,7 +2,7 @@
 // Read First!!!!
 // When the bottle is opened, creates a fog cloud that follows the owner and increases in size until it has reached its maximum size or until
 // the bottle is closed which also makes it stay in place.
-// v1.0.0
+// v1.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -20,7 +20,11 @@
 //
 // Description:
 // In the preTargeting (item OnUse) phase of the Open Bottle activity (in owner's workflow):
-//   Registers a hook preCreateMeasuredTemplate to configure Walled Templates properties if the module is active.
+//   Registers a hook dnd5e.preCreateActivityTemplate to prevent template to be adjusted by the token size and
+//   registers a hook preCreateMeasuredTemplate to configure Walled Templates properties if the module is active.
+// In the dnd5e.preCreateActivityTemplate hook (in owner's workflow):
+//   If the workflow associated to the template document is the same as the one received in the preTargeting,
+//   readjust size to original template size (removes the adjustment for token size).
 // In the preCreateMeasuredTemplate hook (in owner's workflow):
 //   If the workflow associated to the template document is the same as the one received in the preTargeting,
 //   set Walled Templates properties for wall blocking.
@@ -52,7 +56,9 @@ const JB2A_FOG = "jb2a.fog_cloud.01.white";
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.6")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -101,11 +107,30 @@ export async function eversmokingBottle({ speaker, actor, token, character, item
 
 /**
  * Handles the preTargeting phase of the Eversmoking Bottle item.
- * Registers a hook preCreateMeasuredTemplate to configure Walled Templates properties if the module is active.
+ * Registers a hook dnd5e.preCreateActivityTemplate to prevent template to be adjusted by the token size and
+ * registers a hook preCreateMeasuredTemplate to configure Walled Templates properties if the module is active.
  *
  * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
  */
 function handleOnUsePreTargeting(workflow, debug) {
+  Hooks.once("dnd5e.preCreateActivityTemplate", (activity, templateData) => {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateActivityTemplate`, {
+        activity,
+        templateData,
+      });
+    }
+    if (workflow.id !== templateData.flags["midi-qol"]?.workflowId) {
+      if (debug) {
+        // Not same workflow do nothing
+        console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateActivityTemplate hook called from a different workflow.`);
+      }
+      return;
+    }
+    // Note: remove adjustement for token size added automatically for emanation
+    foundry.utils.setProperty(templateData, "distance", templateData.flags?.dnd5e?.dimensions?.size ?? 60);
+    foundry.utils.setProperty(templateData, "flags.dnd5e.dimensions.adjustedSize", false);
+  });
   if (game.modules.get("walledtemplates")?.active) {
     Hooks.once("preCreateMeasuredTemplate", (templateDocument, data, options, userId) => {
       if (debug) {
@@ -188,6 +213,7 @@ async function handleOnUsePostActiveEffectsOpenBottle(workflow, actor, token, us
         .effect()
         .file(JB2A_FOG)
         .scaleToObject()
+        .scaleIn(0, 800)
         .aboveLighting()
         .opacity(0.5)
         .mask(template)
@@ -200,6 +226,7 @@ async function handleOnUsePostActiveEffectsOpenBottle(workflow, actor, token, us
         .effect()
         .file(JB2A_FOG)
         .scaleToObject()
+        .scaleIn(0, 800)
         .aboveLighting()
         .opacity(0.5)
         .xray(xray)

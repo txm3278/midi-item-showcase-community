@@ -20,7 +20,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 4000,
       "denomination": "gp"
     },
     "attunement": "required",
@@ -69,7 +69,7 @@
         "activation": {
           "type": "reaction",
           "value": 1,
-          "condition": "",
+          "condition": "an attacker makes a ranged attack roll against a target within 5 feet of you",
           "override": false
         },
         "consumption": {
@@ -130,15 +130,14 @@
         "sort": 0,
         "useConditionText": "reaction === \"tpr.isTargeted\" && tpr?.isRangedAttack",
         "effectConditionText": "",
-        "name": "Reaction",
+        "name": "Intercept Attack",
         "midiProperties": {
-          "identifier": "reaction",
+          "identifier": "intercept-attack",
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -146,9 +145,19 @@
           "otherActivityCompatible": false,
           "displayActivityName": false,
           "rollMode": "default",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "macroData": {
           "name": "",
@@ -158,7 +167,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -167,7 +177,8 @@
           "postRemoveConditionText": ""
         },
         "useConditionReason": "",
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "arrow-catching-shield",
@@ -243,8 +254,7 @@
     },
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": []
       }
     },
     "tidy5e-sheet": {
@@ -254,8 +264,8 @@
   },
   "effects": [
     {
-      "name": "Arrow-Catching Shield",
-      "origin": "Item.LzpyQ4WdeuTZQFFT",
+      "name": "Ranged Attack AC Bonus",
+      "origin": "Item.Wu948E6438BgsvKL",
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -282,7 +292,7 @@
           "priority": 20
         }
       ],
-      "description": "",
+      "description": "<p>You gain a +2 bonus to Armor Class against ranged attack rolls while you wield this Shield. This bonus is in addition to the Shield’s normal bonus to AC.</p>",
       "statuses": [],
       "flags": {
         "times-up": {
@@ -318,17 +328,22 @@
         },
         "core": {
           "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
-      "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+      "img": "icons/skills/melee/shield-block-fire-orange.webp",
       "type": "base",
       "system": {},
       "sort": 0,
       "_key": "!items.effects!Wu948E6438BgsvKL.WU05KztTWM52xzK5"
     }
   ],
-  "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+  "img": "icons/skills/melee/shield-block-fire-orange.webp",
   "folder": null,
   "_id": "Wu948E6438BgsvKL",
   "_key": "!items!Wu948E6438BgsvKL"

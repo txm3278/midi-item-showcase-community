@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410 based on pospa4
 // Dependencies:
 //  - DAE: [on],[off] item macro
@@ -16,8 +16,9 @@
 // Description:
 // There are multiple calls of this item macro, dependending on the trigger.
 // In the postTargetEffectApplication (TargetOnUse) (in attacker's workflow) (on owner):
-//   Adds an AE to the owner to reduce speed to 0 and to add fire vulnerability, it also removes the AE added
-//   by the reaction activity.
+//   Removes the AE added by the reaction activity and registers a hook on midi-qol.RollComplete.
+// In the midi-qol.RollComplete hook (in attacker's workflow):
+//   Adds an AE to the owner to reduce speed to 0 and to add fire vulnerability.
 // In the "on" DAE macro call:
 //   If "Monk's TokenBar" is active, preserves current token movement status in a flag and change
 //   token movement to none.
@@ -77,7 +78,7 @@ export async function tombOfLevistus({ speaker, actor, token, character, item, a
   }
 
   if (args[0].tag === "TargetOnUse" && args[0].macroPass === "postTargetEffectApplication") {
-    await handleTargetOnUsePostTargetEffectApplication(scope.macroItem);
+    await handleTargetOnUsePostTargetEffectApplication(scope.macroItem, workflow);
   } else if (args[0] === "on") {
     // DAE Item Macro GM call
     if (game.modules.get("monks-tokenbar")?.active) {
@@ -109,11 +110,12 @@ export async function tombOfLevistus({ speaker, actor, token, character, item, a
 
 /**
  * Handles the targetOnUse postTargetEffectApplication of the Tomb of Levistus item in the triggering midi-qol workflow.
- * Adds an AE to the owner to reduce speed to 0 and to add fire vulnerability, it also removes the AE that was added by the reaction.
+ * Removes the AE that was added by the reaction and registers a hook on midi-qol.RollComplete,
+ * which adds an AE to the owner to reduce speed to 0 and to add fire vulnerability.
  *
  * @param {Item5e} sourceItem - The Tomb of Levistus item.
  */
-async function handleTargetOnUsePostTargetEffectApplication(sourceItem) {
+async function handleTargetOnUsePostTargetEffectApplication(sourceItem, workflow) {
   // Find temporary AE to remove it
   const sourceActor = sourceItem.actor;
   const tempEffect = sourceActor.effects.find(
@@ -122,7 +124,7 @@ async function handleTargetOnUsePostTargetEffectApplication(sourceItem) {
   if (tempEffect) {
     await MidiQOL.removeEffects({ actorUuid: sourceActor.uuid, effects: [tempEffect.id] });
   }
-  // Add entombment effect
+
   const entombmentEffect = sourceItem.effects.find(
     (ae) => ae.name !== sourceItem.name && ae.statuses.has("incapacitated")
   );
@@ -133,5 +135,16 @@ async function handleTargetOnUsePostTargetEffectApplication(sourceItem) {
   const entombmentEffectData = entombmentEffect.toObject();
   entombmentEffectData.origin =
     sourceItem.system.activities.find((a) => a.identifier === "reaction")?.uuid ?? sourceItem.uuid;
-  await MidiQOL.createEffects({ actorUuid: sourceActor.uuid, effects: [entombmentEffectData] });
+
+  // Register hook to add entombment effect after roll is complete
+  Hooks.once(`midi-qol.RollComplete.${workflow.itemUuid}`, async (workflow2) => {
+    if (workflow !== workflow2) {
+      if (debug) {
+        // Not same workflow do nothing
+        console.warn(`${sourceItem.name} | midi-qol.RollComplete hook called from a different workflow.`);
+        return;
+      }
+    }
+    MidiQOL.createEffects({ actorUuid: sourceActor.uuid, effects: [entombmentEffectData] });
+  });
 }

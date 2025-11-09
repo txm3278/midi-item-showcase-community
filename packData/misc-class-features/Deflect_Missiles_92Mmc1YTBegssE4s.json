@@ -77,7 +77,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "",
@@ -111,7 +111,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -119,7 +120,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -130,7 +130,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -139,7 +149,8 @@
           "postRemoveConditionText": ""
         },
         "otherActivityId": "none",
-        "name": "Reaction"
+        "name": "Reaction",
+        "otherActivityAsParentType": true
       },
       "PgEw3bDm4sFVzHuy": {
         "type": "attack",
@@ -250,7 +261,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -258,7 +270,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": true,
           "identifier": "throw-back-attack",
@@ -269,7 +280,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -281,7 +302,10 @@
         "ammunition": "",
         "otherActivityId": "none",
         "otherActivityUuid": "",
-        "_id": "PgEw3bDm4sFVzHuy"
+        "_id": "PgEw3bDm4sFVzHuy",
+        "otherActivityAsParentType": true,
+        "attackRollPerTarget": "default",
+        "fumbleThreshold": 1
       }
     },
     "identifier": "deflect-missiles",
@@ -289,7 +313,8 @@
     "enchant": {},
     "prerequisites": {
       "level": 3,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     }
   },
   "effects": [
@@ -305,7 +330,7 @@
         {
           "key": "system.traits.dm.midi.all",
           "mode": 2,
-          "value": "-@item.flags.midi-item-showcase-community.deflectMissilesDmgReduction",
+          "value": "-@utilityRollTotal",
           "priority": 20
         }
       ],
@@ -382,7 +407,7 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preItemRoll]ItemMacro,[preActiveEffects]ItemMacro,[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.classFeatures.deflectMissiles",
       "rollAttackPerTarget": "default",
       "itemCondition": "",
       "reactionCondition": "",

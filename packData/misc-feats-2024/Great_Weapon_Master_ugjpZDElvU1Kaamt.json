@@ -32,6 +32,7 @@
     "enchant": {},
     "prerequisites": {
       "level": 4,
+      "items": [],
       "repeatable": false
     },
     "advancement": [
@@ -55,7 +56,8 @@
             "wis",
             "cha"
           ],
-          "points": 0
+          "points": 0,
+          "recommendation": null
         },
         "value": {
           "type": "asi"
@@ -65,7 +67,6 @@
         "hint": ""
       }
     ],
-    "cover": null,
     "crewed": false
   },
   "flags": {
@@ -200,15 +201,15 @@
           "priority": 20
         },
         {
-          "key": "flags.midi-qol.optional.GWM.activation",
+          "key": "flags.midi-qol.optional.GWM.force",
           "mode": 0,
           "value": "(!fromUuidSync(actorUuid)?.inCombat || actor.isCombatTurn) && \nitem.itemType === \"weapon\" && \n[\"simpleM\", \"martialM\", \"simpleR\", \"martialR\"].includes(item.type?.value) && \nitem.properties?.has(\"hvy\") && \nactivity.type === \"attack\" && \nactivity.activation?.type === \"action\" && \nactivity.attack?.type?.classification === \"weapon\" &&\n!workflow?.damageRolls?.length",
           "priority": 20
         },
         {
-          "key": "flags.midi-qol.optional.GWM.force",
+          "key": "flags.midi-qol.optional.GWM.displayBonusRolls",
           "mode": 0,
-          "value": "true",
+          "value": "false",
           "priority": 20
         },
         {

@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Awakened Astral Self
 // Adds the Awakened effects and summons the Arms, Visage and Body of the Astral Self.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -103,8 +103,10 @@ async function handleOnUsePostActiveEffects(sourceActor, workflow) {
     foundry.utils.setProperty(summonItemData, "flags.midi-qol.syntheticItem", true);
 
     summonItem = new Item.implementation(summonItemData, { parent: sourceActor });
+    // Need to prepare data because constructor does not.
     summonItem.prepareData();
     summonItem.prepareFinalAttributes();
+    summonItem.applyActiveEffects();
 
     const config = {
       midiOptions: {
@@ -113,11 +115,7 @@ async function handleOnUsePostActiveEffects(sourceActor, workflow) {
         workflowOptions: { targetConfirmation: "none", autoConsumeResource: "never", awakenedAstralSelf: true },
       },
     };
-    if (game.release.generation > 12) {
-      await MidiQOL.completeItemUse(summonItem, config, { configure: false }, {});
-    } else {
-      await MidiQOL.completeItemUseV2(summonItem, config, { configure: false }, {});
-    }
+    await MidiQOL.completeItemUse(summonItem, config, { configure: false }, {});
   }
 }
 

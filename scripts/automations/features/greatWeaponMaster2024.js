@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to add a damage bonus when the conditions are met as well as the ability
 // to make a bonus melee weapon attack when the actor scores a critical hit or brings a target to 0 HP with a melee weapon.
-// v1.2.0
+// v1.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -31,17 +31,19 @@ export async function greatWeaponMaster2024({
   options,
 }) {
   // Default name of the item
-  const DEFAULT_ITEM_NAME = 'Great Weapon Master';
-  const MODULE_ID = 'midi-item-showcase-community';
+  const DEFAULT_ITEM_NAME = "Great Weapon Master";
+  const MODULE_ID = "midi-item-showcase-community";
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.4')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.4")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  const dependencies = ["dae", "times-up", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -53,15 +55,18 @@ export async function greatWeaponMaster2024({
       arguments
     );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
       await handleOnUsePostActiveEffectsOtherItems(workflow, scope.macroItem, scope.rolledItem);
     }
-  } else if (args[0].tag === 'OnUse' && ['preAttackRollConfig', 'preDamageRollConfig'].includes(args[0].macroPass)) {
-    if (workflow.item?.getFlag('midi-qol', 'syntheticItem')) {
+  } else if (args[0].tag === "OnUse" && ["preAttackRollConfig", "preDamageRollConfig"].includes(args[0].macroPass)) {
+    if (workflow.item?.getFlag("midi-qol", "syntheticItem")) {
       // Note: patch to fix problem with getAssociatedItem which does not prepare data when creating a synthetic item
-      workflow.activity?.item?.prepareData();
-      workflow.activity?.item?.prepareFinalAttributes();
+      if (!workflow.activity?.damage?.parts?.length) {
+        workflow.activity?.item?.prepareData();
+        workflow.activity?.item?.prepareFinalAttributes();
+        workflow.activity?.item?.applyActiveEffects();
+      }
     }
   }
 
@@ -76,8 +81,8 @@ export async function greatWeaponMaster2024({
   async function handleOnUsePostActiveEffectsOtherItems(currentWorkflow, sourceItem, usedItem) {
     if (
       !elwinHelpers.isMeleeWeapon(usedItem) ||
-      currentWorkflow.activity?.type !== 'attack' ||
-      currentWorkflow.activity?.attack?.type?.classification !== 'weapon'
+      currentWorkflow.activity?.type !== "attack" ||
+      currentWorkflow.activity?.attack?.type?.classification !== "weapon"
     ) {
       // Not an attack from a melee weapon...
       if (debug) {
@@ -107,7 +112,7 @@ export async function greatWeaponMaster2024({
     if (!allowBonusAction || bonusActionAlreadyUsed) {
       return;
     }
-    const content = '<p>Make a special bonus attack?</p>';
+    const content = "<p>Make a special bonus attack?</p>";
     if (
       await foundry.applications.api.DialogV2.confirm({
         window: { title: `${sourceItem.name} - Hew` },
@@ -133,43 +138,39 @@ export async function greatWeaponMaster2024({
     // Change activation type to special so it is not considered as an Attack Action
     const weaponItemData = weaponItem.toObject();
     weaponItemData._id = foundry.utils.randomID();
-    weaponItemData.name += ' (Hew)';
+    weaponItemData.name += " (Hew)";
     // Flag item as synthetic
-    foundry.utils.setProperty(weaponItemData, 'flags.midi-qol.syntheticItem', true);
+    foundry.utils.setProperty(weaponItemData, "flags.midi-qol.syntheticItem", true);
     // TODO remove when fixed... Need to add onOnUseMAcro to prepare the item and activity because ChatMessage.getAssociatedItem does not do it...
-    let onUseMacroName = foundry.utils.getProperty(weaponItemData, 'flags.midi-qol.onUseMacroName') ?? '';
-    const preRollConfigMacro = `${
-      game.release.generation > 12 ? '[preAttackRollConfig]ItemMacro.' + sourceItem.uuid + ',' : ''
-    }[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
+    let onUseMacroName = foundry.utils.getProperty(weaponItemData, "flags.midi-qol.onUseMacroName") ?? "";
+    const preRollConfigMacro = `[preAttackRollConfig]ItemMacro.${sourceItem.uuid},[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
     foundry.utils.setProperty(
       weaponItemData,
-      'flags.midi-qol.onUseMacroName',
-      onUseMacroName?.length ? ',' + preRollConfigMacro : preRollConfigMacro
+      "flags.midi-qol.onUseMacroName",
+      onUseMacroName?.length ? "," + preRollConfigMacro : preRollConfigMacro
     );
     const activity = weaponItemData.system.activities[activityId];
     if (!activity) {
       return;
     }
     activity.activation ??= {};
-    activity.activation.type = 'bonus';
+    activity.activation.type = "bonus";
     activity.activation.cost = null;
 
     const weaponCopy = new Item.implementation(weaponItemData, { parent: sourceItem.actor });
+    // Need to prepare data because constructor does not.
     weaponCopy.prepareData();
     weaponCopy.prepareFinalAttributes();
+    weaponCopy.applyActiveEffects();
 
     const config = {
       midiOptions: {
         ignoreUserTargets: true,
-        workflowOptions: { targetConfirmation: 'always' },
+        workflowOptions: { targetConfirmation: "always" },
         activityId: activityId,
       },
     };
-    if (game.release.generation > 12) {
-      return await MidiQOL.completeItemUse(weaponCopy, config, {}, {});
-    } else {
-      return await MidiQOL.completeItemUseV2(weaponCopy, config, {}, {});
-    }
+    return await MidiQOL.completeItemUse(weaponCopy, config, {}, {});
   }
 
   /**
@@ -196,6 +197,6 @@ export async function greatWeaponMaster2024({
    */
   function needsBonusActionCheck(actor) {
     const configSettings = MidiQOL.configSettings();
-    return configSettings?.enforceBonusActions === 'all' || configSettings?.enforceBonusActions === actor.type;
+    return configSettings?.enforceBonusActions === "all" || configSettings?.enforceBonusActions === actor.type;
   }
 }
