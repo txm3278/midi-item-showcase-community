@@ -2,36 +2,39 @@
   "folder": "B41kUiqk9GDZfueE",
   "name": "Assassinate",
   "type": "feat",
+  "_id": "JHEw0dmxYDDIiE2c",
   "img": "icons/skills/melee/blade-tip-chipped-blood-red.webp",
   "system": {
     "activities": {},
     "uses": {
+      "max": "",
       "spent": 0,
-      "recovery": [],
-      "max": ""
+      "recovery": []
     },
     "advancement": [],
     "description": {
-      "value": "<p><strong>Assassinate.</strong> Starting at 3rd level, you are at your deadliest when you get the drop on your enemies. You have advantage on attack rolls against any creature that hasn't taken a turn in the combat yet. In addition, any hit you score against a creature that is surprised is a critical hit.</p>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Subjekt H</h2>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat. It gives advantage on attacks and auto crits when appropriate.</p></details>",
       "chat": ""
     },
-    "identifier": "assasinate",
+    "identifier": "assassinate",
     "source": {
-      "revision": 1,
+      "custom": "",
       "rules": "2014",
+      "revision": 1,
       "book": "PHB",
       "page": "",
-      "custom": "",
       "license": ""
     },
     "crewed": false,
     "enchant": {},
     "prerequisites": {
+      "level": 3,
       "items": [],
-      "repeatable": false,
-      "level": 3
+      "repeatable": false
     },
-    "properties": [],
+    "properties": [
+      "trait"
+    ],
     "requirements": "",
     "type": {
       "value": "class",
@@ -70,7 +73,7 @@
         "startTurn": null
       },
       "description": "<p>You have advantage on attack rolls against any creature that hasn't taken a turn in the combat yet. In addition, any hit you score against a creature that is surprised is a critical hit.</p>",
-      "origin": null,
+      "origin": "Item.JHEw0dmxYDDIiE2c",
       "tint": "#ffffff",
       "transfer": true,
       "statuses": [],
@@ -93,10 +96,26 @@
         "core": {
           "overlay": false
         }
-      }
+      },
+      "_key": "!items.effects!JHEw0dmxYDDIiE2c.Hd1zaeDOymo7qbDY"
     }
   ],
   "flags": {
+    "dnd5e": {
+      "sourceId": "Compendium.dnd-players-handbook.classes.Item.phbrgeAssasinate",
+      "advancementOrigin": "84lFGO7UC7h6B7xB.52x82ltPXCgmrh1K",
+      "advancementRoot": "84lFGO7UC7h6B7xB.52x82ltPXCgmrh1K",
+      "last": {
+        "xF68xROGwfOkEY7f": {
+          "damageType": {
+            "0": "acid"
+          }
+        }
+      },
+      "riders": {
+        "activity": []
+      }
+    },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -110,5 +129,6 @@
       "addTokenSize": false,
       "attachToken": "na"
     }
-  }
+  },
+  "_key": "!items!JHEw0dmxYDDIiE2c"
 }
