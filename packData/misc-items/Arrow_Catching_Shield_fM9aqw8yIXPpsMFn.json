@@ -7,9 +7,12 @@
       "chat": ""
     },
     "source": {
-      "custom": "Basic Rules, Player's Handbook pg 152",
+      "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "SRD 5.1",
+      "page": "",
+      "license": ""
     },
     "quantity": 1,
     "weight": {
@@ -17,7 +20,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 4000,
       "denomination": "gp"
     },
     "attunement": "required",
@@ -47,7 +50,7 @@
       "conditions": ""
     },
     "strength": 0,
-    "proficient": 1,
+    "proficient": null,
     "unidentified": {
       "description": ""
     },
@@ -66,7 +69,7 @@
         "activation": {
           "type": "reaction",
           "value": 1,
-          "condition": "",
+          "condition": "A ranged attack within 5 ft.",
           "override": false
         },
         "consumption": {
@@ -127,25 +130,34 @@
         "sort": 0,
         "useConditionText": "reaction === \"tpr.isTargeted\" && tpr?.isRangedAttack",
         "effectConditionText": "",
-        "name": "Reaction",
+        "name": "Intercept Attack",
         "midiProperties": {
-          "identifier": "reaction",
+          "identifier": "intercept-attack",
           "otherActivityCompatible": false,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "",
         "macroData": {
@@ -156,7 +168,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -164,7 +177,8 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "arrow-catching-shield",
@@ -238,12 +252,7 @@
       "idv": false,
       "ida": false
     },
-    "dnd5e": {
-      "riders": {
-        "activity": [],
-        "effect": []
-      }
-    },
+    "dnd5e": {},
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
@@ -325,7 +334,7 @@
       "_key": "!items.effects!fM9aqw8yIXPpsMFn.WU05KztTWM52xzK5"
     }
   ],
-  "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+  "img": "icons/equipment/shield/wardoor-wooden-boss-brown.webp",
   "folder": null,
   "_id": "fM9aqw8yIXPpsMFn",
   "_key": "!items!fM9aqw8yIXPpsMFn"

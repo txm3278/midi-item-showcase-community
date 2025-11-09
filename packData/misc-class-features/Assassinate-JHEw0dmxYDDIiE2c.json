@@ -1,0 +1,114 @@
+{
+  "folder": "B41kUiqk9GDZfueE",
+  "name": "Assassinate",
+  "type": "feat",
+  "img": "icons/skills/melee/blade-tip-chipped-blood-red.webp",
+  "system": {
+    "activities": {},
+    "uses": {
+      "spent": 0,
+      "recovery": [],
+      "max": ""
+    },
+    "advancement": [],
+    "description": {
+      "value": "<p><strong>Assassinate.</strong> Starting at 3rd level, you are at your deadliest when you get the drop on your enemies. You have advantage on attack rolls against any creature that hasn't taken a turn in the combat yet. In addition, any hit you score against a creature that is surprised is a critical hit.</p>",
+      "chat": ""
+    },
+    "identifier": "assasinate",
+    "source": {
+      "revision": 1,
+      "rules": "2014",
+      "book": "PHB",
+      "page": "",
+      "custom": "",
+      "license": ""
+    },
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "items": [],
+      "repeatable": false,
+      "level": 3
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "effects": [
+    {
+      "name": "Assasinate",
+      "img": "icons/skills/melee/blade-tip-chipped-blood-red.webp",
+      "_id": "Hd1zaeDOymo7qbDY",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.attack.all",
+          "mode": 0,
+          "value": "fromUuidSync(targetUuid)?.combatant?.combat?.round === 1 && fromUuidSync(targetUuid)?.combatant?.combat?.turn < fromUuidSync(targetUuid)?.combatant?.combat?.turns?.findIndex(i => i.tokenId === fromUuidSync(targetUuid)?.id) && fromUuidSync(targetUuid)?.combatant?.combat?.turns?.findIndex(i => i.tokenId === fromUuidSync(targetUuid)?.id) !== -1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.critical.all",
+          "mode": 0,
+          "value": "target?.effects?.some(eff => eff?.name === 'Surprised')",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<p>You have advantage on attack rolls against any creature that hasn't taken a turn in the combat yet. In addition, any hit you score against a creature that is surprised is a critical hit.</p>",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      }
+    }
+  ],
+  "flags": {
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    }
+  }
+}

@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.1.0
+// v3.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -50,8 +50,8 @@
 
 export async function greatWeaponMaster({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the item
-  const DEFAULT_ITEM_NAME = 'Great Weapon Master';
-  const MODULE_ID = 'midi-item-showcase-community';
+  const DEFAULT_ITEM_NAME = "Great Weapon Master";
+  const MODULE_ID = "midi-item-showcase-community";
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   const OFF_STATE = 0;
@@ -63,12 +63,14 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     [PROMPT_STATE, ON_STATE],
   ]);
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.3.0")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  const dependencies = ["dae", "times-up", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -80,15 +82,15 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       arguments
     );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     if (isBonusAttackActivity(workflow, scope.macroItem)) {
       return await handleOnUsePreItemRollBonusAttack(workflow, scope.macroItem, actor);
     } else {
       return await handleOnUsePreItemRollOthers(workflow, scope.macroItem, actor);
     }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRoll") {
     await handleOnUsePreAttackRoll(workflow, scope.macroItem);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     if (isToggleActivity(workflow, scope.macroItem)) {
       await handleOnUsePostActiveEffectsToggle(scope.macroItem, actor);
     } else if (isBonusAttackActivity(workflow, scope.macroItem)) {
@@ -96,25 +98,28 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     } else if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
       await handleOnUsePostActiveEffectsOtherItems(workflow, scope.macroItem, scope.rolledItem);
     }
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
-    if (workflow.item?.getFlag('midi-qol', 'syntheticItem')) {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
+    if (workflow.item?.getFlag("midi-qol", "syntheticItem")) {
       // Note: patch to fix problem with getAssociatedItem which does not prepare data when creating a synthetic item
-      workflow.activity?.item?.prepareData();
-      workflow.activity?.item?.prepareFinalAttributes();
+      if (!workflow.activity?.damage?.parts?.length) {
+        workflow.activity?.item?.prepareData();
+        workflow.activity?.item?.prepareFinalAttributes();
+        workflow.activity?.item?.applyActiveEffects();
+      }
     }
-  } else if (args[0] === 'on') {
+  } else if (args[0] === "on") {
     // Clear item state when first applied
-    await getBonusAttackActivity(item)?.update({ 'uses.spent': 1 });
-    await actor.setFlag(MODULE_ID, 'greatWeaponMaster.bonus', false);
-  } else if (args[0] === 'each') {
+    await getBonusAttackActivity(item)?.update({ "uses.spent": 1 });
+    await actor.setFlag(MODULE_ID, "greatWeaponMaster.bonus", false);
+  } else if (args[0] === "each") {
     // Reset the Heavy Weapon Master Attack bonus action to 0 charge
     const attackActivity = getBonusAttackActivity(item);
     if (
       attackActivity?.uses?.spent !== 1 ||
       foundry.utils.getProperty(actor, `flags.${MODULE_ID}.greatWeaponMaster.bonus`)
     ) {
-      await attackActivity?.update({ 'uses.spent': 1 });
-      await actor.setFlag(MODULE_ID, 'greatWeaponMaster.bonus', false);
+      await attackActivity?.update({ "uses.spent": 1 });
+      await actor.setFlag(MODULE_ID, "greatWeaponMaster.bonus", false);
     }
   }
 
@@ -137,7 +142,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       return false;
     }
 
-    const chosenWeaponId = sourceActor.getFlag(MODULE_ID, 'greatWeaponMaster.weaponChoiceId');
+    const chosenWeaponId = sourceActor.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId");
     let weaponItem = filteredWeapons[0];
     if (filteredWeapons.length > 1) {
       weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
@@ -149,7 +154,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       return false;
     }
     // Keep weapon choice for next time (used as pre-selected choice) and for postActiveEffects
-    await sourceActor.setFlag(MODULE_ID, 'greatWeaponMaster.weaponChoiceId', weaponItem.id);
+    await sourceActor.setFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId", weaponItem.id);
     return true;
   }
 
@@ -172,19 +177,19 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     const toggleActivity = getToggleActivity(sourceItem);
     const toggleEffect = toggleActivity?.midiProperties.toggleEffect ?? false;
     if (toggleEffect) {
-      const gwmState = sourceItem.getFlag(MODULE_ID, 'greatWeaponMasterState') ?? OFF_STATE;
+      const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState") ?? OFF_STATE;
       if (currentWorkflow.itemUuid !== sourceItem.uuid) {
         // Reset state to toggle off if prompt
         if (gwmState === PROMPT_STATE) {
-          await sourceItem.setFlag(MODULE_ID, 'greatWeaponMasterState', OFF_STATE);
+          await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", OFF_STATE);
         }
       }
     } else {
-      await sourceItem.setFlag(MODULE_ID, 'greatWeaponMasterState', PROMPT_STATE);
-      await sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, 'greatWeaponMasterToggledOn'))?.delete();
+      await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", PROMPT_STATE);
+      await sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "greatWeaponMasterToggledOn"))?.delete();
       if (isToggleActivity(currentWorkflow, sourceItem)) {
         const msg = `${sourceItem.name} | The ${
-          currentWorkflow.activity.name ?? 'Toggle'
+          currentWorkflow.activity.name ?? "Toggle"
         } activity can only be triggered when the activity's Midi property 'Toggle Effect' is checked.`;
         ui.notifications.warn(msg);
         return false;
@@ -207,7 +212,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     const usedItem = currentWorkflow.item;
     if (
       !elwinHelpers.isMeleeWeapon(usedItem) ||
-      !elwinHelpers.hasItemProperty(usedItem, 'hvy') ||
+      !elwinHelpers.hasItemProperty(usedItem, "hvy") ||
       !usedItem?.system?.prof?.hasProficiency ||
       !elwinHelpers.isMeleeWeaponAttack(
         currentWorkflow.activity,
@@ -222,7 +227,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       return;
     }
 
-    const gwmState = sourceItem.getFlag(MODULE_ID, 'greatWeaponMasterState');
+    const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState");
     if (gwmState === OFF_STATE) {
       return;
     } else if (gwmState === PROMPT_STATE) {
@@ -249,12 +254,12 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    */
   async function handleOnUsePostActiveEffectsBonusAttack(currentWorkflow, sourceItem) {
     const currentActor = currentWorkflow.actor;
-    const weaponItem = currentActor?.items.get(currentActor?.getFlag(MODULE_ID, 'greatWeaponMaster.weaponChoiceId'));
+    const weaponItem = currentActor?.items.get(currentActor?.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId"));
     if (!weaponItem) {
       ui.notifications.warn(
         `${sourceItem.name} | No selected weapon for bonus attack, reallocate spent resource if needed.`
       );
-      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag('dnd5e', 'use.consumed');
+      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
       if (consumed) {
         await currentWorkflow.activity?.refund(consumed);
       }
@@ -263,7 +268,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     const bonusAttackWorkflow = await doBonusAttack(currentWorkflow, sourceItem, weaponItem);
     if (bonusAttackWorkflow?.aborted) {
       ui.notifications.warn(`${sourceItem.name} | The bonus attack was aborted, reallocate spent resource if needed.`);
-      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag('dnd5e', 'use.consumed');
+      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
       if (consumed) {
         await currentWorkflow.activity?.refund(consumed);
       }
@@ -277,10 +282,10 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    * @param {Actor5e} sourceActor - The owner of the Great Weapon Master item.
    */
   async function handleOnUsePostActiveEffectsToggle(sourceItem, sourceActor) {
-    const gwmState = sourceItem.getFlag(MODULE_ID, 'greatWeaponMasterState') ?? OFF_STATE;
-    await sourceItem.setFlag(MODULE_ID, 'greatWeaponMasterState', STATES.get(gwmState));
+    const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState") ?? OFF_STATE;
+    await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", STATES.get(gwmState));
 
-    const bonusMalusEffect = sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, 'greatWeaponMasterToggledOn'));
+    const bonusMalusEffect = sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "greatWeaponMasterToggledOn"));
     if (STATES.get(gwmState) === ON_STATE) {
       // Add AE for toggle mode on
       if (!bonusMalusEffect) {
@@ -301,9 +306,9 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    */
   async function handleOnUsePostActiveEffectsOtherItems(currentWorkflow, sourceItem, usedItem) {
     if (
-      usedItem?.type !== 'weapon' ||
-      !['simpleM', 'martialM'].includes(usedItem?.system.type?.value) ||
-      currentWorkflow.activity?.actionType !== 'mwak'
+      usedItem?.type !== "weapon" ||
+      !["simpleM", "martialM"].includes(usedItem?.system.type?.value) ||
+      currentWorkflow.activity?.actionType !== "mwak"
     ) {
       // Not a melee weapon...
       if (debug) {
@@ -312,7 +317,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       return;
     }
     // Adds a charge to the bonus action if the conditions are met.
-    if (currentWorkflow.actor.getFlag(MODULE_ID, 'greatWeaponMaster.bonus')) {
+    if (currentWorkflow.actor.getFlag(MODULE_ID, "greatWeaponMaster.bonus")) {
       // A bonus action was already granted
       return;
     }
@@ -332,8 +337,8 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     }
 
     // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
-    await getBonusAttackActivity(sourceItem)?.update({ 'uses.spent': 0 });
-    await currentWorkflow.actor.setFlag(MODULE_ID, 'greatWeaponMaster', { bonus: true, weaponChoiceId: usedItem.id });
+    await getBonusAttackActivity(sourceItem)?.update({ "uses.spent": 0 });
+    await currentWorkflow.actor.setFlag(MODULE_ID, "greatWeaponMaster", { bonus: true, weaponChoiceId: usedItem.id });
 
     // Add chat message saying a bonus attack can be made
     const message = await TextEditor.enrichHTML(
@@ -350,7 +355,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: message,
         speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token }),
-        whisper: ChatMessage.getWhisperRecipients('GM').map((u) => u.id),
+        whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
       })
     );
   }
@@ -363,7 +368,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    * @returns {Activity} The bonus attack activity, undefined if not found.
    */
   function getBonusAttackActivity(sourceItem) {
-    return sourceItem.system.activities?.find((a) => a.identifier === 'bonus-attack');
+    return sourceItem.system.activities?.find((a) => a.identifier === "bonus-attack");
   }
 
   /**
@@ -375,7 +380,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    *                    of the Great Weapon Master item, false otherwise.
    */
   function isBonusAttackActivity(currentWorkflow, sourceItem) {
-    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === 'bonus-attack';
+    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === "bonus-attack";
   }
 
   /**
@@ -386,7 +391,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    * @returns {Activity} The toggle activity, undefined if not found.
    */
   function getToggleActivity(sourceItem) {
-    return sourceItem.system.activities?.find((a) => a.identifier === 'toggle');
+    return sourceItem.system.activities?.find((a) => a.identifier === "toggle");
   }
 
   /**
@@ -399,7 +404,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    *                    of the Great Weapon Master item, false otherwise.
    */
   function isToggleActivity(currentWorkflow, sourceItem) {
-    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === 'toggle';
+    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === "toggle";
   }
 
   /**
@@ -416,13 +421,13 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       origin: sourceItem.uuid,
       transfer: false,
       flags: {
-        dae: { showIcon: true, stackable: 'noneName' },
+        dae: { showIcon: true, stackable: "noneName" },
         [MODULE_ID]: {
           greatWeaponMasterToggledOn: true,
         },
       },
     };
-    await sourceItem.actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+    await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
   }
 
   /**
@@ -435,16 +440,16 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     const effectData = {
       changes: [
         {
-          key: 'system.bonuses.mwak.attack',
+          key: "system.bonuses.mwak.attack",
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: '-5',
-          priority: '20',
+          value: "-5",
+          priority: "20",
         },
         {
-          key: 'system.bonuses.mwak.damage',
+          key: "system.bonuses.mwak.damage",
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: '+10',
-          priority: '20',
+          value: "+10",
+          priority: "20",
         },
       ],
       img: sourceItem.img,
@@ -452,9 +457,9 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       origin: sourceItem.uuid,
       transfer: false,
       duration: { turns: 1 },
-      flags: { dae: { specialDuration: ['1Attack'], stackable: 'noneName' } },
+      flags: { dae: { specialDuration: ["1Attack"], stackable: "noneName" } },
     };
-    await sourceItem.actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+    await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
   }
 
   /**
@@ -489,28 +494,30 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     weaponItemData._id = foundry.utils.randomID();
     weaponItemData.name += ` (${getBonusAttackActivity(sourceItem).name})`;
     // Flag item as synthetic
-    foundry.utils.setProperty(weaponItemData, 'flags.midi-qol.syntheticItem', true);
+    foundry.utils.setProperty(weaponItemData, "flags.midi-qol.syntheticItem", true);
     // TODO remove when fixed... Need to add onOnUseMAcro to prepare the item and activity because ChatMessage.getAssociatedItem does not do it...
-    let onUseMacroName = foundry.utils.getProperty(weaponItemData, 'flags.midi-qol.onUseMacroName') ?? '';
+    let onUseMacroName = foundry.utils.getProperty(weaponItemData, "flags.midi-qol.onUseMacroName") ?? "";
     const preDamageRollConfigMacro = `[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
     foundry.utils.setProperty(
       weaponItemData,
-      'flags.midi-qol.onUseMacroName',
-      onUseMacroName?.length ? ',' + preDamageRollConfigMacro : preDamageRollConfigMacro
+      "flags.midi-qol.onUseMacroName",
+      onUseMacroName?.length ? "," + preDamageRollConfigMacro : preDamageRollConfigMacro
     );
 
     for (let activityId of Object.keys(weaponItemData.system.activities ?? {})) {
       const activity = weaponItemData.system.activities[activityId];
-      if (activity?.type !== 'attack') {
+      if (activity?.type !== "attack") {
         continue;
       }
       activity.activation ??= {};
-      activity.activation.type = 'special';
+      activity.activation.type = "special";
       activity.activation.cost = null;
     }
     const weaponCopy = new Item.implementation(weaponItemData, { parent: sourceItem.actor });
+    // Need to prepare data because constructor does not.
     weaponCopy.prepareData();
     weaponCopy.prepareFinalAttributes();
+    weaponCopy.applyActiveEffects();
 
     const config = {
       midiOptions: {

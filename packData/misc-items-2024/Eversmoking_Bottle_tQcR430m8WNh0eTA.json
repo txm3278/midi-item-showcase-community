@@ -339,7 +339,7 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "durationExpression": "",
-          "macroRepeat": "startEveryTurn",
+          "macroRepeat": "none",
           "specialDuration": []
         },
         "core": {
@@ -356,7 +356,15 @@
       }
     },
     "midi-qol": {
-      "onUseMacroName": "[preTargeting]function.MISC.macros.items.eversmokingBottle,[postActiveEffects]function.MISC.macros.items.eversmokingBottle"
+      "onUseMacroName": "[preTargeting]function.MISC.macros.items.eversmokingBottle,[preActiveEffects]function.MISC.macros.items.eversmokingBottle,[postActiveEffects]function.MISC.macros.items.eversmokingBottle"
+    },
+    "walledtemplates": {
+      "wallsBlock": "walled",
+      "wallRestriction": "move",
+      "snapCenter": true,
+      "snapCorner": false,
+      "snapSideMidpoint": false,
+      "noAutotarget": true
     }
   },
   "_key": "!items!tQcR430m8WNh0eTA"

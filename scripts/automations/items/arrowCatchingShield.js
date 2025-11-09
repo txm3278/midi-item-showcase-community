@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v4.1.0
+// v4.1.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[isAttacked],[tpr.isTargeted]
@@ -30,15 +30,17 @@
 
 export async function arrowCatchingShield({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Arrow-Catching Shield';
+  const DEFAULT_ITEM_NAME = "Arrow-Catching Shield";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.3.0")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -51,12 +53,12 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isTargeted.post') {
+  } else if (args[0].tag === "TargetOnUse" && args[0].macroPass === "tpr.isTargeted.post") {
     // Other target, handle reaction
     await handleTargetOnUseIsTargetedPost(workflow, token, scope.macroItem, options?.thirdPartyReactionResult);
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isAttacked') {
+  } else if (args[0].tag === "TargetOnUse" && args[0].macroPass === "isAttacked") {
     await handleTargetOnUseIsAttacked(workflow, token, scope.macroItem);
   }
 
@@ -71,7 +73,7 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
    */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isTargeted' ||
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== "tpr.isTargeted" ||
       !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
       // Reaction should only be triggered by aura
@@ -93,7 +95,7 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
    */
   async function handleTargetOnUseIsTargetedPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
     if (debug) {
-      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
+      console.warn(DEFAULT_ITEM_NAME + " | reaction result", { thirdPartyReactionResult });
     }
     if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
@@ -125,13 +127,13 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
     }
 
     // Add info about target switch
-    const targetDivs = elwinHelpers.getTargetDivs(targetToken, 'The target <strong>${tokenName}</strong>');
+    const targetDivs = elwinHelpers.getTargetDivs(targetToken, "The target <strong>${tokenName}</strong>");
     const newTargetDivs = elwinHelpers.getTargetDivs(
       sourceToken,
       `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
     );
     const infoMsg = `${targetDivs}${newTargetDivs}`;
-    await elwinHelpers.insertTextIntoMidiItemCard('beforeHitsDisplay', currentWorkflow, infoMsg);
+    await elwinHelpers.insertTextIntoMidiItemCard("beforeHitsDisplay", currentWorkflow, infoMsg);
   }
 
   /**
@@ -164,9 +166,9 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
       changes: [
         // flag for AC bonus
         {
-          key: 'system.attributes.ac.bonus',
+          key: "system.attributes.ac.bonus",
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: '+2',
+          value: "+2",
           priority: 20,
         },
       ],
@@ -175,7 +177,7 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
       origin: sourceItem.uuid, //flag the effect as associated to the source item used
       img: sourceItem.img,
       name: `${sourceItem.name} - Bonus AC`,
-      'flags.dae': { specialDuration: ['isAttacked'], stackable: 'noneName' },
+      "flags.dae": { specialDuration: ["isAttacked"], stackable: "noneName" },
     };
 
     await MidiQOL.createEffects({ actorUuid: targetToken.actor.uuid, effects: [targetEffectData] });
