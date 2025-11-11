@@ -214,38 +214,37 @@ export async function crownOfStars({ speaker, actor, token, character, item, arg
       }
     }
 
-    function rotateSprites(sequence) {
-      sequence = sequence.effect().file(file);
+    // This helper creates and configures a single mote effect section.
+    function createMote(idx) {
+        const moteEffect = new Sequence()
+            .effect()
+            .file(file)
+            .attachTo(token)
+            .scale(scale)
+            .fadeIn(300)
+            .fadeOut(500)
+            .aboveLighting()
+            .persist()
+            .name(`${id} - ${idx}`)
+            .spriteOffset({ x: radius }, { gridUnits: true })
+            .rotate((360 / moteCount) * idx);
 
-      if (effect) {
-        sequence = sequence.tieToDocuments(effect);
-      }
+        // Tie to an Active Effect if one is provided
+        if (effect) {
+            moteEffect.tieTo(effect);
+        }
 
-      return sequence.attachTo(token).scale(scale).fadeIn(300).fadeOut(500).aboveLighting().persist();
+        // Add looping rotations
+        moteEffect.loopProperty("sprite", "rotation", { from: 0, to: 360, duration: 5000, delay: 500 });
+        moteEffect.loopProperty("spriteContainer", "rotation", { from: 0, to: 360, duration: 5000, delay: 0 });
+
+        return moteEffect;
     }
 
-    function loopDaLoop(sequence, objectName, delay) {
-      return sequence.loopProperty(objectName, 'rotation', {
-        from: 0,
-        to: 360,
-        duration: 5000,
-        delay: delay,
-      });
-    }
-
-    function createStarMoteAnimation(sequence, idx) {
-      sequence = rotateSprites(sequence);
-      sequence = loopDaLoop(sequence, 'sprite', 500);
-      sequence = loopDaLoop(sequence, 'spriteContainer', 0);
-      return sequence
-        .spriteOffset({ x: radius }, { gridUnits: true })
-        .rotate((360 / moteCount) * idx)
-        .name(`${id} - ${idx}`);
-    }
-
-    let starsSequence = new Sequence();
-    for (let idx = 1; idx <= moteCount; ++idx) {
-      starsSequence = createStarMoteAnimation(starsSequence, idx);
+    // Create a sequence and add each mote to it.
+    const starsSequence = new Sequence();
+    for (let idx = 1; idx <= moteCount; idx++) {
+        starsSequence.addSequence(createMote(idx));
     }
     starsSequence.play();
   }
