@@ -543,7 +543,7 @@
           "self": false
         },
         "restrictions": {
-          "allowMagical": false,
+          "allowMagical": true,
           "categories": [],
           "properties": [],
           "type": ""
@@ -657,8 +657,9 @@
     },
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": [
+          "attackArmsOclNe1"
+        ]
       },
       "advancementOrigin": "xwrXPrIVobelvTJb"
     },

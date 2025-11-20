@@ -162,7 +162,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -170,7 +171,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": true,
           "identifier": "adjust-light-radius",
@@ -179,9 +179,19 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "name": "Adjust Light Radius",
         "isOverTimeFlag": false,
@@ -191,7 +201,8 @@
           "postRemoveConditionText": ""
         },
         "useConditionReason": "",
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       },
       "wS5VKZ6Fe6UahYUf": {
         "type": "attack",
@@ -271,7 +282,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -279,7 +291,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": true,
           "identifier": "attack",
@@ -288,9 +299,19 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "attackMode": "oneHanded",
         "ammunition": "",
@@ -303,7 +324,10 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "useConditionReason": ""
+        "useConditionReason": "",
+        "otherActivityAsParentType": true,
+        "attackRollPerTarget": "default",
+        "fumbleThreshold": 1
       },
       "jLK9m3Up8y0pwVup": {
         "type": "enchant",
@@ -368,7 +392,8 @@
           "max": ""
         },
         "enchant": {
-          "identifier": ""
+          "identifier": "",
+          "self": true
         },
         "restrictions": {
           "allowMagical": true,
@@ -386,7 +411,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -394,7 +420,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": false,
           "identifier": "activate-deactivate-blade",
@@ -403,9 +428,19 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "name": "Activate/Deactivate Blade",
         "isOverTimeFlag": false,
@@ -499,7 +534,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -507,7 +543,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "never",
           "automationOnly": true,
           "otherActivityCompatible": true,
@@ -516,9 +551,19 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "name": "Damage vs Undead",
         "isOverTimeFlag": false,
@@ -599,17 +644,12 @@
       "section": "",
       "actionSection": ""
     },
-    "dnd5e": {
-      "riders": {
-        "activity": [],
-        "effect": []
-      }
-    }
+    "dnd5e": {}
   },
   "effects": [
     {
       "name": "Sunlight",
-      "img": "icons/commodities/treasure/sceptre-jeweled-gold.webp",
+      "img": "icons/magic/light/explosion-star-glow-yellow.webp",
       "origin": "Item.7xeuYcnO3qLpobUy",
       "_id": "SnxRN0OBcIvCkwiW",
       "type": "base",

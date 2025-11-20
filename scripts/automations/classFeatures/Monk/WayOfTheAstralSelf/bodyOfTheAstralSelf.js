@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Body of the Astral Self
 // Summons a spectral body and adds its effects.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -71,7 +71,6 @@ export async function bodyOfTheAstralSelf({ speaker, actor, token, character, it
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
  */
 async function handleOnUsePostActiveEffects(sourceActor, workflow) {
-  const total = workflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
 
   // TODO get token damage instead..
   const damages = workflow.workflowOptions?.damageDetail?.filter(
@@ -94,7 +93,7 @@ async function handleOnUsePostActiveEffects(sourceActor, workflow) {
       {
         key: `system.traits.dm.amount.${dmgType}`,
         mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-        value: `-${total}`,
+        value: "-@utilityRollTotal",
         priority: 20,
       },
     ],

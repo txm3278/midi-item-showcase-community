@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v2.2.0
+// v2.3.0
 // Dependencies:
 //  - DAE
 //  - Times Up
@@ -23,21 +23,21 @@
 // In the tpr.isHit (TargetOnUse) post macro (in attacker's workflow) (on owner or other target):
 //   If the reaction was used and completed successfully, recomputes the hit check if the target was hit
 //   to include the AC bonus that was added.
-// In the postActiveEffects (item onUse) phase of Warding Maneuver item (in owner's workflow):
-//   Applies an AE to add an AC bonus (using the rolled "damage") and damage resistance to the target.
 // ###################################################################################################
 
 export async function wardingManeuver({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Warding Maneuver';
+  const DEFAULT_ITEM_NAME = "Warding Maneuver";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.3.0")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  const dependencies = ["dae", "times-up", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -50,12 +50,10 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
+  } else if (args[0].tag === "TargetOnUse" && args[0].macroPass === "tpr.isHit.post") {
     await handleTargetOnUseIsHitPost(workflow, token, scope.macroItem, options?.thirdPartyReactionResult);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-    await handleOnUsePostActiveEffects(workflow, scope.macroItem);
   }
 
   /**
@@ -69,7 +67,7 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
    */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== "tpr.isHit" ||
       !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
     ) {
       // Reaction should only be triggered by third party reactions
@@ -78,7 +76,7 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
       return false;
     }
 
-    foundry.utils.setProperty(currentWorkflow.workflowOptions, 'fastForwardDamage', true);
+    foundry.utils.setProperty(currentWorkflow.workflowOptions, "fastForwardDamage", true);
     return true;
   }
 
@@ -123,7 +121,7 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
         if (
           !elwinHelpers.isMidiHookStillValid(
             DEFAULT_ITEM_NAME,
-            'midi-qol.postCleanup',
+            "midi-qol.postCleanup",
             "'delete Bonus AC AE'",
             currentWorkflow,
             currentWorkflow2,
@@ -139,71 +137,5 @@ export async function wardingManeuver({ speaker, actor, token, character, item, 
         }
       });
     }
-  }
-
-  /**
-   * Handles the postActiveEffects of the Warding Maneuver item midi-qol workflow.
-   * An AE is applied to add an AC bonus and damage resistance to the target.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Warding Maneuver item.
-   */
-  async function handleOnUsePostActiveEffects(currentWorkflow, sourceItem) {
-    const targetToken = currentWorkflow.targets.first();
-    if (!targetToken) {
-      // No target found
-      return;
-    }
-    const targetActor = targetToken.actor;
-    if (!targetActor) {
-      // No actor found
-      return;
-    }
-    if (currentWorkflow.aborted) {
-      if (debug) {
-        // Workflow was aborted do not trigger action
-        console.warn(`${DEFAULT_ITEM_NAME} | Workflow was aborted, ${sourceItem.name} is also cancelled.`);
-      }
-      return;
-    }
-
-    const acBonus = currentWorkflow.utilityRolls?.reduce((acc, r) => acc + r.total, 0);
-    if (acBonus === undefined) {
-      if (debug) {
-        // No AC bonus skip AE
-        console.warn(`${DEFAULT_ITEM_NAME} | No AC bonus.`, { utilityRolls: currentWorkflow.utilityRolls });
-      }
-      return;
-    }
-
-    // create an active effect on target for AC bonus and damage resistance in case it still hits.
-    const duration = sourceItem.actor?.inCombat ? { turns: 1, rounds: 0 } : { seconds: 1 };
-    const targetEffectData = {
-      changes: [
-        // Flag to add AC bonus
-        {
-          key: 'system.attributes.ac.bonus',
-          mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: acBonus,
-          priority: 20,
-        },
-        // Flag to add damage resistance to all (the feature says damage from the attack,
-        // so it should include any damage type done by the attack)
-        {
-          key: 'system.traits.dr.all',
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: 'true',
-          priority: 20,
-        },
-      ],
-      transfer: false,
-      origin: sourceItem.uuid, // flag the effect as associated to the source item used
-      duration,
-      img: sourceItem.img,
-      name: `${sourceItem.name} - AC Bonus/Damage Resistance`,
-      'flags.dae': { specialDuration: ['isHit'], stackable: 'noneName' },
-    };
-
-    await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });
   }
 }

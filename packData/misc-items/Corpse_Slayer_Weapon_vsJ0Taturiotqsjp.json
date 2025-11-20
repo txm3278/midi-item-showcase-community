@@ -5,7 +5,7 @@
   "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on SagaTympana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item is used as a factory to create Corpse Slayer weapons. Open this item and select its effects tab. \nOpen the weapon to be transformed into a Corpse Slayer, then drag drop the 'Corpse Slayer - Template' enchantment effect on the target weapon.\nThe enchantment adds a damage bonus and an effect, that gives disadvantage on saves against Turn Undead, those are applied only to undead creatures when equipped and attuned.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on SagaTympana version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item is used as a factory to create Corpse Slayer weapons.\nThe enchantment adds a damage bonus and an effect, that gives disadvantage on saves against Turn Undead, those are applied only to undead creatures when equipped and attuned.\n@Embed[Compendium.dnd5e.content24.JournalEntry.dmgFoundryRefere.JournalEntryPage.Ok4iCgD25ENgoRxE cite=false caption=false classes=\"hide-in-embed\"]</p></details>",
       "chat": ""
     },
     "source": {
@@ -60,7 +60,7 @@
       },
       "base": {
         "number": null,
-        "denomination": 0,
+        "denomination": null,
         "bonus": "",
         "types": [],
         "custom": {
@@ -141,7 +141,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "1",
@@ -188,7 +188,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -196,7 +197,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -207,7 +207,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -219,7 +229,10 @@
         "attackMode": "twoHanded",
         "ammunition": "",
         "otherActivityUuid": "",
-        "name": "Attack"
+        "name": "Attack",
+        "otherActivityAsParentType": true,
+        "attackRollPerTarget": "default",
+        "fumbleThreshold": 1
       },
       "xYeQf93sxKz4D2qd": {
         "type": "enchant",
@@ -284,7 +297,8 @@
           "max": ""
         },
         "enchant": {
-          "identifier": ""
+          "identifier": "",
+          "self": false
         },
         "restrictions": {
           "allowMagical": false,
@@ -303,7 +317,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -311,7 +326,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -322,7 +336,17 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -330,11 +354,11 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "name": "Corpse Slayer Factory",
+        "name": "Corpse Slayer Weapon",
         "_id": "xYeQf93sxKz4D2qd"
       }
     },
-    "identifier": "corpse-slayer-longbow-copy",
+    "identifier": "corpse-slayer-weapon",
     "container": null,
     "attuned": false,
     "ammunition": {
@@ -426,8 +450,8 @@
     },
     {
       "type": "enchantment",
-      "name": "Corpse Slayer - Template",
-      "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
+      "name": "Corpse Slayer Weapon",
+      "img": "systems/dnd5e/icons/spell-tiers/spell3.webp",
       "disabled": true,
       "_id": "mfjwhj7aa8FkjOAZ",
       "system": {},
@@ -594,10 +618,10 @@
     "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
         "effect": [
           "0p4TAXJ9qUfykkIL"
-        ]
+        ],
+        "activity": []
       }
     }
   },

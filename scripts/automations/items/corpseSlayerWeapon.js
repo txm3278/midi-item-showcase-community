@@ -21,8 +21,8 @@
 // ###################################################################################################
 
 // Default name of the item
-const DEFAULT_ITEM_NAME = 'Corspe Slayer Weapon';
-const WORLD_ID = 'world';
+const DEFAULT_ITEM_NAME = "Corspe Slayer Weapon";
+const WORLD_ID = "world";
 
 /**
  * Validates if the required dependencies are met.
@@ -30,12 +30,14 @@ const WORLD_ID = 'world';
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.0")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -56,9 +58,9 @@ export async function corpseSlayerWeapon({ speaker, actor, token, character, ite
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
     handleOnUsePreDamageRollConfig(scope, workflow, debug);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     await handleOnUsePostActiveEffects(scope, workflow, debug);
   }
 }
@@ -75,7 +77,7 @@ function validateActivityAndTarget(scope, workflow, debug) {
   if (
     !scope.rolledItem?.system.attuned ||
     !scope.rolledActivity?.hasAttack ||
-    scope.rolledActivity?.attack?.type.classification !== 'weapon'
+    scope.rolledActivity?.attack?.type.classification !== "weapon"
   ) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Item not attuned or not a weapon attack activity.`, {
@@ -85,7 +87,7 @@ function validateActivityAndTarget(scope, workflow, debug) {
     }
     return false;
   }
-  if (workflow.hitTargets?.size !== 1 || MidiQOL.raceOrType(workflow.hitTargets.first()) !== 'undead') {
+  if (workflow.hitTargets?.size !== 1 || MidiQOL.raceOrType(workflow.hitTargets.first()) !== "undead") {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Multiple hit targets or hit target is not an undead.`);
     }
@@ -108,7 +110,7 @@ function handleOnUsePreDamageRollConfig(scope, workflow, debug) {
     return;
   }
   elwinHelpers.damageConfig.updateBasic(scope, workflow, {
-    damageBonus: '1d8',
+    damageBonus: "1d8",
     flavor: `${scope.macroItem.name} - Undead Extra Damage`,
     debug,
   });
@@ -126,7 +128,7 @@ async function handleOnUsePostActiveEffects(scope, workflow, debug) {
     return;
   }
   const corpseSlayerEffect = workflow.item?.effects.find(
-    (ae) => !ae.transfer && ae.getFlag(WORLD_ID, 'corpseSlayerWeapon') === true
+    (ae) => !ae.transfer && ae.getFlag(WORLD_ID, "corpseSlayerWeapon") === true
   );
   if (!corpseSlayerEffect) {
     if (debug) {

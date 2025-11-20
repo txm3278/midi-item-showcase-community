@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.7
+// v3.5.8
 // Dependencies:
 //  - MidiQOL
 //
@@ -58,6 +58,7 @@
 // - elwinHelpers.attachToTemplate
 // - elwinHelpers.detachFromTemplate
 // - elwinHelpers.attachAmbientLightToTemplate
+// - elwinHelpers.getEffectiveDamage
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -135,7 +136,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.7";
+  const VERSION = "3.5.8";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -295,6 +296,7 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.attachToTemplate", attachToTemplate);
     exportIdentifier("elwinHelpers.detachFromTemplate", detachFromTemplate);
     exportIdentifier("elwinHelpers.attachAmbientLightToTemplate", attachAmbientLightToTemplate);
+    exportIdentifier("elwinHelpers.getEffectiveDamage", getEffectiveDamage);
 
     // Note: classes need to be exported after they are declared...
 
@@ -385,7 +387,7 @@ export function runElwinsHelpers() {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePostStart.`, workflow);
     }
-    for (let token of game.canvas.tokens.placeables) {
+    for (let token of game.canvas?.tokens.placeables ?? []) {
       const actorOnUseMacros = foundry.utils.getProperty(token.actor ?? {}, "flags.midi-qol.onUseMacroParts");
       if (!actorOnUseMacros) {
         // Skip this actor does not have any on use macros
@@ -953,7 +955,7 @@ export function runElwinsHelpers() {
     }
     reactionFlavor = game.i18n.format(reactionFlavor, {
       itemName: triggerItem?.name ?? "unknown",
-      actorName: getTokenPlayerName(user, triggerToken, user?.isGM),
+      actorName: MidiQOL.getTokenPlayerNameForUser(user, triggerToken, user?.isGM),
       reactionActorName: reactionToken?.name ?? "unknown",
     });
 
@@ -1720,31 +1722,6 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns the token name that can be displayed for the specified user.
-   * Note: Extended from MidiQOL to allow passing a user instead of taking game.user.
-   *
-   * @param {User} user - The user to which the token name will be displayed.
-   * @param {Token5e} token - The token for which to display the name.
-   * @param {boolean} checkGM - If true, indicate that a GM user should be shown the token.name.
-   *
-   * @returns {string} The token name to be displayed to the specified user.
-   */
-  function getTokenPlayerName(user, token, checkGM = false) {
-    if (!token) {
-      return game.user?.name;
-    }
-    let name = getTokenName(token);
-    if (checkGM && user?.isGM) {
-      return name;
-    }
-    if (game.modules.get("anonymous")?.active) {
-      const api = game.modules.get("anonymous")?.api;
-      return api.playersSeeName(token.actor) ? name : api.getName(token.actor);
-    }
-    return name;
-  }
-
-  /**
    * Returns a string containing two midi target divs, one to be displayed to GM and another one to be displayed to players.
    *
    * @param {Token5e} targetToken - The token for which to display the name.
@@ -1846,6 +1823,11 @@ export function runElwinsHelpers() {
     damageItem.elwinHelpersEffectiveDamage = healingAdjustedTotalDamage;
   }
 
+  /**
+   * Calculates the effective damage totals by categories from a list of damages.
+   * @param {object[]} damages - Array of damage details.
+   * @returns {{ damage: number, temp: number, healing: number, healingAdjustedTotalDamage:number }} The damage totals, split in categories
+   */
   function getEffectiveDamage(damages) {
     if (!damages) {
       return { damage: undefined, temp: undefined, healing: undefined, healingAdjustedTotalDamage: undefined };
@@ -2164,7 +2146,7 @@ export function runElwinsHelpers() {
   async function insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text) {
     let content = foundry.utils.deepClone(chatMessage.content);
     let searchRegex = undefined;
-    let replaceString = `$1\n${text}\n$2`;
+    let replaceString = `$1\n${text}<span class="elwin-insert-before"></span>\n$2`;
     switch (position) {
       case "beforeHitsDisplay":
         searchRegex = /(<\/div>)(\s*<div class="midi-qol-hits-display">)/m;
@@ -2172,7 +2154,7 @@ export function runElwinsHelpers() {
       case "beforeButtons":
       default:
         searchRegex =
-          /(<\/section>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
+          /(<\/section>|<span class="elwin-insert-before"><\/span>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
         break;
     }
     content = content.replace(searchRegex, replaceString);
@@ -2366,28 +2348,36 @@ export function runElwinsHelpers() {
     }
 
     // Disables dialog configuration
-    if (
-      (workflow.elwinOptions?.disableConfigDialogIfEnchantExists ?? true) &&
-      elwinHelpers.getAppliedEnchantments(workflow.activity?.uuid)?.length
-    ) {
-      Hooks.once("dnd5e.preUseActivity", (activity, usageConfig, dialogConfig, __) => {
-        const activityWorkflow = usageConfig.worflow;
-        if (
-          !elwinHelpers.isMidiHookStillValid(
-            activity.item?.name,
-            "dnd5e.preUseActivity",
-            activity.name,
-            workflow,
-            activityWorkflow,
-            debug
-          )
-        ) {
-          return;
-        }
+    const enchantments = elwinHelpers.getAppliedEnchantments(workflow.activity?.uuid);
+    if (enchantments?.length) {
+      if (!workflow.activity?.enchant?.self) {
+        if (workflow.elwinOptions?.disableConfigDialogIfEnchantExists ?? true) {
+          Hooks.once("dnd5e.preUseActivity", (activity, usageConfig, dialogConfig, __) => {
+            const activityWorkflow = usageConfig.worflow;
+            if (
+              !elwinHelpers.isMidiHookStillValid(
+                activity.item?.name,
+                "dnd5e.preUseActivity",
+                activity.name,
+                workflow,
+                activityWorkflow,
+                debug
+              )
+            ) {
+              return;
+            }
 
-        // Disable dialog configuration
-        dialogConfig.configure = false;
-      });
+            // Disable dialog configuration
+            dialogConfig.configure = false;
+          });
+        }
+      } else {
+        foundry.utils.setProperty(
+          workflow.workflowOptions,
+          "elwinOptions.previousEnchantments",
+          enchantments.map((e) => e.toObject(false))
+        );
+      }
     }
 
     // Disables enchantment drop area, but keep selected profile
@@ -2408,7 +2398,7 @@ export function runElwinsHelpers() {
       // Keep selected profile in workflow
       if (activityWorkflow) {
         foundry.utils.setProperty(
-          activityWorkflow,
+          activityWorkflow.workflowOptions,
           "elwinOptions.enchantmentProfile",
           foundry.utils.getProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`)
         );
@@ -2436,18 +2426,30 @@ export function runElwinsHelpers() {
       // Skip activities that are not enchantments.
       return;
     }
-    // Get applied enchantements for this item
-    const enchantments = getAppliedEnchantments(workflow.activity.uuid);
-    if (enchantments?.length) {
-      // Remove enchantment
-      await deleteAppliedEnchantments(workflow.activity.uuid);
 
-      // Add message about deactivation
-      const infoMsg = getSelfEnchantmentActivationMessage(enchantments[0], false);
-      if (infoMsg) {
-        await insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
+    let enchantmentEffect = null;
+    // Get applied enchantments for this item
+    if (!workflow.activity.enchant?.self) {
+      console.warn(
+        `${MACRO_NAME} | toggleSelfEnchantmentOnUsePostActiveEffects on activities without 'Automatically Enchant Self' is deprecated, it will be removed in a future version.`
+      );
+      const enchantments = getAppliedEnchantments(workflow.activity.uuid);
+      if (enchantments?.length) {
+        // Remove enchantment
+        await deleteAppliedEnchantments(workflow.activity.uuid);
+
+        // Add message about deactivation
+        const infoMsg = getSelfEnchantmentActivationMessage(enchantments[0], false);
+        if (infoMsg) {
+          await insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
+        }
       }
-    } else {
+      if (
+        enchantments[0]?.flags.dnd5e?.enchantmentProfile === workflow.workflowOptions?.elwinOptions?.enchantmentProfile
+      ) {
+        // Enchantment was deactivated and no other was selected
+        return;
+      }
       const enchantmentEffectData = getAutomatedEnchantmentSelectedProfile(workflow)?.effect.toObject();
       if (!enchantmentEffectData) {
         console.error(`${MACRO_NAME} | Missing enchantment effect`, { workflow });
@@ -2461,47 +2463,63 @@ export function runElwinsHelpers() {
       }
 
       // Add enchantment to self
-      const enchantmentEffect = await applyEnchantmentToItem(workflow, enchantmentEffectData, workflow.item);
+      enchantmentEffect = await applyEnchantmentToItem(workflow, enchantmentEffectData, workflow.item);
       if (!enchantmentEffect) {
         console.error(`${MACRO_NAME} | Enchantment effect could not be created.`, enchantmentEffectData);
         return;
       }
-      // If this activity is a dependency of an applied enchantment, also add this enchantment as a dependency.
-      const metaEchantmentEffect = workflow.activity.item?.effects?.find(
-        (ae) => ae.isAppliedEnchantment && ae.getDependents()?.some((d) => d.uuid === workflow.activity.uuid)
-      );
-      if (metaEchantmentEffect) {
-        await metaEchantmentEffect.addDependent(enchantmentEffect);
-      }
-
-      // Get effects to apply on actor
-      const effectIds = getSelfEnchantmentActorEffects(enchantmentEffect);
-      const effectsToApply = effectIds?.length
-        ? workflow.item?.effects
-            .filter(
-              (ae) =>
-                !ae.transfer && ae.type !== "enchantment" && (effectIds.includes(ae._id) || effectIds.includes(ae.name))
-            )
-            .map((ae) => {
-              const data = ae.toObject();
-              data.origin = ae.uuid;
-              return data;
-            }) ?? []
-        : [];
-      if (effectsToApply?.length) {
-        const effectsCreated = await workflow.actor.createEmbeddedDocuments("ActiveEffect", effectsToApply);
-        await enchantmentEffect.addDependent(...effectsCreated);
-        // Add enchantment to each effect as a dependency (this allows to auto delete the enchantment if the actor effect is deleted)
-        for (let ae of effectsCreated) {
-          await ae.addDependent(enchantmentEffect);
+    } else {
+      const enchantments = foundry.utils.getProperty(workflow.workflowOptions, "elwinOptions.previousEnchantments");
+      const appliedEnchantments = getAppliedEnchantments(workflow.activity.uuid);
+      if (enchantments?.length) {
+        // Add message about deactivation
+        const infoMsg = getSelfEnchantmentActivationMessage(enchantments[0], false);
+        if (infoMsg) {
+          ui.notifications.info(`${workflow.item._source.name} - ${infoMsg}`);
         }
       }
-
-      // Add message about activation
-      const infoMsg = getSelfEnchantmentActivationMessage(enchantmentEffect, true);
-      if (infoMsg) {
-        await insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
+      if (!appliedEnchantments?.length) {
+        // Enchantment was deactivated and no other was selected
+        return;
       }
+      enchantmentEffect = appliedEnchantments[0];
+    }
+
+    // If this activity is a dependency of an applied enchantment, also add this enchantment as a dependency.
+    const metaEchantmentEffect = workflow.activity.item?.effects?.find(
+      (ae) => ae.isAppliedEnchantment && ae.getDependents()?.some((d) => d.uuid === workflow.activity.uuid)
+    );
+    if (metaEchantmentEffect) {
+      await metaEchantmentEffect.addDependent(enchantmentEffect);
+    }
+
+    // Get effects to apply on actor
+    const effectIds = getSelfEnchantmentActorEffects(enchantmentEffect);
+    const effectsToApply = effectIds?.length
+      ? workflow.item?.effects
+          .filter(
+            (ae) =>
+              !ae.transfer && ae.type !== "enchantment" && (effectIds.includes(ae._id) || effectIds.includes(ae.name))
+          )
+          .map((ae) => {
+            const data = ae.toObject();
+            data.origin = ae.uuid;
+            return data;
+          }) ?? []
+      : [];
+    if (effectsToApply?.length) {
+      const effectsCreated = await workflow.actor.createEmbeddedDocuments("ActiveEffect", effectsToApply);
+      await enchantmentEffect.addDependent(...effectsCreated);
+      // Add enchantment to each effect as a dependency (this allows to auto delete the enchantment if the actor effect is deleted)
+      for (let ae of effectsCreated) {
+        await ae.addDependent(enchantmentEffect);
+      }
+    }
+
+    // Add message about activation
+    const infoMsg = getSelfEnchantmentActivationMessage(enchantmentEffect, true);
+    if (infoMsg) {
+      await insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
     }
   }
 
@@ -2542,7 +2560,7 @@ export function runElwinsHelpers() {
     if (workflow.activity?.type !== "enchant") {
       return undefined;
     }
-    const enchantmentProfile = workflow.elwinOptions?.enchantmentProfile;
+    const enchantmentProfile = workflow.workflowOptions?.elwinOptions?.enchantmentProfile;
     return enchantmentProfile
       ? workflow.activity?.effects.find((e) => e._id === enchantmentProfile)
       : workflow.activity?.effects?.[0];
@@ -2567,6 +2585,7 @@ export function runElwinsHelpers() {
 
     // Set current activity has the origin
     enchantmentEffectData.origin = workflow.activity.uuid;
+    foundry.utils.setProperty(enchantmentEffectData, "flags.dnd5e.enchantmentProfile", enchantmentEffectData._id);
 
     // Add enchantment to item
     const itemCard = game.messages.get(workflow.itemCardId);
@@ -3541,7 +3560,7 @@ export function runElwinsHelpers() {
    * @param {Token5e} sourceToken - The source token.
    * @param {Token5e} targetToken - The target token.
    *
-   * @returns {{point: {x: number, y: number}, ray: Ray}} the intersection point between the source token and target token and the ray used to compute the intersection.
+   * @returns {{point: {x: number, y: number}, segment:{x: number, y: number}[]}} the intersection point between the source token and target token and the ray used to compute the intersection.
    */
   function getAttackSegment(sourceToken, targetToken) {
     if (!canvas || !canvas.scene || !canvas.grid || !canvas.dimensions) {
@@ -3741,7 +3760,7 @@ export function runElwinsHelpers() {
    * @returns {{x: number, y: number}} the position where to move the token so its border is next to the specified point.
    */
   function getMoveTowardsPosition(token, point, options = { snapToGrid: true }) {
-    const moveTowardsRay = new (foundry.canvas.geometry?.Ray ?? Ray)(token.center, point);
+    const moveTowardsRay = new foundry.canvas.geometry.Ray(token.center, point);
     const tokenIntersects = token.bounds.segmentIntersections(moveTowardsRay.A, moveTowardsRay.B);
     if (!tokenIntersects?.length) {
       if (debug) {
@@ -3752,9 +3771,9 @@ export function runElwinsHelpers() {
       }
       return undefined;
     }
-    const centerToBounds = new (foundry.canvas.geometry?.Ray ?? Ray)(moveTowardsRay.A, tokenIntersects[0]);
+    const centerToBounds = new foundry.canvas.geometry.Ray(moveTowardsRay.A, tokenIntersects[0]);
 
-    const rayToCenter = (foundry.canvas.geometry?.Ray ?? Ray).towardsPoint(
+    const rayToCenter = foundry.canvas.geometry.Ray.towardsPoint(
       moveTowardsRay.A,
       moveTowardsRay.B,
       moveTowardsRay.distance - centerToBounds.distance
@@ -4426,7 +4445,7 @@ export function runElwinsHelpers() {
     if (!entity) {
       return "<unknown>";
     }
-    if (!(entity instanceof (foundry.canvas.placeables?.Token ?? Token))) {
+    if (!(entity instanceof foundry.canvas.placeables.Token)) {
       return "<unknown>";
     }
     if (MidiQOL.configSettings().useTokenNames) {
@@ -4440,7 +4459,7 @@ export function runElwinsHelpers() {
     if (!tokenRef) {
       return undefined;
     }
-    if (tokenRef instanceof (foundry.canvas.placeables?.Token ?? Token)) {
+    if (tokenRef instanceof foundry.canvas.placeables.Token) {
       return tokenRef;
     }
     if (tokenRef instanceof TokenDocument) {

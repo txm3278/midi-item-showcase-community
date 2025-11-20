@@ -106,6 +106,12 @@
           "mode": 0,
           "value": "ItemUses.identifier.ring-of-evasion",
           "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.ringOfEvasion.displayBonusRolls",
+          "mode": 0,
+          "value": "false",
+          "priority": 20
         }
       ],
       "disabled": false,
