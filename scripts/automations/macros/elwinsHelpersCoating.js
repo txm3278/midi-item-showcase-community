@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.3
+// v2.1.4
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,26 +84,26 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = '2.1.3';
-  const MACRO_NAME = 'elwin-helpers-coating';
-  const MODULE_ID = 'midi-item-showcase-community';
-  const WORLD_MODULE_ID = 'world';
-  const MISC_MODULE_ID = 'midi-item-showcase-community';
-  const APPLY_COATING_IDENT = 'apply-coating';
-  const COATING_EFFECT_IDENT = 'coating-effect';
+  const VERSION = "2.1.4";
+  const MACRO_NAME = "elwin-helpers-coating";
+  const MODULE_ID = "midi-item-showcase-community";
+  const WORLD_MODULE_ID = "world";
+  const MISC_MODULE_ID = "midi-item-showcase-community";
+  const APPLY_COATING_IDENT = "apply-coating";
+  const COATING_EFFECT_IDENT = "coating-effect";
   const active = true;
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? true;
 
-  const AMMO_TRACKER_MOD = 'ammo-tracker-fvtt';
+  const AMMO_TRACKER_MOD = "ammo-tracker-fvtt";
 
   // Default allowed weapon types
-  const DEFAULT_ALLOWED_WEAPON_TYPES = ['simpleM', 'martialM', 'simpleR', 'martialR'];
+  const DEFAULT_ALLOWED_WEAPON_TYPES = ["simpleM", "martialM", "simpleR", "martialR"];
   // Default allowed weapon damage types
-  const DEAULT_ALLOWED_DMG_TYPES = ['slashing', 'piercing'];
+  const DEAULT_ALLOWED_DMG_TYPES = ["slashing", "piercing"];
   // Default mapping between damage type and ammo type
   const DEFAULT_ALLOWED_AMMO_TYPES_BY_DMG_TYPE = new Map([
-    ['piercing', ['arrow', 'crossbowBolt', 'blowgunNeedle', 'firearmBullet']],
-    ['bludgeoning', ['slingBullet']],
+    ["piercing", ["arrow", "crossbowBolt", "blowgunNeedle", "firearmBullet"]],
+    ["bludgeoning", ["slingBullet"]],
   ]);
 
   /**
@@ -131,28 +131,28 @@ export function runElwinsHelpersCoating() {
  * @property {ConditionalAppliedCoatingStatuses[]} conditionalStatuses - Array of conditional statuses to be added to the coating effect activity AE when a coated weapon or ammo hits.
  */
 
-  const dependencies = ['midi-qol'];
+  const dependencies = ["midi-qol"];
   if (hasValidElwinHelpersVersion() && globalThis.elwinHelpers?.requirementsSatisfied(MACRO_NAME, dependencies)) {
-    if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, 'Elwin Helpers')) {
+    if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, "Elwin Helpers")) {
       return;
     }
 
     // Set a version to facilitate dependency check
-    exportIdentifier('elwinHelpers.coating.version', VERSION);
+    exportIdentifier("elwinHelpers.coating.version", VERSION);
 
-    exportIdentifier('elwinHelpers.coating.getCoatingWeaponFilter', getCoatingWeaponFilter);
-    exportIdentifier('elwinHelpers.coating.getCoatingAmmoFilter', getCoatingAmmoFilter);
+    exportIdentifier("elwinHelpers.coating.getCoatingWeaponFilter", getCoatingWeaponFilter);
+    exportIdentifier("elwinHelpers.coating.getCoatingAmmoFilter", getCoatingAmmoFilter);
     exportIdentifier(
-      'elwinHelpers.coating.handleCoatingItemOnUsePostActiveEffects',
+      "elwinHelpers.coating.handleCoatingItemOnUsePostActiveEffects",
       handleCoatingItemOnUsePostActiveEffects
     );
     exportIdentifier(
-      'elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects',
+      "elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects",
       handleCoatedItemOnUsePostActiveEffects
     );
-    exportIdentifier('elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll', handleCoatedItemOnUsePostDamageRoll);
+    exportIdentifier("elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll", handleCoatedItemOnUsePostDamageRoll);
     exportIdentifier(
-      'elwinHelpers.coating.handleCoatingEffectActivityConditionalStatuses',
+      "elwinHelpers.coating.handleCoatingEffectActivityConditionalStatuses",
       handleCoatingEffectActivityConditionalStatuses
     );
   }
@@ -162,8 +162,8 @@ export function runElwinsHelpersCoating() {
    * @returns {boolean} true if elwin helpers' version is valid for this world script.
    */
   function hasValidElwinHelpersVersion() {
-    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.5')) {
-      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.6`;
+    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.7")) {
+      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.8`;
       ui.notifications.error(errorMsg);
       return false;
     }
@@ -178,7 +178,7 @@ export function runElwinsHelpersCoating() {
    */
   function exportIdentifier(exportedIdentifierName, exportedValue) {
     if (foundry.utils.getProperty(globalThis, exportedIdentifierName)) {
-      const lastIndex = exportedIdentifierName.lastIndexOf('.');
+      const lastIndex = exportedIdentifierName.lastIndexOf(".");
       delete foundry.utils.getProperty(globalThis, exportedIdentifierName.substring(0, lastIndex))[
         exportedIdentifierName.substring(lastIndex + 1)
       ];
@@ -201,7 +201,7 @@ export function runElwinsHelpersCoating() {
   function getCoatingWeaponFilter({ allowedWeaponTypes, allowedDamageTypes }) {
     return function (item) {
       return (
-        !item.system?.properties?.has('amm') &&
+        !item.system?.properties?.has("amm") &&
         (allowedWeaponTypes === true || allowedWeaponTypes.includes(item.system?.type?.value)) &&
         (allowedDamageTypes === true ||
           item.system?.damage?.base?.types?.some((type) => allowedDamageTypes.includes(type)))
@@ -249,7 +249,7 @@ export function runElwinsHelpersCoating() {
     if (debug) {
       console.warn(MACRO_NAME, { phase: `${workflow?.tag}-${workflow?.macroPass}` }, arguments);
     }
-    if (workflow.activity?.type !== 'enchant' && workflow.activity?.identifier !== APPLY_COATING_IDENT) {
+    if (workflow.activity?.type !== "enchant" && workflow.activity?.identifier !== APPLY_COATING_IDENT) {
       // Not the apply coating enchant activity
       return;
     }
@@ -284,9 +284,9 @@ export function runElwinsHelpersCoating() {
       return;
     }
 
-    if (coatedItem.type === 'weapon' && maxWeaponHits) {
+    if (coatedItem.type === "weapon" && maxWeaponHits) {
       appliedCoating.uses = maxWeaponHits;
-    } else if (coatedItem.type === 'consumable') {
+    } else if (coatedItem.type === "consumable") {
       appliedCoating.uses = Math.max(0, coatedItem.system?.quantity ?? 0);
     }
 
@@ -305,14 +305,14 @@ export function runElwinsHelpersCoating() {
 
     // Add message about coating
     const infoMsg = `<p><strong>${rolledItem.name}</strong> was applied to <strong>${coatingItemOrigName}</strong>.</p>`;
-    await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', workflow, infoMsg);
+    await elwinHelpers.insertTextIntoMidiItemCard("beforeButtons", workflow, infoMsg);
 
     // Make the proper adjustments for Ammo Tracker
     if (
       game.modules.get(AMMO_TRACKER_MOD)?.active &&
-      selectedItem.type === 'consumable' &&
+      selectedItem.type === "consumable" &&
       coatedItem.id !== selectedItem.id &&
-      actor.type === 'character'
+      actor.type === "character"
     ) {
       for (let combat of game.combats) {
         const actorAmmoAttr = `projectileData.${actor.id}`;
@@ -340,12 +340,12 @@ export function runElwinsHelpersCoating() {
   function getAppliedCoating(currentWorkflow, itemUsed) {
     // Get applied coating default values if not defined
     const appliedCoatingValue = itemUsed.effects
-      .find((ae) => ae.type !== 'enchantment' && !ae.transfer && ae.getFlag('dae', 'dontApply') === true)
+      .find((ae) => ae.type !== "enchantment" && !ae.transfer && ae.getFlag("dae", "dontApply") === true)
       ?.changes.find((c) =>
         [`flags.${WORLD_MODULE_ID}.appliedCoating`, `flags.${MISC_MODULE_ID}.appliedCoating`].includes(c.key)
       )?.value;
     try {
-      const appliedCoating = JSON.parse(appliedCoatingValue ?? '{}');
+      const appliedCoating = JSON.parse(appliedCoatingValue ?? "{}");
 
       appliedCoating.origin = currentWorkflow.activity.uuid;
       appliedCoating.maxWeaponHits ??= 1;
@@ -388,13 +388,13 @@ export function runElwinsHelpersCoating() {
    */
   async function selectCoatingWeaponOrAmmo(actor, itemUsed, { weaponFilter, ammoFilter, maxAmmo }) {
     // Filter to remove items with 0 quantity and those already coated
-    const basicFilter = (i) => i.system?.quantity > 0 && !i.getFlag(MODULE_ID, 'appliedCoating.origin');
-    const defaultWeaponFilter = (i) => !i.system?.properties?.has('amm');
+    const basicFilter = (i) => i.system?.quantity > 0 && !i.getFlag(MODULE_ID, "appliedCoating.origin");
+    const defaultWeaponFilter = (i) => !i.system?.properties?.has("amm");
 
     let itemChoices = actor.itemTypes.weapon.filter((i) => basicFilter(i) && (weaponFilter ?? defaultWeaponFilter)(i));
     if (maxAmmo && ammoFilter) {
       itemChoices = itemChoices.concat(
-        actor.itemTypes.consumable.filter((i) => i.system?.type?.value === 'ammo' && basicFilter(i) && ammoFilter(i))
+        actor.itemTypes.consumable.filter((i) => i.system?.type?.value === "ammo" && basicFilter(i) && ammoFilter(i))
       );
     }
 
@@ -403,7 +403,7 @@ export function runElwinsHelpersCoating() {
     }
 
     const selectedItem = await elwinHelpers.ItemSelectionDialog.createDialog(
-      `⚔️ ${itemUsed.name}: Choose your Weapon${maxAmmo && ammoFilter ? ' or Ammo' : ''}`,
+      `⚔️ ${itemUsed.name}: Choose your Weapon${maxAmmo && ammoFilter ? " or Ammo" : ""}`,
       itemChoices,
       null
     );
@@ -414,20 +414,20 @@ export function runElwinsHelpersCoating() {
 
     let coatedItem = selectedItem;
     const allowedQuantity =
-      selectedItem.type === 'consumable' ? Math.min(maxAmmo ?? 1, selectedItem.system.quantity) : 1;
+      selectedItem.type === "consumable" ? Math.min(maxAmmo ?? 1, selectedItem.system.quantity) : 1;
 
     if (allowedQuantity !== selectedItem.system.quantity) {
       // Split item with allowed quantity
       let itemData = selectedItem.toObject();
       delete itemData._id;
       itemData.system.quantity = allowedQuantity;
-      await actor.updateEmbeddedDocuments('Item', [
+      await actor.updateEmbeddedDocuments("Item", [
         {
           _id: selectedItem.id,
-          ['system.quantity']: selectedItem.system.quantity - allowedQuantity,
+          ["system.quantity"]: selectedItem.system.quantity - allowedQuantity,
         },
       ]);
-      const [newItem] = await actor.createEmbeddedDocuments('Item', [itemData]);
+      const [newItem] = await actor.createEmbeddedDocuments("Item", [itemData]);
       coatedItem = newItem;
     }
     return { selectedItem, coatedItem };
@@ -503,7 +503,7 @@ export function runElwinsHelpersCoating() {
     enchantmentEffectData.changes.push({
       key: `flags.midi-qol.onUseMacroName`,
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value: 'function.elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects,postActiveEffects',
+      value: "function.elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects,postActiveEffects",
       priority: 20,
     });
     if (coatingEffectActivity.hasDamage && !coatingEffectActivity.save) {
@@ -511,7 +511,7 @@ export function runElwinsHelpersCoating() {
       enchantmentEffectData.changes.push({
         key: `flags.midi-qol.onUseMacroName`,
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: 'function.elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll,postDamageRoll',
+        value: "function.elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll,postDamageRoll",
         priority: 20,
       });
     }
@@ -545,7 +545,7 @@ export function runElwinsHelpersCoating() {
       return;
     }
 
-    const appliedCoating = coatedItem.getFlag(MODULE_ID, 'appliedCoating');
+    const appliedCoating = coatedItem.getFlag(MODULE_ID, "appliedCoating");
     if (!appliedCoating) {
       console.error(`${MACRO_NAME} | Missing appliedCoating flag on coated weapon or ammo.`);
       return;
@@ -593,7 +593,7 @@ export function runElwinsHelpersCoating() {
         const config = {
           midiOptions: {
             targetUuids: [target.document?.uuid],
-            workflowOptions: { targetConfirmation: 'none' },
+            workflowOptions: { targetConfirmation: "none" },
             appliedCoating,
             proceedChecks: { checkUse: false },
           },
@@ -839,7 +839,7 @@ export function runElwinsHelpersCoating() {
       let effectData = (await ActiveEffect.implementation.fromStatusEffect(conditionalStatus.status)).toObject();
       effectData.origin = origin;
       if (conditionalStatus.specialDurations?.length) {
-        foundry.utils.setProperty(effectData, 'flags.dae.specialDuration', conditionalStatus.specialDurations);
+        foundry.utils.setProperty(effectData, "flags.dae.specialDuration", conditionalStatus.specialDurations);
       }
       effects.push(effectData);
     }
@@ -868,6 +868,8 @@ export function runElwinsHelpersCoating() {
       return;
     }
     for (let originActiveEffect of activityData.applicableEffects) {
+      // Note: we refetch the activity in case this instance is a clone which may not have the dependent
+      originActiveEffect = fromUuidSync(originActiveEffect.uuid);
       await originActiveEffect.removeDependent(coatedEffectAe);
     }
   }
