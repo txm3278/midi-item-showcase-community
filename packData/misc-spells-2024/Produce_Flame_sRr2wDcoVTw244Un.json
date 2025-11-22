@@ -2,7 +2,7 @@
   "name": "Produce Flame",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This spell needs to be used to activate. When the cast actitity is used it creates an AE that produces light,\nanother activity allows to hurl the flame on a creature ending the light effect.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This spell needs to be used to activate. When the cast actitity is used it creates an AE that produces light,\nanother activity allows to hurl the flame on a creature ending the light effect.</p></details>",
       "chat": ""
     },
     "source": {
