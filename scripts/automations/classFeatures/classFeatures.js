@@ -1,6 +1,6 @@
 import { flashOfGenius } from './Artificer/flashOfGenius.js';
-import { spiritShield } from './Barbarian/PathOfTheAncestrialGuardian/spiritShield.js';
-import { vengefulAncestors } from './Barbarian/PathOfTheAncestrialGuardian/vengefulAncestors.js';
+import { spiritShield } from './Barbarian/PathOfTheAncestralGuardian/spiritShield.js';
+import { vengefulAncestors } from './Barbarian/PathOfTheAncestralGuardian/vengefulAncestors.js';
 import { sorrowfulFate } from './Bard/CollegeOfTragedy/sorrowfulFate.js';
 import { sentinelAtDeathsDoor } from './Cleric/GraveDomain/sentinelAtDeathsDoor.js';
 import { wardingFlare } from './Cleric/LightDomain/wardingFlare.js';

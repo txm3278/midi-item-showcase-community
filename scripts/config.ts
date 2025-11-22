@@ -80,7 +80,7 @@ export function setConfig() {
         "Arms of the Astral Self": {
           name: "Arms of the Astral Self",
           type: "Class Feature",
-          version: "2.2.0",
+          version: "2.2.1",
           authors: ["Elwin", "Spoob"],
         },
         "Arrow-Catching Shield": {
@@ -104,7 +104,7 @@ export function setConfig() {
         "Body of the Astral Self": {
           name: "Body of the Astral Self",
           type: "Class Feature",
-          version: "1.0.1",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Channel Divinity: Rebuke the Violent": {
@@ -128,19 +128,20 @@ export function setConfig() {
         "Corpse Slayer Weapon": {
           name: "Corpse Slayer Weapon",
           type: "Item",
-          version: "1.1.1",
+          factory: true,
+          version: "1.1.2",
           authors: ["Elwin", "SagaTympana"],
         },
         "Crown of Stars": {
           name: "Crown of Stars",
           type: "Spell",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin", "Bakana", "Xenophes"],
         },
         "Dagger of Venom": {
           name: "Dagger of Venom",
           type: "Item",
-          version: "2.1.0",
+          version: "2.3.0",
           authors: ["Elwin"],
         },
         "Dampen Elements": {
@@ -200,31 +201,31 @@ export function setConfig() {
         "Flame Tongue Greatsword": {
           name: "Flame Tongue Greatsword",
           type: "Item",
-          version: "2.0.1",
+          version: "2.0.2",
           authors: ["Elwin"],
         },
         "Flame Tongue Longsword": {
           name: "Flame Tongue Longsword",
           type: "Item",
-          version: "2.0.2",
+          version: "2.0.3",
           authors: ["Elwin"],
         },
         "Flame Tongue Rapier": {
           name: "Flame Tongue Rapier",
           type: "Item",
-          version: "2.0.1",
+          version: "2.0.2",
           authors: ["Elwin", "Moto Moto"],
         },
         "Flame Tongue Scimitar": {
           name: "Flame Tongue Scimitar",
           type: "Item",
-          version: "2.0.1",
+          version: "2.0.2",
           authors: ["Elwin"],
         },
         "Flame Tongue Shortsword": {
           name: "Flame Tongue Shortsword",
           type: "Item",
-          version: "2.0.1",
+          version: "2.0.2",
           authors: ["Elwin"],
         },
         "Flash of Genius": {
@@ -299,10 +300,16 @@ export function setConfig() {
           version: "2.0.1",
           authors: ["Elwin", "Moto Moto"],
         },
+        "Negative Energy Flood": {
+          name: "Negative Energy Flood",
+          type: "Spell",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         Oathbow: {
           name: "Oathbow",
           type: "Item",
-          version: "2.2.1",
+          version: "2.2.2",
           authors: ["Elwin", "Christopher"],
         },
         "Poison, Basic (vial)": {
@@ -323,10 +330,16 @@ export function setConfig() {
           version: "2.0.2",
           authors: ["Elwin"],
         },
+        "Produce Flame": {
+          name: "Produce Flame",
+          type: "Spell",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Psionic Power: Protective Field": {
           name: "Psionic Power: Protective Field",
           type: "Class Feature",
-          version: "4.1.2",
+          version: "4.2.0",
           authors: ["Elwin"],
         },
         "Purple Worm Poison": {
@@ -344,7 +357,7 @@ export function setConfig() {
         "Ring of Evasion": {
           name: "Ring of Evasion",
           type: "Item",
-          version: "1.0.2",
+          version: "1.0.3",
           authors: ["Elwin"],
         },
         "Sentinel at Death's Door": {
@@ -386,7 +399,7 @@ export function setConfig() {
         "Spirit Shield": {
           name: "Spirit Shield",
           type: "Class Feature",
-          version: "4.1.2",
+          version: "4.2.0",
           authors: ["Elwin"],
         },
         "Steady Aim": {
@@ -398,7 +411,7 @@ export function setConfig() {
         "Sun Blade": {
           name: "Sun Blade",
           type: "Item",
-          version: "2.3.0",
+          version: "2.4.0",
           authors: ["Elwin"],
         },
         "Tasha's Mind Whip": {
@@ -447,7 +460,7 @@ export function setConfig() {
         "Warding Maneuver": {
           name: "Warding Maneuver",
           type: "Class Feature",
-          version: "2.2.0",
+          version: "2.3.0",
           authors: ["Elwin"],
         },
         "Wyvern Poison": {
@@ -485,7 +498,7 @@ export function setConfig() {
         "Dagger of Venom": {
           name: "Dagger of Venom",
           type: "Item",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         Deathdance: {
@@ -510,7 +523,7 @@ export function setConfig() {
           name: "Flame Tongue",
           type: "Item",
           factory: true,
-          version: "1.0.2",
+          version: "1.0.3",
           authors: ["Elwin"],
         },
         Goodberry: {
@@ -554,7 +567,7 @@ export function setConfig() {
           name: "Oathbow",
           type: "Item",
           factory: true,
-          version: "2.2.1",
+          version: "2.2.2",
           authors: ["Elwin", "Christopher"],
         },
         "Poison, Basic": {
@@ -575,6 +588,12 @@ export function setConfig() {
           version: "1.0.1",
           authors: ["Elwin"],
         },
+        "Produce Flame": {
+          name: "Produce Flame",
+          type: "Spell",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Purple Worm Poison": {
           name: "Purple Worm Poison",
           type: "Item",
@@ -584,7 +603,7 @@ export function setConfig() {
         "Ring of Evasion": {
           name: "Ring of Evasion",
           type: "Item",
-          version: "1.0.2",
+          version: "1.0.3",
           authors: ["Elwin"],
         },
         "Serpent Venom": {
@@ -614,7 +633,7 @@ export function setConfig() {
         "Sun Blade": {
           name: "Sun Blade",
           type: "Item",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         Ulcrun: {

@@ -34,20 +34,22 @@
 // ###################################################################################################
 
 // Default name of the item
-const DEFAULT_ITEM_NAME = 'Oathbow';
-const MODULE_ID = 'midi-item-showcase-community';
+const DEFAULT_ITEM_NAME = "Oathbow";
+const MODULE_ID = "midi-item-showcase-community";
 /**
  * Validates if the required dependencies are met.
  *
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.5')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.5")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
+      "midi-item-showcase-community.ElwinHelpersRequired"
+    )}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -68,26 +70,26 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
     await handleOnUsePreDamageRollConfig(scope, workflow, debug);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-    if (workflow.activity?.identifier === 'swear-oath') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
+    if (workflow.activity?.identifier === "swear-oath") {
       return await handleOnUsePostActiveEffectsSwearOath(workflow);
     }
-  } else if (args[0] === 'on') {
+  } else if (args[0] === "on") {
     if (scope.lastArgValue?.efData.transfer) {
       await handleOnEffectTransfer(scope.macroItem);
     } else {
       await handleOnEffectAttacker(scope.macroActivity);
     }
-  } else if (args[0] === 'off') {
+  } else if (args[0] === "off") {
     if (scope.lastArgValue?.efData.transfer) {
       await handleOffEffectTransfer(scope.macroItem);
     } else {
       await handleOffEffectAttacker(
         scope.macroActivity,
         scope.lastArgValue?.efData,
-        scope.lastArgValue?.['expiry-reason']
+        scope.lastArgValue?.["expiry-reason"]
       );
     }
   }
@@ -107,11 +109,11 @@ async function handleOnUsePreDamageRollConfig(scope, workflow, debug) {
   if (
     workflow.activity?.hasAttack &&
     workflow.hitTargets?.size === 1 &&
-    workflow.actor.getFlag(MODULE_ID, 'oathbowSwornEnemy') === workflow.hitTargets?.first()?.actor?.uuid &&
-    workflow.activity?.getActionType(workflow.attackMode) === 'rwak'
+    workflow.actor.getFlag(MODULE_ID, "oathbowSwornEnemy") === workflow.hitTargets?.first()?.actor?.uuid &&
+    workflow.activity?.getActionType(workflow.attackMode) === "rwak"
   ) {
     elwinHelpers.damageConfig.updateBasic(scope, workflow, {
-      damageBonus: '3d6[piercing]',
+      damageBonus: "3d6[piercing]",
       flavor: `${scope.macroItem.name} - Sworn Enemy Extra Damage`,
       debug,
     });
@@ -128,14 +130,14 @@ async function handleOnUsePostActiveEffectsSwearOath(workflow) {
   const target = workflow.targets.first();
 
   const effectSource = workflow.actor.effects?.find(
-    (ae) => !ae.transfer && fromUuidSync(ae.origin)?.identifier === 'swear-oath'
+    (ae) => !ae.transfer && fromUuidSync(ae.origin)?.identifier === "swear-oath"
   );
   if (!effectSource) {
     console.error(`${workflow.item} | Missing Sworn Enemy - Attacker AE.`);
     return;
   }
   const changes = foundry.utils.deepClone(effectSource.changes);
-  changes.forEach((c) => (c.value = c.value.replace('{{targetActorUuid}}', target.actor?.uuid)));
+  changes.forEach((c) => (c.value = c.value.replace("{{targetActorUuid}}", target.actor?.uuid)));
   changes.push({
     key: `flags.${MODULE_ID}.oathbowSwornEnemy`,
     value: target.actor?.uuid,
@@ -161,8 +163,8 @@ async function handleOnUsePostActiveEffectsSwearOath(workflow) {
  */
 async function handleOnEffectTransfer(sourceItem) {
   await sourceItem?.system.activities
-    ?.find((a) => a.identifier === 'swear-oath')
-    ?.update({ 'midiProperties.automationOnly': false });
+    ?.find((a) => a.identifier === "swear-oath")
+    ?.update({ "midiProperties.automationOnly": false });
 }
 
 /**
@@ -172,8 +174,8 @@ async function handleOnEffectTransfer(sourceItem) {
  */
 async function handleOffEffectTransfer(sourceItem) {
   await sourceItem?.system.activities
-    ?.find((a) => a.identifier === 'swear-oath')
-    ?.update({ 'midiProperties.automationOnly': true });
+    ?.find((a) => a.identifier === "swear-oath")
+    ?.update({ "midiProperties.automationOnly": true });
 }
 
 /**
@@ -182,7 +184,7 @@ async function handleOffEffectTransfer(sourceItem) {
  * @param {Activity} sourceActivity - The AE origin's activity.
  */
 async function handleOnEffectAttacker(sourceActivity) {
-  await sourceActivity?.update({ 'uses.recovery': [] });
+  await sourceActivity?.update({ "uses.recovery": [] });
 }
 
 /**
@@ -195,13 +197,13 @@ async function handleOnEffectAttacker(sourceActivity) {
  * @param {string} expiryReason - The reason why the AE was deleted.
  */
 async function handleOffEffectAttacker(sourceActivity, effectData, expiryReason) {
-  if (expiryReason === 'midi-qol:zeroHP') {
+  if (expiryReason === "midi-qol:zeroHP") {
     const targetDoc = await fromUuid(
       effectData?.changes.find((ch) => ch.key === `flags.${MODULE_ID}.oathbowSwornEnemy`)?.value
     );
     if ((targetDoc?.actor?.system.attributes?.hp?.value ?? 0) <= 0) {
       await sourceActivity?.update({
-        'uses.recovery': [{ period: 'dawn', type: 'recoverAll' }],
+        "uses.recovery": [{ period: "dawn", type: "recoverAll" }],
       });
     }
   } else {

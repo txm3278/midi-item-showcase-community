@@ -64,7 +64,11 @@
           "concentration": false,
           "override": false
         },
-        "effects": [],
+        "effects": [
+          {
+            "_id": "7rCpgsqRTIQNLMxy"
+          }
+        ],
         "range": {
           "override": false,
           "units": "ft",
@@ -110,14 +114,23 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "",
         "macroData": {
@@ -128,7 +141,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -136,14 +150,16 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "warding-maneuver",
     "enchant": {},
     "prerequisites": {
       "level": 7,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     },
     "advancement": []
   },
@@ -205,6 +221,70 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!W5iwrrAXKajAo0v1.vNUk4Hnqh9SKG2AD"
+    },
+    {
+      "name": "Warding Maneuver - AC Bonus/Damage Resistance",
+      "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+      "origin": "Item.gwtiJjqTZOGueckf",
+      "transfer": false,
+      "_id": "7rCpgsqRTIQNLMxy",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.ac.bonus",
+          "mode": 2,
+          "value": "+@utilityRollTotal",
+          "priority": 20
+        },
+        {
+          "key": "system.traits.dr.all",
+          "mode": 0,
+          "value": "true",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": 1,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "isHit",
+            "None"
+          ]
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!W5iwrrAXKajAo0v1.7rCpgsqRTIQNLMxy"
     }
   ],
   "flags": {
@@ -237,7 +317,7 @@
       "effectCondition": "",
       "reactionCondition": "",
       "removeAttackDamageButtons": "default",
-      "onUseMacroName": "[preTargeting]ItemMacro,[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[preTargeting]ItemMacro",
       "AoETargetType": "any",
       "AoETargetTypeIncludeSelf": true,
       "autoTarget": "default",
@@ -277,8 +357,7 @@
     },
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": []
       }
     },
     "tidy5e-sheet": {

@@ -1,40 +1,31 @@
 {
-  "folder": null,
-  "name": "Crown of Stars",
-  "type": "spell",
-  "_id": "1A7im3YcJMO0OtRU",
-  "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
+  "name": "Produce Flame",
   "system": {
-    "source": {
-      "custom": "",
-      "book": "XGE",
-      "page": "152",
-      "license": "",
-      "revision": 1,
-      "rules": "2014"
-    },
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Bakana and Xenophes version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Sequencer (to support star motes animations)</li>\n   <li>JB2A (free or patreon) (to support star motes animations)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This spell needs to be used to activate. It creates animations of star motes around the caster (if Sequencer is available) \nand allows to make a special attack with a star mote which removes one mote each time. When no star mote remains the spell is ended.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This spell needs to be used to activate. When the cast actitity is used it creates an AE that produces light,\nanother activity allows to hurl the flame on a creature ending the light effect.</p></details>",
       "chat": ""
     },
-    "level": 7,
-    "school": "evo",
-    "properties": [
-      "vocal",
-      "somatic",
-      "mgc"
-    ],
-    "materials": {
-      "value": "",
-      "consumed": false,
-      "cost": 0,
-      "supply": 0
+    "source": {
+      "custom": "",
+      "rules": "2024",
+      "license": "CC-BY-4.0",
+      "book": "SRD 5.2",
+      "revision": 1
+    },
+    "activation": {
+      "type": "bonus",
+      "condition": "",
+      "value": null
+    },
+    "duration": {
+      "value": "10",
+      "units": "minute"
     },
     "target": {
       "affects": {
-        "type": "",
-        "count": "0",
         "choice": false,
+        "count": "",
+        "type": "",
         "special": ""
       },
       "template": {
@@ -44,41 +35,43 @@
       }
     },
     "range": {
-      "value": "0",
       "units": "self",
       "special": ""
     },
-    "activation": {
-      "type": "action",
-      "condition": "",
-      "value": 1
-    },
-    "duration": {
-      "value": "1",
-      "units": "hour"
-    },
-    "ability": "",
     "uses": {
       "max": "",
       "spent": 0,
       "recovery": []
     },
+    "level": 0,
+    "school": "con",
+    "properties": [
+      "vocal",
+      "somatic"
+    ],
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
     "activities": {
-      "dnd5eactivity000": {
-        "_id": "dnd5eactivity000",
+      "MModRd17Oi6hhztj": {
         "type": "utility",
+        "name": "Cast",
+        "_id": "MModRd17Oi6hhztj",
+        "sort": 0,
         "activation": {
           "type": "action",
           "value": null,
           "override": false
         },
         "consumption": {
-          "targets": [],
           "scaling": {
-            "allowed": false,
-            "max": ""
+            "allowed": false
           },
-          "spellSlot": true
+          "spellSlot": true,
+          "targets": []
         },
         "description": {
           "chatFlavor": ""
@@ -90,7 +83,7 @@
         },
         "effects": [
           {
-            "_id": "Zt1cSbtbDN2tiFbr"
+            "_id": "91vahiQP1dduvexk"
           }
         ],
         "range": {
@@ -98,7 +91,6 @@
           "units": "self"
         },
         "target": {
-          "prompt": true,
           "template": {
             "contiguous": false,
             "units": "ft"
@@ -106,20 +98,20 @@
           "affects": {
             "choice": false
           },
-          "override": false
+          "override": false,
+          "prompt": true
         },
         "uses": {
           "spent": 0,
-          "max": "",
-          "recovery": []
+          "recovery": [],
+          "max": ""
         },
         "roll": {
-          "formula": "",
-          "name": "",
           "prompt": false,
-          "visible": false
+          "visible": false,
+          "name": "",
+          "formula": ""
         },
-        "sort": -100000,
         "useConditionText": "",
         "useConditionReason": "",
         "effectConditionText": "",
@@ -140,22 +132,22 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
           "otherActivityCompatible": false,
+          "otherActivityAsParentType": true,
           "identifier": "cast",
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
-          "autoConsume": false,
-          "forceConsumeDialog": "default",
-          "forceRollDialog": "default",
-          "forceDamageDialog": "default",
-          "otherActivityAsParentType": true,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -169,15 +161,15 @@
           "postRemoveConditionText": ""
         },
         "otherActivityId": "none",
-        "name": "Cast",
         "otherActivityAsParentType": true
       },
-      "eiTmaDgjRtpT3aUT": {
+      "tqKlIEdglRYdqHrp": {
         "type": "attack",
-        "_id": "eiTmaDgjRtpT3aUT",
+        "name": "Hurl Fire",
+        "_id": "tqKlIEdglRYdqHrp",
         "sort": 0,
         "activation": {
-          "type": "bonus",
+          "type": "action",
           "value": null,
           "override": true,
           "condition": ""
@@ -186,11 +178,11 @@
           "scaling": {
             "allowed": false
           },
-          "spellSlot": false,
+          "spellSlot": true,
           "targets": []
         },
         "description": {
-          "chatFlavor": "Attack with a Star Mote"
+          "chatFlavor": "Hurl the flame at a creature or an object"
         },
         "duration": {
           "units": "inst",
@@ -202,7 +194,7 @@
           "override": true,
           "units": "ft",
           "special": "",
-          "value": "120"
+          "value": "60"
         },
         "target": {
           "template": {
@@ -212,8 +204,8 @@
           },
           "affects": {
             "choice": false,
-            "type": "creatureOrObject",
             "count": "1",
+            "type": "creatureOrObject",
             "special": ""
           },
           "override": true,
@@ -247,15 +239,16 @@
                 "enabled": false,
                 "formula": ""
               },
-              "number": 4,
-              "denomination": 12,
+              "number": 1,
+              "denomination": 8,
               "bonus": "",
               "types": [
-                "radiant"
+                "fire"
               ],
               "scaling": {
-                "mode": "",
-                "number": 1
+                "mode": "whole",
+                "number": 1,
+                "formula": ""
               }
             }
           ]
@@ -280,22 +273,22 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": true,
           "otherActivityCompatible": true,
-          "identifier": "star-mote-attack",
-          "displayActivityName": false,
+          "otherActivityAsParentType": true,
+          "identifier": "hurl-fire",
+          "displayActivityName": true,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
-          "forceConsumeDialog": "never",
-          "autoConsume": false,
-          "forceRollDialog": "default",
-          "forceDamageDialog": "default",
-          "otherActivityAsParentType": true,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -309,171 +302,117 @@
           "postRemoveConditionText": ""
         },
         "otherActivityId": "none",
+        "otherActivityAsParentType": true,
         "attackMode": "",
         "ammunition": "",
         "otherActivityUuid": "",
-        "name": "Star Mote Attack",
-        "otherActivityAsParentType": true,
         "attackRollPerTarget": "default",
         "fumbleThreshold": 1
       }
     },
-    "identifier": "",
+    "identifier": "produce-flame",
     "method": "spell",
-    "prepared": 0
+    "prepared": 2
   },
+  "_id": "sRr2wDcoVTw244Un",
+  "type": "spell",
+  "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
   "effects": [
     {
-      "name": "Crown of Stars",
-      "origin": "Actor.nAFfu59Cgt3Dllwa.Item.oLR9rLuerrXcY6tU",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "Zt1cSbtbDN2tiFbr",
+      "name": "Produce Flame",
+      "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
+      "origin": "Item.sRr2wDcoVTw244Un",
+      "transfer": false,
+      "_id": "91vahiQP1dduvexk",
+      "type": "base",
+      "system": {},
       "changes": [
         {
-          "key": "macro.execute",
-          "mode": 0,
-          "value": "function.MISC.macros.spells.crownOfStars",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-item-showcase-community.crownOfStarsMotes",
-          "mode": 5,
-          "value": "[[2*@spellLevel - 7]]",
+          "key": "ATL.light.bright",
+          "mode": 4,
+          "value": "20",
           "priority": 20
         },
         {
           "key": "ATL.light.dim",
           "mode": 4,
-          "value": "60",
+          "value": "20",
           "priority": 20
         },
         {
-          "key": "ATL.light.alpha",
-          "mode": 0,
-          "value": "0.4",
+          "key": "ATL.light.animation.type",
+          "mode": 5,
+          "value": "torch",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.animation.speed",
+          "mode": 5,
+          "value": "1",
+          "priority": 20
+        },
+        {
+          "key": "ATL.light.animation.intensity",
+          "mode": 5,
+          "value": "1",
           "priority": 20
         },
         {
           "key": "ATL.light.color",
-          "mode": 0,
-          "value": "#ffd79e",
+          "mode": 5,
+          "value": "#a2642a",
           "priority": 20
         },
         {
-          "key": "ATL.light.luminosity",
+          "key": "macro.execute",
           "mode": 0,
-          "value": "0.5",
-          "priority": 20
-        },
-        {
-          "key": "ATL.light.bright",
-          "mode": 4,
-          "value": "30",
+          "value": "function.MISC.macros.spells.produceFlame",
           "priority": 20
         }
       ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
       "description": "",
-      "transfer": false,
+      "tint": "#ffffff",
       "statuses": [],
+      "sort": 0,
       "flags": {
-        "dae": {
-          "disableIncapacitated": false,
-          "selfTarget": false,
-          "selfTargetAlways": true,
-          "dontApply": false,
-          "stackable": "noneName",
-          "showIcon": false,
-          "durationExpression": "",
-          "macroRepeat": "none",
-          "specialDuration": [],
-          "itemsToDelete": [],
-          "enableCondition": "",
-          "disableCondition": ""
-        },
-        "ActiveAuras": {
-          "isAura": false,
-          "aura": "None",
-          "nameOverride": "",
-          "radius": "",
-          "alignment": "",
-          "type": "",
-          "customCheck": "",
-          "ignoreSelf": false,
-          "height": false,
-          "hidden": false,
-          "displayTemp": false,
-          "hostile": false,
-          "onlyOnce": false,
-          "wallsBlock": "system",
-          "statuses": []
-        },
-        "core": {
-          "overlay": false
-        },
         "dnd5e": {
           "riders": {
             "statuses": []
           }
+        },
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": true,
+          "dontApply": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
         }
       },
-      "tint": "#ffffff",
-      "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!1A7im3YcJMO0OtRU.Zt1cSbtbDN2tiFbr"
+      "_key": "!items.effects!sRr2wDcoVTw244Un.91vahiQP1dduvexk"
     }
   ],
+  "folder": null,
   "flags": {
-    "core": {},
-    "dae": {},
-    "rest-recovery": {
-      "data": {
-        "recovery": {
-          "enabled": false
-        }
-      }
-    },
-    "midi-qol": {
-      "fumbleThreshold": null,
-      "rollAttackPerTarget": "default",
-      "removeAttackDamageButtons": "default",
-      "itemCondition": "",
-      "effectCondition": "",
-      "reactionCondition": "",
-      "otherCondition": "",
-      "onUseMacroName": "[postActiveEffects]function.MISC.macros.spells.crownOfStars"
-    },
-    "midiProperties": {
-      "confirmTargets": "default",
-      "autoFailFriendly": false,
-      "autoSaveFriendly": false,
-      "critOther": false,
-      "offHandWeapon": false,
-      "magicdam": false,
-      "magiceffect": false,
-      "noConcentrationCheck": false,
-      "toggleEffect": false,
-      "ignoreTotalCover": false,
-      "idr": false,
-      "idi": false,
-      "idv": false,
-      "ida": false
-    },
-    "dnd5e": {
-      "riders": {
-        "activity": []
-      }
-    },
+    "dnd5e": {},
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -486,7 +425,10 @@
       "noAutotarget": false,
       "addTokenSize": false,
       "attachToken": "na"
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.spells.produceFlame"
     }
   },
-  "_key": "!items!1A7im3YcJMO0OtRU"
+  "_key": "!items!sRr2wDcoVTw244Un"
 }

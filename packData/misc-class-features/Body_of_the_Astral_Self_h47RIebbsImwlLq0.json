@@ -41,6 +41,12 @@
           "mode": 5,
           "value": "1",
           "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.bodyOfTheAstralSelf.displayBonusRolls",
+          "mode": 0,
+          "value": "false",
+          "priority": 20
         }
       ],
       "disabled": false,
@@ -376,7 +382,13 @@
       "wallRestriction": "globalDefault",
       "snapCenter": true,
       "snapCorner": true,
-      "snapSideMidpoint": true
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
     },
     "midi-qol": {
       "rollAttackPerTarget": "default",

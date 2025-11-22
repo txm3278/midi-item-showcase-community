@@ -95,7 +95,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;pre=true;post=true;canSee=true",
+          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;post=true;canSee=true",
           "priority": 20
         }
       ],
@@ -112,7 +112,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -129,6 +130,14 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
@@ -137,6 +146,63 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!GJMX3U08gcJqvkeO.ca75UjEzNsyVf6kH"
+    },
+    {
+      "name": "Spirit Shield - Damage Prevention",
+      "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
+      "origin": "Item.HX2MBqMv5aADOVg0",
+      "transfer": false,
+      "_id": "4t0ysYqzVQdEPX1K",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.dae.spiritShieldPreventedDmg",
+          "mode": 5,
+          "value": "@utilityRollTotal",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": 1,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "isHit"
+          ]
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!GJMX3U08gcJqvkeO.4t0ysYqzVQdEPX1K"
     }
   ],
   "folder": "Nx5JXfL2Hcdv9LBX",
@@ -231,12 +297,7 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     },
-    "dnd5e": {
-      "riders": {
-        "activity": [],
-        "effect": []
-      }
-    },
+    "dnd5e": {},
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
@@ -353,7 +414,11 @@
           "concentration": false,
           "override": false
         },
-        "effects": [],
+        "effects": [
+          {
+            "_id": "4t0ysYqzVQdEPX1K"
+          }
+        ],
         "range": {
           "override": false,
           "units": "ft",
@@ -399,14 +464,23 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
-          "toggleEffect": false
+          "toggleEffect": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "",
         "macroData": {
@@ -417,7 +491,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -425,13 +500,15 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "spirit-shield",
     "enchant": {},
     "prerequisites": {
       "level": 6,
+      "items": [],
       "repeatable": false
     },
     "advancement": []
