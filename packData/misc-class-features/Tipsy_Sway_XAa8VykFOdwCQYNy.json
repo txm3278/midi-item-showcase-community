@@ -1,0 +1,244 @@
+{
+  "_id": "XAa8VykFOdwCQYNy",
+  "name": "Tipsy Sway",
+  "type": "feat",
+  "effects": [
+    {
+      "name": "Tipsy Sway",
+      "img": "icons/magic/air/wind-tornado-spiral-pink-purple.webp",
+      "origin": "Item.XAa8VykFOdwCQYNy",
+      "_id": "FLWegaavINzSF8LK",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.tipsySway,tpr.isMissed|onlySelf=true;post=true",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!XAa8VykFOdwCQYNy.FLWegaavINzSF8LK"
+    }
+  ],
+  "system": {
+    "activities": {
+      "utilityTiSwclNe0": {
+        "name": "Redirect Attack",
+        "type": "utility",
+        "_id": "utilityTiSwclNe0",
+        "sort": 0,
+        "activation": {
+          "type": "reaction",
+          "value": 1,
+          "condition": "",
+          "override": false
+        },
+        "consumption": {
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "feat:ki",
+              "scaling": {}
+            }
+          ],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {
+          "chatFlavor": "Redirect attack to nearby creature"
+        },
+        "duration": {
+          "units": "inst",
+          "special": "",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "value": "5",
+          "units": "ft",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "prompt": true,
+          "affects": {
+            "count": "1",
+            "type": "creature",
+            "choice": true,
+            "special": ""
+          },
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "name": "",
+          "formula": ""
+        },
+        "useConditionText": "reaction === \"tpr.isMissed\" && targetUuid === tpr?.tokenUuid && tpr?.isMeleeAttack && findNearby(-1, targetUuid, 5, { isSeen: true, includeIncapacitated: true }).some(t => t.document.uuid !== tokenUuid)",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "confirmTargets": "default",
+          "automationOnly": true,
+          "identifier": "redirect-attack",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "otherActivityCompatible": false,
+          "otherActivityAsParentType": true,
+          "displayActivityName": true,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
+      }
+    },
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "advancement": [],
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that adds a third party reaction effect. It is also a reaction item that gets triggered \nby the third party reaction effect when appropriate. When activated, it prompts a dialog to choose a new target on which the attack \nwill be redirected.</p></details>",
+      "chat": ""
+    },
+    "identifier": "tipsy-sway",
+    "source": {
+      "book": "XGtE",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "items": [],
+      "level": 6,
+      "repeatable": false
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "advancementOrigin": "Qc7lUonjK4zfu0kh",
+      "riders": {
+        "activity": []
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    },
+    "midi-qol": {
+      "onUseMacroName": "[preTargeting]function.MISC.macros.classFeatures.tipsySway,[postActiveEffects]function.MISC.macros.classFeatures.tipsySway"
+    }
+  },
+  "img": "icons/magic/air/wind-tornado-spiral-pink-purple.webp",
+  "folder": "b8wtjklz1PO88T7g",
+  "_key": "!items!XAa8VykFOdwCQYNy"
+}

@@ -14,6 +14,10 @@ import { deflectMissiles } from './Monk/deflectMissiles.js';
 import { armsOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/armsOfTheAstralSelf.js';
 import { awakenedAstralSelf } from './Monk/WayOfTheAstralSelf/awakenedAstralSelf.js';
 import { bodyOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/bodyOfTheAstralSelf.js';
+import { drunkardsLuck } from './Monk/WayOfTheDrunkenMaster/drunkardsLuck.js';
+import { drunkenTechnique } from './Monk/WayOfTheDrunkenMaster/drunkenTechnique.js';
+import { intoxicatedFrenzy } from './Monk/WayOfTheDrunkenMaster/intoxicatedFrenzy.js';
+import { tipsySway } from './Monk/WayOfTheDrunkenMaster/tipsySway.js';
 import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/channelDivinityRebukeTheViolent.js';
 import { divineAllegiance } from './Paladin/OathOfTheCrown/divineAllegiance.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
@@ -38,6 +42,10 @@ export let classFeatures = {
   armsOfTheAstralSelf,
   awakenedAstralSelf,
   bodyOfTheAstralSelf,
+  drunkardsLuck,
+  drunkenTechnique,
+  intoxicatedFrenzy,
+  tipsySway,
   channelDivinityRebukeTheViolent,
   divineAllegiance,
   channelDivinityVowOfEnmity,

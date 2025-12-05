@@ -1,0 +1,308 @@
+{
+  "_id": "8t2VVH2GV0qZWRsx",
+  "name": "Drunkard's Luck",
+  "type": "feat",
+  "effects": [
+    {
+      "name": "Drunkard's Luck",
+      "img": "icons/equipment/neck/necklace-charm-clover.webp",
+      "origin": "Item.8t2VVH2GV0qZWRsx",
+      "_id": "DG9IM97FDu9u4ToI",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.drunkardsLuck,preTargetSave",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.drunkardsLuck,preAttackRoll",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!8t2VVH2GV0qZWRsx.DG9IM97FDu9u4ToI"
+    },
+    {
+      "name": "Drunkard's Luck - Cancel Disadvantage",
+      "img": "icons/equipment/neck/necklace-charm-clover.webp",
+      "origin": "Item.8t2VVH2GV0qZWRsx",
+      "_id": "eGGfnTLZbbVHBErr",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.ability.all",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.advantage.attack.all",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": 1,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          },
+          "dependents": []
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "isCheck",
+            "isSave",
+            "1Attack"
+          ],
+          "enableCondition": "",
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!8t2VVH2GV0qZWRsx.eGGfnTLZbbVHBErr"
+    }
+  ],
+  "system": {
+    "activities": {
+      "HRbgUsEmpP1eCIrO": {
+        "type": "utility",
+        "_id": "HRbgUsEmpP1eCIrO",
+        "sort": 0,
+        "activation": {
+          "type": "reaction",
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "2",
+              "target": "feat:ki",
+              "scaling": {}
+            }
+          ]
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [
+          {
+            "_id": "eGGfnTLZbbVHBErr"
+          }
+        ],
+        "range": {
+          "units": "self",
+          "override": false,
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": "self",
+            "special": ""
+          },
+          "override": false,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [],
+          "max": ""
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "name": "",
+          "formula": ""
+        },
+        "useConditionText": "reaction ===  undefined || reaction === \"preTargetSave\" || (reaction === \"preAttack\" && workflow.actorUuid === actorUuid)",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": false,
+          "otherActivityAsParentType": true,
+          "identifier": "cancel-disadvantage",
+          "displayActivityName": true,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true,
+        "name": "Cancel Disadvantage"
+      }
+    },
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "advancement": [],
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect to be called at appropriate phases. It is also a reaction activity \nthat gets triggered when appropriate. When activated it adds an AE that cancels disadvantage on attack, save and check rolls.</p></details>",
+      "chat": "<div class=\"ddb\">\nWhen you make an ability check, an attack roll, or a saving throw and have disadvantage on the roll, you can spend 2 ki points to cancel the disadvantage for that roll.\n</div>"
+    },
+    "identifier": "drunkards-luck",
+    "source": {
+      "book": "XGtE",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "items": [],
+      "level": 11,
+      "repeatable": false
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "class",
+      "subtype": ""
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "advancementOrigin": "Qc7lUonjK4zfu0kh",
+      "riders": {
+        "activity": []
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    }
+  },
+  "img": "icons/equipment/neck/necklace-charm-clover.webp",
+  "folder": "b8wtjklz1PO88T7g",
+  "_key": "!items!8t2VVH2GV0qZWRsx"
+}
