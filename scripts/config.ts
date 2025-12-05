@@ -174,6 +174,18 @@ export function setConfig() {
           version: "2.0.3",
           authors: ["Elwin"],
         },
+        "Drunkard's Luck": {
+          name: "Drunkard's Luck",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
+        "Drunken Technique": {
+          name: "Drunken Technique",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Eversmoking Bottle": {
           name: "Eversmoking Bottle",
           type: "Item",
@@ -268,6 +280,12 @@ export function setConfig() {
           name: "Guardian Emblem",
           type: "Item",
           version: "4.2.1",
+          authors: ["Elwin"],
+        },
+        "Intoxicated Frenzy": {
+          name: "Intoxicated Frenzy",
+          type: "Class Feature",
+          version: "1.0.0",
           authors: ["Elwin"],
         },
         "Moon-Touched Greatsword": {
@@ -419,6 +437,12 @@ export function setConfig() {
           type: "Spell",
           version: "2.0.1",
           authors: ["Elwin", "Moto Moto"],
+        },
+        "Tipsy Sway": {
+          name: "Tipsy Sway",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
         },
         "Tomb of Levistus": {
           name: "Tomb of Levistus",
