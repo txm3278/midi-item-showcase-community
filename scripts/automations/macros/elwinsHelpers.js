@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.8
+// v3.5.9
 // Dependencies:
 //  - MidiQOL
 //
@@ -59,6 +59,8 @@
 // - elwinHelpers.detachFromTemplate
 // - elwinHelpers.attachAmbientLightToTemplate
 // - elwinHelpers.getEffectiveDamage
+// - elwinHelpers.getReactionFlavor
+// - elwinHelpers.getReactionSetting
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -83,6 +85,7 @@
 //     - tpr.isPostCheckSave: this is called in the "midi-qol.postCheckSaves", which is called after a saving throw check is asked from the target but before it is displayed.
 //   - thirdPartyReactionOptions: The options consist of a list of parameter/value pairs separated by `;`. The parameter and its value is separated by a `=`.
 //     - ignoreSelf: true or false to indicate if the owner being a target must not trigger the reaction. [default false]
+//     - onlySelf: true or false to indicate if only the owner being a target must trigger the reaction or not. [default false]
 //     - triggerSource: target or attacker, determines to whom the canSee option, the item’s range and target applies. [default target]
 //     - canSee: true or false, if the trigger source must be seen or not by the owner. [default false]
 //     - pre: true or false, indicates if a pre reaction macro should be called, its targetOnUse value will be the reaction trigger phase with a `.pre` suffix,
@@ -136,7 +139,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.8";
+  const VERSION = "3.5.9";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -149,6 +152,7 @@ export function runElwinsHelpers() {
   const TPR_OPTIONS = [
     "triggerSource",
     "ignoreSelf",
+    "onlySelf",
     "canSee",
     "pre",
     "post",
@@ -164,6 +168,7 @@ export function runElwinsHelpers() {
    * @typedef {object} TprOptions
    * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
    * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
+   * @property {boolean} onlySelf - Flag to indicate if only the owner beeing a target, can trigger the reaction or not.
    * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
    * @property {boolean} pre - Flag to indicate if a pre macro most be called before prompting for reactions, only used if reactionNone is false.
    * @property {boolean} post - Flag to indicate if a post macro most be called after prompting for reactions, only used if reactionNone is false.
@@ -195,6 +200,7 @@ export function runElwinsHelpers() {
    * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
    * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
    * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
+   * @property {boolean} onlySelf - Flag to indicate if only the owner beeing a target, can trigger the reaction or not.
    * @property {boolean} preMacro - Flag to indicate if a pre macro most be called before prompting for reactions, only used if reactionNone is false.
    * @property {boolean} postMacro - Flag to indicate if a post macro most be called after prompting for reactions, only used if reactionNone is false.
    * @property {boolean} reactionNone - Indicates that no reaction activity is associated and only a macro most be called.
@@ -297,6 +303,8 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.detachFromTemplate", detachFromTemplate);
     exportIdentifier("elwinHelpers.attachAmbientLightToTemplate", attachAmbientLightToTemplate);
     exportIdentifier("elwinHelpers.getEffectiveDamage", getEffectiveDamage);
+    exportIdentifier("elwinHelpers.getReactionFlavor", getReactionFlavor);
+    exportIdentifier("elwinHelpers.getReactionSetting", getReactionSetting);
 
     // Note: classes need to be exported after they are declared...
 
@@ -894,63 +902,90 @@ export function runElwinsHelpers() {
   function getReactionFlavor(data) {
     const { user, reactionTriggerName, triggerToken, triggerItem, reactionToken, roll, showReactionAttackRoll } = data;
 
+    const reactionOnSelf = triggerToken.document.uuid === reactionToken.document.uuid;
     let reactionFlavor = "Unknow reaction trigger!";
     switch (reactionTriggerName) {
       case "isPreAttacked":
       case "preAttack":
-        reactionFlavor = "{actorName} is about to be attacked by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is about to be attacked by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isAttacked":
-        reactionFlavor = "{actorName} is attacked by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is attacked by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isPreDamaged":
-        reactionFlavor = "{actorName} is about to be damaged by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is about to be damaged by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isDamaged":
       case "preTargetDamageApplication":
-        reactionFlavor = "{actorName} is damaged by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is damaged by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isHealed":
-        reactionFlavor = "{actorName} is healed by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is healed by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isTargeted":
       case "prePreambleComplete":
-        reactionFlavor = "{actorName} is targeted by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is targeted by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isMissed":
-        reactionFlavor = "{actorName} is missed by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is missed by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isCriticalHit":
-        reactionFlavor = "{actorName} is critically hit by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is critically hit by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isFumble":
-        reactionFlavor =
-          "{actorName} is attacked by {itemName} which fumbled and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is attacked by {itemName} which fumbled and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "preTargetSave":
       case "isAboutToSave":
       case "isPreCheckSave":
       case "isPostCheckSave":
-        reactionFlavor = "{actorName} must save because of {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} must save because of {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isSaveSuccess":
-        reactionFlavor =
-          "{actorName} succeeded on a save because of {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} succeeded on a save because of {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isSaveFailure":
-        reactionFlavor =
-          "{actorName} failed on a save because of {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} failed on a save because of {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isMoved":
-        reactionFlavor = "{actorName} is moved and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is moved and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "postTargetEffectApplication":
-        reactionFlavor =
-          "{actorName} has been applied effects because of {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} has been applied effects because of {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
       case "isHit":
       default:
-        reactionFlavor = "{actorName} is hit by {itemName} and {reactionActorName} can use a reaction";
+        reactionFlavor = `{actorName} is hit by {itemName} and ${
+          reactionOnSelf ? "they" : "{reactionActorName}"
+        } can use a reaction`;
         break;
     }
     reactionFlavor = game.i18n.format(reactionFlavor, {
@@ -1074,14 +1109,6 @@ export function runElwinsHelpers() {
         console.warn(`${MACRO_NAME} | Actor is incapacitated.`, reactionActor);
       }
       return;
-    }
-
-    // Copied from midi-qol because this utility function is not exposed
-    function getReactionSetting(user) {
-      if (!user) {
-        return "none";
-      }
-      return user.isGM ? MidiQOL.configSettings().gmDoReactions : MidiQOL.configSettings().doReactions;
     }
 
     // Check and terminate early for this actor, but only if there aren't any reactionNone
@@ -1248,10 +1275,16 @@ export function runElwinsHelpers() {
   ) {
     const self = reactionToken.document?.uuid === target.document?.uuid;
 
-    // Check self condition
+    // Check self conditions
     if (reactionData.ignoreSelf && self) {
       if (debug) {
         console.warn(`${MACRO_NAME} | canTriggerReaction- ${reactionData.item.name}: self not allowed.`);
+      }
+      return false;
+    }
+    if (reactionData.onlySelf && !self) {
+      if (debug) {
+        console.warn(`${MACRO_NAME} | canTriggerReaction- ${reactionData.item.name}: only self allowed.`);
       }
       return false;
     }
@@ -1405,6 +1438,20 @@ export function runElwinsHelpers() {
       }
     }
     return true;
+  }
+
+  /**
+   * Returns the reaction setting for the specified user.
+   * <b>Note:</b> Copied from midi-qol because this utility function is not exposed.
+   *
+   * @param {User} user - The user for which the get the setting.
+   * @returns {string} the reaction setting for the specified user.
+   */
+  function getReactionSetting(user) {
+    if (!user) {
+      return "none";
+    }
+    return user.isGM ? MidiQOL.configSettings().gmDoReactions : MidiQOL.configSettings().doReactions;
   }
 
   /**
@@ -4492,7 +4539,7 @@ export function runElwinsHelpers() {
     if (MidiQOL.configSettings().usePlayerPortrait && token.actor?.type === "character") {
       img = token.actor?.img ?? token.document?.texture.src;
     }
-    if (VideoHelper.hasVideoExtension(img ?? "")) {
+    if (foundry.helpers.media.VideoHelper.hasVideoExtension(img ?? "")) {
       img = await game.video.createThumbnail(img ?? "", { width: 100, height: 100 });
     }
     return img;
