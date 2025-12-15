@@ -129,10 +129,15 @@ export async function accursedSpecter({
         return;
       }
       
-      const updates = [{ actor: {
-        system: { attributes: { hp: { temp: tempHP }}},
-        effects: attackBonusEffect ? [attackBonusEffect] : []
-      }}];
+      const tokenData = { disposition: token.document.disposition };
+      const updates = [{ 
+        actor: {
+          system: { attributes: { hp: { temp: tempHP }}},
+          effects: attackBonusEffect ? [attackBonusEffect] : [],
+          prototypeToken: tokenData
+        },
+        token: tokenData
+      }];
       chrisPremades.Summons.spawn(summon, updates, scope.macroItem, token, {
         range: CPR_RANGE,
         animation: CPR_ANIMATION
