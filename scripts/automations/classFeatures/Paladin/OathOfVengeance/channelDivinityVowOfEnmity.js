@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v3.2.0
+// v3.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -34,10 +34,10 @@ export async function channelDivinityVowOfEnmity({
   workflow,
   options,
 }) {
-  const DEFAULT_ITEM_NAME = 'Channel Divinity: Vow of Enmity';
+  const DEFAULT_ITEM_NAME = "Channel Divinity: Vow of Enmity";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  const dependencies = ["dae", "times-up", "midi-qol"];
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -67,10 +67,10 @@ export async function channelDivinityVowOfEnmity({
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRoll") {
     if (!workflow.targets?.size) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No targets.`);
@@ -78,7 +78,7 @@ export async function channelDivinityVowOfEnmity({
       return;
     }
     const allTargetsMarked = workflow.targets.every((t) =>
-      t.actor?.appliedEffects.some((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid))
+      t.actor?.appliedEffects.some((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid)),
     );
     if (!allTargetsMarked) {
       if (debug) {
@@ -90,7 +90,7 @@ export async function channelDivinityVowOfEnmity({
     workflow.advantage = true;
     workflow.attackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
     workflow.advReminderAttackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     // Handles Utter Vow or Transfer Vow activities
     if (!workflow.effectTargets?.size) {
       if (debug) {
@@ -101,7 +101,7 @@ export async function channelDivinityVowOfEnmity({
 
     const tokenTarget = workflow.effectTargets.first();
     const appliedEffect = tokenTarget.actor.appliedEffects.find(
-      (ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid)
+      (ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid),
     );
     if (!appliedEffect) {
       if (debug) {
@@ -110,15 +110,15 @@ export async function channelDivinityVowOfEnmity({
       return;
     }
     const rules = elwinHelpers.getRules(scope.macroItem);
-    if (rules === 'modern') {
+    if (rules === "modern") {
       // Make sure transfer vow is not visible
       let transferVow;
-      if (workflow.activity?.identifier === 'transfer-vow') {
+      if (workflow.activity?.identifier === "transfer-vow") {
         transferVow = workflow.activity;
       } else {
-        transferVow = workflow.item.system.activities?.find((a) => a.identifier === 'transfer-vow');
+        transferVow = workflow.item.system.activities?.find((a) => a.identifier === "transfer-vow");
       }
-      await transferVow?.update({ 'midiProperties.automationOnly': true });
+      await transferVow?.update({ "midiProperties.automationOnly": true });
     }
 
     // Find AE on self to add dependency
@@ -129,14 +129,15 @@ export async function channelDivinityVowOfEnmity({
       }
       return;
     }
-    await selfEffect.addDependent(appliedEffect);
-    if (rules !== 'modern') {
+    // Make applied effect dependent on self effect
+    MidiQOL.addDependent(selfEffect, appliedEffect);
+    if (rules !== "modern") {
       // Note: in modern, effect does not end if target reaches 0 HP, only after 1 min or re used
-      await MidiQOL.addDependent(appliedEffect, selfEffect);
+      MidiQOL.addDependent(appliedEffect, selfEffect);
     }
-  } else if (args[0] === 'off') {
+  } else if (args[0] === "off") {
     const transferVow = (scope.macroItem ?? scope.macroActivity?.item)?.system.activities?.find(
-      (a) => a.identifier === 'transfer-vow'
+      (a) => a.identifier === "transfer-vow",
     );
     if (!transferVow) {
       console.warn(`${scope.macroItem.name} | Missing transfer vow activity`, scope.macroItem);
@@ -145,19 +146,19 @@ export async function channelDivinityVowOfEnmity({
     if ((scope.macroItem?.actor?.uuid ?? scope.macroActivity?.item?.actor?.uuid) === actor?.uuid) {
       // Expiry on owner
       // Make sure the Transfer Vow activity is not visible
-      if (!foundry.utils.getProperty(transferVow, 'midiProperties.automationOnly')) {
-        await transferVow.update({ 'midiProperties.automationOnly': true });
+      if (!foundry.utils.getProperty(transferVow, "midiProperties.automationOnly")) {
+        await transferVow.update({ "midiProperties.automationOnly": true });
       }
       return;
     }
     // Expiry on Target
-    if (foundry.utils.getProperty(scope.lastArgValue, 'expiry-reason') !== 'midi-qol:zeroHP') {
+    if (foundry.utils.getProperty(scope.lastArgValue, "expiry-reason") !== "midi-qol:zeroHP") {
       // Not expired due to zero HP
       return;
     }
 
     // Allow using transfer vow
-    await transferVow.update({ 'midiProperties.automationOnly': false });
+    await transferVow.update({ "midiProperties.automationOnly": false });
 
     // Add chat message saying it is possible to transfer vow
     const sourceActor = scope.macroItem.actor;
@@ -166,13 +167,13 @@ export async function channelDivinityVowOfEnmity({
       {
         relativeTo: sourceActor,
         rollData: scope.macroItem.getRollData(),
-      }
+      },
     );
     await ChatMessage.create({
       type: CONST.CHAT_MESSAGE_STYLES.OTHER,
       content: message,
       speaker: ChatMessage.getSpeaker({ actor: sourceActor, token: MidiQOL.getTokenForActor(sourceActor) }),
-      whisper: ChatMessage.getWhisperRecipients('GM').map((u) => u.id),
+      whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
     });
   }
 }

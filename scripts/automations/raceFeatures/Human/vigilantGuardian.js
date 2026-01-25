@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Mark of Sentinel Human
 // when a creature within range is hit to allow him to switch places with the target.
-// v4.1.0
+// v4.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[tpr.isHit]
@@ -26,15 +26,15 @@
 
 export async function vigilantGuardian({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Vigilant Guardian';
+  const DEFAULT_ITEM_NAME = "Vigilant Guardian";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.3.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -43,13 +43,13 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
     return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isHit.post') {
+  } else if (args[0].tag === "TargetOnUse" && args[0].macroPass === "tpr.isHit.post") {
     if (!token) {
       // No target
       if (debug) {
@@ -71,9 +71,9 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
    */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
     if (
-      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isHit' ||
+      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== "tpr.isHit" ||
       !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.some((u) =>
-        sourceItem.system.activities?.some((a) => a.uuid === u)
+        sourceItem.system.activities?.some((a) => a.uuid === u),
       )
     ) {
       // Reaction should only be triggered by third party reaction effect
@@ -95,7 +95,7 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
    */
   async function handleTargetOnUseIsHitPost(currentWorkflow, targetToken, sourceItem, thirdPartyReactionResult) {
     if (debug) {
-      console.warn(DEFAULT_ITEM_NAME + ' | reaction result', { thirdPartyReactionResult });
+      console.warn(DEFAULT_ITEM_NAME + " | reaction result", { thirdPartyReactionResult });
     }
     if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
@@ -151,18 +151,18 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
       hitDisplay.attackTotal = currentWorkflow.attackTotal;
 
       // We just display hits or criticals because the previous numeric values are not relevant anymore
-      if (game.user?.isGM && ['hitDamage', 'all'].includes(configSettings.hideRollDetails)) {
-        hitDisplay.hitSymbol = 'fa-tick';
+      if (game.user?.isGM && ["hitDamage", "all"].includes(configSettings.hideRollDetails)) {
+        hitDisplay.hitSymbol = "fa-tick";
       } else if (currentWorkflow.isCritical) {
-        hitDisplay.hitSymbol = 'fa-check-double';
+        hitDisplay.hitSymbol = "fa-check-double";
       } else {
-        hitDisplay.hitSymbol = 'fa-check';
+        hitDisplay.hitSymbol = "fa-check";
       }
       if (currentWorkflow.isCritical) {
-        hitDisplay.hitString = game.i18n.localize('midi-qol.criticals');
-        hitDisplay.hitResultNumeric = '++';
+        hitDisplay.hitString = game.i18n.localize("midi-qol.criticals");
+        hitDisplay.hitResultNumeric = "++";
       } else {
-        hitDisplay.hitString = game.i18n.localize('midi-qol.hits');
+        hitDisplay.hitString = game.i18n.localize("midi-qol.hits");
         hitDisplay.hitResultNumeric = `${hitDisplay.attackTotal}/${hitDisplay.attackTotal - hitDisplay.ac}`;
       }
     }
@@ -181,20 +181,15 @@ export async function vigilantGuardian({ speaker, actor, token, character, item,
 
     // Update current target selection
     const targetIds = currentWorkflow.targets.map((t) => t.id);
-    if (game.release.generation > 12) {
-      canvas.tokens?.setTargets(targetIds);
-    } else {
-      game.user?.updateTokenTargets(targetIds);
-      game.user?.broadcastActivity({ targets: targetIds });
-    }
+    canvas.tokens?.setTargets(targetIds);
 
     // Add info about target switch
-    const targetDivs = elwinHelpers.getTargetDivs(targetToken, 'The hit target <strong>${tokenName}</strong>');
+    const targetDivs = elwinHelpers.getTargetDivs(targetToken, "The hit target <strong>${tokenName}</strong>");
     const newTargetDivs = elwinHelpers.getTargetDivs(
       sourceToken,
-      `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
+      `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`,
     );
     const infoMsg = `${targetDivs}${newTargetDivs}`;
-    await elwinHelpers.insertTextIntoMidiItemCard('beforeHitsDisplay', currentWorkflow, infoMsg);
+    await elwinHelpers.insertTextIntoMidiItemCard("beforeHitsDisplay", currentWorkflow, infoMsg);
   }
 }

@@ -2,7 +2,7 @@
 // Monk - Way of the Drunken Master - Drunkard's Luck
 // Adds an active effect to trigger on appropriate workflow phases to prompt a reaction allowing
 // cancelling disadvantage on attack, save and check rolls.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -33,9 +33,7 @@ const DEFAULT_ITEM_NAME = "Drunkard's Luck";
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.8")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -56,7 +54,7 @@ export async function drunkardsLuck({ speaker, actor, token, character, item, ar
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -92,7 +90,7 @@ async function handleOnUsePreAttackRoll(actor, token, workflow, sourceItem, debu
     {
       itemName: workflow.item?.name ?? "unknown",
       actorName: MidiQOL.getTokenPlayerNameForUser(user, token, user?.isGM),
-    }
+    },
   );
 
   const result = await callReaction(token, workflow, sourceItem, user, reactionFlavor);
@@ -103,6 +101,18 @@ async function handleOnUsePreAttackRoll(actor, token, workflow, sourceItem, debu
   }
   // Force recomputation of adv/disadv
   workflow.needsAttackAdvantageCheck = true;
+  // TODO PGS remove when midi fixes its bug
+  elwinHelpers.registerWorkflowHook(
+    workflow,
+    "dnd5e.preRollAttack",
+    (rollConfig, dialogConfig, messageConfig) => {
+      console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preRollAttack`, { rollConfig, dialogConfig, messageConfig });
+      if (rollConfig.workflow?.noDisadvantage) {
+        rollConfig.disadvantage = false;
+      }
+    },
+    "drunkards-luck",
+  );
 }
 
 /**

@@ -18,6 +18,12 @@
           "priority": 20
         },
         {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.intoxicatedFrenzy,flurryOfBlowsConditionalExtraAttacks",
+          "priority": 20
+        },
+        {
           "key": "macro.execute",
           "mode": 0,
           "value": "function.MISC.macros.classFeatures.intoxicatedFrenzy",

@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v4.1.1
+// v4.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[isAttacked],[tpr.isTargeted]
@@ -33,10 +33,8 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
   const DEFAULT_ITEM_NAME = "Arrow-Catching Shield";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.3.0")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -49,7 +47,7 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -119,18 +117,13 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
     currentWorkflow.targets.delete(targetToken);
     currentWorkflow.targets.add(sourceToken);
     const targetIds = currentWorkflow.targets.map((t) => t.id);
-    if (game.release.generation > 12) {
-      canvas.tokens?.setTargets(targetIds);
-    } else {
-      game.user?.updateTokenTargets(targetIds);
-      game.user?.broadcastActivity({ targets: targetIds });
-    }
+    canvas.tokens?.setTargets(targetIds);
 
     // Add info about target switch
     const targetDivs = elwinHelpers.getTargetDivs(targetToken, "The target <strong>${tokenName}</strong>");
     const newTargetDivs = elwinHelpers.getTargetDivs(
       sourceToken,
-      `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
+      `was switched to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`,
     );
     const infoMsg = `${targetDivs}${newTargetDivs}`;
     await elwinHelpers.insertTextIntoMidiItemCard("beforeHitsDisplay", currentWorkflow, infoMsg);

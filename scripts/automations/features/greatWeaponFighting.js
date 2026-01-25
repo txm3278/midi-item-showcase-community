@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Adds a dice modifier to the base weapon damage when the conditions are met.
-// v1.2.0
+// v1.3.0
 // Author: Elwin#1410 based on WurstKorn version
 // Dependencies:
 //  - DAE
@@ -14,23 +14,23 @@
 // Description:
 // In the preDamageRollConfig phase of any activity (in owner's workflow):
 //   If the activity is a weapon attack from a melee weapon having the two-handed or versatile property and
-//   the attack mode is two handed, calls elwinHelpers.damageConfig.updateCustom to add a hook on dnd5e.preRollDamageV2
+//   the attack mode is two handed, calls elwinHelpers.damageConfig.updateCustom to add a hook on dnd5e.preRollDamage
 //   that adds dice modifier. The modifier is added to all base weapon dice rolls as well as those added by enchantments
 //   to reroll 1 and 2 or min 3 depending on the rules version.
 // ###################################################################################################
 
 export async function greatWeaponFighting({ speaker, actor, token, character, item, args, scope, workflow, options }) {
-  const DEFAULT_ITEM_NAME = 'Great Weapon Fighting';
-  const MODULE_ID = 'midi-item-showcase-community';
+  const DEFAULT_ITEM_NAME = "Great Weapon Fighting";
+  const MODULE_ID = "midi-item-showcase-community";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.2')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.2")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
 
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -39,23 +39,23 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
     if (
-      scope.rolledItem.type !== 'weapon' ||
-      !['simpleM', 'martialM'].includes(scope.rolledItem.system.type?.value) ||
+      scope.rolledItem.type !== "weapon" ||
+      !["simpleM", "martialM"].includes(scope.rolledItem.system.type?.value) ||
       !scope.rolledActivity?.hasAttack ||
-      scope.rolledActivity?.attack.type?.classification !== 'weapon' ||
-      !(scope.rolledItem.system.properties?.has('two') || scope.rolledItem.system.properties?.has('ver')) ||
-      workflow.attackMode !== 'twoHanded'
+      scope.rolledActivity?.attack.type?.classification !== "weapon" ||
+      !(scope.rolledItem.system.properties?.has("two") || scope.rolledItem.system.properties?.has("ver")) ||
+      workflow.attackMode !== "twoHanded"
     ) {
       // Not an attack from a melee weapon having the versatile or two handed property
       return;
     }
-    const modifier = elwinHelpers.getRules(scope.macroItem) === 'modern' ? 'min3' : 'r<=2';
-    // TODO migrate to after postDamageRollConfig? so it applies to all bonuses added in dnd5e.preRollDamageV2...
+    const modifier = elwinHelpers.getRules(scope.macroItem) === "modern" ? "min3" : "r<=2";
+    // TODO migrate to after postDamageRollConfig? so it applies to all bonuses added in dnd5e.preRollDamage...
     elwinHelpers.damageConfig.updateCustom(
       scope,
       workflow,
@@ -71,7 +71,7 @@ export async function greatWeaponFighting({ speaker, actor, token, character, it
           }
           index++;
         }
-      }
+      },
     );
   }
 

@@ -1,12 +1,12 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Arms of the Astral Self
 // Summons spectral hands and adds a new attack to the Unarmed Strike weapon to use these arms instead.
-// v2.2.0
+// v2.3.0
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
 //  - Times Up
-//  - MidiQOL "OnUseMacro" ItemMacro[preItemRoll],[preAoETargetConfirmation],[postActiveEffects]
+//  - MidiQOL "OnUseMacro" ItemMacro[preAoETargetConfirmation],[postActiveEffects]
 //  - Elwin Helpers world script
 //
 // Usage:
@@ -27,7 +27,10 @@
 
 // Default name of the feature
 const DEFAULT_ITEM_NAME = "Arms of the Astral Self";
+const MODULE_ID = "midi-item-showcase-community";
 const VISAGE_OF_ASTRAL_SELF_IDENT = "visage-of-the-astral-self";
+const ATTACK_WITH_SPECTRAL_ARMS_IDENT = "attack-with-spectral-arms";
+const UNARMED_STRIKE_IDENT = "unarmed-strike";
 
 /**
  * Validates if the required dependencies are met.
@@ -57,7 +60,7 @@ export async function armsOfTheAstralSelf({ speaker, actor, token, character, it
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -69,10 +72,15 @@ export async function armsOfTheAstralSelf({ speaker, actor, token, character, it
       } else if (args[0].macroPass === "postActiveEffects") {
         await handleOnUsePostActiveEffects(actor, workflow, scope, debug);
       }
-    } else if (scope.rolledActivity?.identifier === "attack-with-spectral-arms")
-      if (args[0].macroPass === "preItemRoll") {
-        handleOnUsePreItemRoll(token, workflow);
-      }
+    }
+  } else if (args[0] === "each") {
+    if (scope.lastArgValue?.turn === "startTurn") {
+      // Extended reach is active on token turn
+      await scope.effect.update({ disabled: false });
+    } else if (scope.lastArgValue?.turn === "endTurn") {
+      // Extended reach is only active on token turn
+      await scope.effect.update({ disabled: true });
+    }
   }
 }
 
@@ -89,17 +97,12 @@ function handleOnUsePreAoETargetConfirmation(token) {
   if (!game.user) {
     return;
   }
-  if (game.release.generation > 12) {
-    canvas.tokens?.setTargets(targetIds);
-  } else {
-    game.user?.updateTokenTargets(targetIds);
-    game.user?.broadcastActivity({ targets: targetIds });
-  }
+  canvas.tokens?.setTargets(targetIds);
 }
 
 /**
  * Handles the on use post active effects phase of the Arms of the Astral Self of the Summon activity.
- * It applies an enchantement to the Unarmed Strike to add a new attack allowing to use the Spectral Arms instead.
+ * It applies an enchantment to the Unarmed Strike to add a new attack allowing to use the Spectral Arms instead.
  *
  * @param {Actor5e} actor - The owner of the Arms of the Astral Self item.
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
@@ -113,43 +116,97 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
     return;
   }
 
-  const unarmedStrike = actor.itemTypes.weapon.find((a) => a.identifier === "unarmed-strike");
+  const unarmedStrike = actor.itemTypes.weapon.find((a) => a.identifier === UNARMED_STRIKE_IDENT);
   if (!unarmedStrike) {
     console.error(`${DEFAULT_ITEM_NAME} | Missing Unarmed Strike item`, { workflow });
     return;
   }
 
   const applyArmsActivity = scope.rolledItem.system.activities.find(
-    (a) => a.identifier === "apply-arms-to-unarmed-strike"
+    (a) => a.identifier === "apply-arms-to-unarmed-strike",
   );
   if (!applyArmsActivity) {
-    console.error(`${DEFAULT_ITEM_NAME} | Missing Apply Arms to Unarmed Strike activity`, { workflow });
+    console.error(`${DEFAULT_ITEM_NAME} | Missing Apply Arms to Unarmed Strike activity.`, { workflow });
     return;
   }
 
   const enchantmentEffectData = applyArmsActivity.effects?.[0]?.effect.toObject();
   if (!enchantmentEffectData) {
-    console.error(`${DEFAULT_ITEM_NAME} | Missing enchantment effect`, { workflow });
+    console.error(`${DEFAULT_ITEM_NAME} | Missing Apply Spectral Arms to Unarmed Strike enchantment effect.`, {
+      workflow,
+    });
     return;
   }
+  // Make the enchantment dependent on self effect
+  foundry.utils.setProperty(enchantmentEffectData, "flags.dnd5e.dependentOn", selfEffect.uuid);
+  // Delete self effect when enchantment is deleted
+  enchantmentEffectData.changes.push({ key: "flags.dae.deleteUuid", value: selfEffect.uuid });
 
   // Add enchantment to unarmed strike
   const enchantmentEffect = await elwinHelpers.applyEnchantmentToItemFromOtherActivity(
     workflow,
     applyArmsActivity,
     enchantmentEffectData,
-    unarmedStrike
+    unarmedStrike,
   );
   if (!enchantmentEffect) {
-    console.error(`${DEFAULT_ITEM_NAME} | Enchantment effect could not be created.`, enchantmentEffectData);
+    console.error(
+      `${DEFAULT_ITEM_NAME} | Apply Spectral Arms enchantment effect could not be created.`,
+      enchantmentEffectData,
+    );
     return;
   }
 
-  // Add dependency on each other
-  await selfEffect.addDependent(enchantmentEffect);
-  // Note: We need to wait because addDependent on the enchantment riders are not awaited....
-  await wait(5);
-  await enchantmentEffect.addDependent(selfEffect);
+  const extendReachEnchantmentEffectData = scope.rolledItem.effects
+    .find(
+      (ae) => ae.type === "enchantment" && ae.changes.some((c) => c.key === "system.activities.<id>.range.override"),
+    )
+    ?.toObject();
+  if (!extendReachEnchantmentEffectData) {
+    console.error(`${DEFAULT_ITEM_NAME} | Missing Spectral Arms - Extended Reach enchantment effect.`, { workflow });
+    return;
+  }
+  extendReachEnchantmentEffectData.disabled = game.combat?.combatant.tokenId !== workflow.token?.id;
+  extendReachEnchantmentEffectData.origin = applyArmsActivity.uuid;
+
+  // Make the enchantment dependent on self effect
+  foundry.utils.setProperty(extendReachEnchantmentEffectData, "flags.dnd5e.dependentOn", selfEffect.uuid);
+
+  // Replace placeholder by Attack with Spectral Arms activity id
+  let attackWithSpectralArmsActivity;
+  let nbRetry = 5;
+  while (!attackWithSpectralArmsActivity && nbRetry > 0) {
+    attackWithSpectralArmsActivity = unarmedStrike.system.activities.find(
+      (a) => a.identifier === ATTACK_WITH_SPECTRAL_ARMS_IDENT,
+    );
+    if (!attackWithSpectralArmsActivity) {
+      nbRetry--;
+      await wait(100);
+    }
+  }
+  if (!attackWithSpectralArmsActivity) {
+    console.error(`${DEFAULT_ITEM_NAME} | Missing Attack with Spectral Arms activity.`, { workflow });
+    return;
+  }
+  extendReachEnchantmentEffectData.changes.forEach((c) => {
+    c.key = c.key.replace(/\.<id>\./, `.${attackWithSpectralArmsActivity.id}.`);
+  });
+
+  // Add enchantment to unarmed strike
+  const [extendReachEnchantmentEffect] = await unarmedStrike.createEmbeddedDocuments("ActiveEffect", [
+    extendReachEnchantmentEffectData,
+  ]);
+  if (!extendReachEnchantmentEffect) {
+    console.error(
+      `${DEFAULT_ITEM_NAME} | Extended Reach enchantment effect could not be created.`,
+      enchantmentEffectData2,
+    );
+    return;
+  }
+  // Extended reach is only active on token turn
+  if (game.combat?.combatant.tokenId !== workflow.token?.id) {
+    extendReachEnchantmentEffect.update({ disabled: true });
+  }
 
   let attAbility = "str";
   if (actor.system.abilities.dex.mod >= Math.max(actor.system.abilities.str.mod, actor.system.abilities.wis.mod)) {
@@ -163,13 +220,11 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
   ) {
     attAbility = "str";
   }
-  await unarmedStrike.system.activities
-    ?.find((a) => a.identifier === "attack-with-spectral-arms")
-    ?.update({
-      "attack.ability": attAbility,
-      "midiProperties.automationOnly": false,
-      "damage.includeBase": false,
-    });
+  await attackWithSpectralArmsActivity.update({
+    "attack.ability": attAbility,
+    "midiProperties.automationOnly": false,
+    "damage.includeBase": false,
+  });
 
   ui.notifications.notify("Attack with Spectral Arms added to Unarmed Strike.");
 
@@ -178,6 +233,33 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
     return;
   }
 
+  await handleSummonVisage(actor, workflow, debug);
+}
+
+/**
+ * Presents a dialog to choose if the Visage of the Astral Self should be summoned at the same time as the Arms.
+ * @param {Activity} activity - The Summon Visage of Astral Self activity.
+ * @param {number} nbUses - number of remaining uses.
+ * @param {number} maxUses - maximum number of uses.
+ * @returns {boolean} true if the Visage should also be summoned.
+ */
+async function showDialog(activity, nbUses, maxUses) {
+  return foundry.applications.api.DialogV2.confirm({
+    window: { title: `${activity.item.name}` },
+    content: `Use ${activity.item.name}: ${activity.name} (${nbUses}/${maxUses})?`,
+    modal: true,
+    rejectClose: false,
+  });
+}
+
+/**
+ * Handles summoning the Visage of Astral Self in the same bonus action as the Arms.
+ *
+ * @param {Actor5e} actor - The owner of the Arms of the Astral Self item.
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {boolean} debug - Flag to indicate debug mode.
+ */
+async function handleSummonVisage(actor, workflow, debug) {
   // Ask to Summon Visage if present and of appropriate level
   const visageOfAstralSelfItem = actor.itemTypes.feat.find((i) => i.identifier === VISAGE_OF_ASTRAL_SELF_IDENT);
   if (!visageOfAstralSelfItem) {
@@ -190,7 +272,7 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
     const visageOfAstralSelfActivity = visageOfAstralSelfItem.system.activities?.find((a) => a.identifier === "summon");
     if (!visageOfAstralSelfActivity) {
       console.warn(
-        `${DEFAULT_ITEM_NAME} | Could not find valid the summon activity for ${visageOfAstralSelfItem.name}.`
+        `${DEFAULT_ITEM_NAME} | Could not find valid the summon activity for ${visageOfAstralSelfItem.name}.`,
       );
       return;
     }
@@ -222,72 +304,86 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
       return;
     }
 
-    // Create a modified synthetic modified feature to change the summon activity action type
-    const visageOfAstralSelfItemData = visageOfAstralSelfItem.toObject();
-    visageOfAstralSelfItemData._id = foundry.utils.randomID();
-    foundry.utils.setProperty(
-      visageOfAstralSelfItemData,
-      `system.activities.${visageOfAstralSelfActivity.id}.activation.type`,
-      ""
-    );
-    foundry.utils.setProperty(visageOfAstralSelfItemData, "flags.midi-qol.syntheticItem", true);
-
+    // Create and apply an enchantment to change the summon activity action type
+    const enchantmentEffect = await enchantSpecialItem(visageOfAstralSelfItem, visageOfAstralSelfActivity);
     const config = {
       midiOptions: {
-        activityId: visageOfAstralSelfActivity.id,
         targetUuids: [workflow.tokenUuid],
         workflowOptions: { targetConfirmation: "none", autoConsumeResource: "both" },
       },
     };
 
-    const data = {
-      itemData: visageOfAstralSelfItemData,
-      actorUuid: actor.uuid,
-      config,
-      dialog: {
-        configure: false,
-      },
+    const dialog = {
+      configure: false,
     };
 
-    // Register hook to call retribution damage after roll is complete
+    // Register hook to summmon visage after roll is complete
     Hooks.once(`midi-qol.RollComplete.${workflow.itemUuid}`, async (workflow2) => {
-      if (
-        !elwinHelpers.isMidiHookStillValid(
-          DEFAULT_ITEM_NAME,
-          "midi-qol.RollComplete",
-          visageOfAstralSelfItem.name,
-          workflow,
-          workflow2,
-          debug
-        )
-      ) {
-        return;
+      try {
+        if (
+          !elwinHelpers.isMidiHookStillValid(
+            DEFAULT_ITEM_NAME,
+            "midi-qol.RollComplete",
+            visageOfAstralSelfItem.name,
+            workflow,
+            workflow2,
+            debug,
+          )
+        ) {
+          return;
+        }
+        await MidiQOL.completeActivityUse(visageOfAstralSelfActivity, config, dialog);
+      } finally {
+        enchantmentEffect.delete();
       }
-      const actionName = game.release.generation > 12 ? "completeItemUse" : "completeItemUseV2";
-      await MidiQOL.socket().executeAsUser(actionName, player.id, data);
     });
   }
 }
 
 /**
- * Handles the on use pre item roll phase of the Unarmed Strike of the Attack with Spectral Arms activity.
- * Increases the reach by 5' if it's the token's combat turn.
+ * Enchants the specified item to change the activation type of its activities to special
+ * for the specified activity types.
  *
- * @param {Token5e} token - The token associated to the actor using the activity.
- * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item5e} item - The item to enchant.
+ * @param {Item5e} source - The source of the enchantment.
+ * @param {string[]} activityTypes - The activity for which the activation type must be changed to special (default CONFIG.DND5E.activityTypes).
+ *
+ * @returns {ActiveEffect} the created enchantment effect.
  */
-function handleOnUsePreItemRoll(token, workflow) {
-  // Update spectral arms reach flag if it's the actor's turn
-  if (token?.combatant?.id === game.combat?.combatant?.id) {
-    if (workflow.item?.system.range?.reach) {
-      // This is needed to be taken into account by the item and activity preparedData
-      workflow.item.actor._embeddedPreparation = true;
-      workflow.item.updateSource({ "system.range.reach": workflow.item.system.range.reach + 5 });
-      delete workflow.item.actor._embeddedPreparation;
-      workflow.item.prepareFinalAttributes();
-      workflow.activity = workflow.item.system.activities.get(workflow.activity.id);
-    }
-  }
+async function enchantSpecialItem(item, source, activityTypes = CONFIG.DND5E.activityTypes) {
+  // Change activation type to special so it is not considered as an Attack Action
+  const effectData = {
+    name: source.name,
+    img: "icons/magic/time/arrows-circling-green.webp",
+    type: "enchantment",
+    changes: Object.keys(activityTypes)
+      .flatMap((activityType) => [
+        {
+          key: `activities[${activityType}].activation.type`,
+          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+          value: "special",
+          priority: 20,
+        },
+      ])
+      .concat([
+        {
+          key: "system.activation.type",
+          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+          value: "special",
+          priority: 20,
+        },
+      ]),
+    transfer: false,
+    duration: {
+      seconds: 1,
+      turns: 1,
+    },
+    origin: source.uuid,
+    "flags.dae.stackable": "noneName",
+  };
+  foundry.utils.setProperty(effectData, `flags.${MODULE_ID}.identifier`, "arms-of-astral-self");
+  const [effect] = await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
+  return effect;
 }
 
 /**
@@ -297,20 +393,4 @@ function handleOnUsePreItemRoll(token, workflow) {
  */
 async function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-/**
- * Presents a dialog to choose if the Visage of the Astral Self should be summoned at the same time as the Arms.
- * @param {Activity} activity - The Summon Visage of Astral Self activity.
- * @param {number} nbUses - number of remaining uses.
- * @param {number} maxUses - maximum number of uses.
- * @returns {boolean} true if the Visage should also be summoned.
- */
-async function showDialog(activity, nbUses, maxUses) {
-  return foundry.applications.api.DialogV2.confirm({
-    window: { title: `${activity.item.name}` },
-    content: `Use ${activity.item.name}: ${activity.name} (${nbUses}/${maxUses})?`,
-    modal: true,
-    rejectClose: false,
-  });
 }

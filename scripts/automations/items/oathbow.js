@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Allows to designate a sworn enemy and applies the bow's effect when attacking a sworn enemy.
-// v2.2.0
+// v2.3.0
 // Author: Elwin#1410 based on Christopher version
 // Dependencies:
 //  - DAE [on][off]
@@ -17,7 +17,7 @@
 // Description:
 // In the preDamageRollConfig (OnUse) phase of the Oathbow Attack activity (owner's workflow):
 //   If the activity is a ranged weapon attack that targets the Sworn Enemy,
-//   calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
+//   calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamage that adds damage bonus.
 // In the postActiveEffects (OnUse) phase of the Oathbow Swear Oath activity (owner's workflow):
 //   Updates the attacker's AE to add a flag that designates the Sworn Enemy toknen's UUID and makes the
 //   attacker and target AEs dependent.
@@ -42,10 +42,8 @@ const MODULE_ID = "midi-item-showcase-community";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.5")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -66,7 +64,7 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -89,7 +87,7 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
       await handleOffEffectAttacker(
         scope.macroActivity,
         scope.lastArgValue?.efData,
-        scope.lastArgValue?.["expiry-reason"]
+        scope.lastArgValue?.["expiry-reason"],
       );
     }
   }
@@ -99,7 +97,7 @@ export async function oathbow({ speaker, actor, token, character, item, args, sc
  * Handles the preDamageRollConfig phase of the Attack activity.
  * If the current activity is an attack with an action type of 'rwak', there is only one hit target
  * and its the marked sworn enemy, calls elwinHelpers.damageConfig.updateBasic to add a
- * hook on dnd5e.preRollDamageV2 that adds damage bonus.
+ * hook on dnd5e.preRollDamage that adds damage bonus.
  *
  * @param {object} scope - The midi-qol macro call scope object.
  * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
@@ -130,7 +128,7 @@ async function handleOnUsePostActiveEffectsSwearOath(workflow) {
   const target = workflow.targets.first();
 
   const effectSource = workflow.actor.effects?.find(
-    (ae) => !ae.transfer && fromUuidSync(ae.origin)?.identifier === "swear-oath"
+    (ae) => !ae.transfer && fromUuidSync(ae.origin)?.identifier === "swear-oath",
   );
   if (!effectSource) {
     console.error(`${workflow.item} | Missing Sworn Enemy - Attacker AE.`);
@@ -144,7 +142,6 @@ async function handleOnUsePostActiveEffectsSwearOath(workflow) {
     mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
     priority: 20,
   });
-  await effectSource.update({ changes });
 
   const effectTarget = target.actor?.effects?.find((ae) => !ae.transfer && ae.origin?.startsWith(workflow.itemUuid));
   if (!effectTarget) {
@@ -152,8 +149,11 @@ async function handleOnUsePostActiveEffectsSwearOath(workflow) {
     return;
   }
 
-  await MidiQOL.addDependent(effectSource, effectTarget);
-  await MidiQOL.addDependent(effectTarget, effectSource);
+  // Update changes and make effect source dependent on effect target
+  await effectSource.update({ changes, "flags.dnd5e.dependentOn": effectTarget.uuid });
+
+  // Make effect target dependent on effect source
+  MidiQOL.addDependent(effectSource, effectTarget);
 }
 
 /**
@@ -199,7 +199,7 @@ async function handleOnEffectAttacker(sourceActivity) {
 async function handleOffEffectAttacker(sourceActivity, effectData, expiryReason) {
   if (expiryReason === "midi-qol:zeroHP") {
     const targetDoc = await fromUuid(
-      effectData?.changes.find((ch) => ch.key === `flags.${MODULE_ID}.oathbowSwornEnemy`)?.value
+      effectData?.changes.find((ch) => ch.key === `flags.${MODULE_ID}.oathbowSwornEnemy`)?.value,
     );
     if ((targetDoc?.actor?.system.attributes?.hp?.value ?? 0) <= 0) {
       await sourceActivity?.update({

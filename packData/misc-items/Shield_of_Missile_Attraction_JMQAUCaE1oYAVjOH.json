@@ -36,7 +36,6 @@
     "attunement": "required",
     "equipped": false,
     "cover": null,
-    "crewed": false,
     "uses": {
       "max": "",
       "spent": 0,
@@ -62,13 +61,17 @@
     ],
     "speed": {
       "value": null,
-      "conditions": ""
+      "conditions": "",
+      "units": "ft"
     },
     "strength": 0,
     "proficient": null,
     "activities": {},
     "identifier": "",
-    "attuned": false
+    "attuned": false,
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {

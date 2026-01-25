@@ -31,7 +31,7 @@
     "range": {
       "value": null,
       "long": null,
-      "units": "",
+      "units": "ft",
       "reach": null
     },
     "damage": {
@@ -79,7 +79,6 @@
     },
     "container": null,
     "cover": null,
-    "crewed": false,
     "uses": {
       "max": "",
       "spent": 0,
@@ -132,10 +131,12 @@
         },
         "effects": [
           {
-            "_id": "Bf5EJfd0ghcirCkX"
+            "_id": "Bf5EJfd0ghcirCkX",
+            "level": {}
           },
           {
-            "_id": "eFfWdbcygq1LDcXe"
+            "_id": "eFfWdbcygq1LDcXe",
+            "level": {}
           }
         ],
         "range": {
@@ -210,6 +211,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -221,6 +223,13 @@
         "otherActivityId": "none",
         "name": "Swear Oath",
         "img": "systems/dnd5e/icons/svg/trait-languages.svg",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true
       },
       "tGEXxIRjGfKHzl3u": {
@@ -289,7 +298,6 @@
           "max": ""
         },
         "enchant": {
-          "identifier": "",
           "self": false
         },
         "restrictions": {
@@ -343,6 +351,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -351,13 +360,23 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "name": "Oathbow"
+        "name": "Oathbow",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "identifier": "oathbow",
     "attuned": false,
     "ammunition": {},
-    "mastery": ""
+    "mastery": "",
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {

@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.4
+// v2.1.5
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = "2.1.4";
+  const VERSION = "2.1.5";
   const MACRO_NAME = "elwin-helpers-coating";
   const MODULE_ID = "midi-item-showcase-community";
   const WORLD_MODULE_ID = "world";
@@ -144,16 +144,16 @@ export function runElwinsHelpersCoating() {
     exportIdentifier("elwinHelpers.coating.getCoatingAmmoFilter", getCoatingAmmoFilter);
     exportIdentifier(
       "elwinHelpers.coating.handleCoatingItemOnUsePostActiveEffects",
-      handleCoatingItemOnUsePostActiveEffects
+      handleCoatingItemOnUsePostActiveEffects,
     );
     exportIdentifier(
       "elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects",
-      handleCoatedItemOnUsePostActiveEffects
+      handleCoatedItemOnUsePostActiveEffects,
     );
     exportIdentifier("elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll", handleCoatedItemOnUsePostDamageRoll);
     exportIdentifier(
       "elwinHelpers.coating.handleCoatingEffectActivityConditionalStatuses",
-      handleCoatingEffectActivityConditionalStatuses
+      handleCoatingEffectActivityConditionalStatuses,
     );
   }
 
@@ -162,8 +162,8 @@ export function runElwinsHelpersCoating() {
    * @returns {boolean} true if elwin helpers' version is valid for this world script.
    */
   function hasValidElwinHelpersVersion() {
-    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.7")) {
-      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.8`;
+    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.10`;
       ui.notifications.error(errorMsg);
       return false;
     }
@@ -293,7 +293,7 @@ export function runElwinsHelpersCoating() {
     const enchantmentEffectData = getCoatingApplicationEnchantment(
       enchantmentData.effect,
       appliedCoating,
-      enchantmentData.riderActivity
+      enchantmentData.riderActivity,
     );
 
     const coatingItemOrigName = coatedItem.name;
@@ -342,7 +342,7 @@ export function runElwinsHelpersCoating() {
     const appliedCoatingValue = itemUsed.effects
       .find((ae) => ae.type !== "enchantment" && !ae.transfer && ae.getFlag("dae", "dontApply") === true)
       ?.changes.find((c) =>
-        [`flags.${WORLD_MODULE_ID}.appliedCoating`, `flags.${MISC_MODULE_ID}.appliedCoating`].includes(c.key)
+        [`flags.${WORLD_MODULE_ID}.appliedCoating`, `flags.${MISC_MODULE_ID}.appliedCoating`].includes(c.key),
       )?.value;
     try {
       const appliedCoating = JSON.parse(appliedCoatingValue ?? "{}");
@@ -357,7 +357,7 @@ export function runElwinsHelpersCoating() {
           ? true
           : appliedCoating.allowedDamageTypes.reduce(
               (acc, dmgType) => (acc = acc.concat(DEFAULT_ALLOWED_AMMO_TYPES_BY_DMG_TYPE.get(dmgType) ?? [])),
-              []
+              [],
             );
       return appliedCoating;
     } catch (error) {
@@ -365,7 +365,7 @@ export function runElwinsHelpersCoating() {
         `${itemUsed.name} | Invalid json value in special AE with appliedCoating flag value.`,
         itemUsed,
         appliedCoatingValue,
-        error
+        error,
       );
       return undefined;
     }
@@ -394,7 +394,7 @@ export function runElwinsHelpersCoating() {
     let itemChoices = actor.itemTypes.weapon.filter((i) => basicFilter(i) && (weaponFilter ?? defaultWeaponFilter)(i));
     if (maxAmmo && ammoFilter) {
       itemChoices = itemChoices.concat(
-        actor.itemTypes.consumable.filter((i) => i.system?.type?.value === "ammo" && basicFilter(i) && ammoFilter(i))
+        actor.itemTypes.consumable.filter((i) => i.system?.type?.value === "ammo" && basicFilter(i) && ammoFilter(i)),
       );
     }
 
@@ -405,7 +405,7 @@ export function runElwinsHelpersCoating() {
     const selectedItem = await elwinHelpers.ItemSelectionDialog.createDialog(
       `⚔️ ${itemUsed.name}: Choose your Weapon${maxAmmo && ammoFilter ? " or Ammo" : ""}`,
       itemChoices,
-      null
+      null,
     );
     if (!selectedItem) {
       console.error(`${MACRO_NAME} | selectWeaponOrAmmo: Weapon or ammo selection was cancelled.`);
@@ -445,14 +445,14 @@ export function runElwinsHelpersCoating() {
     const enchantmentProfiles = applyCoatingActivity.availableEnchantments;
     if (!enchantmentProfiles?.length || enchantmentProfiles?.length > 1) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity must have one and only one enchantement profile.`
+        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity must have one and only one enchantement profile.`,
       );
       return undefined;
     }
     const enchantmentProfile = elwinHelpers.getAutomatedEnchantmentSelectedProfile(workflow);
     if (!enchantmentProfile?.effect) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one enchantment effect.`
+        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one enchantment effect.`,
       );
       return undefined;
     }
@@ -461,20 +461,20 @@ export function runElwinsHelpersCoating() {
       ?.map((activityId) => coatingItem.system.activities?.get(activityId));
     if (!coatedEffectActivities?.size || coatedEffectActivities?.size > 1) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one and only one rider activity with a "coating-effect" identifier.`
+        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile must have one and only one rider activity with a "coating-effect" identifier.`,
       );
       return undefined;
     }
     const coatedEffectActivity = coatedEffectActivities.first();
     if (coatedEffectActivity.hasAttack || (!coatedEffectActivity.save && !coatedEffectActivity.hasDamage)) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile rider activity must not be an attack and must have damage or a save.`
+        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile rider activity must not be an attack and must have damage or a save.`,
       );
       return undefined;
     }
     if (!coatedEffectActivity.save && coatedEffectActivity.hasDamage && coatedEffectActivity.effects?.length) {
       console.error(
-        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile damage rider activity must not have effects.`
+        `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile damage rider activity must not have effects.`,
       );
       return undefined;
     }
@@ -553,7 +553,7 @@ export function runElwinsHelpersCoating() {
     if (workflow.item?.uuid !== coatedItem.uuid && workflow.ammunition?.uuid !== coatedItem.uuid) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | Skip, called from a workflow on another item attack activity than the coated one.`
+          `${MACRO_NAME} | Skip, called from a workflow on another item attack activity than the coated one.`,
         );
       }
       return;
@@ -642,7 +642,7 @@ export function runElwinsHelpersCoating() {
     }
     const coatedEffectAe = target.actor?.effects?.find(
       (ae) =>
-        ae.origin?.startsWith(coatedItem.uuid) && activityData.applicableEffects?.some((ae2) => ae2.name === ae.name)
+        ae.origin?.startsWith(coatedItem.uuid) && activityData.applicableEffects?.some((ae2) => ae2.name === ae.name),
     );
     if (!coatedEffectAe) {
       // No effects applied to this target skip conditionals
@@ -683,12 +683,7 @@ export function runElwinsHelpersCoating() {
       }
     }
     if (statusEffectsData.length) {
-      const statusEffects = await addStatusEffects(coatedItem.uuid, target.actor?.uuid, statusEffectsData);
-      // Make the added statuses dependent on the first coated effect applied AE
-      for (let statusEffect of statusEffects) {
-        // TODO change this when MidiQOL supports more than one effect like ActiveEffect.addDependent
-        await MidiQOL.addDependent(coatedEffectAe, statusEffect);
-      }
+      await addStatusEffects(coatedItem.uuid, target.actor?.uuid, statusEffectsData, coatedEffectAe);
     }
   }
 
@@ -783,7 +778,7 @@ export function runElwinsHelpersCoating() {
   async function updateAppliedCoatingForEnchantment(appliedCoating, coatedItem) {
     // Get enchantment AE
     const coatingEnchantment = coatedItem.effects.find(
-      (ae) => ae.isAppliedEnchantment && ae.origin === appliedCoating.origin
+      (ae) => ae.isAppliedEnchantment && ae.origin === appliedCoating.origin,
     );
     const appliedCoatingKey = `flags.${MODULE_ID}.appliedCoating`;
     if (!coatingEnchantment?.changes.find((c) => c.key === appliedCoatingKey)) {
@@ -831,13 +826,16 @@ export function runElwinsHelpersCoating() {
    * @param {string} origin - The origin of the status effect.
    * @param {string} actorUuid - The uuid of the actor on which to add the status effect.
    * @param {ConditionalAppliedCoatingStatuses[]} conditionalStatuses - List of conditional status to be added.
+   * @param {ActiveEffect} coatedEffectAe - The parent coated effect AE.
    * @returns {ActiveEffect5e[]} A list of status effects that were added to the specified actor.
    */
-  async function addStatusEffects(origin, actorUuid, conditionalStatuses) {
+  async function addStatusEffects(origin, actorUuid, conditionalStatuses, coatedEffectAe) {
     const effects = [];
     for (let conditionalStatus of conditionalStatuses) {
       let effectData = (await ActiveEffect.implementation.fromStatusEffect(conditionalStatus.status)).toObject();
       effectData.origin = origin;
+      // Make conditional status effect dependent on coated effect AE
+      foundry.utils.setProperty(effectData, "flags.dnd5e.dependentOn", coatedEffectAe.uuid);
       if (conditionalStatus.specialDurations?.length) {
         foundry.utils.setProperty(effectData, "flags.dae.specialDuration", conditionalStatus.specialDurations);
       }
@@ -861,16 +859,12 @@ export function runElwinsHelpersCoating() {
     }
     const coatedEffectAe = target.actor?.effects?.find(
       (ae) =>
-        ae.origin?.startsWith(coatedItem.uuid) && activityData.applicableEffects?.some((ae2) => ae2.name === ae.name)
+        ae.origin?.startsWith(coatedItem.uuid) && activityData.applicableEffects?.some((ae2) => ae2.name === ae.name),
     );
     if (!coatedEffectAe) {
       // No effects applied to this target
       return;
     }
-    for (let originActiveEffect of activityData.applicableEffects) {
-      // Note: we refetch the activity in case this instance is a clone which may not have the dependent
-      originActiveEffect = fromUuidSync(originActiveEffect.uuid);
-      await originActiveEffect.removeDependent(coatedEffectAe);
-    }
+    await coatedEffectAe.unsetFlag("dnd5e", "dependentOn");
   }
 }

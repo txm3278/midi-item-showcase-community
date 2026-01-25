@@ -162,7 +162,8 @@
         },
         "effects": [
           {
-            "_id": "eGGfnTLZbbVHBErr"
+            "_id": "eGGfnTLZbbVHBErr",
+            "level": {}
           }
         ],
         "range": {
@@ -235,7 +236,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -245,7 +247,14 @@
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
-        "name": "Cancel Disadvantage"
+        "name": "Cancel Disadvantage",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "uses": {

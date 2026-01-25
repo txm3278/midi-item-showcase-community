@@ -65,10 +65,12 @@
         },
         "effects": [
           {
-            "_id": "peIeFYuPKmsoXwVo"
+            "_id": "peIeFYuPKmsoXwVo",
+            "level": {}
           },
           {
-            "_id": "mXb3v0Eqny4tMqiI"
+            "_id": "mXb3v0Eqny4tMqiI",
+            "level": {}
           }
         ],
         "range": {
@@ -85,7 +87,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "1",
@@ -120,7 +122,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -128,7 +129,18 @@
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
-          "toggleEffect": false
+          "toggleEffect": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "You must see the target",
         "macroData": {
@@ -139,7 +151,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -147,7 +160,15 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "otherActivityAsParentType": true
       },
       "DAcAsRLAB94Zz8Jl": {
         "type": "utility",
@@ -177,7 +198,8 @@
         },
         "effects": [
           {
-            "_id": "mXb3v0Eqny4tMqiI"
+            "_id": "mXb3v0Eqny4tMqiI",
+            "level": {}
           }
         ],
         "range": {
@@ -194,7 +216,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "1",
@@ -229,7 +251,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "always",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -237,7 +258,18 @@
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
-          "toggleEffect": false
+          "toggleEffect": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "You must see the target",
         "macroData": {
@@ -248,7 +280,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -257,14 +290,23 @@
           "postRemoveConditionText": ""
         },
         "otherActivityId": "none",
-        "_id": "DAcAsRLAB94Zz8Jl"
+        "_id": "DAcAsRLAB94Zz8Jl",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "channel-divinity-vow-of-enmity",
     "enchant": {},
     "prerequisites": {
       "level": 3,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     },
     "advancement": []
   },
@@ -478,7 +520,13 @@
       "wallRestriction": "globalDefault",
       "snapCenter": true,
       "snapCorner": true,
-      "snapSideMidpoint": true
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
     },
     "dae": {
       "macro": {

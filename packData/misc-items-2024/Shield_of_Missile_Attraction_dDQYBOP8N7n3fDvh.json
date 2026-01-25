@@ -35,7 +35,6 @@
     "attunement": "required",
     "equipped": false,
     "cover": null,
-    "crewed": false,
     "uses": {
       "max": "",
       "spent": 0,
@@ -61,13 +60,17 @@
     ],
     "speed": {
       "value": null,
-      "conditions": ""
+      "conditions": "",
+      "units": "ft"
     },
     "strength": 0,
     "proficient": null,
     "activities": {},
     "identifier": "shield-of-missile-attraction",
-    "attuned": false
+    "attuned": false,
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {
@@ -159,13 +162,15 @@
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
           "value": "function.MISC.macros.items.shieldOfMissileAttraction,tpr.isTargeted|reactionNone=true;ignoreSelf=true;post=true;range=10;condition=tpr.isRangedWeaponAttack",
-          "priority": 20
+          "priority": 20,
+          "fieldDescription": ""
         },
         {
           "key": "flags.midi-item-showcase-community.shieldOfMissileAttractionCurse",
           "mode": 5,
           "value": "true",
-          "priority": 20
+          "priority": 20,
+          "fieldDescription": ""
         }
       ],
       "disabled": false,

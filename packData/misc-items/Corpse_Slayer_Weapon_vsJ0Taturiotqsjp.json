@@ -30,7 +30,6 @@
     "rarity": "rare",
     "identified": true,
     "cover": null,
-    "crewed": false,
     "range": {
       "value": null,
       "long": null,
@@ -124,7 +123,8 @@
         },
         "effects": [
           {
-            "_id": "0p4TAXJ9qUfykkIL"
+            "_id": "0p4TAXJ9qUfykkIL",
+            "level": {}
           }
         ],
         "range": {
@@ -217,6 +217,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -230,6 +231,13 @@
         "ammunition": "",
         "otherActivityUuid": "",
         "name": "Attack",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true,
         "attackRollPerTarget": "default",
         "fumbleThreshold": 1
@@ -297,7 +305,6 @@
           "max": ""
         },
         "enchant": {
-          "identifier": "",
           "self": false
         },
         "restrictions": {
@@ -346,6 +353,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -355,7 +363,14 @@
           "postRemoveConditionText": ""
         },
         "name": "Corpse Slayer Weapon",
-        "_id": "xYeQf93sxKz4D2qd"
+        "_id": "xYeQf93sxKz4D2qd",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "identifier": "corpse-slayer-weapon",
@@ -365,7 +380,10 @@
       "type": "arrow"
     },
     "magicalBonus": null,
-    "mastery": ""
+    "mastery": "",
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {

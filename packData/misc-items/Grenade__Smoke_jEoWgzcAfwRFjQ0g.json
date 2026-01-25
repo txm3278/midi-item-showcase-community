@@ -90,7 +90,8 @@
         },
         "effects": [
           {
-            "_id": "xoOReOiy8pqgbIzb"
+            "_id": "xoOReOiy8pqgbIzb",
+            "level": {}
           }
         ],
         "range": {
@@ -165,7 +166,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -175,7 +177,18 @@
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
-        "name": "Throw"
+        "name": "Throw",
+        "flags": {
+          "region-attacher": {
+            "attachRegionToTemplate": false
+          }
+        },
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       },
       "LnT1N42udJ2R6895": {
         "type": "utility",
@@ -208,7 +221,8 @@
         },
         "effects": [
           {
-            "_id": "xoOReOiy8pqgbIzb"
+            "_id": "xoOReOiy8pqgbIzb",
+            "level": {}
           }
         ],
         "range": {
@@ -283,7 +297,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -294,7 +309,18 @@
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
         "name": "Throw with Launcher",
-        "_id": "LnT1N42udJ2R6895"
+        "_id": "LnT1N42udJ2R6895",
+        "flags": {
+          "region-attacher": {
+            "attachRegionToTemplate": false
+          }
+        },
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "identifier": "smoke-grenade",
@@ -304,7 +330,9 @@
   },
   "flags": {
     "dnd5e": {
-      "migratedUses": 1
+      "riders": {
+        "activity": []
+      }
     },
     "midi-qol": {
       "onUseMacroName": "[preTargeting]function.MISC.macros.items.smokeGrenade,[preActiveEffects]function.MISC.macros.items.smokeGrenade,[postActiveEffects]function.MISC.macros.items.smokeGrenade"
