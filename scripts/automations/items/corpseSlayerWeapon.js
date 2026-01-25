@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // When an attack hits an undead, adds a damage bonus and applies an effect that forces disadvantage on saves against Turn Undead.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410 based on SagaTympana version
 // Dependencies:
 //  - DAE
@@ -15,7 +15,7 @@
 // Description:
 // In the preDamageRollConfig (item OnUse) phase of the Corspe Slayer attack activity (in owner's workflow):
 //   If there is only one hit target and it's an undead, calls elwinHelpers.damageConfig.updateBasic
-//   to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
+//   to add a hook on dnd5e.preRollDamage that adds damage bonus.
 // In the postActiveEffects (item OnUse) phase of the Corspe Slayer attack activity (in owner's workflow):
 //   If there is only one hit target and it's an undead, finds the Corpse Slayer Weapon effect and applies it to the target.
 // ###################################################################################################
@@ -31,9 +31,7 @@ const WORLD_ID = "world";
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.0")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -54,7 +52,7 @@ export async function corpseSlayerWeapon({ speaker, actor, token, character, ite
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -99,7 +97,7 @@ function validateActivityAndTarget(scope, workflow, debug) {
 /**
  * Handles the pre damage roll of the Attack activity.
  * If there is only one hit target and it's an undead, calls elwinHelpers.damageConfig.updateBasic
- * to add a hook on dnd5e.preRollDamageV2 that adds damage bonus.
+ * to add a hook on dnd5e.preRollDamage that adds damage bonus.
  *
  * @param {object} scope - The midi call macro scope.
  * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
@@ -128,7 +126,7 @@ async function handleOnUsePostActiveEffects(scope, workflow, debug) {
     return;
   }
   const corpseSlayerEffect = workflow.item?.effects.find(
-    (ae) => !ae.transfer && ae.getFlag(WORLD_ID, "corpseSlayerWeapon") === true
+    (ae) => !ae.transfer && ae.getFlag(WORLD_ID, "corpseSlayerWeapon") === true,
   );
   if (!corpseSlayerEffect) {
     if (debug) {

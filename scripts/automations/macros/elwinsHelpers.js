@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.9
+// v3.5.10
 // Dependencies:
 //  - MidiQOL
 //
@@ -139,7 +139,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.9";
+  const VERSION = "3.5.10";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -213,7 +213,7 @@ export function runElwinsHelpers() {
   const dependencies = ["midi-qol"];
   if (
     requirementsSatisfied(MACRO_NAME, dependencies) &&
-    foundry.utils.isNewerVersion(game.modules.get("midi-qol")?.version, "12.4.30")
+    foundry.utils.isNewerVersion(game.modules.get("midi-qol")?.version, "13.0.38")
   ) {
     if (!active && game.modules.get(MISC_MODULE_ID)?.active && game.settings.get(MISC_MODULE_ID, "Elwin Helpers")) {
       return;
@@ -236,18 +236,33 @@ export function runElwinsHelpers() {
     setHook(
       "midi-qol.dnd5ePreCalculateDamage",
       "handleMidiDnd5ePreCalculateDamageId",
-      handleMidiDnd5ePreCalculateDamage
+      handleMidiDnd5ePreCalculateDamage,
     );
     setHook("midi-qol.dnd5eCalculateDamage", "handleMidiDnd5eCalculateDamageId", handleMidiDnd5eCalculateDamage);
     setHook("dnd5e.canEnchant", "handleDnd5eCanEnchant", handleDnd5eCanEnchant);
     setHook(
       "deleteChatMessage",
       "handleDeleteChatMessageForRegisteredWorkflowHooks",
-      handleDeleteChatMessageForRegisteredWorkflowHooks
+      handleDeleteChatMessageForRegisteredWorkflowHooks,
     );
     setHook("midi-qol.postCleanup", "cleanupRegisteredWorkflowHooks", cleanupRegisteredWorkflowHooks);
     setHook("moveToken", "handleMoveToken", handleMoveToken);
     setHook("updateMeasuredTemplate", "handleUpdateMeasuredTemplate", handleUpdateMeasuredTemplate);
+
+    // TODO remove if dnd5e or midi supports this
+    setHook("preUpdateActiveEffect", "handlePreUpdateActiveEffect", (activeEffect, _, options, __) => {
+      options.previousDependentOn = activeEffect.getFlag("dnd5e", "dependentOn");
+    });
+    setHook("updateActiveEffect", "handleUpdateActiveEffect", (activeEffect, _, options, __) => {
+      const currentDependentOn = activeEffect.getFlag("dnd5e", "dependentOn");
+      if (options.previousDependentOn && options.previousDependentOn !== currentDependentOn) {
+        dnd5e.registry.dependents.untrack(options.previousDependentOn, activeEffect);
+      }
+      if (currentDependentOn && options.previousDependentOn !== currentDependentOn) {
+        dnd5e.registry.dependents.track(currentDependentOn, activeEffect);
+      }
+    });
+
     exportIdentifier("elwinHelpers.isDebugEnabled", isDebugEnabled);
     exportIdentifier("elwinHelpers.setDebugEnabled", setDebugEnabled);
 
@@ -283,11 +298,11 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.deleteAppliedEnchantments", deleteAppliedEnchantments);
     exportIdentifier(
       "elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll",
-      disableManualEnchantmentPlacingOnUsePreItemRoll
+      disableManualEnchantmentPlacingOnUsePreItemRoll,
     );
     exportIdentifier(
       "elwinHelpers.toggleSelfEnchantmentOnUsePostActiveEffects",
-      toggleSelfEnchantmentOnUsePostActiveEffects
+      toggleSelfEnchantmentOnUsePostActiveEffects,
     );
     exportIdentifier("elwinHelpers.getAutomatedEnchantmentSelectedProfile", getAutomatedEnchantmentSelectedProfile);
     exportIdentifier("elwinHelpers.applyEnchantmentToItem", applyEnchantmentToItem);
@@ -404,7 +419,7 @@ export function runElwinsHelpers() {
       await registerThirdPartyReactions(
         workflow,
         token,
-        actorOnUseMacros.items.filter((m) => m.option.startsWith("tpr."))
+        actorOnUseMacros.items.filter((m) => m.option.startsWith("tpr.")),
       );
     }
   }
@@ -494,6 +509,9 @@ export function runElwinsHelpers() {
           item: options?.item,
           target,
           extraActivationCond: `${conditionAttr} > 0`,
+          reactionOptions: {
+            damageItem: options?.damageItem,
+          },
         });
       } else {
         await handleThirdPartyReactions(options.workflow, ["isHealed"], {
@@ -566,7 +584,7 @@ export function runElwinsHelpers() {
    * @returns {boolean} Explicitly return `false` to prevent damage application.
    */
   function handleMidiDnd5eCalculateDamage(actor, damages, options) {
-    if (!(options.elwinHelpers?.damagePrevention > 0)) {
+    if (!(options.elwinHelpers?.damagePrevention?.value > 0) && !options.elwinHelpers?.damagePrevention?.special) {
       // No damage prevention or not valid
       return true;
     }
@@ -581,7 +599,25 @@ export function runElwinsHelpers() {
       // No damage to prevent, do nothing
       return true;
     }
-    const damagePrevention = Math.min(options.elwinHelpers.damagePrevention, healingAdjustedTotalDamage);
+    if (options.elwinHelpers.damagePrevention.special === "ALL") {
+      damages.push({
+        type: "none",
+        value: -healingAdjustedTotalDamage,
+        active: { DP: true, multiplier: 1 },
+        properties: new Set(),
+      });
+      return true;
+    }
+    let damagePrevention = Math.min(options.elwinHelpers.damagePrevention.value, healingAdjustedTotalDamage);
+    if (options.elwinHelpers.damagePrevention.special === "1HP") {
+      // check effective damage if current dmg prevention greater use it otherwise use 1HP
+      const damageItem = { damageDetail: damages, actorUuid: actor?.uuid };
+      calculateAppliedDamage(damageItem);
+      const specialDmgPrev = healingAdjustedTotalDamage - (damageItem.tempDamage ?? 0) - (damageItem.hpDamage ?? 0) + 1;
+      if (specialDmgPrev >= damagePrevention) {
+        damagePrevention = specialDmgPrev;
+      }
+    }
     if (damagePrevention) {
       damages.push({
         type: "none",
@@ -620,7 +656,7 @@ export function runElwinsHelpers() {
       });
       if (!returnValue) {
         errors.push(
-          new game.system.dataModels.item.EnchantmentError(extraRestiction.conditionMsg ?? extraRestiction.condition)
+          new game.system.dataModels.item.EnchantmentError(extraRestiction.conditionMsg ?? extraRestiction.condition),
         );
         if (debug) {
           console.warn(`${MACRO_NAME} | Extra enchantment restriction condition was not fulfilled.`, {
@@ -691,13 +727,13 @@ export function runElwinsHelpers() {
             elevation: entity.elevation + delta.elevation,
           });
         }
-      })
+      }),
     );
     if (removedEntityUuids.length) {
       await tokenDocument.setFlag(
         moduleId,
         "attached.attachedEntityUuids",
-        attachedEntityUuids.filter((i) => !removedEntityUuids.includes(i))
+        attachedEntityUuids.filter((i) => !removedEntityUuids.includes(i)),
       );
     }
   }
@@ -765,7 +801,7 @@ export function runElwinsHelpers() {
                   foundry.utils.setProperty(
                     updates,
                     "config.bright",
-                    (entity.config.bright / entity.config.dim) * templateDocument.distance
+                    (entity.config.bright / entity.config.dim) * templateDocument.distance,
                   );
                 }
               } else if (entity.config.bright > 0) {
@@ -775,7 +811,7 @@ export function runElwinsHelpers() {
           }
           await entity.update(updates);
         }
-      })
+      }),
     );
     if (removedEntityUuids.length) {
       await templateDocument.setFlag(moduleId, "attached", {
@@ -812,13 +848,13 @@ export function runElwinsHelpers() {
       const itemIdent = target.target;
       const itemIdentLegacy = itemIdent + "-legacy";
       const useItem = item.actor.items?.find(
-        (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max
+        (i) => (i.identifier === itemIdent || i.identifier === itemIdentLegacy) && i.system.uses?.max,
       );
       if (!useItem) {
         // Could not find an item with the referred identifier having uses.
         index++;
         console.warn(
-          `${MACRO_NAME} | Adjust consumption target: Could not find an item with configured uses having identifier '${target.target}' from item ${item.id} on actor ${item.actor.uuid}`
+          `${MACRO_NAME} | Adjust consumption target: Could not find an item with configured uses having identifier '${target.target}' from item ${item.id} on actor ${item.actor.uuid}`,
         );
         continue;
       }
@@ -832,7 +868,7 @@ export function runElwinsHelpers() {
       activityData.consumption.targets[index].target = useItem.id;
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | ${handlerName}: updated item activity consumption target from '${target.target}' to ${useItem.id} for path: ${activityUuid}.consumption.targets[${index}].target.`
+          `${MACRO_NAME} | ${handlerName}: updated item activity consumption target from '${target.target}' to ${useItem.id} for path: ${activityUuid}.consumption.targets[${index}].target.`,
         );
       }
       index++;
@@ -848,10 +884,10 @@ export function runElwinsHelpers() {
   function getEchantmentEffectExtraRestrictions(enchantmentEffect) {
     const partialFlag = "elwinHelpers.extraEnchantRestrictions";
     const conditionKeyRex = new RegExp(
-      `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).condition$`
+      `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).condition$`,
     );
     const conditionMsgKeyRex = new RegExp(
-      `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).conditionMsg$`
+      `^flags.(${WORLD_MODULE_ID}|${MISC_MODULE_ID}).${partialFlag}.(?<position>\\d{1,2}).conditionMsg$`,
     );
     const extraRestrictions = new Map();
 
@@ -972,9 +1008,7 @@ export function runElwinsHelpers() {
         } can use a reaction`;
         break;
       case "isMoved":
-        reactionFlavor = `{actorName} is moved and ${
-          reactionOnSelf ? "they" : "{reactionActorName}"
-        } can use a reaction`;
+        reactionFlavor = `{actorName} is moved and ${reactionOnSelf ? "they" : "{reactionActorName}"} can use a reaction`;
         break;
       case "postTargetEffectApplication":
         reactionFlavor = `{actorName} has been applied effects because of {itemName} and ${
@@ -1011,8 +1045,8 @@ export function runElwinsHelpers() {
         }
         case "d20": {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ""
-            : roll?.terms[0]?.total ?? "";
+            ? (roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? "")
+            : (roll?.terms[0]?.total ?? "");
           reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
@@ -1030,8 +1064,8 @@ export function runElwinsHelpers() {
           break;
         case "d20": {
           const theRoll = roll?.terms[0]?.results
-            ? roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? ""
-            : roll?.terms[0]?.total ?? "";
+            ? (roll.terms[0].results.find((r) => r.active)?.result ?? roll.terms[0]?.total ?? "")
+            : (roll?.terms[0]?.total ?? "");
           reactionFlavor = `${reactionFlavor} ${rollOptions.d20} ${theRoll}`;
           break;
         }
@@ -1079,11 +1113,11 @@ export function runElwinsHelpers() {
     trigger,
     reactionTokenUuid,
     tokenReactionsInfo,
-    options = {}
+    options = {},
   ) {
     // TODO filter out all activities for the same item?
     let filteredReactions = tokenReactionsInfo.reactions.filter(
-      (reactionData) => trigger === reactionData.targetOnUse && reactionData.item.uuid !== workflow.itemUuid
+      (reactionData) => trigger === reactionData.targetOnUse && reactionData.item.uuid !== workflow.itemUuid,
     );
     if (!filteredReactions.length) {
       return;
@@ -1211,7 +1245,7 @@ export function runElwinsHelpers() {
               activity,
               reactionUsed,
               maxCastLevel,
-              options
+              options,
             )
           ) {
             allowedActivities.push(activity);
@@ -1230,7 +1264,7 @@ export function runElwinsHelpers() {
             null,
             reactionUsed,
             maxCastLevel,
-            options
+            options,
           );
         }
         if (reactionDataAllowed) {
@@ -1271,7 +1305,7 @@ export function runElwinsHelpers() {
     activity,
     reactionUsed,
     maxCastLevel,
-    options = {}
+    options = {},
   ) {
     const self = reactionToken.document?.uuid === target.document?.uuid;
 
@@ -1306,7 +1340,7 @@ export function runElwinsHelpers() {
           {
             allowedDisposition,
             triggerTokenDisp: triggerToken.document.disposition,
-          }
+          },
         );
       }
       return false;
@@ -1323,7 +1357,7 @@ export function runElwinsHelpers() {
             {
               distance: tmpDist,
               allowedDistance: range,
-            }
+            },
           );
         }
         return false;
@@ -1347,7 +1381,7 @@ export function runElwinsHelpers() {
         console.warn(
           `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${
             activity?.name ?? ""
-          }: can't see trigger token.`
+          }: can't see trigger token.`,
         );
       }
       return false;
@@ -1402,7 +1436,7 @@ export function runElwinsHelpers() {
             }: extra activation condition not met.`,
             {
               extraActivationCond: options.extraActivationCond,
-            }
+            },
           );
         }
         return false;
@@ -1416,7 +1450,7 @@ export function runElwinsHelpers() {
           `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${
             activity?.name ?? ""
           } using condition ${reactionCondition}`,
-          { extraData }
+          { extraData },
         );
       }
 
@@ -1431,7 +1465,7 @@ export function runElwinsHelpers() {
             `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${
               activity?.name ?? ""
             }: reaction condition not met.`,
-            reactionCondition
+            reactionCondition,
           );
         }
         return false;
@@ -1601,7 +1635,7 @@ export function runElwinsHelpers() {
     }
     const validStrings = ["-2", "-1", "0", "1", "FRIENDLY", "HOSTILE", "NEUTRAL", "SECRET", "all"];
     throw new Error(
-      `${MACRO_NAME} | Disposition ${disposition} is invalid. Disposition must be one of "${validStrings}"`
+      `${MACRO_NAME} | Disposition ${disposition} is invalid. Disposition must be one of "${validStrings}"`,
     );
   }
 
@@ -1627,7 +1661,7 @@ export function runElwinsHelpers() {
     target,
     reactions,
     roll,
-    options = {}
+    options = {},
   ) {
     if (!reactions?.length) {
       return;
@@ -1647,7 +1681,7 @@ export function runElwinsHelpers() {
       const validReactionActivities = [];
       const preReactionOptions = foundry.utils.mergeObject(
         { actor: target.actor, token: target },
-        options?.reactionOptions ?? {}
+        options?.reactionOptions ?? {},
       );
       for (let reactionData of reactionsByTriggerSource) {
         try {
@@ -1668,7 +1702,7 @@ export function runElwinsHelpers() {
               reactionData.macroName,
               "TargetOnUse",
               reactionTrigger + ".pre",
-              preReactionOptions
+              preReactionOptions,
             );
             if (result?.skip) {
               if (result.activities?.length) {
@@ -1687,6 +1721,7 @@ export function runElwinsHelpers() {
       }
 
       let result = { name: "None", uuid: undefined };
+      let postActionData;
       try {
         if (!validReactionActivities.length) {
           continue;
@@ -1702,7 +1737,7 @@ export function runElwinsHelpers() {
             },
             workflowOptions: { targetConfirmation: "none" },
           },
-          options?.reactionOptions ?? {}
+          options?.reactionOptions ?? {},
         );
         let reactionTargetUuid;
         foundry.utils.setProperty(reactionOptions.thirdPartyReaction, "triggerSource", triggerSource);
@@ -1729,7 +1764,11 @@ export function runElwinsHelpers() {
           triggerType: "reaction",
           options: reactionOptions,
         };
-
+        postActionData = {
+          reactionActivities: validReactionActivities,
+          reactionToken,
+          reactionTargetUuid,
+        };
         result = await MidiQOL.socket().executeAsUser("chooseReactions", user.id, data);
       } finally {
         const postReactionOptions = foundry.utils.mergeObject(
@@ -1738,8 +1777,9 @@ export function runElwinsHelpers() {
             token: target,
             thirdPartyReactionResult: result,
           },
-          options?.reactionOptions ?? {}
+          options?.reactionOptions ?? {},
         );
+        await handleGenericPostMacro(workflow, postActionData, postReactionOptions);
         for (let reactionData of reactionsByTriggerSource) {
           try {
             // TODO only call if reaction chosen or has preMacro or reactionNone
@@ -1757,13 +1797,62 @@ export function runElwinsHelpers() {
                 reactionData.macroName,
                 "TargetOnUse",
                 reactionTrigger + (!reactionData.reactionNone ? ".post" : ""),
-                postReactionOptions
+                postReactionOptions,
               );
             }
           } catch (error) {
             console.error(`${MACRO_NAME} | error in postReaction.`, error);
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Executes generic post macro actions.
+   *
+   * @param {MidiQOL.Workflow} workflow - the current MidiQOL workflow.
+   * @param {object} postActionData - Post actions data.
+   * @param {Activity[]} [postActionData.reactionActivities] - Reaction activities that were prompted.
+   * @param {Token5e} [postActionData.reactionToken] - Token for which reactions were prompted.
+   * @param {Token5e} [postActionData.reactionTargetUuid] - UUID of the target token.
+   * @param {object} options - Reaction options
+   * @param {Actor5e} [options.actor] - Reaction target actor
+   * @param {Token5e} [options.target] - Target actor
+   * @param {object} [options.thirdPartyReactionResult] - Result of the reaction execution.
+   */
+  async function handleGenericPostMacro(workflow, postActionData, options) {
+    if (!options?.thirdPartyReactionResult?.uuid) {
+      return;
+    }
+    const reactionActivity = postActionData.reactionActivities.find(
+      (a) => a.uuid === options.thirdPartyReactionResult.uuid,
+    );
+    if (!reactionActivity) {
+      return;
+    }
+    // Analyze target flags for post actions
+    const reactionToken = postActionData.reactionToken;
+    if (!reactionToken) {
+      return;
+    }
+    let tprPostActions = reactionToken.actor?.getFlag(
+      MISC_MODULE_ID,
+      `elwinHelpers.tprPostActions.${reactionActivity.item.identifier}.${reactionActivity.identifier}`,
+    );
+    if (!tprPostActions) {
+      return;
+    }
+    if (!(tprPostActions instanceof Array)) {
+      tprPostActions = [tprPostActions];
+    }
+    // Parse TPR postActions
+    for (let action of tprPostActions) {
+      switch (action.name) {
+        case "reduceAppliedDamage":
+          //TODO add support for formula in preventedDamage
+          elwinHelpers.reduceAppliedDamage(workflow.damageItem, action.preventedDamage, reactionActivity.item);
+          break;
       }
     }
   }
@@ -1799,26 +1888,39 @@ export function runElwinsHelpers() {
    * Reduces the applied damage from the damageItem by preventedDmg.
    *
    * @param {object} damageItem - The MidiQOL damageItem to be updated.
-   * @param {number} preventedDmg - The amount of damage prevented.
+   * @param {number|string} preventedDmg - The amount of damage prevented or one of the special values: ALL, 1HP.
    * @param {Item5e} sourceItem - Source item of the damage prevention. (optional)
    */
   function reduceAppliedDamage(damageItem, preventedDmg, sourceItem) {
-    if (!(preventedDmg > 0)) {
-      // Only values greater than 0 are applied.
-      console.warn(`${MACRO_NAME} | Only greater than 0 damage prevention is supported.`, {
-        damageItem,
-        preventedDmg,
-        sourceItem,
-      });
+    if (!(typeof preventedDmg === "number" && preventedDmg > 0) && !["ALL", "1HP"].includes(preventedDmg)) {
+      // Only values greater than 0 are applied or special values ALL or 1HP.
+      console.warn(
+        `${MACRO_NAME} | Only greater than 0 damage prevention or special values ALL or 1HP are supported.`,
+        {
+          damageItem,
+          preventedDmg,
+          sourceItem,
+        },
+      );
       return;
     }
-    const currentDamagePrevention =
-      foundry.utils.getProperty(damageItem.calcDamageOptions, "elwinHelpers.damagePrevention") ?? 0;
-    foundry.utils.setProperty(
+    let currentDamagePrevention = foundry.utils.getProperty(
       damageItem.calcDamageOptions,
       "elwinHelpers.damagePrevention",
-      currentDamagePrevention + preventedDmg
-    );
+    ) ?? { value: 0, special: null };
+    if (typeof preventedDmg === "number") {
+      currentDamagePrevention.value += preventedDmg;
+    } else {
+      if (!currentDamagePrevention.special) {
+        currentDamagePrevention.special = preventedDmg;
+      } else if (currentDamagePrevention.special === "1HP") {
+        if (preventedDmg === "ALL") {
+          currentDamagePrevention.special = "ALL";
+        }
+      }
+    }
+    foundry.utils.setProperty(damageItem.calcDamageOptions, "elwinHelpers.damagePrevention", currentDamagePrevention);
+
     const actor = fromUuidSync(damageItem.actorUuid);
     damageItem.damageDetail = actor?.calculateDamage(damageItem.rawDamageDetail, damageItem.calcDamageOptions);
     calculateAppliedDamage(damageItem);
@@ -1839,62 +1941,66 @@ export function runElwinsHelpers() {
       }
       return;
     }
-    let { damage: totalDamage, temp, healingAdjustedTotalDamage } = getEffectiveDamage(damageItem?.damageDetail);
+    let { totalDamage, temp, healingAdjustedTotalDamage } = getEffectiveDamage(damageItem?.damageDetail);
 
     const actor = fromUuidSync(damageItem.actorUuid);
-    const as = actor?.system;
-    if (!as || !as.attributes.hp) {
+    const hp = actor?.system.attributes?.hp;
+    if (!hp) {
       if (debug) {
         console.warn(`${MACRO_NAME} | Missing damaged actor or hp attribute.`, { damageItem });
       }
       return;
     }
-    let effectiveTemp = as.attributes.hp.temp ?? 0;
+
+    let effectiveTemp = hp.temp ?? 0;
     const deltaTemp = healingAdjustedTotalDamage > 0 ? Math.min(effectiveTemp, healingAdjustedTotalDamage) : 0;
-    const deltaHP = Math.clamp(
-      healingAdjustedTotalDamage - deltaTemp,
-      -as.attributes.hp.damage,
-      as.attributes.hp.value
-    );
-    const oldTempHP = as.attributes.hp.temp ?? 0;
+    const deltaHP = Math.clamp(healingAdjustedTotalDamage - deltaTemp, -hp.damage, hp.value);
+    const oldTempHP = hp.temp ?? 0;
     const newTempHP = Math.floor(Math.max(0, effectiveTemp - deltaTemp, temp));
 
-    damageItem.oldHP = as.attributes.hp.value;
-    damageItem.newHP = as.attributes.hp.value - deltaHP;
+    damageItem.oldHP = hp.value;
+    damageItem.newHP = hp.value - deltaHP;
     damageItem.oldTempHP = oldTempHP;
     damageItem.newTempHP = newTempHP;
     damageItem.hpDamage = deltaHP;
-    damageItem.tempDamage = oldTempHP - newTempHP;
+    damageItem.tempDamage = deltaTemp;
     damageItem.totalDamage = totalDamage;
     damageItem.healingAdjustedTotalDamage = healingAdjustedTotalDamage;
-    damageItem.elwinHelpersEffectiveDamage = healingAdjustedTotalDamage;
   }
 
   /**
    * Calculates the effective damage totals by categories from a list of damages.
    * @param {object[]} damages - Array of damage details.
-   * @returns {{ damage: number, temp: number, healing: number, healingAdjustedTotalDamage:number }} The damage totals, split in categories
+   * @returns {{ totalDamage: number, temp: number, healing: number, vitality: number, healingAdjustedTotalDamage:number }} The damage totals, split in categories
    */
   function getEffectiveDamage(damages) {
     if (!damages) {
-      return { damage: undefined, temp: undefined, healing: undefined, healingAdjustedTotalDamage: undefined };
+      return {
+        totalDamage: undefined,
+        temp: undefined,
+        healing: undefined,
+        vitality: undefined,
+        healingAdjustedTotalDamage: undefined,
+      };
     }
-    let { damage, temp, healing } = damages.reduce(
+    let { totalDamage, temp, healing, vitality } = damages.reduce(
       (acc, d) => {
         if (d.type === "temphp") acc.temp += d.value;
+        else if (d.type === "vitality")
+          acc.vitality += d.value; // Vitality damage (positive) or healing (negative)
         else if (d.type === "healing") acc.healing += d.value;
-        else if (d.type !== "midi-none") acc.damage += d.value;
+        else if (d.type !== "midi-none") acc.totalDamage += d.value;
         return acc;
       },
-      { damage: 0, temp: 0, healing: 0 }
+      { totalDamage: 0, temp: 0, healing: 0, vitality: 0 },
     );
 
     // Adjust damage
-    if (damage < 0) damage = 0;
-    let healingAdjustedTotalDamage = damage + healing;
+    totalDamage = Math.max(0, totalDamage);
+    let healingAdjustedTotalDamage = totalDamage + healing;
     healingAdjustedTotalDamage =
       healingAdjustedTotalDamage < 0 ? Math.ceil(healingAdjustedTotalDamage) : Math.floor(healingAdjustedTotalDamage);
-    return { damage, temp, healing, healingAdjustedTotalDamage };
+    return { totalDamage, temp, healing, vitality, healingAdjustedTotalDamage };
   }
 
   /**
@@ -1949,7 +2055,7 @@ export function runElwinsHelpers() {
       sourceToken,
       targetToken,
       attackMode,
-      checkThrownWeapons
+      checkThrownWeapons,
     );
   }
 
@@ -1972,7 +2078,7 @@ export function runElwinsHelpers() {
       sourceToken,
       targetToken,
       attackMode,
-      checkThrownWeapons
+      checkThrownWeapons,
     );
   }
 
@@ -1995,7 +2101,7 @@ export function runElwinsHelpers() {
     sourceToken,
     targetToken,
     attackMode = "",
-    checkThrownWeapons = true
+    checkThrownWeapons = true,
   ) {
     let activity = activityOrItem;
     if (activityOrItem instanceof Item) {
@@ -2054,7 +2160,7 @@ export function runElwinsHelpers() {
       sourceToken,
       targetToken,
       attackMode,
-      checkThrownWeapons
+      checkThrownWeapons,
     );
   }
 
@@ -2077,7 +2183,7 @@ export function runElwinsHelpers() {
       sourceToken,
       targetToken,
       attackMode,
-      checkThrownWeapons
+      checkThrownWeapons,
     );
   }
 
@@ -2100,7 +2206,7 @@ export function runElwinsHelpers() {
     sourceToken,
     targetToken,
     attackMode = "",
-    checkThrownWeapons = true
+    checkThrownWeapons = true,
   ) {
     let activity = activityOrItem;
     if (activityOrItem instanceof Item) {
@@ -2159,7 +2265,7 @@ export function runElwinsHelpers() {
   function selectTargetsWithinX(
     sourceToken,
     distance,
-    options = { disposition: null, includeSource: false, updateSelected: true, isSeen: false }
+    options = { disposition: null, includeSource: false, updateSelected: true, isSeen: false },
   ) {
     options.disposition ??= null;
     options.includeSource ??= false;
@@ -2173,12 +2279,7 @@ export function runElwinsHelpers() {
 
     const aoeTargetIds = aoeTargets.map((t) => t.document.id);
     if (options.updateSelected) {
-      if (game.release.generation > 12) {
-        canvas.tokens?.setTargets(aoeTargetIds);
-      } else {
-        game.user?.updateTokenTargets(aoeTargetIds);
-        game.user?.broadcastActivity({ targets: aoeTargetIds });
-      }
+      canvas.tokens?.setTargets(aoeTargetIds);
     }
     return aoeTargets;
   }
@@ -2386,7 +2487,7 @@ export function runElwinsHelpers() {
       console.warn(
         `${MACRO_NAME} | disableManualEnchantmentPlacingOnUsePreItemRoll`,
         { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-        arguments
+        arguments,
       );
     }
     if (workflow.activity?.type !== "enchant") {
@@ -2408,7 +2509,7 @@ export function runElwinsHelpers() {
                 activity.name,
                 workflow,
                 activityWorkflow,
-                debug
+                debug,
               )
             ) {
               return;
@@ -2422,7 +2523,7 @@ export function runElwinsHelpers() {
         foundry.utils.setProperty(
           workflow.workflowOptions,
           "elwinOptions.previousEnchantments",
-          enchantments.map((e) => e.toObject(false))
+          enchantments.map((e) => e.toObject(false)),
         );
       }
     }
@@ -2437,7 +2538,7 @@ export function runElwinsHelpers() {
           activity.name,
           workflow,
           activityWorkflow,
-          debug
+          debug,
         )
       ) {
         return;
@@ -2447,7 +2548,7 @@ export function runElwinsHelpers() {
         foundry.utils.setProperty(
           activityWorkflow.workflowOptions,
           "elwinOptions.enchantmentProfile",
-          foundry.utils.getProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`)
+          foundry.utils.getProperty(messageConfig, `data.flags.${game.system.id}.use.enchantmentProfile`),
         );
       }
       // Clear profile from message to prevent drop area.
@@ -2466,7 +2567,7 @@ export function runElwinsHelpers() {
       console.warn(
         `${MACRO_NAME} | toggleSelfEnchantmentOnUsePostActiveEffects`,
         { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-        arguments
+        arguments,
       );
     }
     if (workflow.activity?.type !== "enchant") {
@@ -2475,10 +2576,16 @@ export function runElwinsHelpers() {
     }
 
     let enchantmentEffect = null;
+
+    // If this activity is a dependency of an applied enchantment, we will also add the enchantment to create as a dependency.
+    const metaEchantmentEffect = workflow.activity.item?.effects?.find(
+      (ae) => ae.isAppliedEnchantment && ae.getDependents()?.some((d) => d.uuid === workflow.activity.uuid),
+    );
+
     // Get applied enchantments for this item
     if (!workflow.activity.enchant?.self) {
       console.warn(
-        `${MACRO_NAME} | toggleSelfEnchantmentOnUsePostActiveEffects on activities without 'Automatically Enchant Self' is deprecated, it will be removed in a future version.`
+        `${MACRO_NAME} | toggleSelfEnchantmentOnUsePostActiveEffects on activities without 'Automatically Enchant Self' is deprecated, it will be removed in a future version.`,
       );
       const enchantments = getAppliedEnchantments(workflow.activity.uuid);
       if (enchantments?.length) {
@@ -2509,6 +2616,11 @@ export function runElwinsHelpers() {
         return;
       }
 
+      // Make the enchantment dependent on meta enchantment.
+      if (metaEchantmentEffect) {
+        foundry.utils.setProperty(enchantmentEffectData, "flags.dnd5e.dependentOn", metaEchantmentEffect.uuid);
+      }
+
       // Add enchantment to self
       enchantmentEffect = await applyEnchantmentToItem(workflow, enchantmentEffectData, workflow.item);
       if (!enchantmentEffect) {
@@ -2530,37 +2642,33 @@ export function runElwinsHelpers() {
         return;
       }
       enchantmentEffect = appliedEnchantments[0];
-    }
 
-    // If this activity is a dependency of an applied enchantment, also add this enchantment as a dependency.
-    const metaEchantmentEffect = workflow.activity.item?.effects?.find(
-      (ae) => ae.isAppliedEnchantment && ae.getDependents()?.some((d) => d.uuid === workflow.activity.uuid)
-    );
-    if (metaEchantmentEffect) {
-      await metaEchantmentEffect.addDependent(enchantmentEffect);
+      // Make the enchantment dependent on meta enchantment.
+      if (metaEchantmentEffect) {
+        await enchantmentEffect.setFlag("dnd5e", "dependentOn", metaEchantmentEffect.uuid);
+      }
     }
 
     // Get effects to apply on actor
     const effectIds = getSelfEnchantmentActorEffects(enchantmentEffect);
     const effectsToApply = effectIds?.length
-      ? workflow.item?.effects
+      ? (workflow.item?.effects
           .filter(
             (ae) =>
-              !ae.transfer && ae.type !== "enchantment" && (effectIds.includes(ae._id) || effectIds.includes(ae.name))
+              !ae.transfer && ae.type !== "enchantment" && (effectIds.includes(ae._id) || effectIds.includes(ae.name)),
           )
           .map((ae) => {
             const data = ae.toObject();
             data.origin = ae.uuid;
+            // Add enchantment to be deleted, this allows to auto delete the enchantment if the actor effect is deleted
+            data.changes.push({ key: "flags.dae.deleteUuid", value: enchantmentEffect.uuid });
+            // Make effect dependent on enchantment
+            foundry.utils.setProperty(data, "flags.dnd5e.dependentOn", enchantmentEffect.uuid);
             return data;
-          }) ?? []
+          }) ?? [])
       : [];
     if (effectsToApply?.length) {
       const effectsCreated = await workflow.actor.createEmbeddedDocuments("ActiveEffect", effectsToApply);
-      await enchantmentEffect.addDependent(...effectsCreated);
-      // Add enchantment to each effect as a dependency (this allows to auto delete the enchantment if the actor effect is deleted)
-      for (let ae of effectsCreated) {
-        await ae.addDependent(enchantmentEffect);
-      }
     }
 
     // Add message about activation
@@ -2580,7 +2688,7 @@ export function runElwinsHelpers() {
     const partialFlag = "elwinHelpers.selfEnchant.effects";
     const keys = [`flags.${WORLD_MODULE_ID}.${partialFlag}`, `flags.${MISC_MODULE_ID}.${partialFlag}`];
     return (enchantmentEffect?.changes?.find((c) => keys.includes(c.key))?.value?.split(/\s*,\s*/) ?? []).map((u) =>
-      u?.trim()
+      u?.trim(),
     );
   }
 
@@ -2648,7 +2756,7 @@ export function runElwinsHelpers() {
       const effectUuid = await globalThis.elwinHelpers.socket.executeAsGM(
         "elwinHelpers.remoteCreateEnchantment",
         enchantmentEffectData,
-        effectOptions
+        effectOptions,
       );
       return fromUuidSync(effectUuid);
     } else {
@@ -2703,7 +2811,7 @@ export function runElwinsHelpers() {
     activity,
     enchantmentEffectData,
     itemToEnchant,
-    deleteExisting = true
+    deleteExisting = true,
   ) {
     if (debug) {
       console.warn(`${MACRO_NAME} | applyEnchantmentToItemFromOtherActivity`, arguments);
@@ -2728,7 +2836,7 @@ export function runElwinsHelpers() {
       const effectUuid = await globalThis.elwinHelpers.socket.executeAsGM(
         "elwinHelpers.remoteCreateEnchantment",
         enchantmentEffectData,
-        effectOptions
+        effectOptions,
       );
       return fromUuidSync(effectUuid);
     } else {
@@ -2750,7 +2858,7 @@ export function runElwinsHelpers() {
           ["simpleM", "martialM"].includes(w.system.type?.value) &&
           w.system.activities
             ?.getByType("attack")
-            .some((a) => a.attack.type.value === "melee" && a.attack.type.classification === "weapon")
+            .some((a) => a.attack.type.value === "melee" && a.attack.type.classification === "weapon"),
       ) ?? []
     );
   }
@@ -2872,7 +2980,7 @@ export function runElwinsHelpers() {
    * @param {string} [options.flavor] - Text to be added under the modified roll to inform of the changes that were made.
    * @param {string} [options.id] - Identifier of this change, this can be used to limit multiple calls, only the first will apply the changes.
    * @param {boolean} [options.debug] - Flag to indicate if debug information should be logged (if undefined uses the current debug value).
-   * @param {function(object, object, object):Set<number>} changeFunction - A callback to run in the 'dnd5e.preRollDamageV2' hook
+   * @param {function(object, object, object):Set<number>} changeFunction - A callback to run in the 'dnd5e.preRollDamage' hook
    *            to apply changes to the damage roll config. It should returns a set of damage roll indexes for which to add the flavor label.
    */
   function updateDamageConfigCustom(scope, workflow, options = {}, changeFunction) {
@@ -2881,9 +2989,9 @@ export function runElwinsHelpers() {
     flavor ??= itemName;
     effectiveDebug ??= debug;
 
-    Hooks.once("dnd5e.preRollDamageV2", (rollConfig, dialogConfig, messageConfig) => {
+    Hooks.once("dnd5e.preRollDamage", (rollConfig, dialogConfig, messageConfig) => {
       if (effectiveDebug) {
-        console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamageV2`, {
+        console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamage`, {
           rollConfig,
           dialogConfig,
           messageConfig,
@@ -2904,14 +3012,14 @@ export function runElwinsHelpers() {
           `${itemName ?? MACRO_NAME} - Damage Config`,
           workflow,
           rollConfig.workflow,
-          effectiveDebug
+          effectiveDebug,
         )
       ) {
         return;
       }
       if (rollConfig.subject?.uuid !== workflow.activity?.uuid) {
         if (effectiveDebug) {
-          console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamageV2 damage is not from rolledActivity`, {
+          console.warn(`${itemName ?? MACRO_NAME} | dnd5e.preRollDamage damage is not from rolledActivity`, {
             rollConfig,
             dialogConfig,
             messageConfig,
@@ -2951,7 +3059,7 @@ export function runElwinsHelpers() {
             `${itemName ?? MACRO_NAME} - Damage Bonus Flavor`,
             workflow,
             dialog.config?.workflow,
-            effectiveDebug
+            effectiveDebug,
           )
         ) {
           return;
@@ -2960,21 +3068,21 @@ export function runElwinsHelpers() {
           if (effectiveDebug) {
             console.warn(
               `${itemName ?? MACRO_NAME} | renderDamageRollConfigurationDialog damage is not from rolledActivity`,
-              { dialog, element }
+              { dialog, element },
             );
           }
           return;
         }
         for (let index of updatedIndexes ?? [0]) {
           const formulaLine = dialog.element.querySelector(
-            `div.rolls > ul.formulas > li:nth-of-type(${index + 1}) > div.formula-line`
+            `div.rolls > ul.formulas > li:nth-of-type(${index + 1}) > div.formula-line`,
           );
           const newDiv = dialog.element.ownerDocument.createElement("div");
           newDiv.innerHTML = `<span class='label'>${flavor}</span>`;
           formulaLine.after(newDiv);
           if (rollConfig.rolls[index].situational === false) {
             const situationalField = dialog.element.querySelector(
-              `div.rolls > ul.formulas > li:nth-of-type(${index + 1}) > div.formula-line ~ div.form-group`
+              `div.rolls > ul.formulas > li:nth-of-type(${index + 1}) > div.formula-line ~ div.form-group`,
             );
             situationalField?.classList?.add("hidden");
           }
@@ -3044,7 +3152,7 @@ export function runElwinsHelpers() {
     await token.document.setFlag(
       moduleId,
       "attached.attachedEntityUuids",
-      attachedEntityUuids.filter((u) => !entityUuids.includes(u))
+      attachedEntityUuids.filter((u) => !entityUuids.includes(u)),
     );
   }
 
@@ -3126,16 +3234,18 @@ export function runElwinsHelpers() {
       console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
       return undefined;
     }
+
     if (game.user.isGM) {
+      // Make ambient light dependent on template
+      foundry.utils.setProperty(ambientLightData, "flags.dnd5e.dependentOn", templateDocument.uuid);
       const [lightSource] = await canvas.scene.createEmbeddedDocuments("AmbientLight", [ambientLightData]);
       await attachToTemplate(templateDocument, [lightSource.uuid], { sync: true });
-      await templateDocument.addDependent(lightSource);
       return lightSource;
     } else {
       const lightSourceUuid = await globalThis.elwinHelpers.socket.executeAsGM(
         "elwinHelpers.remoteAttachAmbientLightToTemplate",
         templateDocument.uuid,
-        ambientLightData
+        ambientLightData,
       );
       return fromUuidSync(lightSourceUuid);
     }
@@ -3257,7 +3367,7 @@ export function runElwinsHelpers() {
       .scrollable-list-container {
         max-height: 300px; /* Set a maximum height */
         overflow-y: auto;  /* Add vertical scrollbar when content overflows */
-        ${foundry.utils.isNewerVersion(game.release.version, "13") ? "position: relative;" : ""}
+        position: relative;
       }
 
       .scrollable-list-container ol {
@@ -3298,12 +3408,9 @@ export function runElwinsHelpers() {
       </ol>
     </div>
       `;
-      if (foundry.utils.isNewerVersion(game.release.version, "13")) {
-        const divContent = document.createElement("div");
-        divContent.innerHTML = content;
-        return divContent;
-      }
-      return content;
+      const divContent = document.createElement("div");
+      divContent.innerHTML = content;
+      return divContent;
     }
 
     /**
@@ -3324,7 +3431,7 @@ export function runElwinsHelpers() {
         window: { title },
         classes: [`theme-${game.settings.get("core", "uiConfig")?.colorScheme?.aplications ?? "dark"}`],
         content: this.getContent(items, defaultItem),
-        modal: foundry.utils.isNewerVersion(game.release.version, "13"),
+        modal: true,
         rejectClose: false,
         buttons: [
           {
@@ -3388,7 +3495,7 @@ export function runElwinsHelpers() {
       .scrollable-list-container {
         max-height: 300px; /* Set a maximum height */
         overflow-y: auto;  /* Add vertical scrollbar when content overflows */
-        ${foundry.utils.isNewerVersion(game.release.version, "13") ? "position: relative;" : ""}
+        position: relative;
       }
 
       .selectToken .form-group {
@@ -3447,12 +3554,9 @@ export function runElwinsHelpers() {
       </div>
     </div>
 `;
-      if (foundry.utils.isNewerVersion(game.release.version, "13")) {
-        const divContent = document.createElement("div");
-        divContent.innerHTML = content;
-        return divContent;
-      }
-      return content;
+      const divContent = document.createElement("div");
+      divContent.innerHTML = content;
+      return divContent;
     }
 
     /** @inheritdoc */
@@ -3632,7 +3736,7 @@ export function runElwinsHelpers() {
     if (MidiQOL.configSettings()?.optionalRules.distanceIncludesHeight) {
       const heightDifference = calculateTokeHeightDifference(sourceToken, targetToken);
       segmentDistances.forEach(
-        (distance, index, arr) => (arr[index] = getDistanceAdjustedByVerticalDist(distance, heightDifference))
+        (distance, index, arr) => (arr[index] = getDistanceAdjustedByVerticalDist(distance, heightDifference)),
       );
     }
     if (debug) {
@@ -3689,7 +3793,7 @@ export function runElwinsHelpers() {
         const origin = new PIXI.Point(
           //        ...canvas.grid.getCenter(
           Math.round(t1.document.x + canvas.dimensions.size * x),
-          Math.round(t1.document.y + canvas.dimensions.size * y)
+          Math.round(t1.document.y + canvas.dimensions.size * y),
           //       )
         );
         for (x1 = t2StartX; x1 < t2.document.width; x1++) {
@@ -3697,7 +3801,7 @@ export function runElwinsHelpers() {
             const dest = new PIXI.Point(
               //            ...canvas.grid.getCenter(
               Math.round(t2.document.x + canvas.dimensions.size * x1),
-              Math.round(t2.document.y + canvas.dimensions.size * y1)
+              Math.round(t2.document.y + canvas.dimensions.size * y1),
               //          )
             );
             const segment = [origin, dest];
@@ -3823,7 +3927,7 @@ export function runElwinsHelpers() {
     const rayToCenter = foundry.canvas.geometry.Ray.towardsPoint(
       moveTowardsRay.A,
       moveTowardsRay.B,
-      moveTowardsRay.distance - centerToBounds.distance
+      moveTowardsRay.distance - centerToBounds.distance,
     );
     const tokenPos = { x: rayToCenter.B.x - token.w / 2, y: rayToCenter.B.y - token.h / 2 };
     let tokenPosSnapped = undefined;
@@ -3832,8 +3936,8 @@ export function runElwinsHelpers() {
       const mode = canvas.grid.isHexagonal
         ? CONST.GRID_SNAPPING_MODES.CORNER
         : isTiny
-        ? CONST.GRID_SNAPPING_MODES.EDGE_MIDPOINT
-        : CONST.GRID_SNAPPING_MODES.CORNER;
+          ? CONST.GRID_SNAPPING_MODES.EDGE_MIDPOINT
+          : CONST.GRID_SNAPPING_MODES.CORNER;
       tokenPosSnapped = canvas.grid.getSnappedPoint(tokenPos, { mode }, { token });
     }
     if (debug) {
@@ -3878,8 +3982,8 @@ export function runElwinsHelpers() {
       mode = canvas.grid.isHexagonal
         ? CONST.GRID_SNAPPING_MODES.CORNER
         : isTiny
-        ? CONST.GRID_SNAPPING_MODES.EDGE_MIDPOINT
-        : CONST.GRID_SNAPPING_MODES.CORNER;
+          ? CONST.GRID_SNAPPING_MODES.EDGE_MIDPOINT
+          : CONST.GRID_SNAPPING_MODES.CORNER;
       gridIncrement = canvas.grid.isHexagonal || !isTiny ? 1 : size;
       gridDistance = isTiny ? 1 : size;
     }
@@ -3893,7 +3997,7 @@ export function runElwinsHelpers() {
         const points = canvas.grid.getBorderPolygon(
           nearToken.document.width,
           nearToken.document.height,
-          CONFIG.Canvas.objectBorderThickness
+          CONFIG.Canvas.objectBorderThickness,
         );
         nearTokenShape = new PIXI.Polygon(points).translate(nearToken.x, nearToken.y);
       } else {
@@ -3911,7 +4015,7 @@ export function runElwinsHelpers() {
         const points = canvas.grid.getBorderPolygon(
           o.t.document.width,
           o.t.document.height,
-          -CONFIG.Canvas.objectBorderThickness
+          -CONFIG.Canvas.objectBorderThickness,
         );
         const currentTokenShape = new PIXI.Polygon(points).translate(o.t.x, o.t.y);
         return currentTokenShape.overlaps(token.testCollisitionShape);
@@ -4014,8 +4118,8 @@ export function runElwinsHelpers() {
     return unoccupiedDestinations.length
       ? { pos: unoccupiedDestinations[0], occupied: false }
       : occupiedDestinations.length
-      ? { pos: occupiedDestinations[0], occupied: true }
-      : undefined;
+        ? { pos: occupiedDestinations[0], occupied: true }
+        : undefined;
   }
 
   /**
@@ -4178,8 +4282,9 @@ export function runElwinsHelpers() {
       return;
     }
     let { item: reactionItem, activity: reactionActivity } = await getItemOrActivityFromMacroName(
+      workflow,
       macroName,
-      reactionToken.actor
+      reactionToken.actor,
     );
     if (options.activityUuid) {
       reactionActivity = await fromUuid(options.activityUuid);
@@ -4187,6 +4292,20 @@ export function runElwinsHelpers() {
     } else if (options.itemUuid) {
       reactionItem = await fromUuid(options.itemUuid);
       reactionActivity = undefined;
+    }
+
+    // Note: if the spell item is a proxy for a cast ativity skip
+    if (!!reactionItem?.getFlag("dnd5e", "cachedFor")) {
+      console.warn(`${MACRO_NAME} | Spells which are proxies for cast activities are ignored, skipping registration.`, {
+        workflow,
+        reactionToken,
+        macroName,
+        targetOnUse,
+        options,
+        reactionItem,
+        reactionActivity,
+      });
+      return false;
     }
 
     // Note: cast activities and linked spell items are not supported for TPRs
@@ -4214,7 +4333,7 @@ export function runElwinsHelpers() {
             targetOnUse,
             options,
             reactionActivity,
-          }
+          },
         );
         return;
       }
@@ -4228,7 +4347,7 @@ export function runElwinsHelpers() {
             targetOnUse,
             options,
             reactionActivity,
-          }
+          },
         );
         return false;
       }
@@ -4237,7 +4356,7 @@ export function runElwinsHelpers() {
       !options.reactionNone &&
       !reactionActivity &&
       !reactionItem?.system?.activities?.some(
-        (activity) => activity.activation?.type === "reaction" && activity.type !== "cast"
+        (activity) => activity.activation?.type === "reaction" && activity.type !== "cast",
       )
     ) {
       console.warn(`${MACRO_NAME} | No supported reaction items found, skipping registration.`, {
@@ -4259,10 +4378,10 @@ export function runElwinsHelpers() {
       activities: options.reactionNone
         ? []
         : reactionActivity
-        ? [reactionActivity]
-        : reactionItem.system.activities.filter(
-            (activity) => activity.activation?.type === "reaction" && activity.type !== "cast"
-          ),
+          ? [reactionActivity]
+          : reactionItem.system.activities.filter(
+              (activity) => activity.activation?.type === "reaction" && activity.type !== "cast",
+            ),
       macroName,
       targetOnUse,
       triggerSource: options.triggerSource ?? "target",
@@ -4289,9 +4408,17 @@ export function runElwinsHelpers() {
    * @param {string} macroName - Name of the macro which should be associated to an item.
    * @param {Actor5e} actor - The current workflow actor.
    *
-   * @returns {{{Item5e} item, {Activity} activity} the item or activity associated to the specifed macroName.
+   * @returns {{{Item5e} item, {Activity} activity} the item or activity associated to the specified macroName.
    */
-  async function getItemOrActivityFromMacroName(macroName, actor) {
+  async function getItemOrActivityFromMacroName(workflow, macroName, actor) {
+    // Phase 1: Parse and resolve context
+    const context = await parseCallMacroContext(workflow, macroName, { actor });
+    if (!context) {
+      return { item: undefined, activity: undefined };
+    }
+    const { name, actorToUse } = context;
+    let resolved;
+
     let MQItemMacroLabel = getI18n("midi-qol.ItemMacroText");
     if (MQItemMacroLabel === "midi-qol.ItemMacroText") {
       MQItemMacroLabel = "ItemMacro";
@@ -4301,122 +4428,152 @@ export function runElwinsHelpers() {
       MQActivityMacroLabel = "ActivityMacro";
     }
 
-    let [name, uuid] = macroName?.trim().split("|") ?? [undefined, undefined];
-    let macroItem = undefined;
-    let macroActivity = undefined;
-
-    if (uuid?.length > 0) {
-      let macroEntity = fromUuidSync(uuid);
-      if (macroEntity) {
-        if (macroEntity instanceof ActiveEffect && macroEntity.parent instanceof Item) {
-          macroItem = macroEntity.parent;
-        } else if (macroEntity instanceof Item) {
-          macroItem = macroEntity;
-        } else if (macroEntity.item) {
-          // it points to an activity
-          macroItem = macroEntity.item;
-          macroActivity = macroEntity;
-        }
-      }
-    }
-    if (!name) {
-      return undefined;
-    }
+    // Phase 2: Resolve macro based on type
     if (name.startsWith("function.")) {
-      // Do nothing, use the macroItem UUID contained in the macroName
+      resolved = resolveFunctionMacro(name, context);
     } else if (name.startsWith(MQItemMacroLabel) || name.startsWith("ItemMacro")) {
-      if (name === "ItemMacro" || name === MQItemMacroLabel) {
-        // Do nothing, use the macroItem UUID contained in the macroName
-      } else {
-        const parts = name.split(".");
-        const itemNameOrUuid = parts.slice(1).join(".");
-        macroItem = await fromUuid(itemNameOrUuid); // item or activity
-        if (macroItem?.item) {
-          macroActivity = macroItem;
-          macroItem = macroItem.item;
-        }
-        // ItemMacro.name
-        if (!macroItem) {
-          macroItem = actor.items.find(
-            (i) =>
-              i.name === itemNameOrUuid &&
-              (foundry.utils.getProperty(i.flags, "dae.macro") ?? foundry.utils.getProperty(i.flags, "itemacro.macro"))
-          );
-        }
-        if (!macroItem && uuid) {
-          let itemId;
-          if (uuid.includes("Activity.")) {
-            itemId = uuid.split(".").slice(-3)[0];
-          } else {
-            itemId = uuid.split(".").slice(-1)[0];
-          }
-          const itemData = actor.effects.find((effect) => effect.flags.dae?.itemData?._id === itemId)?.flags.dae
-            .itemData;
-          if (itemData) {
-            macroItem = itemData;
-          }
-        }
-      }
+      resolved = await resolveItemMacroCall(name, context);
     } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith("ActivityMacro")) {
-      // ActivityMacro
-      // ActivityMacro.uuid
-      // ActivityMacro.identifier
-      // ActivityMacro.ActivityName
-      if (name === MQActivityMacroLabel || name === "ActivityMacro") {
-        // Do nothing
-      } else {
-        const parts = name.split(".");
-        const activitySpec = parts.slice(1).join(".");
-        let itemToUse = macroItem;
-        const activityOrItem = activitySpec ? await fromUuid(activitySpec) : macroActivity;
-        if (activityOrItem instanceof Item) {
-          itemToUse = activityOrItem;
-        } else {
-          itemToUse = activityOrItem?.item ?? macroItem;
-        }
-        // ActivityMacro.name or ActivityMacro.uuid where not found by fromUuid
-        if (activityOrItem) {
-          macroActivity = activityOrItem;
-        }
-        const itemId = parts.at(-1);
-        if (!macroActivity) {
-          macroActivity = itemToUse?.system.activities?.find(
-            (activity) => activity.identifier === itemId && activity.macro?.command
-          );
-        }
-        if (!macroActivity) {
-          macroActivity = itemToUse?.system.activities?.find(
-            (activity) => activity._id === itemId && activity.macro?.command
-          );
-        }
-        if (!macroActivity) {
-          macroActivity = itemToUse?.system.activities?.find(
-            (activity) => activity.name === itemId && activity.macro?.command
-          );
-        }
-        if (!macroActivity && activityOrItem instanceof Item) {
-          const activity = itemToUse?.system.activities?.contents[0];
-          macroActivity ??= activity?.macro.command ? activity : undefined;
-        } else if (!macroActivity) {
-          macroActivity ??= activityOrItem?.macro.command ? activityOrItem : undefined;
-        }
-      }
+      resolved = await resolveActivityMacroCall(name, context);
     } else {
-      // get a world/compendium macro.
-      if (name.startsWith("Macro.")) {
-        name = name.replace("Macro.", "");
-      }
-      const macro = game.macros?.getName(name);
-      if (!macro) {
-        const itemOrMacro = await fromUuid(name);
-        if (itemOrMacro instanceof Item) {
-          macroItem = itemOrMacro;
-        } else if (itemOrMacro instanceof Macro) {
-          // Do nothing, use
-        }
+      // World/compendium macro - show error if not found
+      resolved = await resolveWorldMacro(name, context);
+      if (!resolved) {
+        return { item: undefined, activity: undefined };
       }
     }
-    return { item: macroActivity ? macroActivity.item : macroItem, activity: macroActivity };
+
+    // ItemMacro/ActivityMacro may return undefined for expected reasons
+    // (e.g., ActivityMacro-id not matching current activity)
+    if (!resolved) {
+      return { item: undefined, activity: undefined };
+    }
+    return { item: resolved.item, activity: resolved.activity };
+
+    // let MQItemMacroLabel = getI18n("midi-qol.ItemMacroText");
+    // if (MQItemMacroLabel === "midi-qol.ItemMacroText") {
+    //   MQItemMacroLabel = "ItemMacro";
+    // }
+    // let MQActivityMacroLabel = getI18n("midi-qol.ActivityMacroText");
+    // if (MQActivityMacroLabel === "midi-qol.ActivityMacroText") {
+    //   MQActivityMacroLabel = "ActivityMacro";
+    // }
+
+    // let [name, uuid] = macroName?.trim().split("|") ?? [undefined, undefined];
+    // let macroItem = undefined;
+    // let macroActivity = undefined;
+
+    // if (uuid?.length > 0) {
+    //   let macroEntity = fromUuidSync(uuid);
+    //   if (macroEntity) {
+    //     if (macroEntity instanceof ActiveEffect && macroEntity.parent instanceof Item) {
+    //       macroItem = macroEntity.parent;
+    //     } else if (macroEntity instanceof Item) {
+    //       macroItem = macroEntity;
+    //     } else if (macroEntity.item) {
+    //       // it points to an activity
+    //       macroItem = macroEntity.item;
+    //       macroActivity = macroEntity;
+    //     }
+    //   }
+    // }
+    // if (!name) {
+    //   return undefined;
+    // }
+    // if (name.startsWith("function.")) {
+    //   // Do nothing, use the macroItem UUID contained in the macroName
+    // } else if (name.startsWith(MQItemMacroLabel) || name.startsWith("ItemMacro")) {
+    //   if (name === "ItemMacro" || name === MQItemMacroLabel) {
+    //     // Do nothing, use the macroItem UUID contained in the macroName
+    //   } else {
+    //     const parts = name.split(".");
+    //     const itemNameOrUuid = parts.slice(1).join(".");
+    //     macroItem = await fromUuid(itemNameOrUuid); // item or activity
+    //     if (macroItem?.item) {
+    //       macroActivity = macroItem;
+    //       macroItem = macroItem.item;
+    //     }
+    //     // ItemMacro.name
+    //     if (!macroItem) {
+    //       macroItem = actor.items.find(
+    //         (i) =>
+    //           i.name === itemNameOrUuid &&
+    //           (foundry.utils.getProperty(i.flags, "dae.macro") ?? foundry.utils.getProperty(i.flags, "itemacro.macro")),
+    //       );
+    //     }
+    //     if (!macroItem && uuid) {
+    //       let itemId;
+    //       if (uuid.includes("Activity.")) {
+    //         itemId = uuid.split(".").slice(-3)[0];
+    //       } else {
+    //         itemId = uuid.split(".").slice(-1)[0];
+    //       }
+    //       const itemData = actor.effects.find((effect) => effect.flags.dae?.itemData?._id === itemId)?.flags.dae.itemData;
+    //       if (itemData) {
+    //         macroItem = itemData;
+    //       }
+    //     }
+    //   }
+    // } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith("ActivityMacro")) {
+    //   // ActivityMacro
+    //   // ActivityMacro.uuid
+    //   // ActivityMacro.identifier
+    //   // ActivityMacro.ActivityName
+    //   if (name === MQActivityMacroLabel || name === "ActivityMacro") {
+    //     // Do nothing
+    //   } else {
+    //     const parts = name.split(".");
+    //     const activitySpec = parts.slice(1).join(".");
+    //     let itemToUse = macroItem;
+    //     const activityOrItem = activitySpec ? await fromUuid(activitySpec) : macroActivity;
+    //     if (activityOrItem instanceof Item) {
+    //       itemToUse = activityOrItem;
+    //     } else {
+    //       itemToUse = activityOrItem?.item ?? macroItem;
+    //     }
+    //     // ActivityMacro.name or ActivityMacro.uuid where not found by fromUuid
+    //     if (activityOrItem) {
+    //       macroActivity = activityOrItem;
+    //     }
+    //     const itemId = parts.at(-1);
+    //     if (!macroActivity) {
+    //       macroActivity = itemToUse?.system.activities?.find(
+    //         (activity) => activity.identifier === itemId && activity.macro?.command,
+    //       );
+    //     }
+    //     if (!macroActivity) {
+    //       macroActivity = itemToUse?.system.activities?.find(
+    //         (activity) => activity._id === itemId && activity.macro?.command,
+    //       );
+    //     }
+    //     if (!macroActivity) {
+    //       macroActivity = itemToUse?.system.activities?.find(
+    //         (activity) => activity.name === itemId && activity.macro?.command,
+    //       );
+    //     }
+    //     if (!macroActivity && activityOrItem instanceof Item) {
+    //       const activity = itemToUse?.system.activities?.contents[0];
+    //       macroActivity ??= activity?.macro.command ? activity : undefined;
+    //     } else if (!macroActivity) {
+    //       macroActivity ??= activityOrItem?.macro.command ? activityOrItem : undefined;
+    //     }
+    //   }
+    // } else {
+    //   // get a world/compendium macro.
+    //   if (name.startsWith("Macro.")) {
+    //     name = name.replace("Macro.", "");
+    //   }
+    //   const macro = game.macros?.getName(name);
+    //   if (!macro) {
+    //     const itemOrMacro = await fromUuid(name);
+    //     if (itemOrMacro instanceof Item) {
+    //       macroItem = itemOrMacro;
+    //     } else if (itemOrMacro instanceof Macro) {
+    //       // Do nothing, use
+    //     }
+    //   }
+    // }
+    // return { item: macroActivity ? macroActivity.item : macroItem, activity: macroActivity };
   }
 
   async function checkActivityUsage(activity, maxCastLevel, usedReaction) {
@@ -4570,6 +4727,136 @@ export function runElwinsHelpers() {
       }
     }
     return pactLevel;
+  }
+
+  async function parseCallMacroContext(workflow, macroName, options) {
+    const [name, uuid] = macroName?.trim().split("|") ?? [];
+    if (!name) return undefined;
+
+    let macroItem = undefined;
+    let macroActivity = undefined;
+    const actorToUse = options.actor ?? workflow.actor;
+
+    // Resolve entity from UUID if provided
+    if (uuid?.length > 0) {
+      const macroEntity = await fromUuid(uuid);
+      if (macroEntity) {
+        if (macroEntity instanceof ActiveEffect) {
+          if (macroEntity.parent instanceof Item) macroItem = macroEntity.parent;
+        } else if (macroEntity instanceof Item) {
+          macroItem = macroEntity;
+        } else if (macroEntity.item) {
+          // Activity
+          macroActivity = macroEntity;
+          macroItem = macroEntity.item;
+        }
+      }
+    }
+
+    return { name, uuid, macroItem, macroActivity, actorToUse };
+  }
+
+  /**
+   * Resolve a function.* macro specification.
+   */
+  function resolveFunctionMacro(name, context) {
+    const func = name.replace("function.", "").trim();
+    return {
+      item: context.macroItem,
+      activity: context.macroActivity,
+    };
+  }
+
+  /**
+   * Resolve an ItemMacro specification, with DAE itemData fallback.
+   */
+  async function resolveItemMacroCall(name, context) {
+    const { uuid, macroItem, actorToUse } = context;
+
+    // Try standard resolution first
+    const resolved = await MidiQOL.resolveItemMacro(name, { actor: actorToUse, originItem: macroItem });
+    if (resolved) {
+      return {
+        item: resolved.item,
+        sourceItemUuid: resolved.item?.uuid,
+      };
+    }
+
+    // DAE itemData fallback - look for item data stored in effect flags
+    if (actorToUse instanceof Actor && uuid) {
+      const itemData = resolveDAEItemData(actorToUse, uuid);
+      if (itemData) {
+        return {
+          item: itemData,
+          sourceItemUuid: itemData?.uuid,
+        };
+      }
+    }
+    return undefined;
+  }
+
+  /**
+   * Resolve an ActivityMacro specification.
+   */
+  async function resolveActivityMacroCall(name, context) {
+    const { macroItem, macroActivity } = context;
+
+    // Workflow-specific guard: ActivityMacro-id must match current activity
+    if (name.startsWith("ActivityMacro-")) {
+      const activityId = name.split("-").slice(1).join("-");
+      if (!macroActivity || activityId !== macroActivity?.id) return undefined;
+    }
+
+    const resolved = await MidiQOL.resolveActivityMacro(name, {
+      originItem: macroItem,
+      originActivity: macroActivity,
+    });
+
+    if (resolved) {
+      return {
+        item: resolved.item,
+        activity: resolved.activity,
+        sourceItemUuid: resolved.item?.uuid,
+      };
+    }
+    return undefined;
+  }
+
+  /**
+   * Resolve a world or compendium macro.
+   */
+  async function resolveWorldMacro(name, context) {
+    const macroName = name.startsWith("Macro.") ? name.slice(6) : name;
+    let macro = game.macros?.getName(macroName);
+
+    if (!macro) {
+      const doc = await fromUuid(macroName);
+      if (doc instanceof Item) {
+        return {
+          item: doc,
+          sourceItemUuid: doc.uuid,
+        };
+      } else if (doc instanceof Macro) {
+        macro = doc;
+      }
+    }
+
+    if (macro?.type === "chat") {
+      macro.execute();
+      return undefined; // Chat macros handle themselves
+    }
+
+    return macro ? { item: context.macroItem, activity: context.macroActivity, macro } : undefined;
+  }
+
+  function resolveDAEItemData(actor, uuid) {
+    let itemId;
+    if (uuid.includes("Activity.") || uuid.includes("ActiveEffect.")) {
+      itemId = uuid.split(".").slice(-3)[0];
+    } else {
+      itemId = uuid.split(".").slice(-1)[0];
+    }
+    return actor.effects.find((e) => e.flags?.dae?.itemData?._id === itemId)?.flags?.dae?.itemData;
   }
 
   ////////////////// Remote functions ///////////////////////////////

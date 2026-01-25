@@ -2,7 +2,7 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.4.0
+// v2.5.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -48,10 +48,8 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.7")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -64,7 +62,7 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -115,6 +113,9 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     delete lightEffectData._id;
     lightEffectData.duration = null;
     lightEffectData.origin = sourceItem.uuid;
+    // Make light effect dependent on enchantment effect
+    foundry.utils.setProperty(lightEffectData, "flags.dnd5e.dependentOn", enchantmentEffect.uuid);
+
     // Add support for CPR VAE button
     if (game.modules.get("chris-premades")?.active && game.modules.get("visual-active-effects")?.active) {
       if (!foundry.utils.getProperty(sourceItem, "flags.chris-premades.info.identifier")) {
@@ -144,10 +145,9 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
       });
     }
     const [lightEffect] = await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [lightEffectData]);
-    // Make them dependent upon each other
     if (lightEffect && enchantmentEffect) {
-      await enchantmentEffect.addDependent(lightEffect);
-      await lightEffect.addDependent(enchantmentEffect);
+      // Make enchantment effect dependent on light effect
+      MidiQOL.addDependent(lightEffect, enchantmentEffect);
     }
 
     // Add message about blade activation
@@ -165,13 +165,13 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
    */
   async function handleAdjustLightRadiusPostActiveEffects(currentWorkflow, sourceItem) {
     const lightEffect = sourceItem.actor?.effects.find(
-      (ae) => ae.type !== "enchantment" && ae.origin?.startsWith(sourceItem.uuid)
+      (ae) => ae.type !== "enchantment" && ae.origin?.startsWith(sourceItem.uuid),
     );
     if (!lightEffect) {
       return;
     }
     const currentLightRadius = Number(
-      lightEffect.changes.find((c) => c.key === "ATL.light.bright")?.value ?? INITIAL_LIGHT_RADIUS
+      lightEffect.changes.find((c) => c.key === "ATL.light.bright")?.value ?? INITIAL_LIGHT_RADIUS,
     );
     const buttons = [];
     if (currentLightRadius < MAX_LIGHT_RADIUS) {

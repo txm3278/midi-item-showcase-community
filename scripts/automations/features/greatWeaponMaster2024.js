@@ -2,7 +2,7 @@
 // Read First!!!!
 // Handles the ability to add a damage bonus when the conditions are met as well as the ability
 // to make a bonus melee weapon attack when the actor scores a critical hit or brings a target to 0 HP with a melee weapon.
-// v1.3.0
+// v1.4.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -16,7 +16,7 @@
 // Description:
 // In the postActiveEffects (OnUse) phase (on any owner's item other than Greater Weapon Master):
 //   If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
-//   prompt the user to make a bonus attack with the same weapon. If confirmed, then MidiQOL.completeItemUseV2 is called on this item.
+//   prompt the user to make a bonus attack with the same weapon. If confirmed, then MidiQOL.completeItemUse is called on this item.
 // ###################################################################################################
 
 export async function greatWeaponMaster2024({
@@ -37,9 +37,7 @@ export async function greatWeaponMaster2024({
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.4")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -52,7 +50,7 @@ export async function greatWeaponMaster2024({
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
   if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
@@ -95,7 +93,7 @@ export async function greatWeaponMaster2024({
     let reduceToZeroHp = false;
     if (!allowBonusAction && currentWorkflow.hitTargets.size > 0) {
       reduceToZeroHp = currentWorkflow.damageList?.some(
-        (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0
+        (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0,
       );
       allowBonusAction = reduceToZeroHp;
     }
@@ -147,7 +145,7 @@ export async function greatWeaponMaster2024({
     foundry.utils.setProperty(
       weaponItemData,
       "flags.midi-qol.onUseMacroName",
-      onUseMacroName?.length ? "," + preRollConfigMacro : preRollConfigMacro
+      onUseMacroName?.length ? "," + preRollConfigMacro : preRollConfigMacro,
     );
     const activity = weaponItemData.system.activities[activityId];
     if (!activity) {

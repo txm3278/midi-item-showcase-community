@@ -119,6 +119,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "macroData": {
@@ -131,6 +132,13 @@
           "idv": false,
           "ida": false,
           "idm": false
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
         },
         "useConditionReason": "",
         "isOverTimeFlag": false,
@@ -233,6 +241,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "macroData": {
@@ -245,6 +254,13 @@
           "idv": false,
           "ida": false,
           "idm": false
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
         },
         "useConditionReason": "",
         "isOverTimeFlag": false,

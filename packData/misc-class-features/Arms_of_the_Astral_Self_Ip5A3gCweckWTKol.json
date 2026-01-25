@@ -103,14 +103,7 @@
       "disabled": true,
       "_id": "OrFsgBzqm000L5qA",
       "system": {},
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "function.MISC.macros.classFeatures.armsOfTheAstralSelf,preItemRoll",
-          "priority": 20
-        }
-      ],
+      "changes": [],
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -163,6 +156,69 @@
         }
       },
       "_key": "!items.effects!Ip5A3gCweckWTKol.OrFsgBzqm000L5qA"
+    },
+    {
+      "type": "enchantment",
+      "name": "Spectral Arms - Extended Reach",
+      "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
+      "disabled": true,
+      "_id": "xSpfNfI0cHBuy8p1",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.activities.<id>.range.override",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "system.activities.<id>.range.value",
+          "mode": 5,
+          "value": "@item.range.reach + 5",
+          "priority": 20
+        },
+        {
+          "key": "macro.execute",
+          "mode": 0,
+          "value": "function.MISC.macros.classFeatures.armsOfTheAstralSelf",
+          "priority": 20
+        }
+      ],
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "durationExpression": "",
+          "macroRepeat": "startEndEveryTurnAny",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!Ip5A3gCweckWTKol.xSpfNfI0cHBuy8p1"
     }
   ],
   "system": {
@@ -206,7 +262,8 @@
         "effects": [
           {
             "_id": "PvMAiVVWMn4w620M",
-            "onSave": true
+            "onSave": true,
+            "level": {}
           }
         ],
         "range": {
@@ -311,6 +368,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -320,6 +378,13 @@
           "postRemoveConditionText": ""
         },
         "otherActivityId": "none",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true,
         "friendlySave": "default"
       },
@@ -457,6 +522,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -469,6 +535,13 @@
         "attackMode": "",
         "ammunition": "",
         "otherActivityUuid": "",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true,
         "attackRollPerTarget": "default",
         "fumbleThreshold": 1
@@ -513,6 +586,15 @@
               "effect": [],
               "item": []
             }
+          },
+          {
+            "_id": "xSpfNfI0cHBuy8p1",
+            "level": {},
+            "riders": {
+              "activity": [],
+              "effect": [],
+              "item": []
+            }
           }
         ],
         "range": {
@@ -539,7 +621,6 @@
           "max": ""
         },
         "enchant": {
-          "identifier": "",
           "self": false
         },
         "restrictions": {
@@ -588,6 +669,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
@@ -596,7 +678,14 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "name": "Apply Arms to Unarmed Strike"
+        "name": "Apply Arms to Unarmed Strike",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "uses": {

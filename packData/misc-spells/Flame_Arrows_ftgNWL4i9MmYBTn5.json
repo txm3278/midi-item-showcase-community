@@ -53,10 +53,6 @@
       "cost": 0,
       "supply": 0
     },
-    "preparation": {
-      "mode": "prepared",
-      "prepared": false
-    },
     "activities": {
       "oztDCVKJgOKm5wcl": {
         "type": "enchant",
@@ -116,7 +112,9 @@
           "recovery": [],
           "max": ""
         },
-        "enchant": {},
+        "enchant": {
+          "self": false
+        },
         "restrictions": {
           "allowMagical": true,
           "categories": [],
@@ -134,7 +132,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -142,7 +141,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "always",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -153,7 +151,18 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -161,7 +170,14 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "name": "Enchant Quiver/Crossbow Bolt Case"
+        "name": "Enchant Quiver/Crossbow Bolt Case",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "identifier": "flame-arrows",
@@ -169,7 +185,9 @@
       "vocal",
       "somatic",
       "concentration"
-    ]
+    ],
+    "method": "spell",
+    "prepared": 0
   },
   "name": "Flame Arrows",
   "flags": {

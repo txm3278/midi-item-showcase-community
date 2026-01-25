@@ -2,7 +2,7 @@
 // Read First!!!!
 // Adds damage resistance when the owner is attacked by a ranged weapon attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v2.1.0
+// v2.2.0
 // Author: Elwin#1410 based on Ris version
 // Dependencies:
 //  - DAE [on]
@@ -22,8 +22,8 @@
 // ###################################################################################################
 
 // Default name of the item
-const DEFAULT_ITEM_NAME = 'Shield of Missile Attraction';
-const MODULE_ID = 'midi-item-showcase-community';
+const DEFAULT_ITEM_NAME = "Shield of Missile Attraction";
+const MODULE_ID = "midi-item-showcase-community";
 
 /**
  * Validates if the required dependencies are met.
@@ -31,12 +31,12 @@ const MODULE_ID = 'midi-item-showcase-community';
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.3')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -63,11 +63,11 @@ export async function shieldOfMissileAttraction({
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
-  if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isTargeted') {
+  if (args[0].tag === "TargetOnUse" && args[0].macroPass === "tpr.isTargeted") {
     // Check if ranged weapon attack
     if (elwinHelpers.isRangedWeaponAttack(workflow.activity, workflow.token, token)) {
       // Get token wielding the shield
@@ -82,27 +82,22 @@ export async function shieldOfMissileAttraction({
       workflow.targets.delete(token);
       workflow.targets.add(sourceToken);
       const targetIds = workflow.targets.map((t) => t.id);
-      if (game.release.generation > 12) {
-        canvas.tokens?.setTargets(targetIds);
-      } else {
-        game.user?.updateTokenTargets(targetIds);
-        game.user?.broadcastActivity({ targets: targetIds });
-      }
+      canvas.tokens?.setTargets(targetIds);
 
       // Add info about target switch
-      const targetDivs = elwinHelpers.getTargetDivs(token, 'The target <strong>${tokenName}</strong>');
+      const targetDivs = elwinHelpers.getTargetDivs(token, "The target <strong>${tokenName}</strong>");
       const newTargetDivs = elwinHelpers.getTargetDivs(
         sourceToken,
-        `was switched to <strong>\${tokenName}</strong> by <strong>${scope.macroItem.name}</strong>.`
+        `was switched to <strong>\${tokenName}</strong> by <strong>${scope.macroItem.name}</strong>.`,
       );
       const infoMsg = `${targetDivs}${newTargetDivs}`;
-      await elwinHelpers.insertTextIntoMidiItemCard('beforeHitsDisplay', workflow, infoMsg);
+      await elwinHelpers.insertTextIntoMidiItemCard("beforeHitsDisplay", workflow, infoMsg);
     }
-  } else if (args[0] === 'on') {
-    if (!actor.getFlag(MODULE_ID, 'shieldOfMissileAttractionCurse')) {
+  } else if (args[0] === "on") {
+    if (!actor.getFlag(MODULE_ID, "shieldOfMissileAttractionCurse")) {
       const effectData = item.effects
         .find(
-          (ae) => !ae.transfer && ae.changes.some((c) => c.key === `flags.${MODULE_ID}.shieldOfMissileAttractionCurse`)
+          (ae) => !ae.transfer && ae.changes.some((c) => c.key === `flags.${MODULE_ID}.shieldOfMissileAttractionCurse`),
         )
         ?.toObject();
       if (!effectData) {
@@ -110,7 +105,7 @@ export async function shieldOfMissileAttraction({
       }
       effectData.origin = item.uuid; // flag the effect as associated to the source item used
       // TODO check if options to not show scolling status...
-      await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+      await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
     }
   }
 }

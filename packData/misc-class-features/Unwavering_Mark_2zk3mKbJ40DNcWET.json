@@ -9,7 +9,10 @@
     "source": {
       "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "XGtE",
+      "page": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -79,7 +82,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "",
@@ -113,7 +116,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
@@ -122,7 +124,18 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "",
         "macroData": {
@@ -133,7 +146,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -141,14 +155,23 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "unwavering-mark",
     "enchant": {},
     "prerequisites": {
       "level": 3,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     },
     "advancement": []
   },

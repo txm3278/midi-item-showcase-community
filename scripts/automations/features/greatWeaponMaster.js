@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.2.0
+// v3.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -18,8 +18,8 @@
 // If the attack is a melee attack from a heavy weapon for which the attacker is proficient and toggled on or the prompt to activate was accepted,
 // an effect to give -5 penalty to hit and a +10 bonus to damage is granted for this attack. The passive part will add a charge when
 // the requirements are met and remove it at the end of the owner's turn. The Bonus Attack Activity will prompts a dialog to choose weapon
-// with which to make the bonus attack. Then MidiQOL.completeItemUseV2 is called on this item. If no target is selected and the midi settings
-// for target confirmation are not active or do not trigger on 'noneTargeted', the user's is asked to confirm a target before MidiQOL.completeItemUseV2 is called.
+// with which to make the bonus attack. Then MidiQOL.completeItemUse is called on this item. If no target is selected and the midi settings
+// for target confirmation are not active or do not trigger on 'noneTargeted', the user's is asked to confirm a target before MidiQOL.completeItemUse is called.
 //
 // Description:
 // In the preItemRoll (OnUse) phase (on Greater Weapon Master Bonus Attack activity):
@@ -42,7 +42,7 @@
 // In the postActiveEffects (OnUse) phase (on Greater Weapon Master Toggle activity):
 //   Sets the state to the next state on->off, off->on, and adds or deletes the toggled on AE if the new state is toggled on or toggled off.
 // In the postActiveEffects (OnUse) phase (on Greater Weapon Master Bonus Attack activity):
-//   Calls MidiQOL.completeItemUseV2 with the selected weapon.
+//   Calls MidiQOL.completeItemUse with the selected weapon.
 // In the postActiveEffects (OnUse) phase (on any owner's item other than Greater Weapon Master):
 //   If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
 //   grants one charge to use the special bonus attack if it was not already granted.
@@ -63,10 +63,8 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     [PROMPT_STATE, ON_STATE],
   ]);
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.3.0")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -79,7 +77,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
   if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
@@ -217,7 +215,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       !elwinHelpers.isMeleeWeaponAttack(
         currentWorkflow.activity,
         currentWorkflow.token,
-        currentWorkflow.targets.first()
+        currentWorkflow.targets.first(),
       )
     ) {
       // Only works on proficient heavy melee weapon attacks
@@ -247,7 +245,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
   }
 
   /**
-   * Calls MidiQOL.completeItemUseV2 with the selected weapon to make the bonus attack.
+   * Calls MidiQOL.completeItemUse with the selected weapon to make the bonus attack.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Item5e} sourceItem - The Great Weapon Master item.
@@ -257,7 +255,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     const weaponItem = currentActor?.items.get(currentActor?.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId"));
     if (!weaponItem) {
       ui.notifications.warn(
-        `${sourceItem.name} | No selected weapon for bonus attack, reallocate spent resource if needed.`
+        `${sourceItem.name} | No selected weapon for bonus attack, reallocate spent resource if needed.`,
       );
       const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
       if (consumed) {
@@ -325,7 +323,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     let reduceToZeroHp = false;
     if (!allowBonusAction && currentWorkflow.hitTargets.size > 0) {
       reduceToZeroHp = currentWorkflow.damageList?.some(
-        (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0
+        (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0,
       );
       allowBonusAction = reduceToZeroHp;
     }
@@ -348,7 +346,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       {
         relativeTo: sourceItem.actor,
         rollData: sourceItem.getRollData(),
-      }
+      },
     );
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
@@ -356,7 +354,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
         content: message,
         speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token }),
         whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
-      })
+      }),
     );
   }
 
@@ -476,7 +474,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     return elwinHelpers.ItemSelectionDialog.createDialog(
       `⚔️ ${sourceItem.name}: Choose a Weapon`,
       weaponChoices,
-      defaultWeapon
+      defaultWeapon,
     );
   }
 
@@ -490,6 +488,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    */
   async function doBonusAttack(currentWorkflow, sourceItem, weaponItem) {
     // Change activation type to special so it is not considered as an Attack Action
+    // TODO Add enchantment instead of synthetic item
     const weaponItemData = weaponItem.toObject();
     weaponItemData._id = foundry.utils.randomID();
     weaponItemData.name += ` (${getBonusAttackActivity(sourceItem).name})`;
@@ -501,7 +500,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     foundry.utils.setProperty(
       weaponItemData,
       "flags.midi-qol.onUseMacroName",
-      onUseMacroName?.length ? "," + preDamageRollConfigMacro : preDamageRollConfigMacro
+      onUseMacroName?.length ? "," + preDamageRollConfigMacro : preDamageRollConfigMacro,
     );
 
     for (let activityId of Object.keys(weaponItemData.system.activities ?? {})) {
@@ -535,10 +534,6 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
         },
       },
     };
-    if (game.release.generation > 12) {
-      return await MidiQOL.completeItemUse(weaponCopy, config, {}, message);
-    } else {
-      return await MidiQOL.completeItemUseV2(weaponCopy, config, {}, message);
-    }
+    return await MidiQOL.completeItemUse(weaponCopy, config, {}, message);
   }
 }

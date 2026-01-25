@@ -28,7 +28,6 @@
     "rarity": "rare",
     "identified": true,
     "cover": null,
-    "crewed": false,
     "uses": {
       "max": "",
       "recovery": [],
@@ -47,7 +46,8 @@
     },
     "speed": {
       "value": null,
-      "conditions": ""
+      "conditions": "",
+      "units": "ft"
     },
     "strength": 0,
     "proficient": 1,
@@ -157,6 +157,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "macroData": {
@@ -176,13 +177,23 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": "",
         "otherActivityId": "none",
         "otherActivityAsParentType": true
       }
     },
     "identifier": "arrow-catching-shield",
-    "attuned": false
+    "attuned": false,
+    "crew": {
+      "value": []
+    }
   },
   "flags": {
     "core": {},

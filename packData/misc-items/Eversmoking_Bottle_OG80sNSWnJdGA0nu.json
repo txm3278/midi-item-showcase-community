@@ -91,7 +91,8 @@
         },
         "effects": [
           {
-            "_id": "RyupTjbZQtDlaMfk"
+            "_id": "RyupTjbZQtDlaMfk",
+            "level": {}
           }
         ],
         "range": {
@@ -170,7 +171,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -181,7 +183,18 @@
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
         "name": "Open Bottle",
-        "img": "systems/dnd5e/icons/svg/ink-pot.svg"
+        "img": "systems/dnd5e/icons/svg/ink-pot.svg",
+        "flags": {
+          "region-attacher": {
+            "attachRegionToTemplate": false
+          }
+        },
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       },
       "yoTqvFxxUMtB3aPk": {
         "type": "utility",
@@ -277,7 +290,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -288,7 +302,14 @@
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
         "name": "Close Bottle",
-        "img": "systems/dnd5e/icons/svg/ink-pot.svg"
+        "img": "systems/dnd5e/icons/svg/ink-pot.svg",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "attuned": false,

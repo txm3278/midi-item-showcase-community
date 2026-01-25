@@ -28,7 +28,6 @@
     "rarity": "rare",
     "identified": true,
     "cover": null,
-    "crewed": false,
     "range": {
       "value": 5,
       "long": null,
@@ -191,9 +190,17 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "name": "Adjust Light Radius",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -311,6 +318,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "attackMode": "oneHanded",
@@ -318,6 +326,13 @@
         "otherActivityId": "RZXnbNx7y4NTwGuf",
         "otherActivityUuid": "",
         "name": "Attack",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -392,7 +407,6 @@
           "max": ""
         },
         "enchant": {
-          "identifier": "",
           "self": true
         },
         "restrictions": {
@@ -440,10 +454,18 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "name": "Activate/Deactivate Blade",
         "useConditionReason": "The sword must be equipped and attuned to activate the blade",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -563,9 +585,17 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "name": "Damage vs Undead",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -576,6 +606,9 @@
       }
     },
     "attuned": false,
+    "crew": {
+      "value": []
+    },
     "ammunition": {}
   },
   "flags": {

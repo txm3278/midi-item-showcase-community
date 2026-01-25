@@ -11,6 +11,7 @@ import { wardingManeuver } from './Fighter/Cavalier/wardingManeuver.js';
 import { psionicPowerProtectiveField } from './Fighter/PsiWarrior/psionicPowerProtectiveField.js';
 import { deflectAttacks } from './Monk/deflectAttacks.js';
 import { deflectMissiles } from './Monk/deflectMissiles.js';
+import { ki } from './Monk/ki.js';
 import { armsOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/armsOfTheAstralSelf.js';
 import { awakenedAstralSelf } from './Monk/WayOfTheAstralSelf/awakenedAstralSelf.js';
 import { bodyOfTheAstralSelf } from './Monk/WayOfTheAstralSelf/bodyOfTheAstralSelf.js';
@@ -39,6 +40,7 @@ export let classFeatures = {
   psionicPowerProtectiveField,
   deflectAttacks,
   deflectMissiles,
+  ki,
   armsOfTheAstralSelf,
   awakenedAstralSelf,
   bodyOfTheAstralSelf,

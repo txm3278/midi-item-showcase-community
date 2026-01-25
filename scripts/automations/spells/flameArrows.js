@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Flame Arrows, allows to enchant a quiver or bolt case which will add fire damage to ammunitions
 // fired from the enchanted container.
-// v2.0.0
+// v2.1.0
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
@@ -21,10 +21,10 @@
 //   Applies an enchantment to the selected quiver and an AE that will add extra fire damage
 //   from ammunitions fired from the enchanted container.
 // In the preAttackRoll phase of any item used by the owner of the enchanted container (in target's workflow):
-//   Registers a hook on dnd5e.preRollAttackV2.
+//   Registers a hook on dnd5e.preRollAttack.
 //   It also makes sure that if the count of ammunition allowed to fire from the enchanted container
 //   has been reached, the spell and its enchantment are ended.
-// In the dnd5e.preRollAttackV2 hook (in target's workflow):
+// In the dnd5e.preRollAttack hook (in target's workflow):
 //   If the workflow associated to the current activity is the same as the one received in the preAttackRoll,
 //   changes the label, of ammunitionOptions from the dialog configuration, of an ammunition inside the enchanted container.
 // In the postAttackRollComplete phase of any item used by the owner of the enchanted container (in target's workflow):
@@ -33,12 +33,12 @@
 //   It also sets a flag in the workflow options to indicate that a valid enchanted ammunition was used.
 // In the preDamageRollConfig phase of any item used by the owner of the enchanted container (in target's workflow):
 //   If the workflow options flag to indicate that a valid ammunition as used, calls elwinHelpers.damageConfig.updateBasic
-//   to add a hook on dnd5e.preRollDamageV2 that adds the extra fire damage.
+//   to add a hook on dnd5e.preRollDamage that adds the extra fire damage.
 // ###################################################################################################
 
 // Default name of the feature
-const DEFAULT_ITEM_NAME = 'Flame Arrows';
-const MODULE_ID = 'midi-item-showcase-community';
+const DEFAULT_ITEM_NAME = "Flame Arrows";
+const MODULE_ID = "midi-item-showcase-community";
 
 /**
  * Validates if the required dependencies are met.
@@ -46,12 +46,12 @@ const MODULE_ID = 'midi-item-showcase-community';
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.3')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -68,19 +68,19 @@ export async function flameArrows({ speaker, actor, token, character, item, args
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     return await handleOnUsePreItemRoll(workflow, scope);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     return await handleOnUsePostActiveEffects(actor, workflow, scope);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRoll") {
     return await handleOnUsePreAttackRollTarget(actor, workflow, scope);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postAttackRollComplete') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postAttackRollComplete") {
     return handleOnUsePostAttackRollCompleteTarget(actor, workflow, scope);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preDamageRollConfig') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
     return handleOnUsePreDamageRollConfigTarget(workflow, scope, debug);
   }
 }
@@ -106,9 +106,9 @@ async function handleOnUsePreItemRoll(workflow, scope) {
   const containerChoices = target.actor?.itemTypes.consumable
     .filter(
       (i) =>
-        i.system.type?.value === 'ammo' &&
-        ['arrow', 'crossbowBolt'].includes(i.system.type?.subtype) &&
-        isValidContainer(i.container)
+        i.system.type?.value === "ammo" &&
+        ["arrow", "crossbowBolt"].includes(i.system.type?.subtype) &&
+        isValidContainer(i.container),
     )
     .map((i) => i.container);
   if (!containerChoices?.length) {
@@ -121,7 +121,7 @@ async function handleOnUsePreItemRoll(workflow, scope) {
     selectedContainer = await elwinHelpers.ItemSelectionDialog.createDialog(
       `⚔️ ${scope.rolledItem.name}: Choose a Quiver/Crossbow Bolt Case`,
       containerChoices,
-      selectedContainer
+      selectedContainer,
     );
   }
   if (!selectedContainer) {
@@ -130,7 +130,7 @@ async function handleOnUsePreItemRoll(workflow, scope) {
     ui.notifications.warn(msg);
     return false;
   }
-  foundry.utils.setProperty(workflow.workflowOptions, 'flameArrowsSelectedContainerUuid', selectedContainer.uuid);
+  foundry.utils.setProperty(workflow.workflowOptions, "flameArrowsSelectedContainerUuid", selectedContainer.uuid);
   return true;
 }
 
@@ -149,7 +149,7 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
   let concentrationEffect = undefined;
 
   const refund = async () => {
-    const consumed = MidiQOL.getCachedChatMessage(workflow.itemCardUuid)?.getFlag('dnd5e', 'use.consumed');
+    const consumed = MidiQOL.getCachedChatMessage(workflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
     if (consumed) {
       await workflow.activity?.refund(consumed);
       await concentrationEffect?.delete();
@@ -172,7 +172,7 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
   }
 
   const selectedContainer = fromUuidSync(
-    foundry.utils.getProperty(workflow.workflowOptions, 'flameArrowsSelectedContainerUuid')
+    foundry.utils.getProperty(workflow.workflowOptions, "flameArrowsSelectedContainerUuid"),
   );
   if (!selectedContainer) {
     console.error(`${scope.rolledItem.name} | No quiver or crossbow bolt case selected.`, { workflow });
@@ -187,6 +187,9 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
     await refund();
     return;
   }
+  // Make enchantment effect dependent on concentration effect
+  foundry.utils.setProperty(enchantmentEffectData, "flags.dnd5e.dependentOn", concentrationEffect.uuid);
+
   const spellLevel = workflow.castData.castLevel;
   const ammo = 2 * spellLevel + 6; // 2 * (spellLevel - 3) + 12
 
@@ -200,12 +203,14 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
     mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
     value: ammo,
   });
+  // Delete concentration when this effect is deleted
+  enchantmentEffectData.changes.push({ key: "flags.dae.deleteUuid", value: concentrationEffect.uuid });
 
   // Add enchantment to container
   const enchantmentEffect = await elwinHelpers.applyEnchantmentToItem(
     workflow,
     enchantmentEffectData,
-    selectedContainer
+    selectedContainer,
   );
   if (!enchantmentEffect) {
     console.error(`${DEFAULT_ITEM_NAME} | Enchantment effect could not be created on quiver or crossbow bolt case.`, {
@@ -214,12 +219,9 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
     await refund();
     return;
   }
-  // Add enchantment as a dependency of concentration and vice versa
-  await MidiQOL.addDependent(concentrationEffect, enchantmentEffect);
-  await MidiQOL.addDependent(enchantmentEffect, concentrationEffect);
 
   const bonusDamageEffectData = scope.rolledItem.effects
-    .find((ae) => !ae.transfer && ae.type !== 'enchantment')
+    .find((ae) => !ae.transfer && ae.type !== "enchantment")
     ?.toObject();
   if (!bonusDamageEffectData) {
     console.error(`${DEFAULT_ITEM_NAME} | Missing target effect.`, { workflow });
@@ -227,6 +229,11 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
   }
   bonusDamageEffectData.name += `-${selectedContainer.id}`;
   bonusDamageEffectData.origin = scope.rolledActivity.uuid;
+  // Delete concentration effect when bonus damage effect is deleted
+  bonusDamageEffectData.changes.push({ key: "flags.dae.deleteUuid", value: concentrationEffect.uuid });
+  // Make bonus damage effect dependent on concentration effect
+  foundry.utils.setProperty(bonusDamageEffectData, "flags.dnd5e.dependentOn", concentrationEffect.uuid);
+
   const [bonusDamageEffect] = await MidiQOL.createEffects({
     actorUuid: target.actor.uuid,
     effects: [bonusDamageEffectData],
@@ -240,18 +247,14 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
     return;
   }
 
-  // Add damage effect as a dependency of concentration and vice versa
-  await MidiQOL.addDependent(concentrationEffect, bonusDamageEffect);
-  await MidiQOL.addDependent(bonusDamageEffect, concentrationEffect);
-
   // Add message about enchanted container
   const infoMsg = `<p>${originalName} from \${tokenName} was enchanted with ${scope.rolledItem.name}.</p>`;
-  await elwinHelpers.insertTextIntoMidiItemCard('beforeButtons', workflow, elwinHelpers.getTargetDivs(target, infoMsg));
+  await elwinHelpers.insertTextIntoMidiItemCard("beforeButtons", workflow, elwinHelpers.getTargetDivs(target, infoMsg));
 }
 
 /**
  * Handles the preAttackRoll phase of any item used by the owner of the enchanted container.
- * Registers a hook on dnd5e.preRollAttackV2 to change the label, of ammunitionOptions from
+ * Registers a hook on dnd5e.preRollAttack to change the label, of ammunitionOptions from
  * the dialog configuration, of an ammunition inside the enchanted container.
  * It also makes sure that if the count of ammunition allowed to fire from the enchanted container
  * has been reached, the spell and its enchantment are ended.
@@ -265,8 +268,8 @@ async function handleOnUsePreAttackRollTarget(actor, workflow, scope) {
   // TODO uncomment when midi fixes bug with scope.macroActivity undefined with functions on use macros
   //const enchantmentEffect = elwinHelpers.getAppliedEnchantments(scope.macroActivity?.uuid);
   const enchantmentEffect = actor.itemTypes.container
-    .find((i) => i.getFlag(MODULE_ID, 'flameArrows') === scope.macroItem?.uuid)
-    ?.effects.find((ae) => !ae.transfer && ae.type === 'enchantment');
+    .find((i) => i.getFlag(MODULE_ID, "flameArrows") === scope.macroItem?.uuid)
+    ?.effects.find((ae) => !ae.transfer && ae.type === "enchantment");
   const ammoCount = enchantmentEffect?.changes.find((c) => c.key === `flags.${MODULE_ID}.flameArrowsCount`)?.value ?? 0;
   if (ammoCount <= 0) {
     // Last ammo was already used, delete effect immediately
@@ -274,16 +277,16 @@ async function handleOnUsePreAttackRollTarget(actor, workflow, scope) {
   }
   elwinHelpers.registerWorkflowHook(
     workflow,
-    'dnd5e.preRollAttackV2',
+    "dnd5e.preRollAttack",
     (rollConfig, dialogConfig, messageConfig) => {
-      console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preRollAttackV2`, { rollConfig, dialogConfig, messageConfig });
+      console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preRollAttack`, { rollConfig, dialogConfig, messageConfig });
       // TODO PGS remove when midi fixes its bug
       if (rollConfig.subject?.ammunitionItem) {
         rollConfig.subject.ammunitionItem = undefined;
       }
       for (let ammunitionOption of dialogConfig?.options?.ammunitionOptions ?? []) {
         if (
-          ammunitionOption?.item?.container?.getFlag(MODULE_ID, 'flameArrows') === scope.macroItem?.uuid &&
+          ammunitionOption?.item?.container?.getFlag(MODULE_ID, "flameArrows") === scope.macroItem?.uuid &&
           ammunitionOption.label
         ) {
           const suffix = ` [${scope.macroItem.name}]`;
@@ -293,7 +296,7 @@ async function handleOnUsePreAttackRollTarget(actor, workflow, scope) {
         }
       }
     },
-    `flameArrows-${scope.macroItem.uuid}`
+    `flameArrows-${scope.macroItem.uuid}`,
   );
 }
 
@@ -308,17 +311,17 @@ async function handleOnUsePreAttackRollTarget(actor, workflow, scope) {
  * @param {object} scope - The midi-qol macro call scope object.
  */
 async function handleOnUsePostAttackRollCompleteTarget(actor, workflow, scope) {
-  if (foundry.utils.getProperty(workflow.workflowOptions, 'flameArrowsAmmoUsed') === scope.macroItem?.uuid) {
+  if (foundry.utils.getProperty(workflow.workflowOptions, "flameArrowsAmmoUsed") === scope.macroItem?.uuid) {
     // Reset flag, in case a new attack roll is made on the same workflow.
-    foundry.utils.setProperty(workflow.workflowOptions, 'flameArrowsAmmoUsed', null);
+    foundry.utils.setProperty(workflow.workflowOptions, "flameArrowsAmmoUsed", null);
   }
 
-  if (workflow.ammunition?.container?.getFlag(MODULE_ID, 'flameArrows') === scope.macroItem?.uuid) {
+  if (workflow.ammunition?.container?.getFlag(MODULE_ID, "flameArrows") === scope.macroItem?.uuid) {
     // TODO uncomment when midi fixes bug with scope.macroActivity undefined with functions on use macros
     //const enchantmentEffect = elwinHelpers.getAppliedEnchantments(scope.macroActivity?.uuid);
     const enchantmentEffect = actor.itemTypes.container
-      .find((i) => i.getFlag(MODULE_ID, 'flameArrows') === scope.macroItem?.uuid)
-      ?.effects.find((ae) => !ae.transfer && ae.type === 'enchantment');
+      .find((i) => i.getFlag(MODULE_ID, "flameArrows") === scope.macroItem?.uuid)
+      ?.effects.find((ae) => !ae.transfer && ae.type === "enchantment");
     if (!enchantmentEffect) {
       console.error(`${DEFAULT_ITEM_NAME} | Container enchantment effect could be found on target.`, workflow);
       return;
@@ -330,7 +333,7 @@ async function handleOnUsePostAttackRollCompleteTarget(actor, workflow, scope) {
     }
     if (countChange?.value >= 0) {
       // Ammo was used, add indicator preDamageRollConfig
-      foundry.utils.setProperty(workflow.workflowOptions, 'flameArrowsAmmoUsed', scope.macroItem.uuid);
+      foundry.utils.setProperty(workflow.workflowOptions, "flameArrowsAmmoUsed", scope.macroItem.uuid);
     }
     if (!countChange || countChange?.value <= 0) {
       // Last ammo was used, delete effect
@@ -344,18 +347,18 @@ async function handleOnUsePostAttackRollCompleteTarget(actor, workflow, scope) {
 /**
  * Handles the preDamageRollConfig phase of any item used by the owner of the enchanted container.
  * If the workflow options flag to indicate that a valid ammunition as used, calls elwinHelpers.damageConfig.updateBasic
- * to add a hook on dnd5e.preRollDamageV2 that adds the extra fire damage.
+ * to add a hook on dnd5e.preRollDamage that adds the extra fire damage.
  *
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
  * @param {object} scope - The midi-qol macro call scope object.
  * @param {boolean} debug - Flag to indicate debug mode.
  */
 function handleOnUsePreDamageRollConfigTarget(workflow, scope, debug) {
-  if (foundry.utils.getProperty(workflow.workflowOptions, 'flameArrowsAmmoUsed') === scope.macroItem?.uuid) {
+  if (foundry.utils.getProperty(workflow.workflowOptions, "flameArrowsAmmoUsed") === scope.macroItem?.uuid) {
     elwinHelpers.damageConfig.updateBasic(scope, workflow, {
       damageBonusRoll: {
-        parts: ['1d6'],
-        options: { type: 'fire', properties: ['mgc'] },
+        parts: ["1d6"],
+        options: { type: "fire", properties: ["mgc"] },
         base: true,
         situational: false,
       },

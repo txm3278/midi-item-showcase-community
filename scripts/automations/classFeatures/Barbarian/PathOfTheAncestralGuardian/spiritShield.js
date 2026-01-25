@@ -5,7 +5,7 @@
 // on the raging barbarian when a visible creature within range is damaged to allow him to use the feature
 // to reduce the target's damage.
 // If Vengeful Ancestors is present and the Barbarian has the appropriate level, it is triggered on the attacker.
-// v4.2.0
+// v4.3.0
 // Dependencies:
 //  - DAE [on][off]
 //  - Times Up
@@ -30,8 +30,7 @@
 // When the Spirit Shield effect is passivated:
 //   Suspends the third party reaction effect if present.
 // In the preTargeting (item OnUse) phase of the Spirit Shield reaction activity (in owner's workflow):
-//   Validates that the activity was triggered by the remote tpr.isDamaged target on use,
-//   otherwise the activity workflow execution is aborted.
+//   Forces fast forwarding damage.
 // In the postActiveEffects (item onUse) phase of the Rage item (in owner's workflow):
 //   Unsuspends the third party reaction effect for the actor. The rage effect is also updated to suspend
 //   the third party reaction effect on deletion.
@@ -54,16 +53,12 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
   const MODULE_ID = "midi-item-showcase-community";
   // Default identifier of the Rage feature (support DDBI legacy suffix)
   const RAGE_ITEM_IDENT = "rage";
-  const RAGE_LEGACY_ITEM_IDENT = RAGE_ITEM_IDENT + "-legacy";
   // Default identifier of the Vengeful Ancestors feature  (support DDBI legacy suffix)
   const VENGEFUL_ANCESTORS_ITEM_IDENT = "vengeful-ancestors";
-  const VENGEFUL_ANCESTORS_LEGACY_ITEM_IDENT = VENGEFUL_ANCESTORS_ITEM_IDENT + "-legacy";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
@@ -76,7 +71,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -87,12 +82,12 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
     // MidiQOL TargetOnUse post macro for Spirit Shield post reaction
     return await handleTargetOnUseIsDamagedPost(workflow, actor, scope.macroItem, options?.thirdPartyReactionResult);
   } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-    if (scope.rolledItem?.identifier === RAGE_ITEM_IDENT || scope.rolledItem?.identifier === RAGE_LEGACY_ITEM_IDENT) {
+    if (scope.rolledItem?.identifier === RAGE_ITEM_IDENT) {
       // MidiQOL OnUse item macro for Rage
       await handleRageOnUsePostActiveEffects(workflow, scope.macroItem, scope.rolledItem);
     } else if (scope.rolledItem?.uuid === scope.macroItem?.uuid) {
       // MidiQOL OnUse item macro for Spirit Shield
-      await handleOnUsePostActiveEffects(workflow, actor);
+      await handleOnUsePostActiveEffects(workflow);
     }
   } else if (args[0] === "on") {
     // DAE on item macro for spirit shield effect
@@ -104,8 +99,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
 
   /**
    * Handles the preItemRoll phase of the Spirit Shield reaction activity midi-qol workflow.
-   * Validates that the actor has the Rage effect activated and that one and one target is selected,
-   * that the target is within range and that there is line of sight to the target.
+   * Forces fast forwarding damage.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Item5e} sourceItem - The Spirit Shield item.
@@ -113,16 +107,6 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
    * @returns {boolean} true if all requirements are fulfilled, false otherwise.
    */
   function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
-    if (
-      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== "tpr.isDamaged" ||
-      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
-    ) {
-      // Reaction should only be triggered by third party reaction AE
-      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature of the raging barbarian is damaged.`;
-      ui.notifications.warn(msg);
-      return false;
-    }
-
     foundry.utils.setProperty(currentWorkflow.workflowOptions, "fastForwardDamage", true);
     return true;
   }
@@ -159,7 +143,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
   async function handleTargetOnUseIsDamagedPost(currentWorkflow, targetActor, sourceItem, thirdPartyReactionResult) {
     const sourceActor = sourceItem.actor;
     const damageItem = currentWorkflow.damageItem;
-    const preventedDmg = foundry.utils.getProperty(targetActor, "flags.dae.spiritShieldPreventedDmg");
+    const preventedDmg = DAE.getFlag(targetActor, "spiritShieldPreventedDmg");
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Reaction result`, {
         thirdPartyReactionResult,
@@ -178,7 +162,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
 
     // Activate Vengeful Ancestors if present and of appropriate level
     const vengefulAncestorsItem = sourceActor.itemTypes.feat.find(
-      (i) => i.identifier === VENGEFUL_ANCESTORS_ITEM_IDENT || i.identifier === VENGEFUL_ANCESTORS_LEGACY_ITEM_IDENT
+      (i) => i.identifier === VENGEFUL_ANCESTORS_ITEM_IDENT,
     );
     if (!vengefulAncestorsItem) {
       if (debug) {
@@ -193,7 +177,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
       const vengefulAncestorsActivity = vengefulAncestorsItem.system.activities?.getByType("damage")?.[0];
       if (!vengefulAncestorsActivity) {
         console.warn(
-          `${DEFAULT_ITEM_NAME} | Could not find valid the damage activity for ${vengefulAncestorsItem.name}.`
+          `${DEFAULT_ITEM_NAME} | Could not find valid the damage activity for ${vengefulAncestorsItem.name}.`,
         );
         return;
       }
@@ -232,7 +216,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
             vengefulAncestorsItem.name,
             currentWorkflow,
             currentWorkflow2,
-            debug
+            debug,
           )
         ) {
           return;
@@ -248,9 +232,8 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
    * is updated to inform of the damage reduction to be applied on the target.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Actor5e} sourceActor - The owner of the Spirit Shield item.
    */
-  async function handleOnUsePostActiveEffects(currentWorkflow, sourceActor) {
+  async function handleOnUsePostActiveEffects(currentWorkflow) {
     const targetToken = currentWorkflow.targets.first();
     if (!targetToken) {
       // No target found
@@ -268,7 +251,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
     await elwinHelpers.insertTextIntoMidiItemCard(
       "beforeButtons",
       workflow,
-      elwinHelpers.getTargetDivs(targetToken, infoMsg)
+      elwinHelpers.getTargetDivs(targetToken, infoMsg),
     );
   }
 
@@ -285,9 +268,7 @@ export async function spiritShield({ speaker, actor, token, character, item, arg
     // macro called on the "on" of the source item (Spirit Shield)
     // if rage already present when this item effect is activated,
     // we need to unsuspend the third party reaction effect
-    const rage = sourceActor.itemTypes.feat.find(
-      (i) => i.identifier === RAGE_ITEM_IDENT || i.identifier === RAGE_LEGACY_ITEM_IDENT
-    );
+    const rage = sourceActor.itemTypes.feat.find((i) => i.identifier === RAGE_ITEM_IDENT);
     const rageEffect = rage
       ? sourceActor.appliedEffects.find((ae) => !ae.transfer && ae.origin?.startsWith(rage.uuid))
       : undefined;

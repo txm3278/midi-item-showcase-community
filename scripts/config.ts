@@ -80,13 +80,13 @@ export function setConfig() {
         "Arms of the Astral Self": {
           name: "Arms of the Astral Self",
           type: "Class Feature",
-          version: "2.2.1",
+          version: "2.3.0",
           authors: ["Elwin", "Spoob"],
         },
         "Arrow-Catching Shield": {
           name: "Arrow-Catching Shield",
           type: "Item",
-          version: "4.1.1",
+          version: "4.2.0",
           authors: ["Elwin"],
         },
         Assassinate: {
@@ -110,13 +110,13 @@ export function setConfig() {
         "Channel Divinity: Rebuke the Violent": {
           name: "Channel Divinity: Rebuke the Violent",
           type: "Class Feature",
-          version: "2.2.1",
+          version: "2.3.0",
           authors: ["Elwin"],
         },
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "3.2.0",
+          version: "3.3.0",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -129,7 +129,7 @@ export function setConfig() {
           name: "Corpse Slayer Weapon",
           type: "Item",
           factory: true,
-          version: "1.1.2",
+          version: "1.2.0",
           authors: ["Elwin", "SagaTympana"],
         },
         "Crown of Stars": {
@@ -159,7 +159,7 @@ export function setConfig() {
         "Divine Allegiance": {
           name: "Divine Allegiance",
           type: "Class Feature",
-          version: "4.0.3",
+          version: "4.1.0",
           authors: ["Elwin"],
         },
         "Drow Hand Crossbow": {
@@ -177,7 +177,7 @@ export function setConfig() {
         "Drunkard's Luck": {
           name: "Drunkard's Luck",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Drunken Technique": {
@@ -189,19 +189,19 @@ export function setConfig() {
         "Eversmoking Bottle": {
           name: "Eversmoking Bottle",
           type: "Item",
-          version: "1.0.1",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Fighting Style: Great Weapon Fighting": {
           name: "Fighting Style: Great Weapon Fighting",
           type: "Class Feature",
-          version: "1.2.1",
+          version: "1.3.0",
           authors: ["Elwin", "WurstKorn"],
         },
         "Flame Arrows": {
           name: "Flame Arrows",
           type: "Spell",
-          version: "2.0.1",
+          version: "2.1.0",
           authors: ["Elwin", "Lin Dong"],
         },
         "Flames of Phlegethos": {
@@ -261,19 +261,19 @@ export function setConfig() {
         Goodberry: {
           name: "Goodberry",
           type: "Spell",
-          version: "3.3.0",
+          version: "3.4.0",
           authors: ["Elwin"],
         },
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "3.2.0",
+          version: "3.3.0",
           authors: ["Elwin"],
         },
         "Grenade, Smoke": {
           name: "Grenade, Smoke",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Guardian Emblem": {
@@ -284,6 +284,12 @@ export function setConfig() {
         },
         "Intoxicated Frenzy": {
           name: "Intoxicated Frenzy",
+          type: "Class Feature",
+          version: "1.1.0",
+          authors: ["Elwin"],
+        },
+        "Ki": {
+          name: "Ki",
           type: "Class Feature",
           version: "1.0.0",
           authors: ["Elwin"],
@@ -327,7 +333,7 @@ export function setConfig() {
         Oathbow: {
           name: "Oathbow",
           type: "Item",
-          version: "2.2.2",
+          version: "2.3.0",
           authors: ["Elwin", "Christopher"],
         },
         "Poison, Basic (vial)": {
@@ -399,7 +405,7 @@ export function setConfig() {
         "Shield of Missile Attraction": {
           name: "Shield of Missile Attraction",
           type: "Item",
-          version: "2.1.0",
+          version: "2.2.0",
           authors: ["Elwin", "Ris"],
         },
         "Sorrowful Fate": {
@@ -417,19 +423,19 @@ export function setConfig() {
         "Spirit Shield": {
           name: "Spirit Shield",
           type: "Class Feature",
-          version: "4.2.0",
+          version: "4.3.0",
           authors: ["Elwin"],
         },
         "Steady Aim": {
           name: "Steady Aim",
           type: "Class Feature",
-          version: "3.2.0",
+          version: "3.3.0",
           authors: ["Elwin"],
         },
         "Sun Blade": {
           name: "Sun Blade",
           type: "Item",
-          version: "2.4.0",
+          version: "2.5.0",
           authors: ["Elwin"],
         },
         "Tasha's Mind Whip": {
@@ -454,7 +460,7 @@ export function setConfig() {
         "Unwavering Mark": {
           name: "Unwavering Mark",
           type: "Class Feature",
-          version: "3.3.0",
+          version: "3.4.0",
           authors: ["Elwin"],
         },
         "Vengeful Ancestors": {
@@ -466,7 +472,7 @@ export function setConfig() {
         "Vigilant Guardian": {
           name: "Vigilant Guardian",
           type: "Race Feature",
-          version: "4.1.0",
+          version: "4.2.0",
           authors: ["Elwin"],
         },
         "Visage of the Astral Self": {
@@ -504,7 +510,7 @@ export function setConfig() {
         "Arrow-Catching Shield": {
           name: "Arrow-Catching Shield",
           type: "Item",
-          version: "1.1.2",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -516,7 +522,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Dagger of Venom": {
@@ -540,7 +546,7 @@ export function setConfig() {
         "Eversmoking Bottle": {
           name: "Eversmoking Bottle",
           type: "Item",
-          version: "1.0.1",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Flame Tongue": {
@@ -553,25 +559,25 @@ export function setConfig() {
         Goodberry: {
           name: "Goodberry",
           type: "Spell",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         "Great Weapon Fighting": {
           name: "Great Weapon Fighting",
           type: "Feat",
-          version: "1.2.1",
+          version: "1.3.0",
           authors: ["Elwin", "WurstKorn"],
         },
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "1.3.0",
+          version: "1.4.0",
           authors: ["Elwin"],
         },
         "Smoke Grenade": {
           name: "Smoke Grenade",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Improved Warding Flare": {
@@ -591,7 +597,7 @@ export function setConfig() {
           name: "Oathbow",
           type: "Item",
           factory: true,
-          version: "2.2.2",
+          version: "2.3.0",
           authors: ["Elwin", "Christopher"],
         },
         "Poison, Basic": {
@@ -645,19 +651,19 @@ export function setConfig() {
         "Shield of Missile Attraction": {
           name: "Shield of Missile Attraction",
           type: "Item",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin", "Ris"],
         },
         "Steady Aim": {
           name: "Steady Aim",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Sun Blade": {
           name: "Sun Blade",
           type: "Item",
-          version: "1.3.0",
+          version: "1.4.0",
           authors: ["Elwin"],
         },
         Ulcrun: {
@@ -692,7 +698,7 @@ export function setConfig() {
         Lich: {
           "Negative Energy Tether": {
             name: "Negative Energy Tether",
-            version: "2.0.3",
+            version: "2.1.0",
             authors: ["Elwin"],
           },
         },
@@ -706,7 +712,7 @@ export function setConfig() {
         Rakshasa: {
           "Limited Magic Immunity": {
             name: "Limited Magic Immunity",
-            version: "1.1.1",
+            version: "1.2.0",
             authors: ["thatlonelybugbear", "Elwin"],
           },
         },

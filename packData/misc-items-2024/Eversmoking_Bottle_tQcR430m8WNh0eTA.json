@@ -34,7 +34,8 @@
         },
         "effects": [
           {
-            "_id": "dz9IgkDdFrUTquDP"
+            "_id": "dz9IgkDdFrUTquDP",
+            "level": {}
           }
         ],
         "range": {
@@ -113,7 +114,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -125,7 +127,18 @@
         "otherActivityAsParentType": true,
         "name": "Open Bottle",
         "img": "systems/dnd5e/icons/svg/ink-pot.svg",
-        "_id": "CJcy3l2vgw4GD6YS"
+        "_id": "CJcy3l2vgw4GD6YS",
+        "flags": {
+          "region-attacher": {
+            "attachRegionToTemplate": false
+          }
+        },
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       },
       "AKsXbUzCWOmqwjEg": {
         "type": "utility",
@@ -220,7 +233,8 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -232,7 +246,14 @@
         "otherActivityAsParentType": true,
         "name": "Close Bottle",
         "img": "systems/dnd5e/icons/svg/ink-pot.svg",
-        "_id": "AKsXbUzCWOmqwjEg"
+        "_id": "AKsXbUzCWOmqwjEg",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "uses": {
@@ -275,7 +296,6 @@
       "dex": null
     },
     "cover": null,
-    "crewed": false,
     "hp": {
       "value": null,
       "max": null,
@@ -290,7 +310,10 @@
       "mgc"
     ],
     "strength": null,
-    "proficient": null
+    "proficient": null,
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {

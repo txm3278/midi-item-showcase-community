@@ -2,7 +2,7 @@
 // Read First!!!!
 // When the bottle is opened, creates a fog cloud that follows the owner and increases in size until it has reached its maximum size or until
 // the bottle is closed which also makes it stay in place.
-// v1.0.1
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -55,10 +55,8 @@ const JB2A_FOG = "jb2a.fog_cloud.01.white";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.6")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -80,7 +78,7 @@ export async function eversmokingBottle({ speaker, actor, token, character, item
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -181,8 +179,7 @@ async function handleOnUsePostActiveEffectsOpenBottle(workflow, actor, token, us
   // Add AE as dependent of template
   const openEffect = actor.effects.find((ae) => ae.name === usedItem.name && ae.flags?.dae?.selfTargetAlways);
   if (openEffect) {
-    await openEffect.setFlag(MODULE_ID, "esbTemplateUuid", template.uuid);
-    await template.addDependent(openEffect);
+    MidiQOL.addDependent(template, openEffect);
   }
 
   const animationAvailable =
@@ -261,7 +258,7 @@ async function handleOnUsePostActiveEffectsCloseBottle(actor, token, usedItem, u
 
   // Find template created by this item
   const template = canvas.templates.placeables.find(
-    (template) => template.document?.uuid === openEffect.flags[MODULE_ID]?.esbTemplateUuid
+    (template) => template.document?.uuid === foundry.utils.getProperty(openEffect, "flags.dnd5e.dependentOn"),
   );
   if (!template) {
     return;
@@ -269,23 +266,30 @@ async function handleOnUsePostActiveEffectsCloseBottle(actor, token, usedItem, u
   // Detach template from token
   await elwinHelpers.detachFromToken(token, [template.document.uuid]);
 
-  // TODO use about-time instead and if active when it's v13 compatible
-  // Add AE to delete template when it expires.
-  const closeEffectData = {
-    changes: [],
-    transfer: false,
-    origin: usedItem.uuid, //flag the effect as associated to the source item used
-    disabled: false,
-    duration: { seconds: 10 * 60 },
-    img: usedItem.img,
-    name: `${usedItem.name} - ${template.id}`,
-    "flags.dae.stackable": "noneName",
-  };
+  // When about time is present, register a callback to delete the template when it expires
+  if (game.modules.get("about-time")?.active) {
+    const expirationTime = game.time.worldTime + 10 * 60;
+    abouttime.doAt(expirationTime, deleteTemplate, template.document.uuid);
+  } else {
+    // Add AE to delete template when it expires.
+    const closeEffectData = {
+      changes: [],
+      transfer: false,
+      origin: usedItem.uuid, //flag the effect as associated to the source item used
+      disabled: false,
+      duration: { seconds: 10 * 60 },
+      img: usedItem.img,
+      name: `${usedItem.name} - ${template.id}`,
+      "flags.dae.stackable": "noneName",
+      // Make close effect dependent on template
+      "flags.dnd5e.dependentOn": template.document.uuid,
+    };
 
-  const [closeEffect] = await MidiQOL.createEffects({ actorUuid: actor.uuid, effects: [closeEffectData] });
-  if (closeEffect) {
-    await closeEffect.addDependent(template.document);
-    await template.document.addDependent(closeEffect);
+    const [closeEffect] = await MidiQOL.createEffects({ actorUuid: actor.uuid, effects: [closeEffectData] });
+    if (closeEffect) {
+      // Make template dependent on close effect
+      MidiQOL.addDependent(closeEffect, template.document);
+    }
   }
 }
 
@@ -320,7 +324,7 @@ async function handleOffEffect(actor, item, lastArg) {
   }
   // Find template created by this item
   const template = canvas.templates.placeables.find(
-    (template) => template.document?.uuid === lastArg.efData.flags[MODULE_ID]?.esbTemplateUuid
+    (template) => template.document?.uuid === foundry.utils.getProperty(lastArg.efData, "flags.dnd5e.dependentOn"),
   );
   if (!template) {
     return;
@@ -339,11 +343,18 @@ async function handleOffEffect(actor, item, lastArg) {
     return;
   }
   newEffectData.origin = lastArg.efData.origin;
-  foundry.utils.setProperty(newEffectData, `flags.${MODULE_ID}.esbTemplateUuid`, template.uuid);
+  // Make new effect dependent on template
+  foundry.utils.setProperty(newEffectData, "flags.dnd5e.dependentOn", template.uuid);
   foundry.utils.setProperty(newEffectData, `flags.${MODULE_ID}.esbCount`, count + 1);
 
-  const [effect] = await MidiQOL.createEffects({ actorUuid: actor.uuid, effects: [newEffectData] });
-  if (effect) {
-    await template.document.addDependent(effect);
-  }
+  await MidiQOL.createEffects({ actorUuid: actor.uuid, effects: [newEffectData] });
+}
+
+/**
+ * Deletes an expired smoke template.
+ *
+ * @param {string} templateUuid UUID of the smoke template to be deleted.
+ */
+async function deleteTemplate(templateUuid) {
+  await (await fromUuid(templateUuid))?.delete();
 }

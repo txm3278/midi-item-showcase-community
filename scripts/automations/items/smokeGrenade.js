@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // When the used, prompts to place a template where the grenade will explode and generate smoke.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -40,10 +40,8 @@ const JB2A_FOG = "jb2a.fog_cloud.01.white";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.6")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -65,7 +63,7 @@ export async function smokeGrenade({ speaker, actor, token, character, item, arg
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -101,19 +99,21 @@ async function handleOnUsePostActiveEffects(workflow, actor, usedItem) {
   // Add reference to template on AE
   const smokeEffect = actor.effects.find(
     (ae) =>
-      ae.name === usedItem.name && ae.flags?.dae?.selfTargetAlways && !ae.flags[MODULE_ID]?.smokeGrenadeTemplateUuid
+      ae.name === usedItem.name &&
+      ae.flags?.dae?.selfTargetAlways &&
+      foundry.utils.getProperty(ae, "flags.dnd5e.dependentOn") !== template.uuid,
   );
+  // Make smoke effect dependent on template
   if (smokeEffect) {
-    await smokeEffect.setFlag(MODULE_ID, "smokeGrenadeTemplateUuid", template.uuid);
+    await smokeEffect.setFlag("dnd5e", "dependentOn", template.uuid);
   }
 
   if (elwinHelpers.getRules(usedItem) === "legacy") {
     // Effects will be applied when AE expires
     return;
   }
-  // Make template dependent on AE to delete it on expiry, and vice-versa
-  await smokeEffect.addDependent(template);
-  await template.addDependent(smokeEffect);
+  // Make template dependent on AE to delete it on expiry
+  MidiQOL.addDependent(smokeEffect, template);
   await createSmoke(template);
 }
 
@@ -175,9 +175,8 @@ async function createSmoke(template) {
 
 /**
  * Handles DAE 'off' macro call for the Smoke Grenade effect.
- * If the expiry reason is not effect-deleted, increases the size of the fog cloud unless
- * it has reached its maximum size. It also creates a new effect with the same data has
- * the one that expired to repeat the process until the maximum size has been reached.
+ * If the expiry reason is not effect-deleted, creates the smoke effect and updates
+ * the walled templates hideBorder setting to default.
  *
  * @param {object} lastArg - The last argument value.
  */
@@ -188,7 +187,7 @@ async function handleOffEffect(lastArg) {
   }
   // Find template created by this item
   const template = canvas.templates.placeables.find(
-    (template) => template.document?.uuid === lastArg.efData.flags[MODULE_ID]?.smokeGrenadeTemplateUuid
+    (template) => template.document?.uuid === foundry.utils.getProperty(lastArg.efData, "flags.dnd5e.dependentOn"),
   );
   if (!template) {
     return;

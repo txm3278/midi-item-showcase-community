@@ -28,7 +28,6 @@
     "rarity": "rare",
     "identified": true,
     "cover": null,
-    "crewed": false,
     "range": {
       "value": 5,
       "long": null,
@@ -191,6 +190,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "name": "Adjust Light Radius",
@@ -199,6 +199,13 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
         },
         "useConditionReason": "",
         "otherActivityId": "none",
@@ -311,6 +318,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "attackMode": "oneHanded",
@@ -323,6 +331,13 @@
           "saveRemoves": true,
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
         },
         "useConditionReason": "",
         "otherActivityAsParentType": true,
@@ -392,7 +407,6 @@
           "max": ""
         },
         "enchant": {
-          "identifier": "",
           "self": true
         },
         "restrictions": {
@@ -440,6 +454,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "name": "Activate/Deactivate Blade",
@@ -449,7 +464,14 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "useConditionReason": "The sword must be equipped and attuned to activate the blade"
+        "useConditionReason": "The sword must be equipped and attuned to activate the blade",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       },
       "RZXnbNx7y4NTwGuf": {
         "type": "damage",
@@ -563,6 +585,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "name": "Damage vs Undead",
@@ -572,11 +595,21 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": ""
       }
     },
     "attuned": false,
-    "ammunition": {}
+    "ammunition": {},
+    "crew": {
+      "value": []
+    }
   },
   "flags": {
     "core": {},

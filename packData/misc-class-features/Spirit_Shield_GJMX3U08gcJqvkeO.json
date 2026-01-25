@@ -297,7 +297,11 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     },
-    "dnd5e": {},
+    "dnd5e": {
+      "riders": {
+        "activity": []
+      }
+    },
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
@@ -416,7 +420,11 @@
         },
         "effects": [
           {
-            "_id": "4t0ysYqzVQdEPX1K"
+            "_id": "4t0ysYqzVQdEPX1K",
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -459,6 +467,8 @@
           "otherActivityCompatible": false,
           "confirmTargets": "never",
           "ignoreFullCover": true,
+          "automationOnly": true,
+          "forceDamageDialog": "never",
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -467,10 +477,8 @@
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
-          "forceDamageDialog": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
           "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
@@ -480,8 +488,20 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {},
         "useConditionReason": "",
         "macroData": {
           "name": "",

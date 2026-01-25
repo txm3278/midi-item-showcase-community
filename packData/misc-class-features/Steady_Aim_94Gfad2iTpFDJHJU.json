@@ -6,7 +6,7 @@
   "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
   "system": {
     "description": {
-      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Elwin</h2><h3>Requires:</h3><ul><li>Times-up</li></ul><h3>Optionals:</h3><ul><li>Drag Ruler (to compute movement since start of round)</li><li>Elevation Ruler (to compute movement since start of round)</li><li>Monk's TokenBar (to block movement)</li></ul><p><strong>Usage:</strong></p><p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "source": {
@@ -57,10 +57,12 @@
         },
         "effects": [
           {
-            "_id": "ttliu8T5zozrLsKw"
+            "_id": "ttliu8T5zozrLsKw",
+            "level": {}
           },
           {
-            "_id": "ljsYEY13ngAg6G8h"
+            "_id": "ljsYEY13ngAg6G8h",
+            "level": {}
           }
         ],
         "range": {
@@ -76,7 +78,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "",
@@ -110,16 +112,33 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -130,7 +149,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -138,13 +158,15 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "steady-aim",
     "enchant": {},
     "prerequisites": {
       "level": 3,
+      "items": [],
       "repeatable": false
     },
     "advancement": []
@@ -240,7 +262,7 @@
         {
           "key": "macro.itemMacro.GM",
           "mode": 0,
-          "value": "",
+          "value": "function.MISC.macros.classFeatures.steadyAim",
           "priority": 20
         }
       ],
@@ -323,7 +345,7 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preItemRoll]ItemMacro",
+      "onUseMacroName": "[preItemRoll]function.MISC.macros.classFeatures.steadyAim",
       "rollAttackPerTarget": "never",
       "itemCondition": "",
       "effectCondition": "",
@@ -364,43 +386,13 @@
         }
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Steady Aim",
-        "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.steadyAim(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
       "snapCenter": true,
       "snapCorner": true,
-      "snapSideMidpoint": true,
-      "hideBorder": "globalDefault",
-      "hideHighlighting": "globalDefault",
-      "showOnHover": "globalDefault",
-      "noAutotarget": false,
-      "addTokenSize": false,
-      "attachToken": "na"
+      "snapSideMidpoint": true
     },
     "dnd5e": {
       "riders": {
@@ -411,15 +403,6 @@
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""
-    },
-    "LocknKey": {
-      "IDKeysFlag": "",
-      "RemoveKeyonUseFlag": false,
-      "LPFormulaFlag": "",
-      "LPFormulaOverrideFlag": false,
-      "LBFormulaFlag": "",
-      "LBFormulaOverrideFlag": false,
-      "ReplacementItemFlag": ""
     }
   },
   "_key": "!items!94Gfad2iTpFDJHJU"
