@@ -1,0 +1,196 @@
+{
+  "name": "Lamannian Oak Focus",
+  "type": "equipment",
+  "effects": [
+    {
+      "name": "Lamannian Oak Focus",
+      "changes": [
+        {
+          "key": "flags.midi-qol.optional.lamannianFocus.count",
+          "mode": 5,
+          "value": "every",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.lamannianFocus.damage.all",
+          "mode": 5,
+          "value": "+1",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.lamannianFocus.force",
+          "mode": 5,
+          "value": "damageTypes.lightning || damageTypes.thunder",
+          "priority": 20
+        }
+      ],
+      "transfer": true,
+      "img": "icons/weapons/staves/staff-forked-wood.webp",
+      "_id": "9XbvZruQok4DqUKW",
+      "type": "base",
+      "system": {},
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "origin": "Item.fyxzdZpQG0cgASyB",
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!k9KmBS1eJ0HDu7Br.9XbvZruQok4DqUKW"
+    }
+  ],
+  "system": {
+    "activities": {},
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "description": {
+      "chat": "",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2></details>"
+    },
+    "identifier": "lamannian-oak-focus",
+    "source": {
+      "book": "WGtE",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "identified": true,
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "rarity": "common",
+    "attunement": "required",
+    "armor": {
+      "value": null,
+      "dex": null,
+      "magicalBonus": null
+    },
+    "proficient": null,
+    "properties": [
+      "foc",
+      "mgc"
+    ],
+    "strength": 0,
+    "type": {
+      "value": "trinket",
+      "baseItem": ""
+    },
+    "attuned": true,
+    "equipped": true,
+    "crew": {
+      "value": []
+    }
+  },
+  "flags": {
+    "ddbimporter": {
+      "originalName": "Lamannian Oak Focus",
+      "version": "6.3.10",
+      "dndbeyond": {
+        "type": "Wondrous item",
+        "filterType": "Wondrous item",
+        "isConsumable": false,
+        "isContainer": false,
+        "isCustomItem": false,
+        "homebrew": false,
+        "isMonkWeapon": false,
+        "isPack": false,
+        "levelInfusionGranted": 2,
+        "tags": [
+          "Combat",
+          "Focus"
+        ],
+        "sources": [
+          {
+            "sourceId": 37,
+            "pageNumber": null,
+            "sourceType": 1
+          },
+          {
+            "sourceId": 49,
+            "pageNumber": null,
+            "sourceType": 2
+          }
+        ]
+      },
+      "is2014": true,
+      "is2024": false,
+      "legacy": false,
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 112130694,
+      "definitionId": 215734,
+      "defaultAdditionalActivities": {
+        "enabled": true,
+        "data": {}
+      }
+    },
+    "infusions": {
+      "maps": [],
+      "applied": [],
+      "infused": false
+    },
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": []
+      }
+    },
+    "chris-premades": {
+      "info": {
+        "version": "1.1"
+      }
+    }
+  },
+  "img": "icons/weapons/staves/staff-forked-wood.webp",
+  "folder": null,
+  "_id": "k9KmBS1eJ0HDu7Br",
+  "_key": "!items!k9KmBS1eJ0HDu7Br"
+}

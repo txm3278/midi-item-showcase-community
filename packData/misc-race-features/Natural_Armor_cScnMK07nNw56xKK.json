@@ -1,0 +1,176 @@
+{
+  "name": "Natural Armor",
+  "type": "feat",
+  "effects": [
+    {
+      "img": "icons/commodities/biological/shell-ridged-green.webp",
+      "name": "Natural Armor",
+      "statuses": [],
+      "changes": [
+        {
+          "key": "system.attributes.ac.min",
+          "mode": 5,
+          "value": "17",
+          "priority": 15
+        }
+      ],
+      "duration": {
+        "seconds": null,
+        "startTime": 24433992,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null,
+        "combat": null
+      },
+      "tint": "#ffffff",
+      "transfer": true,
+      "disabled": false,
+      "flags": {
+        "dae": {
+          "transfer": true,
+          "stackable": "noneNameOnly",
+          "disableCondition": "",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ddbimporter": {
+          "disabled": false,
+          "passive": true,
+          "itemId": 13667653,
+          "itemEntityTypeId": 1960452172
+        },
+        "midi-qol": {
+          "forceCEOff": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "description": "",
+      "_id": "lm6Gty9pWGMS1kf1",
+      "type": "base",
+      "system": {},
+      "origin": "Actor.vaqEeLt7hSM2gklg.Item.OOtXQBWrTIRvsJYL",
+      "sort": 0,
+      "_key": "!items.effects!cScnMK07nNw56xKK.lm6Gty9pWGMS1kf1"
+    }
+  ],
+  "system": {
+    "activities": {},
+    "uses": {
+      "spent": 0,
+      "recovery": [],
+      "max": ""
+    },
+    "advancement": [],
+    "description": {
+      "chat": "",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2></details>"
+    },
+    "identifier": "natural-armor",
+    "source": {
+      "book": "BoET",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "items": [],
+      "repeatable": false,
+      "level": null
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "race",
+      "subtype": ""
+    }
+  },
+  "flags": {
+    "ddbimporter": {
+      "isChoiceFeature": false,
+      "id": 13667653,
+      "type": "race",
+      "entityTypeId": 1960452172,
+      "is2014": true,
+      "is2024": false,
+      "originalName": "Natural Armor",
+      "dndbeyond": {
+        "requiredLevel": null,
+        "displayOrder": 7,
+        "featureType": 1,
+        "entityRaceId": 1726258,
+        "entityType": "racial-trait"
+      },
+      "defaultAdditionalActivities": {
+        "enabled": true,
+        "data": {}
+      },
+      "effectsApplied": true,
+      "baseName": "Natural Armor",
+      "fullRaceName": "Shadowborn Bearfolk",
+      "groupName": "Bearfolk",
+      "isLineage": false
+    },
+    "species": {
+      "fullRaceName": "Shadowborn Bearfolk",
+      "baseRaceName": "Bearfolk",
+      "groupName": "Bearfolk",
+      "isLineage": false
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "forceCEOff": true
+    },
+    "midiProperties": {
+      "confirmTargets": "default"
+    },
+    "dae": {
+      "alwaysActive": false,
+      "activeEquipped": false
+    },
+    "dnd5e": {
+      "sourceId": "Compendium.my-shared-content.Species.Item.8WWS0wXDL42BMDJR",
+      "advancementOrigin": "rWJUSXhHwj2F1ggX.qh2LCH12dSz4fEVY",
+      "advancementRoot": "rWJUSXhHwj2F1ggX.qh2LCH12dSz4fEVY",
+      "riders": {
+        "activity": []
+      }
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    },
+    "chris-premades": {
+      "info": {
+        "version": "1.0"
+      }
+    }
+  },
+  "img": "icons/commodities/biological/shell-ridged-green.webp",
+  "folder": "FUkvH7Ri3D8YbgQR",
+  "_id": "cScnMK07nNw56xKK",
+  "_key": "!items!cScnMK07nNw56xKK"
+}

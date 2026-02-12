@@ -1,0 +1,206 @@
+{
+  "name": "Bracers of Celerity",
+  "type": "equipment",
+  "effects": [
+    {
+      "img": "icons/equipment/wrist/bracer-ornate-pink-green.webp",
+      "name": "Bracers of Celerity",
+      "statuses": [],
+      "changes": [
+        {
+          "key": "system.attributes.movement.all",
+          "mode": 0,
+          "value": "+10",
+          "priority": 9
+        },
+        {
+          "key": "flags.chris-premades.CR.paralyzed",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "flags.chris-premades.CR.restrained",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        }
+      ],
+      "duration": {
+        "seconds": null,
+        "startTime": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null,
+        "combat": null
+      },
+      "tint": "#ffffff",
+      "transfer": true,
+      "disabled": false,
+      "flags": {
+        "dae": {
+          "transfer": true,
+          "stackable": "noneNameOnly",
+          "disableCondition": "",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "ddbimporter": {
+          "disabled": false,
+          "passive": true,
+          "itemId": 0,
+          "itemEntityTypeId": 0
+        },
+        "midi-qol": {
+          "forceCEOff": true
+        },
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
+      },
+      "description": "",
+      "_id": "hechdtqorVbXMVrY",
+      "type": "base",
+      "system": {},
+      "origin": "Item.krjuUObSAjivyZIm",
+      "sort": 0,
+      "_key": "!items.effects!cfOJoUemmRr8v5ke.hechdtqorVbXMVrY"
+    }
+  ],
+  "system": {
+    "activities": {},
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "description": {
+      "chat": "",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2><h3>Requires:</h3><ul><li>Cauldron of Plentiful Resources</li></ul></details>"
+    },
+    "identifier": "bracers-of-celerity",
+    "source": {
+      "book": "PBTSO",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "identified": true,
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 0,
+      "denomination": "gp"
+    },
+    "rarity": "rare",
+    "attunement": "required",
+    "attuned": false,
+    "equipped": false,
+    "armor": {
+      "value": null,
+      "dex": null,
+      "magicalBonus": null
+    },
+    "proficient": null,
+    "properties": [
+      "mgc"
+    ],
+    "strength": 0,
+    "type": {
+      "value": "trinket",
+      "baseItem": ""
+    },
+    "crew": {
+      "value": []
+    }
+  },
+  "flags": {
+    "ddbimporter": {
+      "originalName": "Bracers of Celerity",
+      "version": "6.4.13",
+      "dndbeyond": {
+        "type": "Wondrous item",
+        "filterType": "Wondrous item",
+        "isConsumable": false,
+        "isContainer": false,
+        "isCustomItem": false,
+        "homebrew": false,
+        "isMonkWeapon": false,
+        "isPack": false,
+        "levelInfusionGranted": null,
+        "tags": [
+          "Movement",
+          "Wristwear"
+        ],
+        "sources": [
+          {
+            "sourceId": 113,
+            "pageNumber": 217,
+            "sourceType": 1
+          }
+        ]
+      },
+      "is2014": true,
+      "is2024": false,
+      "legacy": false,
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 112130694,
+      "definitionId": 7247067,
+      "defaultAdditionalActivities": {
+        "enabled": true,
+        "data": {}
+      },
+      "effectsApplied": true
+    },
+    "infusions": {
+      "maps": [],
+      "applied": [],
+      "infused": false
+    },
+    "dae": {
+      "alwaysActive": false,
+      "activeEquipped": true
+    },
+    "midi-qol": {
+      "removeAttackDamageButtons": "default",
+      "forceCEOff": true
+    },
+    "midiProperties": {
+      "confirmTargets": "default"
+    },
+    "dnd5e": {
+      "riders": {
+        "activity": [],
+        "effect": []
+      }
+    },
+    "chris-premades": {
+      "info": {
+        "version": "1.1"
+      }
+    }
+  },
+  "img": "icons/equipment/wrist/bracer-ornate-pink-green.webp",
+  "folder": null,
+  "_id": "cfOJoUemmRr8v5ke",
+  "_key": "!items!cfOJoUemmRr8v5ke"
+}

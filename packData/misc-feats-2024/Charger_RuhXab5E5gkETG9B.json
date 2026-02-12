@@ -1,0 +1,332 @@
+{
+  "name": "Charger",
+  "type": "feat",
+  "effects": [
+    {
+      "name": "Charger",
+      "changes": [
+        {
+          "key": "flags.midi-qol.optional.chargerPush.damage.mwak",
+          "mode": 0,
+          "value": "ItemMacro",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.chargerPush.count",
+          "mode": 5,
+          "value": "every",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.chargerPush.label",
+          "mode": 5,
+          "value": "Charger(Push or Damage)",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.chargerPush.criticalDamage",
+          "mode": 0,
+          "value": "true",
+          "priority": 20
+        }
+      ],
+      "transfer": true,
+      "img": "icons/skills/melee/hand-grip-hammer-spiked-blue.webp",
+      "_id": "jkeyufBNntfTtxdD",
+      "type": "base",
+      "system": {},
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "origin": "Compendium.my-shared-content.DDB-Override.Item.UXEDmPgufpzfGmHE",
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "enableCondition": "",
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "selfTarget": false,
+          "selfTargetAlways": false,
+          "dontApply": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!RuhXab5E5gkETG9B.jkeyufBNntfTtxdD"
+    }
+  ],
+  "system": {
+    "activities": {
+      "damageChargefeat": {
+        "name": "Charge Damage",
+        "type": "damage",
+        "_id": "damageChargefeat",
+        "sort": 0,
+        "activation": {
+          "type": "action",
+          "override": false
+        },
+        "consumption": {
+          "targets": [],
+          "scaling": {
+            "allowed": false,
+            "max": ""
+          },
+          "spellSlot": true
+        },
+        "description": {},
+        "duration": {
+          "units": "inst",
+          "special": "",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "value": "5",
+          "units": "ft",
+          "special": "",
+          "override": false
+        },
+        "target": {
+          "prompt": true,
+          "affects": {
+            "count": "",
+            "type": "enemy",
+            "choice": false,
+            "special": ""
+          },
+          "template": {
+            "count": "",
+            "contiguous": false,
+            "type": "",
+            "size": "",
+            "width": "",
+            "height": "",
+            "units": "ft"
+          },
+          "override": false
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": []
+        },
+        "damage": {
+          "critical": {
+            "allow": false
+          },
+          "parts": [
+            {
+              "number": 1,
+              "denomination": 8,
+              "bonus": "",
+              "types": [
+                "bludgeoning",
+                "piercing",
+                "slashing",
+                "necrotic",
+                "acid",
+                "cold",
+                "fire",
+                "lightning",
+                "thunder",
+                "poison",
+                "psychic",
+                "radiant",
+                "force"
+              ],
+              "custom": {
+                "enabled": false
+              },
+              "scaling": {
+                "mode": "whole",
+                "number": 1,
+                "formula": ""
+              }
+            }
+          ]
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "confirmTargets": "default",
+          "automationOnly": false,
+          "identifier": "",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "otherActivityCompatible": true,
+          "otherActivityAsParentType": true,
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "default",
+          "skipConcentrationCheck": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
+      }
+    },
+    "uses": {
+      "spent": 0,
+      "recovery": [],
+      "max": ""
+    },
+    "advancement": [],
+    "description": {
+      "chat": "",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2><h3>Requires:</h3><ul><li>Cauldron of Plentiful Resources</li></ul><p><strong>Usage:</strong></p><p>It does not test rays or movement, instead it sockets a dialog to the DM when the player presses their prompt button to use it.</p></details>"
+    },
+    "identifier": "charger",
+    "source": {
+      "book": "PHB 2024",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2024",
+      "revision": 1
+    },
+    "crewed": false,
+    "enchant": {},
+    "prerequisites": {
+      "items": [],
+      "level": 4,
+      "repeatable": false
+    },
+    "properties": [],
+    "requirements": "",
+    "type": {
+      "value": "feat",
+      "subtype": "general"
+    }
+  },
+  "flags": {
+    "ddbimporter": {
+      "isChoiceFeature": true,
+      "id": 1789121,
+      "type": "feat",
+      "entityTypeId": 1088085227,
+      "is2014": false,
+      "is2024": true,
+      "originalName": "Charger",
+      "dndbeyond": {},
+      "subType": "general",
+      "importId": "PkvPPKkD3BAk8hlP"
+    },
+    "dnd5e": {
+      "sourceId": "Compendium.my-shared-content.Feats.Item.3iyEhRehA193MnG1",
+      "riders": {
+        "activity": []
+      }
+    },
+    "tidy5e-sheet": {
+      "section": "Feats"
+    },
+    "walledtemplates": {
+      "wallsBlock": "globalDefault",
+      "wallRestriction": "globalDefault",
+      "snapCenter": true,
+      "snapCorner": true,
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
+    },
+    "dae": {
+      "macro": {
+        "name": "Charger",
+        "img": "icons/skills/melee/hand-grip-hammer-spiked-blue.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "const params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.charger(params);",
+        "author": "kYgmTFfABhVty1LK",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "coreVersion": "13.351",
+          "systemId": "dnd5e",
+          "systemVersion": "5.2.5",
+          "lastModifiedBy": null,
+          "compendiumSource": null,
+          "duplicateSource": null,
+          "exportSource": null
+        }
+      }
+    },
+    "chris-premades": {
+      "info": {
+        "version": "1.2"
+      }
+    }
+  },
+  "img": "icons/skills/melee/hand-grip-hammer-spiked-blue.webp",
+  "folder": null,
+  "_id": "RuhXab5E5gkETG9B",
+  "_key": "!items!RuhXab5E5gkETG9B"
+}
