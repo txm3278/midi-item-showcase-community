@@ -105,18 +105,18 @@ export async function psionicPower({ speaker, actor, token, character, item, arg
  *
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
  * @param {Actor} targetActor - Target actor.
- * @param {Item} scope.macroItem - The Psionic Power item.
+ * @param {Item} sourceItem - The Psionic Power item.
  * @param {object} thirdPartyReactionResult - The third party reaction result.
  * @param {boolean} debug - Flag to indicate debug mode.
  */
-function handleProtectiveFieldIsDamagedPost(workflow, targetActor, scope.macroItem, thirdPartyReactionResult, debug) {
+function handleProtectiveFieldIsDamagedPost(workflow, targetActor, sourceItem, thirdPartyReactionResult, debug) {
   const preventedDmg = foundry.utils.getProperty(targetActor, "flags.dae.protectiveFieldPreventedDmg");
   if (
-    scope.macroItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid) &&
+    sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid) &&
     workflow.damageItem &&
     preventedDmg > 0
   ) {
-    elwinHelpers.reduceAppliedDamage(workflow.damageItem, preventedDmg, scope.macroItem);
+    elwinHelpers.reduceAppliedDamage(workflow.damageItem, preventedDmg, sourceItem);
   }
   if (debug) {
     console.warn(`${DEFAULT_ITEM_NAME} | Reaction result`, {
@@ -161,33 +161,33 @@ async function handleOnUseProtectiveFieldPostActiveEffects(workflow) {
  *
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
  * @param {Actor} actor - The owner of the Psionic Power item.
- * @param {Activity} scope.rolledActivity - The activity that was used.
- * @param {Item} scope.macroItem - The Psionic Power item.
+ * @param {Activity} usedActivity - The activity that was used.
+ * @param {Item} sourceItem - The Psionic Power item.
  * @param {boolean} debug - Flag to indicate debug mode.
  * @returns
  */
-async function handleOnUsePsionicStrikePostRollFinished(workflow, actor, scope.rolledActivity, scope.macroItem, debug) {
+async function handleOnUsePsionicStrikePostRollFinished(workflow, actor, usedActivity, sourceItem, debug) {
   if (
     !workflow.hitTargets.size ||
-    !elwinHelpers.isWeapon(scope.rolledActivity.item) ||
-    !scope.rolledActivity.hasAttack ||
-    scope.rolledActivity.attack.type?.classification !== "weapon" ||
+    !elwinHelpers.isWeapon(usedActivity.item) ||
+    !usedActivity.hasAttack ||
+    usedActivity.attack.type?.classification !== "weapon" ||
     !(workflow.damageRoll?.total > 0)
   ) {
     return;
   }
-  const psionicStrikeActivity = scope.macroItem.system.activities.find((a) => a.identifier === "psionic-strike");
+  const psionicStrikeActivity = sourceItem.system.activities.find((a) => a.identifier === "psionic-strike");
   if (!psionicStrikeActivity) {
-    console.warn(`${DEFAULT_ITEM_NAME} | Could not find valid the Psionic Strike activity for ${scope.macroItem.name}.`);
+    console.warn(`${DEFAULT_ITEM_NAME} | Could not find valid the Psionic Strike activity for ${sourceItem.name}.`);
     return;
   }
-  const { value: psionicUses, max: maxPsionicUses } = scope.macroItem.system.uses ?? { value: 0, max: 0 };
+  const { value: psionicUses, max: maxPsionicUses } = sourceItem.system.uses ?? { value: 0, max: 0 };
 
   if (psionicUses <= 0 || DAE.getFlag(actor, "psionicPowerPsionicStrikeUsed")) {
     // No uses available cannot use Psionic Strike
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | No uses available, cannot use Psionic Strike.`, {
-        psionicPower: scope.macroItem,
+        psionicPower: sourceItem,
         psionicStrikeActivity,
       });
     }

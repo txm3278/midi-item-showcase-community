@@ -11,7 +11,7 @@ import { wardingManeuver } from './Fighter/Cavalier/wardingManeuver.js';
 import { bulwarkOfForce } from './Fighter/PsiWarrior/bulwarkOfForce.js';
 import { guardedMind } from './Fighter/PsiWarrior/guardedMind.js';
 import { psionicPower } from './Fighter/PsiWarrior/psionicPower.js';
-import { telekineticAdapt } from './Fighter/PsiWarrior/telekineticAdapt.js';
+import { telekineticAdept } from './Fighter/PsiWarrior/telekineticAdept.js';
 import { telekineticMaster } from './Fighter/PsiWarrior/telekineticMaster.js';
 import { psionicPowerProtectiveField } from './Fighter/PsiWarrior/psionicPowerProtectiveField.js';
 import { deflectAttacks } from './Monk/deflectAttacks.js';
@@ -46,7 +46,7 @@ export let classFeatures = {
   guardedMind,
   psionicPower,
   psionicPowerProtectiveField,
-  telekineticAdapt,
+  telekineticAdept,
   telekineticMaster,
   deflectAttacks,
   deflectMissiles,
