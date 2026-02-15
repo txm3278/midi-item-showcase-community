@@ -28,7 +28,7 @@
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
           "minimum": "5.2.0",
-          "verified": "5.2.4"
+          "verified": "5.2.5"
         }
       }
     ],
@@ -38,8 +38,8 @@
         "type": "module",
         "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "minimum": "13.0.39",
-          "verified": "13.0.39"
+          "minimum": "13.0.40",
+          "verified": "13.0.43"
         }
       }
     ]
