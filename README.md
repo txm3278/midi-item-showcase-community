@@ -39,6 +39,7 @@ A collection of utility functions to facilitate automations.
 - elwinHelpers.isMeleeWeaponAttack - Returns true if an activity is considered a melee weapon attack.
 - elwinHelpers.isMidiHookStillValid - Utility function to validate if a dnd5e hook has been called for the same midi-qol workflow on which it was registered.
 - elwinHelpers.getTokenName - Returns the token name using midi-qol config for token name.
+- elwinHelpers.getTokenImage - Returns the token image to display.
 - elwinHelpers.getActorSizeValue - Returns the size value of an actor
 - elwinHelpers.getSizeValue - Returns the value for a size.
 - elwinHelpers.buttonDialog - Helper function to create a simple dialog with labeled buttons and associated data.
@@ -56,17 +57,25 @@ A collection of utility functions to facilitate automations.
 - elwinHelpers.getAutomatedEnchantmentSelectedProfile - Returns the selected enchantment profile for automated enchantment application.
 - elwinHelpers.applyEnchantmentToItem - Applies programmatically an enchantment to the specified item.
 - elwinHelpers.applyEnchantmentToItemFromOtherActivity - Applies programmatically an enchantment to the specified item from an enchant activity different than the one from the workflow
+- elwinHelpers.getEquippedWeapons - Returns a list of equipped weapons for a specified actor.
 - elwinHelpers.getEquippedMeleeWeapons - Returns a list of equipped melee weapons for a specified actor.
+- elwinHelpers.getEquippedRangedWeapons - Returns a list of equipped ranged weapons for a specified actor.
 - elwinHelpers.getRules - Returns `modern` or `legacy` depending on the specified item rules version.
 - elwinHelpers.registerWorkflowHook - Registers a callback on an event for the duration of the specified workflow. 
 - elwinHelpers.damageConfig.updateBasic - Updates the damage roll configuration by adding a damage bonus and or replacing the damage type of the rolls.
 - elwinHelpers.damageConfig.updateCustom - Updates the damage roll configuration by executing the specified callback function.
+- elwinHelpers.attachToToken - Marks the specified UUIDs as attached to the specified token. When the token moves, the attached entities, will be updated accordingly (x, y, elevation, rotation).
+- elwinHelpers.detachFromToken - Removes the specified UUIDs from the entities attached to the specified token.
+- elwinHelpers.attachToTemplate - Marks the specified UUIDs as attached to the specified template document. When the template document is updated, the attached entities, will be updated accordingly (x, y, elevation, rotation).<br>**Note:** Currently only attachments to circle templates are supported.
+- elwinHelpers.detachFromTemplate - Removes the specified UUIDs from the entities attached to the specified template document.
+- elwinHelpers.attachAmbientLightToTemplate - Creates and attaches an ambient light source to the specified template document.<br>**Note:** ambient light sources can only be attached to circle templates and they are attached with the sync option true.
+- elwinHelpers.getEffectiveDamage - Calculates the effective damage totals by categories from a list of damages.
+- elwinHelpers.getReactionFlavor - Returns the reaction flavor for the reaction dialog.
+- elwinHelpers.getReactionSetting - Returns the reaction setting for the specified user.
+ <br>**Note:** Copied from midi-qol because this utility function is not exposed.
+- elwinHelpers.enchantItemTemporarily - Enchants the specified item to change the activation type of its activities to special for the specified activity types that matches its conditions, otherwise the activities are marked as automationOnly.
 - elwinHelpers.ItemSelectionDialog - Utility dialog to select an item from a list of items.
 - elwinHelpers.TokenSelectionDialog - Utility dialog to select a token from a list of tokens.
-
-### Item/Activity Consumption Extended Support
-
-You can specify an item identifier in the consumption target of an item or activity when editing or creating an item from the side bar or an item contained in a Compendium.
 
 ### Enchantment Extra Restrictions
 
