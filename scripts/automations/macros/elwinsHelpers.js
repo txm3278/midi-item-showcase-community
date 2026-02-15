@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.10
+// v3.5.11
 // Dependencies:
 //  - MidiQOL
 //
@@ -48,7 +48,9 @@
 // - elwinHelpers.getAutomatedEnchantmentSelectedProfile
 // - elwinHelpers.applyEnchantmentToItem
 // - elwinHelpers.applyEnchantmentToItemFromOtherActivity
+// - elwinHelpers.getEquippedWeapons
 // - elwinHelpers.getEquippedMeleeWeapons
+// - elwinHelpers.getEquippedRangedWeapons
 // - elwinHelpers.getRules
 // - elwinHelpers.registerWorkflowHook
 // - elwinHelpers.damageConfig.updateBasic
@@ -61,6 +63,7 @@
 // - elwinHelpers.getEffectiveDamage
 // - elwinHelpers.getReactionFlavor
 // - elwinHelpers.getReactionSetting
+// - elwinHelpers.enchantItemTemporarily
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -139,7 +142,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.10";
+  const VERSION = "3.5.11";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -307,7 +310,9 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.getAutomatedEnchantmentSelectedProfile", getAutomatedEnchantmentSelectedProfile);
     exportIdentifier("elwinHelpers.applyEnchantmentToItem", applyEnchantmentToItem);
     exportIdentifier("elwinHelpers.applyEnchantmentToItemFromOtherActivity", applyEnchantmentToItemFromOtherActivity);
+    exportIdentifier("elwinHelpers.getEquippedWeapons", getEquippedWeapons);
     exportIdentifier("elwinHelpers.getEquippedMeleeWeapons", getEquippedMeleeWeapons);
+    exportIdentifier("elwinHelpers.getEquippedRangedWeapons", getEquippedRangedWeapons);
     exportIdentifier("elwinHelpers.getRules", getRules);
     exportIdentifier("elwinHelpers.registerWorkflowHook", registerWorkflowHook);
     exportIdentifier("elwinHelpers.damageConfig.updateBasic", updateDamageConfigBasic);
@@ -320,6 +325,7 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.getEffectiveDamage", getEffectiveDamage);
     exportIdentifier("elwinHelpers.getReactionFlavor", getReactionFlavor);
     exportIdentifier("elwinHelpers.getReactionSetting", getReactionSetting);
+    exportIdentifier("elwinHelpers.enchantItemTemporarily", enchantItemTemporarily);
 
     // Note: classes need to be exported after they are declared...
 
@@ -1056,6 +1062,7 @@ export function runElwinsHelpers() {
     if (["isPostCheckSave"].includes(reactionTriggerName)) {
       // Note: we use the same config as the attack to determine is the TPR owner can see of the Roll.
       const showAttackRoll = showReactionAttackRoll ?? MidiQOL.configSettings().showReactionAttackRoll;
+      // TODO define localization to remove attack from roll options or ask midi to add it
       const rollOptions = getI18nOptions("ShowReactionAttackRollOptions");
       switch (showAttackRoll) {
         case "all":
@@ -1211,7 +1218,7 @@ export function runElwinsHelpers() {
         }
       }
       if (["isPostCheckSave"].includes(regTrigger)) {
-        roll = workflow.saveRolls?.find((r) => r.data.tokenUuid === target.document.uuid);
+        roll = workflow.tokenSaves?.[target.document.uuid];
       }
       const tmpFilteredReactions = [];
       for (let reactionData of filteredReactions) {
@@ -2457,7 +2464,7 @@ export function runElwinsHelpers() {
    * Deletes the applied enchantments for the specified item or activity uuid.
    *
    * @param {string} entityUuid - The UUID of the item or activity for which to delete the associated enchantments.
-   * @returns {ActiveEffect5e[]} the list of applied enchantments that was deleted.
+   * @returns {Promise<ActiveEffect5e[]>} the list of applied enchantments that was deleted.
    */
   async function deleteAppliedEnchantments(entityUuid) {
     if (debug) {
@@ -2845,6 +2852,23 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Returns a list of equipped weapons for a specified actor.
+   *
+   * @param {Actor5e} sourceActor - Actor for which to list equipped weapons.
+   * @returns {Item5e[]} A list of equipped weapons.
+   */
+  function getEquippedWeapons(sourceActor) {
+    return (
+      sourceActor?.itemTypes.weapon.filter(
+        (w) =>
+          w.system.equipped &&
+          isWeapon(w) &&
+          w.system.activities?.getByType("attack").some((a) => a.attack.type.classification === "weapon"),
+      ) ?? []
+    );
+  }
+
+  /**
    * Returns a list of equipped melee weapons for a specified actor.
    *
    * @param {Actor5e} sourceActor - Actor for which to list equipped melee weapons.
@@ -2855,10 +2879,29 @@ export function runElwinsHelpers() {
       sourceActor?.itemTypes.weapon.filter(
         (w) =>
           w.system.equipped &&
-          ["simpleM", "martialM"].includes(w.system.type?.value) &&
+          isMeleeWeapon(w) &&
           w.system.activities
             ?.getByType("attack")
             .some((a) => a.attack.type.value === "melee" && a.attack.type.classification === "weapon"),
+      ) ?? []
+    );
+  }
+
+  /**
+   * Returns a list of equipped ranged weapons for a specified actor.
+   *
+   * @param {Actor5e} sourceActor - Actor for which to list equipped ranged weapons.
+   * @returns {Item5e[]} A list of equipped ranged weapons.
+   */
+  function getEquippedRangedWeapons(sourceActor) {
+    return (
+      sourceActor?.itemTypes.weapon.filter(
+        (w) =>
+          w.system.equipped &&
+          isRangedWeapon(w) &&
+          w.system.activities
+            ?.getByType("attack")
+            .some((a) => a.attack.type.value === "ranged" && a.attack.type.classification === "weapon"),
       ) ?? []
     );
   }
@@ -3215,6 +3258,84 @@ export function runElwinsHelpers() {
       attachedEntityUuids: attachedEntityUuids.filter((u) => !entityUuids.includes(u)),
       synchedEntityUuids: synchedEntityUuids.filter((u) => !entityUuids.includes(u)),
     });
+  }
+
+  /**
+   * Enchants the specified item to change the activation type of its activities to special
+   * for the specified activity types that matches its conditions, otherwise the activities are marked as automationOnly.
+   *
+   * @param {Item} item - The item to enchant.
+   * @param {Item|Activity} source - The source of the enchantment.
+   * @param {object} options - Options for the enchantment to be applied.
+   * @param {string} [options.activationType] - New activation type, (default special).
+   * @param {object[]} [options.changes] - Changes to apply to the source item in addition of activation type (default []).
+   * @param {object[]} [options.activityRequirements] - Requirements an activity must met for its activation type to be must be changed to special,
+   *     otherwise it's marked as automationOnly. (default CONFIG.DND5E.activityTypes with empty conditions).
+   * @param {string} [options.activityRequirements.type] - Activity type, null or undefined for any type.
+   * @param {object[]} [options.activityRequirements.conditions] - Conditions that an activity must met.
+   * @param {string} [options.activityRequirements.conditions.key] - Path of the activity property to be validated.
+   * @param {any} [options.activityRequirements.conditions.value] - Value which the activity property must match.
+   *
+   * @returns {Promise<ActiveEffect>} the created enchantment effect.
+   */
+  async function enchantItemTemporarily(item, source, options = {}) {
+    const activationType = options.activationType ?? "special";
+    const changes = options.changes ?? [];
+    const activityRequirements = options.activityRequirements ?? CONFIG.DND5E.activityTypes.map((at) => ({ type: at }));
+    // Change activation type to the specified one so it is not considered as its normal value
+    const effectData = {
+      name: source.name,
+      img: "icons/magic/time/arrows-circling-green.webp",
+      type: "enchantment",
+      changes: [...changes],
+      transfer: false,
+      duration: {
+        seconds: 1,
+        turns: 1,
+      },
+      origin: source.uuid,
+      "flags.dae.stackable": "noneName",
+    };
+    for (let activity of item.system.activities) {
+      if (
+        activityRequirements.some(
+          (ar) =>
+            (!ar.type || activity.type === ar.type) &&
+            (!ar.conditions || ar.conditions.every((c) => foundry.utils.getProperty(activity, c.key) == c.value)),
+        )
+      ) {
+        effectData.changes.push({
+          key: `system.activities.${activity.id}.activation.type`,
+          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+          value: activationType,
+          priority: 20,
+        });
+      } else if (!activity.midiProperties?.automationOnly) {
+        effectData.changes.push(
+          {
+            key: `system.activities.${activity.id}.activation.type`,
+            mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+            value: activationType,
+            priority: 20,
+          },
+          {
+            key: `system.activities.${activity.id}.midiProperties.automationOnly`,
+            mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+            value: "true",
+            priority: 20,
+          },
+        );
+      }
+    }
+    let moduleId = game.modules.get(MISC_MODULE_ID)?.active ? MISC_MODULE_ID : WORLD_MODULE_ID;
+
+    foundry.utils.setProperty(effectData, `flags.${moduleId}.identifier`, source.identifier);
+
+    // Remove existing enchantments
+    deleteAppliedEnchantments(source.uuid);
+    const effectOptions = { parent: item, keepOrigin: true };
+
+    return await ActiveEffect.implementation.create(effectData, effectOptions);
   }
 
   /**

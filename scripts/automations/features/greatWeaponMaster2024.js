@@ -2,11 +2,11 @@
 // Read First!!!!
 // Handles the ability to add a damage bonus when the conditions are met as well as the ability
 // to make a bonus melee weapon attack when the actor scores a critical hit or brings a target to 0 HP with a melee weapon.
-// v1.4.0
+// v1.5.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - MidiQOL "on use" item macro [postActiveEffects]
+//  - MidiQOL "on use" item macro [postRollFinished]
 //  - Elwin Helpers world script
 //
 // Usage:
@@ -14,9 +14,12 @@
 // After a weapon attack, it will also prompt to make a bonus attack if the conditions are met.
 //
 // Description:
-// In the postActiveEffects (OnUse) phase (on any owner's item other than Greater Weapon Master):
-//   If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
-//   prompt the user to make a bonus attack with the same weapon. If confirmed, then MidiQOL.completeItemUse is called on this item.
+// In the postRollFinished (OnUse) phase (on any owner's item other than Greater Weapon Master):
+//   Validates that the workflow was not aborted, that item used is a melee weapon,
+//   and it was a critical or at least one target was dropped to 0 HP,
+//   then prompt the user to make a bonus attack with the same weapon.
+//   If confirmed, enchants the current weapon to convert its activation type to bonus
+//   then calls MidiQOL.completeActivityUse using the current used activity to make the bonus attack.
 // ###################################################################################################
 
 export async function greatWeaponMaster2024({
@@ -36,7 +39,7 @@ export async function greatWeaponMaster2024({
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.4")) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
@@ -53,18 +56,9 @@ export async function greatWeaponMaster2024({
       arguments,
     );
   }
-  if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-    if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
-      await handleOnUsePostActiveEffectsOtherItems(workflow, scope.macroItem, scope.rolledItem);
-    }
-  } else if (args[0].tag === "OnUse" && ["preAttackRollConfig", "preDamageRollConfig"].includes(args[0].macroPass)) {
-    if (workflow.item?.getFlag("midi-qol", "syntheticItem")) {
-      // Note: patch to fix problem with getAssociatedItem which does not prepare data when creating a synthetic item
-      if (!workflow.activity?.damage?.parts?.length) {
-        workflow.activity?.item?.prepareData();
-        workflow.activity?.item?.prepareFinalAttributes();
-        workflow.activity?.item?.applyActiveEffects();
-      }
+  if (args[0].tag === "OnUse" && args[0].macroPass === "postRollFinished") {
+    if (scope.rolledItem?.uuid !== scope.macroItem.uuid && !workflow.aborted) {
+      await handleOnUsePostRollFinishedOtherItems(workflow, scope.macroItem, scope.rolledItem);
     }
   }
 
@@ -76,7 +70,7 @@ export async function greatWeaponMaster2024({
    * @param {Item5e} sourceItem - The Great Weapon Master item.
    * @param {Item5e} usedItem - The item used for the current workflow.
    */
-  async function handleOnUsePostActiveEffectsOtherItems(currentWorkflow, sourceItem, usedItem) {
+  async function handleOnUsePostRollFinishedOtherItems(currentWorkflow, sourceItem, usedItem) {
     if (
       !elwinHelpers.isMeleeWeapon(usedItem) ||
       currentWorkflow.activity?.type !== "attack" ||
@@ -133,50 +127,50 @@ export async function greatWeaponMaster2024({
    * @param {Activity} activityId - Id of the activity triggering bonus attack.
    */
   async function doBonusAttack(sourceItem, weaponItem, activityId) {
-    // Change activation type to special so it is not considered as an Attack Action
-    const weaponItemData = weaponItem.toObject();
-    weaponItemData._id = foundry.utils.randomID();
-    weaponItemData.name += " (Hew)";
-    // Flag item as synthetic
-    foundry.utils.setProperty(weaponItemData, "flags.midi-qol.syntheticItem", true);
-    // TODO remove when fixed... Need to add onOnUseMAcro to prepare the item and activity because ChatMessage.getAssociatedItem does not do it...
-    let onUseMacroName = foundry.utils.getProperty(weaponItemData, "flags.midi-qol.onUseMacroName") ?? "";
-    const preRollConfigMacro = `[preAttackRollConfig]ItemMacro.${sourceItem.uuid},[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
-    foundry.utils.setProperty(
-      weaponItemData,
-      "flags.midi-qol.onUseMacroName",
-      onUseMacroName?.length ? "," + preRollConfigMacro : preRollConfigMacro,
-    );
-    const activity = weaponItemData.system.activities[activityId];
+    let activity = weaponItem.system.activities.get(activityId);
     if (!activity) {
+      // Invalid activity id.
       return;
     }
-    activity.activation ??= {};
-    activity.activation.type = "bonus";
-    activity.activation.cost = null;
 
-    const weaponCopy = new Item.implementation(weaponItemData, { parent: sourceItem.actor });
-    // Need to prepare data because constructor does not.
-    weaponCopy.prepareData();
-    weaponCopy.prepareFinalAttributes();
-    weaponCopy.applyActiveEffects();
+    // Change activation type to Bonus so it is not considered an Action
+    const changes = [{ key: "name", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `{} (Hew)` }];
 
-    const config = {
-      midiOptions: {
-        ignoreUserTargets: true,
-        workflowOptions: { targetConfirmation: "always" },
-        activityId: activityId,
-      },
-    };
-    return await MidiQOL.completeItemUse(weaponCopy, config, {}, {});
+    const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(weaponItem, sourceItem, {
+      activationType: "bonus",
+      changes,
+      activityRequirements: [
+        {
+          type: "attack",
+          conditions: [{ key: "id", value: activityId }],
+        },
+      ],
+    });
+    if (!enchantmentEffect) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${weaponItem.name}.`);
+      return false;
+    }
+    try {
+      const config = {
+        midiOptions: {
+          ignoreUserTargets: true,
+          workflowOptions: { autoRollAttack: true, targetConfirmation: "always" },
+        },
+      };
+      // Get activity from enchantment parent to make sure the enchantment modifications have been applied.
+      activity = enchantmentEffect.parent.system.activities.get(activityId);
+      return await MidiQOL.completeActivityUse(activity, config);
+    } finally {
+      await enchantmentEffect.delete();
+    }
   }
 
   /**
    * Verifies if the current actor has already used its Bonus Action and that it must be checked.
    *
    * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
-   * @returns {boolean} true if actor is in combat and has used its bonus action and the
-   * midi-qol settings is set to enforce checks for Bonus Action.
+   * @returns {boolean} true if actor is in combat and has used its bonus action and
+   *     the midi-qol settings is set to enforce checks for Bonus Action.
    */
   function hasUsedBonusActionAndNeedsCheck(workflow) {
     return (

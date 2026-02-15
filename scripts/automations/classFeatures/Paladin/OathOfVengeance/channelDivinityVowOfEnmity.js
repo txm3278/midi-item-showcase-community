@@ -1,12 +1,12 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v3.3.0
+// v3.4.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
 //  - Times Up
-//  - MidiQOL "on use" item/actor macro,[preAttackRoll][postActiveEffects]
+//  - MidiQOL "on use" item/actor macro,[preAttackRollConfig][postActiveEffects]
 //
 // Usage:
 // This item need to be used to activate. It marks the target and gives advantage to any attack made to this target.
@@ -17,10 +17,15 @@
 //       The Utter Vow activity consumption must be set to the Channel Divinity item when added to an actor.
 //
 // Description:
-// In the preAttackRoll phase of any item activity of the marker (in owner's workflow):
+// In the preAttackRollConfig phase of any item activity of the marker (in owner's workflow):
 //   Gives advantage to the marker if the target is marked by him.
 // In the postActiveEffects phase of this feature's activity (in owner's workflow):
 //   Updates the self active effect to delete the target active effect when deleted and vice versa.
+// When the Channel Divinity: Vow of Enmity expires [off] (on owner):
+//   Makes the Transfer Vow activity not visible.
+// Wen the Marked by Vow of Enmity expires [off] (on target):
+//   If expired due to 0 HP, makes the Transfer Vow activity visble and displays a chat message
+//   telling about its availability.
 // ###################################################################################################
 
 export async function channelDivinityVowOfEnmity({
@@ -70,7 +75,7 @@ export async function channelDivinityVowOfEnmity({
       arguments,
     );
   }
-  if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRoll") {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRollConfig") {
     if (!workflow.targets?.size) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | No targets.`);
@@ -87,9 +92,8 @@ export async function channelDivinityVowOfEnmity({
       return;
     }
 
-    workflow.advantage = true;
-    workflow.attackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
-    workflow.advReminderAttackAdvAttribution.add(`ADV:${scope.macroItem.name}`);
+    // Add advantage
+    workflow.attackRollModifierTracker.advantage.add(scope.macroItem.identifier, scope.macroItem.name);
   } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     // Handles Utter Vow or Transfer Vow activities
     if (!workflow.effectTargets?.size) {

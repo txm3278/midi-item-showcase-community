@@ -20,8 +20,8 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "function.MISC.macros.classFeatures.drunkardsLuck,preAttackRoll",
-          "priority": 20
+          "value": "function.MISC.macros.classFeatures.drunkardsLuck,preAttackRollConfig",
+          "priority": 150
         }
       ],
       "disabled": false,
@@ -61,7 +61,7 @@
       "_key": "!items.effects!8t2VVH2GV0qZWRsx.DG9IM97FDu9u4ToI"
     },
     {
-      "name": "Drunkard's Luck - Cancel Disadvantage",
+      "name": "Drunkard's Luck",
       "img": "icons/equipment/neck/necklace-charm-clover.webp",
       "origin": "Item.8t2VVH2GV0qZWRsx",
       "_id": "eGGfnTLZbbVHBErr",
@@ -69,13 +69,25 @@
       "system": {},
       "changes": [
         {
-          "key": "flags.midi-qol.advantage.ability.all",
+          "key": "flags.midi-qol.noDisadvantage.save.all",
           "mode": 5,
           "value": "true",
           "priority": 20
         },
         {
-          "key": "flags.midi-qol.advantage.attack.all",
+          "key": "flags.midi-qol.noDisadvantage.check.all",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.noDisadvantage.tool.all",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.noDisadvantage.skill.all",
           "mode": 5,
           "value": "true",
           "priority": 20
@@ -91,7 +103,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "description": "",
+      "description": "<p>Cancels disadvantage on saves and ability checks.</p>",
       "tint": "#ffffff",
       "transfer": false,
       "statuses": [],
@@ -264,7 +276,7 @@
     },
     "advancement": [],
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect to be called at appropriate phases. It is also a reaction activity \nthat gets triggered when appropriate. When activated it adds an AE that cancels disadvantage on attack, save and check rolls.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect to be called at appropriate phases. It is also a reaction activity\n that gets triggered when appropriate. When activated it adds an AE that cancels disadvantage on attack, save and check rolls.</p></details>",
       "chat": "<div class=\"ddb\">\nWhen you make an ability check, an attack roll, or a saving throw and have disadvantage on the roll, you can spend 2 ki points to cancel the disadvantage for that roll.\n</div>"
     },
     "identifier": "drunkards-luck",
@@ -309,6 +321,9 @@
       "noAutotarget": false,
       "addTokenSize": false,
       "attachToken": "na"
+    },
+    "midi-qol": {
+      "onUseMacroName": "[preActiveEffects]function.MISC.macros.classFeatures.drunkardsLuck"
     }
   },
   "img": "icons/equipment/neck/necklace-charm-clover.webp",

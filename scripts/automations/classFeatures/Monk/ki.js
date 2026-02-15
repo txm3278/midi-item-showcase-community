@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Ki, handles making multiple Unarmed Strike when using Fluury of Blows, and adds the
 // appropriate effects for Patient Defense and Step of the Winds.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410, based on CPR's Monk's Focus automation.
 // Dependencies:
 //  - DAE
@@ -25,6 +25,7 @@
 const DEFAULT_ITEM_NAME = "Ki";
 const MODULE_ID = "midi-item-showcase-community";
 const UNARMED_STRIKE_IDENT = "unarmed-strike";
+const FLURRY_OF_BLOWS_IDENT = "flurry-of-blows";
 
 /**
  * Validates if the required dependencies are met.
@@ -32,7 +33,7 @@ const UNARMED_STRIKE_IDENT = "unarmed-strike";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
@@ -62,7 +63,8 @@ export async function ki({ speaker, actor, token, character, item, args, scope, 
     // Activates when Flurry of Blows is used
     if (
       !workflow.aborted &&
-      (scope.rolledActivity?.identifier === "flurry-of-blows" || scope.rolledItem.identifier === "flurry-of-blows")
+      (scope.rolledActivity?.identifier === FLURRY_OF_BLOWS_IDENT ||
+        scope.rolledItem.identifier === FLURRY_OF_BLOWS_IDENT)
     ) {
       await handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, scope.macroItem, debug);
     }
@@ -125,19 +127,23 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, source
       }
     }
   }
-  const enchantmentEffect = await enchantSpecialItem(unarmedStrike, workflow.activity, ["attack", "save"]);
+  const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(
+    unarmedStrike,
+    workflow.activity?.identifier === FLURRY_OF_BLOWS_IDENT ? workflow.activity : workflow.item,
+    { activityRequirements: [{ type: "attack" }, { type: "save" }] },
+  );
   if (!enchantmentEffect) {
     console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${UNARMED_STRIKE_IDENT}.`);
     return;
   }
-  let attacks = 2;
-  // get extra attacks from features
-  const extraAttacks = actor.itemTypes.feat
-    .map((i) => i.getFlag(MODULE_ID, "flurryOfBlowsExtraAttacks") ?? 0)
-    .reduce((total, value) => total + value, 0);
-  attacks += extraAttacks;
-  const attackedTargets = [];
   try {
+    let attacks = 2;
+    // get extra attacks from features
+    const extraAttacks = actor.itemTypes.feat
+      .map((i) => i.getFlag(MODULE_ID, "flurryOfBlowsExtraAttacks") ?? 0)
+      .reduce((total, value) => total + value, 0);
+    attacks += extraAttacks;
+    const attackedTargets = [];
     do {
       attackedTargets.push(target);
       await itemUse(unarmedStrike, [target]);
@@ -238,57 +244,6 @@ async function getSelectedTarget(sourceActivity, targetTokens, defaultToken) {
     targetTokens,
     defaultToken,
   );
-}
-
-/**
- * Enchant the specified item to change the activation type of its activities to special
- * for the specified activity types.
- *
- * @param {Item5e} item - The item to enchant.
- * @param {Item5e} source - The source of the enchantment.
- * @param {string[]} activityTypes - The activity for which the activation type must be changed to special (default CONFIG.DND5E.activityTypes).
- *
- * @returns {ActiveEffect} the created enchantment effect.
- */
-async function enchantSpecialItem(item, source, activityTypes = CONFIG.DND5E.activityTypes) {
-  // Change activation type to special so it is not considered as an Attack Action
-  const effectData = {
-    name: source.name,
-    img: "icons/magic/time/arrows-circling-green.webp",
-    type: "enchantment",
-    changes: Object.keys(activityTypes)
-      .flatMap((activityType) => [
-        {
-          key: `activities[${activityType}].activation.type`,
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: "special",
-          priority: 20,
-        },
-      ])
-      .concat([
-        {
-          key: "name",
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: `{} - ${source.name}`,
-          priority: 20,
-        },
-        {
-          key: "system.activation.type",
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: "special",
-          priority: 20,
-        },
-      ]),
-    transfer: false,
-    duration: {
-      seconds: 1,
-    },
-    origin: source.uuid,
-    "flags.dae.stackable": "noneName",
-  };
-  foundry.utils.setProperty(effectData, `flags.${MODULE_ID}.identifier`, source.identifier);
-  const [effect] = await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
-  return effect;
 }
 
 /**

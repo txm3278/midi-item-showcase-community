@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.3.0
+// v3.4.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -23,7 +23,8 @@
 //
 // Description:
 // In the preItemRoll (OnUse) phase (on Greater Weapon Master Bonus Attack activity):
-//   Prompts the user to select an equipped melee weapon with which to make the bonus attack.
+//   Verifies that the owner as at least one equipped melee weapon with which to make the bonus attack,
+//   otherwise the activity is aborted.
 // In the preItemRoll (OnUse) phase (on any owner's item/activity):
 //   If the Toggle activity's midi "Toggle Effect" property is checked:
 //     If the activity used is not this feat's Toggle activity and the state was set to prompt: set the state to toggled off.
@@ -42,7 +43,9 @@
 // In the postActiveEffects (OnUse) phase (on Greater Weapon Master Toggle activity):
 //   Sets the state to the next state on->off, off->on, and adds or deletes the toggled on AE if the new state is toggled on or toggled off.
 // In the postActiveEffects (OnUse) phase (on Greater Weapon Master Bonus Attack activity):
-//   Calls MidiQOL.completeItemUse with the selected weapon.
+//   Prompts the owner to select an equipped melee weapon with which to make the bonus attack.
+//   Enchants the selected weapon to convert its activation type to special and give advantage and extra damage
+//   then calls MidiQOL.completeItemUse with the selected weapon to make the bonus attack.
 // In the postActiveEffects (OnUse) phase (on any owner's item other than Greater Weapon Master):
 //   If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
 //   grants one charge to use the special bonus attack if it was not already granted.
@@ -63,7 +66,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     [PROMPT_STATE, ON_STATE],
   ]);
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
@@ -95,15 +98,6 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       await handleOnUsePostActiveEffectsBonusAttack(workflow, scope.macroItem);
     } else if (scope.rolledItem?.uuid !== scope.macroItem.uuid) {
       await handleOnUsePostActiveEffectsOtherItems(workflow, scope.macroItem, scope.rolledItem);
-    }
-  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
-    if (workflow.item?.getFlag("midi-qol", "syntheticItem")) {
-      // Note: patch to fix problem with getAssociatedItem which does not prepare data when creating a synthetic item
-      if (!workflow.activity?.damage?.parts?.length) {
-        workflow.activity?.item?.prepareData();
-        workflow.activity?.item?.prepareFinalAttributes();
-        workflow.activity?.item?.applyActiveEffects();
-      }
     }
   } else if (args[0] === "on") {
     // Clear item state when first applied
@@ -139,20 +133,6 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       ui.notifications.warn(msg);
       return false;
     }
-
-    const chosenWeaponId = sourceActor.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId");
-    let weaponItem = filteredWeapons[0];
-    if (filteredWeapons.length > 1) {
-      weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
-    }
-    if (!weaponItem) {
-      // Bonus attack was cancelled
-      const msg = `${sourceItem.name} | No weapon selected for the bonus attack.`;
-      ui.notifications.warn(msg);
-      return false;
-    }
-    // Keep weapon choice for next time (used as pre-selected choice) and for postActiveEffects
-    await sourceActor.setFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId", weaponItem.id);
     return true;
   }
 
@@ -245,31 +225,48 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
   }
 
   /**
-   * Calls MidiQOL.completeItemUse with the selected weapon to make the bonus attack.
+   * Prompts the owner to select an equipped melee weapon with which to make the bonus attack.
+   * Enchants the selected weapon to convert its activation type to special and give advantage
+   * and extra damage then calls MidiQOL.completeItemUse with the selected weapon to make the bonus attack.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Item5e} sourceItem - The Great Weapon Master item.
    */
   async function handleOnUsePostActiveEffectsBonusAttack(currentWorkflow, sourceItem) {
-    const currentActor = currentWorkflow.actor;
-    const weaponItem = currentActor?.items.get(currentActor?.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId"));
-    if (!weaponItem) {
-      ui.notifications.warn(
-        `${sourceItem.name} | No selected weapon for bonus attack, reallocate spent resource if needed.`,
-      );
+    const refundResource = async function () {
       const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
       if (consumed) {
         await currentWorkflow.activity?.refund(consumed);
       }
+    };
+    const currentActor = currentWorkflow.actor;
+    const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(currentActor);
+    if (filteredWeapons.length === 0) {
+      ui.notifications.warn(`${sourceItem.name} | No melee weapon equipped, reallocate spent resource if needed.`);
+      await refundResource();
       return;
     }
+
+    const chosenWeaponId = currentActor.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId");
+    let weaponItem = filteredWeapons[0];
+    if (filteredWeapons.length > 1) {
+      weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
+    }
+    if (!weaponItem) {
+      // Bonus attack was cancelled
+      ui.notifications.warn(
+        `${sourceItem.name} | No weapon selected for the bonus attack, reallocate spent resource if needed.`,
+      );
+      await refundResource();
+      return;
+    }
+    // Keep weapon choice for next time (used as pre-selected choice) and for postActiveEffects
+    await currentActor.setFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId", weaponItem.id);
+
     const bonusAttackWorkflow = await doBonusAttack(currentWorkflow, sourceItem, weaponItem);
-    if (bonusAttackWorkflow?.aborted) {
+    if (!bonusAttackWorkflow || bonusAttackWorkflow?.aborted) {
       ui.notifications.warn(`${sourceItem.name} | The bonus attack was aborted, reallocate spent resource if needed.`);
-      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
-      if (consumed) {
-        await currentWorkflow.activity?.refund(consumed);
-      }
+      await refundResource();
     }
   }
 
@@ -467,7 +464,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    * @param {Item5e[]} weaponChoices - Array of weapon items from which to choose.
    * @param {string} defaultChosenWeaponId - Id of weapon to be selected by default.
    *
-   * @returns {Item5e|null} the selected weapon.
+   * @returns {Promise<Item5e|null>} the selected weapon.
    */
   async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
     const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
@@ -479,61 +476,53 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
   }
 
   /**
-   * Do a complete item use with the specified weapon but changing its attack activities activation
-   * to special or bonus depending on the rules version.
+   * Do a complete item use with the specified weapon but enchanting it to change its attack
+   * activities activation to special.
    *
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Item5e} sourceItem - The Great Weapon Master item.
    * @param {Item5e} weaponItem - The weapon with which to attack.
+   * @returns {Promise<MidiQOL.Workflow|false>} the resulting bonus attack workflow or false.
    */
   async function doBonusAttack(currentWorkflow, sourceItem, weaponItem) {
-    // Change activation type to special so it is not considered as an Attack Action
-    // TODO Add enchantment instead of synthetic item
-    const weaponItemData = weaponItem.toObject();
-    weaponItemData._id = foundry.utils.randomID();
-    weaponItemData.name += ` (${getBonusAttackActivity(sourceItem).name})`;
-    // Flag item as synthetic
-    foundry.utils.setProperty(weaponItemData, "flags.midi-qol.syntheticItem", true);
-    // TODO remove when fixed... Need to add onOnUseMAcro to prepare the item and activity because ChatMessage.getAssociatedItem does not do it...
-    let onUseMacroName = foundry.utils.getProperty(weaponItemData, "flags.midi-qol.onUseMacroName") ?? "";
-    const preDamageRollConfigMacro = `[preDamageRollConfig]ItemMacro.${sourceItem.uuid}`;
-    foundry.utils.setProperty(
-      weaponItemData,
-      "flags.midi-qol.onUseMacroName",
-      onUseMacroName?.length ? "," + preDamageRollConfigMacro : preDamageRollConfigMacro,
-    );
-
-    for (let activityId of Object.keys(weaponItemData.system.activities ?? {})) {
-      const activity = weaponItemData.system.activities[activityId];
-      if (activity?.type !== "attack") {
-        continue;
-      }
-      activity.activation ??= {};
-      activity.activation.type = "special";
-      activity.activation.cost = null;
-    }
-    const weaponCopy = new Item.implementation(weaponItemData, { parent: sourceItem.actor });
-    // Need to prepare data because constructor does not.
-    weaponCopy.prepareData();
-    weaponCopy.prepareFinalAttributes();
-    weaponCopy.applyActiveEffects();
-
-    const config = {
-      midiOptions: {
-        targetUuids: currentWorkflow.targets.size ? [currentWorkflow.targets.first().document.uuid] : [],
-        workflowOptions: { autoRollAttack: true },
+    // Change activation type to special so it is not considered an Action
+    const changes = [
+      {
+        key: "name",
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: `{} [${getBonusAttackActivity(sourceItem).name}]`,
       },
-    };
+    ];
 
-    const message = {
-      data: {
-        flags: {
-          dnd5e: {
-            item: { data: weaponCopy.toObject() },
+    const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(weaponItem, sourceItem, {
+      changes,
+      activityRequirements: [
+        {
+          type: "attack",
+          conditions: [
+            { key: "attack.type.value", value: "melee" },
+            { key: "attack.type.classification", value: "weapon" },
+          ],
+        },
+      ],
+    });
+    if (!enchantmentEffect) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${weaponItem.name}.`);
+      return false;
+    }
+    try {
+      const config = {
+        midiOptions: {
+          targetUuids: currentWorkflow.targets.size ? [currentWorkflow.targets.first().document.uuid] : undefined,
+          workflowOptions: {
+            autoRollAttack: true,
+            targetConfirmation: !currentWorkflow.targets.size ? "always" : undefined,
           },
         },
-      },
-    };
-    return await MidiQOL.completeItemUse(weaponCopy, config, {}, message);
+      };
+      return await MidiQOL.completeItemUse(weaponItem, config);
+    } finally {
+      await enchantmentEffect.delete();
+    }
   }
 }

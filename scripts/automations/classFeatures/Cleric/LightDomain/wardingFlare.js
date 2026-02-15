@@ -3,10 +3,10 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within range attacks to allow him to add disadvantage on the attack to hit.
-// v3.2.0
+// v3.3.0
 // Dependencies:
 //  - DAE [on]
-//  - MidiQOL "on use" actor macro [preTargeting][tpr.isPreAttacked]
+//  - MidiQOL "on use" actor macro [tpr.isPreAttacked]
 //  - Elwin Helpers world script
 //
 // Usage:
@@ -18,27 +18,24 @@
 // Description:
 // In the "on" DAE macro call:
 //   Updates the Warding Flare (2024) recovery to support Short Rest if the requirements are met.
-// In the preTargeting (item OnUse) phase of the reaction activity (in owner's workflow):
-//   Validates that activity was triggered by the remote tpr.isPreAttacked target on use,
-//   otherwise the activity workflow execution is aborted.
 // In the tpr.isPreAttacked (TargetOnUse) post macro (in attacker's workflow) (on owner or other target):
-//   If the reaction was used and completed successfully, the current workflow is set to roll the attack with
+//   If the reaction was used and completed successfully, an AE is applied to force the attack with
 //   disadvantage. Also, if it's the 2024 feature and of appropriate level,
 //   activates the Improved Warding Flare to add temporary hit points on the target.
 // ###################################################################################################
 
 export async function wardingFlare({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Warding Flare';
-  const IMPROVED_WARDING_FLARE_ITEM_IDENT = 'improved-warding-flare';
+  const DEFAULT_ITEM_NAME = "Warding Flare";
+  const IMPROVED_WARDING_FLARE_ITEM_IDENT = "improved-warding-flare";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.2')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -47,39 +44,15 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preTargeting') {
-    return handleOnUsePreTargeting(workflow, scope.macroItem);
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'tpr.isPreAttacked.post') {
+  if (args[0].tag === "TargetOnUse" && args[0].macroPass === "tpr.isPreAttacked.post") {
     await handleTargetOnUseIsPreAttackedPost(workflow, scope.macroItem, options?.thirdPartyReactionResult);
-  } else if (args[0] === 'on') {
+  } else if (args[0] === "on") {
     // DAE on item macro for warding flare effect
     await handleOnEffect(actor, item);
-  }
-
-  /**
-   * Handles the preTargeting phase of the Warding Flare reaction activity workflow.
-   * Validates that the reaction was triggered by the isPreAttacked phase.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5E} sourceItem - The Warding Flare item.
-   *
-   * @returns {boolean} true if all requirements are fulfilled, false otherwise.
-   */
-  function handleOnUsePreTargeting(currentWorkflow, sourceItem) {
-    if (
-      currentWorkflow.workflowOptions?.thirdPartyReaction?.trigger !== 'tpr.isPreAttacked' ||
-      !currentWorkflow.workflowOptions?.thirdPartyReaction?.activityUuids?.includes(currentWorkflow.activity?.uuid)
-    ) {
-      // Reaction should only be triggered by third party reactions
-      const msg = `${sourceItem.name} | This reaction can only be triggered when a nearby creature attacks.`;
-      ui.notifications.warn(msg);
-      return false;
-    }
-    return true;
   }
 
   /**
@@ -95,26 +68,7 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
     if (!sourceItem.system.activities?.some((a) => a.uuid === thirdPartyReactionResult?.uuid)) {
       return;
     }
-    const legacy = elwinHelpers.getRules(scope.rolledItem) === 'legacy';
-
-    if (legacy && currentWorkflow.actor.system?.traits?.ci?.value?.has('blinded')) {
-      if (debug) {
-        console.warn(`{DEFAULT_ITEM_NAME} | Attacker is immune to blindness.`);
-      }
-      return;
-    }
-
-    // Note: at this point midi as already evaluated its ADV/DIS flags, we need to update it
-    // if already defined or add one if not.
-    let disValue = currentWorkflow.attackAdvAttribution.find((i) => i.startsWith('DIS:attack.all'));
-    if (disValue) {
-      currentWorkflow.attackAdvAttribution.delete(disValue);
-      disValue += ', ' + sourceItem.name;
-    } else {
-      disValue = 'DIS:attack.all ' + sourceItem.name;
-    }
-    currentWorkflow.attackAdvAttribution.add(disValue);
-    currentWorkflow.disadvantage = true;
+    const legacy = elwinHelpers.getRules(scope.rolledItem) === "legacy";
 
     if (legacy) {
       // Legacy behavior ends here.
@@ -124,7 +78,7 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
     // Activate Improved Warding Flare if present and of appropriate level
     const sourceActor = sourceItem.actor;
     const improvedWardingFlare = sourceActor.itemTypes.feat.find(
-      (i) => i.identifier === IMPROVED_WARDING_FLARE_ITEM_IDENT
+      (i) => i.identifier === IMPROVED_WARDING_FLARE_ITEM_IDENT,
     );
     if (!improvedWardingFlare) {
       if (debug) {
@@ -136,10 +90,10 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
       (sourceActor.getRollData().classes?.cleric?.levels ?? 0) >=
       (improvedWardingFlare.system.prerequisites?.level ?? 99)
     ) {
-      const improvedWardingFlareActivity = improvedWardingFlare.system.activities?.getByType('heal')?.[0];
+      const improvedWardingFlareActivity = improvedWardingFlare.system.activities?.getByType("heal")?.[0];
       if (!improvedWardingFlareActivity) {
         console.warn(
-          `${DEFAULT_ITEM_NAME} | Could not find valid the healing activity for ${improvedWardingFlare.name}.`
+          `${DEFAULT_ITEM_NAME} | Could not find valid the healing activity for ${improvedWardingFlare.name}.`,
         );
         return;
       }
@@ -164,7 +118,7 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
           wardingFlareTrigger: true,
           targetUuids: [targetUuid],
           configureDialog: false,
-          workflowOptions: { fastForwardDamage: true, targetConfirmation: 'none' },
+          workflowOptions: { fastForwardDamage: true, targetConfirmation: "none" },
         },
       };
 
@@ -174,7 +128,7 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
         usage,
       };
 
-      await MidiQOL.socket().executeAsUser('completeActivityUse', player.id, data);
+      await MidiQOL.socket().executeAsUser("completeActivityUse", player.id, data);
     }
   }
 
@@ -186,13 +140,13 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
    * @param {Item5e} sourceItem - The Warding Flare item.
    */
   async function handleOnEffect(sourceActor, sourceItem) {
-    if (elwinHelpers.getRules(sourceItem) !== 'modern') {
+    if (elwinHelpers.getRules(sourceItem) !== "modern") {
       // Do nothing for legacy
       return;
     }
 
     const improvedWardingFlare = sourceActor.itemTypes.feat.find(
-      (i) => i.identifier === IMPROVED_WARDING_FLARE_ITEM_IDENT
+      (i) => i.identifier === IMPROVED_WARDING_FLARE_ITEM_IDENT,
     );
     if (!improvedWardingFlare) {
       if (debug) {
@@ -204,10 +158,10 @@ export async function wardingFlare({ speaker, actor, token, character, item, arg
       (sourceActor.getRollData().classes?.cleric?.levels ?? 0) >=
       (improvedWardingFlare.system.prerequisites?.level ?? 99)
     ) {
-      if (sourceItem.system.uses?.recovery && !sourceItem.system.uses?.recovery?.some((r) => r.period === 'sr')) {
+      if (sourceItem.system.uses?.recovery && !sourceItem.system.uses?.recovery?.some((r) => r.period === "sr")) {
         const recovery = foundry.utils.deepClone(sourceItem.system.uses.recovery);
-        recovery.push({ period: 'sr', type: 'recoverAll' });
-        await sourceItem.update({ 'system.uses.recovery': recovery });
+        recovery.push({ period: "sr", type: "recoverAll" });
+        await sourceItem.update({ "system.uses.recovery": recovery });
       }
     }
   }

@@ -8,6 +8,11 @@ import { improvedWardingFlare } from './Cleric/LightDomain/improvedWardingFlare.
 import { dampenElements } from './Cleric/NatureDomain/dampenElements.js';
 import { unwaveringMark } from './Fighter/Cavalier/unwaveringMark.js';
 import { wardingManeuver } from './Fighter/Cavalier/wardingManeuver.js';
+import { bulwarkOfForce } from './Fighter/PsiWarrior/bulwarkOfForce.js';
+import { guardedMind } from './Fighter/PsiWarrior/guardedMind.js';
+import { psionicPower } from './Fighter/PsiWarrior/psionicPower.js';
+import { telekineticAdapt } from './Fighter/PsiWarrior/telekineticAdapt.js';
+import { telekineticMaster } from './Fighter/PsiWarrior/telekineticMaster.js';
 import { psionicPowerProtectiveField } from './Fighter/PsiWarrior/psionicPowerProtectiveField.js';
 import { deflectAttacks } from './Monk/deflectAttacks.js';
 import { deflectMissiles } from './Monk/deflectMissiles.js';
@@ -37,7 +42,12 @@ export let classFeatures = {
   dampenElements,
   unwaveringMark,
   wardingManeuver,
+  bulwarkOfForce,
+  guardedMind,
+  psionicPower,
   psionicPowerProtectiveField,
+  telekineticAdapt,
+  telekineticMaster,
   deflectAttacks,
   deflectMissiles,
   ki,
