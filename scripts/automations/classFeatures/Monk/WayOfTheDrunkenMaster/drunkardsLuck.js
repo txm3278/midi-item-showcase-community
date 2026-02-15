@@ -2,12 +2,12 @@
 // Monk - Way of the Drunken Master - Drunkard's Luck
 // Adds an active effect to trigger on appropriate workflow phases to prompt a reaction allowing
 // cancelling disadvantage on attack, save and check rolls.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
 //  - Times Up
-//  - MidiQOL "OnUseMacro" ItemMacro[preAttackRoll]
+//  - MidiQOL "OnUseMacro" ItemMacro[preAttackRollConfig],[preActiveEffects],[preTargetSave]
 //  - Elwin Helpers world script
 //
 // Usage:
@@ -15,9 +15,11 @@
 // When activated it adds an AE that cancels disadvantage on attack, save and check rolls.
 //
 // Description:
-// In the preAttackRoll (item OnUse) phase of any item of the Drunkard's Luck's owner (in owner's workflow):
+// In the preAttackRollConfig (item OnUse) phase of any item of the Drunkard's Luck's owner (in owner's workflow):
 //   If the attack has disadvantage, prompts the player associated to the owner
 //   to use the Drunkard's Luck Cancel Disadvantage reaction activity.
+// In the preActiveEffects (item OnUse) phase of the Drunkard's Luck's owner (in owner's workflow):
+//   If the activity is a reaction, do not apply AE, the disadvantage cancellation is handled by other phases.
 // In the preTargetSave (TargetOnUse) phase (in attacker's workflow) (on owner):
 //   If the save or check has disadvantage, prompts the player associated to the owner
 //   to use the Drunkard's Luck Cancel Disadvantage reaction activity.
@@ -32,7 +34,7 @@ const DEFAULT_ITEM_NAME = "Drunkard's Luck";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.8")) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
@@ -58,8 +60,12 @@ export async function drunkardsLuck({ speaker, actor, token, character, item, ar
     );
   }
 
-  if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRoll") {
-    await handleOnUsePreAttackRoll(actor, token, workflow, scope.macroItem, debug);
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRollConfig") {
+    await handleOnUsePreAttackRollConfig(actor, token, workflow, scope.macroItem, debug);
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preActiveEffects") {
+    if (workflow.workflowOptions?.isReaction) {
+      return { haltEffectsApplication: true };
+    }
   } else if (args[0].tag === "TargetOnUse" && args[0].macroPass === "preTargetSave") {
     await handleTargetOnUsePreTargetSave(actor, token, workflow, scope.macroItem, debug);
   }
@@ -75,8 +81,8 @@ export async function drunkardsLuck({ speaker, actor, token, character, item, ar
  * @param {Item5e} sourceItem - The Drunkard's Luck item.
  * @param {boolean} debug - Flag to indicate debug mode.
  */
-async function handleOnUsePreAttackRoll(actor, token, workflow, sourceItem, debug) {
-  if (!workflow.disadvantage || workflow.advantage) {
+async function handleOnUsePreAttackRollConfig(actor, token, workflow, sourceItem, debug) {
+  if (workflow.attackRollModifierTracker.advantageMode !== CONFIG.Dice.D20Roll.ADV_MODE.DISADVANTAGE) {
     return;
   }
 
@@ -99,20 +105,8 @@ async function handleOnUsePreAttackRoll(actor, token, workflow, sourceItem, debu
     // Canceled or not chosen
     return;
   }
-  // Force recomputation of adv/disadv
-  workflow.needsAttackAdvantageCheck = true;
-  // TODO PGS remove when midi fixes its bug
-  elwinHelpers.registerWorkflowHook(
-    workflow,
-    "dnd5e.preRollAttack",
-    (rollConfig, dialogConfig, messageConfig) => {
-      console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preRollAttack`, { rollConfig, dialogConfig, messageConfig });
-      if (rollConfig.workflow?.noDisadvantage) {
-        rollConfig.disadvantage = false;
-      }
-    },
-    "drunkards-luck",
-  );
+  // Force noDisadvantage
+  workflow.attackRollModifierTracker.disadvantage.suppress(sourceItem.identifier, sourceItem.name);
 }
 
 /**
@@ -126,7 +120,7 @@ async function handleOnUsePreAttackRoll(actor, token, workflow, sourceItem, debu
  * @param {boolean} debug - Flag to indicate debug mode.
  */
 async function handleTargetOnUsePreTargetSave(actor, token, workflow, sourceItem, debug) {
-  if (!workflow.disadvantageSaves.has(token)) {
+  if (workflow.saveDetails.modifierTracker.advantageMode !== CONFIG.Dice.D20Roll.ADV_MODE.DISADVANTAGE) {
     return;
   }
   const user = getPlayerForActor(actor, debug);
@@ -149,7 +143,7 @@ async function handleTargetOnUsePreTargetSave(actor, token, workflow, sourceItem
     // Canceled or not chosen
     return;
   }
-  workflow.saveDetails.advantage = true;
+  workflow.saveDetails.modifierTracker.disadvantage.suppress(sourceItem.identifier, sourceItem.name);
   workflow.disadvantageSaves.delete(token);
 }
 

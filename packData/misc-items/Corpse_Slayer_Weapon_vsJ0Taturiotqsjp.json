@@ -403,7 +403,7 @@
       "_id": "0p4TAXJ9qUfykkIL",
       "changes": [
         {
-          "key": "flags.midi-qol.disadvantage.ability.save.all",
+          "key": "flags.midi-qol.disadvantage.save.all",
           "mode": 0,
           "value": "item?.identifier === \"channel-divinity-turn-undead\" || (item?.identifier === \"channel-divinity\" && workflow?.activity?.identifier === \"turn-undead\")",
           "priority": 20

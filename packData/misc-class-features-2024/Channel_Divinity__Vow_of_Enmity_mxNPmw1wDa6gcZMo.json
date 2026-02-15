@@ -199,7 +199,10 @@
         "effects": [
           {
             "_id": "mXb3v0Eqny4tMqiI",
-            "level": {}
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -254,7 +257,7 @@
           "confirmTargets": "always",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "automationOnly": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
@@ -291,13 +294,17 @@
         },
         "otherActivityId": "none",
         "_id": "DAcAsRLAB94Zz8Jl",
-        "flags": {},
         "visibility": {
-          "level": {},
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
         },
+        "flags": {},
         "otherActivityAsParentType": true
       }
     },
@@ -329,7 +336,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,preAttackRoll",
+          "value": "ItemMacro,preAttackRollConfig",
           "priority": 20
         },
         {
@@ -553,12 +560,7 @@
         }
       }
     },
-    "dnd5e": {
-      "riders": {
-        "activity": [],
-        "effect": []
-      }
-    },
+    "dnd5e": {},
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""

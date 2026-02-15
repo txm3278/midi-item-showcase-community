@@ -107,6 +107,12 @@ export function setConfig() {
           version: "1.1.0",
           authors: ["Elwin"],
         },
+        "Bulwark of Force": {
+          name: "Bulwark of Force",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Channel Divinity: Rebuke the Violent": {
           name: "Channel Divinity: Rebuke the Violent",
           type: "Class Feature",
@@ -116,7 +122,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "3.3.0",
+          version: "3.4.0",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -129,7 +135,7 @@ export function setConfig() {
           name: "Corpse Slayer Weapon",
           type: "Item",
           factory: true,
-          version: "1.2.0",
+          version: "1.2.1",
           authors: ["Elwin", "SagaTympana"],
         },
         "Crown of Stars": {
@@ -177,7 +183,7 @@ export function setConfig() {
         "Drunkard's Luck": {
           name: "Drunkard's Luck",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Drunken Technique": {
@@ -267,13 +273,19 @@ export function setConfig() {
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "3.3.0",
+          version: "3.4.0",
           authors: ["Elwin"],
         },
         "Grenade, Smoke": {
           name: "Grenade, Smoke",
           type: "Item",
           version: "1.1.0",
+          authors: ["Elwin"],
+        },
+        "Guarded Mind": {
+          name: "Guarded Mind",
+          type: "Class Feature",
+          version: "1.0.0",
           authors: ["Elwin"],
         },
         "Guardian Emblem": {
@@ -291,7 +303,7 @@ export function setConfig() {
         "Ki": {
           name: "Ki",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Moon-Touched Greatsword": {
@@ -357,6 +369,12 @@ export function setConfig() {
         "Produce Flame": {
           name: "Produce Flame",
           type: "Spell",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
+        "Psionic Power": {
+          name: "Psionic Power",
+          type: "Class Feature",
           version: "1.0.0",
           authors: ["Elwin"],
         },
@@ -444,6 +462,18 @@ export function setConfig() {
           version: "2.0.1",
           authors: ["Elwin", "Moto Moto"],
         },
+        "Telekinetic Adept": {
+          name: "Telekinetic Adept",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
+        "Telekinetic Master": {
+          name: "Telekinetic Master",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Tipsy Sway": {
           name: "Tipsy Sway",
           type: "Class Feature",
@@ -460,7 +490,7 @@ export function setConfig() {
         "Unwavering Mark": {
           name: "Unwavering Mark",
           type: "Class Feature",
-          version: "3.4.0",
+          version: "3.5.0",
           authors: ["Elwin"],
         },
         "Vengeful Ancestors": {
@@ -484,7 +514,7 @@ export function setConfig() {
         "Warding Flare": {
           name: "Warding Flare",
           type: "Class Feature",
-          version: "3.2.1",
+          version: "3.3.0",
           authors: ["Elwin"],
         },
         "Warding Maneuver": {
@@ -522,7 +552,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Dagger of Venom": {
@@ -571,7 +601,7 @@ export function setConfig() {
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "1.4.0",
+          version: "1.5.0",
           authors: ["Elwin"],
         },
         "Smoke Grenade": {
@@ -675,7 +705,7 @@ export function setConfig() {
         "Warding Flare": {
           name: "Warding Flare",
           type: "Class Feature",
-          version: "1.0.1",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Wyvern Poison": {

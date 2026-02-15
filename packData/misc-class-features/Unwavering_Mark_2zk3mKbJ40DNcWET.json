@@ -297,12 +297,6 @@
           "mode": 0,
           "value": "",
           "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,preDamageRollConfig",
-          "priority": 20
         }
       ],
       "tint": "#ffffff",
