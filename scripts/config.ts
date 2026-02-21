@@ -168,6 +168,12 @@ export function setConfig() {
           version: "4.1.0",
           authors: ["Elwin"],
         },
+        "Dragonhide Belt, +1": {
+          name: "Dragonhide Belt, +1",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Drow Hand Crossbow": {
           name: "Drow Hand Crossbow",
           type: "Item",
@@ -336,6 +342,12 @@ export function setConfig() {
           version: "2.0.1",
           authors: ["Elwin", "Moto Moto"],
         },
+        "Natural Armor": {
+          name: "Natural Armor",
+          type: "Race Feature",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Negative Energy Flood": {
           name: "Negative Energy Flood",
           type: "Spell",
@@ -419,6 +431,12 @@ export function setConfig() {
           type: "Feat",
           version: "3.1.0",
           authors: ["Elwin"],
+        },
+        "Shell Defense": {
+          name: "Shell Defense",
+          type: "Race Feature",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Shield of Missile Attraction": {
           name: "Shield of Missile Attraction",
@@ -531,6 +549,12 @@ export function setConfig() {
         },
       },
       modern: {
+        "Adventurer's Ring": {
+          name: "Adventurer's Ring",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Alchemist's Fire": {
           name: "Alchemist's Fire",
           type: "Item",
@@ -543,17 +567,59 @@ export function setConfig() {
           version: "1.2.0",
           authors: ["Elwin"],
         },
+        "Badge of the Watch": {
+          name: "Badge of the Watch",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
+        "Bloodwell Vial, +1": {
+          name: "Bloodwell Vial, +1",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
+        "Bracers of Celerity": {
+          name: "Bracers of Celerity",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
+        "Cap of Vanishing": {
+          name: "Cap of Vanishing",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
+        "Cloak of Billowing (Stranger Things)": {
+          name: "Cloak of Billowing (Stranger Things)",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Clockwork Amulet": {
           name: "Clockwork Amulet",
           type: "Item",
           version: "1.0.2",
           authors: ["Elwin", "thatlonelybugbear"],
         },
+        "Channel Divinity": {
+          name: "Channel Divinity",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
           version: "1.2.0",
           authors: ["Elwin"],
+        },
+        "Charger": {
+          name: "Charger",
+          type: "Feat",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Dagger of Venom": {
           name: "Dagger of Venom",
@@ -572,6 +638,12 @@ export function setConfig() {
           type: "Class Feature",
           version: "1.4.0",
           authors: ["Elwin"],
+        },
+        "Dread Helm (Stranger Things)": {
+          name: "Dread Helm (Stranger Things)",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Eversmoking Bottle": {
           name: "Eversmoking Bottle",
@@ -604,6 +676,12 @@ export function setConfig() {
           version: "1.5.0",
           authors: ["Elwin"],
         },
+        "Innate Sorcery": {
+          name: "Innate Sorcery",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Smoke Grenade": {
           name: "Smoke Grenade",
           type: "Item",
@@ -615,6 +693,12 @@ export function setConfig() {
           type: "Class Feature",
           version: "1.0.1",
           authors: ["Elwin"],
+        },
+        "Lamannian Oak Focus": {
+          name: "Lamannian Oak Focus",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Lolth’s Sting": {
           name: "Lolth’s Sting",
@@ -629,6 +713,12 @@ export function setConfig() {
           factory: true,
           version: "2.3.0",
           authors: ["Elwin", "Christopher"],
+        },
+        "Oil of Etherealness": {
+          name: "Oil of Etherealness",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Poison, Basic": {
           name: "Poison, Basic",
@@ -648,6 +738,18 @@ export function setConfig() {
           version: "1.0.1",
           authors: ["Elwin"],
         },
+        "Potion of Heroism": {
+          name: "Potion of Heroism",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
+        "Potion of Pugilism": {
+          name: "Potion of Pugilism",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Produce Flame": {
           name: "Produce Flame",
           type: "Spell",
@@ -665,6 +767,12 @@ export function setConfig() {
           type: "Item",
           version: "1.0.3",
           authors: ["Elwin"],
+        },
+        "Rod of the Pact Keeper, +1": {
+          name: "Rod of the Pact Keeper, +1",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Serpent Venom": {
           name: "Serpent Venom",
@@ -684,6 +792,12 @@ export function setConfig() {
           version: "1.2.0",
           authors: ["Elwin", "Ris"],
         },
+        "Spiked Shield": {
+          name: "Spiked Shield",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Steady Aim": {
           name: "Steady Aim",
           type: "Class Feature",
@@ -696,17 +810,35 @@ export function setConfig() {
           version: "1.4.0",
           authors: ["Elwin"],
         },
+        "Sword of Wounding": {
+          name: "Sword of Wounding",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         Ulcrun: {
           name: "Ulcrun",
           type: "Item",
           version: "1.0.0",
           authors: ["Elwin"],
         },
+        "Wand of Paralysis": {
+          name: "Wand of Paralysis",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
+        },
         "Warding Flare": {
           name: "Warding Flare",
           type: "Class Feature",
           version: "1.1.0",
           authors: ["Elwin"],
+        },
+        "Wraps of Unarmed Power, +1": {
+          name: "Wraps of Unarmed Power, +1",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Moto Moto"],
         },
         "Wyvern Poison": {
           name: "Wyvern Poison",
