@@ -28,7 +28,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.V4C5oiBDVfGPI2Iq",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -159,7 +159,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -226,7 +226,7 @@
     ],
     "strength": 0,
     "type": {
-      "value": "trinket",
+      "value": "wondrous",
       "baseItem": ""
     },
     "crew": {
@@ -234,49 +234,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Cloak of Billowing (Stranger Things)",
-      "version": "6.6.18",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "avatarUrl": "https://www.dndbeyond.com/avatars/51925/825/638951219414989843.png",
-        "largeAvatarUrl": "https://www.dndbeyond.com/avatars/51925/826/638951219416705829.png",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": 2,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 203,
-            "pageNumber": null,
-            "sourceType": 1
-          }
-        ],
-        "pictureUrl": "ddb-images/other/item/equipment/2024-wthc-cloak-of-billowing-stranger-things-large.png"
-      },
-      "is2014": false,
-      "is2024": true,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 10674154,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      },
-      "keepIcon": true
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default"
     },
@@ -286,11 +243,6 @@
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
       }
     }
   },

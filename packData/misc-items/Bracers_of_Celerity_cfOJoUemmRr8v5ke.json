@@ -49,12 +49,6 @@
           "macroRepeat": "none",
           "specialDuration": []
         },
-        "ddbimporter": {
-          "disabled": false,
-          "passive": true,
-          "itemId": 0,
-          "itemEntityTypeId": 0
-        },
         "midi-qol": {
           "forceCEOff": true
         },
@@ -71,7 +65,7 @@
       "_id": "hechdtqorVbXMVrY",
       "type": "base",
       "system": {},
-      "origin": "Item.krjuUObSAjivyZIm",
+      "origin": null,
       "sort": 0,
       "_key": "!items.effects!cfOJoUemmRr8v5ke.hechdtqorVbXMVrY"
     }
@@ -107,7 +101,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 4000,
       "denomination": "gp"
     },
     "rarity": "rare",
@@ -125,7 +119,7 @@
     ],
     "strength": 0,
     "type": {
-      "value": "trinket",
+      "value": "wondrous",
       "baseItem": ""
     },
     "crew": {
@@ -133,53 +127,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Bracers of Celerity",
-      "version": "6.4.13",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [
-          "Movement",
-          "Wristwear"
-        ],
-        "sources": [
-          {
-            "sourceId": 113,
-            "pageNumber": 217,
-            "sourceType": 1
-          }
-        ]
-      },
-      "is2014": true,
-      "is2024": false,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 7247067,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      },
-      "effectsApplied": true
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
-    "dae": {
-      "alwaysActive": false,
-      "activeEquipped": true
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "forceCEOff": true
@@ -191,11 +138,6 @@
       "riders": {
         "activity": [],
         "effect": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.1"
       }
     }
   },

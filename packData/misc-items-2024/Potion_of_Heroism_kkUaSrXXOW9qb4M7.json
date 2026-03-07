@@ -5,7 +5,7 @@
     {
       "name": "Potion of Heroism",
       "img": "icons/consumables/potions/bottle-round-corked-pink.webp",
-      "origin": "Compendium.my-shared-content.Magic-Items.Item.eeyZ97kfrvFhWqsR",
+      "origin": null,
       "transfer": false,
       "_id": "7EmZ71p8hstkBIvL",
       "type": "base",
@@ -208,7 +208,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -239,7 +239,7 @@
     },
     "identifier": "potion-of-heroism",
     "source": {
-      "book": "DMG 2024",
+      "book": "SRD 5.2",
       "page": "",
       "license": "",
       "custom": "",
@@ -285,60 +285,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Potion of Heroism",
-      "version": "6.4.13",
-      "dndbeyond": {
-        "type": "Potion",
-        "filterType": "Potion",
-        "isConsumable": true,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [
-          "Healing",
-          "Buff",
-          "Consumable"
-        ],
-        "sources": [
-          {
-            "sourceId": 146,
-            "pageNumber": 188,
-            "sourceType": 1
-          },
-          {
-            "sourceId": 1,
-            "pageNumber": null,
-            "sourceType": 2
-          },
-          {
-            "sourceId": 148,
-            "pageNumber": null,
-            "sourceType": 2
-          }
-        ],
-        "stackable": true
-      },
-      "is2014": false,
-      "is2024": true,
-      "legacy": true,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 4709,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      }
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default"
     },
@@ -348,11 +294,6 @@
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
       }
     }
   },

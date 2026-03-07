@@ -28,7 +28,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.EEjAVtHKid1cYeGy",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -107,7 +107,7 @@
     ],
     "strength": 0,
     "type": {
-      "value": "trinket",
+      "value": "wondrous",
       "baseItem": ""
     },
     "crew": {
@@ -115,49 +115,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Dread Helm (Stranger Things)",
-      "version": "6.6.18",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "avatarUrl": "https://www.dndbeyond.com/avatars/51925/827/638951219418421862.png",
-        "largeAvatarUrl": "https://www.dndbeyond.com/avatars/51925/828/638951219420296744.png",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": 2,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 203,
-            "pageNumber": null,
-            "sourceType": 1
-          }
-        ],
-        "pictureUrl": "ddb-images/other/item/equipment/2024-wthc-dread-helm-stranger-things-large.png"
-      },
-      "is2014": false,
-      "is2024": true,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 10674155,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      },
-      "keepIcon": true
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default"
     },
@@ -167,11 +124,6 @@
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
       }
     }
   },

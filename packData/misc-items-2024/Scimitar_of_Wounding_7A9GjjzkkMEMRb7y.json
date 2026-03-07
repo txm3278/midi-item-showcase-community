@@ -3,9 +3,9 @@
   "type": "weapon",
   "effects": [
     {
-      "name": "Scimitar of Wounding",
-      "img": "icons/weapons/swords/scimitar-guard-red.webp",
-      "origin": "Actor.OMr6msu6qBowagfI.Item.iZLKarhthpAYdXCz",
+      "name": "Wounded and Cannot Heal",
+      "img": "icons/skills/melee/strike-sword-blood-red.webp",
+      "origin": null,
       "transfer": false,
       "_id": "sdeLQpxGvjBIRFK8",
       "type": "base",
@@ -42,12 +42,7 @@
         "dnd5e": {
           "riders": {
             "statuses": []
-          },
-          "dependents": [
-            {
-              "uuid": "Scene.Nd1T4R6sutraxVtS.Token.NqmEjXFc4gfvYqAT.Actor.XLHCIuEMdlWKrOrc.ActiveEffect.mEuHfQtpeIgkv08f"
-            }
-          ]
+          }
         },
         "dae": {
           "enableCondition": "",
@@ -94,7 +89,7 @@
         },
         "duration": {
           "value": "1",
-          "units": "hour",
+          "units": "inst",
           "special": "",
           "override": true,
           "concentration": false
@@ -149,7 +144,7 @@
               "denomination": 6,
               "bonus": "",
               "types": [
-                "force"
+                "necrotic"
               ],
               "scaling": {
                 "number": 1
@@ -192,7 +187,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -318,7 +313,7 @@
           "triggeredActivityRollAs": "self",
           "confirmTargets": "default",
           "automationOnly": true,
-          "identifier": "",
+          "identifier": "sword-of-wounding-save",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "otherActivityCompatible": true,
@@ -331,7 +326,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -348,7 +343,7 @@
         "otherActivityId": "none",
         "friendlySave": "default",
         "otherActivityAsParentType": true,
-        "name": "",
+        "name": "Sword of Wounding Save",
         "flags": {},
         "visibility": {
           "level": {},
@@ -369,7 +364,7 @@
     },
     "identifier": "scimitar-of-wounding",
     "source": {
-      "book": "DMG 2024",
+      "book": "SRD 5.2",
       "page": "",
       "license": "",
       "custom": "",
@@ -439,82 +434,17 @@
       "value": "martialM",
       "baseItem": "scimitar"
     },
-    "attuned": true,
-    "equipped": true,
+    "attuned": false,
+    "equipped": false,
     "crew": {
       "value": []
     },
     "magicalBonus": null
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Scimitar of Wounding",
-      "version": "6.4.13",
-      "dndbeyond": {
-        "type": "Scimitar",
-        "filterType": "Weapon",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 146,
-            "pageNumber": 314,
-            "sourceType": 1
-          }
-        ],
-        "damage": {
-          "parts": []
-        },
-        "classFeatures": [],
-        "ability": "dex"
-      },
-      "is2014": false,
-      "is2024": true,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 9229001,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      }
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "dnd5e": {
-      "last": {
-        "attackScimOfWouI": {
-          "attackMode": "oneHanded",
-          "mastery": "nick",
-          "damageType": {
-            "0": "force",
-            "1": "necrotic"
-          }
-        },
-        "saveScimOfWounII": {
-          "damageType": {
-            "0": "slashing",
-            "1": "necrotic"
-          }
-        }
-      },
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
       }
     }
   },

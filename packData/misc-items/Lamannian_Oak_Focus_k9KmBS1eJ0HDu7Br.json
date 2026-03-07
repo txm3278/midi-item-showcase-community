@@ -20,7 +20,13 @@
         {
           "key": "flags.midi-qol.optional.lamannianFocus.force",
           "mode": 5,
-          "value": "damageTypes.lightning || damageTypes.thunder",
+          "value": "item.itemType === \"spell\" && (damageTypes.lightning || damageTypes.thunder)",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.lamannianFocus.displayBonusRolls",
+          "mode": 5,
+          "value": "false",
           "priority": 20
         }
       ],
@@ -40,7 +46,6 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.fyxzdZpQG0cgASyB",
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -101,7 +106,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 100,
       "denomination": "gp"
     },
     "rarity": "common",
@@ -112,80 +117,25 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": [
-      "foc",
-      "mgc"
-    ],
+    "properties": ["foc", "mgc"],
     "strength": 0,
     "type": {
       "value": "trinket",
       "baseItem": ""
     },
-    "attuned": true,
-    "equipped": true,
+    "attuned": false,
+    "equipped": false,
     "crew": {
       "value": []
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Lamannian Oak Focus",
-      "version": "6.3.10",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": 2,
-        "tags": [
-          "Combat",
-          "Focus"
-        ],
-        "sources": [
-          {
-            "sourceId": 37,
-            "pageNumber": null,
-            "sourceType": 1
-          },
-          {
-            "sourceId": 49,
-            "pageNumber": null,
-            "sourceType": 2
-          }
-        ]
-      },
-      "is2014": true,
-      "is2024": false,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 215734,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      }
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "midi-qol": {
       "onUseMacroName": ""
     },
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.1"
       }
     }
   },

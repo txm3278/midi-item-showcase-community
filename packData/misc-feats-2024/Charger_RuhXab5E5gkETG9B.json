@@ -28,6 +28,12 @@
           "mode": 0,
           "value": "true",
           "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.chargerPush.displayBonusRolls",
+          "mode": 0,
+          "value": "false",
+          "priority": 20
         }
       ],
       "transfer": true,
@@ -46,7 +52,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Compendium.my-shared-content.DDB-Override.Item.UXEDmPgufpzfGmHE",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -196,7 +202,7 @@
           "forceDamageDialog": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "otherActivityCompatible": true,
+          "otherActivityCompatible": false,
           "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
@@ -207,7 +213,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -259,20 +265,7 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "isChoiceFeature": true,
-      "id": 1789121,
-      "type": "feat",
-      "entityTypeId": 1088085227,
-      "is2014": false,
-      "is2024": true,
-      "originalName": "Charger",
-      "dndbeyond": {},
-      "subType": "general",
-      "importId": "PkvPPKkD3BAk8hlP"
-    },
     "dnd5e": {
-      "sourceId": "Compendium.my-shared-content.Feats.Item.3iyEhRehA193MnG1",
       "riders": {
         "activity": []
       }
@@ -307,21 +300,7 @@
         "_id": null,
         "folder": null,
         "sort": 0,
-        "flags": {},
-        "_stats": {
-          "coreVersion": "13.351",
-          "systemId": "dnd5e",
-          "systemVersion": "5.2.5",
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null,
-          "exportSource": null
-        }
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.2"
+        "flags": {}
       }
     }
   },

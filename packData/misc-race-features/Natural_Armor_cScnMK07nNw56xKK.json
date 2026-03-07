@@ -16,7 +16,7 @@
       ],
       "duration": {
         "seconds": null,
-        "startTime": 24433992,
+        "startTime": null,
         "rounds": null,
         "turns": null,
         "startRound": null,
@@ -37,12 +37,6 @@
           "macroRepeat": "none",
           "specialDuration": []
         },
-        "ddbimporter": {
-          "disabled": false,
-          "passive": true,
-          "itemId": 13667653,
-          "itemEntityTypeId": 1960452172
-        },
         "midi-qol": {
           "forceCEOff": true
         },
@@ -59,7 +53,7 @@
       "_id": "lm6Gty9pWGMS1kf1",
       "type": "base",
       "system": {},
-      "origin": "Actor.vaqEeLt7hSM2gklg.Item.OOtXQBWrTIRvsJYL",
+      "origin": null,
       "sort": 0,
       "_key": "!items.effects!cScnMK07nNw56xKK.lm6Gty9pWGMS1kf1"
     }
@@ -100,31 +94,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "isChoiceFeature": false,
-      "id": 13667653,
-      "type": "race",
-      "entityTypeId": 1960452172,
-      "is2014": true,
-      "is2024": false,
-      "originalName": "Natural Armor",
-      "dndbeyond": {
-        "requiredLevel": null,
-        "displayOrder": 7,
-        "featureType": 1,
-        "entityRaceId": 1726258,
-        "entityType": "racial-trait"
-      },
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      },
-      "effectsApplied": true,
-      "baseName": "Natural Armor",
-      "fullRaceName": "Shadowborn Bearfolk",
-      "groupName": "Bearfolk",
-      "isLineage": false
-    },
     "species": {
       "fullRaceName": "Shadowborn Bearfolk",
       "baseRaceName": "Bearfolk",
@@ -138,14 +107,7 @@
     "midiProperties": {
       "confirmTargets": "default"
     },
-    "dae": {
-      "alwaysActive": false,
-      "activeEquipped": false
-    },
     "dnd5e": {
-      "sourceId": "Compendium.my-shared-content.Species.Item.8WWS0wXDL42BMDJR",
-      "advancementOrigin": "rWJUSXhHwj2F1ggX.qh2LCH12dSz4fEVY",
-      "advancementRoot": "rWJUSXhHwj2F1ggX.qh2LCH12dSz4fEVY",
       "riders": {
         "activity": []
       }
@@ -162,15 +124,10 @@
       "noAutotarget": false,
       "addTokenSize": false,
       "attachToken": "na"
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
-      }
     }
   },
   "img": "icons/commodities/biological/shell-ridged-green.webp",
-  "folder": "FUkvH7Ri3D8YbgQR",
+  "folder": "xcplmuqwt3r2UAQ1",
   "_id": "cScnMK07nNw56xKK",
   "_key": "!items!cScnMK07nNw56xKK"
 }

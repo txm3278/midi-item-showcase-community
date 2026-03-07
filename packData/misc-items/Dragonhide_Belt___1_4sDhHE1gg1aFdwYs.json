@@ -4,19 +4,24 @@
   "effects": [
     {
       "name": "Dragonhide Belt, +1",
+      "img": "icons/equipment/waist/belt-buckle-round-red.webp",
+      "_id": "zyVakBF0FA3t38ot",
+      "type": "base",
+      "system": {},
       "changes": [
         {
-          "key": "system.abilities.wis.dc",
-          "mode": 2,
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,preSave",
+          "priority": 20
+        },
+        {
+          "key": "flags.dae.dragonHideBeltDCBonus",
+          "mode": 5,
           "value": "+1",
           "priority": 20
         }
       ],
-      "transfer": true,
-      "img": "icons/equipment/waist/belt-buckle-round-red.webp",
-      "_id": "wxj0K7DeSNbFYlwb",
-      "type": "base",
-      "system": {},
       "disabled": false,
       "duration": {
         "startTime": null,
@@ -28,8 +33,8 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Actor.pJwjyrGixbnAWnsj.Item.5nyFkfff7cV8StPw",
       "tint": "#ffffff",
+      "transfer": true,
       "statuses": [],
       "sort": 0,
       "flags": {
@@ -39,14 +44,10 @@
           }
         },
         "dae": {
-          "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
           "showIcon": false,
           "disableIncapacitated": false,
-          "selfTarget": false,
-          "selfTargetAlways": false,
-          "dontApply": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -55,7 +56,7 @@
           "overlay": false
         }
       },
-      "_key": "!items.effects!4sDhHE1gg1aFdwYs.wxj0K7DeSNbFYlwb"
+      "_key": "!items.effects!4sDhHE1gg1aFdwYs.zyVakBF0FA3t38ot"
     }
   ],
   "system": {
@@ -76,9 +77,8 @@
           "spellSlot": true,
           "targets": [
             {
-              "type": "itemUses",
-              "value": "-@scale.monk.martial-arts",
-              "target": "kFePpr37l9Up0juo",
+              "type": "activityUses",
+              "value": "1",
               "scaling": {}
             }
           ]
@@ -115,7 +115,7 @@
           "spent": 0,
           "recovery": [
             {
-              "period": "lr",
+              "period": "dawn",
               "type": "recoverAll"
             }
           ],
@@ -124,15 +124,15 @@
         "roll": {
           "prompt": false,
           "visible": false,
-          "formula": "",
-          "name": ""
+          "formula": "@scale.monk.die.die",
+          "name": "Recover Ki Points"
         },
         "useConditionText": "",
         "useConditionReason": "",
         "effectConditionText": "",
         "macroData": {
-          "name": "",
-          "command": ""
+          "name": "Restore Ki",
+          "command": "if (args[0].tag !== \"OnUse\" || args[0].macroPass !== \"postActiveEffects\") {\n  return;\n}\n\nconst ki = actor.identifiedItems.get(\"ki\", {type: \"feat\"})?.first();\nif (!ki) {\n  return;\n}\nconst currentSpent = ki.system.uses.spent ?? 0;\nawait ki.update({\"system.uses.spent\": Math.max(0, currentSpent - workflow.utilityRoll?.total ?? 0)});"
         },
         "ignoreTraits": {
           "idi": false,
@@ -150,14 +150,14 @@
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
-          "forceDamageDialog": "default",
+          "forceDamageDialog": "never",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
+          "otherActivityCompatible": false,
           "otherActivityAsParentType": true,
-          "identifier": "",
+          "identifier": "restore-ki",
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
@@ -167,24 +167,29 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
-        "name": "Restore Focus",
+        "name": "Restore Ki",
         "flags": {},
         "visibility": {
-          "level": {},
+          "level": {
+            "min": null,
+            "max": null
+          },
           "requireAttunement": false,
           "requireIdentification": false,
-          "requireMagic": false
+          "requireMagic": false,
+          "identifier": "restore-ki"
         }
       }
     },
@@ -195,7 +200,7 @@
     },
     "description": {
       "chat": "",
-      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2><p><strong>Usage:</strong></p><p>Consumption linkage needs to be set</p></details>"
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2></details>"
     },
     "identifier": "dragonhide-belt-1",
     "source": {
@@ -217,7 +222,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 400,
       "denomination": "gp"
     },
     "rarity": "uncommon",
@@ -228,68 +233,42 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": [
-      "mgc"
-    ],
+    "properties": ["mgc"],
     "strength": 0,
     "type": {
-      "value": "trinket",
+      "value": "wondrous",
       "baseItem": ""
     },
-    "attuned": true,
-    "equipped": true,
+    "attuned": false,
+    "equipped": false,
     "crew": {
       "value": []
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Dragonhide Belt, +1",
-      "version": "6.4.3",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 81,
-            "pageNumber": 23,
-            "sourceType": 1
-          }
-        ]
-      },
-      "is2014": true,
-      "is2024": false,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 4047206,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      }
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "dnd5e": {
       "riders": {
         "activity": []
       }
     },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ActivityMacro-n8tF0LPGNauCo4wF"
+    },
+    "dae": {
+      "macro": {
+        "name": "Dragonhide Belt, +1",
+        "img": "icons/equipment/waist/belt-buckle-round-red.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "if (args[0].tag !== \"OnUse\" || args[0].macroPass !== \"preSave\") {\n  return;\n}\n\nif (rolledItem?.system.type.value !== \"class\" || rolledItem?.system.type.subtype !== \"ki\") {\n  return;\n}\nif (!workflow.hasSave || !workflow.saveActivity?.save?.dc) {\n  return;\n}\nconst save = workflow.saveActivity.save;\nconst dragonHideBeltDCBonus = actor.getFlag(\"dae\", \"dragonHideBeltDCBonus\");\nsave.dc.bonus ??= \"\";\nsave.dc.bonus += dragonHideBeltDCBonus;\nconst rollData = actor.getRollData({ deterministic: true });\nconst bonus = dnd5e.utils.simplifyBonus(dragonHideBeltDCBonus, rollData);\nsave.dc.value += bonus;",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {}
       }
     }
   },

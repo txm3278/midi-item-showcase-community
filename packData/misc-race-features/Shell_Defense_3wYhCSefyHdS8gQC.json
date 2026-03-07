@@ -12,13 +12,13 @@
           "priority": 20
         },
         {
-          "key": "flags.midi-qol.advantage.ability.save.str",
+          "key": "flags.midi-qol.advantage.save.str",
           "mode": 0,
           "value": "1",
           "priority": 20
         },
         {
-          "key": "flags.midi-qol.advantage.ability.save.con",
+          "key": "flags.midi-qol.advantage.save.con",
           "mode": 2,
           "value": "",
           "priority": 20
@@ -42,7 +42,7 @@
           "priority": 20
         },
         {
-          "key": "flags.midi-qol.disadvantage.ability.save.dex",
+          "key": "flags.midi-qol.disadvantage.save.dex",
           "mode": 0,
           "value": "1",
           "priority": 20
@@ -205,7 +205,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -324,7 +324,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -379,45 +379,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "isChoiceFeature": false,
-      "id": 322,
-      "type": "race",
-      "entityTypeId": 1960452172,
-      "is2014": true,
-      "is2024": false,
-      "originalName": "Shell Defense",
-      "dndbeyond": {
-        "requiredLevel": null,
-        "displayOrder": 9,
-        "featureType": 1,
-        "entityRaceId": 41,
-        "entityType": "racial-trait"
-      },
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {
-          "featureName": "Shell Defense",
-          "activityCount": 1,
-          "activityKeys": [
-            "utilitySheDerNe0"
-          ],
-          "nameMap": {
-            "utilitySheDErNe1": [
-              "Shell Defense: Emerge"
-            ],
-            "utilitySheDerNe0": [
-              "Shell Defense"
-            ]
-          }
-        }
-      },
-      "effectsApplied": true,
-      "baseName": "Shell Defense",
-      "fullRaceName": "Tortle",
-      "groupName": "Tortle",
-      "isLineage": false
-    },
     "species": {
       "fullRaceName": "Tortle",
       "baseRaceName": "Tortle",
@@ -432,9 +393,6 @@
       "confirmTargets": "default"
     },
     "dnd5e": {
-      "sourceId": "Compendium.my-shared-content.Species.Item.7aJ6kCTwDlnOxzAA",
-      "advancementOrigin": "rWJUSXhHwj2F1ggX.qh2LCH12dSz4fEVY",
-      "advancementRoot": "rWJUSXhHwj2F1ggX.qh2LCH12dSz4fEVY",
       "riders": {
         "activity": []
       }
@@ -451,11 +409,6 @@
       "noAutotarget": false,
       "addTokenSize": false,
       "attachToken": "na"
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
-      }
     }
   },
   "img": "icons/commodities/biological/shell-turtle-grey.webp",

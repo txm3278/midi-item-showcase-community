@@ -27,7 +27,7 @@
       ],
       "duration": {
         "seconds": null,
-        "startTime": 24686322,
+        "startTime": null,
         "rounds": null,
         "turns": null,
         "startRound": null,
@@ -42,12 +42,6 @@
           "showIcon": false,
           "transfer": true,
           "stackable": "noneNameOnly"
-        },
-        "ddbimporter": {
-          "disabled": false,
-          "passive": true,
-          "itemId": 1828285870,
-          "itemEntityTypeId": 1439493548
         },
         "midi-qol": {
           "forceCEOff": true
@@ -89,7 +83,7 @@
             {
               "type": "itemUses",
               "value": "-5",
-              "target": "RTQTUqRif8aO62OO",
+              "target": "feat:font-of-magic",
               "scaling": {}
             }
           ]
@@ -173,7 +167,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -217,7 +211,7 @@
             {
               "type": "itemUses",
               "value": "-5",
-              "target": "RTQTUqRif8aO62OO",
+              "target": "feat:font-of-magic",
               "scaling": {}
             }
           ]
@@ -288,8 +282,8 @@
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
-          "otherActivityCompatible": true,
+          "automationOnly": true,
+          "otherActivityCompatible": false,
           "otherActivityAsParentType": true,
           "identifier": "",
           "displayActivityName": false,
@@ -301,7 +295,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -361,13 +355,13 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 400,
       "denomination": "gp"
     },
     "rarity": "uncommon",
     "attunement": "required",
-    "attuned": true,
-    "equipped": true,
+    "attuned": false,
+    "equipped": false,
     "crew": {
       "value": []
     },
@@ -388,49 +382,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Bloodwell Vial, +1",
-      "version": "6.6.34",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 67,
-            "pageNumber": 122,
-            "sourceType": 1
-          }
-        ]
-      },
-      "is2014": true,
-      "is2024": false,
-      "legacy": false,
-      "id": 1828285870,
-      "entityTypeId": 1439493548,
-      "containerEntityId": 158152282,
-      "containerEntityTypeId": 1581111423,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 2412127,
-      "effectsApplied": true,
-      "importId": "cDzWAvAhEJ9XLJT4"
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
-    "dae": {
-      "alwaysActive": false,
-      "activeEquipped": true
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "forceCEOff": true
@@ -441,11 +392,6 @@
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.1"
       }
     }
   },

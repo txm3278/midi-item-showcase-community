@@ -28,7 +28,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.yxBEOy2tV795oohq",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -154,7 +154,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -208,7 +208,7 @@
       "units": "lb"
     },
     "price": {
-      "value": 0,
+      "value": 4000,
       "denomination": "gp"
     },
     "rarity": "rare",
@@ -224,59 +224,16 @@
     ],
     "strength": 0,
     "type": {
-      "value": "trinket",
+      "value": "wondrous",
       "baseItem": ""
     },
-    "attuned": true,
-    "equipped": true,
+    "attuned": false,
+    "equipped": false,
     "crew": {
       "value": []
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Badge of the Watch",
-      "version": "6.4.13",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "avatarUrl": "https://www.dndbeyond.com/avatars/4459/586/636708329753369693.jpeg",
-        "largeAvatarUrl": "https://www.dndbeyond.com/avatars/4459/587/636708329754150949.png",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 35,
-            "pageNumber": null,
-            "sourceType": 1
-          }
-        ],
-        "pictureUrl": "ddb-images/other/item/equipment/2014-wdh-badge-of-the-watch-large.png"
-      },
-      "is2014": true,
-      "is2024": false,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 253567,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      },
-      "keepIcon": true
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default"
     },
@@ -286,11 +243,6 @@
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
       }
     }
   },

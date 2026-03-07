@@ -34,7 +34,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Compendium.my-shared-content.DDB-Override.Item.yI4QsS8TfbIUGG1O",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -111,7 +111,7 @@
     ],
     "strength": 0,
     "type": {
-      "value": "trinket",
+      "value": "wondrous",
       "baseItem": ""
     },
     "attuned": false,
@@ -121,45 +121,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Wraps of Unarmed Power, +1",
-      "version": "6.4.3",
-      "dndbeyond": {
-        "type": "Wondrous item",
-        "filterType": "Wondrous item",
-        "isConsumable": false,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [],
-        "sources": [
-          {
-            "sourceId": 146,
-            "pageNumber": 325,
-            "sourceType": 1
-          }
-        ]
-      },
-      "is2014": false,
-      "is2024": true,
-      "legacy": false,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 9229205,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      }
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default"
     },
@@ -169,15 +130,6 @@
     "dnd5e": {
       "riders": {
         "activity": []
-      }
-    },
-    "tidy5e-sheet": {
-      "section": "",
-      "actionSection": ""
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.4"
       }
     }
   },

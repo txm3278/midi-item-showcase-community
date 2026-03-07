@@ -3,9 +3,9 @@
   "type": "consumable",
   "effects": [
     {
-      "name": "Oil of Etherealness",
-      "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
-      "origin": "Compendium.my-shared-content.DDB-Override.Item.IFVJvJl9bxMgScuF",
+      "name": "Etherealness",
+      "img": "icons/consumables/potions/bottle-conical-corked-labeled-shell-cyan.webp",
+      "origin": null,
       "transfer": false,
       "_id": "kz6VhSJPbPHSiUKP",
       "type": "base",
@@ -63,6 +63,7 @@
       "XgK2xqYL7odTLWOe": {
         "type": "utility",
         "_id": "XgK2xqYL7odTLWOe",
+        "img": "systems/dnd5e/icons/svg/trait-saves.svg",
         "sort": 0,
         "activation": {
           "type": "minute",
@@ -75,15 +76,23 @@
             "allowed": false
           },
           "spellSlot": true,
-          "targets": []
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "target": "",
+              "scaling": {}
+            }
+          ]
         },
         "description": {
           "chatFlavor": ""
         },
         "duration": {
-          "units": "inst",
+          "units": "hour",
           "concentration": false,
-          "override": false
+          "override": false,
+          "value": "1"
         },
         "effects": [
           {
@@ -105,7 +114,7 @@
           },
           "affects": {
             "choice": false,
-            "type": "ally",
+            "type": "creature",
             "count": "1",
             "special": ""
           },
@@ -161,9 +170,9 @@
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
-          "otherActivityCompatible": true,
+          "otherActivityCompatible": false,
           "otherActivityAsParentType": true,
-          "identifier": "",
+          "identifier": "apply-oil",
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
@@ -174,7 +183,7 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "skipConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "none"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
@@ -184,7 +193,7 @@
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
-        "name": ""
+        "name": "Apply Oil"
       }
     },
     "uses": {
@@ -199,7 +208,7 @@
     },
     "identifier": "oil-of-etherealness",
     "source": {
-      "book": "DMG 2024",
+      "book": "SRD 5.2",
       "page": "",
       "license": "",
       "custom": "",
@@ -236,81 +245,20 @@
       },
       "replace": false
     },
-    "properties": [
-      "mgc"
-    ],
+    "properties": ["mgc"],
     "type": {
       "value": "potion",
       "subtype": ""
     }
   },
   "flags": {
-    "ddbimporter": {
-      "originalName": "Oil of Etherealness",
-      "version": "6.4.13",
-      "dndbeyond": {
-        "type": "Potion",
-        "filterType": "Potion",
-        "isConsumable": true,
-        "isContainer": false,
-        "isCustomItem": false,
-        "homebrew": false,
-        "isMonkWeapon": false,
-        "isPack": false,
-        "levelInfusionGranted": null,
-        "tags": [
-          "Movement",
-          "Utility",
-          "Consumable"
-        ],
-        "sources": [
-          {
-            "sourceId": 146,
-            "pageNumber": 183,
-            "sourceType": 1
-          },
-          {
-            "sourceId": 1,
-            "pageNumber": null,
-            "sourceType": 2
-          },
-          {
-            "sourceId": 148,
-            "pageNumber": null,
-            "sourceType": 2
-          }
-        ],
-        "stackable": true
-      },
-      "is2014": false,
-      "is2024": true,
-      "legacy": true,
-      "id": 0,
-      "entityTypeId": 0,
-      "definitionEntityTypeId": 112130694,
-      "definitionId": 4687,
-      "defaultAdditionalActivities": {
-        "enabled": true,
-        "data": {}
-      }
-    },
-    "infusions": {
-      "maps": [],
-      "applied": [],
-      "infused": false
-    },
     "dnd5e": {
       "riders": {
         "activity": []
       }
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0"
-      }
     }
   },
-  "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+  "img": "icons/consumables/potions/bottle-conical-corked-labeled-shell-cyan.webp",
   "folder": null,
   "_id": "eiSy6y23FMOTW7Ne",
   "_key": "!items!eiSy6y23FMOTW7Ne"

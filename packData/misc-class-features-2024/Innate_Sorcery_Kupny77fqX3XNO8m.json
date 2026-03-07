@@ -52,10 +52,6 @@
           "durationExpression": "",
           "macroRepeat": "none"
         },
-        "ddbimporter": {
-          "disabled": false,
-          "activityMatch": "Innate Sorcery"
-        },
         "midi-qol": {
           "forceCEOff": true
         },
@@ -196,7 +192,7 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default",
+          "autoCEEffects": "none",
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
@@ -233,7 +229,7 @@
     },
     "identifier": "innate-sorcery",
     "source": {
-      "book": "PHB 2024",
+      "book": "SRD 5.2",
       "page": "",
       "license": "",
       "custom": "",
@@ -255,29 +251,6 @@
     }
   },
   "flags": {
-    "ddbimporter": {
-      "id": 10292362,
-      "type": "class",
-      "entityTypeId": 12168134,
-      "is2014": false,
-      "is2024": true,
-      "originalName": "Innate Sorcery",
-      "dndbeyond": {
-        "requiredLevel": 1,
-        "displayOrder": 3,
-        "featureType": 1,
-        "class": "Sorcerer",
-        "classId": 2190884,
-        "entityType": "class-feature",
-        "levelScale": null,
-        "levelScales": [],
-        "limitedUse": []
-      },
-      "class": "Sorcerer",
-      "classId": 2190884,
-      "effectsApplied": true,
-      "importId": "hqNpcOSoPelyRD70"
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "forceCEOff": true
@@ -286,7 +259,6 @@
       "confirmTargets": "default"
     },
     "dnd5e": {
-      "advancementOrigin": "NbiwvPz0R6f4rxwP",
       "riders": {
         "activity": []
       }
@@ -303,13 +275,6 @@
       "noAutotarget": false,
       "addTokenSize": false,
       "attachToken": "na"
-    },
-    "chris-premades": {
-      "info": {
-        "version": "1.0",
-        "source": "my-shared-content.DDB-Override",
-        "rules": "modern"
-      }
     }
   },
   "img": "icons/magic/control/silhouette-hold-change-blue.webp",
