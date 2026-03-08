@@ -355,7 +355,7 @@
     {
       "name": "Spiny Shield",
       "img": "icons/magic/defensive/shield-barrier-blue.webp",
-      "origin": "Actor.yZeVSxrHCjeENFGg.Item.cS3JYkalMBMWxtJg",
+      "origin": null,
       "_id": "Op2EekdEJIajz8CF",
       "type": "base",
       "system": {},

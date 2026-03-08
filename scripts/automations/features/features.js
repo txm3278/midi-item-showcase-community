@@ -5,6 +5,7 @@ import { greatWeaponMaster } from './greatWeaponMaster.js';
 import { greatWeaponMaster2024 } from './greatWeaponMaster2024.js';
 import { poisoner } from './poisoner.js';
 import { sharpshooter } from './sharpshooter.js';
+import { charger } from './charger.js';
 
 export let features = {
   flamesOfPhlegethos,
@@ -14,4 +15,5 @@ export let features = {
   greatWeaponMaster2024,
   poisoner,
   sharpshooter,
+  charger,
 };

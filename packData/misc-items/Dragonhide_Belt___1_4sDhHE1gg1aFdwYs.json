@@ -1,0 +1,279 @@
+{
+  "name": "Dragonhide Belt, +1",
+  "type": "equipment",
+  "effects": [
+    {
+      "name": "Dragonhide Belt, +1",
+      "img": "icons/equipment/waist/belt-buckle-round-red.webp",
+      "_id": "zyVakBF0FA3t38ot",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,preSave",
+          "priority": 20
+        },
+        {
+          "key": "flags.dae.dragonHideBeltDCBonus",
+          "mode": 5,
+          "value": "+1",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_key": "!items.effects!4sDhHE1gg1aFdwYs.zyVakBF0FA3t38ot"
+    }
+  ],
+  "system": {
+    "activities": {
+      "n8tF0LPGNauCo4wF": {
+        "type": "utility",
+        "_id": "n8tF0LPGNauCo4wF",
+        "sort": 0,
+        "activation": {
+          "type": "action",
+          "override": false,
+          "condition": ""
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": [
+            {
+              "type": "activityUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ]
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "range": {
+          "units": "self",
+          "override": false,
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": "self",
+            "special": ""
+          },
+          "override": false,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [
+            {
+              "period": "dawn",
+              "type": "recoverAll"
+            }
+          ],
+          "max": "1"
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "formula": "@scale.monk.die.die",
+          "name": "Recover Ki Points"
+        },
+        "useConditionText": "",
+        "useConditionReason": "",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "Restore Ki",
+          "command": "if (args[0].tag !== \"OnUse\" || args[0].macroPass !== \"postActiveEffects\") {\n  return;\n}\n\nconst ki = actor.identifiedItems.get(\"ki\", {type: \"feat\"})?.first();\nif (!ki) {\n  return;\n}\nconst currentSpent = ki.system.uses.spent ?? 0;\nawait ki.update({\"system.uses.spent\": Math.max(0, currentSpent - workflow.utilityRoll?.total ?? 0)});"
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "never",
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": false,
+          "otherActivityCompatible": false,
+          "otherActivityAsParentType": true,
+          "identifier": "restore-ki",
+          "displayActivityName": false,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "autoCEEffects": "none",
+          "skipConcentrationCheck": false
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": "",
+          "rollAs": "target"
+        },
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true,
+        "name": "Restore Ki",
+        "flags": {},
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false,
+          "identifier": "restore-ki"
+        }
+      }
+    },
+    "uses": {
+      "spent": null,
+      "recovery": [],
+      "max": ""
+    },
+    "description": {
+      "chat": "",
+      "value": "<p><em>Replace this with a proper description.</em></p><details><summary>Credits and Instructions</summary><h2>Made by Moto Moto</h2></details>"
+    },
+    "identifier": "dragonhide-belt-1",
+    "source": {
+      "book": "FToD",
+      "page": "",
+      "license": "",
+      "custom": "",
+      "rules": "2014",
+      "revision": 1
+    },
+    "identified": true,
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "quantity": 1,
+    "weight": {
+      "value": 0,
+      "units": "lb"
+    },
+    "price": {
+      "value": 400,
+      "denomination": "gp"
+    },
+    "rarity": "uncommon",
+    "attunement": "required",
+    "armor": {
+      "value": null,
+      "dex": null,
+      "magicalBonus": null
+    },
+    "proficient": null,
+    "properties": ["mgc"],
+    "strength": 0,
+    "type": {
+      "value": "wondrous",
+      "baseItem": ""
+    },
+    "attuned": false,
+    "equipped": false,
+    "crew": {
+      "value": []
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "riders": {
+        "activity": []
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ActivityMacro-n8tF0LPGNauCo4wF"
+    },
+    "dae": {
+      "macro": {
+        "name": "Dragonhide Belt, +1",
+        "img": "icons/equipment/waist/belt-buckle-round-red.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "if (args[0].tag !== \"OnUse\" || args[0].macroPass !== \"preSave\") {\n  return;\n}\n\nif (rolledItem?.system.type.value !== \"class\" || rolledItem?.system.type.subtype !== \"ki\") {\n  return;\n}\nif (!workflow.hasSave || !workflow.saveActivity?.save?.dc) {\n  return;\n}\nconst save = workflow.saveActivity.save;\nconst dragonHideBeltDCBonus = actor.getFlag(\"dae\", \"dragonHideBeltDCBonus\");\nsave.dc.bonus ??= \"\";\nsave.dc.bonus += dragonHideBeltDCBonus;\nconst rollData = actor.getRollData({ deterministic: true });\nconst bonus = dnd5e.utils.simplifyBonus(dragonHideBeltDCBonus, rollData);\nsave.dc.value += bonus;",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {}
+      }
+    }
+  },
+  "img": "icons/equipment/waist/belt-buckle-round-red.webp",
+  "folder": null,
+  "_id": "4sDhHE1gg1aFdwYs",
+  "_key": "!items!4sDhHE1gg1aFdwYs"
+}
