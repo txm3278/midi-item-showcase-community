@@ -8,7 +8,11 @@
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "SCAG",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -101,6 +105,8 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -147,6 +153,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -167,12 +174,6 @@
     "infusions": {
       "infused": false
     },
-    "obsidian": {
-      "source": {
-        "type": "class",
-        "text": "Paladin"
-      }
-    },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "effectActivation": false,
@@ -180,7 +181,7 @@
       "reactionCondition": "",
       "otherCondition": "",
       "effectCondition": "",
-      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.classFeatures.divineAllegiance",
       "rollAttackPerTarget": "never",
       "AoETargetType": "any",
       "AoETargetTypeIncludeSelf": true,
@@ -204,31 +205,7 @@
       "ida": false
     },
     "core": {},
-    "dae": {
-      "macro": {
-        "name": "Divine Allegiance",
-        "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.divineAllegiance(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -260,7 +237,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true",
+          "value": "function.MISC.macros.classFeatures.divineAllegiance,tpr.isDamaged|ignoreSelf=true",
           "priority": 20
         },
         {
@@ -283,7 +260,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.wBTKcNEUSwEuzrht",
+      "origin": null,
       "statuses": [],
       "flags": {
         "times-up": {

@@ -5,7 +5,7 @@
   "effects": [
     {
       "name": "Psionic Power",
-      "origin": "Item.1A5pTs8tmemE7euN",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -92,7 +92,7 @@
     {
       "name": "Protective Field - Damage Prevention",
       "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
-      "origin": "Item.1A5pTs8tmemE7euN",
+      "origin": null,
       "_id": "swyWHd4QngjwiwD9",
       "type": "base",
       "system": {},
@@ -225,7 +225,7 @@
           "max": ""
         },
         "roll": {
-          "formula": "max(@scale.psi-warrior.energy-die +@abilities.int.mod, 1)",
+          "formula": "max(@scale.psi-warrior.energy-die.die +@abilities.int.mod, 1)",
           "name": "Damage Prevention",
           "prompt": false,
           "visible": false
@@ -262,6 +262,8 @@
           "toggleEffect": false,
           "ignoreFullCover": true,
           "forceDamageDialog": "never",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -277,7 +279,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
@@ -415,6 +418,8 @@
           "ignoreFullCover": false,
           "autoConsume": true,
           "forceConsumeDialog": "never",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
@@ -429,7 +434,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "img": "icons/skills/melee/weapons-crossed-swords-teal.webp",
         "visibility": {
@@ -563,6 +569,8 @@
           "ignoreFullCover": false,
           "autoConsume": true,
           "forceConsumeDialog": "never",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
@@ -577,7 +585,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "img": "icons/sundries/gaming/dice-pair-white-green.webp",
@@ -714,13 +723,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "skipConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "img": "icons/magic/control/sihouette-hold-beam-green.webp",
@@ -850,13 +862,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "skipConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "img": "icons/magic/control/sihouette-hold-beam-green.webp",
@@ -916,7 +931,10 @@
   },
   "flags": {
     "dnd5e": {
-      "advancementOrigin": "VAj7tkk76TGaFKsO"
+      "advancementOrigin": "VAj7tkk76TGaFKsO",
+      "riders": {
+        "activity": []
+      }
     },
     "midi-qol": {
       "removeAttackDamageButtons": "default",

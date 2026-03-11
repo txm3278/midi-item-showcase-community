@@ -125,6 +125,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -153,7 +155,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "flags": {},
@@ -178,12 +181,6 @@
   "flags": {
     "infusions": {
       "infused": false
-    },
-    "obsidian": {
-      "source": {
-        "type": "class",
-        "text": "Fighter"
-      }
     },
     "midi-qol": {
       "effectActivation": false,
@@ -220,31 +217,7 @@
       "ida": false
     },
     "core": {},
-    "dae": {
-      "macro": {
-        "name": "Unwavering Mark",
-        "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.unwaveringMark(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "ownership": {
-          "default": 3
-        },
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -273,7 +246,7 @@
   "img": "icons/weapons/swords/sword-broad-crystal-paired.webp",
   "effects": [
     {
-      "origin": "Item.OVLcL1mXjmT8iNfI",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,

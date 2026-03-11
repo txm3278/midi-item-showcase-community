@@ -10,7 +10,11 @@
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "PHB",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -97,22 +101,45 @@
         "midiProperties": {
           "otherActivityCompatible": false,
           "identifier": "reaction",
+          "automationOnly": true,
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {},
         "useConditionReason": "",
         "macroData": {
           "name": "",
@@ -122,21 +149,25 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "dampen-elements",
     "enchant": {},
     "prerequisites": {
       "level": 6,
+      "items": [],
       "repeatable": false
     },
     "advancement": []
@@ -144,7 +175,7 @@
   "effects": [
     {
       "name": "Dampen Elements",
-      "origin": "Item.grPTeRTBbKDRrOLp",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -160,7 +191,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|pre=true;post=true",
+          "value": "function.MISC.macros.classFeatures.dampenElements,tpr.isDamaged|pre=true;post=true",
           "priority": 20
         }
       ],
@@ -195,6 +226,11 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
@@ -235,7 +271,7 @@
       "itemCondition": "",
       "effectCondition": "",
       "reactionCondition": "",
-      "onUseMacroName": "[preTargeting]ItemMacro,[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.classFeatures.dampenElements",
       "AoETargetType": "any",
       "AoETargetTypeIncludeSelf": true,
       "autoTarget": "default",
@@ -249,35 +285,10 @@
         }
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Dampen Elements",
-        "img": "icons/commodities/gems/pearl-brown-red.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.dampenElements(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": []
       }
     },
     "tidy5e-sheet": {

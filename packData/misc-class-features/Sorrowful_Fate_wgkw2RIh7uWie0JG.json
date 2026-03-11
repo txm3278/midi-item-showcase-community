@@ -10,7 +10,11 @@
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "CR",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -114,15 +118,27 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "automationOnly": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
-          "toggleEffect": false
+          "toggleEffect": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "",
         "macroData": {
@@ -133,15 +149,29 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {},
+        "otherActivityAsParentType": true
       },
       "R27JMKg3zz7dzbeE": {
         "type": "damage",
@@ -170,7 +200,11 @@
         },
         "effects": [
           {
-            "_id": "5qx6CPCZ6RbhLBDO"
+            "_id": "5qx6CPCZ6RbhLBDO",
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -232,15 +266,27 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "automationOnly": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
-          "toggleEffect": false
+          "toggleEffect": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "useConditionReason": "",
         "macroData": {
@@ -251,28 +297,42 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
-        }
+          "postRemoveConditionText": "",
+          "rollAs": "target"
+        },
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {}
       }
     },
     "identifier": "sorrowful-fate",
     "enchant": {},
     "prerequisites": {
       "level": 3,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     },
     "advancement": []
   },
   "effects": [
     {
       "name": "Sorrowful Fate",
-      "origin": "Item.YA8kaCO3D7saxKPF",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -288,7 +348,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isPreCheckSave|triggerSource=attacker;canSee=true;post=true",
+          "value": "function.MISC.macros.classFeatures.sorrowfulFate,tpr.isPreCheckSave|triggerSource=attacker;canSee=true;post=true",
           "priority": 20
         }
       ],
@@ -320,6 +380,14 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
@@ -332,15 +400,15 @@
     {
       "name": "Sorrowful Fate - Regret",
       "img": "icons/equipment/head/mask-craved-beige.webp",
-      "origin": "Item.YA8kaCO3D7saxKPF",
+      "origin": null,
       "_id": "5qx6CPCZ6RbhLBDO",
       "type": "base",
       "system": {},
       "changes": [
         {
-          "key": "macro.itemMacro",
+          "key": "macro.execute",
           "mode": 0,
-          "value": "",
+          "value": "function.MISC.macros.classFeatures.sorrowfulFate",
           "priority": 20
         }
       ],
@@ -393,6 +461,11 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "_key": "!items.effects!wgkw2RIh7uWie0JG.5qx6CPCZ6RbhLBDO"
@@ -428,7 +501,7 @@
       "itemCondition": "",
       "effectCondition": "",
       "reactionCondition": "",
-      "onUseMacroName": "[preTargeting]ItemMacro,[preActiveEffects]ItemMacro",
+      "onUseMacroName": "[preActiveEffects]function.MISC.macros.classFeatures.sorrowfulFate",
       "AoETargetType": "any",
       "AoETargetTypeIncludeSelf": true,
       "autoTarget": "default",
@@ -442,35 +515,10 @@
         }
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Sorrowful Fate",
-        "img": "icons/equipment/head/mask-craved-beige.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.sorrowfulFate(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": []
       }
     },
     "tidy5e-sheet": {

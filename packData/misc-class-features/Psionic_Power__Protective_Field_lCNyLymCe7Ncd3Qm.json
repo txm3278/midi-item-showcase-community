@@ -4,12 +4,16 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Psi Warrior' subclass, its data value should resolve to '@scale.psi-warrior.energy-die'. When adding this feature to an actor, make sure the consumption on Psionic Power is configured.<br>RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item has a passive effect that adds a third party reaction effect.<br>It is also a reaction item that gets triggered by the third party reaction effect when appropriate.</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Psi Warrior' subclass, its data value should resolve to '@scale.psi-warrior.energy-die'.\n When adding this feature to an actor, make sure the consumption on Psionic Power is configured.<br>RAW the target should be 'Creature', but use 'Ally' to trigger reaction on allies only.</p>\n</details>",
       "chat": ""
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "TCoE",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -59,7 +63,11 @@
         },
         "effects": [
           {
-            "_id": "plQXBVgjHZ2t2IvE"
+            "_id": "plQXBVgjHZ2t2IvE",
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -92,7 +100,7 @@
           "prompt": false,
           "visible": false,
           "name": "Damage Prevention",
-          "formula": "max(@scale.psi-warrior.energy-die +@abilities.int.mod, 1)"
+          "formula": "max(@scale.psi-warrior.energy-die.die +@abilities.int.mod, 1)"
         },
         "useConditionText": "reaction === \"tpr.isDamaged\"",
         "effectConditionText": "",
@@ -106,14 +114,16 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
-          "forceDamageDialog": "default",
-          "confirmTargets": "default",
+          "forceDamageDialog": "never",
+          "confirmTargets": "never",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "automationOnly": true,
           "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
@@ -123,8 +133,20 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {},
         "useConditionReason": "",
         "macroData": {
           "name": "",
@@ -140,6 +162,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -159,12 +182,6 @@
   "flags": {
     "infusions": {
       "infused": false
-    },
-    "obsidian": {
-      "source": {
-        "type": "class",
-        "text": "Fighter"
-      }
     },
     "midi-qol": {
       "removeAttackDamageButtons": "default",
@@ -249,7 +266,7 @@
   "effects": [
     {
       "name": "Psionic Power: Protective Field",
-      "origin": "Item.Ffqtl1yAQRd1XTN3",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -323,7 +340,7 @@
     {
       "name": "Psionic Power: Protective Field - Damage Prevention",
       "img": "icons/magic/defensive/barrier-shield-dome-deflect-blue.webp",
-      "origin": "Item.Ffqtl1yAQRd1XTN3",
+      "origin": null,
       "transfer": false,
       "_id": "plQXBVgjHZ2t2IvE",
       "type": "base",
