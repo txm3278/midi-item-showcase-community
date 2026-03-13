@@ -11,7 +11,11 @@
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "XGtE",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -111,11 +115,13 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
-          "confirmTargets": "default",
+          "confirmTargets": "never",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "otherActivityAsParentType": true,
@@ -157,6 +163,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -260,6 +267,8 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -306,6 +315,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -324,7 +334,7 @@
   },
   "effects": [
     {
-      "origin": "Item.wdID9kD5E1pFbnU6",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -341,8 +351,9 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;post=true",
-          "priority": 20
+          "value": "function.MISC.macros.classFeatures.channelDivinityRebukeTheViolent,tpr.isDamaged|ignoreSelf=true;post=true",
+          "priority": 20,
+          "fieldDescription": ""
         }
       ],
       "description": "",
@@ -376,6 +387,11 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
@@ -422,31 +438,7 @@
       "removeAttackDamageButtons": "default",
       "otherCondition": ""
     },
-    "dae": {
-      "macro": {
-        "name": "Channel Divinity: Rebuke the Violent",
-        "img": "icons/magic/lightning/bolt-strike-blue-white.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.channelDivinityRebukeTheViolent(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "dnd5e": {
       "riders": {
         "activity": []

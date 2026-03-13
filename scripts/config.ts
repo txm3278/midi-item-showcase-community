@@ -116,7 +116,7 @@ export function setConfig() {
         "Channel Divinity: Rebuke the Violent": {
           name: "Channel Divinity: Rebuke the Violent",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.4.0",
           authors: ["Elwin"],
         },
         "Channel Divinity: Vow of Enmity": {
@@ -520,7 +520,7 @@ export function setConfig() {
         "Vengeful Ancestors": {
           name: "Vengeful Ancestors",
           type: "Class Feature",
-          version: "3.1.1",
+          version: "3.2.0",
           authors: ["Elwin"],
         },
         "Vigilant Guardian": {
