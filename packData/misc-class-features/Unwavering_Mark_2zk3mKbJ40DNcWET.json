@@ -184,7 +184,7 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preTargeting]ItemMacro",
+      "onUseMacroName": "[preTargeting]function.MISC.macros.classFeatures.unwaveringMark",
       "rollAttackPerTarget": "never",
       "itemCondition": "",
       "reactionCondition": "",
@@ -262,13 +262,13 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,postActiveEffects",
+          "value": "function.MISC.macros.classFeatures.unwaveringMark,postActiveEffects",
           "priority": 20
         },
         {
-          "key": "macro.itemMacro",
+          "key": "macro.execute",
           "mode": 0,
-          "value": "",
+          "value": "function.MISC.macros.classFeatures.unwaveringMark",
           "priority": 20
         }
       ],
