@@ -116,7 +116,7 @@ export function setConfig() {
         "Channel Divinity: Rebuke the Violent": {
           name: "Channel Divinity: Rebuke the Violent",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.4.0",
           authors: ["Elwin"],
         },
         "Channel Divinity: Vow of Enmity": {
@@ -153,7 +153,7 @@ export function setConfig() {
         "Dampen Elements": {
           name: "Dampen Elements",
           type: "Class Feature",
-          version: "2.0.3",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Deflect Missiles": {
@@ -165,7 +165,7 @@ export function setConfig() {
         "Divine Allegiance": {
           name: "Divine Allegiance",
           type: "Class Feature",
-          version: "4.1.0",
+          version: "4.2.0",
           authors: ["Elwin"],
         },
         "Dragonhide Belt, +1": {
@@ -255,7 +255,7 @@ export function setConfig() {
         "Flash of Genius": {
           name: "Flash of Genius",
           type: "Class Feature",
-          version: "2.2.0",
+          version: "2.3.0",
           authors: ["Elwin"],
         },
         Forage: {
@@ -268,6 +268,12 @@ export function setConfig() {
           name: "Gift of the Metallic Dragon",
           type: "Feat",
           version: "4.3.0",
+          authors: ["Elwin"],
+        },
+        "Gloves of Missile Snaring": {
+          name: "Gloves of Missile Snaring",
+          type: "Item",
+          version: "1.0.0",
           authors: ["Elwin"],
         },
         Goodberry: {
@@ -309,7 +315,7 @@ export function setConfig() {
         "Ki": {
           name: "Ki",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.1.1",
           authors: ["Elwin"],
         },
         "Moon-Touched Greatsword": {
@@ -387,13 +393,13 @@ export function setConfig() {
         "Psionic Power": {
           name: "Psionic Power",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.0.1",
           authors: ["Elwin"],
         },
         "Psionic Power: Protective Field": {
           name: "Psionic Power: Protective Field",
           type: "Class Feature",
-          version: "4.2.0",
+          version: "4.2.1",
           authors: ["Elwin"],
         },
         "Purple Worm Poison": {
@@ -417,7 +423,7 @@ export function setConfig() {
         "Sentinel at Death's Door": {
           name: "Sentinel at Death's Door",
           type: "Class Feature",
-          version: "4.1.1",
+          version: "4.2.0",
           authors: ["Elwin"],
         },
         "Serpent Venom": {
@@ -447,7 +453,7 @@ export function setConfig() {
         "Sorrowful Fate": {
           name: "Sorrowful Fate",
           type: "Class Feature",
-          version: "2.2.1",
+          version: "2.3.0",
           authors: ["Elwin"],
         },
         "Spiny Shield": {
@@ -459,7 +465,7 @@ export function setConfig() {
         "Spirit Shield": {
           name: "Spirit Shield",
           type: "Class Feature",
-          version: "4.3.0",
+          version: "4.4.0",
           authors: ["Elwin"],
         },
         "Steady Aim": {
@@ -502,19 +508,19 @@ export function setConfig() {
           name: "Tomb of Levistus",
           aliases: ["Eldritch Invocations: Tomb of Levistus"],
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin", "pospa4"],
         },
         "Unwavering Mark": {
           name: "Unwavering Mark",
           type: "Class Feature",
-          version: "3.5.0",
+          version: "3.6.0",
           authors: ["Elwin"],
         },
         "Vengeful Ancestors": {
           name: "Vengeful Ancestors",
           type: "Class Feature",
-          version: "3.1.1",
+          version: "3.2.0",
           authors: ["Elwin"],
         },
         "Vigilant Guardian": {
@@ -658,6 +664,12 @@ export function setConfig() {
           version: "1.0.3",
           authors: ["Elwin"],
         },
+        "Gloves of Missile Snaring": {
+          name: "Gloves of Missile Snaring",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         Goodberry: {
           name: "Goodberry",
           type: "Spell",
@@ -691,7 +703,7 @@ export function setConfig() {
         "Improved Warding Flare": {
           name: "Improved Warding Flare",
           type: "Class Feature",
-          version: "1.0.1",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Lamannian Oak Focus": {

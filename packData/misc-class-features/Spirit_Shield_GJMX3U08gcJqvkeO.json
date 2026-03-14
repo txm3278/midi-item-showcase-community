@@ -9,13 +9,13 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,postActiveEffects",
+          "value": "function.MISC.macros.classFeatures.spiritShield,postActiveEffects",
           "priority": 20
         },
         {
-          "key": "macro.itemMacro",
+          "key": "macro.execute",
           "mode": 0,
-          "value": "",
+          "value": "function.MISC.macros.classFeatures.spiritShield",
           "priority": 20
         }
       ],
@@ -29,12 +29,13 @@
         "startRound": null,
         "startTurn": null
       },
-      "origin": "Item.pqEVQomnz1s1xqFG",
+      "origin": null,
       "tint": "#ffffff",
       "transfer": true,
       "flags": {
         "core": {
-          "statusId": ""
+          "statusId": "",
+          "overlay": false
         },
         "dae": {
           "stackable": "noneName",
@@ -46,7 +47,8 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "showIcon": false,
-          "disableIncapacitated": false
+          "disableIncapacitated": false,
+          "disableCondition": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -66,6 +68,11 @@
           "nameOverride": "",
           "customCheck": "",
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "name": "Spirit Shield",
@@ -79,7 +86,7 @@
     },
     {
       "name": "Spirit Shield - TPR",
-      "origin": "Item.HX2MBqMv5aADOVg0",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -95,7 +102,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isDamaged|ignoreSelf=true;post=true;canSee=true",
+          "value": "function.MISC.macros.classFeatures.spiritShield,tpr.isDamaged|ignoreSelf=true;post=true;canSee=true",
           "priority": 20
         }
       ],
@@ -150,7 +157,7 @@
     {
       "name": "Spirit Shield - Damage Prevention",
       "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
-      "origin": "Item.HX2MBqMv5aADOVg0",
+      "origin": null,
       "transfer": false,
       "_id": "4t0ysYqzVQdEPX1K",
       "type": "base",
@@ -210,15 +217,9 @@
     "infusions": {
       "infused": false
     },
-    "obsidian": {
-      "source": {
-        "type": "class",
-        "text": "Barbarian"
-      }
-    },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preTargeting]ItemMacro",
+      "onUseMacroName": "[preTargeting]function.MISC.macros.classFeatures.spiritShield",
       "removeAttackDamageButtons": "default",
       "itemCondition": "",
       "reactionCondition": "",
@@ -265,31 +266,7 @@
         }
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Spirit Shield",
-        "img": "icons/magic/defensive/shield-barrier-flaming-diamond-teal-purple.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.spiritShield(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
@@ -315,7 +292,10 @@
     "source": {
       "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "XGtE",
+      "page": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -474,6 +454,8 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -517,6 +499,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },

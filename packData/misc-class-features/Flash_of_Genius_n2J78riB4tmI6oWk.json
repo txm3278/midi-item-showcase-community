@@ -9,7 +9,10 @@
     "source": {
       "custom": "",
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "TCoE",
+      "page": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -66,7 +69,11 @@
         },
         "effects": [
           {
-            "_id": "YS5K59UnEuyNjtDE"
+            "_id": "YS5K59UnEuyNjtDE",
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -83,7 +90,7 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft"
           },
           "affects": {
             "count": "1",
@@ -106,7 +113,7 @@
           "visible": false
         },
         "sort": 0,
-        "useConditionText": "reaction === \"tpr.isPostCheckSave\"",
+        "useConditionText": "reaction === \"tpr.isPostCheckSave\" || !workflow?.workflowOptions?.isReaction",
         "effectConditionText": "",
         "name": "Reaction",
         "midiProperties": {
@@ -118,16 +125,39 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
-          "toggleEffect": false
+          "toggleEffect": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {},
         "useConditionReason": "",
         "macroData": {
           "name": "",
@@ -137,21 +167,25 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none"
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true
       }
     },
     "identifier": "flash-of-genius",
     "enchant": {},
     "prerequisites": {
       "level": 7,
+      "items": [],
       "repeatable": false
     },
     "advancement": []
@@ -168,7 +202,7 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[preTargeting]ItemMacro,[preActiveEffects]ItemMacro",
+      "onUseMacroName": "[preActiveEffects]function.MISC.macros.classFeatures.flashOfGenius",
       "itemCondition": "",
       "reactionCondition": "",
       "otherCondition": "",
@@ -221,37 +255,10 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     },
-    "dae": {
-      "macro": {
-        "name": "Flash of Genius",
-        "img": "icons/magic/light/explosion-star-blue.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.flashOfGenius(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": "dnd5e",
-          "systemVersion": "4.4.4",
-          "coreVersion": "12.343",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
-        }
-      }
-    },
+    "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": []
       },
       "migratedUses": null
     },
@@ -262,7 +269,7 @@
   },
   "effects": [
     {
-      "origin": "Item.boU3p9rVecaXjnIv",
+      "origin": null,
       "duration": {
         "rounds": null,
         "startTime": null,
@@ -339,7 +346,7 @@
     },
     {
       "name": "Flash of Genius",
-      "origin": "Item.boU3p9rVecaXjnIv",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -355,7 +362,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isPostCheckSave|canSee=true;post=true",
+          "value": "function.MISC.macros.classFeatures.flashOfGenius,tpr.isPostCheckSave|canSee=true;post=true",
           "priority": 20
         }
       ],

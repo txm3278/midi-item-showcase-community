@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an active effect, that effect will trigger a reaction by the Paladin
 // when a creature within range is damaged to allow him to use the feature to take the target's damage instead.
-// v4.1.0
+// v4.2.0
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor and item macro [postActiveEffects]
@@ -20,20 +20,32 @@
 //   and the flag is unset.
 // ###################################################################################################
 
-export async function divineAllegiance({ speaker, actor, token, character, item, args, scope, workflow, options }) {
-  // Default name of the feature
-  const DEFAULT_ITEM_NAME = "Divine Allegiance";
-  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
+// Default name of the feature
+const DEFAULT_ITEM_NAME = "Divine Allegiance";
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+/**
+ * Validates if the required dependencies are met.
+ *
+ * @returns {boolean} True if the requirements are met, false otherwise.
+ */
+function checkDependencies() {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
-    return;
+    return false;
   }
   const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return false;
+  }
+  return true;
+}
+
+export async function divineAllegiance({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  if (!checkDependencies()) {
     return;
   }
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (debug) {
     console.warn(
@@ -47,33 +59,33 @@ export async function divineAllegiance({ speaker, actor, token, character, item,
     // MidiQOL OnUse item macro for Divine Allegiance
     await handleOnUsePostActiveEffects(workflow, actor);
   }
+}
 
-  /**
-   * Handles the postActiveEffects phase of the Divine Allegiance activity.
-   * The owner of the feature HP's are reduced by the damage to be applied to the target.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Actor5e} sourceActor - The owner of the Divine Allegiance item.
-   */
-  async function handleOnUsePostActiveEffects(currentWorkflow, sourceActor) {
-    const targetToken = currentWorkflow.targets.first();
-    if (!targetToken) {
-      // No target found
-      return;
-    }
-    const targetActor = targetToken.actor;
-    if (!targetActor) {
-      // No actor found
-      return;
-    }
-    const appliedDmg = currentWorkflow.workflowOptions?.damageItem?.healingAdjustedTotalDamage ?? 0;
-    await sourceActor.applyDamage(appliedDmg);
-
-    const infoMsg = `<p>You take <strong>${appliedDmg}</strong> points of damage instead to <strong>\${tokenName}</strong>.</p>`;
-    await elwinHelpers.insertTextIntoMidiItemCard(
-      "beforeButtons",
-      workflow,
-      elwinHelpers.getTargetDivs(targetToken, infoMsg),
-    );
+/**
+ * Handles the postActiveEffects phase of the Divine Allegiance activity.
+ * The owner of the feature HP's are reduced by the damage to be applied to the target.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Actor5e} sourceActor - The owner of the Divine Allegiance item.
+ */
+async function handleOnUsePostActiveEffects(workflow, sourceActor) {
+  const targetToken = workflow.targets.first();
+  if (!targetToken) {
+    // No target found
+    return;
   }
+  const targetActor = targetToken.actor;
+  if (!targetActor) {
+    // No actor found
+    return;
+  }
+  const appliedDmg = workflow.workflowOptions?.damageItem?.healingAdjustedTotalDamage ?? 0;
+  await sourceActor.applyDamage(appliedDmg);
+
+  const infoMsg = `<p>You take <strong>${appliedDmg}</strong> points of damage instead to <strong>\${tokenName}</strong>.</p>`;
+  await elwinHelpers.insertTextIntoMidiItemCard(
+    "beforeButtons",
+    workflow,
+    elwinHelpers.getTargetDivs(targetToken, infoMsg),
+  );
 }

@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410 based on pospa4
 // Dependencies:
 //  - DAE: [on],[off] item macro
@@ -73,12 +73,12 @@ export async function tombOfLevistus({ speaker, actor, token, character, item, a
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
   if (args[0].tag === "TargetOnUse" && args[0].macroPass === "postTargetEffectApplication") {
-    await handleTargetOnUsePostTargetEffectApplication(scope.macroItem, workflow);
+    await handleTargetOnUsePostTargetEffectApplication(scope.macroItem, workflow, debug);
   } else if (args[0] === "on") {
     // DAE Item Macro GM call
     if (game.modules.get("monks-tokenbar")?.active) {
@@ -114,19 +114,21 @@ export async function tombOfLevistus({ speaker, actor, token, character, item, a
  * which adds an AE to the owner to reduce speed to 0 and to add fire vulnerability.
  *
  * @param {Item5e} sourceItem - The Tomb of Levistus item.
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {boolean} debug - Flag to indicate if debug mode is enabled.
  */
-async function handleTargetOnUsePostTargetEffectApplication(sourceItem, workflow) {
+async function handleTargetOnUsePostTargetEffectApplication(sourceItem, workflow, debug) {
   // Find temporary AE to remove it
   const sourceActor = sourceItem.actor;
   const tempEffect = sourceActor.effects.find(
-    (ae) => ae.name === sourceItem.name && ae.origin?.startsWith(sourceItem.uuid)
+    (ae) => ae.name === sourceItem.name && ae.origin?.startsWith(sourceItem.uuid),
   );
   if (tempEffect) {
     await MidiQOL.removeEffects({ actorUuid: sourceActor.uuid, effects: [tempEffect.id] });
   }
 
   const entombmentEffect = sourceItem.effects.find(
-    (ae) => ae.name !== sourceItem.name && ae.statuses.has("incapacitated")
+    (ae) => ae.name !== sourceItem.name && ae.statuses.has("incapacitated"),
   );
   if (!entombmentEffect) {
     console.warn(`${DEFAULT_ITEM_NAME} | Missing entombment AE`, sourceItem);

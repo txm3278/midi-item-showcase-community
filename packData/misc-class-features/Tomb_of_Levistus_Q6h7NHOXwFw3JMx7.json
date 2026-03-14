@@ -39,7 +39,8 @@
         },
         "effects": [
           {
-            "_id": "21771uSh7aexC40c"
+            "_id": "21771uSh7aexC40c",
+            "level": {}
           }
         ],
         "range": {
@@ -108,7 +109,7 @@
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
-          "automationOnly": false,
+          "automationOnly": true,
           "otherActivityCompatible": false,
           "otherActivityAsParentType": true,
           "identifier": "reaction",
@@ -121,15 +122,26 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
-        "name": "Reaction"
+        "name": "Reaction",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "uses": {
@@ -180,7 +192,7 @@
   "effects": [
     {
       "name": "Ice Entombment",
-      "origin": "Item.SpT3TQzg3aSdlmzT",
+      "origin": null,
       "duration": {
         "rounds": 1,
         "startTime": null,
@@ -293,7 +305,7 @@
     {
       "name": "Tomb of Levistus",
       "img": "icons/magic/water/ice-snowman.webp",
-      "origin": "Item.Q6h7NHOXwFw3JMx7",
+      "origin": null,
       "_id": "21771uSh7aexC40c",
       "type": "base",
       "system": {},

@@ -6,15 +6,15 @@
     {
       "name": "Improved Warding Flare",
       "img": "icons/magic/light/beam-red-orange.webp",
-      "origin": "Item.2Yh2JuUOQE5TFqQK",
+      "origin": null,
       "_id": "Izp3BmbC6SZiMvPb",
       "type": "base",
       "system": {},
       "changes": [
         {
-          "key": "macro.itemMacro",
+          "key": "macro.execute",
           "mode": 0,
-          "value": "",
+          "value": "function.MISC.macros.classFeatures.improvedWardingFlare",
           "priority": 20
         }
       ],
@@ -159,7 +159,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -167,7 +168,6 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "automationOnly": true,
           "identifier": "heal",
@@ -178,15 +178,36 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
-        "name": "Add Temporary Hit Points"
+        "name": "Add Temporary Hit Points",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "uses": {
@@ -213,7 +234,8 @@
     "enchant": {},
     "prerequisites": {
       "level": 6,
-      "repeatable": false
+      "repeatable": false,
+      "items": []
     },
     "properties": [],
     "requirements": "",
@@ -261,33 +283,7 @@
       "toggleEffect": false,
       "ignoreTotalCover": false
     },
-    "dae": {
-      "macro": {
-        "name": "Improved Warding Flare",
-        "img": "icons/magic/light/beam-red-orange.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.improvedWardingFlare(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "coreVersion": "12.331",
-          "systemId": "dnd5e",
-          "systemVersion": "4.3.9",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
-        }
-      }
-    }
+    "dae": {}
   },
   "img": "icons/magic/light/beam-red-orange.webp",
   "folder": "zj9zsmkrkFw80DsS",

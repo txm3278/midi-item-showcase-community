@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.5.0
+// v3.6.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -46,20 +46,32 @@
 //   if the expiration was not caused by the addition of a new mark on the same token.
 // ###################################################################################################
 
-export async function unwaveringMark({ speaker, actor, token, character, item, args, scope, workflow, options }) {
-  const DEFAULT_ITEM_NAME = "Unwavering Mark";
-  const MODULE_ID = "midi-item-showcase-community";
-  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
+const DEFAULT_ITEM_NAME = "Unwavering Mark";
+const MODULE_ID = "midi-item-showcase-community";
 
-  if (!foundry.utils.isNewerVersion(globalThis.elwinHelpers?.version ?? "1.1", "3.5.10")) {
+/**
+ * Validates if the required dependencies are met.
+ *
+ * @returns {boolean} True if the requirements are met, false otherwise.
+ */
+function checkDependencies() {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
-    return;
+    return false;
   }
   const dependencies = ["dae", "times-up", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return false;
+  }
+  return true;
+}
+
+export async function unwaveringMark({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  if (!checkDependencies()) {
     return;
   }
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (debug) {
     console.warn(
@@ -68,6 +80,7 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       arguments,
     );
   }
+
   if (args[0].tag === "OnUse" && args[0].macroPass === "preTargeting") {
     if (scope.macroItem.uuid !== scope.rolledItem?.uuid || workflow.activity?.identifier !== "bonus-attack") {
       // Do nothing if item used is not the bonus attack activity from source item
@@ -96,24 +109,24 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       handlePreAttackRollConfigForSpecialWeaponAttack(workflow, scope.macroItem);
     } else if (actor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid")) {
       // When the marked target makes an attack
-      handlePreAttackRollConfigByMarkedTarget(workflow, scope.macroItem);
+      handlePreAttackRollConfigByMarkedTarget(workflow, actor, scope.macroItem, debug);
     }
   } else if (args[0].tag === "OnUse" && args[0].macroPass === "preDamageRollConfig") {
     if (workflow?.workflowOptions?.unwaveringMarkSpecialWeaponAttack) {
       // When the special weapon attack rolls damage
-      handlePreDamageRollConfigForSpecialWeaponAttack(workflow, scope.macroItem);
+      handlePreDamageRollConfigForSpecialWeaponAttack(workflow, scope.macroItem, scope, debug);
     }
   } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     const macroData = args[0];
 
     if (actor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid")) {
       // When the marked target makes an attack
-      await handlePostActiveEffectsByMarkedTarget(macroData, workflow, actor, scope.macroItem);
+      await handlePostActiveEffectsByMarkedTarget(macroData, workflow, actor, scope.macroItem, debug);
       return;
     }
     if (scope.rolledItem.uuid !== scope.macroItem.uuid) {
       // Item usage other than the source item
-      await handlePostActiveEffectsByMarker(workflow, token, scope.macroItem);
+      await handlePostActiveEffectsByMarker(workflow, token, scope.macroItem, debug);
       return;
     }
 
@@ -149,484 +162,477 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
       }
     }
   }
+}
 
-  /**
-   * Returns the target tokens associated to the target UUIDs.
-   *
-   * @param {string[]} targetTokenUuids the UUIDs of target tokens.
-   * @returns {Token5e[]} an array of target tokens corresponding to the UUIDs.
-   */
-  function getTargetTokens(targetTokenUuids) {
-    const targetTokens = targetTokenUuids.map((uuid) => fromUuidSync(uuid).object).filter((t) => t);
-    return targetTokens;
-  }
+/**
+ * Returns the target tokens associated to the target UUIDs.
+ *
+ * @param {string[]} targetTokenUuids the UUIDs of target tokens.
+ * @returns {Token[]} an array of target tokens corresponding to the UUIDs.
+ */
+function getTargetTokens(targetTokenUuids) {
+  const targetTokens = targetTokenUuids.map((uuid) => fromUuidSync(uuid).object).filter((t) => t);
+  return targetTokens;
+}
 
-  /**
-   * Handles the preAttackRollConfig phase of the Unwavering Mark special weapon attack activity.
-   * Advantage to the attack roll is added.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol current workflow.
-   * @param {Item5e} sourceItem the Unwavering Mark item.
-   */
-  function handlePreAttackRollConfigForSpecialWeaponAttack(currentWorkflow, sourceItem) {
-    currentWorkflow.attackRollModifierTracker.advantage.add(sourceItem.identifier, sourceItem.name);
-  }
+/**
+ * Handles the preAttackRollConfig phase of the Unwavering Mark special weapon attack activity.
+ * Advantage to the attack roll is added.
+ *
+ * @param {MidiQOL.Workflow} workflow midi-qol current workflow.
+ * @param {Item} sourceItem the Unwavering Mark item.
+ */
+function handlePreAttackRollConfigForSpecialWeaponAttack(workflow, sourceItem) {
+  workflow.attackRollModifierTracker.advantage.add(sourceItem.identifier, sourceItem.name);
+}
 
-  /**
-   * If the marked target attacks another target than the marker and the marker is
-   * within range, the attacker has disadvantage on his attack roll.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol current workflow.
-   * @param {Item5e} sourceItem the Unwavering Mark item.
-   */
-  function handlePreAttackRollConfigByMarkedTarget(currentWorkflow, sourceItem) {
-    const markerTokenUuid = actor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid");
-    if (!isPassiveEffectActiveForItem(scope.macroItem)) {
-      if (debug) {
-        const reason = getActiveEffectInactivityReason(markerTokenUuid);
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | Mark has no effect when source ActiveEffect is not active, reason: ${reason}.`,
-        );
-      }
-      return;
-    }
-
-    const markerToken = fromUuidSync(markerTokenUuid)?.object;
-    if (!markerToken) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Missing token for marker token UUID ${markerTokenUuid}.`);
-      }
-      return;
-    }
-
-    const dist = MidiQOL.computeDistance(currentWorkflow.token, markerToken, true);
-    if (dist <= -1 || dist > 5) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Marker token out of range: ${dist}.`);
-      }
-      return;
-    }
-    const nonMarkerTargetExists = currentWorkflow.targets.some((t) => t?.document.uuid !== markerTokenUuid);
-
-    if (nonMarkerTargetExists) {
-      currentWorkflow.attackRollModifierTracker.disadvantage.add(sourceItem.identifier, sourceItem.name);
-    }
-  }
-
-  /**
-   * Verifies if the conditions are met to trigger the special attack from the marker,
-   * if its the case a flag is set on the marker.
-   *
-   * @param {object} macroData midi-qol macro data.
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol current workflow.
-   * @param {Actor5e} currentActor current actor.
-   * @param {Item5e} sourceItem  the Unwavering Mark item.
-   */
-  async function handlePostActiveEffectsByMarkedTarget(macroData, currentWorkflow, currentActor, sourceItem) {
-    if (currentWorkflow.hitTargets.size < 1) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No target hit.`);
-      }
-      return;
-    }
-
-    const markerTokenUuid = currentActor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid");
-    if (!isPassiveEffectActiveForItem(sourceItem)) {
-      if (debug) {
-        const reason = getActiveEffectInactivityReason(markerTokenUuid);
-        console.warn(
-          `${DEFAULT_ITEM_NAME} | Mark has no effect when source ActiveEffect is not active, reason: ${reason}.`,
-        );
-      }
-      return;
-    }
-
-    if (macroData.targetUuids.every((targetUuid) => targetUuid === markerTokenUuid)) {
-      // Target is the source of the mark, special attack not triggered
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Target selected is the marker.`);
-      }
-      return;
-    }
-
-    if (!currentWorkflow.attackRoll) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Item does not have an attack.`);
-      }
-      return;
-    }
-    if (!currentWorkflow.damageList.some((d) => d.totalDamage > 0 && d.tokenUuid !== markerTokenUuid)) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No damage dealt to other than marker.`);
-      }
-      return;
-    }
-
-    const markerTokenActor = MidiQOL.MQfromActorUuid(markerTokenUuid);
-
-    // Set flag for who was marked that did damage (triggered the special attack)
-    const specialAttackTargetTokenUuids = foundry.utils.deepClone(
-      DAE.getFlag(markerTokenActor, "unwaveringMark.specialAttackTargetTokenUuids") ?? [],
-    );
-    if (!specialAttackTargetTokenUuids.includes(currentWorkflow.tokenUuid)) {
-      specialAttackTargetTokenUuids.push(currentWorkflow.tokenUuid);
-      await DAE.setFlag(
-        markerTokenActor,
-        "unwaveringMark.specialAttackTargetTokenUuids",
-        specialAttackTargetTokenUuids,
+/**
+ * If the marked target attacks another target than the marker and the marker is
+ * within range, the attacker has disadvantage on his attack roll.
+ *
+ * @param {MidiQOL.Workflow} workflow midi-qol current workflow.
+ * @param {Actor} actor - The marked target actor that is making the attack.
+ * @param {Item} sourceItem the Unwavering Mark item.
+ * @param {boolean} debug - Flag to indicate if debug mode is active.
+ */
+function handlePreAttackRollConfigByMarkedTarget(workflow, actor, sourceItem, debug) {
+  const markerTokenUuid = actor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid");
+  if (!isPassiveEffectActiveForItem(sourceItem)) {
+    if (debug) {
+      const reason = getActiveEffectInactivityReason(markerTokenUuid);
+      console.warn(
+        `${DEFAULT_ITEM_NAME} | Mark has no effect when source ActiveEffect is not active, reason: ${reason}.`,
       );
     }
-
-    // Add chat message saying bonus attack can be made against this creature
-    let player = MidiQOL.playerForActor(markerTokenActor);
-    if (!player) {
-      console.warn(`${DEFAULT_ITEM_NAME} | No active player or GM for actor.`, markerTokenActor);
-      return;
-    }
-    const markerTokenDoc = fromUuidSync(markerTokenUuid);
-
-    const message = elwinHelpers.getTargetDivs(
-      currentWorkflow.token,
-      `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack on your turn against \${tokenName}.</p>`,
-    );
-    MidiQOL.addUndoChatMessage(
-      await ChatMessage.create({
-        user: player?.id,
-        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        content: message,
-        speaker: ChatMessage.getSpeaker({ actor: markerTokenActor, token: markerTokenDoc }),
-        whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
-      }),
-    );
+    return;
   }
 
-  /**
-   * On a hit with a melee weapon attack, ask if the target needs to be marked and if that's the case,
-   * an effect to mark it is added. Note: previous marks are removed.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol workflow.
-   * @param {Token5e} sourceToken source token.
-   * @param {Item5e} sourceItem  the Unwavering Mark item.
-   */
-  async function handlePostActiveEffectsByMarker(currentWorkflow, sourceToken, sourceItem) {
-    if (currentWorkflow.hitTargets.size < 1) {
+  const markerToken = fromUuidSync(markerTokenUuid)?.object;
+  if (!markerToken) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Missing token for marker token UUID ${markerTokenUuid}.`);
+    }
+    return;
+  }
+
+  const dist = MidiQOL.computeDistance(workflow.token, markerToken, true);
+  if (dist <= -1 || dist > 5) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Marker token out of range: ${dist}.`);
+    }
+    return;
+  }
+  const nonMarkerTargetExists = workflow.targets.some((t) => t?.document.uuid !== markerTokenUuid);
+
+  if (nonMarkerTargetExists) {
+    workflow.attackRollModifierTracker.disadvantage.add(sourceItem.identifier, sourceItem.name);
+  }
+}
+
+/**
+ * Verifies if the conditions are met to trigger the special attack from the marker,
+ * if its the case a flag is set on the marker.
+ *
+ * @param {object} macroData midi-qol macro data.
+ * @param {MidiQOL.Workflow} workflow midi-qol current workflow.
+ * @param {Actor5e} currentActor current actor.
+ * @param {Item5e} sourceItem  the Unwavering Mark item.
+ * @param {boolean} debug - Flag to indicate if debug mode is active.
+ */
+async function handlePostActiveEffectsByMarkedTarget(macroData, workflow, currentActor, sourceItem, debug) {
+  if (workflow.hitTargets.size < 1) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No target hit.`);
+    }
+    return;
+  }
+
+  const markerTokenUuid = currentActor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid");
+  if (!isPassiveEffectActiveForItem(sourceItem)) {
+    if (debug) {
+      const reason = getActiveEffectInactivityReason(markerTokenUuid);
+      console.warn(
+        `${DEFAULT_ITEM_NAME} | Mark has no effect when source ActiveEffect is not active, reason: ${reason}.`,
+      );
+    }
+    return;
+  }
+
+  if (macroData.targetUuids.every((targetUuid) => targetUuid === markerTokenUuid)) {
+    // Target is the source of the mark, special attack not triggered
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Target selected is the marker.`);
+    }
+    return;
+  }
+
+  if (!workflow.attackRoll) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Item does not have an attack.`);
+    }
+    return;
+  }
+  if (!workflow.damageList.some((d) => d.totalDamage > 0 && d.tokenUuid !== markerTokenUuid)) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No damage dealt to other than marker.`);
+    }
+    return;
+  }
+
+  const markerTokenActor = MidiQOL.MQfromActorUuid(markerTokenUuid);
+
+  // Set flag for who was marked that did damage (triggered the special attack)
+  const specialAttackTargetTokenUuids = foundry.utils.deepClone(
+    DAE.getFlag(markerTokenActor, "unwaveringMark.specialAttackTargetTokenUuids") ?? [],
+  );
+  if (!specialAttackTargetTokenUuids.includes(workflow.tokenUuid)) {
+    specialAttackTargetTokenUuids.push(workflow.tokenUuid);
+    await DAE.setFlag(markerTokenActor, "unwaveringMark.specialAttackTargetTokenUuids", specialAttackTargetTokenUuids);
+  }
+
+  // Add chat message saying bonus attack can be made against this creature
+  let player = MidiQOL.playerForActor(markerTokenActor);
+  if (!player) {
+    console.warn(`${DEFAULT_ITEM_NAME} | No active player or GM for actor.`, markerTokenActor);
+    return;
+  }
+  const markerTokenDoc = fromUuidSync(markerTokenUuid);
+
+  const message = elwinHelpers.getTargetDivs(
+    workflow.token,
+    `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack on your turn against \${tokenName}.</p>`,
+  );
+  MidiQOL.addUndoChatMessage(
+    await ChatMessage.create({
+      user: player?.id,
+      type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+      content: message,
+      speaker: ChatMessage.getSpeaker({ actor: markerTokenActor, token: markerTokenDoc }),
+      whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
+    }),
+  );
+}
+
+/**
+ * On a hit with a melee weapon attack, ask if the target needs to be marked and if that's the case,
+ * an effect to mark it is added. Note: previous marks are removed.
+ *
+ * @param {MidiQOL.Workflow} workflow midi-qol workflow.
+ * @param {Token} sourceToken source token.
+ * @param {Item} sourceItem  the Unwavering Mark item.
+ * @param {boolean} debug - Flag to indicate if debug mode is active.
+ */
+async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem, debug) {
+  if (workflow.hitTargets.size < 1) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No target hit.`);
+    }
+    return;
+  }
+
+  const targetToken = workflow.hitTargets.first();
+  if (!workflow.damageDetail?.some((dt) => dt.value > 0 && !["temphp", "midi-none", "vitality"].includes(dt.type))) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No damage dealt.`);
+    }
+    return;
+  }
+
+  if (!elwinHelpers.isMeleeWeaponAttack(workflow.activity, sourceToken, targetToken)) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon attack.`);
+    }
+    return;
+  }
+
+  const targetActor = targetToken.actor;
+  const targetUuid = targetToken.document.uuid;
+  let currentTurnMarkedTargetTokenUuids = foundry.utils.deepClone(
+    DAE.getFlag(sourceToken, "unwaveringMark.currentTurnMarkedTargetTokenUuids") ?? [],
+  );
+  // Prompt dialog to ask if attacker wants to mark the target, unless this target was already marked this turn
+  const foundIdx = currentTurnMarkedTargetTokenUuids.indexOf((tu) => tu === targetUuid);
+  if (foundIdx >= 0) {
+    if (targetActor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid") === workflow.tokenUuid) {
+      // Target already marked this turn.
       if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No target hit.`);
+        console.warn(`${DEFAULT_ITEM_NAME} | Target already marked this turn.`);
       }
       return;
     }
+    // Remove token from marked targets
+    currentTurnMarkedTargetTokenUuids.splice(foundIdx, 1);
+  }
 
-    const targetToken = currentWorkflow.hitTargets.first();
-    if (
-      !currentWorkflow.damageDetail?.some(
-        (dt) => dt.value > 0 && !["temphp", "midi-none", "vitality"].includes(dt.type),
-      )
-    ) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No damage dealt.`);
-      }
-      return;
-    }
+  const markTarget = await foundry.applications.api.DialogV2.confirm({
+    window: { title: `${sourceItem.name} - Mark Target` },
+    content: `<p>Mark the current target with ${sourceItem.name}?</p>`,
+    defaultYes: true,
+    modal: true,
+    rejectClose: false,
+  });
+  if (!markTarget) {
+    return;
+  }
 
-    if (!elwinHelpers.isMeleeWeaponAttack(currentWorkflow.activity, sourceToken, targetToken)) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon attack.`);
-      }
-      return;
-    }
+  // Keep marked target
+  currentTurnMarkedTargetTokenUuids.push(targetUuid);
+  await DAE.setFlag(sourceToken, "unwaveringMark.currentTurnMarkedTargetTokenUuids", currentTurnMarkedTargetTokenUuids);
 
-    const targetActor = targetToken.actor;
-    const targetUuid = targetToken.document.uuid;
-    let currentTurnMarkedTargetTokenUuids = foundry.utils.deepClone(
-      DAE.getFlag(sourceToken, "unwaveringMark.currentTurnMarkedTargetTokenUuids") ?? [],
-    );
-    // Prompt dialog to ask if attacker wants to mark the target, unless this target was already marked this turn
-    const foundIdx = currentTurnMarkedTargetTokenUuids.indexOf((tu) => tu === targetUuid);
-    if (foundIdx >= 0) {
-      if (targetActor.getFlag(MODULE_ID, "unwaveringMark.markerTokenUuid") === currentWorkflow.tokenUuid) {
-        // Target already marked this turn.
-        if (debug) {
-          console.warn(`${DEFAULT_ITEM_NAME} | Target already marked this turn.`);
-        }
-        return;
-      }
-      // Remove token from marked targets
-      currentTurnMarkedTargetTokenUuids.splice(foundIdx, 1);
-    }
+  const targetEffectName = `Marked by ${sourceItem.name}`;
 
-    const markTarget = await foundry.applications.api.DialogV2.confirm({
-      window: { title: `${sourceItem.name} - Mark Target` },
-      content: `<p>Mark the current target with ${sourceItem.name}?</p>`,
-      defaultYes: true,
-      modal: true,
-      rejectClose: false,
+  // Remove previous effects
+  const targetEffectToDelete = targetActor.effects.getName(targetEffectName);
+  if (targetEffectToDelete) {
+    await MidiQOL.removeEffects({
+      actorUuid: targetActor.uuid,
+      effects: [targetEffectToDelete.id],
+      options: { "expiry-reason": `new-unwavering-mark:${sourceItem.uuid}` },
     });
-    if (!markTarget) {
-      return;
-    }
-
-    // Keep marked target
-    currentTurnMarkedTargetTokenUuids.push(targetUuid);
-    await DAE.setFlag(
-      sourceToken,
-      "unwaveringMark.currentTurnMarkedTargetTokenUuids",
-      currentTurnMarkedTargetTokenUuids,
-    );
-
-    const targetEffectName = `Marked by ${sourceItem.name}`;
-
-    // Remove previous effects
-    const targetEffectToDelete = targetActor.effects.getName(targetEffectName);
-    if (targetEffectToDelete) {
-      await MidiQOL.removeEffects({
-        actorUuid: targetActor.uuid,
-        effects: [targetEffectToDelete.id],
-        options: { "expiry-reason": `new-unwavering-mark:${sourceItem.uuid}` },
-      });
-    }
-    // create an active effect to set disadvantage on attack rolls not made on marker
-    const targetEffectData = {
-      changes: [
-        // flag to indicate marker
-        {
-          key: `flags.${MODULE_ID}.unwaveringMark.markerTokenUuid`,
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: currentWorkflow.tokenUuid,
-          priority: 20,
-        },
-        // macro to handle disadvantage on attacks other than marker
-        {
-          key: "flags.midi-qol.onUseMacroName",
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: `ItemMacro,preAttackRollConfig`,
-          priority: 20,
-        },
-        // macro to handle damage dealt to other targets than marker
-        {
-          key: "flags.midi-qol.onUseMacroName",
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: `ItemMacro,postActiveEffects`,
-          priority: 20,
-        },
-        // macro for on/off of effect
-        {
-          key: "macro.itemMacro",
-          mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-          value: `${currentWorkflow.tokenUuid}`,
-          priority: 20,
-        },
-      ],
-      duration: { rounds: 1, turns: 1 },
-      origin: sourceItem.uuid, //flag the effect as associated to the source item
-      transfer: false,
-      disabled: false,
-      img: sourceItem.img,
-      name: targetEffectName,
-      "flags.dae": { specialDuration: ["turnEndSource"], stackable: "noneNameOnly" },
-    };
-
-    await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });
   }
-
-  /**
-   * Makes a special attack on a marked target that triggered it.
-   * The attacker must choose a weapon with which to attack and if more than one target triggered
-   * a special attack, choose a target. The weapon selected for the special attack is enchanted
-   * to convert its attack activation type to special.
-   *
-   * @param {object} macroData midi-qol macro data.
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol workflow.
-   * @param {Actor5e} sourceActor The source actor.
-   * @param {Item5e} sourceItem The Unwavering Mark item.
-   */
-  async function handlePostActiveEffectsBySpecialAttack(macroData, currentWorkflow, sourceActor, sourceItem) {
-    const refundResource = async function () {
-      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
-      if (consumed) {
-        await currentWorkflow.activity?.refund(consumed);
-      }
-    };
-    const specialAttackTargetTokenUuids =
-      DAE.getFlag(sourceActor, "unwaveringMark.specialAttackTargetTokenUuids") ?? [];
-    const specialAttackTargetTokens = getTargetTokens(specialAttackTargetTokenUuids);
-    if (specialAttackTargetTokens.length === 0) {
-      // Should not happen, this should be checked on the preTargeting phase
-      ui.notifications.warn(
-        `${sourceItem.name} | No marked target triggered the Special Attack action, reallocate spent resource if needed.`,
-      );
-      await refundResource();
-      return;
-    }
-
-    const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(sourceActor);
-    if (filteredWeapons.length === 0) {
-      // Should not happen, this should be checked on the preTargeting phase
-      ui.notifications.warn(`${sourceItem.name} | No melee weapon equipped, reallocate spent resource if needed.`);
-      await refundResource();
-      return;
-    }
-
-    const chosenWeaponId = sourceActor.getFlag(MODULE_ID, "unwaveringMark.weaponChoiceId");
-    let weaponItem = filteredWeapons[0];
-    if (filteredWeapons.length > 1) {
-      weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
-    }
-    if (!weaponItem) {
-      // Special attack was cancelled
-      console.warn(`${sourceItem.name} | Special attack was cancelled, reallocate spent resource if needed.`);
-      await refundResource();
-      return;
-    }
-    // Keep weapon choice for next time (used as pre-selected choice)
-    await sourceActor.setFlag(MODULE_ID, "unwaveringMark.weaponChoiceId", weaponItem.id);
-
-    // Select from special attack target tokens
-    const currentTarget = currentWorkflow.targets.first();
-    let selectedTarget =
-      (currentTarget
-        ? specialAttackTargetTokens.find((t) => t.document.uuid === currentTarget.document.uuid)
-        : undefined) ?? specialAttackTargetTokens[0];
-    if (specialAttackTargetTokens.length > 1) {
-      selectedTarget = await getSelectedTarget(sourceItem, specialAttackTargetTokens, selectedTarget);
-    }
-    if (!selectedTarget) {
-      // Special attack was cancelled
-      console.warn(`${sourceItem.name} | Special attack was cancelled, reallocate spent resource if needed.`);
-      await refundResource();
-      return;
-    }
-
-    // Change activation type to special so it is not considered as Action
-    const changes = [
-      { key: "name", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `{} [${sourceItem.name}]` },
-      // macro to handle advantage on special attack
+  // create an active effect to set disadvantage on attack rolls not made on marker
+  const targetEffectData = {
+    changes: [
+      // flag to indicate marker
+      {
+        key: `flags.${MODULE_ID}.unwaveringMark.markerTokenUuid`,
+        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+        value: workflow.tokenUuid,
+        priority: 20,
+      },
+      // macro to handle disadvantage on attacks other than marker
       {
         key: "flags.midi-qol.onUseMacroName",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
         value: `ItemMacro,preAttackRollConfig`,
         priority: 20,
       },
-      // macro to handle extra damage on special attack
+      // macro to handle damage dealt to other targets than marker
       {
         key: "flags.midi-qol.onUseMacroName",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: `ItemMacro,preDamageRollConfig`,
+        value: `ItemMacro,postActiveEffects`,
         priority: 20,
       },
-    ];
-    let enchantmentEffect;
-    try {
-      enchantmentEffect = await elwinHelpers.enchantItemTemporarily(weaponItem, sourceItem, {
-        changes,
-        activityRequirements: [
-          {
-            type: "attack",
-            conditions: [
-              { key: "attack.type.value", value: "melee" },
-              { key: "attack.type.classification", value: "weapon" },
-            ],
-          },
-        ],
-      });
+      // macro for on/off of effect
+      {
+        key: "macro.itemMacro",
+        mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+        value: `${workflow.tokenUuid}`,
+        priority: 20,
+      },
+    ],
+    duration: { rounds: 1, turns: 1 },
+    origin: sourceItem.uuid, //flag the effect as associated to the source item
+    transfer: false,
+    disabled: false,
+    img: sourceItem.img,
+    name: targetEffectName,
+    "flags.dae": { specialDuration: ["turnEndSource"], stackable: "noneNameOnly" },
+  };
 
-      const config = {
-        midiOptions: {
-          targetUuids: [selectedTarget.document.uuid],
-          workflowOptions: { autoRollAttack: true, targetConfirmation: "none" },
-          unwaveringMarkSpecialWeaponAttack: true,
-        },
-      };
+  await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });
+}
 
-      const result = await MidiQOL.completeItemUse(weaponItem, config);
-      if (!result || result.aborted) {
-        // Special attack was cancelled
-        console.warn(`${sourceItem.name} | Special attack was cancelled, reallocate spent resource if needed.`);
-        await refundResource();
-        return;
-      }
-
-      // Unset flag that allows special attack
-      await DAE.unsetFlag(sourceActor, "unwaveringMark.specialAttackTargetTokenUuids");
-    } finally {
-      await enchantmentEffect?.delete();
+/**
+ * Makes a special attack on a marked target that triggered it.
+ * The attacker must choose a weapon with which to attack and if more than one target triggered
+ * a special attack, choose a target. The weapon selected for the special attack is enchanted
+ * to convert its attack activation type to special.
+ *
+ * @param {object} macroData midi-qol macro data.
+ * @param {MidiQOL.Workflow} workflow midi-qol workflow.
+ * @param {Actor5e} sourceActor The source actor.
+ * @param {Item5e} sourceItem The Unwavering Mark item.
+ */
+async function handlePostActiveEffectsBySpecialAttack(macroData, workflow, sourceActor, sourceItem) {
+  const refundResource = async function () {
+    const consumed = MidiQOL.getCachedChatMessage(workflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
+    if (consumed) {
+      await workflow.activity?.refund(consumed);
     }
+  };
+  const specialAttackTargetTokenUuids = DAE.getFlag(sourceActor, "unwaveringMark.specialAttackTargetTokenUuids") ?? [];
+  const specialAttackTargetTokens = getTargetTokens(specialAttackTargetTokenUuids);
+  if (specialAttackTargetTokens.length === 0) {
+    // Should not happen, this should be checked on the preTargeting phase
+    ui.notifications.warn(
+      `${sourceItem.name} | No marked target triggered the Special Attack action, reallocate spent resource if needed.`,
+    );
+    await refundResource();
+    return;
   }
 
-  /**
-   * Calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamage that adds damage bonus for the special attack.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow midi-qol workflow.
-   * @param {Item5e} sourceItem The Unwavering Mark item.
-   */
-  function handlePreDamageRollConfigForSpecialWeaponAttack(currentWorkflow, sourceItem) {
-    const damageBonus = Math.floor((currentWorkflow.actor?.getRollData().classes?.fighter?.levels ?? 1) / 2);
-    if (!currentWorkflow.activity) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Missing activity.`, currentWorkflow);
-      }
+  const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(sourceActor);
+  if (filteredWeapons.length === 0) {
+    // Should not happen, this should be checked on the preTargeting phase
+    ui.notifications.warn(`${sourceItem.name} | No melee weapon equipped, reallocate spent resource if needed.`);
+    await refundResource();
+    return;
+  }
+
+  const chosenWeaponId = sourceActor.getFlag(MODULE_ID, "unwaveringMark.weaponChoiceId");
+  let weaponItem = filteredWeapons[0];
+  if (filteredWeapons.length > 1) {
+    weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
+  }
+  if (!weaponItem) {
+    // Special attack was cancelled
+    console.warn(`${sourceItem.name} | Special attack was cancelled, reallocate spent resource if needed.`);
+    await refundResource();
+    return;
+  }
+  // Keep weapon choice for next time (used as pre-selected choice)
+  await sourceActor.setFlag(MODULE_ID, "unwaveringMark.weaponChoiceId", weaponItem.id);
+
+  // Select from special attack target tokens
+  const currentTarget = workflow.targets.first();
+  let selectedTarget =
+    (currentTarget
+      ? specialAttackTargetTokens.find((t) => t.document.uuid === currentTarget.document.uuid)
+      : undefined) ?? specialAttackTargetTokens[0];
+  if (specialAttackTargetTokens.length > 1) {
+    selectedTarget = await getSelectedTarget(sourceItem, specialAttackTargetTokens, selectedTarget);
+  }
+  if (!selectedTarget) {
+    // Special attack was cancelled
+    console.warn(`${sourceItem.name} | Special attack was cancelled, reallocate spent resource if needed.`);
+    await refundResource();
+    return;
+  }
+
+  // Change activation type to special so it is not considered as Action
+  const changes = [
+    { key: "name", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `{} [${sourceItem.name}]` },
+    // macro to handle advantage on special attack
+    {
+      key: "flags.midi-qol.onUseMacroName",
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      value: `ItemMacro,preAttackRollConfig`,
+      priority: 20,
+    },
+    // macro to handle extra damage on special attack
+    {
+      key: "flags.midi-qol.onUseMacroName",
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      value: `ItemMacro,preDamageRollConfig`,
+      priority: 20,
+    },
+  ];
+  let enchantmentEffect;
+  try {
+    enchantmentEffect = await elwinHelpers.enchantItemTemporarily(weaponItem, sourceItem, {
+      changes,
+      activityRequirements: [
+        {
+          type: "attack",
+          conditions: [
+            { key: "attack.type.value", value: "melee" },
+            { key: "attack.type.classification", value: "weapon" },
+          ],
+        },
+      ],
+    });
+
+    const config = {
+      midiOptions: {
+        targetUuids: [selectedTarget.document.uuid],
+        workflowOptions: { autoRollAttack: true, targetConfirmation: "none" },
+        unwaveringMarkSpecialWeaponAttack: true,
+      },
+    };
+
+    const result = await MidiQOL.completeItemUse(weaponItem, config);
+    if (!result || result.aborted) {
+      // Special attack was cancelled
+      console.warn(`${sourceItem.name} | Special attack was cancelled, reallocate spent resource if needed.`);
+      await refundResource();
       return;
     }
-    elwinHelpers.damageConfig.updateBasic(scope, workflow, {
-      damageBonus,
-      flavor: `${sourceItem.name} - Special Attack Extra Damage`,
-      debug,
-    });
-  }
 
-  /**
-   * Prompts a dialog to select a weapon and returns the id of the selected weapon.
-   *
-   * @param {Item5e} sourceItem item for which the dialog is prompted.
-   * @param {Item5e[]} weaponChoices array of weapon items from which to choose.
-   * @param {string} defaultChosenWeaponId id of weapon to be selected by default.
-   *
-   * @returns {Promise<Item5e|null>} selected weapon.
-   */
-  async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
-    const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
-    return elwinHelpers.ItemSelectionDialog.createDialog(
-      `⚔️ ${sourceItem.name}: Choose a Weapon`,
-      weaponChoices,
-      defaultWeapon,
-    );
+    // Unset flag that allows special attack
+    await DAE.unsetFlag(sourceActor, "unwaveringMark.specialAttackTargetTokenUuids");
+  } finally {
+    await enchantmentEffect?.delete();
   }
+}
 
-  /**
-   * Prompts a dialog to select a target token and returns it.
-   *
-   * @param {Item5e} sourceItem item for which the dialog is prompted.
-   * @param {Token5e[]} targetTokens list of tokens from which to select a target.
-   * @param {Token5e} defaultToken token to be selected by default.
-   *
-   * @returns {Promise<Token5e|null>} the selected target token.
-   */
-  async function getSelectedTarget(sourceItem, targetTokens, defaultToken) {
-    return await elwinHelpers.TokenSelectionDialog.createDialog(
-      `${sourceItem.name}: Choose a Target`,
-      targetTokens,
-      defaultToken,
-    );
+/**
+ * Calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamage that adds damage bonus for the special attack.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Unwavering Mark item.
+ * @param {object} scope - The scope parameter from midi-qol item's macro call.
+ * @param {boolean} debug - Flag to indicate if debug mode is active.
+ */
+function handlePreDamageRollConfigForSpecialWeaponAttack(workflow, sourceItem, scope, debug) {
+  const damageBonus = Math.floor((workflow.actor?.getRollData().classes?.fighter?.levels ?? 1) / 2);
+  if (!workflow.activity) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Missing activity.`, workflow);
+    }
+    return;
   }
+  elwinHelpers.damageConfig.updateBasic(scope, workflow, {
+    damageBonus,
+    flavor: `${sourceItem.name} - Special Attack Extra Damage`,
+    debug,
+  });
+}
 
-  /**
-   * Verifies if the passive active effect associated to this item is active.
-   *
-   * @param {Item5e} sourceItem item for which the dialog is prompted.
-   * @returns {boolean} true if the passive active effect associated to this item is active, false otherwise.
-   */
-  function isPassiveEffectActiveForItem(sourceItem) {
-    let aePredicate = (ae) => ae.transfer && ae.parent?.uuid === sourceItem.uuid;
-    return sourceItem?.actor?.appliedEffects.find(aePredicate) !== undefined;
-  }
+/**
+ * Prompts a dialog to select a weapon and returns the id of the selected weapon.
+ *
+ * @param {Item5e} sourceItem item for which the dialog is prompted.
+ * @param {Item5e[]} weaponChoices array of weapon items from which to choose.
+ * @param {string} defaultChosenWeaponId id of weapon to be selected by default.
+ *
+ * @returns {Promise<Item5e|null>} selected weapon.
+ */
+async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
+  const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
+  return elwinHelpers.ItemSelectionDialog.createDialog(
+    `⚔️ ${sourceItem.name}: Choose a Weapon`,
+    weaponChoices,
+    defaultWeapon,
+  );
+}
 
-  /**
-   * Returns the reason for which an active effect was inactivated.
-   *
-   * @param {string|Token5e} tokenRef UUID of the token or token for which an active effect was inactivated.
-   * @returns {string} the reason why the active effect was inactivated.
-   */
-  function getActiveEffectInactivityReason(tokenRef) {
-    const incapacitatedCond = MidiQOL.checkIncapacitated(tokenRef, false);
-    return CONFIG.statusEffects.find((a) => a.id === incapacitatedCond)?.name ?? "???";
-  }
+/**
+ * Prompts a dialog to select a target token and returns it.
+ *
+ * @param {Item5e} sourceItem item for which the dialog is prompted.
+ * @param {Token5e[]} targetTokens list of tokens from which to select a target.
+ * @param {Token5e} defaultToken token to be selected by default.
+ *
+ * @returns {Promise<Token5e|null>} the selected target token.
+ */
+async function getSelectedTarget(sourceItem, targetTokens, defaultToken) {
+  return await elwinHelpers.TokenSelectionDialog.createDialog(
+    `${sourceItem.name}: Choose a Target`,
+    targetTokens,
+    defaultToken,
+  );
+}
+
+/**
+ * Verifies if the passive active effect associated to this item is active.
+ *
+ * @param {Item5e} sourceItem item for which the dialog is prompted.
+ * @returns {boolean} true if the passive active effect associated to this item is active, false otherwise.
+ */
+function isPassiveEffectActiveForItem(sourceItem) {
+  let aePredicate = (ae) => ae.transfer && ae.parent?.uuid === sourceItem.uuid;
+  return sourceItem?.actor?.appliedEffects.find(aePredicate) !== undefined;
+}
+
+/**
+ * Returns the reason for which an active effect was inactivated.
+ *
+ * @param {string|Token} tokenRef UUID of the token or token for which an active effect was inactivated.
+ * @returns {string} the reason why the active effect was inactivated.
+ */
+function getActiveEffectInactivityReason(tokenRef) {
+  const incapacitatedCond = MidiQOL.checkIncapacitated(tokenRef, false);
+  return CONFIG.statusEffects.find((a) => a.id === incapacitatedCond)?.name ?? "???";
 }
