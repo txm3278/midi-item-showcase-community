@@ -315,7 +315,7 @@ export function setConfig() {
         "Ki": {
           name: "Ki",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.1.1",
           authors: ["Elwin"],
         },
         "Moon-Touched Greatsword": {
