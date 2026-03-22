@@ -17,7 +17,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "origin": "Item.VkhSCr8wk8iUL71e",
+      "origin": null,
       "tint": "#ffffff",
       "flags": {
         "dnd5e": {
@@ -84,7 +84,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.VkhSCr8wk8iUL71e",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "flags": {
@@ -157,7 +157,7 @@
         "startTurn": null
       },
       "description": "",
-      "origin": "Item.VkhSCr8wk8iUL71e",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "flags": {
@@ -245,7 +245,10 @@
         "effects": [
           {
             "_id": "YDKDIsxNTWuUfrok",
-            "level": {}
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -324,13 +327,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -468,13 +474,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -593,13 +602,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -739,13 +751,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "skipConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,

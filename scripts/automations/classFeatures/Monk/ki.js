@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Ki, handles making multiple Unarmed Strike when using Fluury of Blows, and adds the
 // appropriate effects for Patient Defense and Step of the Winds.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410, based on CPR's Monk's Focus automation.
 // Dependencies:
 //  - DAE
@@ -16,8 +16,8 @@
 //
 // Description:
 // In the postActiveEffects (item OnUse) phase of the Ki - Flurry of Blows activity (in owner's workflow):
-//   It enchant the Unarmed Strike item and makes the allowed extra attacks, presenting a dialog
-//   to choose the target if more than one is near. It supports other features that add extra
+//   It enchants the Unarmed Strike item and makes the allowed extra attacks, it also forces midi-qol
+//   target confirmation to allow changing the target for the attack. It supports other features that add extra
 //   Flurry of Blows attacks as well as those that add extra attacks but on certain conditions.
 // ###################################################################################################
 
@@ -88,55 +88,20 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, source
     console.warn(`${DEFAULT_ITEM_NAME} | Missing item with identifier ${UNARMED_STRIKE_IDENT}.`);
     return;
   }
-
-  // Get min reach of Unarmed Strike (some features add reach to attacks like Arms of the Astral Self)
-  const defaultReach = dnd5e.utils.convertLength(5, "ft", unarmedStrike.system.range.units, { strict: false });
-  const itemDefaultReach = unarmedStrike.system.range.reach ?? defaultReach;
-  // TODO: until a way to select target after the activity has been chosen, we must use the min reach instead of the max reach...
-  // const maxReach = unarmedStrike.system.activities
-  //   .filter((a) => a.range?.override)
-  //   .map((a) => (a.range.value === "" ? null : a.range.value) ?? a.range.reach)
-  //   .reduce((maxRch, rch) => {
-  //     return rch > maxRch ? rch : maxRch;
-  //   }, itemDefaultReach);
-  const minReach = unarmedStrike.system.activities
-    .filter((a) => a.range?.override)
-    .map((a) => (a.range.value === "" ? null : a.range.value) ?? a.range.reach)
-    .reduce((minRch, rch) => {
-      return rch < minRch ? rch : minRch;
-    }, itemDefaultReach);
-
-  let target;
-  let nearbyTargets;
-  if (workflow.targets.size) {
-    target = workflow.targets.first();
-    nearbyTargets = [target];
-  } else {
-    nearbyTargets = MidiQOL.findNearby(-1, workflow.token, minReach, { includeIncapacitated: true, isSeen: true });
-    if (!nearbyTargets.length) {
-      // No targets
-      return;
-    }
-    if (nearbyTargets.length === 1) {
-      target = nearbyTargets[0];
-    } else {
-      target = await getSelectedTarget(workflow.activity, nearbyTargets);
-      if (!target) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Target selection cancelled.`);
-        return;
-      }
-    }
-  }
-  const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(
-    unarmedStrike,
-    workflow.activity?.identifier === FLURRY_OF_BLOWS_IDENT ? workflow.activity : workflow.item,
-    { activityRequirements: [{ type: "attack" }, { type: "save" }] },
-  );
+  const enchantmentSource = workflow.activity?.identifier === FLURRY_OF_BLOWS_IDENT ? workflow.activity : workflow.item;
+  const changes = [
+    { key: "name", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `{} [1]` },
+  ];
+  const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(unarmedStrike, enchantmentSource, {
+    changes,
+    activityRequirements: [{ type: "attack" }, { type: "save" }],
+  });
   if (!enchantmentEffect) {
     console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${UNARMED_STRIKE_IDENT}.`);
     return;
   }
   try {
+    let attackNb = 1;
     let attacks = 2;
     // get extra attacks from features
     const extraAttacks = actor.itemTypes.feat
@@ -145,83 +110,58 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, source
     attacks += extraAttacks;
     const attackedTargets = [];
     do {
-      attackedTargets.push(target);
-      await itemUse(unarmedStrike, [target]);
+      if (debug) {
+        console.warn(`${DEFAULT_ITEM_NAME} | Making extra Flurry of Blows attack`, {
+          workflow,
+          attacksLeft: attacks,
+          attackedTargets,
+        });
+      }
+
+      const attackWorkflow = await itemUse(unarmedStrike);
+      if (!attackWorkflow || attackWorkflow.aborted) {
+        // Workflow aborted, cancel Flurry of Blows extra attacks
+        return;
+      }
+      attackedTargets.push(...attackWorkflow.targets);
+      if (attackWorkflow.targets?.first()) {
+        canvas.tokens?.setTargets([attackWorkflow.targets?.first().id]);
+      }
       attacks--;
+      attackNb++;
       if (attacks) {
-        nearbyTargets = MidiQOL.findNearby(-1, workflow.token, minReach, { includeIncapacitated: true, isSeen: true });
-        if (!nearbyTargets.length) {
-          // No targets
-          return;
-        } else if (nearbyTargets.length === 1) {
-          target = nearbyTargets[0];
-        } else {
-          target = await getSelectedTarget(workflow.activity, nearbyTargets);
-          if (!target) {
-            console.warn(`${DEFAULT_ITEM_NAME} | Target selection cancelled.`);
-            return;
-          }
-        }
+        changes[0].value = `{} [${attackNb}]`;
+        await enchantmentEffect.update({ changes });
       }
     } while (attacks);
 
     // Get special macro for conditional Flurry of Blows attacks from other features
     const conditionalMacros = workflow.onUseMacros?.getMacros("flurryOfBlowsConditionalExtraAttacks");
     const conditionalMacroNames = !conditionalMacros?.length ? [] : conditionalMacros.split(",").map((s) => s.trim());
-    if (nearbyTargets.length && conditionalMacroNames.length) {
+    if (conditionalMacroNames.length) {
       for (let conditionalMacroName of conditionalMacroNames) {
         const nbStartingAttacks = attackedTargets.length;
         const macroData = workflow.getMacroData(workflow.item);
         const options = { nbStartingAttacks, unarmedStrike };
 
-        nearbyTargets = MidiQOL.findNearby(-1, workflow.token, minReach, { includeIncapacitated: true, isSeen: true });
-        options.nearbyTargets = nearbyTargets;
         options.attackedTargets = [...attackedTargets];
-        let makeExtraAttack = await canMakeExtraAttack(workflow, conditionalMacroName, macroData, options, debug);
-        if (!makeExtraAttack) {
-          // No more attacks for this item
-          continue;
-        }
-        if (!nearbyTargets.length) {
-          // No more targets for this item
-          continue;
-        } else if (nearbyTargets.length === 1) {
-          target = nearbyTargets[0];
-        } else {
-          target = await getSelectedTarget(sourceItem, nearbyTargets);
-          if (!target) {
-            console.warn(`${DEFAULT_ITEM_NAME} | Target selection cancelled.`);
-            return;
+        options.excludeTargets = [];
+        while (await canMakeExtraAttack(workflow, conditionalMacroName, macroData, options, debug)) {
+          changes[0].value = `{} [${attackNb}]`;
+          await enchantmentEffect.update({ changes });
+          const attackWorkflow = await itemUse(unarmedStrike, options.excludeTargets);
+          attackNb++;
+          if (!attackWorkflow || attackWorkflow.aborted) {
+            // Workflow aborted, cancel current conditional Flurry of Blows extra attacks
+            break;
           }
-        }
-        do {
-          attackedTargets.push(target);
-          await itemUse(unarmedStrike, [target]);
-          nearbyTargets = MidiQOL.findNearby(-1, workflow.token, minReach, {
-            includeIncapacitated: true,
-            isSeen: true,
-          });
-          options.nearbyTargets = nearbyTargets;
+          attackedTargets.push(...attackWorkflow.targets);
           options.attackedTargets = [...attackedTargets];
-          makeExtraAttack = await canMakeExtraAttack(workflow, conditionalMacroName, macroData, options, debug);
-          if (!makeExtraAttack) {
-            // No more attacks for this item
-            continue;
+          options.excludeTargets = [];
+          if (attackWorkflow.targets?.first()) {
+            canvas.tokens?.setTargets([attackWorkflow.targets?.first().id]);
           }
-          if (!nearbyTargets.length) {
-            // No more targets for this item
-            makeExtraAttack = false;
-            continue;
-          } else if (nearbyTargets.length === 1) {
-            target = nearbyTargets[0];
-          } else {
-            target = await getSelectedTarget(sourceItem, nearbyTargets);
-            if (!target) {
-              console.warn(`${DEFAULT_ITEM_NAME} | Target selection cancelled.`);
-              return;
-            }
-          }
-        } while (makeExtraAttack);
+        }
       }
     }
   } finally {
@@ -230,34 +170,20 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, source
 }
 
 /**
- * Prompts a dialog to select a target token and returns it.
- *
- * @param {Activity} sourceActivity activity for which the dialog is prompted.
- * @param {Token5e[]} targetTokens list of tokens from which to select a target.
- * @param {Token5e} defaultToken token to be selected by default.
- *
- * @returns {Promise<Token5e|null>} the selected target token.
- */
-async function getSelectedTarget(sourceActivity, targetTokens, defaultToken) {
-  return await elwinHelpers.TokenSelectionDialog.createDialog(
-    `${sourceActivity.name}: Choose a Target`,
-    targetTokens,
-    defaultToken,
-  );
-}
-
-/**
  * Uses the specifed item, setting the targets to the ones specified and forces autoRollAttacks.
  *
  * @param {Item5e} item - The item to use.
- * @param {Token[]} targetTokens - Array of tokens to be set as targets.
- * @returns {object} The resulting midi workflow.
+ * @param {Token[]} excludeTargets - Array of tokens to be excluded from the targets.
+ * @returns {Promise<MidiQOL.Workflow>} The resulting midi workflow.
  */
-async function itemUse(item, targetTokens) {
+async function itemUse(item, excludeTargets = []) {
   const config = {
     midiOptions: {
-      targetUuids: (targetTokens ?? []).map((t) => t.document.uuid),
-      workflowOptions: { autoRollAttack: true },
+      workflowOptions: {
+        targetConfirmation: "always",
+        autoRollAttack: true,
+        excludeTargets: (excludeTargets ?? []).map((t) => t.document.uuid),
+      },
     },
   };
 
@@ -273,7 +199,7 @@ async function itemUse(item, targetTokens) {
  * @param {object} options - The options to pass to the macro execution.
  * @param {boolean} debug - Flag to indicate debug mode.
  *
- * @returns {boolean} True if the macro execution returns true, false otherwise.
+ * @returns {Promise<boolean>} True if the macro execution returns true, false otherwise.
  */
 async function canMakeExtraAttack(workflow, conditionalMacroName, macroData, options, debug) {
   macroData.tag = "OnUse";

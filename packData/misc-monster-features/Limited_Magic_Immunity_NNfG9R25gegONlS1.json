@@ -41,7 +41,7 @@
     {
       "name": "Limited Magic Immunity",
       "img": "icons/magic/symbols/runes-triangle-magenta.webp",
-      "origin": "Item.NNfG9R25gegONlS1",
+      "origin": null,
       "_id": "v3vv4QS3B0B2Y7Vx",
       "type": "base",
       "system": {},

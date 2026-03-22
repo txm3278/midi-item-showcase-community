@@ -6,7 +6,7 @@
     {
       "name": "Intoxicated Frenzy",
       "img": "icons/magic/control/hypnosis-mesmerism-watch.webp",
-      "origin": "Item.l61pOJf7Ssg2AlWO",
+      "origin": null,
       "_id": "V5J1jLetiUl6ea8N",
       "type": "base",
       "system": {},
@@ -123,7 +123,8 @@
       "noAutotarget": false,
       "addTokenSize": false,
       "attachToken": "na"
-    }
+    },
+    "midi-item-showcase-community": {}
   },
   "img": "icons/magic/control/hypnosis-mesmerism-watch.webp",
   "folder": "b8wtjklz1PO88T7g",
