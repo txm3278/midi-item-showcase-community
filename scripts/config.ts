@@ -309,13 +309,13 @@ export function setConfig() {
         "Intoxicated Frenzy": {
           name: "Intoxicated Frenzy",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Ki": {
           name: "Ki",
           type: "Class Feature",
-          version: "1.1.1",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Moon-Touched Greatsword": {
@@ -888,6 +888,13 @@ export function setConfig() {
             name: "Limited Magic Immunity",
             version: "1.2.0",
             authors: ["thatlonelybugbear", "Elwin"],
+          },
+        },
+        "Star Spawn Seer": {
+          "Bend Space": {
+            name: "Bend Space",
+            version: "1.0.0",
+            authors: ["Elwin"],
           },
         },
       },

@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.11
+// v3.5.12
 // Dependencies:
 //  - MidiQOL
 //
@@ -142,7 +142,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.11";
+  const VERSION = "3.5.12";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -1948,7 +1948,7 @@ export function runElwinsHelpers() {
       }
       return;
     }
-    let { totalDamage, temp, healingAdjustedTotalDamage } = getEffectiveDamage(damageItem?.damageDetail);
+    let { totalDamage, temp, healingAdjustedTotalDamage, tempMax } = getEffectiveDamage(damageItem?.damageDetail);
 
     const actor = fromUuidSync(damageItem.actorUuid);
     const hp = actor?.system.attributes?.hp;
@@ -1960,8 +1960,9 @@ export function runElwinsHelpers() {
     }
 
     let effectiveTemp = hp.temp ?? 0;
+
     const deltaTemp = healingAdjustedTotalDamage > 0 ? Math.min(effectiveTemp, healingAdjustedTotalDamage) : 0;
-    const deltaHP = Math.clamp(healingAdjustedTotalDamage - deltaTemp, -hp.damage, hp.value);
+    const deltaHP = Math.clamp(healingAdjustedTotalDamage - deltaTemp, -hp.damage + tempMax, hp.value - tempMax);
     const oldTempHP = hp.temp ?? 0;
     const newTempHP = Math.floor(Math.max(0, effectiveTemp - deltaTemp, temp));
 
@@ -1972,13 +1973,15 @@ export function runElwinsHelpers() {
     damageItem.hpDamage = deltaHP;
     damageItem.tempDamage = deltaTemp;
     damageItem.totalDamage = totalDamage;
+    damageItem.oldTempMax = hp.tempmax ?? 0;
+    damageItem.newTempMax = tempMax !== 0 ? damageItem.oldTempMax - tempMax : damageItem.oldTempMax;
     damageItem.healingAdjustedTotalDamage = healingAdjustedTotalDamage;
   }
 
   /**
    * Calculates the effective damage totals by categories from a list of damages.
    * @param {object[]} damages - Array of damage details.
-   * @returns {{ totalDamage: number, temp: number, healing: number, vitality: number, healingAdjustedTotalDamage:number }} The damage totals, split in categories
+   * @returns {{ totalDamage: number, temp: number, healing: number, vitality: number, tempMax: number, healingAdjustedTotalDamage:number }} The damage totals, split in categories
    */
   function getEffectiveDamage(damages) {
     if (!damages) {
@@ -1987,27 +1990,30 @@ export function runElwinsHelpers() {
         temp: undefined,
         healing: undefined,
         vitality: undefined,
+        tempMax: undefined,
         healingAdjustedTotalDamage: undefined,
       };
     }
-    let { totalDamage, temp, healing, vitality } = damages.reduce(
+    let { totalDamage, temp, healing, vitality, tempMax } = damages.reduce(
       (acc, d) => {
         if (d.type === "temphp") acc.temp += d.value;
         else if (d.type === "vitality")
           acc.vitality += d.value; // Vitality damage (positive) or healing (negative)
-        else if (d.type === "healing") acc.healing += d.value;
+        else if (d.type === "maximum") acc.tempMax += d.value;
+        else if (d.type === "healing" || d.active?.absorption || d.active?.type?.absorption) acc.healing += d.value;
         else if (d.type !== "midi-none") acc.totalDamage += d.value;
         return acc;
       },
-      { totalDamage: 0, temp: 0, healing: 0, vitality: 0 },
+      { totalDamage: 0, temp: 0, healing: 0, vitality: 0, tempMax: 0 },
     );
 
     // Adjust damage
     totalDamage = Math.max(0, totalDamage);
+    tempMax = Math.trunc(tempMax);
     let healingAdjustedTotalDamage = totalDamage + healing;
     healingAdjustedTotalDamage =
       healingAdjustedTotalDamage < 0 ? Math.ceil(healingAdjustedTotalDamage) : Math.floor(healingAdjustedTotalDamage);
-    return { totalDamage, temp, healing, vitality, healingAdjustedTotalDamage };
+    return { totalDamage, temp, healing, vitality, tempMax, healingAdjustedTotalDamage };
   }
 
   /**
@@ -4357,6 +4363,7 @@ export function runElwinsHelpers() {
             switch (name) {
               case "canSee":
               case "ignoreSelf":
+              case "onlySelf":
               case "pre":
               case "post":
               case "reactionNone":
@@ -4508,6 +4515,7 @@ export function runElwinsHelpers() {
       triggerSource: options.triggerSource ?? "target",
       canSee: options.canSee ?? false,
       ignoreSelf: options.ignoreSelf ?? false,
+      onlySelf: options.onlySelf ?? false,
       preMacro: (options.pre && !options.reactionNone) ?? false,
       postMacro: (options.post && !options.reactionNone) ?? false,
       reactionNone: options.reactionNone ?? false,
