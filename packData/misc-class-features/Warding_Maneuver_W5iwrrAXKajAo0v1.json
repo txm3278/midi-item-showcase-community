@@ -66,7 +66,11 @@
         },
         "effects": [
           {
-            "_id": "7rCpgsqRTIQNLMxy"
+            "_id": "7rCpgsqRTIQNLMxy",
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -107,7 +111,7 @@
         "midiProperties": {
           "identifier": "reaction",
           "ignoreTraits": [],
-          "automationOnly": false,
+          "automationOnly": true,
           "otherActivityCompatible": false,
           "confirmTargets": "never",
           "triggeredActivityId": "none",
@@ -121,15 +125,18 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
-          "forceDamageDialog": "default",
+          "forceDamageDialog": "never",
           "otherActivityAsParentType": true,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "useConditionReason": "",
@@ -148,9 +155,21 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
+        "flags": {},
+        "visibility": {
+          "identifier": "",
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true
       }
     },
@@ -166,7 +185,7 @@
   "effects": [
     {
       "name": "Warding Maneuver",
-      "origin": "Item.gwtiJjqTZOGueckf",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -182,7 +201,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isHit|canSee=true;post=true",
+          "value": "function.MISC.macros.classFeatures.wardingManeuver,tpr.isHit|canSee=true;post=true",
           "priority": 20
         }
       ],
@@ -196,7 +215,8 @@
           "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "disableCondition": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -213,6 +233,14 @@
           "hostile": false,
           "onlyOnce": false,
           "wallsBlock": "system"
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "core": {
+          "overlay": false
         }
       },
       "tint": "#ffffff",
@@ -225,7 +253,7 @@
     {
       "name": "Warding Maneuver - AC Bonus/Damage Resistance",
       "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
-      "origin": "Item.gwtiJjqTZOGueckf",
+      "origin": null,
       "transfer": false,
       "_id": "7rCpgsqRTIQNLMxy",
       "type": "base",
@@ -317,7 +345,7 @@
       "effectCondition": "",
       "reactionCondition": "",
       "removeAttackDamageButtons": "default",
-      "onUseMacroName": "[preTargeting]ItemMacro",
+      "onUseMacroName": "",
       "AoETargetType": "any",
       "AoETargetTypeIncludeSelf": true,
       "autoTarget": "default",
@@ -330,31 +358,7 @@
         }
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Warding Maneuver",
-        "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.wardingManeuver(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "dnd5e": {
       "riders": {
         "activity": []

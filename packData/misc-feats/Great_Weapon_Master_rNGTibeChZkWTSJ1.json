@@ -106,6 +106,8 @@
           "automationOnly": false,
           "otherActivityCompatible": false,
           "toggleEffect": true,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -144,6 +146,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -227,6 +230,8 @@
           "autoTargetAction": "default",
           "automationOnly": false,
           "otherActivityCompatible": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -266,6 +271,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -285,11 +291,6 @@
     "crewed": false
   },
   "flags": {
-    "obsidian": {
-      "source": {
-        "type": "feat"
-      }
-    },
     "core": {},
     "midi-qol": {
       "effectActivation": false,
@@ -386,7 +387,7 @@
   "effects": [
     {
       "name": "Great Weapon Master - Passive",
-      "origin": "Item.ugjpZDElvU1Kaamt",
+      "origin": null,
       "duration": {
         "rounds": null,
         "startTime": null,

@@ -6,21 +6,51 @@
       "name": "Wraps of Unarmed Power, +1",
       "changes": [
         {
-          "key": "system.bonuses.All-Attacks",
-          "mode": 2,
-          "value": "+1",
+          "key": "flags.midi-qol.optional.wrapsOfUnarmedPower.damage.mwak",
+          "mode": 5,
+          "value": "@flags.dae.wrapsOfUnarmedPowerBonus",
           "priority": 20
         },
         {
-          "key": "system.bonuses.mwak.damage",
-          "mode": 2,
-          "value": "+1",
+          "key": "flags.midi-qol.optional.wrapsOfUnarmedPower.attack.mwak",
+          "mode": 5,
+          "value": "@flags.dae.wrapsOfUnarmedPowerBonus",
           "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.wrapsOfUnarmedPower.label",
+          "mode": 5,
+          "value": "Wraps of Unarmed Power",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.wrapsOfUnarmedPower.count",
+          "mode": 5,
+          "value": "every",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.wrapsOfUnarmedPower.force",
+          "mode": 5,
+          "value": "item.itemType === \"weapon\" && item.identifier?.startsWith(\"unarmed-strike\")",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.wrapsOfUnarmedPower.displayBonusRolls",
+          "mode": 5,
+          "value": "false",
+          "priority": 20
+        },
+        {
+          "key": "flags.dae.wrapsOfUnarmedPowerBonus",
+          "mode": 5,
+          "value": "+1",
+          "priority": 10
         }
       ],
       "transfer": true,
       "img": "icons/commodities/cloth/cloth-worn-gold.webp",
-      "_id": "Y8eL2NhkzmEZRXI9",
+      "_id": "bze9LNMQ1qVdm5Vo",
       "type": "base",
       "system": {},
       "disabled": false,
@@ -61,7 +91,7 @@
           "overlay": false
         }
       },
-      "_key": "!items.effects!JaEC1h5pjExED5PN.Y8eL2NhkzmEZRXI9"
+      "_key": "!items.effects!JaEC1h5pjExED5PN.bze9LNMQ1qVdm5Vo"
     }
   ],
   "system": {
@@ -106,9 +136,7 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": [
-      "mgc"
-    ],
+    "properties": ["mgc"],
     "strength": 0,
     "type": {
       "value": "wondrous",

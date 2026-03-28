@@ -70,11 +70,6 @@
     "crewed": false
   },
   "flags": {
-    "obsidian": {
-      "source": {
-        "type": "feat"
-      }
-    },
     "core": {},
     "midi-qol": {
       "effectActivation": false,
@@ -168,7 +163,7 @@
   "effects": [
     {
       "name": "Great Weapon Master - Passive",
-      "origin": "Item.ugjpZDElvU1Kaamt",
+      "origin": null,
       "duration": {
         "rounds": null,
         "startTime": null,

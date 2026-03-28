@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.6.0
+// v3.7.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -447,7 +447,9 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
  */
 async function handlePostActiveEffectsBySpecialAttack(macroData, workflow, sourceActor, sourceItem) {
   const refundResource = async function () {
-    const consumed = MidiQOL.getCachedChatMessage(workflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
+    const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
+    const consumed =
+      chatMessage?.system.deltas != null ? chatMessage.system.deltas : chatMessage?.getFlag("dnd5e", "use.consumed");
     if (consumed) {
       await workflow.activity?.refund(consumed);
     }

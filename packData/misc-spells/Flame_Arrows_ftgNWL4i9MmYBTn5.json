@@ -152,6 +152,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -168,7 +170,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "name": "Enchant Quiver/Crossbow Bolt Case",
         "flags": {},
@@ -234,7 +237,7 @@
     {
       "name": "Flame Arrows",
       "img": "icons/magic/fire/projectile-arrow-fire-orange-yellow.webp",
-      "origin": "Item.6yY0vhbHNiN7rcEG",
+      "origin": null,
       "_id": "G6AtmlLXrlQxVCZl",
       "type": "base",
       "system": {},

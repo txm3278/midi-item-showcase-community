@@ -7,22 +7,52 @@
       "statuses": [],
       "changes": [
         {
-          "key": "system.bonuses.msak.attack",
-          "value": "1",
-          "mode": 2,
-          "priority": 18
+          "key": "flags.midi-qol.optional.rodOfThePactKeeper.attack.msak",
+          "mode": 5,
+          "value": "@flags.dae.rodOfThePactKeeperBonus",
+          "priority": 20
         },
         {
-          "key": "system.bonuses.rsak.attack",
-          "value": "1",
-          "mode": 2,
-          "priority": 18
+          "key": "flags.midi-qol.optional.rodOfThePactKeeper.attack.rsak",
+          "mode": 5,
+          "value": "@flags.dae.rodOfThePactKeeperBonus",
+          "priority": 20
         },
         {
-          "key": "system.bonuses.spell.dc",
-          "value": "1",
-          "mode": 2,
-          "priority": 18
+          "key": "flags.midi-qol.optional.rodOfThePactKeeper.label",
+          "mode": 5,
+          "value": "Rod of The Pact Keeper",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.rodOfThePactKeeper.count",
+          "mode": 5,
+          "value": "every",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.rodOfThePactKeeper.force",
+          "mode": 5,
+          "value": "item.itemType === \"spell\" && item.sourceClass === \"warlock\"",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.rodOfThePactKeeper.displayBonusRolls",
+          "mode": 5,
+          "value": "false",
+          "priority": 20
+        },
+        {
+          "key": "flags.dae.rodOfThePactKeeperBonus",
+          "mode": 5,
+          "value": "+1",
+          "priority": 10
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,preSave",
+          "priority": 20
         }
       ],
       "duration": {
@@ -41,22 +71,33 @@
         "dae": {
           "showIcon": false,
           "transfer": true,
-          "stackable": "noneNameOnly"
+          "stackable": "noneNameOnly",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
         },
         "midi-qol": {
           "forceCEOff": true
         },
-        "core": {}
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
       },
       "description": "",
       "img": "icons/commodities/tech/pipe-metal.webp",
-      "_id": "MfToZD9cDXCovZHj",
+      "_id": "uQOiZRCtf1TMlCOg",
       "type": "base",
       "system": {},
       "origin": null,
       "sort": 0,
-      "_key": "!items.effects!HvMSDNGC1UM5e4Yp.MfToZD9cDXCovZHj"
-    }
+      "_key": "!items.effects!HvMSDNGC1UM5e4Yp.uQOiZRCtf1TMlCOg"}
   ],
   "system": {
     "activities": {
@@ -188,13 +229,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "skipConcentrationCheck": false,
-          "autoCEEffects": "none"
+          "autoCEEffects": "none",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -251,10 +295,7 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": [
-      "foc",
-      "mgc"
-    ],
+    "properties": ["foc", "mgc"],
     "strength": null,
     "type": {
       "value": "rod",
@@ -272,6 +313,23 @@
     "dnd5e": {
       "riders": {
         "activity": []
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Rod of the Pact Keeper, +1",
+        "img": "icons/commodities/tech/pipe-metal.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "if (args[0].tag !== \"OnUse\" || args[0].macroPass !== \"preSave\") {\n    return;\n}\nif (rolledItem.type !== \"spell\" || rolledItem.system.sourceClass !== \"warlock\") {\n  return;\n}\nif (!workflow.hasSave || !workflow.saveActivity?.save?.dc) {\n  return;\n}\nconst save = workflow.saveActivity.save;\nconst rodOfThePactKeeperBonus = actor.getFlag(\"dae\", \"rodOfThePactKeeperBonus\") ?? \"\";\nsave.dc.bonus ??= \"\";\nsave.dc.bonus += rodOfThePactKeeperBonus;\nconst rollData = actor.getRollData({ deterministic: true });\nconst bonus = dnd5e.utils.simplifyBonus(rodOfThePactKeeperBonus, rollData);\nsave.dc.value += bonus;",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {}
       }
     }
   },
