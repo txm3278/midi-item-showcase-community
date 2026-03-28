@@ -20,7 +20,7 @@
         {
           "key": "flags.midi-qol.optional.potionPugilism.force",
           "mode": 5,
-          "value": "workflow.item.identifier?.startsWith(\"unarmed-strike\")",
+          "value": "item.itemType === \"weapon\" && item.identifier?.startsWith(\"unarmed-strike\")",
           "priority": 20
         },
         {
@@ -205,13 +205,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "skipConcentrationCheck": false,
-          "autoCEEffects": "none"
+          "autoCEEffects": "none",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -267,9 +270,7 @@
       },
       "replace": false
     },
-    "properties": [
-      "mgc"
-    ],
+    "properties": ["mgc"],
     "type": {
       "value": "potion",
       "subtype": ""

@@ -122,7 +122,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "3.4.0",
+          version: "3.5.0",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -171,7 +171,7 @@ export function setConfig() {
         "Dragonhide Belt, +1": {
           name: "Dragonhide Belt, +1",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Moto Moto"],
         },
         "Drow Hand Crossbow": {
@@ -213,7 +213,7 @@ export function setConfig() {
         "Flame Arrows": {
           name: "Flame Arrows",
           type: "Spell",
-          version: "2.1.0",
+          version: "2.2.0",
           authors: ["Elwin", "Lin Dong"],
         },
         "Flames of Phlegethos": {
@@ -285,7 +285,7 @@ export function setConfig() {
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "3.4.0",
+          version: "3.5.0",
           authors: ["Elwin"],
         },
         "Grenade, Smoke": {
@@ -495,7 +495,7 @@ export function setConfig() {
         "Telekinetic Master": {
           name: "Telekinetic Master",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Tipsy Sway": {
@@ -514,7 +514,7 @@ export function setConfig() {
         "Unwavering Mark": {
           name: "Unwavering Mark",
           type: "Class Feature",
-          version: "3.6.0",
+          version: "3.7.0",
           authors: ["Elwin"],
         },
         "Vengeful Ancestors": {
@@ -538,13 +538,13 @@ export function setConfig() {
         "Warding Flare": {
           name: "Warding Flare",
           type: "Class Feature",
-          version: "3.3.0",
+          version: "3.4.0",
           authors: ["Elwin"],
         },
         "Warding Maneuver": {
           name: "Warding Maneuver",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.4.0",
           authors: ["Elwin"],
         },
         "Wyvern Poison": {
@@ -582,7 +582,7 @@ export function setConfig() {
         "Bloodwell Vial, +1": {
           name: "Bloodwell Vial, +1",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Moto Moto"],
         },
         "Bracers of Celerity": {
@@ -685,7 +685,7 @@ export function setConfig() {
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "1.5.0",
+          version: "1.5.1",
           authors: ["Elwin"],
         },
         "Innate Sorcery": {
@@ -732,6 +732,12 @@ export function setConfig() {
           version: "1.0.0",
           authors: ["Moto Moto"],
         },
+        "Planar Warrior": {
+          name: "Planar Warrior",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Poison, Basic": {
           name: "Poison, Basic",
           type: "Item",
@@ -759,7 +765,7 @@ export function setConfig() {
         "Potion of Pugilism": {
           name: "Potion of Pugilism",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Moto Moto"],
         },
         "Produce Flame": {
@@ -783,7 +789,7 @@ export function setConfig() {
         "Rod of the Pact Keeper, +1": {
           name: "Rod of the Pact Keeper, +1",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Moto Moto"],
         },
         "Serpent Venom": {
@@ -843,13 +849,13 @@ export function setConfig() {
         "Warding Flare": {
           name: "Warding Flare",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Wraps of Unarmed Power, +1": {
           name: "Wraps of Unarmed Power, +1",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Moto Moto"],
         },
         "Wyvern Poison": {
@@ -872,7 +878,7 @@ export function setConfig() {
         Lich: {
           "Negative Energy Tether": {
             name: "Negative Energy Tether",
-            version: "2.1.0",
+            version: "2.2.0",
             authors: ["Elwin"],
           },
         },
@@ -886,7 +892,7 @@ export function setConfig() {
         Rakshasa: {
           "Limited Magic Immunity": {
             name: "Limited Magic Immunity",
-            version: "1.2.0",
+            version: "1.3.0",
             authors: ["thatlonelybugbear", "Elwin"],
           },
         },

@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Limited Magic Immunity
 // Gives advantage to saves against magic and spells of 6th level and lower don't effect the owner.
-// v1.2.0
+// v1.3.0
 // Author: thatlonelybugbear and Elwin
 // Dependencies:
 //  - DAE
@@ -104,7 +104,10 @@ export async function limitedMagicImmunity({ speaker, actor, token, character, i
     ui.notifications.info(`${MidiQOL.getTokenPlayerName(targetedToken)} deflects your spell!`);
     await ChatMessage.implementation.create({
       content: getRandomTaunt(),
-      speaker: ChatMessage.getSpeaker({ alias: MidiQOL.getTokenPlayerName(targetedToken), token: targetedToken }),
+      speaker: ChatMessage.getSpeaker({
+        alias: MidiQOL.getTokenPlayerName(targetedToken),
+        token: targetedToken?.document,
+      }),
     });
   }
 }

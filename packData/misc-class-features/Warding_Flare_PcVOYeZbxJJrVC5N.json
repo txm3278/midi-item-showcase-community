@@ -11,7 +11,11 @@
     },
     "source": {
       "revision": 1,
-      "rules": "2014"
+      "rules": "2014",
+      "book": "PHB",
+      "page": "",
+      "custom": "",
+      "license": ""
     },
     "cover": null,
     "crewed": false,
@@ -132,6 +136,8 @@
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -160,7 +166,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "visibility": {
@@ -189,7 +196,7 @@
   "effects": [
     {
       "name": "Warding Flare",
-      "origin": "Item.RGXO60NM96p3tsN3",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -205,7 +212,7 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,tpr.isPreAttacked|triggerSource=attacker;canSee=true;post=true",
+          "value": "function.MISC.macros.classFeatures.wardingFlare,tpr.isPreAttacked|triggerSource=attacker;canSee=true;post=true",
           "priority": 20
         }
       ],
@@ -261,7 +268,7 @@
     {
       "name": "Warding Flare",
       "img": "icons/magic/light/explosion-star-glow-yellow.webp",
-      "origin": "Item.RGXO60NM96p3tsN3",
+      "origin": null,
       "transfer": false,
       "_id": "Qwo49SEB6k65fvJm",
       "type": "base",
@@ -359,32 +366,12 @@
         }
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Warding Flare",
-        "img": "icons/magic/light/explosion-star-glow-yellow.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.wardingFlare(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
+    "dae": {},
+    "dnd5e": {
+      "riders": {
+        "activity": []
       }
     },
-    "dnd5e": {},
     "tidy5e-sheet": {
       "section": "",
       "actionSection": ""

@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.4.0
+// v3.5.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -234,7 +234,9 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
    */
   async function handleOnUsePostActiveEffectsBonusAttack(currentWorkflow, sourceItem) {
     const refundResource = async function () {
-      const consumed = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
+      const chatMessage = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid);
+      const consumed =
+        chatMessage?.system.deltas != null ? chatMessage.system.deltas : chatMessage?.getFlag("dnd5e", "use.consumed");
       if (consumed) {
         await currentWorkflow.activity?.refund(consumed);
       }
@@ -349,7 +351,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       await ChatMessage.create({
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: message,
-        speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token }),
+        speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token?.document }),
         whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
       }),
     );

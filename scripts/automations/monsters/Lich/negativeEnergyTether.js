@@ -4,7 +4,7 @@
 // When used, adds an effect on the target and on the owner. When the owner is damaged, a save is
 // triggered on the tethered creature, if failed it takes half the owner's damage and the owners
 // applied damage is reduced by half.
-// v2.1.0
+// v2.2.0
 // Dependencies:
 //  - DAE [off]
 //  - Times up
@@ -166,7 +166,7 @@ export async function negativeEnergyTether({ speaker, actor, token, character, i
       await ChatMessage.create({
         type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: infoMsg,
-        speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token }),
+        speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token?.document }),
         whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
       }),
     );

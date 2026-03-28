@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Flame Arrows, allows to enchant a quiver or bolt case which will add fire damage to ammunitions
 // fired from the enchanted container.
-// v2.1.0
+// v2.2.0
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
@@ -149,7 +149,9 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope) {
   let concentrationEffect = undefined;
 
   const refund = async () => {
-    const consumed = MidiQOL.getCachedChatMessage(workflow.itemCardUuid)?.getFlag("dnd5e", "use.consumed");
+    const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
+    const consumed =
+      chatMessage?.system.deltas != null ? chatMessage.system.deltas : chatMessage?.getFlag("dnd5e", "use.consumed");
     if (consumed) {
       await workflow.activity?.refund(consumed);
       await concentrationEffect?.delete();

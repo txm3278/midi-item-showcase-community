@@ -112,6 +112,8 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -155,6 +157,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -265,6 +268,8 @@
           "automationOnly": true,
           "identifier": "share-damage",
           "otherActivityCompatible": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -296,6 +301,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -316,7 +322,7 @@
   "effects": [
     {
       "name": "Negative Energy Tether",
-      "origin": "Item.23SrMi66mnohseWi",
+      "origin": null,
       "duration": {
         "rounds": 1,
         "startTime": null,
@@ -395,7 +401,7 @@
     },
     {
       "name": "Negative Energy Tether",
-      "origin": "Item.23SrMi66mnohseWi",
+      "origin": null,
       "duration": {
         "rounds": 1,
         "startTime": null,

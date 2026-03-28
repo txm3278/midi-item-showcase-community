@@ -7,22 +7,52 @@
       "statuses": [],
       "changes": [
         {
-          "key": "system.bonuses.msak.attack",
-          "value": "1",
-          "mode": 2,
-          "priority": 18
+          "key": "flags.midi-qol.optional.bloodwellVial.attack.msak",
+          "mode": 5,
+          "value": "@flags.dae.bloodwellVialBonus",
+          "priority": 20
         },
         {
-          "key": "system.bonuses.rsak.attack",
-          "value": "1",
-          "mode": 2,
-          "priority": 18
+          "key": "flags.midi-qol.optional.bloodwellVial.attack.rsak",
+          "mode": 5,
+          "value": "@flags.dae.bloodwellVialBonus",
+          "priority": 20
         },
         {
-          "key": "system.bonuses.spell.dc",
-          "value": "1",
-          "mode": 2,
-          "priority": 18
+          "key": "flags.midi-qol.optional.bloodwellVial.label",
+          "mode": 5,
+          "value": "Bloodwell Vial",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.bloodwellVial.count",
+          "mode": 5,
+          "value": "every",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.bloodwellVial.force",
+          "mode": 5,
+          "value": "item.itemType === \"spell\" && item.sourceClass === \"sorcerer\"",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.bloodwellVial.displayBonusRolls",
+          "mode": 5,
+          "value": "false",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro,preSave",
+          "priority": 20
+        },
+        {
+          "key": "flags.dae.bloodwellVialBonus",
+          "mode": 5,
+          "value": "+1",
+          "priority": 10
         }
       ],
       "duration": {
@@ -41,21 +71,33 @@
         "dae": {
           "showIcon": false,
           "transfer": true,
-          "stackable": "noneNameOnly"
+          "stackable": "noneNameOnly",
+          "disableCondition": "",
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
         },
         "midi-qol": {
           "forceCEOff": true
         },
-        "core": {}
+        "core": {
+          "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        }
       },
       "description": "",
       "img": "icons/tools/laboratory/vial-orange.webp",
-      "_id": "FIEgXh6fN2QPNF1P",
+      "_id": "TLnRTAkH3co9OP2B",
       "type": "base",
       "system": {},
       "origin": null,
       "sort": 0,
-      "_key": "!items.effects!DCsxOEm7NOdQzBAN.FIEgXh6fN2QPNF1P"
+      "_key": "!items.effects!DCsxOEm7NOdQzBAN.TLnRTAkH3co9OP2B"
     }
   ],
   "system": {
@@ -168,13 +210,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "autoCEEffects": "none",
-          "skipConcentrationCheck": false
+          "skipConcentrationCheck": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -296,13 +341,16 @@
           "magicDamage": false,
           "noConcentrationCheck": false,
           "autoCEEffects": "none",
-          "skipConcentrationCheck": false
+          "skipConcentrationCheck": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "otherActivityAsParentType": true,
@@ -371,10 +419,7 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": [
-      "foc",
-      "mgc"
-    ],
+    "properties": ["foc", "mgc"],
     "strength": 0,
     "type": {
       "value": "trinket",
@@ -392,6 +437,23 @@
     "dnd5e": {
       "riders": {
         "activity": []
+      }
+    },
+    "dae": {
+      "macro": {
+        "name": "Bloodwell Vial, +1",
+        "img": "icons/tools/laboratory/vial-orange.webp",
+        "type": "script",
+        "scope": "global",
+        "command": "if (args[0].tag !== \"OnUse\" || args[0].macroPass !== \"preSave\") {\n    return;\n}\nif (rolledItem.type !== \"spell\" || rolledItem.system.sourceClass !== \"sorcerer\") {\n  return;\n}\nif (!workflow.hasSave || !workflow.saveActivity?.save?.dc) {\n  return;\n}\nconst save = workflow.saveActivity.save;\nconst bloodwellVialBonus = actor.getFlag(\"dae\", \"bloodwellVialBonus\") ?? \"\";\nsave.dc.bonus ??= \"\";\nsave.dc.bonus += bloodwellVialBonus;\nconst rollData = actor.getRollData({ deterministic: true });\nconst bonus = dnd5e.utils.simplifyBonus(bloodwellVialBonus, rollData);\nsave.dc.value += bonus;",
+        "author": "9QqTZMFq1dhCIYAR",
+        "ownership": {
+          "default": 3
+        },
+        "_id": null,
+        "folder": null,
+        "sort": 0,
+        "flags": {}
       }
     }
   },

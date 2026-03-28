@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v3.4.0
+// v3.5.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -28,6 +28,27 @@
 //   telling about its availability.
 // ###################################################################################################
 
+const DEFAULT_ITEM_NAME = "Channel Divinity: Vow of Enmity";
+
+/**
+ * Validates if the required dependencies are met.
+ *
+ * @returns {boolean} True if the requirements are met, false otherwise.
+ */
+function checkDependencies() {
+  // @ts-ignore
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.11")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
+    ui.notifications.error(errorMsg);
+    return false;
+  }
+  const dependencies = ["dae", "times-up", "midi-qol"];
+  if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return false;
+  }
+  return true;
+}
+
 export async function channelDivinityVowOfEnmity({
   speaker,
   actor,
@@ -39,34 +60,11 @@ export async function channelDivinityVowOfEnmity({
   workflow,
   options,
 }) {
-  const DEFAULT_ITEM_NAME = "Channel Divinity: Vow of Enmity";
-  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
-
-  const dependencies = ["dae", "times-up", "midi-qol"];
-  if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+  if (!checkDependencies()) {
     return;
   }
-
-  /**
-   * If the requirements are met, returns true, false otherwise.
-   *
-   * @param {string} name - The name of the item for which to check the dependencies.
-   * @param {string[]} dependencies - The array of module ids which are required.
-   *
-   * @returns {boolean} true if the requirements are met, false otherwise.
-   */
-  function requirementsSatisfied(name, dependencies) {
-    let missingDep = false;
-    dependencies.forEach((dep) => {
-      if (!game.modules.get(dep)?.active) {
-        const errorMsg = `${name} | ${dep} must be installed and active.`;
-        ui.notifications.error(errorMsg);
-        console.warn(errorMsg);
-        missingDep = true;
-      }
-    });
-    return !missingDep;
-  }
+  // @ts-ignore
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (debug) {
     console.warn(
@@ -76,78 +74,17 @@ export async function channelDivinityVowOfEnmity({
     );
   }
   if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRollConfig") {
-    if (!workflow.targets?.size) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No targets.`);
-      }
-      return;
-    }
-    const allTargetsMarked = workflow.targets.every((t) =>
-      t.actor?.appliedEffects.some((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid)),
-    );
-    if (!allTargetsMarked) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not all targets are marked.`, { targets: workflow.targets });
-      }
-      return;
-    }
-
-    // Add advantage
-    workflow.attackRollModifierTracker.advantage.add(scope.macroItem.identifier, scope.macroItem.name);
+    await handleOnUsePreAttackRollConfig(workflow, scope.macroItem, debug);
   } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-    // Handles Utter Vow or Transfer Vow activities
-    if (!workflow.effectTargets?.size) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No effect applied to target.`);
-      }
-      return;
-    }
-
-    const tokenTarget = workflow.effectTargets.first();
-    const appliedEffect = tokenTarget.actor.appliedEffects.find(
-      (ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid),
-    );
-    if (!appliedEffect) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No applied effect found on target actor.`);
-      }
-      return;
-    }
-    const rules = elwinHelpers.getRules(scope.macroItem);
-    if (rules === "modern") {
-      // Make sure transfer vow is not visible
-      let transferVow;
-      if (workflow.activity?.identifier === "transfer-vow") {
-        transferVow = workflow.activity;
-      } else {
-        transferVow = workflow.item.system.activities?.find((a) => a.identifier === "transfer-vow");
-      }
-      await transferVow?.update({ "midiProperties.automationOnly": true });
-    }
-
-    // Find AE on self to add dependency
-    const selfEffect = actor.appliedEffects.find((ae) => !ae.transfer && ae.origin?.startsWith(scope.macroItem.uuid));
-    if (!selfEffect) {
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | No self effect found on actor.`);
-      }
-      return;
-    }
-    // Make applied effect dependent on self effect
-    MidiQOL.addDependent(selfEffect, appliedEffect);
-    if (rules !== "modern") {
-      // Note: in modern, effect does not end if target reaches 0 HP, only after 1 min or re used
-      MidiQOL.addDependent(appliedEffect, selfEffect);
-    }
+    await handleOnUsePostActiveEffects(workflow, actor, debug);
   } else if (args[0] === "off") {
-    const transferVow = (scope.macroItem ?? scope.macroActivity?.item)?.system.activities?.find(
-      (a) => a.identifier === "transfer-vow",
-    );
+    const sourceItem = scope.macroItem ?? scope.macroActivity?.item;
+    const transferVow = sourceItem?.system.activities?.find((a) => a.identifier === "transfer-vow");
     if (!transferVow) {
-      console.warn(`${scope.macroItem.name} | Missing transfer vow activity`, scope.macroItem);
+      console.warn(`${sourceItem.name} | Missing transfer vow activity`, sourceItem);
       return;
     }
-    if ((scope.macroItem?.actor?.uuid ?? scope.macroActivity?.item?.actor?.uuid) === actor?.uuid) {
+    if (sourceItem?.actor?.uuid === actor?.uuid) {
       // Expiry on owner
       // Make sure the Transfer Vow activity is not visible
       if (!foundry.utils.getProperty(transferVow, "midiProperties.automationOnly")) {
@@ -165,19 +102,103 @@ export async function channelDivinityVowOfEnmity({
     await transferVow.update({ "midiProperties.automationOnly": false });
 
     // Add chat message saying it is possible to transfer vow
-    const sourceActor = scope.macroItem.actor;
+    const sourceActor = sourceItem.actor;
     const message = await TextEditor.enrichHTML(
-      `<p><strong>${scope.macroItem.name}</strong> - You can use [[/item ${scope.macroItem.id} activity=${transferVow.id}]].</p>`,
+      `<p><strong>${sourceItem.name}</strong> - You can use [[/item ${sourceItem.id} activity=${transferVow.id}]].</p>`,
       {
         relativeTo: sourceActor,
-        rollData: scope.macroItem.getRollData(),
+        rollData: sourceItem.getRollData(),
       },
     );
     await ChatMessage.create({
       type: CONST.CHAT_MESSAGE_STYLES.OTHER,
       content: message,
-      speaker: ChatMessage.getSpeaker({ actor: sourceActor, token: MidiQOL.getTokenForActor(sourceActor) }),
+      speaker: ChatMessage.getSpeaker({ actor: sourceActor, token: MidiQOL.getTokenForActor(sourceActor)?.document }),
       whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
     });
+  }
+}
+
+/**
+ * Handles the pre-attack roll configuration for the Vow of Enmity item.
+ * Gives advantage to the attack roll if the target is marked by the source actor.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item5e} sourceItem - The Vow of Enmity item.
+ * @param {boolean} debug - Flag to indicate debug mode.
+ */
+async function handleOnUsePreAttackRollConfig(workflow, sourceItem, debug) {
+  if (!workflow.targets?.size) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No targets.`);
+    }
+    return;
+  }
+  const allTargetsMarked = workflow.targets.every((t) =>
+    t.actor?.appliedEffects.some((ae) => !ae.transfer && ae.origin?.startsWith(sourceItem.uuid)),
+  );
+  if (!allTargetsMarked) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Not all targets are marked.`, { targets: workflow.targets });
+    }
+    return;
+  }
+
+  // Add advantage
+  workflow.attackRollModifierTracker.advantage.add(sourceItem.identifier, sourceItem.name);
+}
+
+/**
+ * Handles the post active effects for the Vow of Enmity item.
+ * Updates the self active effect to delete the target active effect when deleted and vice versa.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Actor5e} actor - The actor using the item.
+ * @param {boolean} debug - Flag to indicate debug mode.
+ */
+async function handleOnUsePostActiveEffects(workflow, actor, debug) {
+  // Handles Utter Vow or Transfer Vow activities
+  if (!workflow.effectTargets?.size) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No effect applied to target.`);
+    }
+    return;
+  }
+
+  const tokenTarget = workflow.effectTargets.first();
+  const appliedEffect = tokenTarget.actor.appliedEffects.find(
+    (ae) => !ae.transfer && ae.origin?.startsWith(workflow.item.uuid),
+  );
+  if (!appliedEffect) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No applied effect found on target actor.`);
+    }
+    return;
+  }
+  const rules = elwinHelpers.getRules(workflow.item);
+  if (rules === "modern") {
+    // Make sure transfer vow is not visible
+    let transferVow;
+    if (workflow.activity?.identifier === "transfer-vow") {
+      transferVow = workflow.activity;
+    } else {
+      transferVow = workflow.item.system.activities?.find((a) => a.identifier === "transfer-vow");
+    }
+    await transferVow?.update({ "midiProperties.automationOnly": true });
+  }
+
+  // Find AE on self to add dependency
+  const selfEffect = actor.appliedEffects.find((ae) => !ae.transfer && ae.origin?.startsWith(workflow.item.uuid));
+  if (!selfEffect) {
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | No self effect found on actor.`);
+    }
+    return;
+  }
+  // Make applied effect dependent on self effect
+  await MidiQOL.addDependent(selfEffect, appliedEffect);
+  if (rules !== "modern") {
+    // Note: in modern, effect does not end if target reaches 0 HP, only after 1 min or re used
+    await MidiQOL.addDependent(appliedEffect, selfEffect);
   }
 }
