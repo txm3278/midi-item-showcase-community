@@ -735,7 +735,7 @@ export function setConfig() {
         "Planar Warrior": {
           name: "Planar Warrior",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.0.1",
           authors: ["Elwin"],
         },
         "Poison, Basic": {

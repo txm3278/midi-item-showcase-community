@@ -27,6 +27,7 @@ import { tipsySway } from './Monk/WayOfTheDrunkenMaster/tipsySway.js';
 import { channelDivinityRebukeTheViolent } from './Paladin/OathOfRedemption/channelDivinityRebukeTheViolent.js';
 import { divineAllegiance } from './Paladin/OathOfTheCrown/divineAllegiance.js';
 import { channelDivinityVowOfEnmity } from './Paladin/OathOfVengeance/channelDivinityVowOfEnmity.js';
+import { planarWarrior } from './Ranger/HorizonWalker/planarWarrior.js';
 import { steadyAim } from './Rogue/steadyAim.js';
 import { tombOfLevistus } from './Warlock/tombOfLevistus.js';
 import { accursedSpecter } from './Warlock/Hexblade/accursedSpecter.js';
@@ -61,6 +62,7 @@ export let classFeatures = {
   channelDivinityRebukeTheViolent,
   divineAllegiance,
   channelDivinityVowOfEnmity,
+  planarWarrior,
   steadyAim,
   tombOfLevistus,
   accursedSpecter
