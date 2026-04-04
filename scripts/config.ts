@@ -306,6 +306,18 @@ export function setConfig() {
           version: "4.2.1",
           authors: ["Elwin"],
         },
+        "Healer":{
+          name: "Healer",
+          type: "Feat",
+          version: "1.0.0",
+          authors: ["Elwin", "Moto Moto"],
+        },
+        "Healer's Kit":{
+          name: "Healer's Kit",
+          type: "Item",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
         "Intoxicated Frenzy": {
           name: "Intoxicated Frenzy",
           type: "Class Feature",

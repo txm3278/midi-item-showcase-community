@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.12
+// v3.5.13
 // Dependencies:
 //  - MidiQOL
 //
@@ -64,6 +64,7 @@
 // - elwinHelpers.getReactionFlavor
 // - elwinHelpers.getReactionSetting
 // - elwinHelpers.enchantItemTemporarily
+// - elwinHelpers.stabilize
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -110,6 +111,10 @@
 //                if it returnes the object {skip: true}, this reaction will not be prompted. This is called before the prompt in the workflow of the attacker.
 // TPR post macro: It is always called after the prompt and execution of the selected reaction even it it was cancelled or a reaction was aborted.
 //                 It should be used to cleanup and apply affects on the attacker's workflow if the proper reaction was chosen and was successful.
+// Note: if pre and post are false, and no ItemMacro on your item, and you must either use ItemMacro and add an ItemMacro to your item with only a comment line, 
+//       e.g.: `// Not used but needed for TPR without pre or post macro`, or use function.<any value>, the name does not matter in this case, 
+//       because it will never be called and midi-qol does not validate if the function exists, e.g.: `function.noop`.
+// 
 // When reactionNone is true:
 // TPR macro: It should be used to apply affects on the attacker's workflow.
 // The pre, post, and reactionNone macros are called in the item use workflow, it means that any changes to the MidiQOL workflow are live. 
@@ -142,7 +147,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.12";
+  const VERSION = "3.5.13";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -169,19 +174,19 @@ export function runElwinsHelpers() {
   /**
    * Third party reaction options.
    * @typedef {object} TprOptions
-   * @property {string} triggerSource - The trigger source, allowed values are attacker or target.
-   * @property {boolean} ignoreSelf - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
-   * @property {boolean} onlySelf - Flag to indicate if only the owner beeing a target, can trigger the reaction or not.
-   * @property {boolean} canSee - Flag to indidate if the owner must see the trigger source or not.
-   * @property {boolean} pre - Flag to indicate if a pre macro most be called before prompting for reactions, only used if reactionNone is false.
-   * @property {boolean} post - Flag to indicate if a post macro most be called after prompting for reactions, only used if reactionNone is false.
-   * @property {boolean} reactionNone - Indicates that no reaction activity is associated.
-   * @property {number} range - The maximum range between the owner and the triggering source allowed to trigger the reaction, only used if reactionNone is true.
-   * @property {boolean} wallsBlock - Flag to indicate if wallsBlock, only used if reactionNone is true.
-   * @property {number} disposition - Relative disposition of the triggering source compared to the owner, only used if reactionNone is true.
-   * @property {string} condition - Condition to evaluate to trigger the reaction, only used if reactionNone is true.
-   *
+   * @property {string} [triggerSource] - The trigger source, allowed values are attacker or target.
+   * @property {boolean} [ignoreSelf] - Flag to indicate if the owner beeing a target, can trigger the reaction or not.
+   * @property {boolean} [onlySelf] - Flag to indicate if only the owner beeing a target, can trigger the reaction or not.
+   * @property {boolean} [canSee] - Flag to indidate if the owner must see the trigger source or not.
+   * @property {boolean} [pre] - Flag to indicate if a pre macro most be called before prompting for reactions, only used if reactionNone is false.
+   * @property {boolean} [post] - Flag to indicate if a post macro most be called after prompting for reactions, only used if reactionNone is false.
+   * @property {boolean} [reactionNone] - Indicates that no reaction activity is associated.
+   * @property {number} [range] - The maximum range between the owner and the triggering source allowed to trigger the reaction, only used if reactionNone is true.
+   * @property {boolean} [wallsBlock] - Flag to indicate if wallsBlock, only used if reactionNone is true.
+   * @property {number} [disposition] - Relative disposition of the triggering source compared to the owner, only used if reactionNone is true.
+   * @property {string} [condition] - Condition to evaluate to trigger the reaction, only used if reactionNone is true.
    */
+
   /**
    * Token third party reactions info.
    * @typedef {object} TokenReactionsInfo
@@ -326,6 +331,7 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.getReactionFlavor", getReactionFlavor);
     exportIdentifier("elwinHelpers.getReactionSetting", getReactionSetting);
     exportIdentifier("elwinHelpers.enchantItemTemporarily", enchantItemTemporarily);
+    exportIdentifier("elwinHelpers.stabilize", stabilize);
 
     // Note: classes need to be exported after they are declared...
 
@@ -1398,7 +1404,20 @@ export function runElwinsHelpers() {
       return false;
     }
 
-    const reactionCondition = reactionData.reactionNone ? reactionData.condition : activity?.reactionCondition;
+    let reactionCondition = reactionData.reactionNone ? reactionData.condition : activity?.reactionCondition;
+    // For cast activities, also check the spell's reaction condition from the activity that will be used
+    if (!reactionData.reactionNone && activity?.type === "cast" && activity?.cachedSpell) {
+      const spell = activity.cachedSpell;
+      // Get the first usable activity - this is what spell.use() will use
+      const spellActivity = spell.system?.activities?.filter((a) => a.canUse)?.[0];
+      const spellCondition = spellActivity?.reactionCondition || "";
+      if (reactionCondition && spellCondition) {
+        reactionCondition = `(${reactionCondition}) && (${spellCondition})`;
+      } else {
+        reactionCondition = reactionCondition || spellCondition;
+      }
+    }
+
     if (!reactionCondition && !options?.extraActivationCond) {
       return true;
     }
@@ -1429,32 +1448,19 @@ export function runElwinsHelpers() {
       },
     };
 
-    // Check extra activation condition for this trigger
+    // Add extra activation condition for this trigger
     if (options?.extraActivationCond) {
-      const returnValue = evalReactionActivationCondition(workflow, options.extraActivationCond, target, {
-        item: triggerItem,
-        extraData,
-      });
-      if (!returnValue) {
-        if (debug) {
-          console.warn(
-            `${MACRO_NAME} | canTriggerReaction - ${reactionData.item.name}-${
-              activity?.name ?? ""
-            }: extra activation condition not met.`,
-            {
-              extraActivationCond: options.extraActivationCond,
-            },
-          );
-        }
-        return false;
+      if (reactionCondition) {
+        reactionCondition = `(${options.extraActivationCond}) && (${reactionCondition})`;
+      } else {
+        reactionCondition = options.extraActivationCond;
       }
     }
-
     // Check reaction activation condition
     if (reactionCondition) {
       if (debug) {
         console.warn(
-          `${MACRO_NAME} | Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${
+          `${MACRO_NAME} | canTriggerReaction - Filter reaction for ${reactionToken.name} ${reactionData.item.name}-${
             activity?.name ?? ""
           } using condition ${reactionCondition}`,
           { extraData },
@@ -1843,6 +1849,7 @@ export function runElwinsHelpers() {
     if (!reactionToken) {
       return;
     }
+
     let tprPostActions = reactionToken.actor?.getFlag(
       MISC_MODULE_ID,
       `elwinHelpers.tprPostActions.${reactionActivity.item.identifier}.${reactionActivity.identifier}`,
@@ -1856,6 +1863,9 @@ export function runElwinsHelpers() {
     // Parse TPR postActions
     for (let action of tprPostActions) {
       switch (action.name) {
+        case "calculateAppliedDamage":
+          elwinHelpers.calculateAppliedDamage(workflow.damageItem);
+          break;
         case "reduceAppliedDamage":
           //TODO add support for formula in preventedDamage
           elwinHelpers.reduceAppliedDamage(workflow.damageItem, action.preventedDamage, reactionActivity.item);
@@ -3379,6 +3389,74 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Stabilizes an actor by applying the stable status effect and setting death saves successes and failures to 0.
+   * The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours.
+   * When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
+   *
+   * When stabilizing a target, it must be called with args and workflow parameters.
+   *
+   * <b>Note:</b> This method is also called by DAE when the stable effect expires or is removed.
+   *
+   * @param {object} options - Paramaters for the stabilize function, same as expected by a midi macro call or DAE macro call.
+   * @param {object[]} options.args - The arguments passed to the macro
+   * @param {Actor5e} [options.actor] - The actor doing the stabilization.
+   * @param {object} [options.scope] - The scope of the macro call.
+   * @param {MidiQOL.Workflow} [options.workflow] - The current MidiQOL workflow, only provided for midi macro calls.
+   * @returns {Promise<void>}
+   */
+  async function stabilize({ args, actor, scope, workflow }) {
+    if (args[0].tag === "OnUse") {
+      const targetActor = workflow.hitTargets.first()?.actor;
+      if (!targetActor) {
+        if (debug) {
+          console.warn(`${MACRO_NAME} | stabilize - No target found`, { workflow });
+        }
+        return;
+      }
+
+      await socketlib.modules.get("dae")?.executeAsGM("_updateActor", {
+        actorUuid: targetActor.uuid,
+        updates: { "system.attributes.death.success": 0, "system.attributes.death.failures": 0 },
+      });
+      const effect = await ActiveEffect.implementation.fromStatusEffect("stable");
+      if (!effect) {
+        console.error(`${MACRO_NAME} | Stable status effect not found in CONFIG.statusEffects.`);
+        return;
+      }
+      const effectData = effect.toObject();
+      // Add macro to be called add when the effect is deleted
+      effectData.changes.push({
+        key: "macro.execute",
+        mode: 0,
+        value: "function.elwinHelpers.stabilize",
+        priority: 20,
+      });
+      effectData.origin = workflow.item.uuid;
+      // Make the effect end when the target is damaged or healed
+      foundry.utils.setProperty(effectData, "flags.dae", {
+        showIcon: true,
+        specialDuration: ["isHealed", "isDamaged"],
+      });
+      // End the effect after 1-4 hours
+      const duration = await new Roll("1d4").roll();
+      effectData.duration = { seconds: duration.total * 60 * 60 };
+
+      await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [effectData], options: { keepId: true } });
+    } else if (args[0] === "off") {
+      if (
+        scope.lastArgValue["expiry-reason"] === "midi-qol:isHealed" ||
+        scope.lastArgValue["expiry-reason"] === "times-up:expired"
+      ) {
+        if (scope.lastArgValue["expiry-reason"] === "times-up:expired") {
+          // Give one HP
+          await actor.update({ "system.attributes.hp.value": actor.system.attributes.hp.value + 1 });
+        }
+        await actor.toggleStatusEffect("unconscious", { active: false });
+      }
+    }
+  }
+
+  /**
    * Replaces damage types contained in the specified part with newDamageType.
    *
    * @param {string} part - Damage part to be updated.
@@ -4424,34 +4502,12 @@ export function runElwinsHelpers() {
 
     // Note: if the spell item is a proxy for a cast ativity skip
     if (!!reactionItem?.getFlag("dnd5e", "cachedFor")) {
-      console.warn(`${MACRO_NAME} | Spells which are proxies for cast activities are ignored, skipping registration.`, {
-        workflow,
-        reactionToken,
-        macroName,
-        targetOnUse,
-        options,
-        reactionItem,
-        reactionActivity,
-      });
-      return false;
-    }
-
-    // Note: cast activities and linked spell items are not supported for TPRs
-    if (reactionItem?.system.linkedActivity) {
-      console.warn(`${MACRO_NAME} | Spells linked to cast activities are not supported, skipping registration.`, {
-        workflow,
-        reactionToken,
-        macroName,
-        targetOnUse,
-        options,
-        reactionItem,
-        reactionActivity,
-      });
       return false;
     }
 
     if (reactionActivity) {
-      if (!reactionActivity?.item || reactionActivity?.activation?.type !== "reaction") {
+      const activationType = reactionActivity.effectiveActivationType ?? reactionActivity.activation?.type;
+      if (!reactionActivity?.item || activationType !== "reaction") {
         console.warn(
           `${MACRO_NAME} | Macro activity is not a reaction or does not have an item, skipping registration.`,
           {
@@ -4465,26 +4521,12 @@ export function runElwinsHelpers() {
         );
         return;
       }
-      if (reactionActivity.type === "cast") {
-        console.warn(
-          `${MACRO_NAME} | Macro activity is a cast activity which are not supported, skipping registration.`,
-          {
-            workflow,
-            reactionToken,
-            macroName,
-            targetOnUse,
-            options,
-            reactionActivity,
-          },
-        );
-        return false;
-      }
     }
     if (
       !options.reactionNone &&
       !reactionActivity &&
       !reactionItem?.system?.activities?.some(
-        (activity) => activity.activation?.type === "reaction" && activity.type !== "cast",
+        (activity) => (activity.effectiveActivationType ?? activity.activation?.type) === "reaction",
       )
     ) {
       console.warn(`${MACRO_NAME} | No supported reaction items found, skipping registration.`, {
@@ -4508,7 +4550,7 @@ export function runElwinsHelpers() {
         : reactionActivity
           ? [reactionActivity]
           : reactionItem.system.activities.filter(
-              (activity) => activity.activation?.type === "reaction" && activity.type !== "cast",
+              (activity) => (activity.effectiveActivationType ?? activity.activation?.type) === "reaction",
             ),
       macroName,
       targetOnUse,
@@ -4578,133 +4620,18 @@ export function runElwinsHelpers() {
       return { item: undefined, activity: undefined };
     }
     return { item: resolved.item, activity: resolved.activity };
-
-    // let MQItemMacroLabel = getI18n("midi-qol.ItemMacroText");
-    // if (MQItemMacroLabel === "midi-qol.ItemMacroText") {
-    //   MQItemMacroLabel = "ItemMacro";
-    // }
-    // let MQActivityMacroLabel = getI18n("midi-qol.ActivityMacroText");
-    // if (MQActivityMacroLabel === "midi-qol.ActivityMacroText") {
-    //   MQActivityMacroLabel = "ActivityMacro";
-    // }
-
-    // let [name, uuid] = macroName?.trim().split("|") ?? [undefined, undefined];
-    // let macroItem = undefined;
-    // let macroActivity = undefined;
-
-    // if (uuid?.length > 0) {
-    //   let macroEntity = fromUuidSync(uuid);
-    //   if (macroEntity) {
-    //     if (macroEntity instanceof ActiveEffect && macroEntity.parent instanceof Item) {
-    //       macroItem = macroEntity.parent;
-    //     } else if (macroEntity instanceof Item) {
-    //       macroItem = macroEntity;
-    //     } else if (macroEntity.item) {
-    //       // it points to an activity
-    //       macroItem = macroEntity.item;
-    //       macroActivity = macroEntity;
-    //     }
-    //   }
-    // }
-    // if (!name) {
-    //   return undefined;
-    // }
-    // if (name.startsWith("function.")) {
-    //   // Do nothing, use the macroItem UUID contained in the macroName
-    // } else if (name.startsWith(MQItemMacroLabel) || name.startsWith("ItemMacro")) {
-    //   if (name === "ItemMacro" || name === MQItemMacroLabel) {
-    //     // Do nothing, use the macroItem UUID contained in the macroName
-    //   } else {
-    //     const parts = name.split(".");
-    //     const itemNameOrUuid = parts.slice(1).join(".");
-    //     macroItem = await fromUuid(itemNameOrUuid); // item or activity
-    //     if (macroItem?.item) {
-    //       macroActivity = macroItem;
-    //       macroItem = macroItem.item;
-    //     }
-    //     // ItemMacro.name
-    //     if (!macroItem) {
-    //       macroItem = actor.items.find(
-    //         (i) =>
-    //           i.name === itemNameOrUuid &&
-    //           (foundry.utils.getProperty(i.flags, "dae.macro") ?? foundry.utils.getProperty(i.flags, "itemacro.macro")),
-    //       );
-    //     }
-    //     if (!macroItem && uuid) {
-    //       let itemId;
-    //       if (uuid.includes("Activity.")) {
-    //         itemId = uuid.split(".").slice(-3)[0];
-    //       } else {
-    //         itemId = uuid.split(".").slice(-1)[0];
-    //       }
-    //       const itemData = actor.effects.find((effect) => effect.flags.dae?.itemData?._id === itemId)?.flags.dae.itemData;
-    //       if (itemData) {
-    //         macroItem = itemData;
-    //       }
-    //     }
-    //   }
-    // } else if (name.startsWith(MQActivityMacroLabel) || name.startsWith("ActivityMacro")) {
-    //   // ActivityMacro
-    //   // ActivityMacro.uuid
-    //   // ActivityMacro.identifier
-    //   // ActivityMacro.ActivityName
-    //   if (name === MQActivityMacroLabel || name === "ActivityMacro") {
-    //     // Do nothing
-    //   } else {
-    //     const parts = name.split(".");
-    //     const activitySpec = parts.slice(1).join(".");
-    //     let itemToUse = macroItem;
-    //     const activityOrItem = activitySpec ? await fromUuid(activitySpec) : macroActivity;
-    //     if (activityOrItem instanceof Item) {
-    //       itemToUse = activityOrItem;
-    //     } else {
-    //       itemToUse = activityOrItem?.item ?? macroItem;
-    //     }
-    //     // ActivityMacro.name or ActivityMacro.uuid where not found by fromUuid
-    //     if (activityOrItem) {
-    //       macroActivity = activityOrItem;
-    //     }
-    //     const itemId = parts.at(-1);
-    //     if (!macroActivity) {
-    //       macroActivity = itemToUse?.system.activities?.find(
-    //         (activity) => activity.identifier === itemId && activity.macro?.command,
-    //       );
-    //     }
-    //     if (!macroActivity) {
-    //       macroActivity = itemToUse?.system.activities?.find(
-    //         (activity) => activity._id === itemId && activity.macro?.command,
-    //       );
-    //     }
-    //     if (!macroActivity) {
-    //       macroActivity = itemToUse?.system.activities?.find(
-    //         (activity) => activity.name === itemId && activity.macro?.command,
-    //       );
-    //     }
-    //     if (!macroActivity && activityOrItem instanceof Item) {
-    //       const activity = itemToUse?.system.activities?.contents[0];
-    //       macroActivity ??= activity?.macro.command ? activity : undefined;
-    //     } else if (!macroActivity) {
-    //       macroActivity ??= activityOrItem?.macro.command ? activityOrItem : undefined;
-    //     }
-    //   }
-    // } else {
-    //   // get a world/compendium macro.
-    //   if (name.startsWith("Macro.")) {
-    //     name = name.replace("Macro.", "");
-    //   }
-    //   const macro = game.macros?.getName(name);
-    //   if (!macro) {
-    //     const itemOrMacro = await fromUuid(name);
-    //     if (itemOrMacro instanceof Item) {
-    //       macroItem = itemOrMacro;
-    //     } else if (itemOrMacro instanceof Macro) {
-    //       // Do nothing, use
-    //     }
-    //   }
-    // }
-    // return { item: macroActivity ? macroActivity.item : macroItem, activity: macroActivity };
   }
 
+  /**
+   * Checks if the specified activity can be used based on its activation cost, the max cast level,
+   * if the actor's reaction was used and its consumption usage.
+   *
+   * @param {Activity} activity - The activity to check.
+   * @param {number} maxCastLevel - The maximum cast level of the caster.
+   * @param {boolean} usedReaction - Whether the actor's reaction was used.
+   *
+   * @returns {Promise<boolean>} Whether the activity can be used or not.
+   */
   async function checkActivityUsage(activity, maxCastLevel, usedReaction) {
     if (!activity) {
       return false;
@@ -4713,48 +4640,55 @@ export function runElwinsHelpers() {
 
     if ((activity.activation?.value ?? 1) > 0 && usedReaction) {
       if (debug) {
-        console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: reaction used and cost not zero.`);
+        console.warn(
+          `${MACRO_NAME} | checkActivityUsage - ${item.name}-${activity.name}: reaction used and cost not zero.`,
+        );
       }
       return false; // TODO can't specify 0 cost reactions in dnd5e 4.x - have to find another way
     }
 
     if (!item.system.attuned && item.system.attunement === "required") {
       if (debug) {
-        console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: item not attuned.`);
+        console.warn(`${MACRO_NAME} | checkActivityUsage - ${item.name}-${activity.name}: item not attuned.`);
       }
       return false;
     }
 
-    // Note: third party reactions on cast activities are not supported, they are filtered on registration
-    let isValid = false;
     if (item.type === "spell") {
       if (MidiQOL.configSettings().ignoreSpellReactionRestriction) {
-        isValid = true;
-      } else if (["atwill", "innate"].includes(item.system.preparation.mode)) {
-        isValid = true;
-      } else if (item.system.level === 0) {
-        isValid = true;
-      } else if (item.system.preparation?.prepared !== true && item.system.preparation?.mode === "prepared") {
+        // No need to check usage
+        return true;
+      } else if (item.system.prepared === 0 && item.system.method === "spell") {
+        // Filter out unprepared spells
         if (debug) {
-          console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: spell not prepared.`);
+          console.warn(`${MACRO_NAME} | checkActivityUsage - ${item.name}-${activity.name}: spell not prepared.`);
         }
         return false;
-      } else if (item.system.level <= maxCastLevel) {
-        isValid = true;
-      }
-    } else {
-      const config = activity._prepareUsageConfig({ create: false });
-      const canUse = await activity._prepareUsageUpdates(config, { returnErrors: true });
-      if (canUse instanceof Array) {
-        // insufficent uses available
+      } else if (
+        item.system.level > 0 &&
+        !["atwill", "innate"].includes(item.system.method) &&
+        item.system.level > maxCastLevel
+      ) {
+        // Filter spells that can't be cast due to no available slots of required level
         if (debug) {
-          console.warn(`${MACRO_NAME} | checkUsage - ${item.name}-${activity.name}: insufficent uses available.`);
+          console.warn(
+            `${MACRO_NAME} | checkActivityUsage - ${item.name}-${activity.name}: spell no available slots of required level.`,
+          );
         }
         return false;
       }
-      isValid = true;
     }
-    return isValid;
+    // Use dnd5e's consumption checks for all items/spells
+    const config = activity._prepareUsageConfig({ create: false });
+    const canUse = await activity._prepareUsageUpdates(config, { returnErrors: true });
+    if (canUse instanceof Array) {
+      // insufficent uses available
+      if (debug) {
+        console.warn(`${MACRO_NAME} | checkActivityUsage - ${item.name}-${activity.name}: insufficent uses available.`);
+      }
+      return false;
+    }
+    return true;
   }
 
   //----------------------------------
@@ -4800,8 +4734,8 @@ export function runElwinsHelpers() {
     }
     if (typeof tokenRef === "string") {
       const entity = MidiQOL.MQfromUuid(tokenRef);
-      //@ts-expect-error return cast
       if (entity instanceof TokenDocument) {
+        // @ts-ignore
         return entity.object;
       }
       if (entity instanceof Actor) {

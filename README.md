@@ -74,6 +74,9 @@ A collection of utility functions to facilitate automations.
 - elwinHelpers.getReactionSetting - Returns the reaction setting for the specified user.
  <br>**Note:** Copied from midi-qol because this utility function is not exposed.
 - elwinHelpers.enchantItemTemporarily - Enchants the specified item to change the activation type of its activities to special for the specified activity types that matches its conditions, otherwise the activities are marked as automationOnly.
+- elwinHelpers.stabilize - Stabilizes an actor by applying the stable status effect and setting death saves successes and failures to 0. 
+  The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours. When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
+  <br>When stabilizing a target, it must be called with args and workflow parameters from the calling midi-qol macro.
 - elwinHelpers.ItemSelectionDialog - Utility dialog to select an item from a list of items.
 - elwinHelpers.TokenSelectionDialog - Utility dialog to select a token from a list of tokens.
 
@@ -135,7 +138,12 @@ The value is composed of three parts, the first two are similar to those used by
 
 Example: `ItemMacro,tpr.isDamaged|ignoreSelf=true;canSee=true;pre=true;post=true`
 
-**TPR pre macro**: It is always called before prompting, it is used to set things or cleanup things, it can also be used to add complex activation condition, if it returns the object `{skip: true}`, this reaction will not be prompted.
+**Note**: if `pre` and `post` are false, and there is no `ItemMacro` on your item, and you must either specify `ItemMacro` and add an `ItemMacro` to your item with only a comment line, e.g.:
+      <br>`// Not used but needed for TPR without pre or post macro`, 
+      <br>or use `function.<any value>`, the name does not matter in this case, because it will never be called and midi-qol does not validate if the function exists, e.g.: `function.noop`.
+
+**TPR pre macro**: It is always called before prompting, it is used to set things or cleanup things, it can also be used to add complex activation condition, if it returns the object `{skip: true}`, 
+    this reaction will not be prompted.
     This is called before the prompt in the workflow of the attacker.
 
 **TPR post macro**: It is always called after the prompt and execution of the selected reaction even it it was cancelled or a reaction was aborted.
