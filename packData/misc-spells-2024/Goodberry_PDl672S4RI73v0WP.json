@@ -1,7 +1,7 @@
 {
   "name": "Goodberry",
   "type": "spell",
-  "img": "icons/consumables/plants/leaf-veins-glowing-green.webp",
+  "img": "icons/consumables/fruit/berries-hanging-red.webp",
   "effects": [],
   "folder": null,
   "flags": {
@@ -28,7 +28,7 @@
     },
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.spells.goodberry",
       "onUseMacroParts": {
         "items": {
           "0": {
@@ -67,35 +67,10 @@
       "idv": false,
       "ida": false
     },
-    "dae": {
-      "macro": {
-        "name": "Goodberry",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.spells.goodberry(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "_id": null,
-        "img": "icons/consumables/plants/leaf-veins-glowing-green.webp",
-        "folder": null,
-        "sort": 0,
-        "ownership": {
-          "default": 0
-        },
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "dnd5e": {
       "riders": {
-        "activity": [],
-        "effect": []
+        "activity": []
       }
     },
     "tidy5e-sheet": {
@@ -158,8 +133,7 @@
     "properties": [
       "vocal",
       "somatic",
-      "material",
-      "mgc"
+      "material"
     ],
     "activities": {
       "dnd5eactivity000": {
@@ -216,9 +190,9 @@
         "sort": 0,
         "useConditionText": "",
         "effectConditionText": "",
-        "name": "Cast",
+        "name": "Create Berries",
         "midiProperties": {
-          "identifier": "cast",
+          "identifier": "create-berries",
           "ignoreTraits": [],
           "triggeredActivityId": "none",
           "triggeredActivityConditionText": "",
@@ -231,6 +205,8 @@
           "otherActivityCompatible": false,
           "displayActivityName": false,
           "rollMode": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -261,15 +237,20 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
-        "flags": {},
+        "img": "icons/consumables/fruit/lingonberry-cluster-red.webp",
         "visibility": {
-          "level": {},
+          "level": {
+            "min": null,
+            "max": null
+          },
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
         },
+        "flags": {},
         "useConditionReason": "",
         "otherActivityId": "none",
         "otherActivityAsParentType": true

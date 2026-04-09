@@ -75,8 +75,8 @@ A collection of utility functions to facilitate automations.
  <br>**Note:** Copied from midi-qol because this utility function is not exposed.
 - elwinHelpers.enchantItemTemporarily - Enchants the specified item to change the activation type of its activities to special for the specified activity types that matches its conditions, otherwise the activities are marked as automationOnly.
 - elwinHelpers.stabilize - Stabilizes an actor by applying the stable status effect and setting death saves successes and failures to 0. 
-  The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours. When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
-  <br>When stabilizing a target, it must be called with args and workflow parameters from the calling midi-qol macro.
+  The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours.
+  <br>When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
 - elwinHelpers.ItemSelectionDialog - Utility dialog to select an item from a list of items.
 - elwinHelpers.TokenSelectionDialog - Utility dialog to select a token from a list of tokens.
 

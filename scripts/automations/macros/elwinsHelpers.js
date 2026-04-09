@@ -65,6 +65,7 @@
 // - elwinHelpers.getReactionSetting
 // - elwinHelpers.enchantItemTemporarily
 // - elwinHelpers.stabilize
+// - elwinHelpers.getItemData
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -332,6 +333,8 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.getReactionSetting", getReactionSetting);
     exportIdentifier("elwinHelpers.enchantItemTemporarily", enchantItemTemporarily);
     exportIdentifier("elwinHelpers.stabilize", stabilize);
+    exportIdentifier("elwinHelpers.stableConditionExpiration", stableConditionExpiration);
+    exportIdentifier("elwinHelpers.getItemData", getItemData);
 
     // Note: classes need to be exported after they are declared...
 
@@ -1833,6 +1836,7 @@ export function runElwinsHelpers() {
    * @param {Actor5e} [options.actor] - Reaction target actor
    * @param {Token5e} [options.target] - Target actor
    * @param {object} [options.thirdPartyReactionResult] - Result of the reaction execution.
+   * @returns {Promise<void>}
    */
   async function handleGenericPostMacro(workflow, postActionData, options) {
     if (!options?.thirdPartyReactionResult?.uuid) {
@@ -1867,8 +1871,19 @@ export function runElwinsHelpers() {
           elwinHelpers.calculateAppliedDamage(workflow.damageItem);
           break;
         case "reduceAppliedDamage":
-          //TODO add support for formula in preventedDamage
-          elwinHelpers.reduceAppliedDamage(workflow.damageItem, action.preventedDamage, reactionActivity.item);
+          let preventedDamage = action.preventedDamage;
+          if (["ALL", "1HP"].includes(action.preventedDamage)) {
+            preventedDamage = action.preventedDamage;
+          } else if (Number.isNumeric(action.preventedDamage)) {
+            preventedDamage = Number(action.preventedDamage);
+          } else if (action.preventedDamage?.includes("@")) {
+            // Replace formula data
+            const rollData =
+              workflow.activity?.getRollData() ?? workflow.item?.getRollData() ?? workflow.actor?.getRollData();
+            preventedDamage = dnd5e.utils.simplifyBonus(action.preventedDamage, rollData);
+          }
+
+          elwinHelpers.reduceAppliedDamage(workflow.damageItem, preventedDamage, reactionActivity.item);
           break;
       }
     }
@@ -1909,7 +1924,7 @@ export function runElwinsHelpers() {
    * @param {Item5e} sourceItem - Source item of the damage prevention. (optional)
    */
   function reduceAppliedDamage(damageItem, preventedDmg, sourceItem) {
-    if (!(typeof preventedDmg === "number" && preventedDmg > 0) && !["ALL", "1HP"].includes(preventedDmg)) {
+    if (!(Number.isNumeric(preventedDmg) && Number(preventedDmg) > 0) && !["ALL", "1HP"].includes(preventedDmg)) {
       // Only values greater than 0 are applied or special values ALL or 1HP.
       console.warn(
         `${MACRO_NAME} | Only greater than 0 damage prevention or special values ALL or 1HP are supported.`,
@@ -1925,8 +1940,8 @@ export function runElwinsHelpers() {
       damageItem.calcDamageOptions,
       "elwinHelpers.damagePrevention",
     ) ?? { value: 0, special: null };
-    if (typeof preventedDmg === "number") {
-      currentDamagePrevention.value += preventedDmg;
+    if (Number.isNumeric(preventedDmg)) {
+      currentDamagePrevention.value += Number(preventedDmg);
     } else {
       if (!currentDamagePrevention.special) {
         currentDamagePrevention.special = preventedDmg;
@@ -2312,7 +2327,7 @@ export function runElwinsHelpers() {
    *
    * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
    * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
-   * @param {string} text - The text to insert in the chat message.
+   * @param {Promise<string>} text - The text to insert in the chat message.
    */
   async function insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text) {
     let content = foundry.utils.deepClone(chatMessage.content);
@@ -2336,8 +2351,9 @@ export function runElwinsHelpers() {
    * Inserts text into a Midi item chat message before the card buttons div and updates it.
    *
    * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
-   * @param {MidiQOL.workflow} workflow - The current MidiQOL workflow for which to update the item card.
+   * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow for which to update the item card.
    * @param {string} text - The text to insert in the MidiQOL item card.
+   * @returns {Promise<void>}
    */
   async function insertTextIntoMidiItemCard(position, workflow, text) {
     const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
@@ -3393,56 +3409,54 @@ export function runElwinsHelpers() {
    * The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours.
    * When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
    *
-   * When stabilizing a target, it must be called with args and workflow parameters.
-   *
-   * <b>Note:</b> This method is also called by DAE when the stable effect expires or is removed.
+   * @param {Actor5e} actor - The actor to stabilize.
+   * @param {Activity|Item5e} source - The activity or item causing the stabilization.
+   * @returns {Promise<void>}
+   */
+  async function stabilize(actor, source) {
+    if (!actor) {
+      return;
+    }
+    await socketlib.modules.get("dae")?.executeAsGM("_updateActor", {
+      actorUuid: actor.uuid,
+      updates: { "system.attributes.death.success": 0, "system.attributes.death.failures": 0 },
+    });
+    const effect = await ActiveEffect.implementation.fromStatusEffect("stable");
+    if (!effect) {
+      console.error(`${MACRO_NAME} | Stable status effect not found in CONFIG.statusEffects.`);
+      return;
+    }
+    const effectData = effect.toObject();
+    // Add macro to be called add when the effect is deleted
+    effectData.changes.push({
+      key: "macro.execute",
+      mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
+      value: "function.elwinHelpers.stableConditionExpiration",
+      priority: 20,
+    });
+    effectData.origin = source?.uuid;
+    // Make the effect end when the target is damaged or healed
+    foundry.utils.setProperty(effectData, "flags.dae", { showIcon: true, specialDuration: ["isHealed", "isDamaged"] });
+    // End the effect after 1-4 hours
+    const duration = await new Roll("1d4").roll();
+    effectData.duration = { seconds: duration.total * 60 * 60 };
+
+    await MidiQOL.createEffects({ actorUuid: actor.uuid, effects: [effectData], options: { keepId: true } });
+  }
+
+  /**
+   * Handles expiration of the stable condition.
+   * The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours.
+   * When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
    *
    * @param {object} options - Paramaters for the stabilize function, same as expected by a midi macro call or DAE macro call.
    * @param {object[]} options.args - The arguments passed to the macro
-   * @param {Actor5e} [options.actor] - The actor doing the stabilization.
-   * @param {object} [options.scope] - The scope of the macro call.
-   * @param {MidiQOL.Workflow} [options.workflow] - The current MidiQOL workflow, only provided for midi macro calls.
+   * @param {Actor5e} options.actor - The actor doing the stabilization.
+   * @param {object} options.scope - The scope of the macro call.
    * @returns {Promise<void>}
    */
-  async function stabilize({ args, actor, scope, workflow }) {
-    if (args[0].tag === "OnUse") {
-      const targetActor = workflow.hitTargets.first()?.actor;
-      if (!targetActor) {
-        if (debug) {
-          console.warn(`${MACRO_NAME} | stabilize - No target found`, { workflow });
-        }
-        return;
-      }
-
-      await socketlib.modules.get("dae")?.executeAsGM("_updateActor", {
-        actorUuid: targetActor.uuid,
-        updates: { "system.attributes.death.success": 0, "system.attributes.death.failures": 0 },
-      });
-      const effect = await ActiveEffect.implementation.fromStatusEffect("stable");
-      if (!effect) {
-        console.error(`${MACRO_NAME} | Stable status effect not found in CONFIG.statusEffects.`);
-        return;
-      }
-      const effectData = effect.toObject();
-      // Add macro to be called add when the effect is deleted
-      effectData.changes.push({
-        key: "macro.execute",
-        mode: 0,
-        value: "function.elwinHelpers.stabilize",
-        priority: 20,
-      });
-      effectData.origin = workflow.item.uuid;
-      // Make the effect end when the target is damaged or healed
-      foundry.utils.setProperty(effectData, "flags.dae", {
-        showIcon: true,
-        specialDuration: ["isHealed", "isDamaged"],
-      });
-      // End the effect after 1-4 hours
-      const duration = await new Roll("1d4").roll();
-      effectData.duration = { seconds: duration.total * 60 * 60 };
-
-      await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [effectData], options: { keepId: true } });
-    } else if (args[0] === "off") {
+  async function stableConditionExpiration({ args, actor, scope }) {
+    if (args[0] === "off") {
       if (
         scope.lastArgValue["expiry-reason"] === "midi-qol:isHealed" ||
         scope.lastArgValue["expiry-reason"] === "times-up:expired"
@@ -3454,6 +3468,67 @@ export function runElwinsHelpers() {
         await actor.toggleStatusEffect("unconscious", { active: false });
       }
     }
+  }
+
+  /**
+   * Returns the item data for the specified item attributes, it looks first in the world's items, then in a MISC compendium.
+   *
+   * @param {string} rules - Rules version (legacy or modern).
+   * @param {string} itemType - The item type of the item to find.
+   * @param {string} identifier - The identifier of the item to find.
+   * @param {object} options - The options to use for the search.
+   * @param {string} [options.type] - The system type of the item to find.
+   * @param {string} [options.subtype] - The system subtype of the item to find.
+   * @param {string} [options.basePackageName] - The base package name of the compendium to search (may be modified depending on the rules of the sourceItem).
+   * @param {string} [options.uuid] - The UUID of the item to find. If provided, the search will be done directly with the UUID without looking at item type, identifier, rules or compendium.
+   * @returns {Promise<object|null>} An item data for the specified item attributes or null if none found.
+   */
+  async function getItemData(rules, itemType, identifier, { type, subtype, basePackageName, uuid } = {}) {
+    // Lookup in world items
+    let item = game.items.find(
+      (i) =>
+        i.type === itemType &&
+        (!type || i.system.type?.value === type) &&
+        (!subtype || i.system.subtype?.value === subtype) &&
+        i.identifier === identifier &&
+        elwinHelpers.getRules(i) === rules,
+    );
+    if (debug) {
+      console.warn(`${MACRO_NAME} | ${identifier} from world items: `, item);
+    }
+    // Lookup wiht UUID
+    if (!item && uuid) {
+      item = await fromUuid(uuid);
+      if (debug) {
+        console.warn(`${MACRO_NAME} | ${identifier} from UUID ${uuid}: `, item);
+      }
+    }
+    if (!item) {
+      const compendiumIndex = await game.packs
+        .get(`${MISC_MODULE_ID}.${basePackageName ?? "misc-items"}${rules === "legacy" ? "" : "-2024"}`)
+        .getIndex({ fields: ["type", "name", "identifier", "system.type", "system.source.rules"] });
+      const itemUuid = compendiumIndex.find(
+        (id) =>
+          id.type === itemType &&
+          (!type || id.system.type?.value === type) &&
+          (!subtype || id.system.subtype?.value === subtype) &&
+          id.system.identifier === identifier &&
+          elwinHelpers.getRules(id) === rules,
+      )?.uuid;
+      if (itemUuid) {
+        item = await fromUuid(itemUuid);
+      }
+      if (debug) {
+        console.warn(
+          `${MACRO_NAME} | ${identifier} from MISC compendium ${basePackageName ?? "misc-items"}${rules === "legacy" ? "" : "-2024"}: `,
+          item,
+        );
+      }
+    }
+    if (item) {
+      return item.toObject();
+    }
+    return null;
   }
 
   /**

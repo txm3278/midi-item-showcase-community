@@ -53,6 +53,6 @@ export async function healersKit({ speaker, actor, token, character, item, args,
   }
 
   if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
-    await elwinHelpers.stabilize({ args, actor, scope, workflow });
+    await elwinHelpers.stabilize(workflow.hitTargets?.first()?.actor, scope.rolledActivity);
   }
 }

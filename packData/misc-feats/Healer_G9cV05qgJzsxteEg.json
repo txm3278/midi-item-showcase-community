@@ -300,7 +300,7 @@
     "advancement": [],
     "description": {
       "chat": "",
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat that heals 1 HP when a creature is stabilized by the owner using a Healer's Kit. \n It can also by used to heal a creature with an Healer's Kit.</p></details>"
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on MotoMoto version.\n <h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat that heals 1 HP when a creature is stabilized by the owner using a Healer's Kit. \n It can also by used to heal a creature with an Healer's Kit.</p></details>"
     },
     "identifier": "healer",
     "source": {
