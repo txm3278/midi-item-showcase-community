@@ -279,7 +279,7 @@ export function setConfig() {
         Goodberry: {
           name: "Goodberry",
           type: "Spell",
-          version: "3.4.0",
+          version: "3.5.0",
           authors: ["Elwin"],
         },
         "Great Weapon Master": {
@@ -304,6 +304,18 @@ export function setConfig() {
           name: "Guardian Emblem",
           type: "Item",
           version: "4.2.1",
+          authors: ["Elwin"],
+        },
+        "Healer":{
+          name: "Healer",
+          type: "Feat",
+          version: "1.0.0",
+          authors: ["Elwin", "Moto Moto"],
+        },
+        "Healer's Kit":{
+          name: "Healer's Kit",
+          type: "Item",
+          version: "1.0.0",
           authors: ["Elwin"],
         },
         "Intoxicated Frenzy": {
@@ -673,7 +685,7 @@ export function setConfig() {
         Goodberry: {
           name: "Goodberry",
           type: "Spell",
-          version: "1.3.0",
+          version: "1.4.0",
           authors: ["Elwin"],
         },
         "Great Weapon Fighting": {
@@ -693,12 +705,6 @@ export function setConfig() {
           type: "Class Feature",
           version: "1.0.0",
           authors: ["Moto Moto"],
-        },
-        "Smoke Grenade": {
-          name: "Smoke Grenade",
-          type: "Item",
-          version: "1.1.0",
-          authors: ["Elwin"],
         },
         "Improved Warding Flare": {
           name: "Improved Warding Flare",
@@ -809,6 +815,12 @@ export function setConfig() {
           type: "Item",
           version: "1.2.0",
           authors: ["Elwin", "Ris"],
+        },
+        "Smoke Grenade": {
+          name: "Smoke Grenade",
+          type: "Item",
+          version: "1.1.0",
+          authors: ["Elwin"],
         },
         "Spiked Shield": {
           name: "Spiked Shield",
