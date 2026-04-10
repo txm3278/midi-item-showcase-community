@@ -370,13 +370,20 @@
   "effects": [],
   "folder": "YXuwZpnGdPlfnDjx",
   "flags": {
-    "dnd5e": {},
+    "dnd5e": {
+      "riders": {
+        "activity": []
+      }
+    },
     "rest-recovery": {
       "data": {
         "consumable": {
           "dayWorth": true
         }
       }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[preTargeting]function.MISC.macros.spells.magicalBerries,[preItemRoll]function.MISC.macros.spells.magicalBerries,[postActiveEffects]function.MISC.macros.spells.magicalBerries"
     }
   },
   "_key": "!items!n6y96VJav9HscW5f"
