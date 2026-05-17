@@ -2,11 +2,11 @@
 // Read First!!!!
 // When the bottle is opened, creates a fog cloud that follows the owner and increases in size until it has reached its maximum size or until
 // the bottle is closed which also makes it stay in place.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" actor macro [preTargeting],[preActiveEffects],[postActiveEffects]
 //  - Elwin Helpers world script
 //  - Sequencer (optional)
@@ -60,7 +60,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -318,8 +321,8 @@ async function toggleActivities(usedItem, usedActivity) {
  * @param {object} lastArg - The last argument value.
  */
 async function handleOffEffect(actor, item, lastArg) {
-  if (lastArg["expiry-reason"] === "effect-deleted") {
-    // Do not recreate effect when deleted and not expired
+  if (!["times-up:expired", "duration-expired:updateWorldTime"].includes(lastArg["expiry-reason"])) {
+    // Do not recreate effect when not expired
     return;
   }
   // Find template created by this item

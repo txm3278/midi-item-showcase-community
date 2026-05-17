@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Fighter - Psi Warrior - Bulwark of Force
 // Allows to apply a psychic shield to one or more targets.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects]
 //  - Elwin Helpers world script
 //
@@ -34,7 +34,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

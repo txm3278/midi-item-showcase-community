@@ -2,11 +2,11 @@
 // Fighter - Psi Warrior - Guarded Mind
 // Gives psychic damage resistance to the owner and if the onwer has the charmed or frightened conditions
 // at the start of its turn, allows to remove the effects causing them.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [each]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects]
 //  - Elwin Helpers world script
 //
@@ -38,7 +38,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

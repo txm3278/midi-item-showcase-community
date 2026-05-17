@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Negative Energy Flood
 // Applies the effect of the spell on the target.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[preItemRoll],[preActiveEffects],[preCompleted]
 //
 // Usage:
@@ -72,7 +72,7 @@ export async function negativeEnergyFlood({ speaker, actor, token, character, it
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -149,7 +149,14 @@ async function handleOnUsePreCompleted(workflow) {
  * @param {Item5e} sourceItem - The Negative Energy Flood item.
  */
 async function handleOffEffect(lastArg, sourceItem) {
-  if (!["times-up:expired", "times-up:turnStartSource"].includes(foundry.utils.getProperty(lastArg, "expiry-reason"))) {
+  if (
+    ![
+      "times-up:expired",
+      "times-up:turnStartSource",
+      "duration-expired:updateWorldTime",
+      "duration-expired:turnStart:source",
+    ].includes(foundry.utils.getProperty(lastArg, "expiry-reason"))
+  ) {
     // Not expired
     return;
   }
@@ -189,7 +196,7 @@ function isTargetDead(workflow, target) {
   }
   // Get damage item for token only if the old HP was not 0 already and the new is 0
   const damageItem = workflow.damageList?.find(
-    (dmgItem) => dmgItem.targetUuid === target.document.uuid && dmgItem.oldHP !== 0 && dmgItem.newHP === 0
+    (dmgItem) => dmgItem.targetUuid === target.document.uuid && dmgItem.oldHP !== 0 && dmgItem.newHP === 0,
   );
   if (!damageItem) {
     return false;

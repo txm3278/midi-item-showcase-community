@@ -2,10 +2,11 @@
 // Read First!!!!
 // Handles the ability to add a damage bonus when the conditions are met as well as the ability
 // to make a bonus melee weapon attack when the actor scores a critical hit or brings a target to 0 HP with a melee weapon.
-// v1.5.0
+// v1.6.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item macro [postRollFinished]
 //  - Elwin Helpers world script
 //
@@ -44,7 +45,10 @@ export async function greatWeaponMaster2024({
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }

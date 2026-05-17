@@ -2,12 +2,12 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.5.0
+// v2.6.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" item macro, [postActiveEffects]
-//  - Active Token Effects
+//  - Active Token Effects (if Foundry version < v14)
 //  - Elwin Helpers world script
 //  - Cauldron of Plentiful Resources (optional, support for VAE buttons)
 //  - Visual Active Effects (optional, for button on Sun Blade - Light AE)
@@ -53,7 +53,10 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ["dae", "midi-qol", "ATL"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("ATL");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -170,8 +173,10 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     if (!lightEffect) {
       return;
     }
+    const tokenKeyPrefix = game.release.generation >= 14 ? "token" : "ATL";
+
     const currentLightRadius = Number(
-      lightEffect.changes.find((c) => c.key === "ATL.light.bright")?.value ?? INITIAL_LIGHT_RADIUS,
+      lightEffect.changes.find((c) => c.key === `${tokenKeyPrefix}.light.bright`)?.value ?? INITIAL_LIGHT_RADIUS,
     );
     const buttons = [];
     if (currentLightRadius < MAX_LIGHT_RADIUS) {
@@ -212,8 +217,8 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
 
     const newChanges = foundry.utils.deepClone(lightEffect.changes ?? []);
     for (let change of newChanges) {
-      if (["ATL.light.dim", "ATL.light.bright"].includes(change.key)) {
-        const newValue = change.key === "ATL.light.dim" ? newLightRadius * 2 : newLightRadius;
+      if ([`${tokenKeyPrefix}.light.dim`, `${tokenKeyPrefix}.light.bright`].includes(change.key)) {
+        const newValue = change.key === `${tokenKeyPrefix}.light.dim` ? newLightRadius * 2 : newLightRadius;
         change.value = "" + newValue;
       }
     }

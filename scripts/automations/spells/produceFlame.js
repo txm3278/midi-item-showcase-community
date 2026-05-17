@@ -1,12 +1,13 @@
 // ##################################################################################################
 // Produce Flame
 // Creates an AE that produces light and allows to hurl the flame on a creature ending the light effect.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects]
+//  - Active Token Effects (if Foundry version < v14)
 //
 // Usage:
 // This spell needs to be used to activate. When the cast activity is used it creates an AE that produces light and
@@ -36,7 +37,10 @@ const DEFAULT_ITEM_NAME = "Produce Flame";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -74,7 +78,7 @@ export async function produceFlame({ speaker, actor, token, character, item, arg
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -133,7 +137,7 @@ async function handleOnUseCastAndHurlPostActiveEffects(workflow, debug) {
   foundry.utils.setProperty(
     produceFlameItemData,
     `system.activities.${hurlFireActivity.id}.activation.type`,
-    "special"
+    "special",
   );
   foundry.utils.setProperty(produceFlameItemData, "flags.midi-qol.syntheticItem", true);
 
@@ -164,7 +168,7 @@ async function handleOnUseCastAndHurlPostActiveEffects(workflow, debug) {
         produceFlameItemData.name,
         workflow,
         workflow2,
-        debug
+        debug,
       )
     ) {
       return;

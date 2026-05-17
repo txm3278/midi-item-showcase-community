@@ -3,13 +3,14 @@
 // Creates animations of star motes around the caster (if Sequencer is avaialble) and allows to make a
 // special attack with a star mote which removes one mote each time. When no star mote remains the spell
 // is ended.
-// v2.1.0
+// v2.2.0
 // Author: Elwin#1410, based on Bakana and Xenophes
 // Dependencies:
 //  - DAE [off]
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item macro [preItemRoll],[postActiveEffects]
 //  - Elwin Helpers world script
-//  - Active Token Effects
+//  - Active Token Effects (if Foundry version < v14)
 //  - Sequencer (optional)
 //  - JB2A free or patreon (optional)
 //
@@ -38,13 +39,15 @@ const ANIMATION_FILE = "jb2a.twinkling_stars.points07.white";
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.7")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol", "ATL"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+    dependencies.push("ATL");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -61,7 +64,7 @@ export async function crownOfStars({ speaker, actor, token, character, item, arg
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -94,7 +97,7 @@ async function handleCastOnUsePostActiveEffects(workflow, sourceActor, sourceIte
     return;
   }
   const effect = sourceActor.effects.find((ae) =>
-    ae.changes.find((c) => c.key === `flags.${MODULE_ID}.crownOfStarsMotes`)
+    ae.changes.find((c) => c.key === `flags.${MODULE_ID}.crownOfStarsMotes`),
   );
   if (!effect) {
     console.error(`${sourceItem.name} | Missing Crown of Stars effect.`);
@@ -130,21 +133,22 @@ async function handleStartMoteAttackOnUsePostActiveEffects(sourceActor, sourceIt
 
   // Update the AE accordingly
   const effect = sourceActor.effects.find((ae) =>
-    ae.changes.some((ch) => ch.key === `flags.${MODULE_ID}.crownOfStarsMotes`)
+    ae.changes.some((ch) => ch.key === `flags.${MODULE_ID}.crownOfStarsMotes`),
   );
   if (!effect) {
     console.error(`${sourceItem.name} | Missing Crown of Stars effect.`);
     return;
   }
+  const tokenKeyPrefix = game.release.generation >= 14 ? "token" : "ATL";
   const changes = foundry.utils.deepClone(effect.changes);
   changes.find((ch) => ch.key === `flags.${MODULE_ID}.crownOfStarsMotes`).value = remainingStars;
   if (remainingStars <= 3) {
     // Remove bright light emission and reduce the dim one
-    const brightIndex = changes.findIndex((ch) => ch.key === "ATL.light.bright");
+    const brightIndex = changes.findIndex((ch) => ch.key === `${tokenKeyPrefix}.light.bright`);
     if (brightIndex >= 0) {
       changes.splice(brightIndex, 1);
     }
-    changes.find((ch) => ch.key === "ATL.light.dim").value = "30";
+    changes.find((ch) => ch.key === `${tokenKeyPrefix}.light.dim`).value = "30";
   }
   await effect.update({ changes: changes });
 
@@ -195,7 +199,7 @@ function createStartMotesAnimation(
     file = "jb2a.twinkling_stars.points07.white",
     scale = 0.5,
     radius = 0.5,
-  } = {}
+  } = {},
 ) {
   if (!game.modules.get("sequencer")?.active) {
     if (debug) {

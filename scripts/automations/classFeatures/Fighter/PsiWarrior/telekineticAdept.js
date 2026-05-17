@@ -2,11 +2,11 @@
 // Fighter - Psi Warrior - Telekinetic Adept
 // Allows to take Psi-Powered Leap as a free action or one that consumes a Psionic Energy die,
 // it also handles applying Telekinetic Thrust (knock or push) when Pisonic Strike is used.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects],[postRollFinished]
 //  - Elwin Helpers world script
 //  - Sequencer
@@ -37,7 +37,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol", "sequencer"];
+  const dependencies = ["dae", "midi-qol", "sequencer"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

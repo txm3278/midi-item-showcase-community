@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Read First!!!!
 // When the used, prompts to place a template where the grenade will explode and generate smoke.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" actor macro [preActiveEffects],[postActiveEffects]
 //  - Elwin Helpers world script
 //  - Sequencer (optional)
@@ -45,7 +45,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -181,8 +184,8 @@ async function createSmoke(template) {
  * @param {object} lastArg - The last argument value.
  */
 async function handleOffEffect(lastArg) {
-  if (lastArg["expiry-reason"] === "effect-deleted") {
-    // Do nothing if effect is deleted
+  if (!["times-up:expired", "duration-expired:updateWorldTime"].includes(lastArg["expiry-reason"])) {
+    // Do nothing if effect not expired
     return;
   }
   // Find template created by this item

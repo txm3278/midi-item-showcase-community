@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Monk - Ki, handles making multiple Unarmed Strike when using Fluury of Blows, and adds the
 // appropriate effects for Patient Defense and Step of the Winds.
-// v1.2.0
+// v1.3.0
 // Author: Elwin#1410, based on CPR's Monk's Focus automation.
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postRollFinished]
 //  - Elwin Helpers world script
 //
@@ -38,7 +38,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

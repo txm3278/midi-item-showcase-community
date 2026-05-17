@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.5
+// v2.1.6
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = "2.1.5";
+  const VERSION = "2.1.6";
   const MACRO_NAME = "elwin-helpers-coating";
   const MODULE_ID = "midi-item-showcase-community";
   const WORLD_MODULE_ID = "world";
@@ -162,7 +162,7 @@ export function runElwinsHelpersCoating() {
    * @returns {boolean} true if elwin helpers' version is valid for this world script.
    */
   function hasValidElwinHelpersVersion() {
-    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.13")) {
       const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.10`;
       ui.notifications.error(errorMsg);
       return false;
@@ -345,7 +345,12 @@ export function runElwinsHelpersCoating() {
         [`flags.${WORLD_MODULE_ID}.appliedCoating`, `flags.${MISC_MODULE_ID}.appliedCoating`].includes(c.key),
       )?.value;
     try {
-      const appliedCoating = JSON.parse(appliedCoatingValue ?? "{}");
+      let appliedCoating = {};
+      if (typeof appliedCoatingValue === "string") {
+        appliedCoating = JSON.parse(appliedCoatingValue ?? "{}");
+      } else if (typeof appliedCoatingValue === "object") {
+        appliedCoating = appliedCoatingValue;
+      }
 
       appliedCoating.origin = currentWorkflow.activity.uuid;
       appliedCoating.maxWeaponHits ??= 1;

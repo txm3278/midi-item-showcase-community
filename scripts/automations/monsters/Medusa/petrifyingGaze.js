@@ -2,10 +2,10 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Applies the proper AE depending on the save result.
-// v1.1.0
+// v1.2.0
 // Dependencies:
 //  - DAE [off]
-//  - Times up
+//  - Times up (if Foundry version < v14)
 //  - MidiQOL "on use" actor macro [postActiveEffects]
 //  - Effect Macro
 //
@@ -26,15 +26,18 @@
 
 export async function petrifyingGaze({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Petrifying Gaze';
+  const DEFAULT_ITEM_NAME = "Petrifying Gaze";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -43,20 +46,20 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
-    if (scope.rolledActivity?.identifier === 'resist-effect') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
+    if (scope.rolledActivity?.identifier === "resist-effect") {
       const gazeEffect = scope.rolledActivity?.effects[0]?.effect;
       for (let targetToken of workflow.effectTargets ?? []) {
-        if (targetToken.actor?.statuses?.has('petrified')) {
+        if (targetToken.actor?.statuses?.has("petrified")) {
           // Already petrified no need to add 'Petrifying Gaze - Effect' or petrified status
           continue;
         }
-        if (elwinHelpers.getRules(scope.rolledItem) === 'legacy' && failedSavedBy5(workflow, targetToken)) {
-          const effectData = (await ActiveEffect.implementation.fromStatusEffect('petrified')).toObject();
+        if (elwinHelpers.getRules(scope.rolledItem) === "legacy" && failedSavedBy5(workflow, targetToken)) {
+          const effectData = (await ActiveEffect.implementation.fromStatusEffect("petrified")).toObject();
           effectData.origin = scope.macroItem.uuid;
           await MidiQOL.createEffects({
             actorUuid: targetToken.actor.uuid,
@@ -71,7 +74,7 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
           if (!alreadyHasEffectWithHigherPotency(workflow, targetToken)) {
             const effectData = gazeEffect.toObject();
             effectData.origin = gazeEffect.uuid;
-            foundry.utils.setProperty(effectData, 'flags.dae.dontApply', false);
+            foundry.utils.setProperty(effectData, "flags.dae.dontApply", false);
             if (!targetToken.inCombat && effectData.duration) {
               effectData.duration.seconds =
                 CONFIG.time.roundTime * effectData.duration.rounds + CONFIG.time.turnTime * effectData.duration.turns;
@@ -87,9 +90,9 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
           }
         }
       }
-    } else if (scope.rolledActivity?.identifier === 'resist-petrification') {
+    } else if (scope.rolledActivity?.identifier === "resist-petrification") {
       for (let targetToken of workflow.effectTargets ?? []) {
-        const gazeEffectActivity = scope.macroItem.system.activities?.find((a) => a.identifier === 'resist-effect');
+        const gazeEffectActivity = scope.macroItem.system.activities?.find((a) => a.identifier === "resist-effect");
         if (!gazeEffectActivity) {
           return;
         }
@@ -100,19 +103,24 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
         }
       }
     }
-  } else if (args[0] === 'off') {
+  } else if (args[0] === "off") {
     if (
-      !['times-up:expired', 'times-up:turnEnd'].includes(foundry.utils.getProperty(scope.lastArgValue, 'expiry-reason'))
+      ![
+        "times-up:expired",
+        "times-up:turnEnd",
+        "duration-expired:updateWorldTime",
+        "duration-expired:turnEnd",
+      ].includes(foundry.utils.getProperty(scope.lastArgValue, "expiry-reason"))
     ) {
       // Only activate saving throw when effect expires normally
       return;
     }
-    if (token.actor?.statuses?.has('petrified')) {
+    if (token.actor?.statuses?.has("petrified")) {
       // Actor already petrified, no need to save
       return;
     }
 
-    const gazeEffectActivity = scope.macroItem.system.activities?.find((a) => a.identifier === 'resist-petrification');
+    const gazeEffectActivity = scope.macroItem.system.activities?.find((a) => a.identifier === "resist-petrification");
     if (!gazeEffectActivity) {
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Missing Resist Petrification activity.`, { item: scope.macroItem });
@@ -133,7 +141,7 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
     const usage = {
       midiOptions: {
         targetUuids: [token.document?.uuid],
-        workflowOptions: { targetConfirmation: 'none' },
+        workflowOptions: { targetConfirmation: "none" },
       },
     };
 
@@ -143,7 +151,7 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
       usage,
     };
 
-    await MidiQOL.socket().executeAsUser('completeActivityUse', player.id, data);
+    await MidiQOL.socket().executeAsUser("completeActivityUse", player.id, data);
   }
 
   /**
@@ -219,7 +227,7 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
           ae.name === effectName &&
           (anyExisting ||
             targetTurn !== currentTurn?.turn ||
-            (ae.duration?.startRound === currentTurn?.round && ae.duration?.startTurn === currentTurn?.turn))
+            (ae.duration?.startRound === currentTurn?.round && ae.duration?.startTurn === currentTurn?.turn)),
       )
       .map((ae) => {
         return { effect: ae, gazePotency: getGazePotency(ae) };

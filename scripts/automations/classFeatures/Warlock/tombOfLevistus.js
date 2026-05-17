@@ -2,11 +2,11 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v1.2.0
+// v1.3.0
 // Author: Elwin#1410 based on pospa4
 // Dependencies:
 //  - DAE: [on],[off] item macro
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" macro [postTargetEffectApplication]
 //  - Monk's TokenBar (optional)
 //
@@ -35,7 +35,10 @@ const DEFAULT_ITEM_NAME = "Tomb of Levistus";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

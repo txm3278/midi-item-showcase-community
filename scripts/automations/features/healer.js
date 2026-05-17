@@ -1,10 +1,11 @@
 // ##################################################################################################
 // Read First!!!!
 // Handles the extra healing effect when a creature is stabilized by the owner and allows to heal using a Healer's Kit.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410 based on MotoMoto version
 // Dependencies:
 //  - DAE
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item macro [postRollFinished]
 //  - Elwin Helpers world script
 //
@@ -34,7 +35,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

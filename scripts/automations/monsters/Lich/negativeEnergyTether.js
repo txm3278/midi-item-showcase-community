@@ -4,10 +4,10 @@
 // When used, adds an effect on the target and on the owner. When the owner is damaged, a save is
 // triggered on the tethered creature, if failed it takes half the owner's damage and the owners
 // applied damage is reduced by half.
-// v2.2.0
+// v2.3.0
 // Dependencies:
 //  - DAE [off]
-//  - Times up
+//  - Times up (if Foundry version < v14)
 //  - MidiQOL "on use" actor macro [preTargetDamageApplication],[postActiveEffects]
 //  - Elwin Helpers world script
 //  - Sequencer (optional)
@@ -44,7 +44,10 @@ export async function negativeEnergyTether({ speaker, actor, token, character, i
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
