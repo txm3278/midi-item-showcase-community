@@ -8,61 +8,61 @@ export function setConfig() {
         "Absorbing Tattoo, Acid": {
           name: "Absorbing Tattoo, Acid",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Cold": {
           name: "Absorbing Tattoo, Cold",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Fire": {
           name: "Absorbing Tattoo, Fire",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Force": {
           name: "Absorbing Tattoo, Force",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Lightning": {
           name: "Absorbing Tattoo, Lightning",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Necrotic": {
           name: "Absorbing Tattoo, Necrotic",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Poison": {
           name: "Absorbing Tattoo, Poison",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Psychic": {
           name: "Absorbing Tattoo, Psychic",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Radiant": {
           name: "Absorbing Tattoo, Radiant",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Thunder": {
           name: "Absorbing Tattoo, Thunder",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Accursed Specter": {
@@ -80,7 +80,7 @@ export function setConfig() {
         "Arms of the Astral Self": {
           name: "Arms of the Astral Self",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.5.0",
           authors: ["Elwin", "Spoob"],
         },
         "Arrow-Catching Shield": {
@@ -104,7 +104,7 @@ export function setConfig() {
         "Body of the Astral Self": {
           name: "Body of the Astral Self",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Bulwark of Force": {
@@ -122,7 +122,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "3.5.0",
+          version: "3.6.0",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -195,7 +195,7 @@ export function setConfig() {
         "Drunken Technique": {
           name: "Drunken Technique",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Eversmoking Bottle": {
@@ -630,7 +630,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         "Charger": {

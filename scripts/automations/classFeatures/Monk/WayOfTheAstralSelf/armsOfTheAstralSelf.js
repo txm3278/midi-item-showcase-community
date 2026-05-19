@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Arms of the Astral Self
 // Summons spectral hands and adds a new attack to the Unarmed Strike weapon to use these arms instead.
-// v2.3.0
+// v2.5.0
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[preAoETargetConfirmation],[postActiveEffects]
 //  - Elwin Helpers world script
 //
@@ -38,12 +38,15 @@ const UNARMED_STRIKE_IDENT = "unarmed-strike";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.2")) {
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -294,96 +297,45 @@ async function handleSummonVisage(actor, workflow, debug) {
       return;
     }
 
-    let player = MidiQOL.playerForActor(actor);
-    if (!player?.active) {
-      // Find first active GM player
-      player = game.users?.activeGM;
-    }
-    if (!player?.active) {
-      console.warn(`${DEFAULT_ITEM_NAME} | No active player or GM for actor.`, actor);
-      return;
-    }
-
-    // Create and apply an enchantment to change the summon activity action type
-    const enchantmentEffect = await enchantSpecialItem(visageOfAstralSelfItem, visageOfAstralSelfActivity);
-    const config = {
-      midiOptions: {
-        targetUuids: [workflow.tokenUuid],
-        workflowOptions: { targetConfirmation: "none", autoConsumeResource: "both" },
-      },
-    };
-
-    const dialog = {
-      configure: false,
-    };
-
     // Register hook to summmon visage after roll is complete
     Hooks.once(`midi-qol.RollComplete.${workflow.itemUuid}`, async (workflow2) => {
+      if (
+        !elwinHelpers.isMidiHookStillValid(
+          DEFAULT_ITEM_NAME,
+          "midi-qol.RollComplete",
+          visageOfAstralSelfItem.name,
+          workflow,
+          workflow2,
+          debug,
+        )
+      ) {
+        return;
+      }
+
+      // Create and apply an enchantment to change the summon activity action type
+      const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(visageOfAstralSelfItem, workflow.item);
+      if (!enchantmentEffect) {
+        console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${visageOfAstralSelfItem.name}.`);
+        return;
+      }
       try {
-        if (
-          !elwinHelpers.isMidiHookStillValid(
-            DEFAULT_ITEM_NAME,
-            "midi-qol.RollComplete",
-            visageOfAstralSelfItem.name,
-            workflow,
-            workflow2,
-            debug,
-          )
-        ) {
-          return;
-        }
+        const config = {
+          midiOptions: {
+            targetUuids: [workflow.tokenUuid],
+            workflowOptions: { targetConfirmation: "none", autoConsumeResource: "both" },
+          },
+        };
+
+        const dialog = {
+          configure: false,
+        };
+
         await MidiQOL.completeActivityUse(visageOfAstralSelfActivity, config, dialog);
       } finally {
-        enchantmentEffect.delete();
+        await enchantmentEffect.delete();
       }
     });
   }
-}
-
-/**
- * Enchants the specified item to change the activation type of its activities to special
- * for the specified activity types.
- *
- * @param {Item5e} item - The item to enchant.
- * @param {Item5e} source - The source of the enchantment.
- * @param {string[]} activityTypes - The activity for which the activation type must be changed to special (default CONFIG.DND5E.activityTypes).
- *
- * @returns {ActiveEffect} the created enchantment effect.
- */
-async function enchantSpecialItem(item, source, activityTypes = CONFIG.DND5E.activityTypes) {
-  // Change activation type to special so it is not considered as an Attack Action
-  const effectData = {
-    name: source.name,
-    img: "icons/magic/time/arrows-circling-green.webp",
-    type: "enchantment",
-    changes: Object.keys(activityTypes)
-      .flatMap((activityType) => [
-        {
-          key: `activities[${activityType}].activation.type`,
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: "special",
-          priority: 20,
-        },
-      ])
-      .concat([
-        {
-          key: "system.activation.type",
-          mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: "special",
-          priority: 20,
-        },
-      ]),
-    transfer: false,
-    duration: {
-      seconds: 1,
-      turns: 1,
-    },
-    origin: source.uuid,
-    "flags.dae.stackable": "noneName",
-  };
-  foundry.utils.setProperty(effectData, `flags.${MODULE_ID}.identifier`, "arms-of-astral-self");
-  const [effect] = await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
-  return effect;
 }
 
 /**
