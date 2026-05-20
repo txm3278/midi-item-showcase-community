@@ -2,7 +2,7 @@
 // Read First!!!!
 // Reaction that reduces the damage taken by 2d4 (+1d4 per spell level) for melee attacks and adds a
 // +2 bonus (intended as half cover) until the user's next turn.
-// v1.0.0
+// v1.1.0
 // Author: tb
 // Dependencies:
 //  - DAE
@@ -297,6 +297,7 @@ export async function spinyShield({
           priority: 20,
         },
       ],
+      duration: { rounds: 1 },
       flags: {
         dae: {
           stackable: 'noneName',

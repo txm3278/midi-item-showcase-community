@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.13
+// v3.5.14
 // Dependencies:
 //  - MidiQOL
 //
@@ -148,7 +148,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.13";
+  const VERSION = "3.5.14";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -1037,11 +1037,13 @@ export function runElwinsHelpers() {
         } can use a reaction`;
         break;
     }
-    reactionFlavor = game.i18n.format(reactionFlavor, {
+
+    const replacementData = {
       itemName: triggerItem?.name ?? "unknown",
       actorName: MidiQOL.getTokenPlayerNameForUser(user, triggerToken, user?.isGM),
       reactionActorName: reactionToken?.name ?? "unknown",
-    });
+    };
+    reactionFlavor = reactionFlavor.replace(/{[^}]+}/g, (k) => replacementData[k.slice(1, -1)]);
 
     //{none: 'Attack Hits', d20: 'd20 roll only', all: 'Attack Roll Total', allCrit: 'Attack Roll Total + Critical'}
     if (["isHit", "isMissed", "isCrit", "isFumble", "isAttacked"].includes(reactionTriggerName)) {
@@ -3458,10 +3460,14 @@ export function runElwinsHelpers() {
   async function stableConditionExpiration({ args, actor, scope }) {
     if (args[0] === "off") {
       if (
-        scope.lastArgValue["expiry-reason"] === "midi-qol:isHealed" ||
-        scope.lastArgValue["expiry-reason"] === "times-up:expired"
+        ["midi-qol:isHealed", "times-up:expired", "duration-expired:updateWorldTime"].includes(
+          scope.lastArgValue["expiry-reason"],
+        )
       ) {
-        if (scope.lastArgValue["expiry-reason"] === "times-up:expired") {
+        if (
+          scope.lastArgValue["expiry-reason"] === "times-up:expired" ||
+          scope.lastArgValue["expiry-reason"] === "duration-expired:updateWorldTime"
+        ) {
           // Give one HP
           await actor.update({ "system.attributes.hp.value": actor.system.attributes.hp.value + 1 });
         }

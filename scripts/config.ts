@@ -8,61 +8,61 @@ export function setConfig() {
         "Absorbing Tattoo, Acid": {
           name: "Absorbing Tattoo, Acid",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Cold": {
           name: "Absorbing Tattoo, Cold",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Fire": {
           name: "Absorbing Tattoo, Fire",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Force": {
           name: "Absorbing Tattoo, Force",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Lightning": {
           name: "Absorbing Tattoo, Lightning",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Necrotic": {
           name: "Absorbing Tattoo, Necrotic",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Poison": {
           name: "Absorbing Tattoo, Poison",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Psychic": {
           name: "Absorbing Tattoo, Psychic",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Radiant": {
           name: "Absorbing Tattoo, Radiant",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Absorbing Tattoo, Thunder": {
           name: "Absorbing Tattoo, Thunder",
           type: "Item",
-          version: "2.0.2",
+          version: "2.1.0",
           authors: ["Elwin"],
         },
         "Accursed Specter": {
@@ -80,7 +80,7 @@ export function setConfig() {
         "Arms of the Astral Self": {
           name: "Arms of the Astral Self",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.5.0",
           authors: ["Elwin", "Spoob"],
         },
         "Arrow-Catching Shield": {
@@ -98,19 +98,19 @@ export function setConfig() {
         "Awakened Astral Self": {
           name: "Awakened Astral Self",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Body of the Astral Self": {
           name: "Body of the Astral Self",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Bulwark of Force": {
           name: "Bulwark of Force",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Channel Divinity: Rebuke the Violent": {
@@ -122,7 +122,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "3.5.0",
+          version: "3.6.0",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -141,7 +141,7 @@ export function setConfig() {
         "Crown of Stars": {
           name: "Crown of Stars",
           type: "Spell",
-          version: "2.1.0",
+          version: "2.2.0",
           authors: ["Elwin", "Bakana", "Xenophes"],
         },
         "Dagger of Venom": {
@@ -189,13 +189,13 @@ export function setConfig() {
         "Drunkard's Luck": {
           name: "Drunkard's Luck",
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         "Drunken Technique": {
           name: "Drunken Technique",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Eversmoking Bottle": {
@@ -219,7 +219,7 @@ export function setConfig() {
         "Flames of Phlegethos": {
           name: "Flames of Phlegethos",
           type: "Feat",
-          version: "3.2.0",
+          version: "3.3.0",
           authors: ["Elwin"],
         },
         "Flame Tongue Greatsword": {
@@ -255,7 +255,7 @@ export function setConfig() {
         "Flash of Genius": {
           name: "Flash of Genius",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.4.0",
           authors: ["Elwin"],
         },
         Forage: {
@@ -285,19 +285,19 @@ export function setConfig() {
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "3.5.0",
+          version: "3.6.0",
           authors: ["Elwin"],
         },
         "Grenade, Smoke": {
           name: "Grenade, Smoke",
           type: "Item",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Guarded Mind": {
           name: "Guarded Mind",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Guardian Emblem": {
@@ -309,13 +309,13 @@ export function setConfig() {
         "Healer":{
           name: "Healer",
           type: "Feat",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin", "Moto Moto"],
         },
         "Healer's Kit":{
           name: "Healer's Kit",
           type: "Item",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Intoxicated Frenzy": {
@@ -327,7 +327,7 @@ export function setConfig() {
         "Ki": {
           name: "Ki",
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         "Moon-Touched Greatsword": {
@@ -369,7 +369,7 @@ export function setConfig() {
         "Negative Energy Flood": {
           name: "Negative Energy Flood",
           type: "Spell",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         Oathbow: {
@@ -386,8 +386,8 @@ export function setConfig() {
         },
         Poisoner: {
           name: "Poisoner",
-          type: "Class Features",
-          version: "2.2.0",
+          type: "Feat",
+          version: "2.3.0",
           authors: ["Elwin"],
         },
         "Potent Poison": {
@@ -399,7 +399,7 @@ export function setConfig() {
         "Produce Flame": {
           name: "Produce Flame",
           type: "Spell",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Psionic Power": {
@@ -465,31 +465,31 @@ export function setConfig() {
         "Sorrowful Fate": {
           name: "Sorrowful Fate",
           type: "Class Feature",
-          version: "2.3.0",
+          version: "2.4.0",
           authors: ["Elwin"],
         },
         "Spiny Shield": {
           name: "Spiny Shield",
           type: "Spell",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["tb"],
         },
         "Spirit Shield": {
           name: "Spirit Shield",
           type: "Class Feature",
-          version: "4.4.0",
+          version: "4.5.0",
           authors: ["Elwin"],
         },
         "Steady Aim": {
           name: "Steady Aim",
           type: "Class Feature",
-          version: "3.3.0",
+          version: "3.4.0",
           authors: ["Elwin"],
         },
         "Sun Blade": {
           name: "Sun Blade",
           type: "Item",
-          version: "2.5.0",
+          version: "2.6.0",
           authors: ["Elwin"],
         },
         "Tasha's Mind Whip": {
@@ -501,32 +501,32 @@ export function setConfig() {
         "Telekinetic Adept": {
           name: "Telekinetic Adept",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Telekinetic Master": {
           name: "Telekinetic Master",
           type: "Class Feature",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Tipsy Sway": {
           name: "Tipsy Sway",
           type: "Class Feature",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Tomb of Levistus": {
           name: "Tomb of Levistus",
           aliases: ["Eldritch Invocations: Tomb of Levistus"],
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin", "pospa4"],
         },
         "Unwavering Mark": {
           name: "Unwavering Mark",
           type: "Class Feature",
-          version: "3.7.0",
+          version: "3.8.0",
           authors: ["Elwin"],
         },
         "Vengeful Ancestors": {
@@ -556,7 +556,7 @@ export function setConfig() {
         "Warding Maneuver": {
           name: "Warding Maneuver",
           type: "Class Feature",
-          version: "2.4.0",
+          version: "2.5.0",
           authors: ["Elwin"],
         },
         "Wyvern Poison": {
@@ -630,7 +630,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         "Charger": {
@@ -666,7 +666,7 @@ export function setConfig() {
         "Eversmoking Bottle": {
           name: "Eversmoking Bottle",
           type: "Item",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Flame Tongue": {
@@ -697,7 +697,7 @@ export function setConfig() {
         "Great Weapon Master": {
           name: "Great Weapon Master",
           type: "Feat",
-          version: "1.5.1",
+          version: "1.6.0",
           authors: ["Elwin"],
         },
         "Innate Sorcery": {
@@ -753,7 +753,7 @@ export function setConfig() {
         Poisoner: {
           name: "Poisoner",
           type: "Feat",
-          version: "1.1.0",
+          version: "1.3.0",
           authors: ["Elwin"],
         },
         "Potent Poison": {
@@ -777,7 +777,7 @@ export function setConfig() {
         "Produce Flame": {
           name: "Produce Flame",
           type: "Spell",
-          version: "1.0.0",
+          version: "1.1.0",
           authors: ["Elwin"],
         },
         "Purple Worm Poison": {
@@ -819,7 +819,7 @@ export function setConfig() {
         "Smoke Grenade": {
           name: "Smoke Grenade",
           type: "Item",
-          version: "1.1.0",
+          version: "1.2.0",
           authors: ["Elwin"],
         },
         "Spiked Shield": {
@@ -831,13 +831,13 @@ export function setConfig() {
         "Steady Aim": {
           name: "Steady Aim",
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.4.0",
           authors: ["Elwin"],
         },
         "Sun Blade": {
           name: "Sun Blade",
           type: "Item",
-          version: "1.4.0",
+          version: "1.6.0",
           authors: ["Elwin"],
         },
         "Sword of Wounding": {
@@ -890,14 +890,14 @@ export function setConfig() {
         Lich: {
           "Negative Energy Tether": {
             name: "Negative Energy Tether",
-            version: "2.2.0",
+            version: "2.3.0",
             authors: ["Elwin"],
           },
         },
         Medusa: {
           "Petrifying Gaze": {
             name: "Petrifying Gaze",
-            version: "1.1.1",
+            version: "1.2.0",
             authors: ["Elwin", "Moto Moto"],
           },
         },
@@ -920,7 +920,7 @@ export function setConfig() {
         Medusa: {
           "Petrifying Gaze": {
             name: "Petrifying Gaze",
-            version: "1.1.1",
+            version: "1.2.0",
             authors: ["Elwin"],
           },
         },

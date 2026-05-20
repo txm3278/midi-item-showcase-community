@@ -2,11 +2,11 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.7.0
+// v3.8.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item macro, [preTargeting][preAttackRollConfig][preDamageRollConfig][postActiveEffects]
 //  - Elwin Helpers world script
 //
@@ -60,7 +60,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -422,13 +425,13 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
         priority: 20,
       },
     ],
-    duration: { rounds: 1, turns: 1 },
+    duration: game.release.generation >= 14 ? { rounds: 1, expiry: "sourceEnd" } : { rounds: 1, turns: 1 },
     origin: sourceItem.uuid, //flag the effect as associated to the source item
     transfer: false,
     disabled: false,
     img: sourceItem.img,
     name: targetEffectName,
-    "flags.dae": { specialDuration: ["turnEndSource"], stackable: "noneNameOnly" },
+    "flags.dae": { specialDuration: game.release.generation >= 14 ? [] : ["turnEndSource"], stackable: "noneNameOnly" },
   };
 
   await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });

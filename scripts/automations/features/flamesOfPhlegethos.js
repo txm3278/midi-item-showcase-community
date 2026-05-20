@@ -3,13 +3,13 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v3.2.0
+// v3.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item macro [postDamageRoll][isDamaged]
-//  - Active Token Effects
+//  - Active Token Effects (if Foundry version < v14)
 //  - Elwin Helpers world script
 //  - Token Magic FX (optional)
 //  - Dice So Nice (optional)
@@ -35,18 +35,22 @@
 
 export async function flamesOfPhlegethos({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the item
-  const DEFAULT_ITEM_NAME = 'Flames of Phlegethos';
+  const DEFAULT_ITEM_NAME = "Flames of Phlegethos";
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   // Normally should be one, but for test purpose can be set to an higher value
   const rerollNumber = 1;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.5.5')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | The Elwin Helpers setting must be enabled.`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.5")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol', 'ATL'];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+    dependencies.push("ATL");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -55,17 +59,17 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'postDamageRoll') {
-    if (scope.rolledItem?.type !== 'spell' || !workflow.damageRolls?.length) {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "postDamageRoll") {
+    if (scope.rolledItem?.type !== "spell" || !workflow.damageRolls?.length) {
       // Only works on spell with damage rolls
       return;
     }
     // TODO check also for other or bonus dmg?
     const fireDmg =
-      workflow.damageRolls.some((r) => r.options?.type === 'fire') || workflow.defaultDamageType === 'fire';
+      workflow.damageRolls.some((r) => r.options?.type === "fire") || workflow.defaultDamageType === "fire";
     if (!fireDmg) {
       // Spell must do fire damage to trigger effect
       return;
@@ -77,15 +81,15 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       .flat()
       .filter(
         (data) =>
-          (data.type ?? workflow.defaultDamageType) === 'fire' &&
-          data.die.results.some((r) => r.active && r.result <= rerollNumber)
+          (data.type ?? workflow.defaultDamageType) === "fire" &&
+          data.die.results.some((r) => r.active && r.result <= rerollNumber),
       )
       .map((d) => d.die);
 
     const { activateFlames, rerollDice } = await promptActivateFlamesAndOrRerollDice(
       scope.macroItem,
       diceToReroll,
-      rerollNumber
+      rerollNumber,
     );
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Activation prompt responses`, { activateFlames, rerollDice, diceToReroll });
@@ -114,20 +118,20 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       // Otherwise, ATL receives the new create event before the delete event...
       await wait(5);
 
-      await actor.createEmbeddedDocuments('ActiveEffect', [flamesEffectData]);
+      await actor.createEmbeddedDocuments("ActiveEffect", [flamesEffectData]);
       const message = `<p><strong>${scope.macroItem.name}</strong> - ${elwinHelpers.getTokenName(
-        token
+        token,
       )} is wreathed in flames</p>`;
       MidiQOL.addUndoChatMessage(
         await ChatMessage.create({
           content: message,
-          whisper: ChatMessage.getWhisperRecipients('GM').map((u) => u.id),
-        })
+          whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
+        }),
       );
     }
-  } else if (args[0].tag === 'TargetOnUse' && args[0].macroPass === 'isDamaged') {
+  } else if (args[0].tag === "TargetOnUse" && args[0].macroPass === "isDamaged") {
     // TODO check thrown weapons?
-    if (workflow.activity?.attack?.type?.value !== 'melee') {
+    if (workflow.activity?.attack?.type?.value !== "melee") {
       // Not a melee attack...
       if (debug) {
         console.warn(`${DEFAULT_ITEM_NAME} | Not a melee attack`);
@@ -144,7 +148,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
         actor,
         token,
         targetToken,
-        scope.macroItem
+        scope.macroItem,
       );
       return;
     }
@@ -157,7 +161,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       return;
     }
 
-    const reativeDamageActivity = scope.macroItem.system.activities?.find((a) => a.identifier === 'reactive-damage');
+    const reativeDamageActivity = scope.macroItem.system.activities?.find((a) => a.identifier === "reactive-damage");
     if (!reativeDamageActivity) {
       console.warn(`${DEFAULT_ITEM_NAME} | Could not find valid the damage activity for ${scope.macroItem.name}.`);
       return;
@@ -178,11 +182,11 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       midiOptions: {
         targetUuids: [workflow.tokenUuid],
         configureDialog: false,
-        workflowOptions: { fastForwardDamage: true, targetConfirmation: 'none' },
+        workflowOptions: { fastForwardDamage: true, targetConfirmation: "none" },
       },
     };
     if (player?.isGM) {
-      usage.midiOptions.workflowOptions.autoRollDamage = 'always';
+      usage.midiOptions.workflowOptions.autoRollDamage = "always";
     }
 
     const data = {
@@ -196,16 +200,16 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       if (
         !elwinHelpers.isMidiHookStillValid(
           DEFAULT_ITEM_NAME,
-          'midi-qol.RollComplete',
+          "midi-qol.RollComplete",
           scope.macroItem.name,
           workflow,
           currentWorkflow,
-          debug
+          debug,
         )
       ) {
         return;
       }
-      await MidiQOL.socket().executeAsUser('completeActivityUse', player.id, data);
+      await MidiQOL.socket().executeAsUser("completeActivityUse", player.id, data);
     });
   }
 
@@ -219,20 +223,20 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
    */
   async function promptActivateFlamesAndOrRerollDice(sourceItem, diceToReroll, rerollNumber) {
     let choices = [
-      new foundry.data.fields.BooleanField({ initial: true, label: 'Activate flames' }).toFormGroup(
+      new foundry.data.fields.BooleanField({ initial: true, label: "Activate flames" }).toFormGroup(
         {},
-        { name: 'activateFlames', value: true }
+        { name: "activateFlames", value: true },
       ).outerHTML,
     ];
     if (diceToReroll.length > 0) {
       choices.push(
         new foundry.data.fields.BooleanField({
           initial: true,
-          label: `Reroll ${rerollNumber}s${rerollNumber !== 1 ? ' and lower' : ''}`,
-        }).toFormGroup({}, { name: 'rerollDice', value: true }).outerHTML
+          label: `Reroll ${rerollNumber}s${rerollNumber !== 1 ? " and lower" : ""}`,
+        }).toFormGroup({}, { name: "rerollDice", value: true }).outerHTML,
       );
     }
-    const content = `<fieldset>${choices.join('')}</fieldset>`;
+    const content = `<fieldset>${choices.join("")}</fieldset>`;
     const dataset = await foundry.applications.api.DialogV2.wait({
       window: { title: `${sourceItem.name}` },
       content,
@@ -240,14 +244,14 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       modal: true,
       buttons: [
         {
-          action: 'ok',
-          label: 'Ok',
+          action: "ok",
+          label: "Ok",
           callback: (_, button, __) =>
             new (foundry.applications.ux?.FormDataExtended ?? FormDataExtended)(button.form).object,
         },
         {
-          action: 'cancel',
-          label: 'Cancel',
+          action: "cancel",
+          label: "Cancel",
         },
       ],
     });
@@ -267,10 +271,10 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       // Only keep last nb results (the new results of the rerolled ones)
       const rerolledResults = die.results.filter((result) => result.rerolled);
       dieJson.results = dieJson.results.slice(dieJson.results.length - rerolledResults.length);
-      foundry.utils.setProperty(dieJson, 'options.flavor', 'fire');
+      foundry.utils.setProperty(dieJson, "options.flavor", "fire");
       // Add dummy + operator if we want to roll multiple dice
       if (terms.length > 0) {
-        const operatorTerm = new OperatorTerm({ operator: '+' }).evaluate();
+        const operatorTerm = new OperatorTerm({ operator: "+" }).evaluate();
         terms.push(operatorTerm);
       }
       terms.push(new Die(dieJson));
@@ -280,7 +284,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Rerolled dice`, rerolledResult);
     }
-    MidiQOL.displayDSNForRoll(rerolledResult, 'damageRoll');
+    MidiQOL.displayDSNForRoll(rerolledResult, "damageRoll");
   }
 
   /**
@@ -291,79 +295,77 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
    * @returns {object} the active effect data for the light and Token Magic FX flames.
    */
   function getFlamesEffectData(sourceItem) {
+    const tokenKeyPrefix = game.release.generation >= 14 ? "token" : "ATL";
     const flamesEffectData = {
       changes: [
         {
-          key: 'flags.midi-qol.onUseMacroName',
+          key: "flags.midi-qol.onUseMacroName",
           mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
           value: `ItemMacro.${sourceItem.uuid},isDamaged`,
-          priority: '20',
+          priority: "20",
         },
         {
-          key: 'ATL.light.dim',
+          key: `${tokenKeyPrefix}.light.dim`,
           mode: CONST.ACTIVE_EFFECT_MODES.UPGRADE,
-          value: '60',
-          priority: '20',
+          value: "60",
+          priority: "20",
         },
         {
-          key: 'ATL.light.bright',
+          key: `${tokenKeyPrefix}.light.bright`,
           mode: CONST.ACTIVE_EFFECT_MODES.UPGRADE,
-          value: '30',
-          priority: '20',
+          value: "30",
+          priority: "20",
         },
         {
-          key: 'ATL.light.animation.type',
+          key: `${tokenKeyPrefix}.light.animation.type`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: 'torch',
-          priority: '20',
+          value: "torch",
+          priority: "20",
         },
         {
-          key: 'ATL.light.animation.speed',
+          key: `${tokenKeyPrefix}.light.animation.speed`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
           value: 1,
-          priority: '20',
+          priority: "20",
         },
         {
-          key: 'ATL.light.animation.intensity',
+          key: `${tokenKeyPrefix}.light.animation.intensity`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
           value: 1,
-          priority: '20',
+          priority: "20",
         },
         {
-          key: 'ATL.light.color',
+          key: `${tokenKeyPrefix}.light.color`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: '#a2642a',
-          priority: '20',
+          value: "#a2642a",
+          priority: "20",
         },
         {
-          key: 'ATL.light.alpha',
+          key: `${tokenKeyPrefix}.light.alpha`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
           value: 0.7,
-          priority: '20',
+          priority: "20",
         },
       ],
-      duration: {
-        rounds: 1,
-        turns: 1,
-      },
+      duration: game.release.generation >= 14 ? { rounds: 1, expiry: "sourceEnd" } : { rounds: 1, turns: 1 },
       img: sourceItem.img,
       name: `${sourceItem.name} - Flames`,
       origin: sourceItem.uuid,
       transfer: false,
       flags: {
         dae: {
-          stackable: 'noneName',
-          specialDuration: ['turnEndSource'],
+          stackable: "noneName",
+          specialDuration: game.release.generation >= 14 ? [] : ["turnEndSource"],
         },
       },
     };
 
-    if (game.modules.get('tokenmagic')?.active) {
+    if (game.modules.get("tokenmagic")?.active) {
       flamesEffectData.changes.push({
-        key: 'macro.tokenMagic',
+        key: "macro.tokenMagic",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: 'fire',
-        priority: '20',
+        value: "fire",
+        priority: "20",
       });
     }
 

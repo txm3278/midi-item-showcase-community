@@ -3,10 +3,10 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Artificer
 // when a creature within range rolls a saving throw or ability check to allow them to add a bonus on the roll.
-// v2.3.0
+// v2.4.0
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item/actor macro [preActiveEffects][tpr.isPostCheckSave]
 //  - Elwin Helpers world script
 //
@@ -36,7 +36,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

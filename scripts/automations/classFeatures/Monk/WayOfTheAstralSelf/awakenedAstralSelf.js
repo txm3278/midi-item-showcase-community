@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Awakened Astral Self
 // Adds the Awakened effects and summons the Arms, Visage and Body of the Astral Self.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects]
 //
 // Usage:
@@ -26,7 +26,10 @@ const DEFAULT_ITEM_NAME = "Awakened Astral Self";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -64,7 +67,7 @@ export async function awakenedAstralSelf({ speaker, actor, token, character, ite
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 

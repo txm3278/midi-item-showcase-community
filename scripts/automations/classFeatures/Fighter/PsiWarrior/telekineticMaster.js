@@ -2,11 +2,11 @@
 // Fighter - Psi Warrior - Telekinetic Master
 // Adds Telekinesis spell as a free use or one that consumes a Psionic Energy die,
 // it also handles special Bonus Weapon Attack.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on],[off],[each]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[preItemRoll][postActiveEffects],[postRollFinished]
 //  - Elwin Helpers world script
 //
@@ -55,7 +55,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

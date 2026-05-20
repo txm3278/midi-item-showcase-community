@@ -3,11 +3,11 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Bard
 // when an ally or himself forces a creature to roll a saving throw. When doing so, the saving
 // throw ability is changed to Charisma and if the target fails its save it takes extra damage.
-// v2.3.0
+// v2.4.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE, macro [off]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item macro,[preActiveEffects][tpr.isPreCheckSave]
 //  - Elwin Helpers world script
 //
@@ -46,7 +46,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

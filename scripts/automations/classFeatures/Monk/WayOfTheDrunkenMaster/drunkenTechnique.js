@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Monk - Way of the Drunken Master - Drunken Technique
 // Handles the ability to increment walking speed and prevent provoking AoO when Flurry of Blows is used.
-// v1.0.0
+// v1.1.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects]
 //  - Elwin Helpers world script
 //
@@ -31,13 +31,14 @@ const MONKS_FOCUS_IDENT = "monks-focus";
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.8")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -54,7 +55,7 @@ export async function drunkenTechnique({ speaker, actor, token, character, item,
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 

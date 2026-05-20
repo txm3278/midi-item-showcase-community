@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for "Channel Divinity: Vow of Enmity", and gives advantage on attacks against it.
-// v3.5.0
+// v3.6.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "on use" item/actor macro,[preAttackRollConfig][postActiveEffects]
 //
 // Usage:
@@ -42,7 +42,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }

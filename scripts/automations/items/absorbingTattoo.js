@@ -3,11 +3,11 @@
 // Read First!!!!
 // Adds resistance to the tattoo damage type, and a reaction is triggered when the owner is damaged by the tattoo damage type,
 // which adds immunity to that damage and heals the owner by 1/2 of the damage he would have taken.
-// v2.0.0
+// v2.1.0
 // Dependencies:
 //  - DAE
-//  - Times Up
-//  - MidiQOL "on use" actor macro [preItemRoll],[preTargetDamageApplication]
+//  - Times Up (if Foundry version < v14)
+//  - MidiQOL "on use" actor macro [preItemRoll]
 //  - Elwin Helpers world script
 //
 // Usage:
@@ -19,42 +19,37 @@
 //   Validates that the item is equipped and attuned, otherwise aborts the item use.
 // ###################################################################################################
 
-
-export async function absorbingTattoo({
-  speaker,
-  actor,
-  token,
-  character,
-  item,
-  args,
-  scope,
-  workflow,
-  options,
-}) {
-// Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Absorbing Tattoo';
-  const MODULE_ID = 'midi-item-showcase-community';
+export async function absorbingTattoo({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  // Default name of the feature
+  const DEFAULT_ITEM_NAME = "Absorbing Tattoo";
+  const MODULE_ID = "midi-item-showcase-community";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.0')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.0")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
-  const dependencies = ['dae', 'times-up', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
 
   if (debug) {
-    console.warn(DEFAULT_ITEM_NAME, { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] }, arguments);
+    console.warn(
+      DEFAULT_ITEM_NAME,
+      { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
+      arguments,
+    );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     if (!scope.rolledItem.system.equipped || !scope.rolledItem.system.attuned) {
-    // The Item must be equipped and attuned
+      // The Item must be equipped and attuned
       ui.notifications.warn(`${scope.rolledItem.name} | The tattoo must be equipped and attuned.`);
       return false;
     }
   }
-
 }

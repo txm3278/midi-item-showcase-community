@@ -1,11 +1,11 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Body of the Astral Self
 // Summons a spectral body and adds its effects.
-// v1.1.0
+// v1.2.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
-//  - Times Up
+//  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[postActiveEffects]
 //  - Elwin Helpers world script
 //
@@ -33,7 +33,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -50,7 +53,7 @@ export async function bodyOfTheAstralSelf({ speaker, actor, token, character, it
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -71,10 +74,9 @@ export async function bodyOfTheAstralSelf({ speaker, actor, token, character, it
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
  */
 async function handleOnUsePostActiveEffects(sourceActor, workflow) {
-
   // TODO get token damage instead..
   const damages = workflow.workflowOptions?.damageDetail?.filter(
-    (d) => ["acid", "cold", "fire", "force", "lightning", "thunder"].includes(d.type) && d.value > 0
+    (d) => ["acid", "cold", "fire", "force", "lightning", "thunder"].includes(d.type) && d.value > 0,
   );
   if (!damages?.length) {
     console.warn(`${DEFAULT_ITEM_NAME} | No supported damage types`, {

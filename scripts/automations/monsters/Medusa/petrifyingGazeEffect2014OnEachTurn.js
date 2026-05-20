@@ -2,10 +2,10 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Triggers at the start of each creature's turn to ask if they avert their eyes or they will need to resist the Petrifying Gaze.
-// v1.0.0
+// v1.2.0
 // Dependencies:
 //  - DAE
-//  - Times up
+//  - Times up (if Foundry version < v14)
 //  - MidiQOL
 //  - Effect Macro
 //
@@ -29,13 +29,16 @@ export async function petrifyingGazeEffect2014OnEachTurn(
   scene,
   origin,
   effect,
-  item
+  item,
 ) {
   // Default name of the feature
-  const DEFAULT_ITEM_NAME = 'Petrifying Gaze - EM';
+  const DEFAULT_ITEM_NAME = "Petrifying Gaze - EM";
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
-  const dependencies = ['dae', 'times-up', 'midi-qol', 'effectmacro'];
+  const dependencies = ["dae", "midi-qol", "effectmacro"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -69,7 +72,7 @@ export async function petrifyingGazeEffect2014OnEachTurn(
     // Skip turn of owner of effect or no actor
     return;
   }
-  if (actor.statuses?.has('incapacitated')) {
+  if (actor.statuses?.has("incapacitated")) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Source of gaze is incapacitated.`, { sourceActor: actor });
     }
@@ -83,7 +86,7 @@ export async function petrifyingGazeEffect2014OnEachTurn(
     }
     return;
   }
-  if (targetToken.actor?.statuses?.intersects(new Set(['dead', 'unconscious']))) {
+  if (targetToken.actor?.statuses?.intersects(new Set(["dead", "unconscious"]))) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Target cannot see the source of gaze.`, { targetToken, sourceToken: token });
     }
@@ -103,13 +106,13 @@ export async function petrifyingGazeEffect2014OnEachTurn(
     return;
   }
 
-  if (item?.identifier !== 'petrifying-gaze') {
+  if (item?.identifier !== "petrifying-gaze") {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Missing item.`, { effect });
     }
     return;
   }
-  const gazeEffectActivity = item.system?.activities.find((a) => a.identifier === 'resist-effect');
+  const gazeEffectActivity = item.system?.activities.find((a) => a.identifier === "resist-effect");
   if (!gazeEffectActivity) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Missing Resist Effect activity.`, { item });
@@ -125,7 +128,7 @@ export async function petrifyingGazeEffect2014OnEachTurn(
   }
 
   // Check if target wants to avert eyes.
-  if (!targetToken.actor?.statuses?.has('surprised')) {
+  if (!targetToken.actor?.statuses?.has("surprised")) {
     const sourceName = MidiQOL.getTokenPlayerName(token, true);
     const avertEyes = await foundry.applications.api.DialogV2.confirm({
       window: { title: `${item.name} - ${targetToken.actor.name} - Avert Eyes` },
@@ -138,13 +141,13 @@ export async function petrifyingGazeEffect2014OnEachTurn(
       const targetEffectData = {
         changes: [
           {
-            key: 'flags.midi-qol.disadvantage.attack.all',
+            key: "flags.midi-qol.disadvantage.attack.all",
             mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
             value: `targetUuid === "${token.document.uuid}"`,
             priority: 20,
           },
           {
-            key: 'flags.midi-qol.grants.advantage.attack.all',
+            key: "flags.midi-qol.grants.advantage.attack.all",
             mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
             value: `tokenUuid === "${token.document.uuid}"`,
             priority: 20,
@@ -154,7 +157,7 @@ export async function petrifyingGazeEffect2014OnEachTurn(
         img: item.img,
         name: `Avert Eyes from ${sourceName}`,
         duration: { rounds: 1 },
-        'flags.dae.stackable': 'noneNameOnly',
+        "flags.dae.stackable": "noneNameOnly",
       };
       await MidiQOL.createEffects({ actorUuid: targetToken.actor?.uuid, effects: [targetEffectData] });
       return;
@@ -174,7 +177,7 @@ export async function petrifyingGazeEffect2014OnEachTurn(
   const usage = {
     midiOptions: {
       targetUuids: [targetToken.document?.uuid],
-      workflowOptions: { targetConfirmation: 'none' },
+      workflowOptions: { targetConfirmation: "none" },
     },
   };
 
@@ -184,5 +187,5 @@ export async function petrifyingGazeEffect2014OnEachTurn(
     usage,
   };
 
-  await MidiQOL.socket().executeAsUser('completeActivityUse', player.id, data);
+  await MidiQOL.socket().executeAsUser("completeActivityUse", player.id, data);
 }
