@@ -354,13 +354,9 @@
     {
       "changes": [],
       "duration": {
-        "seconds": 3600,
-        "startTime": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "hours",
+        "expiry": "turnStart"
       },
       "tint": "#ffffff",
       "transfer": false,
@@ -375,7 +371,6 @@
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false,
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

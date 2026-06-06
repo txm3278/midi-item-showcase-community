@@ -195,13 +195,9 @@
     {
       "origin": "Item.CbvtrJStTDXzgM7E",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "name": "Absorbing Tattoo, Acid",
@@ -222,7 +218,6 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -257,13 +252,9 @@
     {
       "origin": "Item.CbvtrJStTDXzgM7E",
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "disabled": false,
       "name": "Absorbing Tattoo, Acid",
@@ -288,7 +279,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

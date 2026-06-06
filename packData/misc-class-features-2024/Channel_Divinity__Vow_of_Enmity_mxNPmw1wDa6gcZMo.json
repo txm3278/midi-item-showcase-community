@@ -328,13 +328,9 @@
       "name": "Channel Divinity: Vow of Enmity",
       "origin": null,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "peIeFYuPKmsoXwVo",
@@ -362,7 +358,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
@@ -406,13 +401,9 @@
       "name": "Marked by Vow of Enmity",
       "origin": null,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "mXb3v0Eqny4tMqiI",
@@ -434,7 +425,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

@@ -26,13 +26,9 @@
         }
       ],
       "duration": {
-        "seconds": 60,
-        "startTime": null,
-        "rounds": 10,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": 1,
+        "unit": "minutes",
+        "expiry": "turnStart"
       },
       "tint": "#ffffff",
       "transfer": false,
@@ -44,7 +40,6 @@
           "specialDuration": [],
           "enableCondition": "",
           "disableCondition": "",
-          "showIcon": true,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,

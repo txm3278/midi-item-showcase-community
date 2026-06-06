@@ -248,13 +248,9 @@
     {
       "origin": null,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "k6VChPqCYMCeFLPJ",
@@ -284,7 +280,6 @@
           "macroRepeat": "endEveryTurn",
           "specialDuration": [],
           "dontApply": false,
-          "showIcon": false,
           "disableIncapacitated": true,
           "disableCondition": ""
         },

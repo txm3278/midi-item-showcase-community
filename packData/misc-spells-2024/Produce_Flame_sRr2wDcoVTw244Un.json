@@ -328,37 +328,37 @@
       "system": {},
       "changes": [
         {
-          "key": "ATL.light.bright",
+          "key": "token.light.bright",
           "mode": 4,
           "value": "20",
           "priority": 20
         },
         {
-          "key": "ATL.light.dim",
+          "key": "token.light.dim",
           "mode": 4,
           "value": "20",
           "priority": 20
         },
         {
-          "key": "ATL.light.animation.type",
+          "key": "token.light.animation.type",
           "mode": 5,
           "value": "torch",
           "priority": 20
         },
         {
-          "key": "ATL.light.animation.speed",
+          "key": "token.light.animation.speed",
           "mode": 5,
           "value": "1",
           "priority": 20
         },
         {
-          "key": "ATL.light.animation.intensity",
+          "key": "token.light.animation.intensity",
           "mode": 5,
           "value": "1",
           "priority": 20
         },
         {
-          "key": "ATL.light.color",
+          "key": "token.light.color",
           "mode": 5,
           "value": "#a2642a",
           "priority": 20
@@ -372,13 +372,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -394,7 +390,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": true,

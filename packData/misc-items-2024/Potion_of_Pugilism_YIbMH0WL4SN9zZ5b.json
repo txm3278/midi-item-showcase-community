@@ -36,6 +36,7 @@
           "priority": 20
         }
       ],
+      "showIcon": 2,
       "transfer": false,
       "img": "icons/consumables/potions/potion-tube-corked-tied-green.webp",
       "_id": "gIHgjqvd2Xjq41GX",
@@ -43,13 +44,9 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "origin": null,
@@ -66,7 +63,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": true,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,
@@ -270,7 +266,9 @@
       },
       "replace": false
     },
-    "properties": ["mgc"],
+    "properties": [
+      "mgc"
+    ],
     "type": {
       "value": "potion",
       "subtype": ""

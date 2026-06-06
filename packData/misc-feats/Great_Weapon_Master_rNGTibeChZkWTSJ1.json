@@ -389,13 +389,9 @@
       "name": "Great Weapon Master - Passive",
       "origin": null,
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "transfer": true,
       "disabled": false,
@@ -438,7 +434,6 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "endEveryTurn",
           "specialDuration": [],

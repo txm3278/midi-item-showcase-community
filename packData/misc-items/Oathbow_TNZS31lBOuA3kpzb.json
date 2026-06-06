@@ -429,13 +429,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "<p>When you make a ranged attack roll with this weapon against your sworn enemy, you have Advantage on the roll. In addition, your target gains no benefit from Half Cover or Three-Quarters Cover, and you suffer no Disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 Piercing damage.</p><p>While your sworn enemy lives, you have Disadvantage on attack rolls with all other weapons.</p>",
       "tint": "#ffffff",
@@ -450,7 +446,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -494,13 +489,9 @@
       "changes": [],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "<p>When you make a ranged attack roll with this weapon against your sworn enemy, you have Advantage on the roll. In addition, your target gains no benefit from Half Cover or Three-Quarters Cover, and you suffer no Disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 Piercing damage.</p><p>While your sworn enemy lives, you have Disadvantage on attack rolls with all other weapons.</p>",
       "tint": "#ffffff",
@@ -517,7 +508,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [
@@ -569,13 +559,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -587,7 +573,6 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "multi",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

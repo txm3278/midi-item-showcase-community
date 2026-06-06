@@ -334,13 +334,9 @@
       "name": "Sorrowful Fate",
       "origin": null,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "C0ft0r2WhkqxIFgG",
@@ -359,7 +355,6 @@
         "dae": {
           "disableIncapacitated": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
@@ -414,13 +409,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": 60,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "minutes",
+        "expiry": "turnStart"
       },
       "description": "",
       "tint": "#ffffff",
@@ -436,7 +427,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

@@ -77,13 +77,9 @@
       "name": "Shield of Missile Attraction",
       "origin": "Item.dDQYBOP8N7n3fDvh",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "OtCRp2ff3vM88UxP",
@@ -111,7 +107,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
@@ -175,13 +170,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -195,7 +186,6 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],

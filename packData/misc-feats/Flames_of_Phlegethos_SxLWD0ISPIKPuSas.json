@@ -164,13 +164,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "origin": "Item.NXTNzCS4k7G8Jnbs",
       "transfer": true,

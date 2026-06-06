@@ -184,13 +184,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "turns": 1,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
       "transfer": false,
@@ -210,7 +206,6 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false,
           "enableCondition": "",
           "disableCondition": ""
         },
@@ -268,13 +263,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "turns": 1,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
       "transfer": false,
@@ -292,7 +283,6 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false,
           "enableCondition": "",
           "disableCondition": ""
         },

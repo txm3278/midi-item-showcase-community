@@ -163,13 +163,9 @@
       "name": "Gift of the Metallic Dragon",
       "origin": "Item.Vui6WdIKyasm5bcI",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "transfer": true,
       "disabled": false,
@@ -194,7 +190,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -227,13 +222,9 @@
       "name": "Gift of the Metallic Dragon - AC Bonus",
       "origin": "Item.Vui6WdIKyasm5bcI",
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "transfer": false,
       "disabled": false,
@@ -258,7 +249,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

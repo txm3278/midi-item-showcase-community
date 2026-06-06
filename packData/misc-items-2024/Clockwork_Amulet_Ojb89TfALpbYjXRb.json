@@ -198,15 +198,12 @@
           "priority": 20
         }
       ],
+      "showIcon": 2,
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -221,7 +218,6 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": true,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

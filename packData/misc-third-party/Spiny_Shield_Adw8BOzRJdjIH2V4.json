@@ -393,13 +393,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": 1,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "sourceStart"
       },
       "description": "",
       "tint": "#ffffff",
@@ -411,12 +407,9 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "multi",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": [
-            "turnStartSource"
-          ],
+          "specialDuration": [],
           "enableCondition": "",
           "selfTarget": true,
           "selfTargetAlways": false,

@@ -8,22 +8,28 @@
       "statuses": [],
       "changes": [
         {
-          "key": "system.attributes.senses.devilsSight",
+          "key": "system.attributes.senses.range.devilsSight",
           "mode": 4,
           "value": "120",
           "priority": 20
         },
         {
-          "key": "ATL.sight.visionMode",
+          "key": "token.sight.visionMode",
           "mode": 0,
           "value": "devilsSight",
-          "priority": 20
+          "priority": 30
         },
         {
-          "key": "ATL.sight.range",
+          "key": "token.sight.range",
           "mode": 4,
           "value": "120",
-          "priority": 20
+          "priority": 30
+        },
+        {
+          "key": "token.sight.detectionMode",
+          "mode": 0,
+          "value": "devilsSight",
+          "priority": 30
         },
         {
           "key": "flags.midi-qol.advantage.skill.ins",
@@ -44,26 +50,22 @@
           "priority": 20
         },
         {
-          "key": "ATL.detectionModes.devilsSight.range",
+          "key": "token.detectionModes.devilsSight.range",
           "mode": 4,
           "value": "120",
           "priority": 20
         },
         {
-          "key": "ATL.detectionModes.devilsSight.enabled",
+          "key": "token.detectionModes.devilsSight.enabled",
           "mode": 5,
           "value": "true",
           "priority": 20
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
@@ -78,7 +80,6 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "dontApply": false,
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

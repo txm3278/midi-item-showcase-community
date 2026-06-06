@@ -151,13 +151,9 @@
       "name": "Psionic Shield",
       "origin": "Item.CJBSMFb1OYhBxGk4",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "transfer": true,
       "disabled": false,
@@ -182,7 +178,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
@@ -219,13 +214,9 @@
       "name": "Psionic Shield - AC Bonus",
       "origin": "Item.CJBSMFb1OYhBxGk4",
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "transfer": false,
       "disabled": false,
@@ -250,7 +241,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

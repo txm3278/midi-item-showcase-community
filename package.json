@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "buildCompendiums": "node packData/packData.mjs",
-    "extractPack": "node packData/unpackData.mjs"
+    "extractPack": "node packData/unpackData.mjs",
+    "transform:v14": "node scripts/transform-v14.mjs"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
   "homepage": "https://github.com/txm3278/midi-item-showcase-community#readme",
   "dependencies": {
     "@eslint/compat": "^1.4.0",
-    "@foundryvtt/foundryvtt-cli": "^3.0.0"
+    "@foundryvtt/foundryvtt-cli": "^3.0.0",
+    "glob": "^10.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",

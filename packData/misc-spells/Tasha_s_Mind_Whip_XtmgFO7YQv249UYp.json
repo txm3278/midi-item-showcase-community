@@ -261,13 +261,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": 1,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "targetEnd"
       },
       "description": "",
       "tint": "#ffffff",
@@ -282,12 +278,9 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "startEveryTurn",
-          "specialDuration": [
-            "turnEnd"
-          ]
+          "specialDuration": []
         },
         "dnd5e": {
           "riders": {

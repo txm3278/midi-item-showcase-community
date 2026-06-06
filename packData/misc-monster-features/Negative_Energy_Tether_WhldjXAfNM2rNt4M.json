@@ -324,13 +324,9 @@
       "name": "Negative Energy Tether",
       "origin": null,
       "duration": {
-        "rounds": 1,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "turnStart"
       },
       "disabled": false,
       "_id": "bAjDOs9V0fZYdjmi",
@@ -358,12 +354,9 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": [
-            "None"
-          ],
+          "specialDuration": [],
           "enableCondition": "",
           "disableCondition": ""
         },
@@ -403,13 +396,9 @@
       "name": "Negative Energy Tether",
       "origin": null,
       "duration": {
-        "rounds": 1,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "turnStart"
       },
       "disabled": false,
       "_id": "YP2QLxlBrwy51W9m",
@@ -424,7 +413,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

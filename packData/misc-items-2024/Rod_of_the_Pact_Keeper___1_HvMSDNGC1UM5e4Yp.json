@@ -56,20 +56,15 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": true,
       "disabled": false,
       "flags": {
         "dae": {
-          "showIcon": false,
           "transfer": true,
           "stackable": "noneNameOnly",
           "disableCondition": "",
@@ -97,7 +92,8 @@
       "system": {},
       "origin": null,
       "sort": 0,
-      "_key": "!items.effects!HvMSDNGC1UM5e4Yp.uQOiZRCtf1TMlCOg"}
+      "_key": "!items.effects!HvMSDNGC1UM5e4Yp.uQOiZRCtf1TMlCOg"
+    }
   ],
   "system": {
     "activities": {
@@ -295,7 +291,10 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": ["foc", "mgc"],
+    "properties": [
+      "foc",
+      "mgc"
+    ],
     "strength": null,
     "type": {
       "value": "rod",

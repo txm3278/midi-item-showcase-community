@@ -404,13 +404,9 @@
         }
       ],
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "origin": null,
@@ -423,7 +419,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -465,51 +460,48 @@
       "system": {},
       "changes": [
         {
-          "key": "ATL.light.bright",
+          "key": "token.light.bright",
           "mode": 4,
           "value": "40",
           "priority": 20
         },
         {
-          "key": "ATL.light.dim",
+          "key": "token.light.dim",
           "mode": 4,
           "value": "80",
           "priority": 20
         },
         {
-          "key": "ATL.light.animation.type",
+          "key": "token.light.animation.type",
           "mode": 5,
           "value": "torch",
           "priority": 20
         },
         {
-          "key": "ATL.light.animation.speed",
+          "key": "token.light.animation.speed",
           "mode": 5,
           "value": "5",
           "priority": 20
         },
         {
-          "key": "ATL.light.animation.intensity",
+          "key": "token.light.animation.intensity",
           "mode": 5,
           "value": "5",
           "priority": 20
         },
         {
-          "key": "ATL.light.color",
+          "key": "token.light.color",
           "mode": 5,
           "value": "#a2642a",
           "priority": 20
         }
       ],
+      "showIcon": 2,
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -521,7 +513,6 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "noneName",
-          "showIcon": true,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
@@ -628,13 +619,9 @@
         }
       ],
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "origin": "Item.XtfHU1nNOfQ2Jnd8.Activity.gWyUnL5ovlZj5GCK",
@@ -647,7 +634,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

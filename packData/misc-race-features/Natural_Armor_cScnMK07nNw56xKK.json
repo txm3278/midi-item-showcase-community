@@ -15,13 +15,9 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": true,
@@ -31,7 +27,6 @@
           "transfer": true,
           "stackable": "noneNameOnly",
           "disableCondition": "",
-          "showIcon": false,
           "disableIncapacitated": false,
           "durationExpression": "",
           "macroRepeat": "none",

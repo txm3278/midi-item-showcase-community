@@ -532,13 +532,9 @@
       "changes": [],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": 60,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "minutes",
+        "expiry": "turnStart"
       },
       "description": "",
       "tint": "#ffffff",
@@ -555,7 +551,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -622,13 +617,9 @@
         }
       ],
       "duration": {
-        "startTime": null,
-        "seconds": 60,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "minutes",
+        "expiry": "turnStart"
       },
       "description": "",
       "origin": null,
@@ -641,7 +632,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

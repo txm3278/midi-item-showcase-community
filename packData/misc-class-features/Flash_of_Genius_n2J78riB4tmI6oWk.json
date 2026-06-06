@@ -271,13 +271,9 @@
     {
       "origin": null,
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "disabled": false,
       "_id": "YS5K59UnEuyNjtDE",
@@ -312,8 +308,7 @@
             "isSave"
           ],
           "disableIncapacitated": false,
-          "dontApply": false,
-          "showIcon": false
+          "dontApply": false
         },
         "core": {
           "statusId": ""
@@ -348,13 +343,9 @@
       "name": "Flash of Genius",
       "origin": null,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "PmbYTNMjZDpmi9EX",
@@ -373,7 +364,6 @@
         "dae": {
           "disableIncapacitated": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],

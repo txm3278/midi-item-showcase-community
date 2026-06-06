@@ -363,13 +363,9 @@
     {
       "origin": "Actor.YAjfi4ZsIEJbjXMU.Item.TpORQgI8pcguakxW",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "name": "Poison, Basic (vial) - Config",
@@ -394,7 +390,6 @@
           "selfTargetAlways": false,
           "dontApply": true,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -454,13 +449,9 @@
         }
       ],
       "duration": {
-        "startTime": null,
-        "seconds": 60,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "minutes",
+        "expiry": "turnStart"
       },
       "description": "",
       "origin": null,
@@ -473,7 +464,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

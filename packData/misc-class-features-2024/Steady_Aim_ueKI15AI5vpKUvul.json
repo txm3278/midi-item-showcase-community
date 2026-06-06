@@ -15,13 +15,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "turns": 1,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "origin": "Item.mp4IXtsdpgI3uZD0",
       "transfer": false,
@@ -41,7 +37,6 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false,
           "enableCondition": "",
           "disableCondition": ""
         },
@@ -99,13 +94,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "turns": 1,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "origin": "Item.mp4IXtsdpgI3uZD0",
       "transfer": false,
@@ -123,7 +114,6 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false,
           "enableCondition": "",
           "disableCondition": ""
         },

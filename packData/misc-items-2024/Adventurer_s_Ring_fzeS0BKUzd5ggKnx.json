@@ -12,27 +12,24 @@
       "system": {},
       "changes": [
         {
-          "key": "ATL.light.dim",
+          "key": "token.light.dim",
           "mode": 4,
           "value": "40",
           "priority": 20
         },
         {
-          "key": "ATL.light.bright",
+          "key": "token.light.bright",
           "mode": 4,
           "value": "20",
           "priority": 20
         }
       ],
+      "showIcon": 2,
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -48,7 +45,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": true,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,
@@ -249,7 +245,9 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": ["mgc"],
+    "properties": [
+      "mgc"
+    ],
     "strength": 0,
     "type": {
       "value": "ring",

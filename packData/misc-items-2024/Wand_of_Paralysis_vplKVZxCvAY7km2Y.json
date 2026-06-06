@@ -21,13 +21,9 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
@@ -39,7 +35,6 @@
           "specialDuration": [],
           "enableCondition": "",
           "disableCondition": "",
-          "showIcon": false,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,
@@ -151,7 +146,9 @@
           }
         },
         "save": {
-          "ability": ["con"],
+          "ability": [
+            "con"
+          ],
           "dc": {
             "calculation": "",
             "formula": "15"
@@ -269,7 +266,10 @@
       "magicalBonus": null
     },
     "proficient": null,
-    "properties": ["foc", "mgc"],
+    "properties": [
+      "foc",
+      "mgc"
+    ],
     "strength": null,
     "type": {
       "value": "wand",

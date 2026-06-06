@@ -215,17 +215,14 @@
           "priority": 20
         }
       ],
+      "showIcon": 2,
       "transfer": false,
       "_id": "9hKbwzQMH2NC8phg",
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": 9999,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "origin": null,
@@ -243,7 +240,6 @@
           "specialDuration": [],
           "disableIncapacitated": false,
           "dontApply": false,
-          "showIcon": false,
           "enableCondition": "",
           "disableCondition": ""
         },

@@ -358,13 +358,9 @@
       "changes": [],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": 60,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "minutes",
+        "expiry": "turnStart"
       },
       "description": "",
       "tint": "#ffffff",
@@ -380,7 +376,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "multi",
-          "showIcon": false,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": true,

@@ -18,15 +18,12 @@
           "priority": 20
         }
       ],
+      "showIcon": 2,
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -42,7 +39,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": true,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": false,
@@ -245,7 +241,9 @@
       },
       "replace": false
     },
-    "properties": ["mgc"],
+    "properties": [
+      "mgc"
+    ],
     "type": {
       "value": "potion",
       "subtype": ""

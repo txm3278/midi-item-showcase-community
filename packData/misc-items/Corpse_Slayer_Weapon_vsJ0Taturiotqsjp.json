@@ -390,13 +390,9 @@
       "name": "Corpse Slayer",
       "origin": "Item.e8f1IqRLvmTyyezq",
       "duration": {
-        "rounds": 1,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "sourceStart"
       },
       "transfer": false,
       "disabled": false,
@@ -421,12 +417,9 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": [
-            "turnStartSource"
-          ],
+          "specialDuration": [],
           "enableCondition": "",
           "disableCondition": ""
         },
@@ -536,13 +529,9 @@
         }
       ],
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "origin": null,
@@ -555,7 +544,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

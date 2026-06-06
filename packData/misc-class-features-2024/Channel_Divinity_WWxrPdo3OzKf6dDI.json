@@ -12,21 +12,23 @@
       "system": {},
       "changes": [
         {
-          "key": "ATL.detectionModes.divineSense.range",
+          "key": "token.detectionModes.divineSense.range",
           "mode": 4,
           "value": "60",
+          "priority": 20
+        },
+        {
+          "key": "token.detectionModes.divineSense.enabled",
+          "mode": 5,
+          "value": "true",
           "priority": 20
         }
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -42,7 +44,6 @@
           "enableCondition": "!statuses.incapacitated",
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "disableIncapacitated": true,
           "selfTarget": false,
           "selfTargetAlways": false,

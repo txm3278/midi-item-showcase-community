@@ -327,13 +327,9 @@
       "name": "Crown of Stars",
       "origin": "Actor.nAFfu59Cgt3Dllwa.Item.oLR9rLuerrXcY6tU",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "disabled": false,
       "_id": "Zt1cSbtbDN2tiFbr",
@@ -351,31 +347,31 @@
           "priority": 20
         },
         {
-          "key": "ATL.light.dim",
+          "key": "token.light.dim",
           "mode": 4,
           "value": "60",
           "priority": 20
         },
         {
-          "key": "ATL.light.alpha",
+          "key": "token.light.alpha",
           "mode": 0,
-          "value": "0.4",
+          "value": "0.16",
           "priority": 20
         },
         {
-          "key": "ATL.light.color",
+          "key": "token.light.color",
           "mode": 0,
           "value": "#ffd79e",
           "priority": 20
         },
         {
-          "key": "ATL.light.luminosity",
+          "key": "token.light.luminosity",
           "mode": 0,
           "value": "0.5",
           "priority": 20
         },
         {
-          "key": "ATL.light.bright",
+          "key": "token.light.bright",
           "mode": 4,
           "value": "30",
           "priority": 20
@@ -391,7 +387,6 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],

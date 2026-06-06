@@ -336,13 +336,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "description": "",
       "tint": "#ffffff",
@@ -357,7 +353,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "multi",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [

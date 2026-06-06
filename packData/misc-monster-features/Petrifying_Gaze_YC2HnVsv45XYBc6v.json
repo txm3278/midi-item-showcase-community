@@ -294,13 +294,9 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": 1,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "targetEnd"
       },
       "description": "",
       "origin": null,
@@ -318,12 +314,9 @@
           "selfTargetAlways": false,
           "dontApply": true,
           "stackable": "multi",
-          "showIcon": true,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": [
-            "turnEnd"
-          ]
+          "specialDuration": []
         },
         "core": {
           "overlay": false
@@ -369,13 +362,9 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "origin": "Item.YC2HnVsv45XYBc6v",
@@ -396,7 +385,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -441,13 +429,9 @@
       "changes": [],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": 1,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "description": "",
       "tint": "#ffffff",
@@ -462,7 +446,6 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

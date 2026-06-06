@@ -194,13 +194,9 @@
       "name": "Ice Entombment",
       "origin": null,
       "duration": {
-        "rounds": 1,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": 1,
+        "unit": "rounds",
+        "expiry": "sourceEnd"
       },
       "transfer": false,
       "disabled": false,
@@ -239,12 +235,9 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": [
-            "turnEndSource"
-          ],
+          "specialDuration": [],
           "enableCondition": "",
           "disableCondition": ""
         },
@@ -319,13 +312,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "description": "",
       "tint": "#ffffff",
@@ -341,7 +330,6 @@
         "dae": {
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "disableIncapacitated": false,
           "durationExpression": "",
           "macroRepeat": "none",
