@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Body of the Astral Self
 // Summons a spectral body and adds its effects.
-// v1.2.0
+// v1.2.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -104,7 +104,12 @@ async function handleOnUsePostActiveEffects(sourceActor, workflow) {
     disabled: false,
     img: workflow.activity.item.img,
     name: workflow.activity.name,
-    duration: workflow.isCombat ? { turns: 1 } : { seconds: CONFIG.time.roundTime ?? 1 },
+    duration:
+      game.release.generation >= 14
+        ? { expiry: "turnEnd" }
+        : workflow.isCombat
+          ? { turns: 1 }
+          : { seconds: CONFIG.time.roundTime ?? 1 },
     flags: { dae: { stackable: "noneName", specialDuration: ["isDamaged"] } },
   };
   await sourceActor.createEmbeddedDocuments("ActiveEffect", [effectData]);

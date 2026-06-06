@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Handles the ability to toggle on/off or prompt the -5 penalty to hit and +10 bonus to the damage on a ranged weapon.
-// v3.1.0
+// v3.1.1
 // Author: Elwin#1410 based on MotoMoto and Michael version
 // Dependencies:
 //  - DAE
@@ -33,8 +33,8 @@
 
 export async function sharpshooter({ speaker, actor, token, character, item, args, scope, workflow, options }) {
   // Default name of the item
-  const DEFAULT_ITEM_NAME = 'Sharpshooter';
-  const MODULE_ID = 'midi-item-showcase-community';
+  const DEFAULT_ITEM_NAME = "Sharpshooter";
+  const MODULE_ID = "midi-item-showcase-community";
   // Set to false to remove debug logging
   const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
   const OFF_STATE = 0;
@@ -46,13 +46,13 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
     [PROMPT_STATE, ON_STATE],
   ]);
 
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? '1.1', '3.1')) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize('midi-item-showcase-community.ElwinHelpersRequired')}`;
+  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.1")) {
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return;
   }
 
-  const dependencies = ['dae', 'midi-qol'];
+  const dependencies = ["dae", "midi-qol"];
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return;
   }
@@ -61,14 +61,14 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
-  if (args[0].tag === 'OnUse' && args[0].macroPass === 'preItemRoll') {
+  if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     return await handleOnUsePreItemRoll(workflow, scope.macroItem, actor);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'preAttackRoll') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "preAttackRoll") {
     await handleOnUsePreAttackRoll(workflow, scope.macroItem);
-  } else if (args[0].tag === 'OnUse' && args[0].macroPass === 'postActiveEffects') {
+  } else if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     if (isToggleActivity(workflow, scope.macroItem)) {
       await handleOnUsePostActiveEffectsToggle(scope.macroItem, actor);
     }
@@ -93,19 +93,19 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
     const toggleActivity = getToggleActivity(sourceItem);
     const toggleEffect = toggleActivity?.midiProperties.toggleEffect ?? false;
     if (toggleEffect) {
-      const sharpshooterState = sourceItem.getFlag(MODULE_ID, 'sharpshooterState') ?? OFF_STATE;
+      const sharpshooterState = sourceItem.getFlag(MODULE_ID, "sharpshooterState") ?? OFF_STATE;
       if (currentWorkflow.itemUuid !== sourceItem.uuid) {
         // Reset state to toggle off if prompt
         if (sharpshooterState === PROMPT_STATE) {
-          await sourceItem.setFlag(MODULE_ID, 'sharpshooterState', OFF_STATE);
+          await sourceItem.setFlag(MODULE_ID, "sharpshooterState", OFF_STATE);
         }
       }
     } else {
-      await sourceItem.setFlag(MODULE_ID, 'sharpshooterState', PROMPT_STATE);
-      await sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, 'sharpshooterToggledOn'))?.delete();
+      await sourceItem.setFlag(MODULE_ID, "sharpshooterState", PROMPT_STATE);
+      await sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "sharpshooterToggledOn"))?.delete();
       if (isToggleActivity(currentWorkflow, sourceItem)) {
         const msg = `${sourceItem.name} | The ${
-          currentWorkflow.activity.name ?? 'Toggle'
+          currentWorkflow.activity.name ?? "Toggle"
         } activity can only be triggered when the item Midi property 'Toggle effect' is checked.`;
         ui.notifications.warn(msg);
         return false;
@@ -135,7 +135,7 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
       !elwinHelpers.isRangedWeaponAttack(
         currentWorkflow.activity,
         currentWorkflow.token,
-        currentWorkflow.targets.first()
+        currentWorkflow.targets.first(),
       )
     ) {
       // Only works on ranged weapon attacks
@@ -145,7 +145,7 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
       return;
     }
 
-    const sharpshooterState = sourceItem.getFlag(MODULE_ID, 'sharpshooterState');
+    const sharpshooterState = sourceItem.getFlag(MODULE_ID, "sharpshooterState");
     if (sharpshooterState === OFF_STATE) {
       return;
     } else if (sharpshooterState === PROMPT_STATE) {
@@ -172,10 +172,10 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
    * @param {Actor5e} sourceActor - The owner of the Sharpshooter item.
    */
   async function handleOnUsePostActiveEffectsToggle(sourceItem, sourceActor) {
-    const sharpshooterState = sourceItem.getFlag(MODULE_ID, 'sharpshooterState') ?? OFF_STATE;
-    await sourceItem.setFlag(MODULE_ID, 'sharpshooterState', STATES.get(sharpshooterState));
+    const sharpshooterState = sourceItem.getFlag(MODULE_ID, "sharpshooterState") ?? OFF_STATE;
+    await sourceItem.setFlag(MODULE_ID, "sharpshooterState", STATES.get(sharpshooterState));
 
-    const bonusMalusEffect = sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, 'sharpshooterToggledOn'));
+    const bonusMalusEffect = sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "sharpshooterToggledOn"));
     if (STATES.get(sharpshooterState) === ON_STATE) {
       // Add AE for toggle mode on
       if (!bonusMalusEffect) {
@@ -196,7 +196,7 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
    *                    of the Sharpshooter item, false otherwise.
    */
   function isToggleActivity(currentWorkflow, sourceItem) {
-    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === 'toggle';
+    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === "toggle";
   }
 
   /**
@@ -207,7 +207,7 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
    * @returns {Activity} The toggle activity, undefined if not found.
    */
   function getToggleActivity(sourceItem) {
-    return sourceItem.system.activities?.find((a) => a.identifier === 'toggle');
+    return sourceItem.system.activities?.find((a) => a.identifier === "toggle");
   }
 
   /**
@@ -224,13 +224,13 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
       origin: sourceItem.uuid,
       transfer: false,
       flags: {
-        dae: { stackable: 'noneName', showIcon: true },
+        dae: { stackable: "noneName", showIcon: true },
         [MODULE_ID]: {
           sharpshooterToggledOn: true,
         },
       },
     };
-    await sourceItem.actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+    await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
   }
 
   /**
@@ -243,27 +243,25 @@ export async function sharpshooter({ speaker, actor, token, character, item, arg
     const effectData = {
       changes: [
         {
-          key: 'system.bonuses.rwak.attack',
+          key: "system.bonuses.rwak.attack",
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: '-5',
-          priority: '20',
+          value: "-5",
+          priority: "20",
         },
         {
-          key: 'system.bonuses.rwak.damage',
+          key: "system.bonuses.rwak.damage",
           mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: '+10',
-          priority: '20',
+          value: "+10",
+          priority: "20",
         },
       ],
-      duration: {
-        turns: 1,
-      },
+      duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
       img: sourceItem.img,
       name: `${sourceItem.name} - Bonus`,
       origin: sourceItem.uuid,
       transfer: false,
-      'flags.dae': { stackable: 'noneName', specialDuration: ['1Attack'] },
+      "flags.dae": { stackable: "noneName", specialDuration: ["1Attack"] },
     };
-    await sourceItem.actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+    await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
   }
 }

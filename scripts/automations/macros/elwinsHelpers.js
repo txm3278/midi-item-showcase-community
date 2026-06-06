@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.14
+// v3.5.15
 // Dependencies:
 //  - MidiQOL
 //
@@ -148,7 +148,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.14";
+  const VERSION = "3.5.15";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -3323,10 +3323,7 @@ export function runElwinsHelpers() {
       type: "enchantment",
       changes: [...changes],
       transfer: false,
-      duration: {
-        seconds: 1,
-        turns: 1,
-      },
+      duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
       origin: source.uuid,
       "flags.dae.stackable": "noneName",
     };

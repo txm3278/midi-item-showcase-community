@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.6.0
+// v3.6.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -456,7 +456,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       name: `${sourceItem.name} - Bonus/Malus`,
       origin: sourceItem.uuid,
       transfer: false,
-      duration: { turns: 1 },
+      duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
       flags: { dae: { specialDuration: ["1Attack"], stackable: "noneName" } },
     };
     await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
