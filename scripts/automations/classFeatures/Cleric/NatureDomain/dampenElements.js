@@ -4,7 +4,7 @@
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Cleric
 // when a creature within is damaged by elemental damage type to allow him to add resistance to this type
 // of damage before the damage is applied.
-// v2.1.0
+// v2.1.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [postActiveEffects],[tpr.isDamaged]
@@ -204,7 +204,7 @@ async function handleOnUsePostActiveEffects(workflow, sourceItem, sourceActor, d
     transfer: false,
     img: sourceItem.img,
     name: `${sourceItem.name} - ${game.i18n.localize("DND5E.TraitDRPlural.one")}`,
-    duration: { turns: 1 },
+    duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
     flags: { dae: { stackable: "nonName", specialDuration: ["isAttacked", "isSave", "isDamaged"] } },
   };
   await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });

@@ -2,7 +2,7 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Triggers at the start of each creature's turn to ask if they avert their eyes or they will need to resist the Petrifying Gaze.
-// v1.2.0
+// v1.2.1
 // Dependencies:
 //  - DAE
 //  - Times up (if Foundry version < v14)
@@ -156,7 +156,7 @@ export async function petrifyingGazeEffect2014OnEachTurn(
         transfer: false,
         img: item.img,
         name: `Avert Eyes from ${sourceName}`,
-        duration: { rounds: 1 },
+        duration: game.release.generation >= 14 ? { value: 1, units: "rounds" } : { rounds: 1, turns: 0 },
         "flags.dae.stackable": "noneNameOnly",
       };
       await MidiQOL.createEffects({ actorUuid: targetToken.actor?.uuid, effects: [targetEffectData] });
