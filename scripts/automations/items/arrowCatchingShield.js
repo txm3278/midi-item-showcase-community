@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds an AC bonus when the owner is attacked by a ranged attack and triggers a reaction to change the
 // target to the owner of the shield when an other target is attacked.
-// v4.2.0
+// v4.2.1
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" actor macro [preTargeting],[isAttacked],[tpr.isTargeted]
@@ -165,7 +165,7 @@ export async function arrowCatchingShield({ speaker, actor, token, character, it
           priority: 20,
         },
       ],
-      duration: { turns: 1 },
+      duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
       transfer: false,
       origin: sourceItem.uuid, //flag the effect as associated to the source item used
       img: sourceItem.img,

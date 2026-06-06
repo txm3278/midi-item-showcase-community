@@ -2,7 +2,7 @@
 // Read First!!!!
 // Allows to create potent poison doses, to apply poisons to weapon or ammunitions a bonus action,
 // to ignore poison resistance, and adds proficiency with poisoner's kit.
-// v2.3.0
+// v2.3.1
 // Author: Elwin#1410 based on WurstKorn
 // Dependencies:
 //  - DAE
@@ -336,7 +336,7 @@ export async function poisoner({ speaker, actor, token, character, item, args, s
             },
           ],
           transfer: false,
-          duration: { seconds: 60 },
+          duration: game.release.generation >= 14 ? { value: 1, units: "minutes" } : { seconds: 60 },
           flags: {
             dae: { stackable: "noneNameOnly" },
           },

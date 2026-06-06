@@ -2,7 +2,7 @@
 // Read First!!!!
 // When the bottle is opened, creates a fog cloud that follows the owner and increases in size until it has reached its maximum size or until
 // the bottle is closed which also makes it stay in place.
-// v1.2.0
+// v1.2.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -280,7 +280,7 @@ async function handleOnUsePostActiveEffectsCloseBottle(actor, token, usedItem, u
       transfer: false,
       origin: usedItem.uuid, //flag the effect as associated to the source item used
       disabled: false,
-      duration: { seconds: 10 * 60 },
+      duration: game.release.generation >= 14 ? { value: 10, units: "minutes" } : { seconds: 10 * 60 },
       img: usedItem.img,
       name: `${usedItem.name} - ${template.id}`,
       "flags.dae.stackable": "noneName",
