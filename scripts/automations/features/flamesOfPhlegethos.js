@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v3.3.0
+// v3.3.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -343,7 +343,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
         {
           key: `${tokenKeyPrefix}.light.alpha`,
           mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-          value: 0.7,
+          value: tokenKeyPrefix === "token" ? 0.49 : 0.7,
           priority: "20",
         },
       ],
