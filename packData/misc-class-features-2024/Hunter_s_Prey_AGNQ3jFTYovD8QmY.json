@@ -180,7 +180,13 @@
           "override": false
         },
         "consumption": {
-          "targets": [],
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ],
           "scaling": {
             "allowed": false,
             "max": ""
@@ -456,7 +462,13 @@
           "override": false
         },
         "consumption": {
-          "targets": [],
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ],
           "scaling": {
             "allowed": false,
             "max": ""
@@ -593,8 +605,13 @@
     },
     "uses": {
       "spent": null,
-      "max": "",
-      "recovery": []
+      "max": "1",
+      "recovery": [
+        {
+          "period": "sr",
+          "type": "recoverAll"
+        }
+      ]
     },
     "advancement": [],
     "description": {
@@ -641,6 +658,6 @@
     }
   },
   "img": "icons/magic/nature/leaf-arrowheads-glow-green.webp",
-  "folder": "M9H1PJ8V7fslUEp3",
+  "folder": "PU3tbnREf50VDjnw",
   "_key": "!items!AGNQ3jFTYovD8QmY"
 }

@@ -352,7 +352,13 @@
           "override": false
         },
         "consumption": {
-          "targets": [],
+          "targets": [
+            {
+              "type": "itemUses",
+              "value": "1",
+              "scaling": {}
+            }
+          ],
           "scaling": {
             "allowed": false,
             "max": ""
@@ -542,6 +548,6 @@
     }
   },
   "img": "icons/skills/melee/shield-block-gray-yellow.webp",
-  "folder": "M9H1PJ8V7fslUEp3",
+  "folder": "PU3tbnREf50VDjnw",
   "_key": "!items!WuXxJh8YEnvNrjpa"
 }

@@ -29,7 +29,7 @@ const MODULE_ID = "midi-item-showcase-community";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion("3.5.16", globalThis?.elwinHelpers?.version ?? "1.1")) {
+  if (foundry.utils.isNewerVersion("3.5.16", globalThis?.elwinHelpers?.version ?? "1.1")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;

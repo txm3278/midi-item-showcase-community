@@ -28,7 +28,7 @@ const MODULE_ID = "midi-item-showcase-community";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion("3.5.14", globalThis?.elwinHelpers?.version ?? "1.1")) {
+  if (foundry.utils.isNewerVersion("3.5.14", globalThis?.elwinHelpers?.version ?? "1.1")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
@@ -76,7 +76,7 @@ export async function superiorHuntersDefense({
  * Handles the on use preActiveEffects phase of the Superior Hunter's Defense Resistance activity.
  * If damage was taken by the owner, updates the AE that adds resistance to the damage taken.
  * If more than one damage type was taken, prompts the owner for which one will be used to update the AE.
- *
+ * 
  * @param {Actor} actor - The owner of the the Superior Hunter's Defense feat.
  * @param {Token} token - The token associated to the actor.
  * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.

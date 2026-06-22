@@ -47,7 +47,7 @@ const MODULE_ID = "midi-item-showcase-community";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion("3.5.14", globalThis?.elwinHelpers?.version ?? "1.1")) {
+  if (foundry.utils.isNewerVersion("3.5.14", globalThis?.elwinHelpers?.version ?? "1.1")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
@@ -131,14 +131,8 @@ async function handleOnUseChoicePreActiveEffects(actor, workflow, scope, debug) 
  * @param {boolean} debug - Flag to indicate debug mode.
  */
 async function handleOnUsePostRollFinished(actor, token, workflow, scope, debug) {
-  if (
-    workflow.aborted ||
-    scope.rolledItem?.type !== "weapon" ||
-    !scope.rolledActivity?.hasAttack ||
-    !workflow.targets.size ||
-    scope.rolledItem.getFlag(MODULE_ID, "hordeBreakerExtraAttack")
-  ) {
-    // Not an attack with a weapon, or no target, do nothing
+  if (workflow.aborted || !scope.rolledActivity?.hasAttack || !workflow.targets.size) {
+    // Not an attack or no target, do nothing
     return;
   }
 
@@ -146,6 +140,7 @@ async function handleOnUsePostRollFinished(actor, token, workflow, scope, debug)
     // Not the attacker's turn, do nothing
     return;
   }
+
   // Fetch current turn state
   const huntersPreyTurn = actor.getFlag(MODULE_ID, "huntersPreyTurn");
   if (!huntersPreyTurn) {
@@ -153,8 +148,14 @@ async function handleOnUsePostRollFinished(actor, token, workflow, scope, debug)
     return;
   }
 
-  huntersPreyTurn.targets.push(...workflow.targets.map((t) => t.document.uuid));
+  // Add current attacked targets even for non weapon or Horde Breaker attack
+  huntersPreyTurn.targets = [...new Set(huntersPreyTurn.targets).union(workflow.targets.map((t) => t.document.uuid))];
   await actor.setFlag(MODULE_ID, "huntersPreyTurn", huntersPreyTurn);
+
+  if (scope.rolledItem?.type !== "weapon" || scope.rolledItem.getFlag(MODULE_ID, "hordeBreakerExtraAttack")) {
+    // Not a weapon or Horde Breaker, do nothing
+    return;
+  }
 
   const hordeBreaker = scope.macroItem.system.activities.find((a) => a.identifier === "horde-breaker");
   if (!hordeBreaker) {
@@ -179,7 +180,7 @@ async function handleOnUsePostRollFinished(actor, token, workflow, scope, debug)
     null,
     workflow.targets.first(),
     dnd5e.utils.convertLength(5, "ft", dnd5e.utils.defaultUnits("length") ?? "ft"),
-  ).filter((t) => !huntersPreyTurn.targets.includes(t.document.uuid));
+  ).filter((t) => t !== token && !huntersPreyTurn.targets.includes(t.document.uuid));
   if (!validTargets.length) {
     // No valid target, skip extra attack
     if (debug) {
@@ -299,10 +300,10 @@ async function handleOnUseHordeBreakerPostActiveEffects(actor, token, workflow, 
     const defaultTargets = validTargets.filter((t) => t.document.disposition * -1 === token.document.disposition);
     const config = {
       midiOptions: {
-        targetUuids: defaultTargets.length ? [defaultTargets[0].document.uuid] : undefined,
+        targetUuids: defaultTargets.length ? [defaultTargets[0].document.uuid] : [validTargets[0].document.uuid],
         workflowOptions: {
           autoRollAttack: true,
-          targetConfirmation: validTargets.length > 1 ? "always" : undefined,
+          targetConfirmation: validTargets.length > 1 || !defaultTargets.length ? "always" : undefined,
           excludeTargets: canvas.tokens.placeables.filter((t) => !validTargets.includes(t)).map((t) => t.document.uuid),
         },
       },
