@@ -317,14 +317,7 @@
   "flags": {
     "midi-qol": {
       "effectActivation": false,
-      "onUseMacroName": "[postActiveEffects]function.MISC.macros.classFeatures.channelDivinityVowOfEnmity",
-      "onUseMacroParts": {
-        "items": {
-          "0": {
-            "macroName": "ItemMacro",
-            "option": "postActiveEffects"
-          }
-        }
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.classFeatures.channelDivinityVowOfEnmity"
       },
       "rollAttackPerTarget": "never",
       "itemCondition": "",

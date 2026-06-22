@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Body of the Astral Self
 // Summons a spectral body and adds its effects.
-// v1.2.1
+// v1.2.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -121,7 +121,7 @@ async function handleOnUsePostActiveEffects(sourceActor, workflow) {
  * @param {Item5e} sourceItem the source item.
  * @param {Array<object>} damages the type and value of damages from which to choose.
  *
- * @returns {string} the selected damage type.
+ * @returns {Promise<string>} the selected damage type.
  */
 async function chooseDamageType(sourceItem, damages) {
   const data = {

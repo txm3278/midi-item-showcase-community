@@ -545,9 +545,6 @@ export async function forage({
       },
       'midi-qol': {
         onUseMacroName: '',
-        onUseMacroParts: {
-          items: [],
-        },
       },
       'hide-item-value': {
         appraised: '',

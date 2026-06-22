@@ -80,7 +80,7 @@ export function setConfig() {
         "Arms of the Astral Self": {
           name: "Arms of the Astral Self",
           type: "Class Feature",
-          version: "2.5.0",
+          version: "2.5.1",
           authors: ["Elwin", "Spoob"],
         },
         "Arrow-Catching Shield": {
@@ -104,7 +104,7 @@ export function setConfig() {
         "Body of the Astral Self": {
           name: "Body of the Astral Self",
           type: "Class Feature",
-          version: "1.2.0",
+          version: "1.2.1",
           authors: ["Elwin"],
         },
         "Bulwark of Force": {
@@ -122,7 +122,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "3.6.0",
+          version: "3.6.1",
           authors: ["Elwin"],
         },
         "Clockwork Amulet": {
@@ -261,7 +261,7 @@ export function setConfig() {
         Forage: {
           name: "Forage",
           type: "Generic Action",
-          version: "1.2.0",
+          version: "1.2.1",
           authors: ["Fridan99", "Christopher"],
         },
         "Gift of the Metallic Dragon": {
@@ -630,7 +630,7 @@ export function setConfig() {
         "Channel Divinity: Vow of Enmity": {
           name: "Channel Divinity: Vow of Enmity",
           type: "Class Feature",
-          version: "1.3.0",
+          version: "1.3.1",
           authors: ["Elwin"],
         },
         "Charger": {
@@ -648,6 +648,12 @@ export function setConfig() {
         Deathdance: {
           name: "Deathdance",
           type: "Item",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
+        "Defensive Tactics": {
+          name: "Defensive Tactics",
+          type: "Class Feature",
           version: "1.0.0",
           authors: ["Elwin"],
         },
@@ -698,6 +704,18 @@ export function setConfig() {
           name: "Great Weapon Master",
           type: "Feat",
           version: "1.6.0",
+          authors: ["Elwin"],
+        },
+        "Hunter's Lore": {
+          name: "Hunter's Lore",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
+        "Hunter's Prey": {
+          name: "Hunter's Prey",
+          type: "Class Feature",
+          version: "1.0.0",
           authors: ["Elwin"],
         },
         "Innate Sorcery": {
@@ -838,6 +856,18 @@ export function setConfig() {
           name: "Sun Blade",
           type: "Item",
           version: "1.6.0",
+          authors: ["Elwin"],
+        },
+        "Superior Hunter's Defense": {
+          name: "Superior Hunter's Defense",
+          type: "Class Feature",
+          version: "1.0.0",
+          authors: ["Elwin"],
+        },
+        "Superior Hunter's Prey": {
+          name: "Superior Hunter's Prey",
+          type: "Class Feature",
+          version: "1.0.0",
           authors: ["Elwin"],
         },
         "Sword of Wounding": {
