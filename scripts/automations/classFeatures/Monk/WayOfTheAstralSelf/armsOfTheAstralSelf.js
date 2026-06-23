@@ -1,10 +1,10 @@
 // ##################################################################################################
 // Monk - Way of the Astral Self - Arms of the Astral Self
 // Summons spectral hands and adds a new attack to the Unarmed Strike weapon to use these arms instead.
-// v2.5.0
+// v2.5.1
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
-//  - DAE
+//  - DAE [each]
 //  - Times Up (if Foundry version < v14)
 //  - MidiQOL "OnUseMacro" ItemMacro[preAoETargetConfirmation],[postActiveEffects]
 //  - Elwin Helpers world script
@@ -21,8 +21,10 @@
 // In the postActiveEffects phase of the Arms of the Astral Self Summon activity (in owner's workflow):
 //   It applies an enchantement to the Unarmed Strike to add a new attack allowing to use the Spectral Hands
 //  instead.
-// In the preItemRoll phase of the Unarmed Strike Attack with Spectral Hands activity (in owner's workflow):
-//   If it's the attacker's turn, increase the item and the activity reach.
+// When the owner of the Arms of the Astral Self with Spectral Arms - Extended Reach AE turn starts ["each"]:
+//   Enables the AE,
+// When the owner of the Arms of the Astral Self with Spectral Arms - Extended Reach AE turn ends ["each"]:
+//   Disables the AE.
 // ###################################################################################################
 
 // Default name of the feature

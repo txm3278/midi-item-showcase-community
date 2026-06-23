@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.15
+// v3.5.16
 // Dependencies:
 //  - MidiQOL
 //
@@ -66,6 +66,7 @@
 // - elwinHelpers.enchantItemTemporarily
 // - elwinHelpers.stabilize
 // - elwinHelpers.getItemData
+// - elwinHelpers.getOriginItemSync
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -148,7 +149,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.15";
+  const VERSION = "3.5.16";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -335,6 +336,7 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.stabilize", stabilize);
     exportIdentifier("elwinHelpers.stableConditionExpiration", stableConditionExpiration);
     exportIdentifier("elwinHelpers.getItemData", getItemData);
+    exportIdentifier("elwinHelpers.getOriginItemSync", getOriginItemSync);
 
     // Note: classes need to be exported after they are declared...
 
@@ -3532,6 +3534,29 @@ export function runElwinsHelpers() {
       return item.toObject();
     }
     return null;
+  }
+
+  /**
+   * Retrieves the item from which the specified active effect originates.
+   * @param {ActiveEffect} effect - The active effect for which to find the origin item.
+   * @returns {ActiveEffect|undefined} the origin item or undefined if not found.
+   */
+  function getOriginItemSync(effect) {
+    let origin = fromUuidSync(effect?.origin, { strict: false });
+    if (!origin) {
+      return undefined;
+    }
+    if (origin instanceof Item) {
+      return origin;
+    }
+    if (origin.parent instanceof Item) {
+      return origin.parent;
+    }
+    origin = fromUuidSync(origin.origin, { strict: false });
+    if (origin instanceof Item) {
+      return origin;
+    }
+    return undefined;
   }
 
   /**
