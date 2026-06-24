@@ -39,6 +39,12 @@
           "priority": 20
         },
         {
+          "key": "flags.midi-qol.optional.colossusSlayer.criticalDamage",
+          "mode": 0,
+          "value": "true",
+          "priority": 20
+        },
+        {
           "key": "flags.midi-qol.optional.colossusSlayer.displayBonusRolls",
           "mode": 0,
           "value": "false",
