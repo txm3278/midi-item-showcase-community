@@ -171,7 +171,7 @@ async function handleOnUsePostActiveEffects(actor, workflow, scope, debug) {
     console.error(`${DEFAULT_ITEM_NAME} | Missing Spectral Arms - Extended Reach enchantment effect.`, { workflow });
     return;
   }
-  extendReachEnchantmentEffectData.disabled = game.combat?.combatant.tokenId !== workflow.token?.id;
+  extendReachEnchantmentEffectData.disabled = !game.combat?.combatant || game.combat?.combatant?.tokenId !== workflow.token?.id;
   extendReachEnchantmentEffectData.origin = applyArmsActivity.uuid;
 
   // Make the enchantment dependent on self effect
