@@ -15,20 +15,15 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
         "dae": {
-          "showIcon": false,
           "transfer": false,
           "stackable": "none",
           "specialDuration": [],
@@ -78,20 +73,15 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
         "dae": {
-          "showIcon": false,
           "transfer": false,
           "stackable": "none",
           "specialDuration": [],
@@ -146,13 +136,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "combat": null,
-        "seconds": null,
-        "rounds": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "description": "<div class=\"ddb\"><p>The creature has Disadvantage on all other attack rolls against you this turn.</p></div>",
       "tint": "#ffffff",
@@ -168,7 +154,6 @@
         "dae": {
           "disableCondition": "",
           "stackable": "noneName",
-          "showIcon": false,
           "disableIncapacitated": false,
           "durationExpression": "",
           "macroRepeat": "none",

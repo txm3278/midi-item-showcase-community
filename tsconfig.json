@@ -10,7 +10,7 @@
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["fvtt-types", "sequencer", "dnd5e/dnd5e/dnd5e.d.mts"],
+    "types": ["fvtt-types", "sequencer", "dnd5e/dnd5e/dnd5e.d.mts", "./scripts/fvtt-types-config.d.ts"],
     "strict": true,
 
     "verbatimModuleSyntax": true,

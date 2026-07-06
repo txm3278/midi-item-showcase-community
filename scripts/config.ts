@@ -1,6 +1,7 @@
+import type { AutomationConfig } from "./_types.ts";
 import { moduleName } from "./constants.ts";
 
-export const automationConfig = {
+export const automationConfig: AutomationConfig = {
   module: moduleName,
   automations: {
     legacy: {
@@ -1069,7 +1070,7 @@ export const automationConfig = {
         identifier: "goblin-psi-commander",
         "Psionic Shield": {
           name: "Psionic Shield",
-          identifer: "psionic-shield",
+          identifier: "psionic-shield",
           monsterIdentifier: "goblin-psi-commander",
           type: "feat",
           version: "2.2.0",
@@ -1080,7 +1081,7 @@ export const automationConfig = {
         identifier: "lich",
         "Negative Energy Tether": {
           name: "Negative Energy Tether",
-          identifer: "negative-energy-tether",
+          identifier: "negative-energy-tether",
           monsterIdentifier: "lich",
           type: "feat",
           version: "2.3.0",

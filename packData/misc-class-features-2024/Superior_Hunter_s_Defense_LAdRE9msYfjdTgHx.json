@@ -15,20 +15,15 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
         "dae": {
-          "showIcon": false,
           "transfer": false,
           "stackable": "noneNameOnly",
           "enableCondition": "",
