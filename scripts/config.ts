@@ -605,7 +605,7 @@ export const automationConfig: AutomationConfig = {
         name: "Sun Blade",
         identifier: "sun-blade",
         type: "Item",
-        version: "2.6.0",
+        version: "2.6.1",
         authors: ["Elwin"],
       },
       "Tasha's Mind Whip": {
@@ -1003,7 +1003,7 @@ export const automationConfig: AutomationConfig = {
         name: "Sun Blade",
         identifier: "sun-blade",
         type: "Item",
-        version: "1.6.0",
+        version: "1.6.1",
         authors: ["Elwin"],
       },
       "Superior Hunter's Defense": {
