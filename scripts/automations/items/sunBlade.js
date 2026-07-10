@@ -2,14 +2,15 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.6.0
+// v2.6.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
 //  - MidiQOL "on use" item macro, [postActiveEffects]
 //  - Active Token Effects (if Foundry version < v14)
 //  - Elwin Helpers world script
-//  - Cauldron of Plentiful Resources (optional, support for VAE buttons)
+//  - Cauldron of Plentiful Resources (if Foundry version < v14) (optional, support for VAE buttons)
+//  - Coven's Automation Toolkit (if Foundry version >= v14) (optional, support for VAE buttons)
 //  - Visual Active Effects (optional, for button on Sun Blade - Light AE)
 //
 // Usage:
@@ -119,8 +120,10 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     // Make light effect dependent on enchantment effect
     foundry.utils.setProperty(lightEffectData, "flags.dnd5e.dependentOn", enchantmentEffect.uuid);
 
-    // Add support for CPR VAE button
-    if (game.modules.get("chris-premades")?.active && game.modules.get("visual-active-effects")?.active) {
+    // Add support for CPR/CAT VAE button
+    const isV14 = game.release.generation >= 14;
+
+    if (!isV14 && game.modules.get("chris-premades")?.active && game.modules.get("visual-active-effects")?.active) {
       if (!foundry.utils.getProperty(sourceItem, "flags.chris-premades.info.identifier")) {
         await sourceItem.setFlag("chris-premades", "info.identifier", sourceItem.identifier);
       }
@@ -141,6 +144,22 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
               type: "use",
               name: `${sourceItem.name}: Adjust Light Radius`,
               identifier: sourceItem.identifier,
+              activityIdentifier: ADJUST_LIGHT_RADIUS_IDENT,
+            },
+          ],
+        },
+      });
+    }
+    if (isV14 && game.modules.get("cat")?.active && game.modules.get("visual-active-effects")?.active) {
+      const adjustLightActivity = sourceItem.system.activities?.find((a) => a.identifier === ADJUST_LIGHT_RADIUS_IDENT);
+      foundry.utils.setProperty(lightEffectData, "flags.cat", {
+        noAnimation: false,
+        vae: {
+          buttons: [
+            {
+              type: "use",
+              name: `${sourceItem.name}: Adjust Light Radius`,
+              itemIdentifier: sourceItem.identifier,
               activityIdentifier: ADJUST_LIGHT_RADIUS_IDENT,
             },
           ],
