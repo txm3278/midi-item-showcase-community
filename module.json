@@ -4,9 +4,9 @@
   "description": "A collection of Midi Automations from the Posney's Foundry Automation Discord",
   "version": "#{VERSION}#",
   "compatibility": {
-    "minimum": "13",
-    "verified": "13.351",
-    "maximum": "13"
+    "minimum": "14",
+    "verified": "14.364",
+    "maximum": "14.999"
   },
   "authors": [
     {
@@ -27,8 +27,8 @@
         "type": "system",
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
-          "minimum": "5.2.0",
-          "verified": "5.2.5"
+          "minimum": "5.3.3",
+          "verified": "5.3.3"
         }
       }
     ],
@@ -38,8 +38,8 @@
         "type": "module",
         "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "minimum": "13.0.55",
-          "verified": "13.0.56"
+          "minimum": "14.0.10",
+          "verified": "14.0.10"
         }
       }
     ]
