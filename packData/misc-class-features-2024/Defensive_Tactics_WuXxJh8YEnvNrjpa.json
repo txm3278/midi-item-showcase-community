@@ -219,7 +219,7 @@
           "chatFlavor": ""
         },
         "duration": {
-          "units": "inst",
+          "units": "spec",
           "special": "",
           "concentration": false,
           "override": false
@@ -356,6 +356,7 @@
             {
               "type": "itemUses",
               "value": "1",
+              "target": "",
               "scaling": {}
             }
           ],
@@ -369,7 +370,7 @@
           "chatFlavor": ""
         },
         "duration": {
-          "units": "inst",
+          "units": "spec",
           "special": "",
           "concentration": false,
           "override": false

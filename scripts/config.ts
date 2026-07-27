@@ -775,7 +775,7 @@ export const automationConfig = {
         name: "Defensive Tactics",
         identifier: "defensive-tactics",
         type: "Class Feature",
-        version: "1.0.0",
+        version: "1.0.1",
         authors: ["Elwin"],
       },
       "Deflect Attacks": {
@@ -846,7 +846,7 @@ export const automationConfig = {
         name: "Hunter's Prey",
         identifier: "hunters-prey",
         type: "Class Feature",
-        version: "1.0.0",
+        version: "1.0.1",
         authors: ["Elwin"],
       },
       "Innate Sorcery": {
