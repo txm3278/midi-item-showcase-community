@@ -6,7 +6,7 @@
     {
       "name": "Tipsy Sway",
       "img": "icons/magic/air/wind-tornado-spiral-pink-purple.webp",
-      "origin": "Item.XAa8VykFOdwCQYNy",
+      "origin": null,
       "_id": "FLWegaavINzSF8LK",
       "type": "base",
       "system": {},
@@ -169,16 +169,27 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
-          "autoCEEffects": "default"
+          "autoCEEffects": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "skipConcentrationCheck": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
-        "otherActivityAsParentType": true
+        "otherActivityAsParentType": true,
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        }
       }
     },
     "uses": {
@@ -188,7 +199,7 @@
     },
     "advancement": [],
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that adds a third party reaction effect. It is also a reaction item that gets triggered \nby the third party reaction effect when appropriate. When activated, it prompts a dialog to choose a new target on which the attack \nwill be redirected.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that adds a third party reaction effect. It is also a reaction item that gets triggered \nby the third party reaction effect when appropriate. When activated, it prompts a dialog to choose a new target on which the attack \nwill be redirected.</p></details>",
       "chat": ""
     },
     "identifier": "tipsy-sway",

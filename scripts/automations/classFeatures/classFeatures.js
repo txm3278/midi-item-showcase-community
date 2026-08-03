@@ -1,4 +1,5 @@
 import { flashOfGenius } from "./Artificer/flashOfGenius.js";
+import { ancestralProtectors } from "./Barbarian/PathOfTheAncestralGuardian/ancestralProtectors.js";
 import { spiritShield } from "./Barbarian/PathOfTheAncestralGuardian/spiritShield.js";
 import { vengefulAncestors } from "./Barbarian/PathOfTheAncestralGuardian/vengefulAncestors.js";
 import { sorrowfulFate } from "./Bard/CollegeOfTragedy/sorrowfulFate.js";
@@ -17,6 +18,7 @@ import { psionicPowerProtectiveField } from "./Fighter/PsiWarrior/psionicPowerPr
 import { deflectAttacks } from "./Monk/deflectAttacks.js";
 import { deflectMissiles } from "./Monk/deflectMissiles.js";
 import { ki } from "./Monk/ki.js";
+import { monksFocus } from "./Monk/monksFocus.js";
 import { armsOfTheAstralSelf } from "./Monk/WayOfTheAstralSelf/armsOfTheAstralSelf.js";
 import { awakenedAstralSelf } from "./Monk/WayOfTheAstralSelf/awakenedAstralSelf.js";
 import { bodyOfTheAstralSelf } from "./Monk/WayOfTheAstralSelf/bodyOfTheAstralSelf.js";
@@ -38,9 +40,13 @@ import { tombOfLevistus } from "./Warlock/tombOfLevistus.js";
 import { accursedSpecter } from "./Warlock/Hexblade/accursedSpecter.js";
 
 export let classFeatures = {
+  // Artificer
   flashOfGenius,
+  // Barbarian - Path of the Ancestral Guardian
+  ancestralProtectors,
   spiritShield,
   vengefulAncestors,
+  // Bard - College of Tragedy
   sorrowfulFate,
   // Cleric - Grave Domain
   sentinelAtDeathsDoor,
@@ -63,6 +69,7 @@ export let classFeatures = {
   deflectAttacks,
   deflectMissiles,
   ki,
+  monksFocus,
   // Monk - Way of the Astral Self
   armsOfTheAstralSelf,
   awakenedAstralSelf,

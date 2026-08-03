@@ -6,7 +6,7 @@
     {
       "name": "Drunken Technique",
       "img": "icons/containers/kitchenware/mug-stein-grey.webp",
-      "origin": "Item.4OSVXvRKxEP1pjGB",
+      "origin": null,
       "_id": "5eBZso1wAhq876mK",
       "type": "base",
       "system": {},
@@ -57,7 +57,7 @@
     {
       "name": "Drunken Technique",
       "img": "icons/containers/kitchenware/mug-stein-grey.webp",
-      "origin": "Item.4OSVXvRKxEP1pjGB",
+      "origin": null,
       "_id": "r5l8a3iZDYjRjH5S",
       "type": "base",
       "system": {},
@@ -127,7 +127,7 @@
     },
     "advancement": [],
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feature. When Flurry of Blows is used, it adds an AE that increments the owner's walking speed and \nadds a flag to prevent provoking AoO.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feature. When Flurry of Blows is used, it adds an AE that increments the owner's walking speed and\n adds a flag to prevent provoking AoO.</p></details>",
       "chat": ""
     },
     "identifier": "drunken-technique",

@@ -34,9 +34,7 @@ const MODULE_ID = "midi-item-showcase-community";
  */
 function checkDependencies() {
   if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.6")) {
-    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize(
-      "midi-item-showcase-community.ElwinHelpersRequired"
-    )}`;
+    const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
   }
@@ -57,7 +55,7 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments
+      arguments,
     );
   }
 
@@ -79,12 +77,12 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
     // Get last attack mode from item flags
     const attackMode = foundry.utils.getProperty(
       workflow.workflowOptions,
-      `item.flags.dnd5e.last.${attackActivity.id}.attackMode`
+      `item.flags.dnd5e.last.${attackActivity.id}.attackMode`,
     );
     let actionType = attackActivity?.getActionType(attackMode);
     if (!actionType) {
       console.warn(
-        `${scope.rolledItem.name} | Could not determine attack activity's action type, defaulting to 'mwak'.`
+        `${scope.rolledItem.name} | Could not determine attack activity's action type, defaulting to 'mwak'.`,
       );
       actionType = "mwak";
     }
@@ -103,7 +101,7 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
 
     if (rangedAttack) {
       redirectAttackActivity = scope.rolledItem.system.activities?.find(
-        (a) => a.identifier === "redirect-ranged-attack"
+        (a) => a.identifier === "redirect-ranged-attack",
       );
       if (!redirectAttackActivity) {
         console.error(`${DEFAULT_ITEM_NAME} | Missing redirect ranged attack activity.`, { item: scope.rolledItem });
@@ -111,7 +109,7 @@ export async function deflectAttacks({ speaker, actor, token, character, item, a
       }
     } else {
       redirectAttackActivity = scope.rolledItem.system.activities?.find(
-        (a) => a.identifier === "redirect-melee-attack"
+        (a) => a.identifier === "redirect-melee-attack",
       );
       if (!redirectAttackActivity) {
         console.error(`${DEFAULT_ITEM_NAME} | Missing redirect melee attack activity.`, { item: scope.rolledItem });

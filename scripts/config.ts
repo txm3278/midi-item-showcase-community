@@ -88,11 +88,18 @@ export const automationConfig = {
         version: "2.0.1",
         authors: ["Elwin"],
       },
+      "Ancestral Protectors": {
+        name: "Ancestral Protectors",
+        identifier: "ancestral-protectors",
+        type: "Class Feature",
+        version: "3.3.0",
+        authors: ["Elwin"],
+      },
       "Arms of the Astral Self": {
         name: "Arms of the Astral Self",
         identifier: "arms-of-the-astral-self",
         type: "Class Feature",
-        version: "2.5.1",
+        version: "2.5.2",
         authors: ["Elwin", "Spoob"],
       },
       "Arrow-Catching Shield": {
@@ -113,7 +120,7 @@ export const automationConfig = {
         name: "Awakened Astral Self",
         identifier: "awakened-astral-self",
         type: "Class Feature",
-        version: "1.2.0",
+        version: "1.2.1",
         authors: ["Elwin"],
       },
       "Badge of the Watch": {
@@ -171,6 +178,13 @@ export const automationConfig = {
         type: "Item",
         version: "2.0.2",
         authors: ["Elwin", "thatlonelybugbear"],
+      },
+      "Consult the Spirits": {
+        name: "Consult the Spirits",
+        identifier: "consult-the-spirits",
+        type: "Class Feature",
+        version: "1.0.0",
+        authors: ["Elwin"],
       },
       "Corpse Slayer Weapon": {
         name: "Corpse Slayer Weapon",
@@ -240,14 +254,14 @@ export const automationConfig = {
         name: "Drunkard's Luck",
         identifier: "drunkards-luck",
         type: "Class Feature",
-        version: "1.3.0",
+        version: "1.3.1",
         authors: ["Elwin"],
       },
       "Drunken Technique": {
         name: "Drunken Technique",
         identifier: "drunken-technique",
         type: "Class Feature",
-        version: "1.1.0",
+        version: "1.1.1",
         authors: ["Elwin"],
       },
       "Eversmoking Bottle": {
@@ -275,7 +289,7 @@ export const automationConfig = {
         name: "Flames of Phlegethos",
         identifier: "flames-of-phlegethos",
         type: "Feat",
-        version: "3.3.0",
+        version: "3.3.2",
         authors: ["Elwin"],
       },
       "Flame Tongue Greatsword": {
@@ -394,14 +408,15 @@ export const automationConfig = {
         name: "Intoxicated Frenzy",
         identifier: "intoxicated-frenzy",
         type: "Class Feature",
-        version: "1.2.0",
+        version: "1.2.1",
         authors: ["Elwin"],
       },
       Ki: {
         name: "Ki",
         identifier: "ki",
+        aliases: ["Ki: Flurry of Blows", "Ki: Patient Defense", "Ki: Step of the Wind"],
         type: "Class Feature",
-        version: "1.3.0",
+        version: "1.3.1",
         authors: ["Elwin"],
       },
       "Lamannian Oak Focus": {
@@ -485,7 +500,7 @@ export const automationConfig = {
         name: "Poisoner",
         identifier: "poisoner",
         type: "Feat",
-        version: "2.3.0",
+        version: "2.3.2",
         authors: ["Elwin"],
       },
       "Potent Poison": {
@@ -632,7 +647,7 @@ export const automationConfig = {
         name: "Tipsy Sway",
         identifier: "tipsy-sway",
         type: "Class Feature",
-        version: "1.1.0",
+        version: "1.1.1",
         authors: ["Elwin"],
       },
       "Tomb of Levistus": {
@@ -647,7 +662,7 @@ export const automationConfig = {
         name: "Unwavering Mark",
         identifier: "unwavering-mark",
         type: "Class Feature",
-        version: "3.8.0",
+        version: "3.8.1",
         authors: ["Elwin"],
       },
       "Vengeful Ancestors": {
@@ -668,7 +683,7 @@ export const automationConfig = {
         name: "Visage of the Astral Self",
         identifier: "visage-of-the-astral-self",
         type: "Class Feature",
-        version: "1.0.0",
+        version: "1.0.1",
         authors: ["Elwin"],
       },
       "Warding Flare": {
@@ -708,11 +723,32 @@ export const automationConfig = {
         version: "1.0.1",
         authors: ["Elwin"],
       },
+      "Arms of the Astral Self": {
+        name: "Arms of the Astral Self",
+        identifier: "arms-of-the-astral-self",
+        type: "Class Feature",
+        version: "1.0.0",
+        authors: ["Elwin", "Spoob"],
+      },
       "Arrow-Catching Shield": {
         name: "Arrow-Catching Shield",
         identifier: "arrow-catching-shield",
         type: "Item",
         version: "1.2.0",
+        authors: ["Elwin"],
+      },
+      "Awakened Astral Self": {
+        name: "Awakened Astral Self",
+        identifier: "awakened-astral-self",
+        type: "Class Feature",
+        version: "1.0.0",
+        authors: ["Elwin"],
+      },
+      "Body of the Astral Self": {
+        name: "Body of the Astral Self",
+        identifier: "body-of-the-astral-self",
+        type: "Class Feature",
+        version: "1.0.0",
         authors: ["Elwin"],
       },
       "Cap of Vanishing": {
@@ -782,7 +818,7 @@ export const automationConfig = {
         name: "Deflect Attacks",
         identifier: "deflect-attacks",
         type: "Class Feature",
-        version: "1.4.0",
+        version: "1.4.1",
         authors: ["Elwin"],
       },
       "Dread Helm (Stranger Things)": {
@@ -791,6 +827,20 @@ export const automationConfig = {
         type: "Item",
         version: "1.0.0",
         authors: ["Moto Moto"],
+      },
+      "Drunkard's Luck": {
+        name: "Drunkard's Luck",
+        identifier: "drunkards-luck",
+        type: "Class Feature",
+        version: "1.0.0",
+        authors: ["Elwin"],
+      },
+      "Drunken Technique": {
+        name: "Drunken Technique",
+        identifier: "drunken-technique",
+        type: "Class Feature",
+        version: "1.0.0",
+        authors: ["Elwin"],
       },
       "Eversmoking Bottle": {
         name: "Eversmoking Bottle",
@@ -849,6 +899,13 @@ export const automationConfig = {
         version: "1.0.1",
         authors: ["Elwin"],
       },
+      "Improved Warding Flare": {
+        name: "Improved Warding Flare",
+        identifier: "improved-warding-flare",
+        type: "Class Feature",
+        version: "1.1.0",
+        authors: ["Elwin"],
+      },
       "Innate Sorcery": {
         name: "Innate Sorcery",
         identifier: "innate-sorcery",
@@ -856,11 +913,11 @@ export const automationConfig = {
         version: "1.0.0",
         authors: ["Moto Moto"],
       },
-      "Improved Warding Flare": {
-        name: "Improved Warding Flare",
-        identifier: "improved-warding-flare",
+      "Intoxicated Frenzy": {
+        name: "Intoxicated Frenzy",
+        identifier: "intoxicated-frenzy",
         type: "Class Feature",
-        version: "1.1.0",
+        version: "1.0.0",
         authors: ["Elwin"],
       },
       "Lolth’s Sting": {
@@ -869,6 +926,14 @@ export const automationConfig = {
         aliases: ["Lolth's Sting"],
         type: "Item",
         version: "1.0.1",
+        authors: ["Elwin"],
+      },
+      "Monk's Focus": {
+        name: "Monk's Focus",
+        identifier: "monks-focus",
+        aliases: ["Monk's Focus: Flurry of Blows", "Monk's Focus: Patient Defense", "Monk's Focus: Step of the Wind"],
+        type: "Class Feature",
+        version: "1.0.0",
         authors: ["Elwin"],
       },
       Oathbow: {
@@ -897,7 +962,7 @@ export const automationConfig = {
         name: "Poisoner",
         identifier: "poisoner",
         type: "Feat",
-        version: "1.3.0",
+        version: "1.3.2",
         authors: ["Elwin"],
       },
       "Potent Poison": {
@@ -1026,10 +1091,24 @@ export const automationConfig = {
         version: "1.0.0",
         authors: ["Moto Moto"],
       },
+      "Tipsy Sway": {
+        name: "Tipsy Sway",
+        identifier: "tipsy-sway",
+        type: "Class Feature",
+        version: "1.0.0",
+        authors: ["Elwin"],
+      },
       Ulcrun: {
         name: "Ulcrun",
         identifier: "ulcrun",
         type: "Item",
+        version: "1.0.0",
+        authors: ["Elwin"],
+      },
+      "Visage of the Astral Self": {
+        name: "Visage of the Astral Self",
+        identifier: "visage-of-the-astral-self",
+        type: "Class Feature",
         version: "1.0.0",
         authors: ["Elwin"],
       },

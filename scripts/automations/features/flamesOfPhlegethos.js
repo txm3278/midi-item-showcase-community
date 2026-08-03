@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v3.3.1
+// v3.3.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -109,7 +109,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
 
     if (activateFlames) {
       // Add active effect for aura (for reactive damage) and flames effects
-      const flamesEffectData = getFlamesEffectData(scope.macroItem);
+      const flamesEffectData = getFlamesEffectData(workflow, scope.macroItem);
 
       // Delete the effect if it already exists before reapplying it
       await actor.effects.getName(flamesEffectData.name)?.delete();
@@ -290,11 +290,12 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
   /**
    * Returns the effect data for the light and Token Magic FX flames.
    *
-   * @param {Item5e} sourceItem the feat item.
+   * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+   * @param {Item5e} sourceItem - The Flames of Phlegethos feat item.
    *
    * @returns {object} the active effect data for the light and Token Magic FX flames.
    */
-  function getFlamesEffectData(sourceItem) {
+  function getFlamesEffectData(workflow, sourceItem) {
     const tokenKeyPrefix = game.release.generation >= 14 ? "token" : "ATL";
     const flamesEffectData = {
       changes: [
@@ -347,7 +348,7 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
           priority: "20",
         },
       ],
-      duration: game.release.generation >= 14 ? { rounds: 1, expiry: "sourceEnd" } : { rounds: 1, turns: 1 },
+      duration: game.release.generation >= 14 ? { expiry: "sourceEnd" } : { rounds: 1, turns: 1 },
       img: sourceItem.img,
       name: `${sourceItem.name} - Flames`,
       origin: sourceItem.uuid,
@@ -359,6 +360,11 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
         },
       },
     };
+    // Temporary fix for DAE on v14, remove when fixed in DAE
+    if (workflow.isTurn) {
+      flamesEffectData.duration.value = 1;
+      flamesEffectData.duration.units = "rounds";
+    }
 
     if (game.modules.get("tokenmagic")?.active) {
       flamesEffectData.changes.push({

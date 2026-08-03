@@ -142,7 +142,7 @@
             {
               "type": "itemUses",
               "value": "1",
-              "target": "ki",
+              "target": "feat:ki",
               "scaling": {}
             }
           ],
@@ -164,7 +164,8 @@
         },
         "effects": [
           {
-            "_id": "XyzlPyIKXmCWdGJA"
+            "_id": "XyzlPyIKXmCWdGJA",
+            "level": {}
           }
         ],
         "range": {
@@ -233,6 +234,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -242,16 +245,25 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "name": "Summon",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true
       }
     },
@@ -261,7 +273,7 @@
       "max": ""
     },
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated it adds an effect to enhance vison and give advantage to Insight and Intimidation checks.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Active Token Effects (less than v14)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When activated it adds an effect to enhance vision and gives advantage to Insight and Intimidation checks.</p></details>",
       "chat": ""
     },
     "identifier": "visage-of-the-astral-self",
@@ -310,18 +322,23 @@
       "ignoreTotalCover": false
     },
     "dnd5e": {
+      "advancementOrigin": "xwrXPrIVobelvTJb",
       "riders": {
-        "activity": [],
-        "effect": []
-      },
-      "advancementOrigin": "xwrXPrIVobelvTJb"
+        "activity": []
+      }
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",
       "wallRestriction": "globalDefault",
       "snapCenter": true,
       "snapCorner": true,
-      "snapSideMidpoint": true
+      "snapSideMidpoint": true,
+      "hideBorder": "globalDefault",
+      "hideHighlighting": "globalDefault",
+      "showOnHover": "globalDefault",
+      "noAutotarget": false,
+      "addTokenSize": false,
+      "attachToken": "na"
     }
   },
   "img": "icons/creatures/magical/spirit-undead-masked-blue.webp",

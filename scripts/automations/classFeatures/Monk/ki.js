@@ -1,7 +1,7 @@
 // ##################################################################################################
-// Monk - Ki, handles making multiple Unarmed Strike when using Fluury of Blows, and adds the
+// Monk - Ki, handles making multiple Unarmed Strike when using Flurry of Blows, and adds the
 // appropriate effects for Patient Defense and Step of the Winds.
-// v1.3.0
+// v1.3.1
 // Author: Elwin#1410, based on CPR's Monk's Focus automation.
 // Dependencies:
 //  - DAE
@@ -10,12 +10,12 @@
 //  - Elwin Helpers world script
 //
 // Usage:
-// This item needs to be used to activate. When Fluury of Blows activity is used, allows to make multiples
+// This item needs to be used to activate. When Flurry of Blows activity is used, allows to make multiples
 // Unarmed Strike attacks, it also supports features that adds additional attacks.
 // When Patient Defense or Step of the Wind are used, the appropriate effects are applied to the Monk.
 //
 // Description:
-// In the postActiveEffects (item OnUse) phase of the Ki - Flurry of Blows activity (in owner's workflow):
+// In the postRollFinished (item OnUse) phase of the Ki - Flurry of Blows activity (in owner's workflow):
 //   It enchants the Unarmed Strike item and makes the allowed extra attacks, it also forces midi-qol
 //   target confirmation to allow changing the target for the attack. It supports other features that add extra
 //   Flurry of Blows attacks as well as those that add extra attacks but on certain conditions.

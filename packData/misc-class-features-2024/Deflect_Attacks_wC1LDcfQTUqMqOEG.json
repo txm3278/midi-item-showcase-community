@@ -6,7 +6,7 @@
   "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a reaction activity that gets triggered when appropriate. When the damage received is reduced to 0, it allows to redirect the attack (by spending a use of Monk's Focus) to another target. When adding this feature to an actor, make sure the Redirect Attack activities consumption on Monks's Focus is configured.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a reaction activity that gets triggered when appropriate (supports Deflect Energy).\n When the damage received is reduced to 0, it allows to redirect the attack (by spending a use of Monk's Focus) to another target.\n When adding this feature to an actor, make sure the Redirect Attack activities consumption on Monks's Focus is configured.</p></details>",
       "chat": ""
     },
     "source": {
@@ -60,7 +60,11 @@
         },
         "effects": [
           {
-            "_id": "5e8RbHiOcFWK1D0G"
+            "_id": "5e8RbHiOcFWK1D0G",
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -100,7 +104,7 @@
           "visible": false
         },
         "sort": 0,
-        "useConditionText": "reaction == 'isDamaged' && activity?.hasAttack && workflow?.damageDetail?.some(d => [\"bludgeoning\", \"piercing\", \"slashing\"].includes(d.type) && d.value > 0)",
+        "useConditionText": "reaction == 'isDamaged' && activity?.hasAttack && ((target?.items.some(i => i.itemType === \"feat\" && i.identifier === \"deflect-energy\") && workflow?.damageDetail?.some(d => d.value > 0)) || workflow?.damageDetail?.some(d => [\"bludgeoning\", \"piercing\", \"slashing\"].includes(d.type) && d.value > 0))",
         "useConditionReason": "",
         "effectConditionText": "",
         "macroData": {
@@ -131,6 +135,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -140,16 +146,29 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "name": "Reaction",
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "flags": {},
         "otherActivityAsParentType": true
       },
       "1LO6qrrSnypPVXkg": {
@@ -272,6 +291,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -281,16 +302,25 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "name": "Redirect Ranged Attack",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true,
         "friendlySave": "default"
       },
@@ -413,6 +443,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -422,17 +454,26 @@
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "name": "Redirect Melee Attack",
         "_id": "Pkn3thIsV2mqK1He",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "otherActivityAsParentType": true,
         "friendlySave": "default"
       }
@@ -450,7 +491,7 @@
     {
       "name": "Deflect Attacks - Damage Reduction",
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
-      "origin": "Actor.8uHSuxQokfqz8dvc.Item.S7hJ1jQV26jZp5vD",
+      "origin": null,
       "transfer": false,
       "_id": "5e8RbHiOcFWK1D0G",
       "type": "base",
@@ -625,12 +666,7 @@
       "snapCorner": true,
       "snapSideMidpoint": true
     },
-    "dnd5e": {
-      "riders": {
-        "activity": [],
-        "effect": []
-      }
-    },
+    "dnd5e": {},
     "midi-item-showcase-community": {}
   },
   "_key": "!items!wC1LDcfQTUqMqOEG"

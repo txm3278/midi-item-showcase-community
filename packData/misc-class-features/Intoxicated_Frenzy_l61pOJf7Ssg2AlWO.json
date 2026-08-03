@@ -76,7 +76,7 @@
     },
     "advancement": [],
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feature. When Flurry of Blows is used, it informs the owner on the conditions needed to use \nthe extra attacks granted by this feature. If CPR is active, also increases the allowed number of Flurry of Blows attacks.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feature. When Flurry of Blows is used, it informs the owner on the conditions needed to use \nthe extra attacks granted by this feature. If CPR is active, also increases the allowed number of Flurry of Blows attacks.</p></details>",
       "chat": ""
     },
     "identifier": "intoxicated-frenzy",
