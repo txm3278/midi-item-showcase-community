@@ -154,7 +154,7 @@ async function handlePostAttackByBarbarian(workflow, actor, sourceItem, debug) {
       {
         key: "flags.midi-qol.disadvantage.attack.all",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: `targetUuid !== "@tokenUuid"`,
+        value: `targetUuid !== "${workflow.tokenUuid}"`,
         priority: 20,
       },
       // macro to set damage resistance or not

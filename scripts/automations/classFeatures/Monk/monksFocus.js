@@ -88,7 +88,7 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, debug)
     return;
   }
   const enchantmentSource = workflow.activity;
-  const changes = [{ key: "name", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `{} [1]` }];
+  let changes = [{ key: "name", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `{} [1]` }];
   const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(unarmedStrike, enchantmentSource, {
     changes,
     activityRequirements: [{ type: "attack" }, { type: "save" }],
@@ -130,6 +130,7 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, debug)
       attacks--;
       attackNb++;
       if (attacks) {
+        changes = foundry.utils.deepClone(enchantmentEffect.changes);
         changes[0].value = `{} [${attackNb}]`;
         await enchantmentEffect.update({ changes });
       }
@@ -147,6 +148,7 @@ async function handleOnUseFlurryOfBlowsPostActiveEffects(actor, workflow, debug)
         options.attackedTargets = [...attackedTargets];
         options.excludeTargets = [];
         while (await canMakeExtraAttack(workflow, conditionalMacroName, macroData, options, debug)) {
+          changes = foundry.utils.deepClone(enchantmentEffect.changes);
           changes[0].value = `{} [${attackNb}]`;
           await enchantmentEffect.update({ changes });
           const attackWorkflow = await itemUse(unarmedStrike, options.excludeTargets);
