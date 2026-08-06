@@ -70,13 +70,9 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": 1,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "sourceStart"
       },
       "description": "",
       "origin": null,

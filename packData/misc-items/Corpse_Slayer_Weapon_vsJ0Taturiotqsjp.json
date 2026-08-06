@@ -390,8 +390,8 @@
       "name": "Corpse Slayer",
       "origin": "Item.e8f1IqRLvmTyyezq",
       "duration": {
-        "value": 1,
-        "unit": "rounds",
+        "value": null,
+        "unit": "seconds",
         "expiry": "sourceStart"
       },
       "transfer": false,

@@ -93,7 +93,7 @@ export const automationConfig: AutomationConfig = {
         name: "Ancestral Protectors",
         identifier: "ancestral-protectors",
         type: "Class Feature",
-        version: "3.3.0",
+        version: "4.0.0",
         authors: ["Elwin"],
       },
       "Arms of the Astral Self": {
@@ -184,7 +184,7 @@ export const automationConfig: AutomationConfig = {
         name: "Consult the Spirits",
         identifier: "consult-the-spirits",
         type: "Class Feature",
-        version: "1.0.0",
+        version: "2.0.0",
         authors: ["Elwin"],
       },
       "Corpse Slayer Weapon": {
@@ -192,7 +192,7 @@ export const automationConfig: AutomationConfig = {
         identifier: "corpse-slayer-weapon",
         type: "Item",
         factory: true,
-        version: "2.0.0",
+        version: "2.0.1",
         authors: ["Elwin", "SagaTympana"],
       },
       "Crown of Stars": {
@@ -473,7 +473,7 @@ export const automationConfig: AutomationConfig = {
         name: "Negative Energy Flood",
         identifier: "negative-energy-flood",
         type: "Spell",
-        version: "2.0.0",
+        version: "2.0.1",
         authors: ["Elwin"],
       },
       Oathbow: {
@@ -599,7 +599,7 @@ export const automationConfig: AutomationConfig = {
         name: "Spiny Shield",
         identifier: "spiny-shield",
         type: "Spell",
-        version: "2.0.0",
+        version: "2.0.1",
         authors: ["tb"],
       },
       "Spirit Shield": {

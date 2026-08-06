@@ -828,8 +828,8 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "value": 1,
-        "unit": "rounds",
+        "value": null,
+        "unit": "seconds",
         "expiry": "sourceStart"
       },
       "description": "",
