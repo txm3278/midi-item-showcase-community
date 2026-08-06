@@ -15,13 +15,9 @@
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "origin": null,
       "transfer": true,
@@ -39,7 +35,6 @@
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false,
-          "showIcon": false,
           "disableCondition": "",
           "disableIncapacitated": false
         },

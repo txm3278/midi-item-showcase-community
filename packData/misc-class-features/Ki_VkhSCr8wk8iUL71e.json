@@ -9,13 +9,9 @@
       "_id": "7SIdx9FaJj2jTKKU",
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": 1,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": "turnEnd"
       },
       "origin": null,
       "tint": "#ffffff",
@@ -30,7 +26,6 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": true,
@@ -96,7 +91,6 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -163,7 +157,6 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneNameOnly",
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

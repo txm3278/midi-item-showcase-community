@@ -14,13 +14,9 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
@@ -35,7 +31,6 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []

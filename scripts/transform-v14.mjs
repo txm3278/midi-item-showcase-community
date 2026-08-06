@@ -28,9 +28,12 @@ function transformItem(item) {
       }
       if (effect.flags.dae?.showIcon === true) {
         insertPropAfterInPlace(effect, "changes", "showIcon", 2);
+        changed = true;
       }
-      delete effect.flags.dae.showIcon;
-      changed = true;
+      if (effect.flags.dae?.showIcon !== undefined) {
+        delete effect.flags.dae.showIcon;
+        changed = true;
+      }
     }
   }
 

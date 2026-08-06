@@ -52,20 +52,15 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
         "dae": {
-          "showIcon": false,
           "transfer": false,
           "stackable": "noneNameOnly",
           "specialDuration": [],
@@ -121,20 +116,15 @@
         }
       ],
       "duration": {
-        "seconds": null,
-        "startTime": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null,
-        "combat": null
+        "value": null,
+        "unit": "seconds",
+        "expiry": null
       },
       "tint": "#ffffff",
       "transfer": false,
       "disabled": false,
       "flags": {
         "dae": {
-          "showIcon": false,
           "transfer": false,
           "stackable": "noneNameOnly",
           "specialDuration": [],
