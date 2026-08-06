@@ -224,7 +224,7 @@
             {
               "type": "itemUses",
               "value": "1",
-              "target": "ki",
+              "target": "feat:ki",
               "scaling": {}
             }
           ],
@@ -248,7 +248,10 @@
           {
             "_id": "PvMAiVVWMn4w620M",
             "onSave": true,
-            "level": {}
+            "level": {
+              "min": null,
+              "max": null
+            }
           }
         ],
         "range": {
@@ -366,12 +369,20 @@
           "rollAs": "target"
         },
         "otherActivityId": "none",
-        "flags": {},
         "visibility": {
-          "level": {},
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "identifier": "",
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
+        },
+        "flags": {
+          "region-attacher": {
+            "attachRegionToTemplate": false
+          }
         },
         "otherActivityAsParentType": true,
         "friendlySave": "default"

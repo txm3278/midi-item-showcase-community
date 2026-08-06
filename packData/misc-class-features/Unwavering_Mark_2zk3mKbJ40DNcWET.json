@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that marks a target when a melee attack is successful.<br>\n  It can also be activated to use the special attack if one was triggered by a marked target.<br>\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature has a passive effect that marks a target when a melee attack is successful.<br>\n  It can also be activated to use the special attack if one was triggered by a marked target.<br>\n  When activated if a marked target triggered a special attack, an attack with a selected weapon is made with an additional damage bonus.</p></details>",
       "chat": ""
     },
     "source": {

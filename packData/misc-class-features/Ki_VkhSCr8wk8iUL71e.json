@@ -9,9 +9,13 @@
       "_id": "7SIdx9FaJj2jTKKU",
       "disabled": false,
       "duration": {
-        "value": null,
-        "unit": "seconds",
-        "expiry": null
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": 1,
+        "startRound": null,
+        "startTurn": null
       },
       "origin": null,
       "tint": "#ffffff",
@@ -25,7 +29,8 @@
         "dae": {
           "enableCondition": "",
           "disableCondition": "",
-          "stackable": "noneName",
+          "stackable": "noneNameOnly",
+          "showIcon": false,
           "disableIncapacitated": false,
           "selfTarget": false,
           "selfTargetAlways": true,
@@ -70,9 +75,13 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "value": 1,
-        "unit": "rounds",
-        "expiry": "sourceStart"
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": 1,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
       },
       "description": "",
       "origin": null,
@@ -86,7 +95,8 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "stackable": "noneName",
+          "stackable": "noneNameOnly",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -152,7 +162,8 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
-          "stackable": "noneName",
+          "stackable": "noneNameOnly",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -219,11 +230,11 @@
           "chatFlavor": ""
         },
         "duration": {
-          "units": "round",
+          "units": "inst",
           "special": "",
           "concentration": false,
           "override": false,
-          "value": "2"
+          "value": ""
         },
         "effects": [
           {
@@ -763,7 +774,7 @@
     },
     "advancement": [],
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When Fluury of Blows activity is used, allows to make multiples\nUnarmed Strike attacks, it also supports features that adds additional attacks.\nWhen Patient Defense or Step of the Wind are used, the appropriate effects are applied to the Monk.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item needs to be used to activate. When Flurry of Blows activity is used, allows to make multiples\nUnarmed Strike attacks, it also supports features that adds additional attacks.\nWhen Patient Defense or Step of the Wind are used, the appropriate effects are applied to the Monk.</p></details>",
       "chat": "<div class=\"ddb\">\nYou can spend Ki Points to fuel ki features. You have + [[@classes.monk.levels]] points per short rest and your Ki save DC is [[8 + @abilities.wis.mod + @prof]].\n\n<strong>Flurry of Blows</strong> - After you take the Attack action on your turn, you can spend 1 ki point to make two unarmed strikes as a bonus action.\n\n<strong>Patient Defense</strong> - You can spend 1 ki point to take the Dodge action as a bonus action on your turn.\n\n<strong>Step of the Wind</strong> - You can spend 1 ki point to take the Disengage or Dash action as a bonus action on your turn, and your jump distance is doubled for the turn.\n</div>"
     },
     "identifier": "ki",

@@ -6,7 +6,7 @@
   "img": "icons/magic/control/debuff-chains-red.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n   <li>Active Token Effects (less than v14)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Token Magic FX (to add fire effect on token)</li>\n   <li>Dice So Nice!</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a passive feat, it will trigger when the requirements for the different effects are met.</p></details>",
       "chat": ""
     },
     "source": {
@@ -115,15 +115,34 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
         },
         "useConditionReason": "",
         "macroData": {
@@ -134,11 +153,13 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         }
@@ -147,7 +168,7 @@
     "advancement": [],
     "enchant": {},
     "prerequisites": {
-      "level": null,
+      "items": [],
       "repeatable": false
     }
   },
@@ -168,7 +189,7 @@
         "unit": "seconds",
         "expiry": null
       },
-      "origin": "Item.NXTNzCS4k7G8Jnbs",
+      "origin": null,
       "transfer": true,
       "flags": {
         "dae": {

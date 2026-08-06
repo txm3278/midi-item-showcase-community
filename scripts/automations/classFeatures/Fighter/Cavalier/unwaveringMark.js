@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.8.0
+// v3.8.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -425,7 +425,7 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
         priority: 20,
       },
     ],
-    duration: game.release.generation >= 14 ? { rounds: 1, expiry: "sourceEnd" } : { rounds: 1, turns: 1 },
+    duration: game.release.generation >= 14 ? { expiry: "sourceEnd" } : { rounds: 1, turns: 1 },
     origin: sourceItem.uuid, //flag the effect as associated to the source item
     transfer: false,
     disabled: false,
@@ -433,7 +433,11 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
     name: targetEffectName,
     "flags.dae": { specialDuration: game.release.generation >= 14 ? [] : ["turnEndSource"], stackable: "noneNameOnly" },
   };
-
+  // Temporary fix for DAE on v14, remove when fixed in DAE
+  if (workflow.isTurn) {
+    targetEffectData.duration.value = 1;
+    targetEffectData.duration.units = "rounds";
+  }
   await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });
 }
 

@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.16
+// v3.5.17
 // Dependencies:
 //  - MidiQOL
 //
@@ -149,7 +149,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.16";
+  const VERSION = "3.5.17";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -2339,7 +2339,7 @@ export function runElwinsHelpers() {
     let replaceString = `$1\n${text}<span class="elwin-insert-before"></span>\n$2`;
     switch (position) {
       case "beforeHitsDisplay":
-        searchRegex = /(<\/div>)(\s*<div class="midi-qol-hits-display">)/m;
+        searchRegex = /(<\/div>)(\s*<div class="midi-qol-hits-display(?: [\w\-]+)*">)/m;
         break;
       case "beforeButtons":
       default:
