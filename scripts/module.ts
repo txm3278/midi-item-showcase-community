@@ -45,7 +45,7 @@ Hooks.once("catReady", async () => {
     packs.map(async (id: string) => {
       const pack = game.packs?.get(moduleName + "." + id);
       if (!pack) return;
-      const index = await pack.getIndex({ fields: ["system.identifier", "system.source.rules", "type"] });
+      const index = await pack.getIndex();
        index.contents.forEach((entry) => {
         const { uuid, name } = entry;
         const type = foundry.utils.getProperty(entry, "type") as string;
