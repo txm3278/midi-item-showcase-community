@@ -89,3 +89,6 @@ AE changes with @ values needing a replacement value of origin:
 - Gift of the Metallic Dragon
 Eversmoking Bottle (2014/2024):
 - Open activity set to duration special
+Remove deprecated senses and movements attributes:
+- movement.x has moved to "movement.speeds.x
+- senses.x has moved to "senses.range.x
