@@ -188,7 +188,7 @@
         "unit": "seconds",
         "expiry": "turnEnd"
       },
-      "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
+      "origin": null,
       "transfer": false,
       "flags": {
         "core": {
@@ -267,7 +267,7 @@
         "unit": "seconds",
         "expiry": "turnEnd"
       },
-      "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
+      "origin": null,
       "transfer": false,
       "flags": {
         "core": {

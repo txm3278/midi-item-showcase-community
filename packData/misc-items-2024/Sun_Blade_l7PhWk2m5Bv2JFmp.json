@@ -683,7 +683,7 @@
     {
       "name": "Sunlight",
       "img": "icons/magic/light/explosion-star-glow-yellow.webp",
-      "origin": "Item.7xeuYcnO3qLpobUy",
+      "origin": null,
       "_id": "SnxRN0OBcIvCkwiW",
       "type": "base",
       "system": {},

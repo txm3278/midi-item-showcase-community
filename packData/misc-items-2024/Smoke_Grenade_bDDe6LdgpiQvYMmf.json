@@ -350,7 +350,7 @@
     {
       "name": "Smoke Grenade",
       "img": "icons/weapons/thrown/grenade-round.webp",
-      "origin": "Item.bDDe6LdgpiQvYMmf",
+      "origin": null,
       "transfer": false,
       "_id": "libOMVLmgoJpVyEu",
       "type": "base",

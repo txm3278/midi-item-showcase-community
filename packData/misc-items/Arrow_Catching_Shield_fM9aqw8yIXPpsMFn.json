@@ -272,7 +272,7 @@
   "effects": [
     {
       "name": "Arrow-Catching Shield",
-      "origin": "Item.LzpyQ4WdeuTZQFFT",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",

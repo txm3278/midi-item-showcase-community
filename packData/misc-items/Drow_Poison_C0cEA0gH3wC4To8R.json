@@ -351,7 +351,7 @@
   },
   "effects": [
     {
-      "origin": "Item.83BKjPo3v4TxlDN5",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",
@@ -415,7 +415,7 @@
     {
       "name": "Drow Poison",
       "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
-      "origin": "Item.83BKjPo3v4TxlDN5",
+      "origin": null,
       "_id": "NlqjFwb7JZ4DVjdJ",
       "type": "base",
       "system": {},

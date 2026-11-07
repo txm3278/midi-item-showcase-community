@@ -457,7 +457,7 @@
     {
       "name": "Flame Tongue - Light",
       "img": "icons/weapons/swords/sword-guard-red-jewel.webp",
-      "origin": "Item.Ibog1FSa29CjE2XI",
+      "origin": null,
       "_id": "1c4elg5A8MNxn5tJ",
       "type": "base",
       "system": {},

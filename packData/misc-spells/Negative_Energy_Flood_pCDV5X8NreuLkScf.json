@@ -435,7 +435,7 @@
     {
       "name": "Negative Energy Flood",
       "img": "icons/magic/unholy/strike-beam-blood-large-red-green.webp",
-      "origin": "Item.pCDV5X8NreuLkScf",
+      "origin": null,
       "_id": "8FIERzKn9CoEopA5",
       "type": "base",
       "system": {},

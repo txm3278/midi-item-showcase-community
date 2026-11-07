@@ -371,7 +371,7 @@
     {
       "name": "Potent Poison",
       "img": "icons/consumables/potions/potion-tube-corked-orange.webp",
-      "origin": "Item.XT8t5QIXgFRzzMfE",
+      "origin": null,
       "_id": "flmuyOHEgBDkMwtI",
       "type": "base",
       "system": {},

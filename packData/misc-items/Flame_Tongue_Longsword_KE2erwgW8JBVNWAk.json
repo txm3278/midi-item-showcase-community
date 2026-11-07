@@ -462,7 +462,7 @@
     {
       "name": "Flame Tongue - Light",
       "img": "icons/skills/melee/strike-sword-slashing-red.webp",
-      "origin": "Item.KE2erwgW8JBVNWAk",
+      "origin": null,
       "_id": "Dhcf3VE4hicjpnF1",
       "type": "base",
       "system": {},

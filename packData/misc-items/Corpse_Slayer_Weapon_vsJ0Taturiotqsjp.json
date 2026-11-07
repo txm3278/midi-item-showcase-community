@@ -388,7 +388,7 @@
   "effects": [
     {
       "name": "Corpse Slayer",
-      "origin": "Item.e8f1IqRLvmTyyezq",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",

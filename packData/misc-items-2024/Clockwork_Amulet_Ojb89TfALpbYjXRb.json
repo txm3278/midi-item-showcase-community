@@ -185,7 +185,7 @@
     {
       "name": "Clockwork Amulet",
       "img": "icons/equipment/neck/amulet-triangle-blue.webp",
-      "origin": "Item.pJjlqS6fy9yWfRzS",
+      "origin": null,
       "transfer": false,
       "_id": "maj0z8F9gCg0CMCL",
       "type": "base",

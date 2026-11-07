@@ -58,7 +58,7 @@
     {
       "name": "Psi Powered Leap",
       "img": "icons/skills/movement/figure-running-gray.webp",
-      "origin": "Item.id9NB2YXKM5NIbqF",
+      "origin": null,
       "transfer": false,
       "_id": "PNOThSmOkvqJz2lW",
       "type": "base",
@@ -108,7 +108,7 @@
     {
       "name": "Telekinetic Adept",
       "img": "icons/magic/air/air-burst-spiral-yellow.webp",
-      "origin": "Item.id9NB2YXKM5NIbqF",
+      "origin": null,
       "_id": "g5Tyr3dOU0jFW8ae",
       "type": "base",
       "system": {},

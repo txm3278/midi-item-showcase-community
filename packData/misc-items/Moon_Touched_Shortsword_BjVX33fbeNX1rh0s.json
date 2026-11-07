@@ -332,7 +332,7 @@
     {
       "name": "Moon-Touched - Light",
       "img": "icons/weapons/swords/sword-guard-red-jewel.webp",
-      "origin": "Item.BjVX33fbeNX1rh0s",
+      "origin": null,
       "_id": "HTFLoIn85kYSuRxG",
       "type": "base",
       "system": {},

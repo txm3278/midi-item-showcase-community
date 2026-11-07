@@ -85,7 +85,7 @@
         "duration": {
           "concentration": false,
           "value": "",
-          "units": "perm",
+          "units": "special",
           "special": "",
           "override": false
         },
@@ -216,7 +216,7 @@
           "chatFlavor": "Put back the stopper"
         },
         "duration": {
-          "units": "inst",
+          "units": "special",
           "concentration": false,
           "override": false
         },
@@ -319,7 +319,7 @@
     {
       "name": "Eversmoking Bottle",
       "img": "icons/commodities/tech/smoke-bomb-purple.webp",
-      "origin": "Item.OG80sNSWnJdGA0nu",
+      "origin": null,
       "transfer": false,
       "_id": "RyupTjbZQtDlaMfk",
       "type": "base",

@@ -332,7 +332,7 @@
     {
       "name": "Moon-Touched - Light",
       "img": "icons/weapons/swords/greatsword-crossguard-flanged-red.webp",
-      "origin": "Item.Y5Z1ljqHarH4McB0",
+      "origin": null,
       "_id": "HTFLoIn85kYSuRxG",
       "type": "base",
       "system": {},

@@ -78,7 +78,7 @@
     {
       "name": "Ring of Evasion",
       "img": "icons/equipment/finger/ring-eye-silver-green.webp",
-      "origin": "Item.VajxXAC7xsEPnQPC",
+      "origin": null,
       "_id": "30vmoE2Z5s0k3uCH",
       "type": "base",
       "system": {},

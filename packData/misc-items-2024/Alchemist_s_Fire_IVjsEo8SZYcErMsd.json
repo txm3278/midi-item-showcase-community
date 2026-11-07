@@ -211,7 +211,7 @@
     {
       "name": "Alchemist's Fire",
       "img": "icons/consumables/potions/potion-flask-corked-orange.webp",
-      "origin": "Item.IVjsEo8SZYcErMsd",
+      "origin": null,
       "transfer": false,
       "_id": "BWIptf5hbhDC2ijj",
       "type": "base",

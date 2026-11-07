@@ -28,7 +28,7 @@
         "duration": {
           "concentration": false,
           "value": "",
-          "units": "perm",
+          "units": "special",
           "special": "",
           "override": false
         },
@@ -319,7 +319,7 @@
     {
       "name": "Eversmoking Bottle",
       "img": "icons/commodities/tech/smoke-bomb-purple.webp",
-      "origin": "Item.tQcR430m8WNh0eTA",
+      "origin": null,
       "transfer": false,
       "_id": "dz9IgkDdFrUTquDP",
       "type": "base",

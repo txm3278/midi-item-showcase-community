@@ -192,7 +192,7 @@
   },
   "effects": [
     {
-      "origin": "Item.pV9RXjbkmkyuokEm",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",
@@ -249,7 +249,7 @@
       "_key": "!items.effects!dHMWSsxrrEs58U6w.8tHtGdbD3oMO61fl"
     },
     {
-      "origin": "Item.pV9RXjbkmkyuokEm",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",

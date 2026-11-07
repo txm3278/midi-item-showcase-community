@@ -321,7 +321,7 @@
     {
       "name": "Produce Flame",
       "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
-      "origin": "Item.sRr2wDcoVTw244Un",
+      "origin": null,
       "transfer": false,
       "_id": "91vahiQP1dduvexk",
       "type": "base",

@@ -351,7 +351,7 @@
     {
       "name": "Grenade, Smoke",
       "img": "icons/weapons/thrown/grenade-round.webp",
-      "origin": "Item.jEoWgzcAfwRFjQ0g",
+      "origin": null,
       "transfer": false,
       "_id": "xoOReOiy8pqgbIzb",
       "type": "base",

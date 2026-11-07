@@ -523,7 +523,7 @@
     {
       "name": "Dagger of Venom",
       "img": "icons/skills/melee/blade-tip-acid-poison-green.webp",
-      "origin": "Item.6W6LGpJqzsXykGbO",
+      "origin": null,
       "transfer": false,
       "_id": "W3exe9GzisjGw4UL",
       "type": "base",

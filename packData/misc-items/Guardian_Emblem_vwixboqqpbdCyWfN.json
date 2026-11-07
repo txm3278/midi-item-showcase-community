@@ -379,7 +379,7 @@
   "effects": [
     {
       "name": "Guardian Emblem - TPR",
-      "origin": "Item.pkk4U68aMz4x6TiW",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",
@@ -438,7 +438,7 @@
     },
     {
       "name": "Guardian Emblem",
-      "origin": "Item.pkk4U68aMz4x6TiW",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",

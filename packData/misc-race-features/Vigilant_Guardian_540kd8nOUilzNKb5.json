@@ -177,7 +177,7 @@
   "effects": [
     {
       "name": "Vigilant Guardian",
-      "origin": "Item.x6ukfMYysNxqtQnD",
+      "origin": null,
       "duration": {
         "value": null,
         "unit": "seconds",

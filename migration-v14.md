@@ -82,3 +82,10 @@
   once migrated it becomes: {"value": 0, "units: "seconds", "expiry": "turnStart"}
 
 - Sorrowfull Fate|Sorrowful Fate - Regret: replace {"seconds" 60} by {"value": 1, "units": "hours", "expiry": "turnStart"}
+
+
+# Migration dnd5e v6.0.x:
+AE changes with @ values needing a replacement value of origin:
+- Gift of the Metallic Dragon
+Eversmoking Bottle (2014/2024):
+- Open activity set to duration special

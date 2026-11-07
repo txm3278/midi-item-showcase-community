@@ -6,7 +6,7 @@
     {
       "name": "Great Weapon Fighting",
       "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
-      "origin": "Item.2FtWaINpckrvjqEr",
+      "origin": null,
       "_id": "HbxULptV9VroqWfp",
       "type": "base",
       "system": {},

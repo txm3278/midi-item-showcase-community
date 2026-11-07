@@ -19,7 +19,7 @@
         "unit": "seconds",
         "expiry": "turnEnd"
       },
-      "origin": "Item.mp4IXtsdpgI3uZD0",
+      "origin": null,
       "transfer": false,
       "flags": {
         "core": {
@@ -98,7 +98,7 @@
         "unit": "seconds",
         "expiry": "turnEnd"
       },
-      "origin": "Item.mp4IXtsdpgI3uZD0",
+      "origin": null,
       "transfer": false,
       "flags": {
         "core": {

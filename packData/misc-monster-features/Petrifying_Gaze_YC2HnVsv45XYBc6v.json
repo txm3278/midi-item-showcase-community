@@ -367,7 +367,7 @@
         "expiry": null
       },
       "description": "",
-      "origin": "Item.YC2HnVsv45XYBc6v",
+      "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
@@ -421,7 +421,7 @@
     {
       "name": "Petrifying Gaze - Petrification",
       "img": "icons/magic/control/hypnosis-mesmerism-eye.webp",
-      "origin": "Scene.0iYH9MED4yPi9t9u.Token.JOlDuUxwhRs6Eov3.Actor.6XrYdDXotYgOyYgz.Item.DDZDp2q14rukTzMC",
+      "origin": null,
       "transfer": false,
       "_id": "g9u5SvM2yIfi2VVM",
       "type": "base",

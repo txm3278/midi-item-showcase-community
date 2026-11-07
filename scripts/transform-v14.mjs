@@ -68,21 +68,21 @@ function normalizeDuration(duration = {}, specialDuration = []) {
   ) {
     return { duration: { value: null, unit: "seconds", expiry: "turnEnd" }, specialDuration };
   }
-  // replace DAE turnEndSource {"rounds": 1, "turns": 1} by {"value": 1, "units": "rounds", "expiry": "sourceEnd"}
+  // replace DAE turnEndSource {"rounds": 1, "turns": 1} by {"value": null, "units": "seconds", "expiry": "sourceEnd"}
   if (duration.rounds === 1 && duration.turns === 1 && specialDuration[0] === "turnEndSource") {
-    return { duration: { value: 1, unit: "rounds", expiry: "sourceEnd" }, specialDuration: specialDuration.slice(1) };
+    return { duration: { value: null, unit: "seconds", expiry: "sourceEnd" }, specialDuration: specialDuration.slice(1) };
   }
-  // replace DAE turnStartSource {"rounds": 1 or null} by {"value": 1, "units": "rounds", "expiry": "sourceStart"}
+  // replace DAE turnStartSource {"rounds": 1 or null} by {"value": null, "units": "seconds", "expiry": "sourceStart"}
   if (
     (duration.rounds === 1 || duration.rounds === null) &&
     duration.turns === null &&
     specialDuration[0] === "turnStartSource"
   ) {
-    return { duration: { value: 1, unit: "rounds", expiry: "sourceStart" }, specialDuration: specialDuration.slice(1) };
+    return { duration: { value: null, unit: "seconds", expiry: "sourceStart" }, specialDuration: specialDuration.slice(1) };
   }
-  // replace DAE turnEnd {"rounds": 1, "turns": 1} by {"value": 1, "units": "rounds", "expiry": "targetEnd"}
+  // replace DAE turnEnd {"rounds": 1, "turns": 1} by {"value": null, "units": "seconds", "expiry": "targetEnd"}
   if (duration.rounds === 1 && duration.turns === 1 && specialDuration[0] === "turnEnd") {
-    return { duration: { value: 1, unit: "rounds", expiry: "targetEnd" }, specialDuration: specialDuration.slice(1) };
+    return { duration: { value: null, unit: "seconds", expiry: "targetEnd" }, specialDuration: specialDuration.slice(1) };
   }
   // replace {"turns": null, "rounds": null, "seconds": 60} by {"value": 1, "units": "minutes", "expiry": "turnStart"}
   if (
