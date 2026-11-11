@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Active Token Effects</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Active Token Effects (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>",
       "chat": ""
     },
     "source": {
@@ -174,6 +174,8 @@
           "automationOnly": true,
           "identifier": "adjust-light-radius",
           "otherActivityCompatible": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -202,13 +204,14 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none",
         "otherActivityAsParentType": true
       },
       "wS5VKZ6Fe6UahYUf": {
@@ -301,6 +304,8 @@
           "confirmTargets": "default",
           "automationOnly": true,
           "identifier": "attack",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -337,6 +342,7 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
@@ -437,6 +443,8 @@
           "confirmTargets": "default",
           "automationOnly": false,
           "identifier": "activate-deactivate-blade",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -466,9 +474,11 @@
           "requireIdentification": false,
           "requireMagic": false
         },
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         }
@@ -569,6 +579,8 @@
           "automationOnly": true,
           "otherActivityCompatible": true,
           "identifier": "damage-vs-undead",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -597,9 +609,11 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         }
@@ -683,7 +697,7 @@
     {
       "name": "Sunlight",
       "img": "icons/magic/light/explosion-star-glow-yellow.webp",
-      "origin": "Item.7xeuYcnO3qLpobUy",
+      "origin": null,
       "_id": "SnxRN0OBcIvCkwiW",
       "type": "base",
       "system": {},

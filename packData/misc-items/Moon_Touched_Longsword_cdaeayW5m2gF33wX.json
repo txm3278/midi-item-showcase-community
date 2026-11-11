@@ -331,7 +331,7 @@
     {
       "name": "Moon-Touched - Light",
       "img": "icons/weapons/swords/greatsword-sheathed.webp",
-      "origin": "Item.cdaeayW5m2gF33wX",
+      "origin": null,
       "_id": "HTFLoIn85kYSuRxG",
       "type": "base",
       "system": {},

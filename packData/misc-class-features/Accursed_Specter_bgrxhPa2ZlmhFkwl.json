@@ -190,7 +190,7 @@
     {
       "name": "Accursed Specter",
       "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
-      "origin": "Actor.taT12mxpu5KIohJk.Item.1Dzsr7YZVnhm054B",
+      "origin": null,
       "_id": "zKzUIIMi3ETZwsTB",
       "type": "base",
       "system": {},

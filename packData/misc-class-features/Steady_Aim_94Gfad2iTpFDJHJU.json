@@ -6,7 +6,7 @@
   "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "source": {
@@ -112,6 +112,8 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -141,6 +143,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "macroData": {
           "name": "",
           "command": ""
@@ -155,10 +158,10 @@
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none",
         "otherActivityAsParentType": true
       }
     },
@@ -192,7 +195,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
+      "origin": null,
       "transfer": false,
       "flags": {
         "core": {
@@ -276,7 +279,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "origin": "Compendium.ddb-shared-compendia.ddb-override.KHeN1sbRruVh5CqQ",
+      "origin": null,
       "transfer": false,
       "flags": {
         "core": {
@@ -336,12 +339,6 @@
   "flags": {
     "infusions": {
       "infused": false
-    },
-    "obsidian": {
-      "source": {
-        "type": "class",
-        "text": "Rogue"
-      }
     },
     "midi-qol": {
       "effectActivation": false,

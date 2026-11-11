@@ -323,7 +323,7 @@
     {
       "name": "Deathdance",
       "img": "icons/consumables/potions/potion-bottle-skull-label-poison-teal.webp",
-      "origin": "Item.SVoWiBw1GRJ4RhRV",
+      "origin": null,
       "transfer": false,
       "_id": "Xdm1fFhBElqAaOHD",
       "type": "base",

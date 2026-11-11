@@ -332,7 +332,7 @@
     {
       "name": "Moon-Touched - Light",
       "img": "icons/weapons/swords/sword-hooked-engraved.webp",
-      "origin": "Item.lyjN7xgLBSByXzE8",
+      "origin": null,
       "_id": "HTFLoIn85kYSuRxG",
       "type": "base",
       "system": {},

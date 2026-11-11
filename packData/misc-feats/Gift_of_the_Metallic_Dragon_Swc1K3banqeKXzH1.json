@@ -161,7 +161,7 @@
   "effects": [
     {
       "name": "Gift of the Metallic Dragon",
-      "origin": "Item.Vui6WdIKyasm5bcI",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -225,7 +225,7 @@
     },
     {
       "name": "Gift of the Metallic Dragon - AC Bonus",
-      "origin": "Item.Vui6WdIKyasm5bcI",
+      "origin": null,
       "duration": {
         "rounds": null,
         "startTime": null,

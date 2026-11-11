@@ -1,0 +1,322 @@
+{
+  "_id": "4UsTYykQ73n5NMtE",
+  "name": "Belt of Dwarvenkind",
+  "type": "equipment",
+  "img": "icons/equipment/waist/belt-armored-steel.webp",
+  "system": {
+    "description": {
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>The feature is a passive one that is active when attuned and equipped.\nThere is also a check done once per day triggered at dawn to verify if the owner grows a beard or it becomes thicker.</p></details>",
+      "chat": ""
+    },
+    "source": {
+      "custom": "",
+      "book": "SRD 5.1",
+      "page": "",
+      "license": "CC-BY-4.0",
+      "rules": "2014",
+      "revision": 1
+    },
+    "quantity": 1,
+    "weight": {
+      "value": 1,
+      "units": "lb"
+    },
+    "price": {
+      "value": 4000,
+      "denomination": "gp"
+    },
+    "attunement": "required",
+    "equipped": false,
+    "rarity": "rare",
+    "identified": true,
+    "cover": null,
+    "uses": {
+      "max": "",
+      "spent": 0,
+      "recovery": []
+    },
+    "armor": {
+      "value": 0,
+      "dex": 0,
+      "magicalBonus": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "speed": {
+      "value": null,
+      "conditions": "",
+      "units": "ft"
+    },
+    "strength": null,
+    "proficient": null,
+    "type": {
+      "value": "wondrous",
+      "baseItem": ""
+    },
+    "unidentified": {
+      "description": ""
+    },
+    "container": null,
+    "properties": [
+      "mgc"
+    ],
+    "activities": {
+      "E9xN6pyRQtbyQ191": {
+        "type": "utility",
+        "sort": 0,
+        "activation": {
+          "type": "longRest",
+          "override": false,
+          "condition": "At dawn",
+          "value": null
+        },
+        "consumption": {
+          "scaling": {
+            "allowed": false
+          },
+          "spellSlot": true,
+          "targets": []
+        },
+        "description": {
+          "chatFlavor": ""
+        },
+        "duration": {
+          "units": "inst",
+          "concentration": false,
+          "override": false
+        },
+        "effects": [],
+        "flags": {},
+        "range": {
+          "units": "self",
+          "override": false,
+          "special": ""
+        },
+        "target": {
+          "template": {
+            "contiguous": false,
+            "units": "ft",
+            "type": ""
+          },
+          "affects": {
+            "choice": false,
+            "type": "self",
+            "special": ""
+          },
+          "override": false,
+          "prompt": true
+        },
+        "uses": {
+          "spent": 0,
+          "recovery": [
+            {
+              "period": "dawn",
+              "type": "recoverAll"
+            }
+          ],
+          "max": "1"
+        },
+        "visibility": {
+          "level": {
+            "min": null,
+            "max": null
+          },
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false,
+          "identifier": ""
+        },
+        "roll": {
+          "prompt": false,
+          "visible": false,
+          "name": "Beard Check, 51+ you grow a beard",
+          "formula": "1d100"
+        },
+        "useConditionText": "item.attuned",
+        "useConditionReason": "Must be attuned",
+        "effectConditionText": "",
+        "macroData": {
+          "name": "",
+          "command": ""
+        },
+        "ignoreTraits": {
+          "idi": false,
+          "idr": false,
+          "idv": false,
+          "ida": false,
+          "idm": false
+        },
+        "midiProperties": {
+          "ignoreTraits": [],
+          "triggeredActivityId": "none",
+          "triggeredActivityConditionText": "",
+          "triggeredActivityTargets": "targets",
+          "triggeredActivityRollAs": "self",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "never",
+          "confirmTargets": "default",
+          "autoTargetType": "any",
+          "autoTargetAction": "default",
+          "automationOnly": true,
+          "otherActivityCompatible": false,
+          "otherActivityAsParentType": true,
+          "identifier": "beard-check",
+          "displayActivityName": true,
+          "rollMode": "default",
+          "chooseEffects": false,
+          "toggleEffect": false,
+          "ignoreFullCover": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
+        },
+        "isOverTimeFlag": false,
+        "overTimeProperties": {
+          "saveRemoves": true,
+          "rollAs": "target",
+          "preRemoveConditionText": "",
+          "postRemoveConditionText": ""
+        },
+        "otherActivityId": "none",
+        "otherActivityAsParentType": true,
+        "name": "Beard Check",
+        "_id": "E9xN6pyRQtbyQ191"
+      }
+    },
+    "attuned": false,
+    "identifier": "belt-of-dwarvenkind",
+    "crew": {
+      "value": []
+    }
+  },
+  "effects": [
+    {
+      "name": "Dwarvenkind Benefits",
+      "img": "systems/dnd5e/icons/svg/items/race.svg",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.traits.languages.value",
+          "mode": 2,
+          "value": "dwarvish",
+          "priority": 20
+        },
+        {
+          "key": "system.abilities.con.value",
+          "mode": 2,
+          "value": "clamp(20 - @abilities.con.value, 0, 2)",
+          "priority": 20
+        },
+        {
+          "key": "system.attributes.senses.darkvision",
+          "mode": 4,
+          "value": "60",
+          "priority": 40
+        },
+        {
+          "key": "system.traits.dr.value",
+          "mode": 2,
+          "value": "poison",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.beltOfDwarvenKind.skill.per",
+          "mode": 5,
+          "value": "reroll-kh",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.beltOfDwarvenKind.count",
+          "mode": 5,
+          "value": "every",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.beltOfDwarvenKind.label",
+          "mode": 5,
+          "value": "Persuading a Dwarf? (Advantage)",
+          "priority": 20
+        },
+        {
+          "key": "flags.midi-qol.optional.beltOfDwarvenKind.displayBonusRolls",
+          "mode": 5,
+          "value": "false",
+          "priority": 20
+        },
+        {
+          "key": "flags.chris-premades.CR.poisoned",
+          "mode": 5,
+          "value": "true",
+          "priority": 20
+        },
+        {
+          "key": "macro.execute",
+          "mode": 0,
+          "value": "function.MISC.macros.items.beltOfDwarvenkind",
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "description": "<div class=\"def-block\"><p><strong>Dwarvish.</strong> You know Dwarvish.</p><p><strong>Friend of Dwarvenkind.</strong> You have Advantage on Charisma (Persuasion) checks made to interact with dwarves and duergar.</p><p><strong>Toughness.</strong> Your Constitution increases by 2, to a maximum of 20.</p><p>If you aren’t a dwarf or duergar, you gain the following additional benefits while wearing the belt:</p><div class=\"def-block\"><p><strong>Darkvision.</strong> You have Darkvision with a range of 60 feet.</p><p><strong>Resilience.</strong> You have Resistance to Poison damage. You also have Advantage on saving throws you make to avoid or end the Poisoned condition.</p></div></div>",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
+        },
+        "dae": {
+          "disableCondition": "",
+          "stackable": "noneName",
+          "showIcon": false,
+          "disableIncapacitated": false,
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "overlay": false
+        }
+      },
+      "_id": "IJEZAjdpRDR3je27",
+      "_key": "!items.effects!4UsTYykQ73n5NMtE.IJEZAjdpRDR3je27"
+    }
+  ],
+  "folder": null,
+  "flags": {
+    "dnd5e": {
+      "riders": {
+        "activity": []
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.items.beltOfDwarvenkind"
+    }
+  },
+  "_key": "!items!4UsTYykQ73n5NMtE"
+}

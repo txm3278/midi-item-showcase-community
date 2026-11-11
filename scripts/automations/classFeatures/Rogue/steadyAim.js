@@ -2,7 +2,7 @@
 // Read First!!!!
 // Verifies that the token has not moved yet and modifies its ability to move if drag-ruler and/or
 // monks-tokenbar are active.
-// v3.4.0
+// v3.4.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [on], [off] item macro
@@ -82,7 +82,7 @@ export async function steadyAim({ speaker, actor, token, character, item, args, 
     let moved = false;
     if (
       token.document.movementHistory?.length > 0 &&
-      game.canvas?.grid?.measurePath(token.document.movementHistory)?.distance > 0
+      canvas.grid.measurePath(token.document.movementHistory)?.distance > 0
     ) {
       moved = true;
     }

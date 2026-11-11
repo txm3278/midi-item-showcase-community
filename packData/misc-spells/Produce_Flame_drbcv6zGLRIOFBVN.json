@@ -448,7 +448,7 @@
     {
       "name": "Produce Flame",
       "img": "icons/magic/fire/explosion-fireball-medium-orange.webp",
-      "origin": "Item.drbcv6zGLRIOFBVN",
+      "origin": null,
       "transfer": false,
       "_id": "FtTzohi151e7cmKw",
       "type": "base",

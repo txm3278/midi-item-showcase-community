@@ -2,7 +2,7 @@
 // Fighter - Psi Warrior - Telekinetic Master
 // Adds Telekinesis spell as a free use or one that consumes a Psionic Energy die,
 // it also handles special Bonus Weapon Attack.
-// v1.2.0
+// v1.2.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on],[off],[each]
@@ -294,7 +294,7 @@ async function displayBonusActionInfo(actor, token, sourceItem, debug) {
   );
   MidiQOL.addUndoChatMessage(
     await ChatMessage.create({
-      type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+      style: CONST.CHAT_MESSAGE_STYLES.OTHER,
       content: message,
       speaker: ChatMessage.getSpeaker({ actor, token: token?.document }),
       whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),

@@ -192,7 +192,7 @@
   },
   "effects": [
     {
-      "origin": "Item.lKlL71XSFFmxEtI0",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -254,7 +254,7 @@
       "_key": "!items.effects!NGFPAx8J5vhB4DJM.8tHtGdbD3oMO61fl"
     },
     {
-      "origin": "Item.lKlL71XSFFmxEtI0",
+      "origin": null,
       "duration": {
         "rounds": null,
         "startTime": null,

@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.6.1
+// v3.6.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -352,7 +352,7 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
     );
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
-        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: message,
         speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token?.document }),
         whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),

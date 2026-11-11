@@ -321,7 +321,7 @@
     {
       "name": "Deflect Missiles - Damage Reduction",
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
-      "origin": "Actor.8uHSuxQokfqz8dvc.Item.S7hJ1jQV26jZp5vD",
+      "origin": null,
       "transfer": false,
       "_id": "5e8RbHiOcFWK1D0G",
       "type": "base",

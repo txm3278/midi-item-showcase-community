@@ -141,6 +141,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "macroData": {
           "name": "",
           "command": ""
@@ -159,7 +160,6 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none",
         "otherActivityAsParentType": true
       }
     },

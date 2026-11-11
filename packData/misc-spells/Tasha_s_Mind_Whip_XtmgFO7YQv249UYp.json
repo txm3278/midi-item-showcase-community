@@ -234,7 +234,7 @@
     {
       "name": "Tasha's Mind Whip",
       "img": "icons/magic/lightning/bolt-strike-pink.webp",
-      "origin": "Item.gAnhnfNF5HZ2V7sk",
+      "origin": null,
       "transfer": false,
       "_id": "lY2cxrpwRO25JQmO",
       "type": "base",

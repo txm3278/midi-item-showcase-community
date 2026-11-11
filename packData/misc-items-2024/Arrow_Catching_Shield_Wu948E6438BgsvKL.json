@@ -276,7 +276,7 @@
   "effects": [
     {
       "name": "Ranged Attack AC Bonus",
-      "origin": "Item.Wu948E6438BgsvKL",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,

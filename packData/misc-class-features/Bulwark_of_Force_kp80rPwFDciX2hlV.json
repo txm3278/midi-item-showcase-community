@@ -6,7 +6,7 @@
     {
       "name": "Psychic Shield",
       "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
-      "origin": "Item.kp80rPwFDciX2hlV",
+      "origin": null,
       "transfer": false,
       "_id": "wGUzV4CGfgPiUoYF",
       "type": "base",
@@ -56,7 +56,7 @@
     {
       "name": "Bulwark of Force",
       "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
-      "origin": "Item.kp80rPwFDciX2hlV",
+      "origin": null,
       "_id": "OdQQ71DdzysccgeR",
       "type": "base",
       "system": {},

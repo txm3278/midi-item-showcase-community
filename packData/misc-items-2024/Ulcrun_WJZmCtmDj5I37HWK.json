@@ -338,7 +338,7 @@
     {
       "name": "Ulcrun",
       "img": "icons/consumables/potions/potion-bottle-corked-stopper-yellow.webp",
-      "origin": "Item.WJZmCtmDj5I37HWK",
+      "origin": null,
       "transfer": false,
       "_id": "6OoyzHtRnM0oHRrD",
       "type": "base",

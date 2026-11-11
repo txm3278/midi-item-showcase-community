@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Mix of helper functions for macros.
-// v3.5.17
+// v3.6.0
 // Dependencies:
 //  - MidiQOL
 //
@@ -67,6 +67,7 @@
 // - elwinHelpers.stabilize
 // - elwinHelpers.getItemData
 // - elwinHelpers.getOriginItemSync
+// - elwinHelpers.getRegionPosition
 // - elwinHelpers.ItemSelectionDialog
 // - elwinHelpers.TokenSelectionDialog
 //
@@ -149,7 +150,7 @@
 **/
 
 export function runElwinsHelpers() {
-  const VERSION = "3.5.17";
+  const VERSION = "3.6.0";
   const MACRO_NAME = "elwin-helpers";
   const WORLD_MODULE_ID = "world";
   const MISC_MODULE_ID = "midi-item-showcase-community";
@@ -257,8 +258,14 @@ export function runElwinsHelpers() {
     );
     setHook("midi-qol.postCleanup", "cleanupRegisteredWorkflowHooks", cleanupRegisteredWorkflowHooks);
     setHook("moveToken", "handleMoveToken", handleMoveToken);
-    setHook("updateMeasuredTemplate", "handleUpdateMeasuredTemplate", handleUpdateMeasuredTemplate);
-
+    if (game.release.generation >= 14) {
+      setHook("updateRegion", "handleUpdateRegion", handleUpdateRegion);
+    } else {
+      setHook("updateMeasuredTemplate", "handleUpdateMeasuredTemplate", handleUpdateMeasuredTemplate);
+    }
+    if (foundry.utils.isNewerVersion(game.modules.get("midi-qol")?.version ?? "0.0.0", "14.6")) {
+      setHook("dnd5e.renderChatMessage", "handleDnd5eRenderChatMessage", handleDnd5eRenderChatMessage);
+    }
     // TODO remove if dnd5e or midi supports this
     setHook("preUpdateActiveEffect", "handlePreUpdateActiveEffect", (activeEffect, _, options, __) => {
       options.previousDependentOn = activeEffect.getFlag("dnd5e", "dependentOn");
@@ -337,6 +344,7 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.stableConditionExpiration", stableConditionExpiration);
     exportIdentifier("elwinHelpers.getItemData", getItemData);
     exportIdentifier("elwinHelpers.getOriginItemSync", getOriginItemSync);
+    exportIdentifier("elwinHelpers.getRegionPosition", getRegionPosition);
 
     // Note: classes need to be exported after they are declared...
 
@@ -427,7 +435,7 @@ export function runElwinsHelpers() {
     if (debug) {
       console.warn(`${MACRO_NAME} | handlePostStart.`, workflow);
     }
-    for (let token of game.canvas?.tokens.placeables ?? []) {
+    for (let token of canvas?.tokens.placeables ?? []) {
       const actorOnUseMacros = foundry.utils.getProperty(token.actor ?? {}, "flags.midi-qol.onUseMacroParts");
       if (!actorOnUseMacros) {
         // Skip this actor does not have any on use macros
@@ -657,6 +665,7 @@ export function runElwinsHelpers() {
     if (debug) {
       console.warn(`${MACRO_NAME} | handleDnd5eCanEnchant`, { activity, item, errors });
     }
+    // TODO: how to handle async in dndn5e hook...
     const enchantmentEffect = activity.effects?.[0]?.effect;
     if (!enchantmentEffect) {
       return;
@@ -687,7 +696,7 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Handles the updateToken hook. Updates position of attached entities when the token is moved.
+   * Handles the moveToken hook. Updates position of attached entities when the token is moved.
    *
    * @param {TokenDocument} tokenDocument - The existing Token Document which was moved.
    * @param {object} movement - The movement data.
@@ -713,7 +722,7 @@ export function runElwinsHelpers() {
       return;
     }
     if (debug) {
-      console.warn(`${MACRO_NAME} | updateToken`, { tokenDocument, movement, options, user });
+      console.warn(`${MACRO_NAME} | handleMoveToken`, { tokenDocument, movement, options, user });
     }
 
     const delta = {
@@ -738,11 +747,26 @@ export function runElwinsHelpers() {
         if (!entity) {
           removedEntityUuids.push(entityUuid);
         } else {
-          await entity.update({
-            x: entity.x + delta.x,
-            y: entity.y + delta.y,
-            elevation: entity.elevation + delta.elevation,
-          });
+          if (entity instanceof RegionDocument) {
+            const shapes = foundry.utils.deepClone(entity.shapes);
+            shapes.forEach((shape) => {
+              shape.base.x += delta.x;
+              shape.base.y += delta.y;
+            });
+            await entity.update({
+              shapes,
+              elevation: {
+                bottom: entity.elevation.bottom + delta.elevation,
+                top: entity.elevation.top + delta.elevation,
+              },
+            });
+          } else {
+            await entity.update({
+              x: entity.x + delta.x,
+              y: entity.y + delta.y,
+              elevation: entity.elevation + delta.elevation,
+            });
+          }
         }
       }),
     );
@@ -839,6 +863,129 @@ export function runElwinsHelpers() {
   }
 
   /**
+   * Handles the updateRegion hook. Updates position of attached entities when the region is moved.
+   *
+   * @param {RegionDocument} regionDocument - The existing Region Document which was updated.
+   * @param {object} changed - The changes appied
+   * @param {Partial<DatabaseUpdateOperation>} options - Additional options which modified the template.
+   * @param {string} userId -The User ID who triggered the update.
+   */
+  async function handleUpdateRegion(regionDocument, changed, options, userId) {
+    if (game.user.id !== userId) {
+      return;
+    }
+    if (!foundry.utils.hasProperty(changed, "shapes")) {
+      return;
+    }
+    if (!["emanation", "circle", "ring"].includes(regionDocument.shapes[0]?.type)) {
+      // For now only support emanation, circle and ring
+      console.error(`${MACRO_NAME} | Only emanation, circle and ring shapes are supported.`);
+      return undefined;
+    }
+
+    if (debug) {
+      console.warn(`${MACRO_NAME} | handleUpdateRegion`, { regionDocument, changed, options, userId });
+    }
+
+    let moduleId = WORLD_MODULE_ID;
+    let attachedEntityUuids = regionDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+    let synchedEntityUuids = regionDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    if (!attachedEntityUuids.length) {
+      moduleId = MISC_MODULE_ID;
+      attachedEntityUuids = regionDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
+      synchedEntityUuids = regionDocument.flags[moduleId]?.attached?.synchedEntityUuids ?? [];
+    }
+    if (!attachedEntityUuids.length) {
+      return;
+    }
+    // TODO v14 convert to batch update
+    const pos = getRegionPosition(regionDocument);
+    let removedEntityUuids = [];
+    await Promise.all(
+      attachedEntityUuids.map(async (entityUuid) => {
+        let entity = await fromUuid(entityUuid);
+        if (!entity) {
+          removedEntityUuids.push(entityUuid);
+        } else {
+          const updates = {
+            x: pos.x,
+            y: pos.y,
+            elevation: pos.elevation ?? 0,
+            rotation: pos.rotation,
+          };
+          if (synchedEntityUuids.includes(entityUuid)) {
+            const distance = ((regionDocument.shapes[0]?.radius ?? 0) / canvas.grid.size) * canvas.grid.distance;
+            if (entity instanceof AmbientLightDocument) {
+              if (entity.config.dim > 0) {
+                foundry.utils.setProperty(updates, "config.dim", distance);
+                if (entity.config.bright > 0) {
+                  foundry.utils.setProperty(
+                    updates,
+                    "config.bright",
+                    (entity.config.bright / entity.config.dim) * distance,
+                  );
+                }
+              } else if (entity.config.bright > 0) {
+                foundry.utils.setProperty(updates, "config.bright", distance);
+              }
+            }
+          }
+          await entity.update(updates);
+        }
+      }),
+    );
+    if (removedEntityUuids.length) {
+      await regionDocument.setFlag(moduleId, "attached", {
+        attachedEntityUuids: attachedEntityUuids.filter((i) => !removedEntityUuids.includes(i)),
+        synchedEntityUuids: synchedEntityUuids.filter((i) => !removedEntityUuids.includes(i)),
+      });
+    }
+  }
+
+  /**
+   * Returns the position of a region document. If the region has multiple shapes, the position is the center of the bounding box.
+   * If the region has a single shape, the position is the center of that shape.<br>
+   * Note: inspired from Sequencer get_object_position function.
+   *
+   * @param {RegionDocument} regionDocument - The region document to get the position of.
+   * @returns {{x: number, y: number, rotation: number, [elevation]: number}} The position of the region document, with x, y, rotation and elevation properties.<br>
+   *    Note: elevation is optional and may be undefined if the region has infinite or no elevation.
+   */
+  function getRegionPosition(regionDocument) {
+    let pos = { x: 0, y: 0, rotation: 0 };
+    if (regionDocument.shapes.length > 1) {
+      pos.x = regionDocument.bounds.x + regionDocument.bounds.width / 2;
+      pos.y = regionDocument.bounds.y + regionDocument.bounds.height / 2;
+      // TODO how to support rotation on multiple shapes
+      pos.rotation = 0;
+    } else {
+      let firstShape = regionDocument.shapes[0];
+      pos.rotation = firstShape.rotation ?? 0;
+      switch (firstShape.type) {
+        case "cone":
+        case "line":
+          pos.x = firstShape.measuredSegments[0].ray.A.x;
+          pos.y = firstShape.measuredSegments[0].ray.A.y;
+          break;
+        default:
+          pos.x = firstShape.center.x;
+          pos.y = firstShape.center.y;
+      }
+    }
+    if (regionDocument.attachment?.token) {
+      pos.elevation = regionDocument.attachment.token.elevation;
+    } else if (
+      Number.isFinite(regionDocument.elevation?.top ?? 0) &&
+      Number.isFinite(regionDocument.elevation?.bottom ?? 0)
+    ) {
+      pos.elevation = (regionDocument.elevation.top + regionDocument.elevation.bottom) / 2;
+    } else {
+      // TODO how to support elevation when at least top or bottom is +-Infinity
+    }
+    return pos;
+  }
+
+  /**
    * Replaces an activity consumption target, if it's an identifier, by the id of the corresponding item on the owner if found.
    * @param {string} handlerName - Name of the calling function.
    * @param {Item5e} item - The item to be updated or created.
@@ -891,6 +1038,25 @@ export function runElwinsHelpers() {
       index++;
     }
     return activityData;
+  }
+
+  /**
+   * Handles the rendering of a D&D 5e chat message.
+   * @param {ChatMessage} chatMessage - The chat message to render.
+   * @param {HTMLElement} html - The HTML element to render the message into.
+   */
+  function handleDnd5eRenderChatMessage(chatMessage, html) {
+    if (debug) {
+      console.warn(`${MACRO_NAME} | Rendering additional text to midi chat message.`, { chatMessage, html });
+    }
+    let elwinExtraText = chatMessage.getFlag(MISC_MODULE_ID, "elwinMidiChatCardExtraText") ?? {};
+    if (elwinExtraText.position && elwinExtraText.text) {
+      renderTextIntoMidiChatMessage(html, elwinExtraText);
+    }
+    elwinExtraText = chatMessage.getFlag(WORLD_MODULE_ID, "elwinMidiChatCardExtraText") ?? {};
+    if (elwinExtraText.position && elwinExtraText.text) {
+      renderTextIntoMidiChatMessage(html, elwinExtraText);
+    }
   }
 
   /**
@@ -1543,6 +1709,13 @@ export function runElwinsHelpers() {
     const range = {};
     if (reactionData.reactionNone) {
       range.value = reactionData.range;
+      const defaultUnits = getDefaultLengthUnits();
+      const units = reactionData.rangeUnits ?? defaultUnits;
+      range.value =
+        range.value !== undefined
+          ? dnd5e.utils.convertLength(range.value, units, canvas.grid.units, { strict: false })
+          : undefined;
+
       range.wallsBlock = reactionData.wallsBlock;
     } else {
       range.value = getRangeFromActivity(activity);
@@ -1561,28 +1734,14 @@ export function runElwinsHelpers() {
    * @returns {number} range for the specified activity converted in the canvas scene grid units if possible,
    */
   function getRangeFromActivity(activity) {
-    if (activity?.range?.value === null || activity?.range?.value === undefined) {
+    if (activity?.range?.value === null || activity?.range?.value === undefined || activity?.range?.value === "") {
       return undefined;
     }
     let range = activity.range.value;
-    if (activity.range.units) {
-      switch (activity.range.units) {
-        case "mi": // miles - assume grid units are feet or miles - ignore furlongs/chains whatever
-          if (["feet", "ft"].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
-            range *= 5280;
-          } else if (["yards", "yd", "yds"].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
-            range *= 1760;
-          }
-          break;
-        case "km": // kilometeres - assume grid units are meters or kilometers
-          if (["meter", "m", "meters", "metre", "metres"].includes(canvas?.scene?.grid.units?.toLocaleLowerCase())) {
-            range *= 1000;
-          }
-          break;
-        // "none" "self" "ft" "m" "any" "spec":
-        default:
-          break;
-      }
+    const defaultUnits = getDefaultLengthUnits();
+    const rangeUnits = activity.range.units ?? defaultUnits;
+    if (range) {
+      return dnd5e.utils.convertLength(range, rangeUnits, canvas.grid.units, { strict: false });
     }
     return range;
   }
@@ -1874,7 +2033,7 @@ export function runElwinsHelpers() {
         case "calculateAppliedDamage":
           elwinHelpers.calculateAppliedDamage(workflow.damageItem);
           break;
-        case "reduceAppliedDamage":
+        case "reduceAppliedDamage": {
           let preventedDamage = action.preventedDamage;
           if (["ALL", "1HP"].includes(action.preventedDamage)) {
             preventedDamage = action.preventedDamage;
@@ -1886,9 +2045,9 @@ export function runElwinsHelpers() {
               workflow.activity?.getRollData() ?? workflow.item?.getRollData() ?? workflow.actor?.getRollData();
             preventedDamage = dnd5e.utils.simplifyBonus(action.preventedDamage, rollData);
           }
-
           elwinHelpers.reduceAppliedDamage(workflow.damageItem, preventedDamage, reactionActivity.item);
           break;
+        }
       }
     }
   }
@@ -1902,10 +2061,18 @@ export function runElwinsHelpers() {
    * @returns {string} Div texts for GM and non GM player.
    */
   function getTargetDivs(targetToken, textTemplate) {
-    const gmText = textTemplate.replace("${tokenName}", getTokenName(targetToken));
-    const targetName = MidiQOL.getTokenPlayerName(targetToken);
-    const playerText = textTemplate.replace("${tokenName}", targetName);
-    return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
+    if (foundry.utils.isNewerVersion(game.modules.get("midi-qol")?.version ?? "0.0.0", "14.6")) {
+      const tokenData = targetToken.document?.uuid ? `data-token-uuid="${targetToken.document.uuid}"` : "";
+      return textTemplate.replace(
+        "${tokenName}",
+        `<span class="elwin-target-name" ${tokenData}>${getTokenName(targetToken)}</span>`,
+      );
+    } else {
+      const gmText = textTemplate.replace("${tokenName}", getTokenName(targetToken));
+      const targetName = MidiQOL.getTokenPlayerName(targetToken);
+      const playerText = textTemplate.replace("${tokenName}", targetName);
+      return `<div class="midi-qol-gmTokenName">${gmText}</div><div class="midi-qol-playerTokenName">${playerText}</div>`;
+    }
   }
 
   /**
@@ -2079,13 +2246,13 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property.
+   * Returns true if the attack is a melee attack. It also handle the case of weapons with the thrown property or monsters' ranged weapons.
    *
    * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
    * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown/ranged weapons.
    *
    * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
    */
@@ -2102,13 +2269,13 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is a melee weapon attack. It also handle the case of weapons with the thrown property.
+   * Returns true if the attack is a melee weapon attack. It also handle the case of weapons with the thrown property or monsters' ranged weapons.
    *
    * @param {Activity|Item5e} activityOrItem - The activity or item used to attack.
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
    * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown/ranged weapons.
    *
    * @returns {boolean} true if the attack is a melee weapon attack, false otherwise.
    */
@@ -2125,7 +2292,7 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is melee attack. It also handle the case of weapons with the thrown property.
+   * Returns true if the attack is melee attack. It also handle the case of weapons with the thrown property or monsters' ranged weapons.
    *
    * @param {string[]|null} classifications - Array of supported attack classifications.
    * @param {string} subActionType - The allowed sub action type of the activity.
@@ -2133,7 +2300,7 @@ export function runElwinsHelpers() {
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
    * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown/ranged weapons.
    * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
   function isMeleeAttackByClassification(
@@ -2167,19 +2334,23 @@ export function runElwinsHelpers() {
     if (subActionType !== null && !actionType?.endsWith(subActionType)) {
       return false;
     }
-    if (!checkThrownWeapons) {
+    if (!checkThrownWeapons || activity.item.type !== "weapon" || !activity.item.system.hasRange) {
       return true;
     }
 
     // TODO what to do with attackMode === "ranged", will need to wait for Monster Manual
-    if (!hasItemProperty(activity?.item, "thr")) {
-      return true;
-    }
-
+    const gridUnits = canvas.grid.units;
     const distance = MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true });
     // Note: reach on activities is set from melee weapon item range if not overriden.
-    // TODO use grid default instead of 5
-    const meleeDistance = activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
+    const defaultUnits = getDefaultLengthUnits();
+    const defaultReach = dnd5e.utils.convertLength(5, "ft", gridUnits, { strict: false });
+    const activityRange = {
+      reach: activity.range?.reach ?? activity.item?.system.range?.reach,
+      units: activity.range?.units ?? defaultUnits,
+    };
+    const meleeDistance = activityRange.reach
+      ? dnd5e.utils.convertLength(activityRange.reach, activityRange.units, gridUnits, { strict: false })
+      : defaultReach;
     return distance >= 0 && distance <= meleeDistance;
   }
 
@@ -2190,7 +2361,7 @@ export function runElwinsHelpers() {
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
    * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown/ranged weapons.
    *
    * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
@@ -2213,7 +2384,7 @@ export function runElwinsHelpers() {
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
    * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown/ranged weapons.
    *
    * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
@@ -2230,7 +2401,7 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property.
+   * Returns true if the attack is ranged attack. It also handle the case of weapons with the thrown property or monsters' ranged weapons.
    *
    * @param {string[]|null} classifications - Array of supported attack classifications.
    * @param {string} subActionType - The allowed sub action type of the activity.
@@ -2238,7 +2409,7 @@ export function runElwinsHelpers() {
    * @param {Token5e} sourceToken - The attacker's token.
    * @param {Token5e} targetToken - The target's token.
    * @param {string} attackMode - The attack mode selected for the attack activity, if empty uses activity's default.
-   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown weapons.
+   * @param {boolean} checkThrownWeapons - Flag to indicate if the distance must be validated for thrown/ranged weapons.
    * @returns {boolean} true if the attack is a ranged weapon attack, false otherwise.
    */
   function isRangedAttackByClassification(
@@ -2274,21 +2445,31 @@ export function runElwinsHelpers() {
       return true;
     }
 
-    if (!checkThrownWeapons) {
-      return false;
-    }
-
-    // TODO what to do with attackMode === "ranged", will need to wait for Monster Manual
-    const attackType = activity.attack.type.value;
-    if (attackType !== "melee" || !hasItemProperty(activity.item, "thr")) {
+    if (!checkThrownWeapons || activity.item.type !== "weapon" || !activity.item.system.hasRange) {
       return false;
     }
 
     const distance = MidiQOL.computeDistance(sourceToken, targetToken, { wallsBlock: true });
     // Note: reach on activities is set from melee weapon item range if not overriden.
-    // TODO use grid default instead of 5
-    const meleeDistance = activity.range?.reach ?? activity.item?.system.range?.reach ?? 5;
+    const gridUnits = canvas.grid.units;
+    const defaultUnits = getDefaultLengthUnits();
+    const defaultReach = dnd5e.utils.convertLength(5, "ft", gridUnits, { strict: false });
+    const activityRange = {
+      reach: activity.range?.reach ?? activity.item?.system.range?.reach,
+      units: activity.range?.units ?? defaultUnits,
+    };
+    const meleeDistance = activityRange.reach
+      ? dnd5e.utils.convertLength(activityRange.reach, activityRange.units, gridUnits, { strict: false })
+      : defaultReach;
     return distance > meleeDistance;
+  }
+
+  /**
+   * Returns the default length units for the current game system.
+   * @returns {string} The default length units.
+   */
+  function getDefaultLengthUnits() {
+    return dnd5e.utils.defaultUnits("length") ?? "ft";
   }
 
   /**
@@ -2329,43 +2510,107 @@ export function runElwinsHelpers() {
   /**
    * Inserts text into a Midi item chat message before the card buttons div and updates it.
    *
-   * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
-   * @param {ChatMessage5e} chatMessage - The MidiQOL item chat message to update
-   * @param {Promise<string>} text - The text to insert in the chat message.
+   * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay, afterSavesDisplay.
+   * @param {ChatMessage} chatMessage - The MidiQOL item chat message to update
+   * @param {string} text - The text to insert in the chat message.
+   * @param {object} options - Optional parameters.
+   * @param {string[]} [options.targetUuids=null] - The UUIDs of the target tokens which names are contained in the text.
+   * @returns {Promise<void>}
    */
-  async function insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text) {
-    let content = foundry.utils.deepClone(chatMessage.content);
-    let searchRegex = undefined;
-    let replaceString = `$1\n${text}<span class="elwin-insert-before"></span>\n$2`;
-    switch (position) {
-      case "beforeHitsDisplay":
-        searchRegex = /(<\/div>)(\s*<div class="midi-qol-hits-display(?: [\w\-]+)*">)/m;
-        break;
-      case "beforeButtons":
-      default:
-        searchRegex =
-          /(<\/section>|<span class="elwin-insert-before"><\/span>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
-        break;
+  async function insertTextIntoMidiItemChatMessage(position, chatMessage, text, options = {}) {
+    if (foundry.utils.isNewerVersion(game.modules.get("midi-qol")?.version ?? "0.0.0", "14.6")) {
+      const moduleId = game.modules.get(MISC_MODULE_ID)?.active ? MISC_MODULE_ID : WORLD_MODULE_ID;
+      await chatMessage.setFlag(moduleId, "elwinMidiChatCardExtraText", {
+        position,
+        text,
+        targetUuids: options?.targetUuids ?? null,
+      });
+    } else {
+      let content = foundry.utils.deepClone(chatMessage.content);
+      let searchRegex = undefined;
+      let replaceString = `$1\n${text}<span class="elwin-insert-before"></span>\n$2`;
+      switch (position) {
+        case "beforeHitsDisplay":
+          searchRegex = /(<\/div>)(\s*<div class="midi-qol-hits-display(?: [\w-]+)*">)/m;
+          break;
+        case "afterSavesDisplay":
+          searchRegex = /(<div class="end-midi-qol-saves-display">\s*<\/div>)(\s*<\/div>)/m;
+        case "beforeButtons":
+        default:
+          searchRegex =
+            /(<\/section>|<span class="elwin-insert-before"><\/span>)(\s*<div class="card-buttons midi-buttons">|\s*<ul class="card-footer pills unlist">|\s*<div class="card-buttons">)/m;
+          break;
+      }
+      content = content.replace(searchRegex, replaceString);
+      await chatMessage.update({ content: content });
     }
-    content = content.replace(searchRegex, replaceString);
-    await chatMessage.update({ content: content });
+  }
+
+  /**
+   * Renders extra text into a Midi item chat message.
+   *
+   * @param {HTMLElement} html - The HTML element to render the message into.
+   * @param {object} extraText - The extra text to render into the chat message.
+   * @param {string} extraText.position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
+   * @param {string} extraText.text - The text to insert in the chat message.
+   */
+  function renderTextIntoMidiChatMessage(html, extraText) {
+    let elwinText = html.querySelector(".elwin-extra-text");
+    let before = true;
+    if (elwinText) {
+      elwinText.innerHTML = extraText.text;
+    } else {
+      let insertAt;
+      switch (extraText.position) {
+        case "beforeHitsDisplay":
+          insertAt = html.querySelector(".midi-qol-hits-display");
+          break;
+        case "beforeButtons":
+          insertAt = html.querySelector(".card-buttons.midi-buttons, .card-buttons, .card-footer.pills.unlist");
+          break;
+        case "afterSavesDisplay":
+          insertAt = html.querySelector(".end-midi-qol-saves-display");
+          before = false;
+          break;
+      }
+      if (insertAt) {
+        elwinText = document.createElement("span");
+        elwinText.classList.add("elwin-extra-text");
+        elwinText.innerHTML = extraText.text;
+        if (before) {
+          insertAt.parentNode.insertBefore(elwinText, insertAt);
+        } else {
+          insertAt.after(elwinText);
+        }
+      }
+    }
+    elwinText.querySelectorAll(".elwin-target-name").forEach((span) => {
+      const targetName = span.textContent;
+      const tokenUuid = span.getAttribute("data-token-uuid");
+      let targetNameForUser = MidiQOL.getTokenPlayerNameForUser(game.user, fromUuidSync(tokenUuid), true);
+      if (targetName !== targetNameForUser) {
+        span.textContent = targetNameForUser;
+      }
+    });
   }
 
   /**
    * Inserts text into a Midi item chat message before the card buttons div and updates it.
    *
-   * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay.
+   * @param {string} position - The position where to insert the text, supported values: beforeButtons, beforeHitsDisplay, afterSavesDisplay.
    * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow for which to update the item card.
    * @param {string} text - The text to insert in the MidiQOL item card.
+   * @param {object} [options] - Optional parameters.
+   * @param {string[]} [options.targetUuids=null] - The UUIDs of the target tokens which names are contained in the text.
    * @returns {Promise<void>}
    */
-  async function insertTextIntoMidiItemCard(position, workflow, text) {
+  async function insertTextIntoMidiItemCard(position, workflow, text, options = {}) {
     const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
     if (!chatMessage) {
       console.error(`${MACRO_NAME} | Could not find workflow item card`, { workflow });
       return;
     }
-    await insertTextBeforeButtonsIntoMidiItemChatMessage(position, chatMessage, text);
+    await insertTextIntoMidiItemChatMessage(position, chatMessage, text, options);
   }
 
   /**
@@ -2438,6 +2683,13 @@ export function runElwinsHelpers() {
     // Redisplay roll and hits with the new data
     if (debug) {
       console.warn(`${MACRO_NAME} | Hit display data after updates.`, { hitDisplayData: workflow.hitDisplayData });
+    }
+
+    if (workflow.attackRoll?.options) {
+      workflow.attackRoll.options.criticalSuccess = 999;
+    }
+    if (workflow.attackRoll?.dice[0]?.options) {
+      workflow.attackRoll.dice[0].options.criticalSuccess = 999;
     }
 
     await workflow.displayAttackRoll(configSettings.mergeCard);
@@ -2784,6 +3036,11 @@ export function runElwinsHelpers() {
     // Set current activity has the origin
     enchantmentEffectData.origin = workflow.activity.uuid;
     foundry.utils.setProperty(enchantmentEffectData, "flags.dnd5e.enchantmentProfile", enchantmentEffectData._id);
+    // Needed for dnd5e v6
+    if (foundry.utils.isNewerVersion(game.system.version, "6.0")) {
+      enchantmentEffectData.disabled = false;
+      enchantmentEffectData.transfer = true;
+    }
 
     // Add enchantment to item
     const itemCard = game.messages.get(workflow.itemCardId);
@@ -2866,6 +3123,11 @@ export function runElwinsHelpers() {
 
     // Set current activity has the origin
     enchantmentEffectData.origin = activity.uuid;
+    // Needed for dnd5e v6
+    if (foundry.utils.isNewerVersion(game.system.version, "6.0")) {
+      enchantmentEffectData.disabled = false;
+      enchantmentEffectData.transfer = true;
+    }
 
     const effectOptions = {
       parent: itemToEnchant,
@@ -3236,14 +3498,14 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Marks the specified UUIDs as attached to the specified template document.
-   * When the template document is updated, the attached entities, will be updated accordingly (x, y, elevation, rotation).
-   * <br>Note: Currently only attachments to circle templates are supported.
+   * Marks the specified UUIDs as attached to the specified template/region document.
+   * When the template/region document is updated, the attached entities, will be updated accordingly (x, y, elevation, rotation).
+   * <br>Note: Currently only attachments to circle templates are supported or emanation, circle and ring regions.
    *
-   * @param {MeasuredTemplateDocument} templateDocument - Template document on which to attach entities.
-   * @param {string[]} entityUuids - Array of UUIDs of the entities to be attached to the template document.
+   * @param {MeasuredTemplateDocument|RegionDocument} templateDocument - Template/region document on which to attach entities.
+   * @param {string[]} entityUuids - Array of UUIDs of the entities to be attached to the template/region document.
    * @param {object} options - Attach options
-   * @param {boolean} [options.sync] - Flag to indicate that when the size of the template changes,
+   * @param {boolean} [options.sync] - Flag to indicate that when the size of the template/region changes,
    *    it must also be reflected on the attached entities in addition of the position attributes.
    *    Note: currently only synching AmbientLight is supported.
    */
@@ -3251,10 +3513,19 @@ export function runElwinsHelpers() {
     if (debug) {
       console.warn(`${MACRO_NAME} | attachToTemplate`, { templateDocument, entityUuids });
     }
-    if (templateDocument?.t !== "circle") {
-      // For now only support circle
-      console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
-      return;
+    const v14 = game.release.generation >= 14;
+    if (v14) {
+      if (!["emanation", "circle", "ring"].includes(templateDocument.shapes[0]?.type)) {
+        // For now only support emanation, circle and ring
+        console.error(`${MACRO_NAME} | Only emanation, circle and ring shapes are supported.`);
+        return undefined;
+      }
+    } else {
+      if (templateDocument?.t !== "circle") {
+        // For now only support circle
+        console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
+        return;
+      }
     }
     let moduleId = WORLD_MODULE_ID;
     let attachedEntityUuids = templateDocument.flags[moduleId]?.attached?.attachedEntityUuids ?? [];
@@ -3271,12 +3542,10 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Removes the specified UUIDs from the entities attached to the specified template document.
+   * Removes the specified UUIDs from the entities attached to the specified template/region document.
    *
-   * @param {MeasuredTemplateDocument} templateDocument - Template document from which to detach entities.
-   * @param {string[]} entityUuids - Array of UUIDs of the entities to be detached from the template document.
-   * @param {*} templateDocument
-   * @param {*} entityUuids
+   * @param {MeasuredTemplateDocument|RegionDocument} templateDocument - Template/region document from which to detach entities.
+   * @param {string[]} entityUuids - Array of UUIDs of the entities to be detached from the template/region document.
    */
   async function detachFromTemplate(templateDocument, entityUuids) {
     if (debug) {
@@ -3324,7 +3593,7 @@ export function runElwinsHelpers() {
       img: "icons/magic/time/arrows-circling-green.webp",
       type: "enchantment",
       changes: [...changes],
-      transfer: false,
+      transfer: true,
       duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
       origin: source.uuid,
       "flags.dae.stackable": "noneName",
@@ -3372,25 +3641,36 @@ export function runElwinsHelpers() {
   }
 
   /**
-   * Creates and attaches an ambient light source to the specified template document.
-   * <br>Note: ambient light sources can only be attached to circle templates and they are attached with the sync option true.
+   * Creates and attaches an ambient light source to the specified template/region document.
+   * <br>Note: ambient light sources can only be attached to circle templates or enamation, circle and ring regions
+   * and they are attached with the sync option true.
    *
-   * @param {MeasuredTemplateDocument} templateDocument - Template document on which to attach an ambient light source.
+   * @param {MeasuredTemplateDocument|RegionDocument} templateDocument - Template/Region document on which to attach an ambient light source.
    * @param {object} ambientLightData - Ambient light source data.
-   * @returns {AmbientLight} The created and attached ambient light source.
+   * @returns Promise<AmbientLight> The created and attached ambient light source.
    */
   async function attachAmbientLightToTemplate(templateDocument, ambientLightData) {
     if (debug) {
       console.warn(`${MACRO_NAME} | attachAmbientLightToTemplate`, { templateDocument, ambientLightData });
     }
-    if (templateDocument?.t !== "circle") {
-      // For now only support circle
-      console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
-      return undefined;
+    const v14 = game.release.generation >= 14;
+    if (v14) {
+      if (!["emanation", "circle", "ring"].includes(templateDocument.shapes[0]?.type)) {
+        // For now only support emanation, circle and ring
+        console.error(`${MACRO_NAME} | Only emanation, circle and ring shapes are supported.`);
+        return undefined;
+      }
+      // TODO set x, y, elevation, rotation here instead of caller
+    } else {
+      if (templateDocument?.t !== "circle") {
+        // For now only support circle
+        console.error(`${MACRO_NAME} | Only circle shape measured templates are supported.`);
+        return undefined;
+      }
     }
 
     if (game.user.isGM) {
-      // Make ambient light dependent on template
+      // Make ambient light dependent on template/region
       foundry.utils.setProperty(ambientLightData, "flags.dnd5e.dependentOn", templateDocument.uuid);
       const [lightSource] = await canvas.scene.createEmbeddedDocuments("AmbientLight", [ambientLightData]);
       await attachToTemplate(templateDocument, [lightSource.uuid], { sync: true });
@@ -3410,8 +3690,8 @@ export function runElwinsHelpers() {
    * The stable effect is removed when the actor is healed, damaged or expires after 1-4 hours.
    * When the target is healed or expires, the unconscious status effect is also removed, and when it expires the target also regains 1 HP.
    *
-   * @param {Actor5e} actor - The actor to stabilize.
-   * @param {Activity|Item5e} source - The activity or item causing the stabilization.
+   * @param {Actor} actor - The actor to stabilize.
+   * @param {Activity|Item} source - The activity or item causing the stabilization.
    * @returns {Promise<void>}
    */
   async function stabilize(actor, source) {
@@ -3539,15 +3819,19 @@ export function runElwinsHelpers() {
   /**
    * Retrieves the item from which the specified active effect originates.
    * @param {ActiveEffect} effect - The active effect for which to find the origin item.
-   * @returns {ActiveEffect|undefined} the origin item or undefined if not found.
+   * @returns {Item|undefined} the origin item or undefined if not found.
    */
   function getOriginItemSync(effect) {
+    // TODO dndv6 support system.origin instead of origin
     let origin = fromUuidSync(effect?.origin, { strict: false });
     if (!origin) {
       return undefined;
     }
     if (origin instanceof Item) {
       return origin;
+    }
+    if (origin.item) {
+      return origin.item;
     }
     if (origin.parent instanceof Item) {
       return origin.parent;
@@ -3970,7 +4254,7 @@ export function runElwinsHelpers() {
    * @param {object} [data.options] - Dialog's options.
    * @param {string} [direction = 'row'] - Controls layout direction of the dialog's buttons. 'column' or 'row' accepted.
    *
-   * @returns {object} the value associated to the selected button.
+   * @returns Promise<{object}> the value associated to the selected button.
    */
   async function buttonDialog(data, direction) {
     const buttons = [];
@@ -4006,7 +4290,7 @@ export function runElwinsHelpers() {
    * @param {object} [data.options] - Dialog's options.
    * @param {string} [direction = 'row'] - Controls layout direction of the dialog's buttons. 'column' or 'row' accepted.
    *
-   * @returns {object} the value associated to the selected button.
+   * @returns Promise<{object}> the value associated to the selected button.
    */
   async function remoteButtonDialog(userId, data, direction) {
     return globalThis.elwinHelpers.socket.executeAsUser("elwinHelpers.remoteButtonDialog", userId, data, direction);
@@ -4144,7 +4428,7 @@ export function runElwinsHelpers() {
    */
   function simpleMeasureDistances(segments, options = {}) {
     return segments.map((s) => {
-      const result = canvas?.grid?.measurePath(s);
+      const result = canvas.grid.measurePath(s);
       return !options.gridSpaces ? result.euclidean : result.distance;
     });
   }
@@ -4604,7 +4888,7 @@ export function runElwinsHelpers() {
     }
 
     // Note: if the spell item is a proxy for a cast ativity skip
-    if (!!reactionItem?.getFlag("dnd5e", "cachedFor")) {
+    if (reactionItem?.getFlag("dnd5e", "cachedFor")) {
       return false;
     }
 
@@ -4963,6 +5247,7 @@ export function runElwinsHelpers() {
 
   /**
    * Resolve an ActivityMacro specification.
+   * @return Promise<{item: Item5e, activity: Activity, sourceItemUuid: string} | undefined>
    */
   async function resolveActivityMacroCall(name, context) {
     const { macroItem, macroActivity } = context;
@@ -4990,6 +5275,7 @@ export function runElwinsHelpers() {
 
   /**
    * Resolve a world or compendium macro.
+   * @returns {Promise<{item: Item, [activity]: Activity, macro: Macro, [sourceItemUuid]: string} | undefined>}
    */
   async function resolveWorldMacro(name, context) {
     const macroName = name.startsWith("Macro.") ? name.slice(6) : name;
@@ -5016,6 +5302,10 @@ export function runElwinsHelpers() {
   }
 
   function resolveDAEItemData(actor, uuid) {
+    if (foundry.utils.isNewerVersion(game.modules.get("dae")?.version ?? 0, "14.6")) {
+      return DAE.getActorItemData(actor, uuid);
+    }
+    // TODO dndv6 remove this when only v14 dndv6 supported
     let itemId;
     if (uuid.includes("Activity.") || uuid.includes("ActiveEffect.")) {
       itemId = uuid.split(".").slice(-3)[0];
@@ -5038,6 +5328,12 @@ export function runElwinsHelpers() {
     exportIdentifier("elwinHelpers.socket", socket);
   }
 
+  /**
+   * Opens a button dialog remotely.
+   * @param {object} data
+   * @param {string} direction
+   * @returns Promise<{buttonId: string, buttonData: object, direction: string}> the button dialog result.
+   */
   async function _remoteButtonDialog(data, direction) {
     return await buttonDialog(data, direction);
   }
@@ -5065,6 +5361,12 @@ export function runElwinsHelpers() {
     await effect.delete(options);
   }
 
+  /**
+   * Attaches an ambient light document to the specified template/region document.
+   * @param {string} templateUuid
+   * @param {object} ambientLightData
+   * @returns Promise<string | undefined> the ambient light document UUID attached to the template/region, or undefined if not attached.
+   */
   async function _remoteAttachAmbientLightToTemplate(templateUuid, ambientLightData) {
     const templateDocument = fromUuidSync(templateUuid);
     return (await attachAmbientLightToTemplate(templateDocument, ambientLightData))?.uuid;

@@ -2,7 +2,7 @@
 // Read First!!!!
 // When equipped and attuned, adds an action that allows to activate/deactivate the blade.
 // Once the blade is activated another item it added to adjust the radius of the light.
-// v2.6.1
+// v2.6.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -121,9 +121,9 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     foundry.utils.setProperty(lightEffectData, "flags.dnd5e.dependentOn", enchantmentEffect.uuid);
 
     // Add support for CPR/CAT VAE button
-    const isV14 = game.release.generation >= 14;
+    const v14 = game.release.generation >= 14;
 
-    if (!isV14 && game.modules.get("chris-premades")?.active && game.modules.get("visual-active-effects")?.active) {
+    if (!v14 && game.modules.get("chris-premades")?.active && game.modules.get("visual-active-effects")?.active) {
       if (!foundry.utils.getProperty(sourceItem, "flags.chris-premades.info.identifier")) {
         await sourceItem.setFlag("chris-premades", "info.identifier", sourceItem.identifier);
       }
@@ -150,7 +150,7 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
         },
       });
     }
-    if (isV14 && game.modules.get("cat")?.active && game.modules.get("visual-active-effects")?.active) {
+    if (v14 && game.modules.get("cat")?.active && game.modules.get("visual-active-effects")?.active) {
       const adjustLightActivity = sourceItem.system.activities?.find((a) => a.identifier === ADJUST_LIGHT_RADIUS_IDENT);
       foundry.utils.setProperty(lightEffectData, "flags.cat", {
         noAnimation: false,
@@ -194,14 +194,22 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     }
     const tokenKeyPrefix = game.release.generation >= 14 ? "token" : "ATL";
 
+    const initialLightRadius = dnd5e.utils.convertLength(
+      INITIAL_LIGHT_RADIUS,
+      "ft",
+      canvas.grid.units ?? dnd5e.utils.defaultUnits("length") ?? "ft",
+    );
     const currentLightRadius = Number(
-      lightEffect.changes.find((c) => c.key === `${tokenKeyPrefix}.light.bright`)?.value ?? INITIAL_LIGHT_RADIUS,
+      lightEffect.changes.find((c) => c.key === `${tokenKeyPrefix}.light.bright`)?.value ?? initialLightRadius,
     );
     const buttons = [];
-    if (currentLightRadius < MAX_LIGHT_RADIUS) {
+    const defaultUnits = dnd5e.utils.defaultUnits("length") ?? "ft";
+    const maxLightRadius = dnd5e.utils.convertLength(MAX_LIGHT_RADIUS, "ft", defaultUnits);
+    if (currentLightRadius < maxLightRadius) {
       buttons.push({ action: ENLARGE_CHOICE, label: "Enlarge", default: true });
     }
-    if (currentLightRadius > MIN_LIGHT_RADIUS) {
+    const minLightRadius = dnd5e.utils.convertLength(MIN_LIGHT_RADIUS, "ft", defaultUnits);
+    if (currentLightRadius > minLightRadius) {
       buttons.push({ action: REDUCE_CHOICE, label: "Reduce", default: !buttons.length });
     }
     let choice;
@@ -226,28 +234,32 @@ export async function sunBlade({ speaker, actor, token, character, item, args, s
     if (!choice) {
       return;
     }
+    let baseAdj = dnd5e.utils.convertLength(5, "ft", defaultUnits);
     let adjustment = 0;
     if (choice === ENLARGE_CHOICE) {
-      adjustment = 5;
+      adjustment = baseAdj;
     } else {
-      adjustment = -5;
+      adjustment = -baseAdj;
     }
-    const newLightRadius = Math.clamp(currentLightRadius + adjustment, MIN_LIGHT_RADIUS, MAX_LIGHT_RADIUS);
+    const newLightRadius = Math.clamp(currentLightRadius + adjustment, minLightRadius, maxLightRadius);
 
     const newChanges = foundry.utils.deepClone(lightEffect.changes ?? []);
     for (let change of newChanges) {
       if ([`${tokenKeyPrefix}.light.dim`, `${tokenKeyPrefix}.light.bright`].includes(change.key)) {
-        const newValue = change.key === `${tokenKeyPrefix}.light.dim` ? newLightRadius * 2 : newLightRadius;
+        const gridLightRadius = dnd5e.utils.convertLength(newLightRadius, defaultUnits, canvas.grid.units, {
+          strict: false,
+        });
+        const newValue = change.key === `${tokenKeyPrefix}.light.dim` ? gridLightRadius * 2 : gridLightRadius;
         change.value = "" + newValue;
       }
     }
     await lightEffect.update({ changes: newChanges });
 
     let text;
-    if (newLightRadius === MIN_LIGHT_RADIUS) {
-      text = `The minimum bright and dim light radius was reached (${MIN_LIGHT_RADIUS}/${MIN_LIGHT_RADIUS * 2}).`;
-    } else if (newLightRadius === MAX_LIGHT_RADIUS) {
-      text = `The maximum bright and dim light radius was reached (${MAX_LIGHT_RADIUS}/${MAX_LIGHT_RADIUS * 2}).`;
+    if (newLightRadius === minLightRadius) {
+      text = `The minimum bright and dim light radius was reached (${minLightRadius}/${minLightRadius * 2}).`;
+    } else if (newLightRadius === maxLightRadius) {
+      text = `The maximum bright and dim light radius was reached (${maxLightRadius}/${maxLightRadius * 2}).`;
     } else {
       text = `The bright and dim light radius was ${
         choice === ENLARGE_CHOICE ? "increased" : "decreased"

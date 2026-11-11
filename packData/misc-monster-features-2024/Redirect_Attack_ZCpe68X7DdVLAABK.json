@@ -148,7 +148,7 @@
     {
       "name": "Redirect Attack",
       "img": "icons/equipment/shield/targe-copper-eye.webp",
-      "origin": "Scene.f3tuZP2gy7ZYUOYI.Token.hrN6aIfV4cCTQSiA.Actor.yDW5TuZAenTtFD7E.Item.xw4Sph7stGhOT1L9",
+      "origin": null,
       "_id": "ClUmptTXzTzVKIWy",
       "type": "base",
       "system": {},

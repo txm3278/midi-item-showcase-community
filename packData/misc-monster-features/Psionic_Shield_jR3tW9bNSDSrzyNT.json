@@ -149,7 +149,7 @@
   "effects": [
     {
       "name": "Psionic Shield",
-      "origin": "Item.CJBSMFb1OYhBxGk4",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -217,7 +217,7 @@
     },
     {
       "name": "Psionic Shield - AC Bonus",
-      "origin": "Item.CJBSMFb1OYhBxGk4",
+      "origin": null,
       "duration": {
         "rounds": null,
         "startTime": null,

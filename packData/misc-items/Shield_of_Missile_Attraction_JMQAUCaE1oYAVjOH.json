@@ -76,7 +76,7 @@
   "effects": [
     {
       "name": "Shield of Missile Attraction",
-      "origin": "Item.bt86HN84GlH93N4J",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,
@@ -154,7 +154,7 @@
     {
       "name": "Shield of Missile Attraction - Curse",
       "img": "icons/equipment/shield/kite-decorative-steel-claws.webp",
-      "origin": "Item.bt86HN84GlH93N4J",
+      "origin": null,
       "_id": "Zh6Q5E7IvZ3818r6",
       "type": "base",
       "system": {},

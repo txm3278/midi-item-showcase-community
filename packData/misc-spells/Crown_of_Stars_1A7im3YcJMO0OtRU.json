@@ -325,7 +325,7 @@
   "effects": [
     {
       "name": "Crown of Stars",
-      "origin": "Actor.nAFfu59Cgt3Dllwa.Item.oLR9rLuerrXcY6tU",
+      "origin": null,
       "duration": {
         "startTime": null,
         "seconds": null,

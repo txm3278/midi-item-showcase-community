@@ -2,7 +2,7 @@
 // Ranger - Hunter - Hunter's Prey
 // Allows to choose between the Colossus Slayer or Horde Breaker on short or long and applies an AE
 // that provides the benefits of the choice.
-// v1.0.0
+// v1.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [each]
@@ -179,7 +179,7 @@ async function handleOnUsePostRollFinished(actor, token, workflow, scope, debug)
   const validTargets = MidiQOL.findNearby(
     null,
     workflow.targets.first(),
-    dnd5e.utils.convertLength(5, "ft", dnd5e.utils.defaultUnits("length") ?? "ft"),
+    dnd5e.utils.convertLength(5, "ft", canvas.grid.units, {strict: false}),
   ).filter((t) => t !== token && !huntersPreyTurn.targets.includes(t.document.uuid));
   if (!validTargets.length) {
     // No valid target, skip extra attack
@@ -304,7 +304,7 @@ async function handleOnUseHordeBreakerPostActiveEffects(actor, token, workflow, 
         workflowOptions: {
           autoRollAttack: true,
           targetConfirmation: validTargets.length > 1 || !defaultTargets.length ? "always" : undefined,
-          excludeTargets: canvas.tokens.placeables.filter((t) => !validTargets.includes(t)).map((t) => t.document.uuid),
+          includeTargets: validTargets.map((t) => t.document.uuid),
         },
       },
     };

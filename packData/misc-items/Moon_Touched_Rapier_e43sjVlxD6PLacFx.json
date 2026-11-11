@@ -331,7 +331,7 @@
     {
       "name": "Moon-Touched - Light",
       "img": "icons/weapons/swords/sword-broad-red.webp",
-      "origin": "Item.e43sjVlxD6PLacFx",
+      "origin": null,
       "_id": "HTFLoIn85kYSuRxG",
       "type": "base",
       "system": {},

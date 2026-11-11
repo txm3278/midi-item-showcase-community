@@ -396,7 +396,7 @@
     {
       "name": "Sworn Enemy - Attacker",
       "img": "icons/weapons/bows/longbow-recurve-leather-red.webp",
-      "origin": "Item.rcxIhfkns0874Y48",
+      "origin": null,
       "transfer": false,
       "_id": "eFfWdbcygq1LDcXe",
       "type": "base",
@@ -486,7 +486,7 @@
     {
       "name": "Sworn Enemy",
       "img": "icons/skills/targeting/crosshair-bars-yellow.webp",
-      "origin": "Item.rcxIhfkns0874Y48",
+      "origin": null,
       "transfer": false,
       "_id": "Bf5EJfd0ghcirCkX",
       "type": "base",
@@ -555,7 +555,7 @@
     {
       "name": "Oathbow",
       "img": "icons/weapons/bows/longbow-recurve-leather-red.webp",
-      "origin": "Item.rcxIhfkns0874Y48",
+      "origin": null,
       "_id": "3Dux3zNFGizvVdyo",
       "type": "base",
       "system": {},

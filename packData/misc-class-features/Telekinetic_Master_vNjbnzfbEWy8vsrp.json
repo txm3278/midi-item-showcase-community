@@ -186,7 +186,8 @@
           "postRemoveConditionText": "",
           "rollAs": "target"
         },
-        "name": ""
+        "name": "",
+        "otherActivityId": null
       },
       "LawYD11PK6RaVmj1": {
         "type": "cast",
@@ -315,7 +316,8 @@
           "rollAs": "target"
         },
         "name": "Telekinesis (Free Use)",
-        "_id": "LawYD11PK6RaVmj1"
+        "_id": "LawYD11PK6RaVmj1",
+        "otherActivityId": null
       },
       "6aaY0FxUVhbWHXIa": {
         "type": "utility",
@@ -452,7 +454,7 @@
     },
     "advancement": [],
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item allows to cast Telekinesis as a free use or by spending a Psionic Energy die, it also allows\n to make a special Bonus Weapon Attack when Telekinesis is cast or when the actor concentrate on it\n at the start of its turn.\n <br>Telekinetic Movement is not automated.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item allows to cast Telekinesis as a free use or by spending a Psionic Energy die, it also allows\n to make a special Bonus Weapon Attack when Telekinesis is cast or when the actor concentrate on it\n at the start of its turn.\n <br>Telekinetic Movement is not automated.</p></details>",
       "chat": "<div class=\"ddb\">\nYou can cast the telekinesis spell, requiring no components, and your spellcasting ability for the spell is INT. On each of your turns while you concentrate on the spell, including the turn when you cast it, you can make one attack with a weapon as a bonus action. Once you cast the spell with this feature, you can’t do so again until you finish a long rest, unless you expend a Psionic Energy die to cast it again.\n</div>"
     },
     "identifier": "telekinetic-master",
@@ -480,7 +482,10 @@
   },
   "flags": {
     "dnd5e": {
-      "advancementOrigin": "WqxnblslkHM67Ac9"
+      "advancementOrigin": "WqxnblslkHM67Ac9",
+      "riders": {
+        "activity": []
+      }
     },
     "walledtemplates": {
       "wallsBlock": "globalDefault",

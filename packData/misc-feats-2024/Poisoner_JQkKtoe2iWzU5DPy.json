@@ -159,7 +159,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
-        "otherActivityId": "none",
+        "otherActivityId": null,
         "otherActivityAsParentType": true
       }
     },

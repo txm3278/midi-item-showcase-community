@@ -85,7 +85,7 @@ export let classFeatures = {
   divineAllegiance,
   // Paladin - Oath of Vegeance
   channelDivinityVowOfEnmity,
-  // Ranger
+  // Ranger - Horizon Walker
   planarWarrior,
   // Ranger - Hunter
   defensiveTactics,

@@ -2,7 +2,7 @@
 // Read First!!!!
 // When the bottle is opened, creates a fog cloud that follows the owner and increases in size until it has reached its maximum size or until
 // the bottle is closed which also makes it stay in place.
-// v1.2.1
+// v1.3.0
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [off]
@@ -55,7 +55,7 @@ const JB2A_FOG = "jb2a.fog_cloud.01.white";
  * @returns {boolean} True if the requirements are met, false otherwise.
  */
 function checkDependencies() {
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.9")) {
+  if (foundry.utils.isNewerVersion("3.6.0", globalThis?.elwinHelpers?.version ?? "1.1")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
     return false;
@@ -91,6 +91,7 @@ export async function eversmokingBottle({ speaker, actor, token, character, item
     }
   } else if (args[0].tag === "OnUse" && args[0].macroPass === "preActiveEffects") {
     if (scope.rolledActivity?.identifier === "open-bottle") {
+      // TODO dndv6 when only dndv6 supported remove this
       // Keep template reference in a different value to prevent midi-qol adding an AE to delete the template
       workflow.workflowOptions.elwinTemplateUuid = workflow.templateUuid;
       workflow.templateUuid = null;
@@ -114,46 +115,66 @@ export async function eversmokingBottle({ speaker, actor, token, character, item
  * @param {MidiQOL.Workflow} workflow - The current MidiQOL workflow.
  */
 function handleOnUsePreTargeting(workflow, debug) {
-  Hooks.once("dnd5e.preCreateActivityTemplate", (activity, templateData) => {
-    if (debug) {
-      console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateActivityTemplate`, {
-        activity,
-        templateData,
-      });
-    }
-    if (workflow.id !== templateData.flags["midi-qol"]?.workflowId) {
+  const v14 = game.release.generation >= 14;
+  if (v14) {
+    Hooks.once("dnd5e.preCreateMeasuredTemplate", (activity, placementConfig) => {
       if (debug) {
-        // Not same workflow do nothing
-        console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateActivityTemplate hook called from a different workflow.`);
+        console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateMeasuredTemplate`, { activity, placementConfig });
       }
-      return;
-    }
-    // Note: remove adjustement for token size added automatically for emanation
-    foundry.utils.setProperty(templateData, "distance", templateData.flags?.dnd5e?.dimensions?.size ?? 60);
-    foundry.utils.setProperty(templateData, "flags.dnd5e.dimensions.adjustedSize", false);
-  });
-  if (game.modules.get("walledtemplates")?.active) {
-    Hooks.once("preCreateMeasuredTemplate", (templateDocument, data, options, userId) => {
+      // TODO adjust size to not expand with token width...
+    });
+    Hooks.once("preCreateRegion", (regionDoc, regionData) => {
+      if (!foundry.utils.getProperty(regionData, "flags.core.MeasuredTemplate")) return true;
       if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | preCreateMeasuredTemplate`, {
-          templateDocument,
-          data,
-          options,
-          userId,
+        console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateRegion`, { regionDoc, regionData });
+      }
+      // TODO adjust size to not expand with token width...
+      // regionDoc.updateSource({
+      //   shapes: [{ ...regionData.shapes[0], base: { ...regionData.shapes[0].base, height: 0, width: 0 } }],
+      // });
+    });
+  } else {
+    Hooks.once("dnd5e.preCreateActivityTemplate", (activity, templateData) => {
+      if (debug) {
+        console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateActivityTemplate`, {
+          activity,
+          templateData,
         });
       }
-      if (workflow.id !== templateDocument.flags["midi-qol"]?.workflowId) {
+      if (workflow.id !== templateData.flags["midi-qol"]?.workflowId) {
         if (debug) {
           // Not same workflow do nothing
-          console.warn(`${DEFAULT_ITEM_NAME} | preCreateMeasuredTemplate hook called from a different workflow.`);
+          console.warn(`${DEFAULT_ITEM_NAME} | dnd5e.preCreateActivityTemplate hook called from a different workflow.`);
         }
         return;
       }
-
-      templateDocument.updateSource({
-        flags: { walledtemplates: { wallsBlock: "walled", wallRestriction: "move" } },
-      });
+      // Note: remove adjustement for token size added automatically for emanation
+      foundry.utils.setProperty(templateData, "distance", templateData.flags?.dnd5e?.dimensions?.size ?? 60);
+      foundry.utils.setProperty(templateData, "flags.dnd5e.dimensions.adjustedSize", false);
     });
+    if (game.modules.get("walledtemplates")?.active) {
+      Hooks.once("preCreateMeasuredTemplate", (templateDocument, data, options, userId) => {
+        if (debug) {
+          console.warn(`${DEFAULT_ITEM_NAME} | preCreateMeasuredTemplate`, {
+            templateDocument,
+            data,
+            options,
+            userId,
+          });
+        }
+        if (workflow.id !== templateDocument.flags["midi-qol"]?.workflowId) {
+          if (debug) {
+            // Not same workflow do nothing
+            console.warn(`${DEFAULT_ITEM_NAME} | preCreateMeasuredTemplate hook called from a different workflow.`);
+          }
+          return;
+        }
+
+        templateDocument.updateSource({
+          flags: { walledtemplates: { wallsBlock: "walled", wallRestriction: "move" } },
+        });
+      });
+    }
   }
 }
 
@@ -172,12 +193,16 @@ function handleOnUsePreTargeting(workflow, debug) {
  */
 async function handleOnUsePostActiveEffectsOpenBottle(workflow, actor, token, usedItem, usedActivity) {
   // Attach template to token
+  // TODO dndv6 switch to regions
   const template = fromUuidSync(workflow.workflowOptions.elwinTemplateUuid);
   if (!template) {
     console.error(`${usedItem.name} | Missing template UUID reference.`);
     return;
   }
-  await elwinHelpers.attachToToken(token, [template.uuid]);
+  const v14 = game.release.generation >= 14;
+  if (!v14) {
+    await elwinHelpers.attachToToken(token, [template.uuid]);
+  }
 
   // Add AE as dependent of template
   const openEffect = actor.effects.find((ae) => ae.name === usedItem.name && ae.flags?.dae?.selfTargetAlways);
@@ -188,18 +213,23 @@ async function handleOnUsePostActiveEffectsOpenBottle(workflow, actor, token, us
   const animationAvailable =
     game.modules.get("sequencer")?.active && foundry.utils.hasProperty(Sequencer.Database.entries, "jb2a");
 
+  // TODO v14 add midi light behavior instead
+  let pos;
+  if (v14) {
+    pos = elwinHelpers.getRegionPosition(template);
+  }
   await elwinHelpers.attachAmbientLightToTemplate(template, {
     config: {
       negative: true,
       dim: 0,
-      bright: template.distance,
+      bright: v14 ? (template.shapes[0].radius / canvas.grid.size) * canvas.grid.distance : template.distance,
       priority: 100,
       animation: { type: !animationAvailable ? "denseSmoke" : null },
     },
-    x: template.x,
-    y: template.y,
-    elevation: template.elevation,
-    rotation: template.rotation,
+    x: v14 ? pos.x : template.x,
+    y: v14 ? pos.y : template.y,
+    elevation: v14 ? (pos.elevation ?? token.document.elevation) : template.elevation,
+    rotation: v14 ? pos.rotation : template.rotation,
   });
 
   // Change toggle automationOnly values
@@ -212,26 +242,26 @@ async function handleOnUsePostActiveEffectsOpenBottle(workflow, actor, token, us
       new Sequence()
         .effect()
         .file(JB2A_FOG)
-        .scaleToObject()
+        .scaleToObject(1.1)
         .scaleIn(0, 800)
         .aboveLighting()
         .opacity(0.5)
         .mask(template)
         .xray(xray)
         .persist(true)
-        .attachTo(template)
+        .attachTo(template, { edge: "outer" })
         .play();
     } else {
       new Sequence()
         .effect()
         .file(JB2A_FOG)
-        .scaleToObject()
+        .scaleToObject(1.1)
         .scaleIn(0, 800)
         .aboveLighting()
         .opacity(0.5)
         .xray(xray)
         .persist(true)
-        .attachTo(template)
+        .attachTo(template, { edge: "outer" })
         .play();
     }
   }
@@ -259,15 +289,20 @@ async function handleOnUsePostActiveEffectsCloseBottle(actor, token, usedItem, u
   }
   await openEffect.delete();
 
+  const v14 = game.release.generation >= 14;
   // Find template created by this item
-  const template = canvas.templates.placeables.find(
+  const template = canvas[v14 ? "regions" : "templates"].placeables.find(
     (template) => template.document?.uuid === foundry.utils.getProperty(openEffect, "flags.dnd5e.dependentOn"),
   );
   if (!template) {
     return;
   }
   // Detach template from token
-  await elwinHelpers.detachFromToken(token, [template.document.uuid]);
+  if (v14) {
+    await template.document.update({ "attachment.token": null });
+  } else {
+    await elwinHelpers.detachFromToken(token, [template.document.uuid]);
+  }
 
   // When about time is present, register a callback to delete the template when it expires
   if (game.modules.get("about-time")?.active) {
@@ -321,33 +356,50 @@ async function toggleActivities(usedItem, usedActivity) {
  * @param {object} lastArg - The last argument value.
  */
 async function handleOffEffect(actor, item, lastArg) {
-  if (!["times-up:expired", "duration-expired:updateWorldTime"].includes(lastArg["expiry-reason"])) {
+  if (
+    !["times-up:expired", "duration-expired:updateWorldTime", "duration-expired:turnStart"].includes(
+      lastArg["expiry-reason"],
+    )
+  ) {
     // Do not recreate effect when not expired
     return;
   }
+
   // Find template created by this item
-  const template = canvas.templates.placeables.find(
+  const v14 = game.release.generation >= 14;
+  const template = canvas[v14 ? "regions" : "templates"].placeables.find(
     (template) => template.document?.uuid === foundry.utils.getProperty(lastArg.efData, "flags.dnd5e.dependentOn"),
   );
   if (!template) {
     return;
   }
-  const newSize = template.document.distance + 10;
   let count = lastArg.efData.flags[MODULE_ID]?.esbCount ?? 0;
   if (count >= 6) {
     // No more cloud increase
     return;
   }
-  await template.document.update({ distance: newSize });
+  let changes;
+  if (v14) {
+    const distIncrement =
+      (dnd5e.utils.convertLength(10, "ft", canvas.grid.units, { strict: false }) * canvas.grid.size) /
+      canvas.grid.distance;
+    const newSize = template.document.shapes[0].radius + distIncrement;
+    changes = { shapes: [{ ...template.document.shapes[0], radius: newSize }] };
+  } else {
+    const newSize = template.document.distance + 10;
+    changes = { distance: newSize };
+  }
+  await template.document.update(changes);
 
   // Find AE from item
   const newEffectData = item.effects.find((ae) => !ae.transfer && ae.flags?.dae?.selfTargetAlways)?.toObject();
   if (!newEffectData) {
     return;
   }
+  newEffectData._id = null;
   newEffectData.origin = lastArg.efData.origin;
   // Make new effect dependent on template
-  foundry.utils.setProperty(newEffectData, "flags.dnd5e.dependentOn", template.uuid);
+  foundry.utils.setProperty(newEffectData, "flags.dnd5e.dependentOn", template.document.uuid);
   foundry.utils.setProperty(newEffectData, `flags.${MODULE_ID}.esbCount`, count + 1);
 
   await MidiQOL.createEffects({ actorUuid: actor.uuid, effects: [newEffectData] });
