@@ -2,7 +2,7 @@
 // Fighter - Psi Warrior - Telekinetic Adept
 // Allows to take Psi-Powered Leap as a free action or one that consumes a Psionic Energy die,
 // it also handles applying Telekinetic Thrust (knock or push) when Pisonic Strike is used.
-// v1.1.0
+// v1.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -84,7 +84,7 @@ async function handleOnUsePostActiveEffects(workflow, debug) {
     return;
   }
   const targetToken = workflow.effectTargets.first();
-  const maxRange = dnd5e.utils.convertLength(10, "ft", canvas.grid.units);
+  const maxRange = dnd5e.utils.convertLength(10, "ft", canvas.grid.units, {strict: false});
 
   const location = await Sequencer.Crosshair.show(
     {

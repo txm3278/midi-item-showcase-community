@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target for Planar Warrior damage, and replaces the damage type of the weapon used by the first attack that
 // hits before the end of the round by force damage.
-// v1.0.0
+// v1.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -50,7 +50,10 @@ function checkDependencies() {
     ui.notifications.error(errorMsg);
     return false;
   }
-  const dependencies = ["dae", "times-up", "midi-qol"];
+  const dependencies = ["dae", "midi-qol"];
+  if (game.release.generation < 14) {
+    dependencies.push("times-up");
+  }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
     return false;
   }
@@ -94,8 +97,8 @@ async function handleOnUsePostActiveEffects(workflow, actor) {
   }
 
   const target = workflow.effectTargets.first();
-  const selfEffect = actor.effects?.find((ae) => ae.origin === workflow.activity?.uuid);
-  const markedEffect = target?.actor.effects?.find((ae) => ae.origin?.startsWith(workflow.item.uuid));
+  const selfEffect = actor.effects?.find((ae) => !ae.transfer && ae.origin?.startsWith(workflow.item.uuid));
+  const markedEffect = target?.actor.effects?.find((ae) => !ae.transfer && ae.origin?.startsWith(workflow.item.uuid));
   if (!(selfEffect && markedEffect)) {
     // Missing AEs
     return;

@@ -248,6 +248,8 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -276,7 +278,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "_id": "fPFO0iuKYP4ikG7p",
@@ -296,7 +299,7 @@
       "max": ""
     },
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n</ul>\n<h3>Optionals:</h3>\n<ul>\n   <li>Drag Ruler (to compute movement since start of round)</li>\n   <li>Elevation Ruler (to compute movement since start of round)</li>\n   <li>Monk's TokenBar (to block movement)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the effects are applied.</p></details>",
       "chat": ""
     },
     "identifier": "steady-aim",

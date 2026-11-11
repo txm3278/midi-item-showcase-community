@@ -2,7 +2,7 @@
 // Ranger - Hunter - Defensive Tactics
 // Allows to choose between Escape the Horde or Multiattack Defense on short or long and applies an AE
 // that provides the benefits of the choice.
-// v1.0.0
+// v1.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -106,7 +106,7 @@ async function handleTargetOnUseMultiAttackDefenseIsHit(actor, sourceItem, attac
     });
   }
   const multiAttackDefenseActiveEffectData = multiAttackDefenseActiveEffect.toObject();
-  multiAttackDefenseActiveEffectData.origin = multiAttackDefenseActiveEffect.uuid;
+  multiAttackDefenseActiveEffectData.origin = sourceItem.uuid;
   multiAttackDefenseActiveEffectData.changes.forEach((c) => {
     if (c.value && typeof c.value === "string") {
       c.value = c.value.replaceAll("@tokenUuid", attackerTokenUuid);

@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Flame Arrows, allows to enchant a quiver or bolt case which will add fire damage to ammunitions
 // fired from the enchanted container.
-// v2.2.0
+// v2.2.1
 // Author: Elwin#1410 based on Spoob
 // Dependencies:
 //  - DAE
@@ -271,7 +271,7 @@ async function handleOnUsePreAttackRollTarget(actor, workflow, scope) {
   //const enchantmentEffect = elwinHelpers.getAppliedEnchantments(scope.macroActivity?.uuid);
   const enchantmentEffect = actor.itemTypes.container
     .find((i) => i.getFlag(MODULE_ID, "flameArrows") === scope.macroItem?.uuid)
-    ?.effects.find((ae) => !ae.transfer && ae.type === "enchantment");
+    ?.effects.find((ae) => ae.type === "enchantment" && ae.isAppliedEnchantment);
   const ammoCount = enchantmentEffect?.changes.find((c) => c.key === `flags.${MODULE_ID}.flameArrowsCount`)?.value ?? 0;
   if (ammoCount <= 0) {
     // Last ammo was already used, delete effect immediately
@@ -323,7 +323,7 @@ async function handleOnUsePostAttackRollCompleteTarget(actor, workflow, scope) {
     //const enchantmentEffect = elwinHelpers.getAppliedEnchantments(scope.macroActivity?.uuid);
     const enchantmentEffect = actor.itemTypes.container
       .find((i) => i.getFlag(MODULE_ID, "flameArrows") === scope.macroItem?.uuid)
-      ?.effects.find((ae) => !ae.transfer && ae.type === "enchantment");
+      ?.effects.find((ae) => ae.type === "enchantment" && ae.isAppliedEnchantment);
     if (!enchantmentEffect) {
       console.error(`${DEFAULT_ITEM_NAME} | Container enchantment effect could be found on target.`, workflow);
       return;

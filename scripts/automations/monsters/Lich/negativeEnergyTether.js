@@ -4,7 +4,7 @@
 // When used, adds an effect on the target and on the owner. When the owner is damaged, a save is
 // triggered on the tethered creature, if failed it takes half the owner's damage and the owners
 // applied damage is reduced by half.
-// v2.3.0
+// v2.3.1
 // Dependencies:
 //  - DAE [off]
 //  - Times up (if Foundry version < v14)
@@ -167,7 +167,7 @@ export async function negativeEnergyTether({ speaker, actor, token, character, i
     const infoMsg = `${targetDivs}${newTargetDivs}`;
     MidiQOL.addUndoChatMessage(
       await ChatMessage.create({
-        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content: infoMsg,
         speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token?.document }),
         whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),

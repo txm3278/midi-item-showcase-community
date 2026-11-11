@@ -145,6 +145,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "macroData": {
           "name": "",
           "command": ""

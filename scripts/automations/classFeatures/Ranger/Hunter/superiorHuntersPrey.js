@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Ranger - Hunter - Superior Hunter's Prey
 // Implements the optional extra damage to a seen nearby creatures of a marked target which has been dealt damage.
-// v1.0.0
+// v1.0.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -140,7 +140,7 @@ async function handleOnUsePostRollFinished(actor, token, workflow, sourceItem, d
   const validTargets = MidiQOL.findNearby(
     null,
     markedTarget,
-    dnd5e.utils.convertLength(30, "ft", dnd5e.utils.defaultUnits("length") ?? "ft"),
+    dnd5e.utils.convertLength(30, "ft", canvas.grid.units, {strict: false}),
   ).filter((t) => MidiQOL.canSee(token, t) && token.document.uuid !== t.document.uuid);
   if (!validTargets.length) {
     // No valid target, skip extra damage
@@ -162,7 +162,7 @@ async function handleOnUsePostRollFinished(actor, token, workflow, sourceItem, d
       targetUuids: defaultTargets.length ? [defaultTargets[0].document.uuid] : undefined,
       workflowOptions: {
         targetConfirmation: validTargets.length > 1 ? "always" : undefined,
-        excludeTargets: canvas.tokens.placeables.filter((t) => !validTargets.includes(t)).map((t) => t.document.uuid),
+        includeTargets: validTargets.map((t) => t.document.uuid),
       },
     },
   };

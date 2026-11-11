@@ -57,7 +57,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.attributes.movement.walk",
+          "key": "system.attributes.movement.speeds.walk",
           "mode": 2,
           "value": "10",
           "priority": 20

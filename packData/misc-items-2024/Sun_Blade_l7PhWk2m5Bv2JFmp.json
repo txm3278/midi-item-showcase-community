@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>undefined</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>undefined</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to activate/deactivate the blade.\n When this activity is used, it activates the blade, when activated an AE with the light effect is added, also an another activity can be used to adjust the blade's light radius.</p></details>",
       "chat": ""
     },
     "source": {
@@ -178,6 +178,8 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -198,7 +200,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "flags": {},
         "visibility": {
@@ -208,7 +211,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
-        "otherActivityId": "none",
+        "otherActivityId": null,
         "otherActivityAsParentType": true
       },
       "wS5VKZ6Fe6UahYUf": {
@@ -306,6 +309,8 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -330,7 +335,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "flags": {},
         "visibility": {
@@ -442,6 +448,8 @@
           "otherActivityCompatible": true,
           "displayActivityName": false,
           "rollMode": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -462,7 +470,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "useConditionReason": "The sword must be equipped and attuned to activate the blade",
         "flags": {},
@@ -471,7 +480,8 @@
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
-        }
+        },
+        "otherActivityId": null
       },
       "RZXnbNx7y4NTwGuf": {
         "type": "damage",
@@ -573,6 +583,8 @@
           "autoTargetAction": "default",
           "displayActivityName": false,
           "rollMode": "default",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
@@ -593,7 +605,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "flags": {},
         "visibility": {
@@ -602,7 +615,8 @@
           "requireIdentification": false,
           "requireMagic": false
         },
-        "useConditionReason": ""
+        "useConditionReason": "",
+        "otherActivityId": null
       }
     },
     "attuned": false,

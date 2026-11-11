@@ -201,7 +201,8 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "name": "Extra Damage"
+        "name": "Extra Damage",
+        "otherActivityId": null
       }
     },
     "uses": {

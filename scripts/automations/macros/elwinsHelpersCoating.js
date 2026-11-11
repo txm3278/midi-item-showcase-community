@@ -2,7 +2,7 @@
 // Read First!!!!
 // World Scripter Macro.
 // Coating item helper functions for macros.
-// v2.1.6
+// v2.1.7
 // Dependencies:
 //  - ElwinHelpers
 //  - MidiQOL
@@ -84,7 +84,7 @@
 // ###################################################################################################
 
 export function runElwinsHelpersCoating() {
-  const VERSION = "2.1.6";
+  const VERSION = "2.1.7";
   const MACRO_NAME = "elwin-helpers-coating";
   const MODULE_ID = "midi-item-showcase-community";
   const WORLD_MODULE_ID = "world";
@@ -162,8 +162,8 @@ export function runElwinsHelpersCoating() {
    * @returns {boolean} true if elwin helpers' version is valid for this world script.
    */
   function hasValidElwinHelpersVersion() {
-    if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.13")) {
-      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.5.10`;
+    if (foundry.utils.isNewerVersion("3.6.0", globalThis?.elwinHelpers?.version ?? "1.1")) {
+      const errorMsg = `${MACRO_NAME}: The Elwin Helpers world script must be installed, active and have a version greater than or equal to 3.6.0`;
       ui.notifications.error(errorMsg);
       return false;
     }
@@ -388,7 +388,7 @@ export function runElwinsHelpersCoating() {
    * @param {function} options.weaponFilter - Weapon filter.
    * @param {function} options.ammoFilter - Ammo filter.
    * @param {number} options.maxAmmo - Maximum number of ammo on which the coating can be applied in one use.
-   * @returns {{selectedItem: Item5e, coatedItem: Item5e}} The selected weapon and the coated item, it may be different if the
+   * @returns Promise<{{selectedItem: Item5e, coatedItem: Item5e}}> The selected weapon and the coated item, it may be different if the
    *          selectedItem had a greater quantity than the one allowed for coating.
    */
   async function selectCoatingWeaponOrAmmo(actor, itemUsed, { weaponFilter, ammoFilter, maxAmmo }) {
@@ -477,7 +477,11 @@ export function runElwinsHelpersCoating() {
       );
       return undefined;
     }
-    if (!coatedEffectActivity.save && coatedEffectActivity.hasDamage && coatedEffectActivity.effects?.length) {
+    if (
+      !coatedEffectActivity.save &&
+      coatedEffectActivity.hasDamage &&
+      coatedEffectActivity.applicableEffects?.length
+    ) {
       console.error(
         `${MACRO_NAME} | The ${applyCoatingActivity.name} activity enchantment profile damage rider activity must not have effects.`,
       );
@@ -505,20 +509,22 @@ export function runElwinsHelpersCoating() {
       priority: 20,
     });
     // Add on use item for the coating effect
-    enchantmentEffectData.changes.push({
+    let change = {
       key: `flags.midi-qol.onUseMacroName`,
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
       value: "function.elwinHelpers.coating.handleCoatedItemOnUsePostActiveEffects,postActiveEffects",
       priority: 20,
-    });
+    };
+    enchantmentEffectData.changes.push(change);
     if (coatingEffectActivity.hasDamage && !coatingEffectActivity.save) {
       // Add bonus damage for the coating effect
-      enchantmentEffectData.changes.push({
+      change = {
         key: `flags.midi-qol.onUseMacroName`,
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
         value: "function.elwinHelpers.coating.handleCoatedItemOnUsePostDamageRoll,postDamageRoll",
         priority: 20,
-      });
+      };
+      enchantmentEffectData.changes.push(change);
     }
     return enchantmentEffectData;
   }
@@ -640,7 +646,7 @@ export function runElwinsHelpersCoating() {
     }
 
     // Should only be called by coating effect activity
-    const activityData = getCoatingEffectActivityAndEffectTargets(workflow);
+    const activityData = await getCoatingEffectActivityAndEffectTargets(workflow);
     if (!activityData?.effectTargets?.has(target)) {
       // No applicable effects were applied to this target skip conditionals
       return;
@@ -803,9 +809,9 @@ export function runElwinsHelpersCoating() {
    * these come either from the main activity or other activity depending on which has the coating effect identifier.
    *
    * @param {MidiQOL.Workflow} workflow - The MidiQOL current workflow.
-   * @returns {{applicableEffects: ActiveEffect[], effectTargets: Set<Token5e>}} the coating effect activity's appliable effects and effecTargets.
+   * @returns Promise<{{applicableEffects: ActiveEffect[], effectTargets: Set<Token5e>}}> the coating effect activity's appliable effects and effecTargets.
    */
-  function getCoatingEffectActivityAndEffectTargets(workflow) {
+  async function getCoatingEffectActivityAndEffectTargets(workflow) {
     // Should only be called by coating effect activity
     const mainActivity = workflow.activity?.identifier === COATING_EFFECT_IDENT ? workflow.activity : null;
     const otherActivity = workflow.otherActivity?.identifier === COATING_EFFECT_IDENT ? workflow.otherActivity : null;
@@ -818,8 +824,16 @@ export function runElwinsHelpersCoating() {
       }
       return null;
     }
+    const dndv6 = foundry.utils.isNewerVersion(game.system.version, "6.0");
+
     const activityData = {
-      applicableEffects: mainActivity ? mainActivity.applicableEffects : otherActivity.applicableEffects,
+      applicableEffects: mainActivity
+        ? dndv6
+          ? await mainActivity.getApplicableEffects()
+          : mainActivity.applicableEffects
+        : dndv6
+          ? await otherActivity.getApplicableEffects()
+          : otherActivity.applicableEffects,
       effectTargets: mainActivity ? workflow.effectTargets : workflow.otherEffectTargets,
     };
     return activityData;
@@ -857,7 +871,7 @@ export function runElwinsHelpersCoating() {
    * @param {Token5e} target - The target on which the active effect could have been applied.
    */
   async function removeAppliedEffectFromOriginDependency(workflow, coatedItem, target) {
-    const activityData = getCoatingEffectActivityAndEffectTargets(workflow);
+    const activityData = await getCoatingEffectActivityAndEffectTargets(workflow);
     if (!activityData?.effectTargets?.has(target)) {
       // No applicable effects were applied to this target
       return;
@@ -870,6 +884,9 @@ export function runElwinsHelpersCoating() {
       // No effects applied to this target
       return;
     }
-    await coatedEffectAe.unsetFlag("dnd5e", "dependentOn");
+    // Dndv6 does not add dependency on effect unless it's a concentration effect
+    if (!foundry.utils.isNewerVersion(game.system.version, "6.0")) {
+      await coatedEffectAe.unsetFlag("dnd5e", "dependentOn");
+    }
   }
 }

@@ -2,7 +2,7 @@
 // Author: Elwin#1410
 // Read First!!!!
 // Applies the proper AE depending on the save result.
-// v1.2.0
+// v1.2.1
 // Dependencies:
 //  - DAE [off]
 //  - Times up (if Foundry version < v14)
@@ -52,7 +52,10 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
 
   if (args[0].tag === "OnUse" && args[0].macroPass === "postActiveEffects") {
     if (scope.rolledActivity?.identifier === "resist-effect") {
-      const gazeEffect = scope.rolledActivity?.effects[0]?.effect;
+      const dndv6 = foundry.utils.isNewerVersion(game.system.version, "6.0");
+      const gazeEffect = dndv6
+        ? (await scope.rolledActivity?.getApplicableEffects())[0]
+        : scope.rolledActivity?.applicableEffects[0]?.effect;
       for (let targetToken of workflow.effectTargets ?? []) {
         if (targetToken.actor?.statuses?.has("petrified")) {
           // Already petrified no need to add 'Petrifying Gaze - Effect' or petrified status
@@ -71,9 +74,10 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
             await effect.delete();
           }
         } else {
-          if (!alreadyHasEffectWithHigherPotency(workflow, targetToken)) {
+          const hasHigherPotencyEffect = await alreadyHasEffectWithHigherPotency(workflow, targetToken);
+          if (!hasHigherPotencyEffect) {
             const effectData = gazeEffect.toObject();
-            effectData.origin = gazeEffect.uuid;
+            effectData.origin = scope.rolledActivity.uuid;
             foundry.utils.setProperty(effectData, "flags.dae.dontApply", false);
             if (!targetToken.inCombat && effectData.duration) {
               effectData.duration.seconds =
@@ -85,7 +89,8 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
             });
           }
           // Remove all effect having the lower potency
-          for (let effect of getEffectsWithLowerPotency(workflow, targetToken)) {
+          const effectsWithLowerPotency = await getEffectsWithLowerPotency(workflow, targetToken);
+          for (let effect of effectsWithLowerPotency) {
             await effect.delete();
           }
         }
@@ -97,7 +102,8 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
           return;
         }
         // Remove all effect having the same name (does not need to have same origin)
-        const origin = gazeEffectActivity.effects[0]?.effect;
+        const dndv6 = foundry.utils.isNewerVersion(game.system.version, "6.0");
+        const origin = dndv6 ? await gazeEffectActivity.effects[0]?.getEffect() : gazeEffectActivity.effects[0]?.effect;
         for (let effect of targetToken.actor?.effects?.filter((ae) => ae.name === origin?.name) ?? []) {
           await effect.delete();
         }
@@ -169,24 +175,26 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
    * Returns true if an existing effect has an higher potency.
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Token5e} targetToken - The target for which to validate effects.
-   * @returns {boolean} true if a gaze effect having an higher or equal potency than the one to be applied exists.
+   * @returns Promise<{boolean}> true if a gaze effect having an higher or equal potency than the one to be applied exists.
    */
-  function alreadyHasEffectWithHigherPotency(currentWorkflow, targetToken) {
+  async function alreadyHasEffectWithHigherPotency(currentWorkflow, targetToken) {
     // Find existing effects ending at same time or starting at same time having higher or equal potency than the current one.
     const gazePotency = currentWorkflow.saveDC;
-    return getExistingEffectsWithPotency(currentWorkflow, targetToken).some((data) => data.gazePotency >= gazePotency);
+    return (await getExistingEffectsWithPotency(currentWorkflow, targetToken)).some(
+      (data) => data.gazePotency >= gazePotency,
+    );
   }
 
   /**
    * Returns existing effects having a lower potency.
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Token5e} targetToken - The target for which to fetch effects.
-   * @returns {ActiveEffect[]} existing active effects having a lower potency than the one to be applied.
+   * @returns Promise<{ActiveEffect[]}> existing active effects having a lower potency than the one to be applied.
    */
-  function getEffectsWithLowerPotency(currentWorkflow, targetToken) {
+  async function getEffectsWithLowerPotency(currentWorkflow, targetToken) {
     // Find existing effects ending at same time or starting at same time having a lower potency than the current one.
     const gazePotency = currentWorkflow.saveDC;
-    return getExistingEffectsWithPotency(currentWorkflow, targetToken)
+    return (await getExistingEffectsWithPotency(currentWorkflow, targetToken))
       .filter((data) => data.gazePotency < gazePotency)
       .map((data) => data.effect);
   }
@@ -195,10 +203,13 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
    * Returns the effects and their potency having the same name and ending at the same on the specified target.
    * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
    * @param {Token5e} targetToken - The target for which to fetch effects.
-   * @returns {{effect: ActiveEffect, potency: number}[]} List of effect and potency of similar effects ending at the same time.
+   * @returns Promise<{{effect: ActiveEffect, potency: number}[]}> List of effect and potency of similar effects ending at the same time.
    */
-  function getExistingEffectsWithPotency(currentWorkflow, targetToken) {
-    const effectName = currentWorkflow.activity?.effects[0]?.effect?.name;
+  async function getExistingEffectsWithPotency(currentWorkflow, targetToken) {
+    const dndv6 = foundry.utils.isNewerVersion(game.system.version, "6.0");
+    const effectName = dndv6
+      ? (await currentWorkflow.activity?.effects[0]?.getEffect())?.name
+      : currentWorkflow.activity?.effects[0]?.effect?.name;
     if (!effectName) {
       // Could not determine effect name, cannot validate existing effects
       if (debug) {
@@ -241,12 +252,24 @@ export async function petrifyingGaze({ speaker, actor, token, character, item, a
    */
   function getGazePotency(effect) {
     const origin = fromUuidSync(effect.origin);
-    if (!(origin instanceof ActiveEffect)) {
+    if (!(origin instanceof ActiveEffect) && !(origin instanceof Activity)) {
       console.warn(`${DEFAULT_ITEM_NAME} | Missing or wrong effect origin.`, { effect });
       return -1;
     }
+    // TODO remove code for ActiveEffect origin and adjust code when dnd5e v6+ is the only versions supported
+    if (origin instanceof Activity) {
+      return origin.save?.dc?.value ?? -1;
+    }
+    const dndv6 = foundry.utils.isNewerVersion(game.system.version, "6.0");
+    if (dndv6) {
+      console.error(
+        `${DEFAULT_ITEM_NAME} | Effect origin is an ActiveEffect, but in dnd5e v6+ an Activity is expected.`,
+        { effect, origin },
+      );
+      return -1;
+    }
     return (
-      origin.parent?.system?.activities?.find((a) => a.effects.some((e) => e.effect.uuid === effect.origin)).save?.dc
+      origin.item?.system?.activities?.find((a) => a.effects.some((e) => e.effect?.uuid === effect.origin))?.save?.dc
         ?.value ?? -1
     );
   }

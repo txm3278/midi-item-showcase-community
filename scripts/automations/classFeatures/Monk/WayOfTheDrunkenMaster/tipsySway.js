@@ -2,7 +2,7 @@
 // Monk - Way of the Drunken Master - Tipsy Sway
 // Adds an active effect with third party reaction, that effect will trigger a reaction
 // on the monk when a melee attack misses him to allow him to redirect the attack on another target.
-// v1.1.0
+// v1.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -62,7 +62,7 @@ export async function tipsySway({ speaker, actor, token, character, item, args, 
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments,
+      arguments
     );
   }
 
@@ -86,8 +86,9 @@ export async function tipsySway({ speaker, actor, token, character, item, args, 
  * @param {Item5e} sourceItem - The Tipsy Sway item.
  */
 async function handleOnUsePostActiveEffects(actor, token, workflow, sourceItem) {
-  let targetTokens = MidiQOL.findNearby(-1, token, 5, { isSeen: true, includeIncapacitated: true }).filter(
-    (t) => t.document?.uuid !== workflow.workflowOptions?.thirdPartyReaction?.attackerUuid,
+  const closeDist = dnd5e.utils.convertLength(5, "ft", canvas.grid.units, {strict: false});
+  let targetTokens = MidiQOL.findNearby(-1, token, closeDist, { isSeen: true, includeIncapacitated: true }).filter(
+    (t) => t.document?.uuid !== workflow.workflowOptions?.thirdPartyReaction?.attackerUuid
   );
   const targetToken = await getSelectedTarget(sourceItem, targetTokens);
   if (!targetToken) {
@@ -166,7 +167,7 @@ async function handleTargetOnUseIsMissedPost(token, workflow, sourceItem, thirdP
     hitDisplay.showAC = true;
     hitDisplay.img = targetTokenImg;
     hitDisplay.gmName = elwinHelpers.getTokenName(targetToken);
-    ((hitDisplay.playerName = MidiQOL.getTokenPlayerName(targetToken.document) ?? ""), (hitDisplay.bonusAC = 0));
+    (hitDisplay.playerName = MidiQOL.getTokenPlayerName(targetToken.document) ?? ""), (hitDisplay.bonusAC = 0);
     hitDisplay.hitResultNumeric = `${workflow.attackTotal}/${Math.abs(workflow.attackTotal - hitDisplay.ac)}`;
     hitDisplay.attackTotal = workflow.attackTotal;
     hitDisplay.isHit = true;
@@ -191,7 +192,7 @@ async function handleTargetOnUseIsMissedPost(token, workflow, sourceItem, thirdP
   const targetDivs = elwinHelpers.getTargetDivs(token, "Missed attack on target <strong>${tokenName}</strong>");
   const newTargetDivs = elwinHelpers.getTargetDivs(
     targetToken,
-    `was redirected to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`,
+    `was redirected to <strong>\${tokenName}</strong> by <strong>${sourceItem.name}</strong>.`
   );
   const infoMsg = `${targetDivs}${newTargetDivs}`;
   await elwinHelpers.insertTextIntoMidiItemCard("beforeHitsDisplay", workflow, infoMsg);
@@ -210,6 +211,6 @@ async function getSelectedTarget(sourceItem, targetTokens, defaultToken) {
   return await elwinHelpers.TokenSelectionDialog.createDialog(
     `${sourceItem.name}: Choose a Target`,
     targetTokens,
-    defaultToken,
+    defaultToken
   );
 }

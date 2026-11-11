@@ -1,5 +1,7 @@
 import { absorbingTattoo } from "./absorbingTattoo.js";
 import { arrowCatchingShield } from "./arrowCatchingShield.js";
+import { beltOfDwarvenkind } from "./beltOfDwarvenkind.js";
+import { bladeOfMedusa } from "./bladeOfMedusa.js";
 import { clockworkAmulet } from "./clockworkAmulet.js";
 import { corpseSlayerWeapon } from "./corpseSlayerWeapon.js";
 import { daggerOfVenom } from "./daggerOfVenom.js";
@@ -15,6 +17,8 @@ import { sunBlade } from "./sunBlade.js";
 export let items = {
   absorbingTattoo,
   arrowCatchingShield,
+  beltOfDwarvenkind,
+  bladeOfMedusa,
   clockworkAmulet,
   corpseSlayerWeapon,
   daggerOfVenom,

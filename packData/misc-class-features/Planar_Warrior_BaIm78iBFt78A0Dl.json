@@ -272,6 +272,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -279,7 +280,6 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none",
         "otherActivityAsParentType": true
       }
     },
@@ -289,7 +289,7 @@
       "max": ""
     },
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the target is marked\n and the next time the target is hit with a weapon attack the effect will be applied</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Horizon Walker' subclass, its data value should resolve to '@scale.horizon-walker.planar-warrior'.</p>\n</details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This feature needs to be used to activate. When activated the target is marked\n and the next time the target is hit with a weapon attack the effect will be applied</p><p><strong>Note:</strong> A scale dice value must be configured on the 'Horizon Walker' subclass, its data value should resolve to '@scale.horizon-walker.planar-warrior'.</p>\n</details>",
       "chat": ""
     },
     "identifier": "planar-warrior",

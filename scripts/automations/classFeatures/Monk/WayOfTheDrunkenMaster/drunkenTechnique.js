@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Monk - Way of the Drunken Master - Drunken Technique
 // Handles the ability to increment walking speed and prevent provoking AoO when Flurry of Blows is used.
-// v1.1.0
+// v1.1.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -55,7 +55,7 @@ export async function drunkenTechnique({ speaker, actor, token, character, item,
     console.warn(
       DEFAULT_ITEM_NAME,
       { phase: args[0].tag ? `${args[0].tag}-${args[0].macroPass}` : args[0] },
-      arguments,
+      arguments
     );
   }
 
@@ -82,7 +82,7 @@ async function handleOnUsePostActiveEffects(actor, sourceItem) {
   }
 
   const drunkenEffectData = drunkenEffect.toObject();
-  drunkenEffectData.origin = drunkenEffect.uuid; //flag the effect as associated to the item AE used
+  drunkenEffectData.origin = sourceItem.uuid; //flag the effect as associated to the source item
   await actor.createEmbeddedDocuments("ActiveEffect", [drunkenEffectData]);
 }
 

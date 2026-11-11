@@ -3,7 +3,7 @@
   "type": "feat",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a feat that can be toggled on or off, when the midi property \"Toggle effect\" is checked and the Toggle activity is used, when unchecked, a dialog to activate the feat will be prompted on attacks that meet the requirements. One item use will be added when the requirements are met and remove it at the end of the owner's turn. Having an item use allows to use the Bonus Attack Activity.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This is a feat that can be toggled on or off, when the midi property \"Toggle effect\" is checked and the Toggle activity is used, when unchecked, a dialog to activate the feat will be prompted on attacks that meet the requirements. One item use will be added when the requirements are met and remove it at the end of the owner's turn. Having an item use allows to use the Bonus Attack Activity.</p></details>",
       "chat": ""
     },
     "source": {
@@ -143,6 +143,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -150,7 +151,6 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none",
         "otherActivityAsParentType": true
       },
       "gCJEoaY3nm0E9jbK": {
@@ -268,6 +268,7 @@
           "requireMagic": false
         },
         "useConditionReason": "",
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
@@ -275,7 +276,6 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": "none",
         "otherActivityAsParentType": true
       }
     },

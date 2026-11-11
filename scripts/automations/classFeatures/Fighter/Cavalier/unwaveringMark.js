@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.8.1
+// v3.8.2
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -141,6 +141,7 @@ export async function unwaveringMark({ speaker, actor, token, character, item, a
   } else if (args[0] === "off") {
     const markerTokenUuid = args[1];
     // Remove this token from special attack flag on marker unless the delete is caused by the same origin
+    // TODO dndv6 use .source instead of .origin
     if (
       scope.lastArgValue["expiry-reason"] &&
       scope.lastArgValue["expiry-reason"] !== `new-unwavering-mark:${scope.lastArgValue.origin}`
@@ -218,8 +219,9 @@ function handlePreAttackRollConfigByMarkedTarget(workflow, actor, sourceItem, de
     return;
   }
 
+  const closeDist = dnd5e.utils.convertLength(5, "ft", canvas.grid.units, {strict: false});
   const dist = MidiQOL.computeDistance(workflow.token, markerToken, true);
-  if (dist <= -1 || dist > 5) {
+  if (dist <= -1 || dist > closeDist) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Marker token out of range: ${dist}.`);
     }
@@ -308,7 +310,7 @@ async function handlePostActiveEffectsByMarkedTarget(macroData, workflow, curren
   MidiQOL.addUndoChatMessage(
     await ChatMessage.create({
       user: player?.id,
-      type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+      style: CONST.CHAT_MESSAGE_STYLES.OTHER,
       content: message,
       speaker: ChatMessage.getSpeaker({ actor: markerTokenActor, token: markerTokenDoc }),
       whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
