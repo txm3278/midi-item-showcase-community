@@ -39,6 +39,7 @@ Hooks.once("catReady", async () => {
     "misc-spells-2024",
     "misc-third-party",
   ];
+
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   cat.api.registerSourceName(moduleName, game.modules?.get(moduleName)?.title ?? "Midi Item Showcase Community");
   await Promise.all(

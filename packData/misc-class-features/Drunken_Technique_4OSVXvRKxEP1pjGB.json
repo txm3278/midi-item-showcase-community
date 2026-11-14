@@ -21,7 +21,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",
@@ -73,7 +73,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": "turnEnd"
       },
       "description": "<p>You gain the benefit of the Disengage action, and your walking speed increases by 10 feet until the end of the current turn.</p>",

@@ -405,7 +405,7 @@
       ],
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",
@@ -500,7 +500,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",
@@ -620,7 +620,7 @@
       ],
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",

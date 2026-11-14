@@ -4,7 +4,7 @@
 // heavy weapon melee attack as well as the ability to make a bonus melee weapon attack when the actor scores
 // a critical hit or brings a target to 0 HP with a melee weapon.
 // Note: it supports checking for melee weapon attack with a thrown property.
-// v3.6.2
+// v3.6.3
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE [on][every]
@@ -50,34 +50,44 @@
 //   If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
 //   grants one charge to use the special bonus attack if it was not already granted.
 // ###################################################################################################
+// Default name of the item
+const DEFAULT_ITEM_NAME = "Great Weapon Master";
+const MODULE_ID = "midi-item-showcase-community";
+const OFF_STATE = 0;
+const ON_STATE = 1;
+const PROMPT_STATE = 2;
+const STATES = new Map([
+  [ON_STATE, OFF_STATE],
+  [OFF_STATE, ON_STATE],
+  [PROMPT_STATE, ON_STATE],
+]);
 
-export async function greatWeaponMaster({ speaker, actor, token, character, item, args, scope, workflow, options }) {
-  // Default name of the item
-  const DEFAULT_ITEM_NAME = "Great Weapon Master";
-  const MODULE_ID = "midi-item-showcase-community";
-  // Set to false to remove debug logging
-  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
-  const OFF_STATE = 0;
-  const ON_STATE = 1;
-  const PROMPT_STATE = 2;
-  const STATES = new Map([
-    [ON_STATE, OFF_STATE],
-    [OFF_STATE, ON_STATE],
-    [PROMPT_STATE, ON_STATE],
-  ]);
-
-  if (!foundry.utils.isNewerVersion(globalThis?.elwinHelpers?.version ?? "1.1", "3.5.10")) {
+/**
+ * Validates if the required dependencies are met.
+ *
+ * @returns {boolean} True if the requirements are met, false otherwise.
+ */
+function checkDependencies() {
+  if (foundry.utils.isNewerVersion("3.5.11", globalThis?.elwinHelpers?.version ?? "1.1")) {
     const errorMsg = `${DEFAULT_ITEM_NAME} | ${game.i18n.localize("midi-item-showcase-community.ElwinHelpersRequired")}`;
     ui.notifications.error(errorMsg);
-    return;
+    return false;
   }
   const dependencies = ["dae", "midi-qol"];
   if (game.release.generation < 14) {
     dependencies.push("times-up");
   }
   if (!elwinHelpers.requirementsSatisfied(DEFAULT_ITEM_NAME, dependencies)) {
+    return false;
+  }
+  return true;
+}
+
+export async function greatWeaponMaster({ speaker, actor, token, character, item, args, scope, workflow, options }) {
+  if (!checkDependencies()) {
     return;
   }
+  const debug = globalThis.elwinHelpers?.isDebugEnabled() ?? false;
 
   if (debug) {
     console.warn(
@@ -86,9 +96,10 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       arguments,
     );
   }
+
   if (args[0].tag === "OnUse" && args[0].macroPass === "preItemRoll") {
     if (isBonusAttackActivity(workflow, scope.macroItem)) {
-      return await handleOnUsePreItemRollBonusAttack(workflow, scope.macroItem, actor);
+      return await handleOnUsePreItemRollBonusAttack(scope.macroItem, actor);
     } else {
       return await handleOnUsePreItemRollOthers(workflow, scope.macroItem, actor);
     }
@@ -117,417 +128,413 @@ export async function greatWeaponMaster({ speaker, actor, token, character, item
       await actor.setFlag(MODULE_ID, "greatWeaponMaster.bonus", false);
     }
   }
+}
 
-  /**
-   * Prompts the user to select an equipped melee weapon with which to make the bonus attack.
-   * If no target is selected and the midi settings for target confirmation are not active or do not trigger on 'noneTargeted',
-   * the user's is asked to confirm a target.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   * @param {Actor5e} sourceActor - The owner of the Great Weapon Master item.
-   *
-   * @returns true if the activity workflow can continue, false otherwise.
-   */
-  async function handleOnUsePreItemRollBonusAttack(currentWorkflow, sourceItem, sourceActor) {
-    const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(sourceActor);
-    if (filteredWeapons.length === 0) {
-      const msg = `${sourceItem.name} | No melee weapon equipped.`;
+/**
+ * Prompts the user to select an equipped melee weapon with which to make the bonus attack.
+ * If no target is selected and the midi settings for target confirmation are not active or do not trigger on 'noneTargeted',
+ * the user's is asked to confirm a target.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ * @param {Actor} sourceActor - The owner of the Great Weapon Master item.
+ *
+ * @returns true if the activity workflow can continue, false otherwise.
+ */
+async function handleOnUsePreItemRollBonusAttack(sourceItem, sourceActor) {
+  const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(sourceActor);
+  if (filteredWeapons.length === 0) {
+    const msg = `${sourceItem.name} | No melee weapon equipped.`;
+    ui.notifications.warn(msg);
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Adjust the behavior of Great Weapon Master feat depending on the value of the Toggle activity's midi "Toggle Effect" property.
+ * If the midi "Toggle Effect" property is checked:
+ *   If the activity used is not this feat's Toggle activity and the state was set to prompt: set the state to toggle off.
+ * Else:
+ *   Set prompt to activate on attack.
+ *   Delete the toggled on effect.
+ *   If the activity used is this feat's Toggle activity: block this activity's workflow and prompts a warning.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ * @param {Actor} sourceActor - The owner of the Great Weapon Master item.
+ *
+ * @returns Promise<boolean> true if the activity workflow can continue, false otherwise.
+ */
+async function handleOnUsePreItemRollOthers(workflow, sourceItem, sourceActor) {
+  const toggleActivity = getToggleActivity(sourceItem);
+  const toggleEffect = toggleActivity?.midiProperties.toggleEffect ?? false;
+  if (toggleEffect) {
+    const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState") ?? OFF_STATE;
+    if (workflow.itemUuid !== sourceItem.uuid) {
+      // Reset state to toggle off if prompt
+      if (gwmState === PROMPT_STATE) {
+        await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", OFF_STATE);
+      }
+    }
+  } else {
+    await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", PROMPT_STATE);
+    await sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "greatWeaponMasterToggledOn"))?.delete();
+    if (isToggleActivity(workflow, sourceItem)) {
+      const msg = `${sourceItem.name} | The ${
+        workflow.activity.name ?? "Toggle"
+      } activity can only be triggered when the activity's Midi property 'Toggle Effect' is checked.`;
       ui.notifications.warn(msg);
       return false;
     }
-    return true;
   }
+  return true;
+}
 
-  /**
-   * Adjust the behavior of Great Weapon Master feat depending on the value of the Toggle activity's midi "Toggle Effect" property.
-   * If the midi "Toggle Effect" property is checked:
-   *   If the activity used is not this feat's Toggle activity and the state was set to prompt: set the state to toggle off.
-   * Else:
-   *   Set prompt to activate on attack.
-   *   Delete the toggled on effect.
-   *   If the activity used is this feat's Toggle activity: block this activity's workflow and prompts a warning.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   * @param {Actor5e} sourceActor - The owner of the Great Weapon Master item.
-   *
-   * @returns true if the activity workflow can continue, false otherwise.
-   */
-  async function handleOnUsePreItemRollOthers(currentWorkflow, sourceItem, sourceActor) {
-    const toggleActivity = getToggleActivity(sourceItem);
-    const toggleEffect = toggleActivity?.midiProperties.toggleEffect ?? false;
-    if (toggleEffect) {
-      const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState") ?? OFF_STATE;
-      if (currentWorkflow.itemUuid !== sourceItem.uuid) {
-        // Reset state to toggle off if prompt
-        if (gwmState === PROMPT_STATE) {
-          await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", OFF_STATE);
-        }
-      }
-    } else {
-      await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", PROMPT_STATE);
-      await sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "greatWeaponMasterToggledOn"))?.delete();
-      if (isToggleActivity(currentWorkflow, sourceItem)) {
-        const msg = `${sourceItem.name} | The ${
-          currentWorkflow.activity.name ?? "Toggle"
-        } activity can only be triggered when the activity's Midi property 'Toggle Effect' is checked.`;
-        ui.notifications.warn(msg);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * When the attack is made with a heavy weapon, is a melee weapon attack and the actor is proficient with it,
-   * if in prompt mode ask if the bonus/malus should be added before adding an AE, otherwise if toggled on adds an AE for the bonus/malus.
-   * This AE only last for one attack.
-   * Note: if the weapon has the thrown property, the distance to the target must be less than or equal to 5 ft
-   *       (10 ft or reach value if the weapon has reach property) to be considered a melee weapon attack.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   */
-  async function handleOnUsePreAttackRoll(currentWorkflow, sourceItem) {
-    const usedItem = currentWorkflow.item;
-    if (
-      !elwinHelpers.isMeleeWeapon(usedItem) ||
-      !elwinHelpers.hasItemProperty(usedItem, "hvy") ||
-      !usedItem?.system?.prof?.hasProficiency ||
-      !elwinHelpers.isMeleeWeaponAttack(
-        currentWorkflow.activity,
-        currentWorkflow.token,
-        currentWorkflow.targets.first(),
-      )
-    ) {
-      // Only works on proficient heavy melee weapon attacks
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not an heavy melee weapon attack.`);
-      }
-      return;
-    }
-
-    const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState");
-    if (gwmState === OFF_STATE) {
-      return;
-    } else if (gwmState === PROMPT_STATE) {
-      const activate = await foundry.applications.api.DialogV2.confirm({
-        window: { title: `${sourceItem.name} - Activation` },
-        content: `<p>Use ${sourceItem.name}? (-5 to attack, +10 to damage)</p>`,
-        defaultYes: true,
-        modal: true,
-        rejectClose: false,
-      });
-      if (!activate) {
-        return;
-      }
-    }
-    // Add an AE for -5 to hit +10 dmg
-    await addMalusBonusActiveEffect(sourceItem);
-  }
-
-  /**
-   * Prompts the owner to select an equipped melee weapon with which to make the bonus attack.
-   * Enchants the selected weapon to convert its activation type to special and give advantage
-   * and extra damage then calls MidiQOL.completeItemUse with the selected weapon to make the bonus attack.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   */
-  async function handleOnUsePostActiveEffectsBonusAttack(currentWorkflow, sourceItem) {
-    const refundResource = async function () {
-      const chatMessage = MidiQOL.getCachedChatMessage(currentWorkflow.itemCardUuid);
-      const consumed =
-        chatMessage?.system.deltas != null ? chatMessage.system.deltas : chatMessage?.getFlag("dnd5e", "use.consumed");
-      if (consumed) {
-        await currentWorkflow.activity?.refund(consumed);
-      }
-    };
-    const currentActor = currentWorkflow.actor;
-    const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(currentActor);
-    if (filteredWeapons.length === 0) {
-      ui.notifications.warn(`${sourceItem.name} | No melee weapon equipped, reallocate spent resource if needed.`);
-      await refundResource();
-      return;
-    }
-
-    const chosenWeaponId = currentActor.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId");
-    let weaponItem = filteredWeapons[0];
-    if (filteredWeapons.length > 1) {
-      weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
-    }
-    if (!weaponItem) {
-      // Bonus attack was cancelled
-      ui.notifications.warn(
-        `${sourceItem.name} | No weapon selected for the bonus attack, reallocate spent resource if needed.`,
-      );
-      await refundResource();
-      return;
-    }
-    // Keep weapon choice for next time (used as pre-selected choice) and for postActiveEffects
-    await currentActor.setFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId", weaponItem.id);
-
-    const bonusAttackWorkflow = await doBonusAttack(currentWorkflow, sourceItem, weaponItem);
-    if (!bonusAttackWorkflow || bonusAttackWorkflow?.aborted) {
-      ui.notifications.warn(`${sourceItem.name} | The bonus attack was aborted, reallocate spent resource if needed.`);
-      await refundResource();
-    }
-  }
-
-  /**
-   * Sets the state to the next state on->off, off->on, and adds or deletes the toggled on AE if the new state is toggled on or toggled off.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   * @param {Actor5e} sourceActor - The owner of the Great Weapon Master item.
-   */
-  async function handleOnUsePostActiveEffectsToggle(sourceItem, sourceActor) {
-    const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState") ?? OFF_STATE;
-    await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", STATES.get(gwmState));
-
-    const bonusMalusEffect = sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "greatWeaponMasterToggledOn"));
-    if (STATES.get(gwmState) === ON_STATE) {
-      // Add AE for toggle mode on
-      if (!bonusMalusEffect) {
-        await addToggledOnEffect(sourceItem);
-      }
-    } else {
-      await bonusMalusEffect?.delete();
-    }
-  }
-
-  /**
-   * If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
-   * grants one charge to use the special bonus attack if it was not already granted.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   * @param {Item5e} usedItem - The item used for the current workflow.
-   */
-  async function handleOnUsePostActiveEffectsOtherItems(currentWorkflow, sourceItem, usedItem) {
-    if (
-      usedItem?.type !== "weapon" ||
-      !["simpleM", "martialM"].includes(usedItem?.system.type?.value) ||
-      currentWorkflow.activity?.actionType !== "mwak"
-    ) {
-      // Not a melee weapon...
-      if (debug) {
-        console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon.`);
-      }
-      return;
-    }
-    // Adds a charge to the bonus action if the conditions are met.
-    if (currentWorkflow.actor.getFlag(MODULE_ID, "greatWeaponMaster.bonus")) {
-      // A bonus action was already granted
-      return;
-    }
-    let allowBonusAction = currentWorkflow.isCritical;
-    let reduceToZeroHp = false;
-    if (!allowBonusAction && currentWorkflow.hitTargets.size > 0) {
-      reduceToZeroHp = currentWorkflow.damageList?.some(
-        (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0,
-      );
-      allowBonusAction = reduceToZeroHp;
-    }
+/**
+ * When the attack is made with a heavy weapon, is a melee weapon attack and the actor is proficient with it,
+ * if in prompt mode ask if the bonus/malus should be added before adding an AE, otherwise if toggled on adds an AE for the bonus/malus.
+ * This AE only last for one attack.
+ * Note: if the weapon has the thrown property, the distance to the target must be less than or equal to 5 ft
+ *       (10 ft or reach value if the weapon has reach property) to be considered a melee weapon attack.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ */
+async function handleOnUsePreAttackRoll(workflow, sourceItem) {
+  const usedItem = workflow.item;
+  if (
+    !elwinHelpers.isMeleeWeapon(usedItem) ||
+    !elwinHelpers.hasItemProperty(usedItem, "hvy") ||
+    !usedItem?.system?.prof?.hasProficiency ||
+    !elwinHelpers.isMeleeWeaponAttack(workflow.activity, workflow.token, workflow.targets.first())
+  ) {
+    // Only works on proficient heavy melee weapon attacks
     if (debug) {
-      console.warn(DEFAULT_ITEM_NAME, { allowBonusAction, isCritical: currentWorkflow.isCritical, reduceToZeroHp });
+      console.warn(`${DEFAULT_ITEM_NAME} | Not an heavy melee weapon attack.`);
     }
-    if (!allowBonusAction) {
+    return;
+  }
+
+  const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState");
+  if (gwmState === OFF_STATE) {
+    return;
+  } else if (gwmState === PROMPT_STATE) {
+    const activate = await foundry.applications.api.DialogV2.confirm({
+      window: { title: `${sourceItem.name} - Activation` },
+      content: `<p>Use ${sourceItem.name}? (-5 to attack, +10 to damage)</p>`,
+      defaultYes: true,
+      modal: true,
+      rejectClose: false,
+    });
+    if (!activate) {
       return;
     }
+  }
+  // Add an AE for -5 to hit +10 dmg
+  await addMalusBonusActiveEffect(sourceItem);
+}
 
-    // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
-    await getBonusAttackActivity(sourceItem)?.update({ "uses.spent": 0 });
-    await currentWorkflow.actor.setFlag(MODULE_ID, "greatWeaponMaster", { bonus: true, weaponChoiceId: usedItem.id });
+/**
+ * Prompts the owner to select an equipped melee weapon with which to make the bonus attack.
+ * Enchants the selected weapon to convert its activation type to special and give advantage
+ * and extra damage then calls MidiQOL.completeItemUse with the selected weapon to make the bonus attack.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ */
+async function handleOnUsePostActiveEffectsBonusAttack(workflow, sourceItem) {
+  const refundResource = async function () {
+    const chatMessage = MidiQOL.getCachedChatMessage(workflow.itemCardUuid);
+    const consumed =
+      chatMessage?.system.deltas != null ? chatMessage.system.deltas : chatMessage?.getFlag("dnd5e", "use.consumed");
+    if (consumed) {
+      await workflow.activity?.refund(consumed);
+    }
+  };
+  const currentActor = workflow.actor;
+  const filteredWeapons = elwinHelpers.getEquippedMeleeWeapons(currentActor);
+  if (filteredWeapons.length === 0) {
+    ui.notifications.warn(`${sourceItem.name} | No melee weapon equipped, reallocate spent resource if needed.`);
+    await refundResource();
+    return;
+  }
 
-    // Add chat message saying a bonus attack can be made
-    const message = await TextEditor.enrichHTML(
-      `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack [[/item ${sourceItem.id} activity=${
-        getBonusAttackActivity(sourceItem).id
-      }]].</p>`,
-      {
-        relativeTo: sourceItem.actor,
-        rollData: sourceItem.getRollData(),
-      },
+  const chosenWeaponId = currentActor.getFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId");
+  let weaponItem = filteredWeapons[0];
+  if (filteredWeapons.length > 1) {
+    weaponItem = await getSelectedWeapon(sourceItem, filteredWeapons, chosenWeaponId);
+  }
+  if (!weaponItem) {
+    // Bonus attack was cancelled
+    ui.notifications.warn(
+      `${sourceItem.name} | No weapon selected for the bonus attack, reallocate spent resource if needed.`,
     );
-    MidiQOL.addUndoChatMessage(
-      await ChatMessage.create({
-        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        content: message,
-        speaker: ChatMessage.getSpeaker({ actor: currentWorkflow.actor, token: currentWorkflow.token?.document }),
-        whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
-      }),
-    );
+    await refundResource();
+    return;
   }
+  // Keep weapon choice for next time (used as pre-selected choice) and for postActiveEffects
+  await currentActor.setFlag(MODULE_ID, "greatWeaponMaster.weaponChoiceId", weaponItem.id);
 
-  /**
-   * Returns the bonus attack activity of the Great Weapon Master item.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   *
-   * @returns {Activity} The bonus attack activity, undefined if not found.
-   */
-  function getBonusAttackActivity(sourceItem) {
-    return sourceItem.system.activities?.find((a) => a.identifier === "bonus-attack");
+  const bonusAttackWorkflow = await doBonusAttack(workflow, sourceItem, weaponItem);
+  if (!bonusAttackWorkflow || bonusAttackWorkflow?.aborted) {
+    ui.notifications.warn(`${sourceItem.name} | The bonus attack was aborted, reallocate spent resource if needed.`);
+    await refundResource();
   }
+}
 
-  /**
-   * Returns true if the current workflow activity is the bonus attack activity of the Great Weapon Master item.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   *
-   * @returns {boolean} True if the current workflow activity is the bonus attack activity
-   *                    of the Great Weapon Master item, false otherwise.
-   */
-  function isBonusAttackActivity(currentWorkflow, sourceItem) {
-    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === "bonus-attack";
-  }
+/**
+ * Sets the state to the next state on->off, off->on, and adds or deletes the toggled on AE if the new state is toggled on or toggled off.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ * @param {Actor} sourceActor - The owner of the Great Weapon Master item.
+ */
+async function handleOnUsePostActiveEffectsToggle(sourceItem, sourceActor) {
+  const gwmState = sourceItem.getFlag(MODULE_ID, "greatWeaponMasterState") ?? OFF_STATE;
+  await sourceItem.setFlag(MODULE_ID, "greatWeaponMasterState", STATES.get(gwmState));
 
-  /**
-   * Returns the toggle activity of the Great Weapon Master item.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   *
-   * @returns {Activity} The toggle activity, undefined if not found.
-   */
-  function getToggleActivity(sourceItem) {
-    return sourceItem.system.activities?.find((a) => a.identifier === "toggle");
-  }
-
-  /**
-   * Returns true if the current workflow activity is the toggle activity of the Great Weapon Master item.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   *
-   * @returns {boolean} True if the current workflow activity is the toggle activity
-   *                    of the Great Weapon Master item, false otherwise.
-   */
-  function isToggleActivity(currentWorkflow, sourceItem) {
-    return sourceItem.uuid === currentWorkflow.itemUuid && currentWorkflow.activity?.identifier === "toggle";
-  }
-
-  /**
-   * Adds an active effect to show that the feat toggle on state is active.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   */
-  async function addToggledOnEffect(sourceItem) {
+  const bonusMalusEffect = sourceActor.effects.find((ae) => ae.getFlag(MODULE_ID, "greatWeaponMasterToggledOn"));
+  if (STATES.get(gwmState) === ON_STATE) {
     // Add AE for toggle mode on
-    const effectData = {
-      changes: [],
-      img: sourceItem.img,
-      name: `${sourceItem.name} - Toggled On`,
-      origin: sourceItem.uuid,
-      transfer: false,
-      flags: {
-        dae: { showIcon: true, stackable: "noneName" },
-        [MODULE_ID]: {
-          greatWeaponMasterToggledOn: true,
-        },
-      },
-    };
-    await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    if (!bonusMalusEffect) {
+      await addToggledOnEffect(sourceItem);
+    }
+  } else {
+    await bonusMalusEffect?.delete();
   }
+}
 
-  /**
-   * Adds an active effect to add a malus to attack and bonus to damage.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   */
-  async function addMalusBonusActiveEffect(sourceItem) {
-    // Add an AE for -5 to hit +10 dmg
-    const effectData = {
-      changes: [
-        {
-          key: "system.bonuses.mwak.attack",
-          mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: "-5",
-          priority: "20",
-        },
-        {
-          key: "system.bonuses.mwak.damage",
-          mode: CONST.ACTIVE_EFFECT_MODES.ADD,
-          value: "+10",
-          priority: "20",
-        },
-      ],
-      img: sourceItem.img,
-      name: `${sourceItem.name} - Bonus/Malus`,
-      origin: sourceItem.uuid,
-      transfer: false,
-      duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
-      flags: { dae: { specialDuration: ["1Attack"], stackable: "noneName" } },
-    };
-    await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+/**
+ * If the item used is a melee weapon, and it was a critical or at least one target was dropped to 0 HP,
+ * grants one charge to use the special bonus attack if it was not already granted.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ * @param {Item} usedItem - The item used for the current workflow.
+ */
+async function handleOnUsePostActiveEffectsOtherItems(workflow, sourceItem, usedItem) {
+  if (
+    usedItem?.type !== "weapon" ||
+    !["simpleM", "martialM"].includes(usedItem?.system.type?.value) ||
+    workflow.activity?.actionType !== "mwak"
+  ) {
+    // Not a melee weapon...
+    if (debug) {
+      console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon.`);
+    }
+    return;
   }
-
-  /**
-   * Prompts a dialog to select a weapon and returns the id of the selected weapon.
-   *
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   * @param {Item5e[]} weaponChoices - Array of weapon items from which to choose.
-   * @param {string} defaultChosenWeaponId - Id of weapon to be selected by default.
-   *
-   * @returns {Promise<Item5e|null>} the selected weapon.
-   */
-  async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
-    const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
-    return elwinHelpers.ItemSelectionDialog.createDialog(
-      `⚔️ ${sourceItem.name}: Choose a Weapon`,
-      weaponChoices,
-      defaultWeapon,
+  // Adds a charge to the bonus action if the conditions are met.
+  if (workflow.actor.getFlag(MODULE_ID, "greatWeaponMaster.bonus")) {
+    // A bonus action was already granted
+    return;
+  }
+  let allowBonusAction = workflow.isCritical;
+  let reduceToZeroHp = false;
+  if (!allowBonusAction && workflow.hitTargets.size > 0) {
+    reduceToZeroHp = workflow.damageList?.some(
+      (dmgItem) => dmgItem.wasHit && dmgItem.oldHP !== 0 && dmgItem.newHP === 0,
     );
+    allowBonusAction = reduceToZeroHp;
+  }
+  if (debug) {
+    console.warn(DEFAULT_ITEM_NAME, { allowBonusAction, isCritical: workflow.isCritical, reduceToZeroHp });
+  }
+  if (!allowBonusAction) {
+    return;
   }
 
-  /**
-   * Do a complete item use with the specified weapon but enchanting it to change its attack
-   * activities activation to special.
-   *
-   * @param {MidiQOL.Workflow} currentWorkflow - The current midi-qol workflow.
-   * @param {Item5e} sourceItem - The Great Weapon Master item.
-   * @param {Item5e} weaponItem - The weapon with which to attack.
-   * @returns {Promise<MidiQOL.Workflow|false>} the resulting bonus attack workflow or false.
-   */
-  async function doBonusAttack(currentWorkflow, sourceItem, weaponItem) {
-    // Change activation type to special so it is not considered an Action
-    const changes = [
-      {
-        key: "name",
-        mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-        value: `{} [${getBonusAttackActivity(sourceItem).name}]`,
-      },
-    ];
+  // Set one charge to the Heavy Weapon Master Attack bonus action for this turn and keep id of weapon that did it
+  await getBonusAttackActivity(sourceItem)?.update({ "uses.spent": 0 });
+  await workflow.actor.setFlag(MODULE_ID, "greatWeaponMaster", { bonus: true, weaponChoiceId: usedItem.id });
 
-    const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(weaponItem, sourceItem, {
-      changes,
-      activityRequirements: [
-        {
-          type: "attack",
-          conditions: [
-            { key: "attack.type.value", value: "melee" },
-            { key: "attack.type.classification", value: "weapon" },
-          ],
+  // Add chat message saying a bonus attack can be made
+  const message = await TextEditor.enrichHTML(
+    `<p><strong>${sourceItem.name}</strong> - You can make a special bonus attack [[/item ${sourceItem.id} activity=${
+      getBonusAttackActivity(sourceItem).id
+    }]].</p>`,
+    {
+      relativeTo: sourceItem.actor,
+      rollData: sourceItem.getRollData(),
+    },
+  );
+  MidiQOL.addUndoChatMessage(
+    await ChatMessage.create({
+      style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+      content: message,
+      speaker: ChatMessage.getSpeaker({ actor: workflow.actor, token: workflow.token?.document }),
+      whisper: ChatMessage.getWhisperRecipients("GM").map((u) => u.id),
+    }),
+  );
+}
+
+/**
+ * Returns the bonus attack activity of the Great Weapon Master item.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ *
+ * @returns {Activity} The bonus attack activity, undefined if not found.
+ */
+function getBonusAttackActivity(sourceItem) {
+  return sourceItem.system.activities?.find((a) => a.identifier === "bonus-attack");
+}
+
+/**
+ * Returns true if the current workflow activity is the bonus attack activity of the Great Weapon Master item.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ *
+ * @returns {boolean} True if the current workflow activity is the bonus attack activity
+ *                    of the Great Weapon Master item, false otherwise.
+ */
+function isBonusAttackActivity(workflow, sourceItem) {
+  return sourceItem.uuid === workflow.itemUuid && workflow.activity?.identifier === "bonus-attack";
+}
+
+/**
+ * Returns the toggle activity of the Great Weapon Master item.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ *
+ * @returns {Activity} The toggle activity, undefined if not found.
+ */
+function getToggleActivity(sourceItem) {
+  return sourceItem.system.activities?.find((a) => a.identifier === "toggle");
+}
+
+/**
+ * Returns true if the current workflow activity is the toggle activity of the Great Weapon Master item.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ *
+ * @returns {boolean} True if the current workflow activity is the toggle activity
+ *                    of the Great Weapon Master item, false otherwise.
+ */
+function isToggleActivity(workflow, sourceItem) {
+  return sourceItem.uuid === workflow.itemUuid && workflow.activity?.identifier === "toggle";
+}
+
+/**
+ * Adds an active effect to show that the feat toggle on state is active.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ */
+async function addToggledOnEffect(sourceItem) {
+  // Add AE for toggle mode on
+  const effectData = {
+    changes: [],
+    img: sourceItem.img,
+    name: `${sourceItem.name} - Toggled On`,
+    origin: sourceItem.uuid,
+    transfer: false,
+    flags: {
+      dae: { showIcon: true, stackable: "noneName" },
+      [MODULE_ID]: {
+        greatWeaponMasterToggledOn: true,
+      },
+    },
+  };
+  await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+}
+
+/**
+ * Adds an active effect to add a malus to attack and bonus to damage.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ */
+async function addMalusBonusActiveEffect(sourceItem) {
+  // Add an AE for -5 to hit +10 dmg
+  const effectData = {
+    changes: [
+      {
+        key: "system.bonuses.mwak.attack",
+        mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+        value: "-5",
+        priority: "20",
+      },
+      {
+        key: "system.bonuses.mwak.damage",
+        mode: CONST.ACTIVE_EFFECT_MODES.ADD,
+        value: "+10",
+        priority: "20",
+      },
+    ],
+    img: sourceItem.img,
+    name: `${sourceItem.name} - Bonus/Malus`,
+    origin: sourceItem.uuid,
+    transfer: false,
+    duration: game.release.generation >= 14 ? { expiry: "turnEnd" } : { turns: 1 },
+    flags: { dae: { specialDuration: ["1Attack"], stackable: "noneName" } },
+  };
+  await sourceItem.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+}
+
+/**
+ * Prompts a dialog to select a weapon and returns the id of the selected weapon.
+ *
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ * @param {Item[]} weaponChoices - Array of weapon items from which to choose.
+ * @param {string} defaultChosenWeaponId - Id of weapon to be selected by default.
+ *
+ * @returns {Promise<Item|null>} the selected weapon.
+ */
+async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
+  const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
+  return elwinHelpers.ItemSelectionDialog.createDialog(
+    `⚔️ ${sourceItem.name}: Choose a Weapon`,
+    weaponChoices,
+    defaultWeapon,
+  );
+}
+
+/**
+ * Do a complete item use with the specified weapon but enchanting it to change its attack
+ * activities activation to special.
+ *
+ * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
+ * @param {Item} sourceItem - The Great Weapon Master item.
+ * @param {Item} weaponItem - The weapon with which to attack.
+ * @returns {Promise<MidiQOL.Workflow|false>} the resulting bonus attack workflow or false.
+ */
+async function doBonusAttack(workflow, sourceItem, weaponItem) {
+  // Change activation type to special so it is not considered an Action
+  const changes = [
+    {
+      key: "name",
+      mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+      value: `{} [${getBonusAttackActivity(sourceItem).name}]`,
+    },
+  ];
+
+  const enchantmentEffect = await elwinHelpers.enchantItemTemporarily(weaponItem, sourceItem, {
+    changes,
+    activityRequirements: [
+      {
+        type: "attack",
+        conditions: [
+          { key: "attack.type.value", value: "melee" },
+          { key: "attack.type.classification", value: "weapon" },
+        ],
+      },
+    ],
+  });
+  if (!enchantmentEffect) {
+    console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${weaponItem.name}.`);
+    return false;
+  }
+  try {
+    const config = {
+      midiOptions: {
+        targetUuids: workflow.targets.size ? [workflow.targets.first().document.uuid] : undefined,
+        workflowOptions: {
+          autoRollAttack: true,
+          targetConfirmation: !workflow.targets.size ? "always" : undefined,
         },
-      ],
-    });
-    if (!enchantmentEffect) {
-      console.warn(`${DEFAULT_ITEM_NAME} | Could not enchant item ${weaponItem.name}.`);
-      return false;
-    }
-    try {
-      const config = {
-        midiOptions: {
-          targetUuids: currentWorkflow.targets.size ? [currentWorkflow.targets.first().document.uuid] : undefined,
-          workflowOptions: {
-            autoRollAttack: true,
-            targetConfirmation: !currentWorkflow.targets.size ? "always" : undefined,
-          },
-        },
-      };
-      return await MidiQOL.completeItemUse(weaponItem, config);
-    } finally {
-      await enchantmentEffect.delete();
-    }
+      },
+    };
+    return await MidiQOL.completeItemUse(weaponItem, config);
+  } finally {
+    await enchantmentEffect.delete();
   }
 }

@@ -188,7 +188,7 @@
       "origin": null,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "disabled": false,
@@ -270,7 +270,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": "turnEnd"
       },
       "description": "",

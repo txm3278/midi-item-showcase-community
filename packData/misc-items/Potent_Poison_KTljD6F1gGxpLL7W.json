@@ -378,8 +378,8 @@
       "changes": [],
       "disabled": true,
       "duration": {
-        "value": 1,
-        "unit": "rounds",
+        "value": null,
+        "units": "seconds",
         "expiry": "sourceEnd"
       },
       "description": "",
@@ -447,7 +447,7 @@
       ],
       "duration": {
         "value": 1,
-        "unit": "minutes",
+        "units": "minutes",
         "expiry": "turnStart"
       },
       "description": "",

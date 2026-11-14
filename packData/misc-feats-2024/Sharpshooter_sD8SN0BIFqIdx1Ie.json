@@ -34,10 +34,11 @@
     "enchant": {},
     "prerequisites": {
       "level": 4,
+      "items": [],
       "repeatable": false
     },
-    "advancement": [
-      {
+    "advancement": {
+      "M73ScJNvzsaWvU1c": {
         "_id": "M73ScJNvzsaWvU1c",
         "type": "AbilityScoreImprovement",
         "configuration": {
@@ -57,23 +58,20 @@
             "wis",
             "cha"
           ],
-          "points": 0
+          "points": 0,
+          "recommendation": null
         },
         "value": {
           "type": "asi"
         },
         "level": 4,
         "title": "",
-        "hint": ""
+        "hint": "",
+        "flags": {}
       }
-    ]
+    }
   },
   "flags": {
-    "obsidian": {
-      "source": {
-        "type": "feat"
-      }
-    },
     "midi-qol": {
       "effectActivation": false,
       "forceCEOff": true,
@@ -137,24 +135,11 @@
   },
   "effects": [
     {
-      "changes": [
-        {
-          "key": "flags.dnd5e.sharpShooter",
-          "mode": 0,
-          "value": "1",
-          "priority": 30
-        },
-        {
-          "key": "flags.midi-qol.ignoreNearbyFoes",
-          "mode": 0,
-          "value": "1",
-          "priority": 20
-        }
-      ],
       "duration": {
         "value": null,
-        "unit": "seconds",
-        "expiry": null
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "tint": "#ffffff",
       "transfer": true,
@@ -167,6 +152,7 @@
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false,
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
@@ -211,8 +197,27 @@
       "origin": null,
       "img": "icons/skills/ranged/arrow-flying-white-blue.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "flags.dnd5e.sharpShooter",
+            "value": 1,
+            "priority": 30,
+            "type": "custom",
+            "phase": "initial"
+          },
+          {
+            "key": "flags.midi-qol.ignoreNearbyFoes",
+            "value": 1,
+            "priority": 20,
+            "type": "custom",
+            "phase": "initial"
+          }
+        ]
+      },
       "sort": 0,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!sD8SN0BIFqIdx1Ie.q5Le1zgY3WEmhZFu"
     }
   ],

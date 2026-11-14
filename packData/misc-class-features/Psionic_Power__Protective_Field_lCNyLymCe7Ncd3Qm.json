@@ -269,7 +269,7 @@
       "origin": null,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "transfer": true,

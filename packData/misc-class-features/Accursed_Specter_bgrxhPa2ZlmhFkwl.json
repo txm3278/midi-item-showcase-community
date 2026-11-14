@@ -198,14 +198,14 @@
         {
           "key": "flags.midi-qol.onUseMacroName",
           "mode": 0,
-          "value": "ItemMacro,postActiveEffects",
+          "value": "function.MISC.macros.classFeatures.accursedSpecter,postActiveEffects",
           "priority": 20
         }
       ],
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",
@@ -259,7 +259,7 @@
       }
     },
     "midi-qol": {
-      "onUseMacroName": "[preItemRoll]ItemMacro,[postNoAction]ItemMacro"
+      "onUseMacroName": "[preItemRoll]function.MISC.macros.classFeatures.accursedSpecter,[postNoAction]function.MISC.macros.classFeatures.accursedSpecter"
     },
     "dae": {
       "macro": {
@@ -267,7 +267,7 @@
         "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
         "type": "script",
         "scope": "global",
-        "command": "const params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.classFeatures.accursedSpecter(params);",
+        "command": "",
         "author": "0IRD6hJ6pXW2tz12",
         "ownership": {
           "default": 3

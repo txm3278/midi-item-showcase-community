@@ -103,8 +103,7 @@
       "description": ""
     },
     "container": null,
-    "crewed": false,
-    "magicalBonus": 1,
+    "magicalBonus": "1",
     "equipped": true,
     "proficient": null,
     "attuned": false,
@@ -151,7 +150,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": "ft"
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "",
@@ -217,22 +217,27 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "attackMode": "oneHanded",
         "ammunition": "",
@@ -240,6 +245,39 @@
         "otherActivityUuid": "",
         "name": "Attack",
         "useConditionReason": "",
+        "img": null,
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
         "otherActivityAsParentType": true,
         "attackRollPerTarget": "default",
         "fumbleThreshold": 1
@@ -272,7 +310,8 @@
         "effects": [
           {
             "_id": "W3exe9GzisjGw4UL",
-            "onSave": false
+            "onSave": false,
+            "level": {}
           }
         ],
         "range": {
@@ -284,7 +323,8 @@
           "template": {
             "contiguous": false,
             "units": "ft",
-            "type": ""
+            "type": "",
+            "stationary": false
           },
           "affects": {
             "choice": false,
@@ -362,26 +402,64 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "name": "Poison - Effect",
         "useConditionReason": "",
         "otherActivityId": "",
+        "img": null,
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
         "otherActivityAsParentType": true,
         "friendlySave": "default"
       },
@@ -440,7 +518,8 @@
           "template": {
             "contiguous": false,
             "units": "ft",
-            "type": ""
+            "type": "",
+            "stationary": false
           },
           "affects": {
             "choice": false,
@@ -455,7 +534,6 @@
           "max": ""
         },
         "enchant": {
-          "identifier": "",
           "self": true
         },
         "restrictions": {
@@ -494,30 +572,72 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
           "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
           "autoCEEffects": "default"
         },
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "name": "Coat Blade with Poison",
-        "useConditionReason": ""
+        "useConditionReason": "",
+        "img": "",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
+        "otherActivityId": null,
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        }
       }
     },
     "identifier": "dagger-of-venom",
     "ammunition": {},
-    "mastery": "nick"
+    "mastery": "nick",
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {
@@ -527,13 +647,15 @@
       "transfer": false,
       "_id": "W3exe9GzisjGw4UL",
       "type": "base",
-      "system": {},
-      "changes": [],
+      "system": {
+        "changes": []
+      },
       "disabled": false,
       "duration": {
-        "value": 1,
-        "unit": "minutes",
-        "expiry": "turnStart"
+        "value": 60,
+        "units": "seconds",
+        "expiry": "turnStart",
+        "expired": false
       },
       "description": "",
       "tint": "#ffffff",
@@ -550,6 +672,7 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -580,6 +703,9 @@
           "statuses": []
         }
       },
+      "showIcon": 2,
+      "start": null,
+      "folder": null,
       "_key": "!items.effects!1hOW9TyUpORw6Z6i.W3exe9GzisjGw4UL"
     },
     {
@@ -588,37 +714,43 @@
       "img": "icons/skills/toxins/symbol-poison-drop-skull-green.webp",
       "disabled": true,
       "_id": "WOcmWplHQT4iWEe3",
-      "system": {},
-      "changes": [
-        {
-          "key": "system.activities.SSsP94UR3G54FhRi.midiProperties.otherActivityCompatible",
-          "mode": 5,
-          "value": "true",
-          "priority": 20
-        },
-        {
-          "key": "system.activities.dnd5eactivity000.otherActivityId",
-          "mode": 5,
-          "value": "SSsP94UR3G54FhRi",
-          "priority": 20
-        },
-        {
-          "key": "system.activities.JtKstra1sl6pVptH.midiProperties.automationOnly",
-          "mode": 5,
-          "value": "true",
-          "priority": 20
-        },
-        {
-          "key": "img",
-          "mode": 5,
-          "value": "icons/skills/melee/blade-tip-acid-poison-green.webp",
-          "priority": 20
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "system.activities.SSsP94UR3G54FhRi.midiProperties.otherActivityCompatible",
+            "value": true,
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.activities.dnd5eactivity000.otherActivityId",
+            "value": "SSsP94UR3G54FhRi",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.activities.JtKstra1sl6pVptH.midiProperties.automationOnly",
+            "value": true,
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "img",
+            "value": "icons/skills/melee/blade-tip-acid-poison-green.webp",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          }
+        ]
+      },
       "duration": {
         "value": 1,
-        "unit": "minutes",
-        "expiry": "turnStart"
+        "units": "minutes",
+        "expiry": "turnStart",
+        "expired": false
       },
       "description": "",
       "origin": null,
@@ -631,6 +763,7 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneName",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -661,6 +794,9 @@
           "statuses": []
         }
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!1hOW9TyUpORw6Z6i.WOcmWplHQT4iWEe3"
     }
   ],
@@ -672,7 +808,7 @@
       "itemCondition": "",
       "otherCondition": "",
       "effectCondition": "",
-      "onUseMacroName": "[preItemRoll]function.elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll,[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[preItemRoll]function.elwinHelpers.disableManualEnchantmentPlacingOnUsePreItemRoll,[postActiveEffects]function.MISC.macros.items.daggerOfVenom",
       "reactionCondition": ""
     },
     "midiProperties": {
@@ -694,33 +830,7 @@
       "idv": false,
       "ida": false
     },
-    "dae": {
-      "macro": {
-        "name": "Dagger of Venom",
-        "img": "icons/weapons/daggers/dagger-poisoned.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.items.daggerOfVenom(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": "dnd5e",
-          "systemVersion": "4.3.3",
-          "coreVersion": "12.331",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
-        }
-      }
-    },
+    "dae": {},
     "core": {},
     "rest-recovery": {
       "data": {

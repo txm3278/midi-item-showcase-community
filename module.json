@@ -28,7 +28,8 @@
         "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
           "minimum": "5.3.3",
-          "verified": "5.3.3"
+          "verified": "5.3.3",
+          "maximum": "5.9.99"
         }
       }
     ],
@@ -38,8 +39,9 @@
         "type": "module",
         "manifest": "https://gitlab.com/tposney/midi-qol/raw/v12dnd4/package/module.json",
         "compatibility": {
-          "minimum": "14.0.10",
-          "verified": "14.0.10"
+          "minimum": "14.0.20",
+          "verified": "14.0.20",
+          "maximum": "14.5.99"
         }
       }
     ]
@@ -67,6 +69,15 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "weapon",
+                  "equipment",
+                  "consumable"
+              ]
+          }
       }
     },
     {
@@ -78,6 +89,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat"
+              ]
+          }
       }
     },
     {
@@ -100,6 +118,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat"
+              ]
+          }
       }
     },
     {
@@ -111,6 +136,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat"
+              ]
+          }
       }
     },
     {
@@ -122,6 +154,14 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat",
+                  "weapon"
+              ]
+          }
       }
     },
     {
@@ -133,6 +173,14 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "spell",
+                  "consumable"
+              ]
+          }
       }
     },
     {
@@ -144,6 +192,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat"
+              ]
+          }
       }
     },
     {
@@ -155,6 +210,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat"
+              ]
+          }
       }
     },
     {
@@ -166,6 +228,15 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "weapon",
+                  "equipment",
+                  "consumable"
+              ]
+          }
       }
     },
     {
@@ -177,6 +248,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat"
+              ]
+          }
       }
     },
     {
@@ -188,6 +266,14 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "feat",
+                  "weapon"
+              ]
+          }
       }
     },
     {
@@ -199,6 +285,14 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "spell",
+                  "consumable"
+              ]
+          }
       }
     },
     {
@@ -210,6 +304,13 @@
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
+      },
+      "flags": {
+          "dnd5e": {
+              "types": [
+                  "spell"
+              ]
+          }
       }
     }
   ],

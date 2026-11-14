@@ -253,7 +253,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "<div class=\"def-block\"><p><strong>Dwarvish.</strong> You know Dwarvish.</p><p><strong>Friend of Dwarvenkind.</strong> You have Advantage on Charisma (Persuasion) checks made to interact with dwarves and duergar.</p><p><strong>Toughness.</strong> Your Constitution increases by 2, to a maximum of 20.</p><p>If you aren’t a dwarf or duergar, you gain the following additional benefits while wearing the belt:</p><div class=\"def-block\"><p><strong>Darkvision.</strong> You have Darkvision with a range of 60 feet.</p><p><strong>Resilience.</strong> You have Resistance to Poison damage. You also have Advantage on saving throws you make to avoid or end the Poisoned condition.</p></div></div>",

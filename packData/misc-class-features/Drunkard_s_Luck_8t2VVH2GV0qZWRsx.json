@@ -27,7 +27,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",
@@ -79,7 +79,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": "turnEnd"
       },
       "description": "<p>Cancels disadvantage on saves and ability checks.</p>",

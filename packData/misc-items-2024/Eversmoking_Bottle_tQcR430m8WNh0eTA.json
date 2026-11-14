@@ -348,7 +348,7 @@
       "disabled": false,
       "duration": {
         "value": 1,
-        "unit": "minutes",
+        "units": "minutes",
         "expiry": "turnStart"
       },
       "description": "",

@@ -194,8 +194,8 @@
       "name": "Ice Entombment",
       "origin": null,
       "duration": {
-        "value": 1,
-        "unit": "rounds",
+        "value": null,
+        "units": "seconds",
         "expiry": "sourceEnd"
       },
       "transfer": false,
@@ -313,7 +313,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": "turnEnd"
       },
       "description": "",

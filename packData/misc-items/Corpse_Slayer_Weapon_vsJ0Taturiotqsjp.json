@@ -391,7 +391,7 @@
       "origin": null,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": "sourceStart"
       },
       "transfer": false,
@@ -530,7 +530,7 @@
       ],
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",

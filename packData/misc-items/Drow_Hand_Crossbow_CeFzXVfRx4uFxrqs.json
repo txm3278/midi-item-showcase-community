@@ -3,7 +3,7 @@
   "type": "weapon",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item applies the Drow poison effect on a hit including extra unconscious status when the save failed by 5 or more.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\n<h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item applies the Drow poison effect on a hit including extra unconscious status when the save failed by 5 or more.</p></details>",
       "chat": ""
     },
     "source": {
@@ -28,7 +28,6 @@
     "rarity": "",
     "identified": true,
     "cover": null,
-    "crewed": false,
     "range": {
       "value": 30,
       "long": 120,
@@ -139,7 +138,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "",
@@ -185,7 +185,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -193,31 +194,81 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "default",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": false,
           "otherActivityCompatible": true,
           "identifier": "attack",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "targetMustBeSeen": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "attackMode": "oneHanded",
         "ammunition": "",
         "otherActivityId": "dnd5eactivity100",
         "otherActivityUuid": "",
         "name": "Attack",
+        "img": "",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": "",
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
-        }
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
+        "otherActivityAsParentType": true,
+        "attackRollPerTarget": "default",
+        "fumbleThreshold": 1
       },
       "dnd5eactivity100": {
         "_id": "dnd5eactivity100",
@@ -249,7 +300,8 @@
         "effects": [
           {
             "_id": "grjnvTkjcY1QJ1fZ",
-            "onSave": false
+            "onSave": false,
+            "level": {}
           }
         ],
         "range": {
@@ -266,7 +318,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": ""
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "1",
@@ -309,7 +362,8 @@
           "idi": false,
           "idr": false,
           "idv": false,
-          "ida": false
+          "ida": false,
+          "idm": false
         },
         "midiProperties": {
           "ignoreTraits": [],
@@ -317,28 +371,77 @@
           "triggeredActivityConditionText": "",
           "triggeredActivityTargets": "targets",
           "triggeredActivityRollAs": "self",
-          "forceDialog": false,
           "confirmTargets": "never",
           "autoTargetType": "any",
           "autoTargetAction": "default",
           "automationOnly": true,
           "otherActivityCompatible": true,
           "identifier": "coating-effect",
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
+          "autoConsume": false,
+          "forceConsumeDialog": "default",
+          "forceRollDialog": "default",
+          "forceDamageDialog": "default",
+          "otherActivityAsParentType": true,
           "displayActivityName": false,
           "rollMode": "default",
           "chooseEffects": false,
           "toggleEffect": false,
-          "ignoreFullCover": false
+          "ignoreFullCover": false,
+          "targetMustBeSeen": false,
+          "removeChatButtons": "default",
+          "magicEffect": false,
+          "magicDamage": false,
+          "noConcentrationCheck": false,
+          "skipConcentrationCheck": false,
+          "autoCEEffects": "default"
         },
         "name": "Drow Poison Effect",
+        "img": "",
+        "flags": {},
+        "visibility": {
+          "level": {},
+          "requireAttunement": false,
+          "requireIdentification": false,
+          "requireMagic": false
+        },
         "useConditionReason": "",
+        "otherActivityId": null,
         "isOverTimeFlag": false,
         "overTimeProperties": {
           "saveRemoves": true,
+          "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
-        "otherActivityId": ""
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
+        "otherActivityAsParentType": true,
+        "friendlySave": "default"
       }
     },
     "identifier": "drow-hand-crossbow",
@@ -347,16 +450,18 @@
     "ammunition": {
       "type": ""
     },
-    "magicalBonus": null,
-    "mastery": ""
+    "mastery": "",
+    "crew": {
+      "value": []
+    }
   },
   "effects": [
     {
-      "changes": [],
       "duration": {
         "value": 1,
-        "unit": "hours",
-        "expiry": "turnStart"
+        "units": "hours",
+        "expiry": "turnStart",
+        "expired": false
       },
       "tint": "#ffffff",
       "transfer": false,
@@ -371,6 +476,7 @@
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false,
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -417,8 +523,13 @@
       "origin": null,
       "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": []
+      },
       "sort": 0,
+      "showIcon": 2,
+      "start": null,
+      "folder": null,
       "_key": "!items.effects!CeFzXVfRx4uFxrqs.grjnvTkjcY1QJ1fZ"
     }
   ],
@@ -442,7 +553,7 @@
       "reactionCondition": "",
       "otherCondition": "",
       "effectCondition": "",
-      "onUseMacroName": "[postActiveEffects]ItemMacro"
+      "onUseMacroName": "[postActiveEffects]function.MISC.macros.items.drowHandCrossbow"
     },
     "dnd5e": {
       "riders": {
@@ -450,33 +561,7 @@
         "effect": []
       }
     },
-    "dae": {
-      "macro": {
-        "name": "Drow Hand Crossbow",
-        "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.items.drowHandCrossbow(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "coreVersion": "12.331",
-          "systemId": "dnd5e",
-          "systemVersion": "4.3.3",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
-        }
-      }
-    }
+    "dae": {}
   },
   "img": "icons/weapons/crossbows/crossbow-simple-brown.webp",
   "_id": "CeFzXVfRx4uFxrqs",

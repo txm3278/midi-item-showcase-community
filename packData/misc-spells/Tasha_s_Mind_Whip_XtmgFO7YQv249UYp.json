@@ -261,8 +261,8 @@
       ],
       "disabled": false,
       "duration": {
-        "value": 1,
-        "unit": "rounds",
+        "value": null,
+        "units": "seconds",
         "expiry": "targetEnd"
       },
       "description": "",

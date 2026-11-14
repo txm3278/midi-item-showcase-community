@@ -27,7 +27,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",
@@ -252,7 +252,7 @@
     "midi-qol": {
       "removeAttackDamageButtons": "default",
       "forceCEOff": true,
-      "onUseMacroName": "[postActiveEffects]ActivityMacro-kpdpYNvKmzGvE8oX"
+      "onUseMacroName": ""
     },
     "midiProperties": {
       "confirmTargets": "default"

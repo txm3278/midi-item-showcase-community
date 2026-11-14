@@ -35,8 +35,8 @@
       "items": [],
       "repeatable": false
     },
-    "advancement": [
-      {
+    "advancement": {
+      "1K1vyC74GrGSNehI": {
         "_id": "1K1vyC74GrGSNehI",
         "type": "AbilityScoreImprovement",
         "configuration": {
@@ -64,9 +64,10 @@
         },
         "level": 4,
         "title": "",
-        "hint": ""
+        "hint": "",
+        "flags": {}
       }
-    ],
+    },
     "crewed": false
   },
   "flags": {
@@ -118,20 +119,6 @@
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": "dnd5e",
-          "systemVersion": "4.3.3",
-          "coreVersion": "12.331",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
         }
       }
     },
@@ -166,56 +153,13 @@
       "origin": null,
       "duration": {
         "value": null,
-        "unit": "seconds",
-        "expiry": null
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "transfer": true,
       "disabled": false,
       "_id": "9nM4tx8rg8WlIpEW",
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,postRollFinished",
-          "priority": 0
-        },
-        {
-          "key": "flags.midi-qol.optional.GWM.damage.mwak",
-          "mode": 0,
-          "value": "+@prof",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.GWM.damage.rwak",
-          "mode": 0,
-          "value": "+@prof",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.GWM.force",
-          "mode": 0,
-          "value": "(!fromUuidSync(actorUuid)?.inCombat || actor.isCombatTurn) && \nitem.itemType === \"weapon\" && \n[\"simpleM\", \"martialM\", \"simpleR\", \"martialR\"].includes(item.type?.value) && \nitem.properties?.has(\"hvy\") && \nactivity.type === \"attack\" && \nactivity.activation?.type === \"action\" && \nactivity.attack?.type?.classification === \"weapon\" &&\n!workflow?.damageRolls?.length",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.GWM.displayBonusRolls",
-          "mode": 0,
-          "value": "false",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.GWM.label",
-          "mode": 0,
-          "value": "Heavy Weapon Mastery",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.optional.GWM.count",
-          "mode": 0,
-          "value": "every",
-          "priority": 20
-        }
-      ],
       "description": "",
       "statuses": [],
       "flags": {
@@ -228,10 +172,12 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneName",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "endEveryTurn",
           "specialDuration": [],
-          "disableCondition": ""
+          "disableCondition": "",
+          "expiryMode": "default"
         },
         "ActiveAuras": {
           "isAura": false,
@@ -263,8 +209,63 @@
       "tint": "#ffffff",
       "img": "icons/weapons/axes/axe-battle-skull-black.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "type": "custom",
+            "value": "function.MISC.macros.features.greatWeaponMaster2024,postRollFinished",
+            "phase": "initial",
+            "priority": 0
+          },
+          {
+            "key": "flags.midi-qol.optional.GWM.damage.mwak",
+            "type": "custom",
+            "value": "+@prof",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.optional.GWM.damage.rwak",
+            "type": "custom",
+            "value": "+@prof",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.optional.GWM.force",
+            "type": "custom",
+            "value": "(!fromUuidSync(actorUuid)?.inCombat || actor.isCombatTurn) && \nitem.itemType === \"weapon\" && \n[\"simpleM\", \"martialM\", \"simpleR\", \"martialR\"].includes(item.type?.value) && \nitem.properties?.has(\"hvy\") && \nactivity.type === \"attack\" && \nactivity.activation?.type === \"action\" && \nactivity.attack?.type?.classification === \"weapon\" &&\n!workflow?.damageRolls?.length",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.optional.GWM.displayBonusRolls",
+            "type": "custom",
+            "value": false,
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.optional.GWM.label",
+            "type": "custom",
+            "value": "Heavy Weapon Mastery",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.optional.GWM.count",
+            "type": "custom",
+            "value": "every",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!ugjpZDElvU1Kaamt.9nM4tx8rg8WlIpEW"
     }
   ],

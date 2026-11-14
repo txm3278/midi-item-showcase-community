@@ -67,7 +67,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": "ft"
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "",
@@ -117,6 +118,7 @@
           "rollMode": "default",
           "chooseEffects": false,
           "ignoreFullCover": false,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -135,6 +137,7 @@
           "ida": false,
           "idm": false
         },
+        "img": "",
         "flags": {},
         "visibility": {
           "level": {},
@@ -150,6 +153,31 @@
           "rollAs": "target",
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
         },
         "otherActivityAsParentType": true
       },
@@ -194,7 +222,8 @@
           "template": {
             "contiguous": false,
             "units": "ft",
-            "type": ""
+            "type": "",
+            "stationary": false
           },
           "affects": {
             "choice": false,
@@ -242,6 +271,7 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -260,6 +290,7 @@
           "ida": false,
           "idm": false
         },
+        "img": "",
         "flags": {},
         "visibility": {
           "level": {},
@@ -276,6 +307,31 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
         "otherActivityAsParentType": true
       }
     },
@@ -286,7 +342,7 @@
       "repeatable": false,
       "items": []
     },
-    "advancement": [],
+    "advancement": {},
     "cover": null,
     "crewed": false
   },
@@ -339,20 +395,6 @@
         "author": "9QqTZMFq1dhCIYAR",
         "ownership": {
           "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": "dnd5e",
-          "systemVersion": "4.1.2",
-          "coreVersion": "12.331",
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null,
-          "compendiumSource": null,
-          "duplicateSource": null
         }
       }
     },
@@ -390,38 +432,13 @@
       "origin": null,
       "duration": {
         "value": null,
-        "unit": "seconds",
-        "expiry": null
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "transfer": true,
       "disabled": false,
       "_id": "9nM4tx8rg8WlIpEW",
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,preItemRoll",
-          "priority": 0
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,preAttackRoll",
-          "priority": 0
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,postActiveEffects",
-          "priority": 0
-        },
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "",
-          "priority": 20
-        }
-      ],
       "description": "",
       "statuses": [],
       "flags": {
@@ -434,10 +451,12 @@
           "selfTargetAlways": true,
           "dontApply": false,
           "stackable": "noneName",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "endEveryTurn",
           "specialDuration": [],
-          "disableCondition": ""
+          "disableCondition": "",
+          "expiryMode": "default"
         },
         "ActiveAuras": {
           "isAura": false,
@@ -458,13 +477,52 @@
         "core": {
           "sheetClass": "core.DAEActiveEffectConfig",
           "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
       "img": "icons/weapons/axes/axe-battle-skull-black.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "type": "custom",
+            "value": "function.MISC.macros.features.greatWeaponMaster,preItemRoll",
+            "phase": "initial",
+            "priority": 0
+          },
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "type": "custom",
+            "value": "function.MISC.macros.features.greatWeaponMaster,preAttackRoll",
+            "phase": "initial",
+            "priority": 0
+          },
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "type": "custom",
+            "value": "function.MISC.macros.features.greatWeaponMaster,postActiveEffects",
+            "phase": "initial",
+            "priority": 0
+          },
+          {
+            "key": "macro.itemMacro",
+            "type": "custom",
+            "value": "",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!rNGTibeChZkWTSJ1.9nM4tx8rg8WlIpEW"
     }
   ],

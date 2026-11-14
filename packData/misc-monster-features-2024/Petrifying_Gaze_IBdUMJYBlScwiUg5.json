@@ -352,8 +352,8 @@
       "system": {},
       "disabled": false,
       "duration": {
-        "value": 1,
-        "unit": "rounds",
+        "value": null,
+        "units": "seconds",
         "expiry": "targetEnd"
       },
       "description": "",
@@ -422,7 +422,7 @@
       "disabled": false,
       "duration": {
         "value": null,
-        "unit": "seconds",
+        "units": "seconds",
         "expiry": null
       },
       "description": "",

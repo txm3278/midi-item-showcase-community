@@ -52,7 +52,7 @@
       "disabled": false,
       "duration": {
         "value": 1,
-        "unit": "hours",
+        "units": "hours",
         "expiry": "turnStart"
       },
       "description": "",
