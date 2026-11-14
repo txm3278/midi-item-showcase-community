@@ -87,8 +87,13 @@
 # Migration dnd5e v6.0.x:
 AE changes with @ values needing a replacement value of origin:
 - Gift of the Metallic Dragon
+- Flash of Genius
+- Great Weapon Master
+- Crown of Stars (to validate) (@spellLevel)
+- Defensive Tactics (to validate) (@tokenUuid)
+- Psionic Power (to validate) (@utilityRollTotal)
 Eversmoking Bottle (2014/2024):
-- Open activity set to duration special
+- Open activity set to duration special (DONE)
 Remove deprecated senses and movements attributes:
-- movement.x has moved to "movement.speeds.x
-- senses.x has moved to "senses.range.x
+- system.attributes.movement.x has moved to "system.attributes.movement.speeds.x (DONE)
+- system.attributes.senses.x has moved to "system.attributes.senses.range.x (DONE)
