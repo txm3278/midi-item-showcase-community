@@ -2,7 +2,7 @@
 // Read First!!!!
 // Marks a target by an "Unwavering Mark", it handles the effect of attacks made by a marked targets
 // and the special attack that a marked target can trigger from the marker.
-// v3.8.2
+// v3.8.3
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE: [off][each]
@@ -48,6 +48,7 @@
 
 const DEFAULT_ITEM_NAME = "Unwavering Mark";
 const MODULE_ID = "midi-item-showcase-community";
+const MODULE_FUNCTIONS = "MISC";
 
 /**
  * Validates if the required dependencies are met.
@@ -227,7 +228,8 @@ function handlePreAttackRollConfigByMarkedTarget(workflow, actor, sourceItem, de
     }
     return;
   }
-  const nonMarkerTargetExists = workflow.targets.some((t) => t?.document.uuid !== markerTokenUuid);
+  // TODO revise after MidiQOL 14.9+
+  const nonMarkerTargetExists = workflow.targets.some((t) => (t.uuid ?? t.document.uuid) !== markerTokenUuid);
 
   if (nonMarkerTargetExists) {
     workflow.attackRollModifierTracker.disadvantage.add(sourceItem.identifier, sourceItem.name);
@@ -240,9 +242,9 @@ function handlePreAttackRollConfigByMarkedTarget(workflow, actor, sourceItem, de
  *
  * @param {object} macroData midi-qol macro data.
  * @param {MidiQOL.Workflow} workflow midi-qol current workflow.
- * @param {Actor5e} currentActor current actor.
- * @param {Item5e} sourceItem  the Unwavering Mark item.
- * @param {boolean} debug - Flag to indicate if debug mode is active.
+ * @param {Actor} currentActor current actor.
+ * @param {Item} sourceItem  the Unwavering Mark item.
+ * @param Promise<{boolean}> debug - Flag to indicate if debug mode is active.
  */
 async function handlePostActiveEffectsByMarkedTarget(macroData, workflow, currentActor, sourceItem, debug) {
   if (workflow.hitTargets.size < 1) {
@@ -335,14 +337,14 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
     return;
   }
 
-  const targetToken = workflow.hitTargets.first();
   if (!workflow.damageDetail?.some((dt) => dt.value > 0 && !["temphp", "midi-none", "vitality"].includes(dt.type))) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | No damage dealt.`);
     }
     return;
   }
-
+  
+  const targetToken = workflow.hitTargets.first();
   if (!elwinHelpers.isMeleeWeaponAttack(workflow.activity, sourceToken, targetToken)) {
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | Not a melee weapon attack.`);
@@ -351,9 +353,10 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
   }
 
   const targetActor = targetToken.actor;
-  const targetUuid = targetToken.document.uuid;
+  // TODO revise when MidiQOL 14.9+
+  const targetUuid = targetToken.uuid ?? targetToken.document.uuid;
   let currentTurnMarkedTargetTokenUuids = foundry.utils.deepClone(
-    DAE.getFlag(sourceToken, "unwaveringMark.currentTurnMarkedTargetTokenUuids") ?? [],
+    DAE.getFlag(sourceToken.actor, "unwaveringMark.currentTurnMarkedTargetTokenUuids") ?? [],
   );
   // Prompt dialog to ask if attacker wants to mark the target, unless this target was already marked this turn
   const foundIdx = currentTurnMarkedTargetTokenUuids.indexOf((tu) => tu === targetUuid);
@@ -382,7 +385,7 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
 
   // Keep marked target
   currentTurnMarkedTargetTokenUuids.push(targetUuid);
-  await DAE.setFlag(sourceToken, "unwaveringMark.currentTurnMarkedTargetTokenUuids", currentTurnMarkedTargetTokenUuids);
+  await DAE.setFlag(sourceToken.actor, "unwaveringMark.currentTurnMarkedTargetTokenUuids", currentTurnMarkedTargetTokenUuids);
 
   const targetEffectName = `Marked by ${sourceItem.name}`;
 
@@ -409,21 +412,21 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
       {
         key: "flags.midi-qol.onUseMacroName",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: `ItemMacro,preAttackRollConfig`,
+        value: `function.${MODULE_FUNCTIONS}.macros.classFeatures.unwaveringMark,preAttackRollConfig`,
         priority: 20,
       },
       // macro to handle damage dealt to other targets than marker
       {
         key: "flags.midi-qol.onUseMacroName",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: `ItemMacro,postActiveEffects`,
+        value: `function.${MODULE_FUNCTIONS}.macros.classFeatures.unwaveringMark,postActiveEffects`,
         priority: 20,
       },
       // macro for on/off of effect
       {
-        key: "macro.itemMacro",
+        key: "macro.execute",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: `${workflow.tokenUuid}`,
+        value: `function.${MODULE_FUNCTIONS}.macros.classFeatures.unwaveringMark ${workflow.tokenUuid}`,
         priority: 20,
       },
     ],
@@ -435,11 +438,6 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
     name: targetEffectName,
     "flags.dae": { specialDuration: game.release.generation >= 14 ? [] : ["turnEndSource"], stackable: "noneNameOnly" },
   };
-  // Temporary fix for DAE on v14, remove when fixed in DAE
-  if (workflow.isTurn) {
-    targetEffectData.duration.value = 1;
-    targetEffectData.duration.units = "rounds";
-  }
   await MidiQOL.createEffects({ actorUuid: targetActor.uuid, effects: [targetEffectData] });
 }
 
@@ -451,8 +449,8 @@ async function handlePostActiveEffectsByMarker(workflow, sourceToken, sourceItem
  *
  * @param {object} macroData midi-qol macro data.
  * @param {MidiQOL.Workflow} workflow midi-qol workflow.
- * @param {Actor5e} sourceActor The source actor.
- * @param {Item5e} sourceItem The Unwavering Mark item.
+ * @param {Actor} sourceActor The source actor.
+ * @param {Item} sourceItem The Unwavering Mark item.
  */
 async function handlePostActiveEffectsBySpecialAttack(macroData, workflow, sourceActor, sourceItem) {
   const refundResource = async function () {
@@ -498,9 +496,11 @@ async function handlePostActiveEffectsBySpecialAttack(macroData, workflow, sourc
 
   // Select from special attack target tokens
   const currentTarget = workflow.targets.first();
+  // TODO revise when MidiQOL 14.9+
+  const currentTargetUuid = currentTarget?.uuid ?? currentTarget?.document?.uuid;
   let selectedTarget =
-    (currentTarget
-      ? specialAttackTargetTokens.find((t) => t.document.uuid === currentTarget.document.uuid)
+    (currentTargetUuid
+      ? specialAttackTargetTokens.find((t) => t.document.uuid === currentTargetUuid)
       : undefined) ?? specialAttackTargetTokens[0];
   if (specialAttackTargetTokens.length > 1) {
     selectedTarget = await getSelectedTarget(sourceItem, specialAttackTargetTokens, selectedTarget);
@@ -519,14 +519,14 @@ async function handlePostActiveEffectsBySpecialAttack(macroData, workflow, sourc
     {
       key: "flags.midi-qol.onUseMacroName",
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value: `ItemMacro,preAttackRollConfig`,
+      value: `function.${MODULE_FUNCTIONS}.macros.classFeatures.unwaveringMark,preAttackRollConfig`,
       priority: 20,
     },
     // macro to handle extra damage on special attack
     {
       key: "flags.midi-qol.onUseMacroName",
       mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-      value: `ItemMacro,preDamageRollConfig`,
+      value: `function.${MODULE_FUNCTIONS}.macros.classFeatures.unwaveringMark,preDamageRollConfig`,
       priority: 20,
     },
   ];
@@ -572,7 +572,7 @@ async function handlePostActiveEffectsBySpecialAttack(macroData, workflow, sourc
  * Calls elwinHelpers.damageConfig.updateBasic to add a hook on dnd5e.preRollDamage that adds damage bonus for the special attack.
  *
  * @param {MidiQOL.Workflow} workflow - The current midi-qol workflow.
- * @param {Item5e} sourceItem - The Unwavering Mark item.
+ * @param {Item} sourceItem - The Unwavering Mark item.
  * @param {object} scope - The scope parameter from midi-qol item's macro call.
  * @param {boolean} debug - Flag to indicate if debug mode is active.
  */
@@ -594,11 +594,11 @@ function handlePreDamageRollConfigForSpecialWeaponAttack(workflow, sourceItem, s
 /**
  * Prompts a dialog to select a weapon and returns the id of the selected weapon.
  *
- * @param {Item5e} sourceItem item for which the dialog is prompted.
- * @param {Item5e[]} weaponChoices array of weapon items from which to choose.
+ * @param {Item} sourceItem item for which the dialog is prompted.
+ * @param {Item[]} weaponChoices array of weapon items from which to choose.
  * @param {string} defaultChosenWeaponId id of weapon to be selected by default.
  *
- * @returns {Promise<Item5e|null>} selected weapon.
+ * @returns {Promise<Item|null>} selected weapon.
  */
 async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponId) {
   const defaultWeapon = weaponChoices.find((i) => i.id === defaultChosenWeaponId);
@@ -612,11 +612,11 @@ async function getSelectedWeapon(sourceItem, weaponChoices, defaultChosenWeaponI
 /**
  * Prompts a dialog to select a target token and returns it.
  *
- * @param {Item5e} sourceItem item for which the dialog is prompted.
- * @param {Token5e[]} targetTokens list of tokens from which to select a target.
- * @param {Token5e} defaultToken token to be selected by default.
+ * @param {Item} sourceItem item for which the dialog is prompted.
+ * @param {Token[]} targetTokens list of tokens from which to select a target.
+ * @param {Token} defaultToken token to be selected by default.
  *
- * @returns {Promise<Token5e|null>} the selected target token.
+ * @returns {Promise<Token|null>} the selected target token.
  */
 async function getSelectedTarget(sourceItem, targetTokens, defaultToken) {
   return await elwinHelpers.TokenSelectionDialog.createDialog(
@@ -629,7 +629,7 @@ async function getSelectedTarget(sourceItem, targetTokens, defaultToken) {
 /**
  * Verifies if the passive active effect associated to this item is active.
  *
- * @param {Item5e} sourceItem item for which the dialog is prompted.
+ * @param {Item} sourceItem item for which the dialog is prompted.
  * @returns {boolean} true if the passive active effect associated to this item is active, false otherwise.
  */
 function isPassiveEffectActiveForItem(sourceItem) {

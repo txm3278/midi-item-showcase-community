@@ -76,7 +76,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": "ft"
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "",
@@ -102,6 +103,7 @@
         "useConditionText": "",
         "effectConditionText": "",
         "name": "Brew Poison",
+        "img": "",
         "midiProperties": {
           "identifier": "brew-poison",
           "otherActivityCompatible": false,
@@ -126,6 +128,7 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -160,6 +163,31 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
         "otherActivityAsParentType": true
       }
     },
@@ -170,35 +198,11 @@
       "items": [],
       "repeatable": false
     },
-    "advancement": []
+    "advancement": {}
   },
   "flags": {
     "core": {},
-    "dae": {
-      "macro": {
-        "name": "Poisoner",
-        "img": "icons/skills/melee/strike-scythe-fire-green.webp",
-        "type": "script",
-        "scope": "global",
-        "command": "\nconst params = {speaker, actor, token, character, item, args, scope};\nif (typeof args[0] !== \"string\") {\n  params.workflow = workflow;\n  params.options = options;\n}\nreturn await MISC.macros.features.poisoner(params);\n",
-        "author": "9QqTZMFq1dhCIYAR",
-        "ownership": {
-          "default": 3
-        },
-        "_id": null,
-        "folder": null,
-        "sort": 0,
-        "flags": {},
-        "_stats": {
-          "systemId": null,
-          "systemVersion": null,
-          "coreVersion": null,
-          "createdTime": null,
-          "modifiedTime": null,
-          "lastModifiedBy": null
-        }
-      }
-    },
+    "dae": {},
     "rest-recovery": {
       "data": {
         "recovery": {
@@ -225,7 +229,7 @@
       "ida": false
     },
     "midi-qol": {
-      "onUseMacroName": "[preItemRoll]ItemMacro,[postActiveEffects]ItemMacro",
+      "onUseMacroName": "[preItemRoll]function.MISC.macros.features.poisoner,[postActiveEffects]function.MISC.macros.features.poisoner",
       "itemCondition": "",
       "reactionCondition": "",
       "otherCondition": "",
@@ -259,33 +263,14 @@
   "effects": [
     {
       "name": "Poisoner",
-      "changes": [
-        {
-          "key": "system.tools.pois.prof",
-          "mode": 0,
-          "value": "1",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "ItemMacro,preTargeting",
-          "priority": 20
-        },
-        {
-          "key": "system.traits.idr.value",
-          "mode": 2,
-          "value": "poison",
-          "priority": 20
-        }
-      ],
       "transfer": true,
       "_id": "Xqi4aPelledv8vUX",
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "",
       "origin": null,
@@ -300,10 +285,12 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [],
-          "disableCondition": ""
+          "disableCondition": "",
+          "expiryMode": "default"
         },
         "ActiveAuras": {
           "isAura": false,
@@ -323,13 +310,45 @@
         },
         "core": {
           "overlay": false
+        },
+        "dnd5e": {
+          "riders": {
+            "statuses": []
+          }
         }
       },
       "tint": "#ffffff",
       "img": "icons/skills/melee/strike-scythe-fire-green.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.tools.pois.prof",
+            "type": "override",
+            "value": 1,
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "type": "custom",
+            "value": "function.MISC.macros.features.poisoner,preTargeting",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "system.traits.idr.value",
+            "type": "add",
+            "value": "poison",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!D62ih0YBNoMniP3q.Xqi4aPelledv8vUX"
     }
   ],

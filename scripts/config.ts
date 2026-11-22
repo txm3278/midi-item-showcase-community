@@ -93,7 +93,7 @@ export const automationConfig: AutomationConfig = {
         name: "Ancestral Protectors",
         identifier: "ancestral-protectors",
         type: "Class Feature",
-        version: "4.0.1",
+        version: "4.0.2",
         authors: ["Elwin"],
       },
       "Arms of the Astral Self": {
@@ -340,7 +340,7 @@ export const automationConfig: AutomationConfig = {
         name: "Flames of Phlegethos",
         identifier: "flames-of-phlegethos",
         type: "Feat",
-        version: "4.0.3",
+        version: "4.0.4",
         authors: ["Elwin"],
       },
       "Flash of Genius": {
@@ -361,7 +361,7 @@ export const automationConfig: AutomationConfig = {
         name: "Gift of the Metallic Dragon",
         identifier: "gift-of-the-metallic-dragon",
         type: "Feat",
-        version: "5.0.2",
+        version: "5.0.3",
         authors: ["Elwin"],
       },
       "Gloves of Missile Snaring": {
@@ -495,7 +495,7 @@ export const automationConfig: AutomationConfig = {
         name: "Oathbow",
         identifier: "oathbow",
         type: "Item",
-        version: "3.0.2",
+        version: "3.0.3",
         authors: ["Elwin", "Christopher"],
       },
       "Planar Warrior": {
@@ -516,7 +516,7 @@ export const automationConfig: AutomationConfig = {
         name: "Poisoner",
         identifier: "poisoner",
         type: "Feat",
-        version: "3.0.3",
+        version: "3.0.4",
         authors: ["Elwin"],
       },
       "Potent Poison": {
@@ -628,7 +628,7 @@ export const automationConfig: AutomationConfig = {
         name: "Steady Aim",
         identifier: "steady-aim",
         type: "Class Feature",
-        version: "4.0.2",
+        version: "4.0.3",
         authors: ["Elwin"],
       },
       "Sun Blade": {
@@ -642,7 +642,7 @@ export const automationConfig: AutomationConfig = {
         name: "Tasha's Mind Whip",
         identifier: "tashas-mind-whip",
         type: "Spell",
-        version: "3.0.2",
+        version: "3.0.3",
         authors: ["Elwin", "Moto Moto"],
       },
       "Telekinetic Adept": {
@@ -678,7 +678,7 @@ export const automationConfig: AutomationConfig = {
         name: "Unwavering Mark",
         identifier: "unwavering-mark",
         type: "Class Feature",
-        version: "4.0.3",
+        version: "4.0.4",
         authors: ["Elwin"],
       },
       "Vengeful Ancestors": {
@@ -713,7 +713,7 @@ export const automationConfig: AutomationConfig = {
         name: "Warding Maneuver",
         identifier: "warding-maneuver",
         type: "Class Feature",
-        version: "3.0.1",
+        version: "3.0.2",
         authors: ["Elwin"],
       },
       "Wyvern Poison": {
@@ -820,7 +820,7 @@ export const automationConfig: AutomationConfig = {
         name: "Dagger of Venom",
         identifier: "dagger-of-venom",
         type: "Item",
-        version: "2.0.2",
+        version: "2.0.4",
         authors: ["Elwin"],
       },
       Deathdance: {
@@ -971,7 +971,7 @@ export const automationConfig: AutomationConfig = {
         identifier: "oathbow",
         type: "Item",
         factory: true,
-        version: "3.0.2",
+        version: "3.0.3",
         authors: ["Elwin", "Christopher"],
       },
       "Oil of Etherealness": {
@@ -1090,7 +1090,7 @@ export const automationConfig: AutomationConfig = {
         name: "Steady Aim",
         identifier: "steady-aim",
         type: "Class Feature",
-        version: "2.0.2",
+        version: "2.0.3",
         authors: ["Elwin"],
       },
       "Sun Blade": {
@@ -1139,7 +1139,7 @@ export const automationConfig: AutomationConfig = {
         name: "Visage of the Astral Self",
         identifier: "visage-of-the-astral-self",
         type: "Class Feature",
-        version: "2.0.1",
+        version: "2.0.2",
         authors: ["Elwin"],
       },
       "Wand of Paralysis": {

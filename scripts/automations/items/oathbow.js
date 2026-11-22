@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Allows to designate a sworn enemy and applies the bow's effect when attacking a sworn enemy.
-// v2.3.0
+// v2.3.1
 // Author: Elwin#1410 based on Christopher version
 // Dependencies:
 //  - DAE [on][off]
@@ -197,9 +197,13 @@ async function handleOnEffectAttacker(sourceActivity) {
  * @param {string} expiryReason - The reason why the AE was deleted.
  */
 async function handleOffEffectAttacker(sourceActivity, effectData, expiryReason) {
-  if (expiryReason === "midi-qol:zeroHP") {
+  // TODO: needed to add other expiry reasons because DAE does not seem to propagate reason to dependent effects anymore in v14
+  if (["midi-qol:zeroHP", "effect-deleted", "effect-disabled"].includes(expiryReason)) {
+    // TODO revise when only v14
     const targetDoc = await fromUuid(
-      effectData?.changes.find((ch) => ch.key === `flags.${MODULE_ID}.oathbowSwornEnemy`)?.value,
+      (effectData?.system?.changes ?? effectData?.changes)?.find(
+        (ch) => ch.key === `flags.${MODULE_ID}.oathbowSwornEnemy`,
+      )?.value,
     );
     if ((targetDoc?.actor?.system.attributes?.hp?.value ?? 0) <= 0) {
       await sourceActivity?.update({

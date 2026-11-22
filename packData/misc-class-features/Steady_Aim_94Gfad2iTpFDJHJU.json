@@ -78,7 +78,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": "ft"
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "",
@@ -104,6 +105,7 @@
         "useConditionText": "",
         "effectConditionText": "",
         "name": "Aim",
+        "img": "",
         "midiProperties": {
           "identifier": "aim",
           "otherActivityCompatible": false,
@@ -128,6 +130,7 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -162,6 +165,31 @@
           "preRemoveConditionText": "",
           "postRemoveConditionText": ""
         },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
+        },
         "otherActivityAsParentType": true
       }
     },
@@ -172,19 +200,11 @@
       "items": [],
       "repeatable": false
     },
-    "advancement": []
+    "advancement": {}
   },
   "effects": [
     {
       "_id": "ttliu8T5zozrLsKw",
-      "changes": [
-        {
-          "key": "flags.midi-qol.advantage.attack.all",
-          "mode": 0,
-          "value": "1",
-          "priority": 20
-        }
-      ],
       "disabled": false,
       "duration": {
         "value": null,
@@ -209,6 +229,7 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
+          "showIcon": false,
           "enableCondition": "",
           "disableCondition": ""
         },
@@ -244,26 +265,25 @@
       "statuses": [],
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "flags.midi-qol.advantage.attack.all",
+            "value": 1,
+            "priority": 20,
+            "type": "custom",
+            "phase": "initial"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!94Gfad2iTpFDJHJU.ttliu8T5zozrLsKw"
     },
     {
       "_id": "ljsYEY13ngAg6G8h",
-      "changes": [
-        {
-          "key": "system.attributes.movement.all",
-          "mode": 0,
-          "value": "0",
-          "priority": 20
-        },
-        {
-          "key": "macro.itemMacro.GM",
-          "mode": 0,
-          "value": "function.MISC.macros.classFeatures.steadyAim",
-          "priority": 20
-        }
-      ],
       "disabled": false,
       "duration": {
         "value": null,
@@ -286,8 +306,10 @@
           "selfTarget": false,
           "selfTargetAlways": true,
           "dontApply": false,
+          "showIcon": false,
           "enableCondition": "",
-          "disableCondition": ""
+          "disableCondition": "",
+          "expiryMode": "default"
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -321,8 +343,28 @@
       "statuses": [],
       "img": "icons/skills/ranged/target-bullseye-arrow-green.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.attributes.movement.speed",
+            "type": "downgrade",
+            "value": 0,
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "macro.execute.GM",
+            "type": "custom",
+            "value": "function.MISC.macros.classFeatures.steadyAim",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!94Gfad2iTpFDJHJU.ljsYEY13ngAg6G8h"
     }
   ],

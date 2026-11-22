@@ -5,19 +5,12 @@
   "effects": [
     {
       "_id": "zZYT0CrKMzLQlQFk",
-      "changes": [
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "function.MISC.macros.classFeatures.ancestralProtectors,postAttackRoll",
-          "priority": 20
-        }
-      ],
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "origin": null,
       "transfer": true,
@@ -35,6 +28,7 @@
           "selfTarget": false,
           "selfTargetAlways": false,
           "dontApply": false,
+          "showIcon": false,
           "disableCondition": "",
           "disableIncapacitated": false
         },
@@ -66,8 +60,21 @@
       "statuses": [],
       "img": "icons/creatures/unholy/demons-horned-glowing-pink.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "value": "function.MISC.macros.classFeatures.ancestralProtectors,postAttackRoll",
+            "priority": 20,
+            "type": "custom",
+            "phase": "initial"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!g03NOOnSGZM6ts8q.zZYT0CrKMzLQlQFk"
     }
   ],
@@ -152,7 +159,7 @@
       "repeatable": false
     },
     "activities": {},
-    "advancement": [],
+    "advancement": {},
     "enchant": {}
   },
   "_id": "g03NOOnSGZM6ts8q",

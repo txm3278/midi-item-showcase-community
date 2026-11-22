@@ -81,7 +81,7 @@
 - Sun Blade: replace {"seconds": 0} by {"value": null, "units: "seconds", "expiry": null}
   once migrated it becomes: {"value": 0, "units: "seconds", "expiry": "turnStart"}
 
-- Sorrowfull Fate|Sorrowful Fate - Regret: replace {"seconds" 60} by {"value": 1, "units": "hours", "expiry": "turnStart"}
+- Sorrowfull Fate|Sorrowful Fate - Regret: replace {"seconds" 60} by {"value": 1, "units": "minutes", "expiry": "turnStart"}
 
 
 # Migration dnd5e v6.0.x:
@@ -97,3 +97,6 @@ Eversmoking Bottle (2014/2024):
 Remove deprecated senses and movements attributes:
 - system.attributes.movement.x has moved to "system.attributes.movement.speeds.x (DONE)
 - system.attributes.senses.x has moved to "system.attributes.senses.range.x (DONE)
+
+change computeDistance to getDistance
+DAE.setFlag does not take TokenDocument need to be revised or fixed

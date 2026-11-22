@@ -13,13 +13,13 @@
           "priority": 20
         },
         {
-          "key": "ATL.sight.visionMode",
+          "key": "token.sight.visionMode",
           "mode": 0,
           "value": "devilsSight",
           "priority": 20
         },
         {
-          "key": "ATL.sight.range",
+          "key": "token.sight.range",
           "mode": 4,
           "value": "120",
           "priority": 20
@@ -43,13 +43,13 @@
           "priority": 20
         },
         {
-          "key": "ATL.detectionModes.devilsSight.range",
+          "key": "token.detectionModes.devilsSight.range",
           "mode": 4,
           "value": "120",
           "priority": 20
         },
         {
-          "key": "ATL.detectionModes.devilsSight.enabled",
+          "key": "token.detectionModes.devilsSight.enabled",
           "mode": 5,
           "value": "true",
           "priority": 20

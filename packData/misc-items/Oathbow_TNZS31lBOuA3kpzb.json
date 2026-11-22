@@ -6,7 +6,7 @@
   "img": "icons/weapons/bows/longbow-recurve-leather-red.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Christopher version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to designate a sworn enemy.\nWhen this activity is used, it allows to designate a sworn enemy, this applies one AE on the attacker \nand one on the target to be able to apply the effects. When a sworn enemy is attacked with this bow, it applies its effects.</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Christopher version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>When equipped and attuned, an activity can be used to designate a sworn enemy.\nWhen this activity is used, it allows to designate a sworn enemy, this applies one AE on the attacker \nand one on the target to be able to apply the effects. When a sworn enemy is attacked with this bow, it applies its effects.</p></details>",
       "chat": ""
     },
     "source": {
@@ -99,7 +99,6 @@
       "dt": null,
       "conditions": ""
     },
-    "magicalBonus": null,
     "equipped": true,
     "proficient": null,
     "activities": {
@@ -145,7 +144,8 @@
             "size": "",
             "width": "",
             "height": "",
-            "units": "ft"
+            "units": "ft",
+            "stationary": false
           },
           "affects": {
             "count": "1",
@@ -212,11 +212,14 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -228,19 +231,46 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "",
         "attackMode": "twoHanded",
         "ammunition": "",
         "otherActivityUuid": "",
         "name": "Attack",
+        "img": null,
         "flags": {},
         "visibility": {
           "level": {},
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
         },
         "otherActivityAsParentType": true,
         "attackRollPerTarget": "default",
@@ -298,7 +328,8 @@
           "template": {
             "contiguous": false,
             "units": "ft",
-            "type": ""
+            "type": "",
+            "stationary": false
           },
           "affects": {
             "choice": false,
@@ -351,11 +382,14 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -367,7 +401,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "name": "Swear Oath",
@@ -378,6 +413,31 @@
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
         },
         "otherActivityAsParentType": true
       }
@@ -400,38 +460,44 @@
       "transfer": false,
       "_id": "eFfWdbcygq1LDcXe",
       "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "flags.midi-qol.disadvantage.attack.all",
-          "mode": 5,
-          "value": "workflow?.item?.uuid !== \"@itemUuid\"",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.advantage.attack.rwak",
-          "mode": 5,
-          "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
-          "priority": 20
-        },
-        {
-          "key": "flags.dnd5e.sharpShooter",
-          "mode": 5,
-          "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
-          "priority": 20
-        },
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "function.MISC.macros.items.oathbow",
-          "priority": 20
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "type": "override",
+            "value": "workflow?.item?.uuid !== \"@itemUuid\"",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.advantage.attack.rwak",
+            "type": "override",
+            "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.dnd5e.sharpShooter",
+            "type": "override",
+            "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "macro.execute",
+            "type": "custom",
+            "value": "function.MISC.macros.items.oathbow",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "<p>When you make a ranged attack roll with this weapon against your sworn enemy, you have Advantage on the roll. In addition, your target gains no benefit from Half Cover or Three-Quarters Cover, and you suffer no Disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 Piercing damage.</p><p>While your sworn enemy lives, you have Disadvantage on attack rolls with all other weapons.</p>",
       "tint": "#ffffff",
@@ -446,9 +512,11 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "expiryMode": "default"
         },
         "dnd5e": {
           "riders": {
@@ -476,6 +544,9 @@
           "statuses": []
         }
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!TNZS31lBOuA3kpzb.eFfWdbcygq1LDcXe"
     },
     {
@@ -485,13 +556,15 @@
       "transfer": false,
       "_id": "Bf5EJfd0ghcirCkX",
       "type": "base",
-      "system": {},
-      "changes": [],
+      "system": {
+        "changes": []
+      },
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "<p>When you make a ranged attack roll with this weapon against your sworn enemy, you have Advantage on the roll. In addition, your target gains no benefit from Half Cover or Three-Quarters Cover, and you suffer no Disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 Piercing damage.</p><p>While your sworn enemy lives, you have Disadvantage on attack rolls with all other weapons.</p>",
       "tint": "#ffffff",
@@ -508,6 +581,7 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [
@@ -540,6 +614,9 @@
           "statuses": []
         }
       },
+      "showIcon": 2,
+      "start": null,
+      "folder": null,
       "_key": "!items.effects!TNZS31lBOuA3kpzb.Bf5EJfd0ghcirCkX"
     },
     {
@@ -548,20 +625,23 @@
       "origin": null,
       "_id": "3Dux3zNFGizvVdyo",
       "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "function.MISC.macros.items.oathbow",
-          "priority": 20
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "macro.execute",
+            "type": "custom",
+            "value": "function.MISC.macros.items.oathbow",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "",
       "tint": "#ffffff",
@@ -573,9 +653,11 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "multi",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "expiryMode": "default"
         },
         "dnd5e": {
           "riders": {
@@ -603,6 +685,9 @@
           "statuses": []
         }
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!TNZS31lBOuA3kpzb.3Dux3zNFGizvVdyo"
     }
   ],

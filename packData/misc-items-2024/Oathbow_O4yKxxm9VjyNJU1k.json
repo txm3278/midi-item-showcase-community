@@ -5,7 +5,7 @@
   "img": "icons/weapons/bows/longbow-recurve-leather-red.webp",
   "system": {
     "description": {
-      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Christopher version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item is used as a factory to create Oathbow bows.\nThe enchantment adds an activity to swear an oath when equipped and attuned.\nWhen this activity is used, it allows to swear an oath to designate a sworn enemy, this applies one AE on the attacker \nand one on the target to be able to apply the effects. When a sworn enemy is attacked with this bow, it applies its effects.\n@Embed[Compendium.dnd5e.content24.JournalEntry.dmgFoundryRefere.JournalEntryPage.Ok4iCgD25ENgoRxE cite=false caption=false classes=\"hide-in-embed\"]</p></details>",
+      "value": "<em>Replace this with a proper description.</em>\n<details>\n<summary>Credits and Instructions</summary>\n<h2>Made by Elwin</h2>\nBased on Christopher version.\n <h3>Requires:</h3>\n<ul>\n   <li>Times-up (less than v14)</li>\n   <li>Elwin Helpers (Enable in Settings)</li>\n</ul>\n<p><strong>Usage:</strong></p>\n<p>This item is used as a factory to create Oathbow bows.\nThe enchantment adds an activity to swear an oath when equipped and attuned.\nWhen this activity is used, it allows to swear an oath to designate a sworn enemy, this applies one AE on the attacker \nand one on the target to be able to apply the effects. When a sworn enemy is attacked with this bow, it applies its effects.\n@Embed[Compendium.dnd5e.content24.JournalEntry.dmgFoundryRefere.JournalEntryPage.Ok4iCgD25ENgoRxE cite=false caption=false classes=\"hide-in-embed\"]</p></details>",
       "chat": ""
     },
     "source": {
@@ -93,7 +93,6 @@
       "dt": null,
       "conditions": ""
     },
-    "magicalBonus": null,
     "equipped": true,
     "proficient": null,
     "activities": {
@@ -149,7 +148,8 @@
           "template": {
             "contiguous": false,
             "units": "ft",
-            "type": ""
+            "type": "",
+            "stationary": false
           },
           "affects": {
             "choice": false,
@@ -202,11 +202,14 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -218,7 +221,8 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "otherActivityId": "none",
         "name": "Swear Oath",
@@ -229,6 +233,31 @@
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
+        },
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
         },
         "otherActivityAsParentType": true
       },
@@ -283,7 +312,8 @@
           "template": {
             "contiguous": false,
             "units": "ft",
-            "type": ""
+            "type": "",
+            "stationary": false
           },
           "affects": {
             "choice": false,
@@ -342,11 +372,14 @@
           "chooseEffects": false,
           "toggleEffect": false,
           "ignoreFullCover": false,
+          "triggeredActivityConsume": true,
+          "triggeredActivityConfigure": true,
           "autoConsume": false,
           "forceConsumeDialog": "default",
           "forceRollDialog": "default",
           "forceDamageDialog": "default",
           "otherActivityAsParentType": true,
+          "targetMustBeSeen": false,
           "removeChatButtons": "default",
           "magicEffect": false,
           "magicDamage": false,
@@ -358,15 +391,43 @@
         "overTimeProperties": {
           "saveRemoves": true,
           "preRemoveConditionText": "",
-          "postRemoveConditionText": ""
+          "postRemoveConditionText": "",
+          "rollAs": "target"
         },
         "name": "Oathbow",
+        "img": "",
         "flags": {},
         "visibility": {
           "level": {},
           "requireAttunement": false,
           "requireIdentification": false,
           "requireMagic": false
+        },
+        "otherActivityId": null,
+        "regionBehavior": {
+          "enabled": false,
+          "dispositionFilter": -1,
+          "excludeSource": true,
+          "oncePerTurn": true,
+          "wallRestriction": "none",
+          "regionVisibility": 2,
+          "attachToken": "default",
+          "moveDistance": 0,
+          "moveDirection": "away",
+          "moveTiming": "start",
+          "templateOrigin": "default",
+          "rules": []
+        },
+        "regionLight": {
+          "enabled": false,
+          "dim": 0,
+          "bright": 0,
+          "color": null,
+          "alpha": 0.5,
+          "luminosity": 0.5,
+          "animationType": "",
+          "animationSpeed": 5,
+          "animationIntensity": 5
         }
       }
     },
@@ -386,38 +447,44 @@
       "transfer": false,
       "_id": "eFfWdbcygq1LDcXe",
       "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "flags.midi-qol.disadvantage.attack.all",
-          "mode": 5,
-          "value": "workflow?.item?.uuid !== \"@itemUuid\"",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.advantage.attack.rwak",
-          "mode": 0,
-          "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
-          "priority": 20
-        },
-        {
-          "key": "flags.dnd5e.sharpShooter",
-          "mode": 0,
-          "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
-          "priority": 20
-        },
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "function.MISC.macros.items.oathbow",
-          "priority": 20
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "type": "override",
+            "value": "workflow?.item?.uuid !== \"@itemUuid\"",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.midi-qol.advantage.attack.rwak",
+            "type": "custom",
+            "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "flags.dnd5e.sharpShooter",
+            "type": "custom",
+            "value": "workflow?.item?.uuid === \"@itemUuid\" && targetActorUuid === \"{{targetActorUuid}}\" && activity?.hasAttack && activity?.getActionType(workflow.attackMode) === \"rwak\"",
+            "phase": "initial",
+            "priority": 20
+          },
+          {
+            "key": "macro.execute",
+            "type": "custom",
+            "value": "function.MISC.macros.items.oathbow",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "<p>When you make a ranged attack roll with this weapon against your sworn enemy, you have Advantage on the roll. In addition, your target gains no benefit from Half Cover or Three-Quarters Cover, and you suffer no Disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 Piercing damage.</p><p>While your sworn enemy lives, you have Disadvantage on attack rolls with all other weapons.</p>",
       "tint": "#ffffff",
@@ -432,9 +499,11 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneNameOnly",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "expiryMode": "default"
         },
         "dnd5e": {
           "riders": {
@@ -462,6 +531,9 @@
           "statuses": []
         }
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.eFfWdbcygq1LDcXe"
     },
     {
@@ -471,13 +543,15 @@
       "transfer": false,
       "_id": "Bf5EJfd0ghcirCkX",
       "type": "base",
-      "system": {},
-      "changes": [],
+      "system": {
+        "changes": []
+      },
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "<p>When you make a ranged attack roll with this weapon against your sworn enemy, you have Advantage on the roll. In addition, your target gains no benefit from Half Cover or Three-Quarters Cover, and you suffer no Disadvantage due to long range. If the attack hits, your sworn enemy takes an extra 3d6 Piercing damage.</p><p>While your sworn enemy lives, you have Disadvantage on attack rolls with all other weapons.</p>",
       "tint": "#ffffff",
@@ -494,6 +568,7 @@
           "selfTargetAlways": false,
           "dontApply": false,
           "stackable": "noneName",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": [
@@ -526,6 +601,9 @@
           "statuses": []
         }
       },
+      "showIcon": 2,
+      "start": null,
+      "folder": null,
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.Bf5EJfd0ghcirCkX"
     },
     {
@@ -534,20 +612,23 @@
       "origin": null,
       "_id": "ZEOnfGlqjubR8yjI",
       "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "macro.itemMacro",
-          "mode": 0,
-          "value": "function.MISC.macros.items.oathbow",
-          "priority": 20
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "macro.execute",
+            "type": "custom",
+            "value": "function.MISC.macros.items.oathbow",
+            "phase": "initial",
+            "priority": 20
+          }
+        ]
+      },
       "disabled": false,
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "",
       "tint": "#ffffff",
@@ -559,9 +640,11 @@
           "disableCondition": "",
           "disableIncapacitated": false,
           "stackable": "multi",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
-          "specialDuration": []
+          "specialDuration": [],
+          "expiryMode": "default"
         },
         "dnd5e": {
           "riders": {
@@ -589,6 +672,9 @@
           "statuses": []
         }
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.ZEOnfGlqjubR8yjI"
     },
     {
@@ -597,91 +683,106 @@
       "img": "systems/dnd5e/icons/spell-tiers/spell4.webp",
       "disabled": true,
       "_id": "w5C2XoXw58Z5Xh7c",
-      "system": {},
-      "changes": [
-        {
-          "key": "name",
-          "mode": 5,
-          "value": "Oathbow ({})",
-          "priority": 20
-        },
-        {
-          "key": "system.rarity",
-          "mode": 5,
-          "value": "veryRare",
-          "priority": 20
-        },
-        {
-          "key": "system.description.value",
-          "mode": 5,
-          "value": "{}<p>@Embed[Compendium.dnd5e.equipment24.Item.dmgOathbow000000 caption=false]</p>",
-          "priority": 20
-        },
-        {
-          "key": "system.attunement",
-          "mode": 5,
-          "value": "required",
-          "priority": 20
-        },
-        {
-          "key": "sytem.properties",
-          "mode": 2,
-          "value": "mgc",
-          "priority": 20
-        },
-        {
-          "key": "img",
-          "mode": 5,
-          "value": "icons/weapons/bows/longbow-recurve-leather-red.webp",
-          "priority": 20
-        },
-        {
-          "key": "system.price.value",
-          "mode": 2,
-          "value": "40000",
-          "priority": 20
-        },
-        {
-          "key": "system.price.denomination",
-          "mode": 5,
-          "value": "gp",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "function.MISC.macros.items.oathbow,preDamageRollConfig",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-qol.onUseMacroName",
-          "mode": 0,
-          "value": "function.MISC.macros.items.oathbow,postActiveEffects",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-item-showcase-community.elwinHelpers.extraEnchantRestrictions.0.condition",
-          "mode": 5,
-          "value": "[\"longbow\", \"shortbow].includes(item.identifier)",
-          "priority": 20
-        },
-        {
-          "key": "flags.midi-item-showcase-community.elwinHelpers.extraEnchantRestrictions.0.conditionMsg",
-          "mode": 5,
-          "value": "Only Longbow and Shortbow are supported",
-          "priority": 20
-        },
-        {
-          "key": "system.identifier",
-          "mode": 5,
-          "value": "oathbow-{}",
-          "priority": 20
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "name",
+            "value": "Oathbow ({})",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.rarity",
+            "value": "veryRare",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.description.value",
+            "value": "{}<p>@Embed[Compendium.dnd5e.equipment24.Item.dmgOathbow000000 caption=false]</p>",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.attunement",
+            "value": "required",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "sytem.properties",
+            "value": "mgc",
+            "priority": 20,
+            "type": "add",
+            "phase": "initial"
+          },
+          {
+            "key": "img",
+            "value": "icons/weapons/bows/longbow-recurve-leather-red.webp",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.price.value",
+            "value": 40000,
+            "priority": 20,
+            "type": "add",
+            "phase": "initial"
+          },
+          {
+            "key": "system.price.denomination",
+            "value": "gp",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "value": "function.MISC.macros.items.oathbow,preDamageRollConfig",
+            "priority": 20,
+            "type": "custom",
+            "phase": "initial"
+          },
+          {
+            "key": "flags.midi-qol.onUseMacroName",
+            "value": "function.MISC.macros.items.oathbow,postActiveEffects",
+            "priority": 20,
+            "type": "custom",
+            "phase": "initial"
+          },
+          {
+            "key": "flags.midi-item-showcase-community.elwinHelpers.extraEnchantRestrictions.0.condition",
+            "value": "[\"longbow\", \"shortbow].includes(item.identifier)",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "flags.midi-item-showcase-community.elwinHelpers.extraEnchantRestrictions.0.conditionMsg",
+            "value": "Only Longbow and Shortbow are supported",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          },
+          {
+            "key": "system.identifier",
+            "value": "oathbow-{}",
+            "priority": 20,
+            "type": "override",
+            "phase": "initial"
+          }
+        ]
+      },
       "duration": {
         "value": null,
         "units": "seconds",
-        "expiry": null
+        "expiry": null,
+        "expired": false
       },
       "description": "",
       "origin": null,
@@ -694,6 +795,7 @@
           "enableCondition": "",
           "disableCondition": "",
           "stackable": "noneNameOnly",
+          "showIcon": false,
           "durationExpression": "",
           "macroRepeat": "none",
           "specialDuration": []
@@ -724,6 +826,9 @@
           "statuses": []
         }
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!O4yKxxm9VjyNJU1k.w5C2XoXw58Z5Xh7c"
     }
   ],

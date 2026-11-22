@@ -1,7 +1,7 @@
 // ##################################################################################################
 // Read First!!!!
 // Marks a target for Ancestral Protectors, and handles the behavior on the marked target.
-// v3.3.0
+// v3.3.1
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -109,7 +109,7 @@ async function handlePostAttackByBarbarian(workflow, actor, sourceItem, debug) {
     return;
   }
 
-  if (workflow.isCombat && !workflow.isTurn) {
+  if (workflow.inCombat && game.combat?.combatant?.actor?.uuid !== actor.uuid) {
     // Can only be activated on combatant turn's
     if (debug) {
       console.warn(`${DEFAULT_ITEM_NAME} | When in combat it must be the combatant turn's`);
@@ -121,8 +121,9 @@ async function handlePostAttackByBarbarian(workflow, actor, sourceItem, debug) {
     console.warn(`${DEFAULT_ITEM_NAME} | Applied on target`, workflow);
   }
 
+  // TODO revise when MidiQOL 14.9+
   const targetToken = workflow.hitTargets.first();
-  const targetUuid = targetToken.document.uuid;
+  const targetUuid = targetToken?.uuid ?? targetToken?.document.uuid;
   const targetActor = targetToken.actor;
 
   // create an active effect to set the target of the item
@@ -161,7 +162,7 @@ async function handlePostAttackByBarbarian(workflow, actor, sourceItem, debug) {
       {
         key: "flags.midi-qol.onUseMacroName",
         mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM,
-        value: `ItemMacro,postDamageRoll`,
+        value: `function.MISC.macros.classFeatures.ancestralProtectors,postDamageRoll`,
         priority: 20,
       },
       // flag to indicate who marked this actor
@@ -210,7 +211,10 @@ async function handlePostDamageByMarkedTarget(workflow, token, sourceItem, debug
   }
 
   const sourceTokenUuid = token.actor.getFlag(MODULE_ID, "ancestralProtectors.sourceTokenUuid");
-  const notSourceTargets = workflow.hitTargets.filter((target) => target.uuid !== sourceTokenUuid);
+  // TODO revise when MidiQOL 14.9+
+  const notSourceTargets = workflow.hitTargets.filter(
+    (target) => (target?.uuid ?? target?.document.uuid) !== sourceTokenUuid,
+  );
   if (notSourceTargets.length === 0) {
     // Target is the source of the mark, no penalties
     if (debug) {

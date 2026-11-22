@@ -3,7 +3,7 @@
 // Read First!!!!
 // Adds a third party reaction active effect, that effect will trigger a reaction by the Fighter
 // when a creature within range is hit to allow him to add an AC bonus.
-// v2.5.0
+// v2.5.1
 // Dependencies:
 //  - DAE
 //  - Times Up (if Foundry version < v14)
@@ -90,11 +90,13 @@ async function handleTargetOnUseIsHitPost(workflow, targetToken, sourceItem, thi
 
   // Reset hitTargets and recompute checkHits to take into account the AC bonus
   // TODO Remove when fixed in midi-qol
-  workflow.hitTargets = new Set();
+  workflow.hitTargets?.clear();
   await workflow.checkHits({
     noProvokeReaction: true,
+    // TODO Remove when fixed in midi-qol
+    noOnuseMacro: true,
     noOnUseMacro: true,
-    noTargetOnuseMacro: true,
+    noTargetOnUseMacro: true,
   });
   // Adjust attack roll target AC, it is used by dnd5e chat message to display the attack result
   elwinHelpers.adjustAttackRollTargetAC(workflow);

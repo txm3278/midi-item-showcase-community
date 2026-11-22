@@ -3,7 +3,7 @@
 // Rerolls ones on fire damage spells. It also adds a flame effect that sheds light on the caster when
 // a spell with fire damage is cast and an aura effect that allows to damage any creature within 5' hitting him
 // with a melee attack.
-// v3.3.3
+// v3.3.4
 // Author: Elwin#1410
 // Dependencies:
 //  - DAE
@@ -275,10 +275,10 @@ export async function flamesOfPhlegethos({ speaker, actor, token, character, ite
       foundry.utils.setProperty(dieJson, "options.flavor", "fire");
       // Add dummy + operator if we want to roll multiple dice
       if (terms.length > 0) {
-        const operatorTerm = new OperatorTerm({ operator: "+" }).evaluate();
+        const operatorTerm = new foundry.dice.terms.OperatorTerm({ operator: "+" }).evaluate();
         terms.push(operatorTerm);
       }
-      terms.push(new Die(dieJson));
+      terms.push(new foundry.dice.terms.Die(dieJson));
     });
 
     const rerolledResult = Roll.fromTerms(terms);
