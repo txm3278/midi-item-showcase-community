@@ -83,6 +83,10 @@
 
 - Sorrowfull Fate|Sorrowful Fate - Regret: replace {"seconds" 60} by {"value": 1, "units": "minutes", "expiry": "turnStart"}
 
+# TODO
+- do a release v13 for fix enchant drop box + translation czech
+- do a release v14 v5.3.3. for fix enchant drop box + translation czech
+- do a release v14 6.0.x
 
 # Migration dnd5e v6.0.x:
 AE changes with @ values needing a replacement value of origin:
