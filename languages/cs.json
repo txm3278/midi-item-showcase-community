@@ -1,0 +1,18 @@
+{
+  "midi-item-showcase-community": {
+    "ElwinHelpersRequired": "Nastavení Elwin Helpers musí být zapnuté.",
+    "ElwinHelpersName": "Používat Elwin Helpers?",
+    "ElwinHelpersHint": "Zaškrtnutí aktivuje automatizace využívajícé Elwin Helpers Script.",
+    "Goodberry": {
+      "BatchIdFormat": {
+        "Name": "Formát dávky Dobrůvek",
+        "Hint": "Formát ID dávky přidaného coby přípona k vytvořeným bobulím.",
+        "Choices": {
+          "default": "Výchozí formát kalendáře (časové razítko)",
+          "uid": "Unikátní ID",
+          "none": "Dávka bez ID"
+        }
+      }
+    }
+  }
+}
